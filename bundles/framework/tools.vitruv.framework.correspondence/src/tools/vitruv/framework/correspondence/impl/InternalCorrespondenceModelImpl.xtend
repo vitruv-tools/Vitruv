@@ -1,32 +1,34 @@
 package tools.vitruv.framework.correspondence.impl
 
 import java.util.HashSet
+import java.util.LinkedHashSet
 import java.util.List
 import java.util.Set
+import java.util.function.Predicate
 import java.util.function.Supplier
+import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
-import tools.vitruv.framework.correspondence.Correspondences
-
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
-import java.util.function.Predicate
-import java.util.LinkedHashSet
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import tools.vitruv.framework.correspondence.Correspondences
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+
 import static com.google.common.base.Preconditions.checkState
-import org.eclipse.emf.ecore.resource.ResourceSet
-import java.util.Map
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
-	static val saveOptions = Map.of("PROCESS_DANGLING_HREF", "DISCARD")
+	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
 	val Correspondences correspondences
 	val Resource correspondencesResource
 
@@ -69,7 +71,28 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 	}
 
 	override save() {
-		this.correspondencesResource?.save(saveOptions)
+		removeCorrespondencesForRemovedElements()
+		this.correspondencesResource?.save(null)
+	}
+	
+	private def void removeCorrespondencesForRemovedElements() {
+		val iterator = correspondences.correspondences.iterator
+		while (iterator.hasNext()) {
+			val element = iterator.next()
+			if (element.leftEObjects.exists[!isInManagedResource] || element.rightEObjects.exists[!isInManagedResource]) {
+				checkState(element.leftEObjects.forall[!isInManagedResource] || element.leftEObjects.forall[!isInManagedResource],
+					"Correspondence between %s and %s contains elements %s that are not contained in a resource anymore.",
+					element.leftEObjects, element.rightEObjects, (element.leftEObjects + element.rightEObjects).filter[!isInManagedResource])
+				iterator.remove()
+				if (logger.traceEnabled) {
+					logger.trace('''Correspondence between «element.leftEObjects» and «element.rightEObjects» has been removed as all its elements have been removed from resources.''')
+				}
+			}
+		}
+	}
+	
+	private def static isInManagedResource(EObject object) {
+		object instanceof EClass || object.eResource?.resourceSet !== null
 	}
 
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,

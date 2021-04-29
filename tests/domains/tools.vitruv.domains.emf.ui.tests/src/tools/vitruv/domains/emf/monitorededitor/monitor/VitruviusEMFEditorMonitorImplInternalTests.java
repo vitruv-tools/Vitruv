@@ -40,8 +40,6 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
         EclipseAdapterProvider.getInstance().setProvidedEclipseAdapter(eclipseUtils);
         this.factory = new DefaultEditorPartAdapterFactoryImpl(Files.ECORE_FILE_EXTENSION);
         this.virtualModel = TestVirtualModel.createInstance();
-        this.virtualModel.registerExistingModel(Files.EXAMPLEMODEL_ECORE);
-        this.virtualModel.registerExistingModel(Files.DATATYPE_ECORE);
     }
 
     @Test

@@ -37,7 +37,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
-import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations.TestVirtualModel;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.VitruviusChange;
@@ -53,8 +52,6 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     private static final EObject DUMMY_EOBJECT = EcoreFactory.eINSTANCE.createEClass();
 
-    private TestVirtualModel virtualModel;
-    
     @BeforeEach
     public void setUp() {
         this.eclipseCtrl = new EclipseMock();
@@ -63,8 +60,6 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         adapterFactory = new DefaultEditorPartAdapterFactoryImpl(Files.ECORE_FILE_EXTENSION);
         editorPart = eclipseCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
         editorPartAdapter = adapterFactory.createAdapter(editorPart);
-        this.virtualModel = TestVirtualModel.createInstance();
-        this.virtualModel.registerExistingModel(Files.EXAMPLEMODEL_ECORE);
     }
 
     @AfterEach
@@ -74,7 +69,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void initializeCompletesWithoutFailures() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
         monitor.dispose();
@@ -82,11 +77,10 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void emfEditorsCreatedAfterInitializeAreMonitored() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
-        virtualModel.registerExistingModel(Files.EMPTY_ECORE);
         IEditorPart emfEditor2 = eclipseCtrl.openNewEMFTreeEditorPart(Files.EMPTY_ECORE);
         assert monitor.isMonitoringEditor(emfEditor2);
 
@@ -95,7 +89,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void nonEmfEditorsAreNotMonitored() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -107,7 +101,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void noEditorsAreMonitoredWhenMonitoringDeciderSaysNo() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, new IMonitoringDecider() {
                     @Override
                     public boolean isMonitoringEnabled(IEditorPartAdapter editor) {
@@ -126,7 +120,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     public void correctAdapterIsPassedToTheMonitoringDecider() {
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, new IMonitoringDecider() {
                     @Override
                     public boolean isMonitoringEnabled(IEditorPartAdapter editor) {
@@ -158,7 +152,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel, cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -182,7 +176,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel, cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -211,11 +205,10 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel, cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
-        virtualModel.registerExistingModel(Files.EMPTY_ECORE);
         IEditorPart otherEditor = eclipseCtrl.openNewEMFTreeEditorPart(Files.EMPTY_ECORE);
         // now, otherEditor is the current editor.
         assert eclipseCtrl.getEclipseUtils().getActiveEditorPart() == otherEditor;
@@ -259,7 +252,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel, cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 

@@ -391,6 +391,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.builder = builder
 			this.taggable = taggable
 		}
+		
+		def void taggedWithAnything() {
+			taggable.tag = LanguageFactory.eINSTANCE.createTagCodeBlock => [
+				code = XbaseFactory.eINSTANCE.createXNullLiteral
+			]
+		}
 
 		def void taggedWith(String tag) {
 			taggable.tag = LanguageFactory.eINSTANCE.createTagCodeBlock => [

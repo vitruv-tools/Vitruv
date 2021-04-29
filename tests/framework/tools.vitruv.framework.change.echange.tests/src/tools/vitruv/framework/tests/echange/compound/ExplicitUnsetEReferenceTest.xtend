@@ -44,18 +44,12 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
-		oldValue = aet.NonRoot.withUuid
-		oldValue2 = aet.NonRoot.withUuid
-		oldValue3 = aet.NonRoot.withUuid
+		affectedEObject = rootObject
+		oldValue = aet.NonRoot
+		oldValue2 = aet.NonRoot
+		oldValue3 = aet.NonRoot
 	}
 	
-	private def registerOldValuesAsPreexisting() {
-		oldValue.registerAsPreexisting
-		oldValue2.registerAsPreexisting
-		oldValue3.registerAsPreexisting
-	}
-
 	/**
 	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
 	 * valued non containment reference and the model is in state before the change.
@@ -79,7 +73,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		resolveBeforeTest
 	}
 
@@ -106,60 +99,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		resolveBeforeTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
-	 * valued non containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterSingleValuedNonContainmentReferenceTest() {
-		// Set state before
-		isSingleValuedNonContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
-	 * valued containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterSingleValuedContainmentReferenceTest() {
-		// Set state before
-		isSingleValuedContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a multi 
-	 * valued non containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterMultiValuedNonContainmentReferenceTest() {
-		// Set state before
-		isMultiValuedNonContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a multi 
-	 * valued containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterMultiValuedContainmentReferenceTest() {
-		// Set state before
-		isMultiValuedContainmentTest
-
-		// Test
-		resolveAfterTest
 	}
 
 	/**
@@ -201,7 +141,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -215,7 +154,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -229,7 +167,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -256,7 +193,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyBackwardTest
 	}
 
@@ -283,7 +219,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyBackwardTest
 	}
 
@@ -344,7 +279,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		resource.contents.add(oldValue)
 		resource.contents.add(oldValue2)
 		resource.contents.add(oldValue3)
-		registerOldValuesAsPreexisting()
 	}
 
 	/**
@@ -577,36 +511,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	}
 
 	/**
-	 * Starts a test with resolving the change after the change is applied.
-	 */
-	def private void resolveAfterTest() {
-	
-		// State before
-		assertIsStateBefore
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.localAssertIsNotResolved()
-
-		// Set state after
-		prepareStateAfter
-		assertIsStateAfter
-
-		// Resolve
-		var resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.localAssertIsResolved
-
-		// Model should be unaffected.
-		assertIsStateAfter
-
-		// Apply Backward
-		resolvedChange.applyBackward
-
-		// State before
-		assertIsStateBefore
-	}
-
-	/**
 	 * Starts a test with applying the change forward.
 	 */
 	def private void applyForwardTest() {
@@ -617,7 +521,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		val resolvedChange = createUnresolvedChange().resolveBefore
 
 		// Apply forward
-		assertTrue(resolvedChange.applyForward)
+		resolvedChange.applyForward
 
 		// State after
 		assertIsStateAfter
@@ -638,7 +542,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateAfter
 
 		// Apply forward
-		assertTrue(resolvedChange.applyBackward)
+		resolvedChange.applyBackward
 
 		// State before
 		assertIsStateBefore

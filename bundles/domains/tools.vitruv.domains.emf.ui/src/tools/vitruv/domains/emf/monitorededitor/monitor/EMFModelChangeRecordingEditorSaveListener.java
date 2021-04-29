@@ -11,8 +11,6 @@
 
 package tools.vitruv.domains.emf.monitorededitor.monitor;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.ecore.change.ChangeDescription;
@@ -22,10 +20,8 @@ import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEdito
 import tools.vitruv.domains.emf.monitorededitor.tools.ISaveEventListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
-import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
-import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * <p>
@@ -64,8 +60,6 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /** The listener getting fired when the user saves the edited file. */
     private final SaveEventListenerMgr saveActionListenerManager;
 
-    private VirtualModel virtualModel;
-
     /**
      * A constructor for {@link EMFModelChangeRecordingEditorSaveListener} instances. The listener
      * remains inactive until <code>initialize()</code> is called.
@@ -103,9 +97,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
             @Override
             public void onPostSave() {
-                var changes = readOutChangesAndEndRecording();
-                LOGGER.trace("Detected a user save action, got change descriptions: " + changes);
-                onSavedResource(changes);
+                var change = readOutChangesAndEndRecording();
+                LOGGER.trace("Detected a user save action, got change description: " + change);
+                onSavedResource(change);
                 resetChangeRecorder();
             }
 
@@ -145,11 +139,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        UuidGeneratorAndResolver localUuidResolver = virtualModel != null
-                ? virtualModel.createChildUuidGeneratorAndResolver(targetResource.getResourceSet())
-                : null;
-
-        changeRecorder = new ChangeRecorder(localUuidResolver);
+        changeRecorder = new ChangeRecorder(targetResource.getResourceSet());
         changeRecorder.addToRecording(targetResource);
         changeRecorder.beginRecording();
     }
@@ -157,17 +147,15 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * @return The changes recorded since last resetting the change recorder.
      */
-    protected List<? extends TransactionalChange> readOutChangesAndEndRecording() {
-        changeRecorder.endRecording();
-        return changeRecorder.getChanges();
+    protected VitruviusChange readOutChangesAndEndRecording() {
+        return changeRecorder.endRecording();
     }
 
     /**
      * Initializes the listener. After calling this method, the listener is active until
      * <code>dispose()</code> is called.
      */
-    public void initialize(VirtualModel virtualModel) {
-        this.virtualModel = virtualModel;
+    public void initialize() {
         if (!isInitialized) {
             resetChangeRecorder();
             installResourceReloadListener();
@@ -210,5 +198,5 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            saving it (rsp. since opening it, in case it has not been saved yet). This object is
      *            provided "as is" from a {@link ChangeRecorder} instance.
      */
-    protected abstract void onSavedResource(List<? extends TransactionalChange> changeDescription);
+    protected abstract void onSavedResource(VitruviusChange changeDescription);
 }

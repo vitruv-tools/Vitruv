@@ -32,9 +32,9 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
+		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		oldNonRootObject = aet.NonRoot.withUuid
+		oldNonRootObject = aet.NonRoot
 		prepareStateBefore
 	}
 
@@ -49,37 +49,11 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
 		unresolvedChange.assertIsNotResolved
 
-		// Set state after
-		prepareStateAfter
-
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
+		val resolvedChange = unresolvedChange.resolveBefore
 		resolvedChange.assertIsResolved(affectedEObject, oldNonRootObject)
 
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
-	}
-
-	/**
-	 * Resolves a {@link ReplaceAndDeleteNonRoot} EChange. The model is in state
-	 * after the change, so the old non root element is deleted and the single valued
-	 * containment reference is null.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, oldNonRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
+		assertIsStateBefore
 	}
 
 	/**
@@ -92,7 +66,6 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
 
 		// Resolve		
-		oldNonRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -104,7 +77,6 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	@Test
 	def void applyForwardTest() {
 		// Create and resolve and apply
-		oldNonRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(oldNonRootObject).resolveBefore
 		resolvedChange.assertApplyForward
 
@@ -120,7 +92,6 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	@Test
 	def void applyBackwardTest() {
 		// Create and resolve
-		oldNonRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(oldNonRootObject).resolveBefore
 
 		// Set state after

@@ -24,9 +24,9 @@ abstract class ReferenceEChangeTest extends EChangeTest {
 	 */
 	@BeforeEach
 	def final void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
-		newValue = aet.NonRoot.withUuid
-		newValue2 = aet.NonRoot.withUuid
+		affectedEObject = rootObject
+		newValue = aet.NonRoot
+		newValue2 = aet.NonRoot
 	}
 
 	/**

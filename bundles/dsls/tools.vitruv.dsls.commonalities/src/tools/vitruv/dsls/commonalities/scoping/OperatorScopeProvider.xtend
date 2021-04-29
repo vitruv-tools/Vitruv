@@ -16,11 +16,11 @@ final class OperatorScopeProvider extends ImportedNamespaceAwareLocalScopeProvid
 	// Going forward, there should be no distinction between different operator types, and hence the
 	// need to differentiate should disappear.
 	// Thus: either remove different operator types or filter the scope by this class.
-	var Class<?> operatorBaseType
+	// var Class<?> operatorBaseType
 	var List<String> translatedImports
 	
 	private new(Class<?> operatorBaseType, List<String> defaultImports) {
-		this.operatorBaseType = operatorBaseType
+		// this.operatorBaseType = operatorBaseType
 		this.translatedImports = defaultImports.mapFixed [
 			CommonalitiesOperatorConventions.toOperatorTypeQualifiedName(it)
 		]

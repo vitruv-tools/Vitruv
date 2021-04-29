@@ -4,8 +4,6 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -14,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link InsertEAttributeValue} EChange,
@@ -121,7 +120,7 @@ class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def void invalidAttributeTest() {
 		// NonRoot has no multi-valued int attribute
-		val affectedNonRootEObject = aet.NonRoot.withUuid.registerAsPreexisting
+		val affectedNonRootEObject = aet.NonRoot
 		resource.contents.add(affectedNonRootEObject)
 
 		// Resolving the change will be tested in EFeatureChange

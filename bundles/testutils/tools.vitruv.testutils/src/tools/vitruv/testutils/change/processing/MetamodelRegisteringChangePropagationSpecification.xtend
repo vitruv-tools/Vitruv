@@ -6,9 +6,9 @@ import tools.vitruv.framework.domains.VitruvDomain
 import org.eclipse.emf.ecore.EPackage
 import java.util.List
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.propagation.ResourceAccess
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Xtext tests reset the metamodel registry between test runs. Hence, it might
@@ -18,7 +18,7 @@ import tools.vitruv.framework.propagation.ResourceAccess
 class MetamodelRegisteringChangePropagationSpecification implements ChangePropagationSpecification {
 	@Delegate val ChangePropagationSpecification delegate
 	
-	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
+	override propagateChange(EChange change, CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
 		sourceDomain.registerAllMetamodels()
 		targetDomain.registerAllMetamodels()
 		delegate.propagateChange(change, correspondenceModel, resourceAccess)

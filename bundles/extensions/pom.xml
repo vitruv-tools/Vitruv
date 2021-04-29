@@ -17,7 +17,6 @@
 		<module>changevisualization</module>
 		<module>dslsruntime</module>
 		<module>integration</module>
-		<module>constructionsimulation</module>
 	</modules>
 
 </project>

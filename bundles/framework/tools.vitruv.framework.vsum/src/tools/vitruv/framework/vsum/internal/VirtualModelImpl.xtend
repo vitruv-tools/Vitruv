@@ -18,8 +18,6 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.internal.ChangePropagator
 import tools.vitruv.framework.vsum.ChangePropagationListener
-import org.eclipse.emf.ecore.resource.ResourceSet
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -71,12 +69,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 		checkNotNull(change, "change to propagate")
 		checkArgument(change.containsConcreteChange, 
 			"This change contains no concrete changes:%s%s", System.lineSeparator, change)
-
+		val unresolvedChange = change.unresolve()
+		
 		LOGGER.info("Start change propagation")
-		startChangePropagation(change)
-
-		change.unresolveIfApplicable
-		val result = changePropagator.propagateChange(change)
+		startChangePropagation(unresolvedChange)
+		
+		val result = changePropagator.propagateChange(unresolvedChange)
 		save()
 		
 		if (LOGGER.isTraceEnabled) {
@@ -89,7 +87,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			''')
 		}
 		
-		finishChangePropagation(change)
+		finishChangePropagation(unresolvedChange)
 		informPropagatedChangeListeners(result)
 		LOGGER.info("Finished change propagation")
 		return result
@@ -124,11 +122,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val vitruvDomain = domainRepository.getDomain(if (oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
 		val strategy = vitruvDomain.stateChangePropagationStrategy
 		val compositeChange = if (currentState === null) {
-				strategy.getChangeSequenceForCreated(newState, uuidResolver)
+				strategy.getChangeSequenceForCreated(newState)
 			} else if (newState === null) {
-				strategy.getChangeSequenceForDeleted(currentState, uuidResolver)
+				strategy.getChangeSequenceForDeleted(currentState)
 			} else {
-				strategy.getChangeSequenceBetween(newState, currentState, uuidResolver)
+				strategy.getChangeSequenceBetween(newState, currentState)
 			}
 		if (!compositeChange.containsConcreteChange) {
 			LOGGER.warn("State-based change for " + oldLocation + " was empty")
@@ -143,27 +141,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 	}
 
-	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		changes.reverseView.forEach [applyBackward(uuidResolver)]
-
-		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
-		changes.flatMap [originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
-			.map [eResource]
-			.filterNull
-			.forEach[modified = true]
-		save()
-	}
-
 	override Path getFolder() {
 		return fileSystemLayout.vsumProjectFolder
-	}
-
-	override getUuidResolver() {
-		return resourceRepository.uuidResolver
-	}
-		
-	override createChildUuidGeneratorAndResolver(ResourceSet resourceSet) {
-		createUuidGeneratorAndResolver(uuidResolver, resourceSet)
 	}
 
 	/**

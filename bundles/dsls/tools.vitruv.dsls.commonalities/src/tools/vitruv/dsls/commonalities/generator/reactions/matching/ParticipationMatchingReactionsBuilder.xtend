@@ -34,6 +34,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 /**
  * Generates the reactions and routines that match participations in given
@@ -312,8 +313,11 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 		return reaction.call [
 			match [
 				vall(INTERMEDIATE).retrieve(commonality.changeClass).correspondingTo.oldValue
+				vall(RESOURCE_BRIDGE).retrieve(ResourcesPackage.eINSTANCE.intermediateResourceBridge).correspondingTo.oldValue
 			]
 			action [
+				// Remove correspondence between the resource bridge and the just removed element
+				removeCorrespondenceBetween [extension typeProvider|typeProvider.oldValue].and(RESOURCE_BRIDGE).taggedWithAnything
 				delete(INTERMEDIATE)
 				// Note: The deletion of the intermediate will also remove it
 				// from any parent intermediate container (if there is one).

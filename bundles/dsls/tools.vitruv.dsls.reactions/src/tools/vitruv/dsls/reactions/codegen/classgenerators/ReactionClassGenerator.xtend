@@ -129,14 +129,18 @@ class ReactionClassGenerator extends ClassGenerator {
 				«changeSequenceRepresentation.generatePropertiesAssignmentCode()»
 								
 				«IF hasPreconditionBlock»
-					getLogger().trace("Passed change matching of Reaction " + this.getClass().getName());
+					if (getLogger().isTraceEnabled()) {
+						getLogger().trace("Passed change matching of Reaction " + this.getClass().getName());
+					}
 					if (!«userDefinedPreconditionMethod.simpleName»(«
 						FOR argument : accessibleElementList.generateArgumentsForAccesibleElements SEPARATOR ", "»«argument»«ENDFOR»)) {
 						«resetChangesMethod.simpleName»();
 						return;
 					}
 				«ENDIF»
-				getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+				if (getLogger().isTraceEnabled()) {
+					getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+				}
 								
 				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
 				userExecution.«callRoutineMethod.simpleName»(«

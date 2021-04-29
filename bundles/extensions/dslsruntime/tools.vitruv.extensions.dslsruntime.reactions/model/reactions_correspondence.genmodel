@@ -7,7 +7,7 @@
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testSuiteClass="tools.vitruv.extensions.dslsruntime.reactions.reactions.tests.Reactions_correspondenceAllTests"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     editPluginID="tools.vitruv.extensions.dslsruntime.reactions.edit" editorPluginID="tools.vitruv.extensions.dslsruntime.reactions.editor"
-    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence ../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
+    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence"
     importOrganizing="true">
   <foreignModel>reactions_correspondence.ecore</foreignModel>
   <genPackages prefix="Reactions" basePackage="tools.vitruv.dsls.reactions.meta.correspondence"

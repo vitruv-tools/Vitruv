@@ -7,23 +7,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.ObjectExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
-import tools.vitruv.framework.correspondence.Correspondence;
-import tools.vitruv.framework.correspondence.CorrespondenceFactory;
-import tools.vitruv.framework.correspondence.Correspondences;
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
-import tools.vitruv.framework.correspondence.impl.InternalCorrespondenceModelImpl;
-import tools.vitruv.framework.util.VitruviusConstants;
-import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.variability.InternalVaveModel;
 import vavemodel.VavemodelFactory;
 

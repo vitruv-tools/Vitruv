@@ -28,8 +28,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		newRootObject = aet.Root.withUuid
-		newRootObject2 = aet.Root.withUuid
+		newRootObject = aet.Root
+		newRootObject2 = aet.Root
 		prepareStateBefore
 
 	}
@@ -46,33 +46,11 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved
 
 		// Resolve
-		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		resolvedChange.assertIsResolved(newRootObject)
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
 		assertIsStateBefore
-	}
-
-	/**
-	 * Resolves the {@link RemoveAndDeleteRoot} EChange. The model is in state
-	 * after the change was applied, so the staging area and object in progress
-	 * are empty, and the root element was deleted.
-	 */
-	@Test
-	def void resolveAftertTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved
-		// State after
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(newRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		assertIsStateAfter
 	}
 
 	/**
@@ -85,7 +63,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
 
 		// Resolve		
-		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -97,7 +74,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def void applyForwardTest() {
 		// Create and resolve change 1
-		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore
 
 		// Apply 1
@@ -108,7 +84,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		assertTrue(resourceContent.contains(newRootObject2))
 
 		// Create and resolve change 2
-		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore
 
 		// Apply 1
@@ -125,12 +100,10 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore
 		resolvedChange.assertApplyForward
 
 		// Create and resolve and apply change 2
-		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore
 		resolvedChange2.assertApplyForward
 
@@ -157,15 +130,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		resourceContent.add(newRootObject)
 		resourceContent.add(newRootObject2)
 		assertIsStateBefore
-	}
-
-	/**
-	 * Sets the state of the model after the changes.
-	 */
-	def private void prepareStateAfter() {
-		resourceContent.remove(newRootObject)
-		resourceContent.remove(newRootObject2)
-		assertIsStateAfter
 	}
 
 	/**

@@ -90,15 +90,68 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2ChangeTra
 			.assertUnsetFeature(uniquePersistedRoot, ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
 			.assertEmpty
 	}
+	
+	@Test
+	def void testRemoveElementAndReinsertContainedOne() {
+		// prepare
+		val containedRoot = aet.Root
+		val nonRoot = aet.NonRoot
+		uniquePersistedRoot => [
+			recursiveRoot = containedRoot => [
+				singleValuedContainmentEReference = nonRoot
+			]
+		]
 
+		// test
+		val result = uniquePersistedRoot.record [
+			recursiveRoot = null
+			singleValuedContainmentEReference = nonRoot
+		]
+
+		// assert
+		result.assertChangeCount(4)
+			.assertReplaceAndDeleteNonRoot(containedRoot, uniquePersistedRoot, ROOT__RECURSIVE_ROOT, false)
+			.assertReplaceSingleValuedEReference(containedRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, null, true, false, false)
+			.assertReplaceSingleValuedEReference(uniquePersistedRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, null, nonRoot, true, false, false)
+			.assertEmpty
+	}
+	
+	@Test
+	def void testRemoveElementAndReinsertContainedInContainedOne() {
+		// prepare
+		val containedRoot = aet.Root
+		val innerContainedRoot = aet.Root
+		val nonRoot = aet.NonRoot
+		uniquePersistedRoot => [
+			recursiveRoot = containedRoot => [
+				recursiveRoot = innerContainedRoot => [
+					singleValuedContainmentEReference = nonRoot
+				]
+			]
+		]
+
+		// test
+		val result = uniquePersistedRoot.record [
+			recursiveRoot = null
+			singleValuedContainmentEReference = nonRoot
+		]
+
+		// assert
+		result.assertChangeCount(4)
+			.assertReplaceAndDeleteNonRoot(containedRoot, uniquePersistedRoot, ROOT__RECURSIVE_ROOT, false)
+			.assertReplaceSingleValuedEReference(innerContainedRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, null, true, false, false)
+			.assertReplaceSingleValuedEReference(uniquePersistedRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, null, nonRoot, true, false, false)
+			.assertEmpty
+	}
+	
 	@Test
 	def void testClearEReferences() {
 		// prepare
 		val nonRoot1 = aet.NonRoot
 		val nonRoot2 = aet.NonRoot
 		uniquePersistedRoot => [
-			multiValuedContainmentEReference +=  nonRoot1
-			multiValuedContainmentEReference +=  nonRoot2
+			multiValuedContainmentEReference += nonRoot1
+			multiValuedContainmentEReference += nonRoot2
 		]
 
 		// test

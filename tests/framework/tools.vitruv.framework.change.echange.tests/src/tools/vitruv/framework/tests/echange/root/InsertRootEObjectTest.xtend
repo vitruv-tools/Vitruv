@@ -4,7 +4,6 @@ import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
@@ -35,30 +33,9 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Resolve
-		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 		assertIsStateBefore
-	}
-
-	/**
-	 * Test resolves a {@link InsertRootEObject} EChange with a root object which is already
-	 * in the resource. This happens when the model is in state after the change
-	 * and the change will be applied backward.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved(newRootObject)
-		assertIsStateBefore
-
-		// Set state after
-		resourceContent.add(1, newRootObject)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as InsertRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource)
 	}
 
 	/**
@@ -71,7 +48,6 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 
 		// Resolve
-		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -85,7 +61,6 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Create change and resolve 1
-		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 
@@ -96,7 +71,6 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertTrue(newRootObject == resourceContent.get(1))
 
 		// Create change and resolve 2
-		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore as InsertRootEObject<Root>
 		resolvedChange2.assertIsResolved(newRootObject2, resource)
 
@@ -117,12 +91,10 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Create change and resolve and apply forward 1
-		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertApplyForward
 
 		// Create change and resolve and apply forward 2
-		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore as InsertRootEObject<Root>
 		resolvedChange2.assertApplyForward
 
@@ -152,7 +124,6 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertTrue(resourceContent.size < index)
 
 		// Create change and resolve
-		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 
