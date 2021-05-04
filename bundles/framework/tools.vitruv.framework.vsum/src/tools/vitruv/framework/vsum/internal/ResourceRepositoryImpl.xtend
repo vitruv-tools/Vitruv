@@ -82,7 +82,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override getVaveModel() {
-//		TODO
+		this.vaveModel
 	}
 	
 
