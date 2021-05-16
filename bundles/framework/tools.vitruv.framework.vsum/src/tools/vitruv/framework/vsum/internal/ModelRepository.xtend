@@ -12,7 +12,7 @@ package interface ModelRepository extends ResourceAccess, AutoCloseable {
 
 	def CorrespondenceModel getCorrespondenceModel()
 	
-	def InternalVaveModel getVaveModel()
+//	def InternalVaveModel getVaveModel()
 
 	/**
 	 * Returns the model at the given {@link URI} if it was already loaded to or created in

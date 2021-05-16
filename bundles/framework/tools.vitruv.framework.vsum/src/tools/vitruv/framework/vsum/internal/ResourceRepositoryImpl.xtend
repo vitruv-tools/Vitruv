@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
-import static tools.vitruv.framework.vsum.variability.VaveModelFactory.createVaveModel
+//import static tools.vitruv.framework.vsum.variability.VaveModelFactory.createVaveModel
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.variability.InternalVaveModel
 import java.nio.file.Files
@@ -36,7 +36,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
-	val InternalVaveModel vaveModel
+//	val InternalVaveModel vaveModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 	var isLoading = false
@@ -48,7 +48,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
 		this.vaveResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.vaveModel = createVaveModel(fileSystemLayout.vaveURI)
+//		this.vaveModel = createVaveModel(fileSystemLayout.vaveURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [
 			if(!isLoading) getCreateOrLoadModel(it.URI)
 		]
@@ -81,9 +81,9 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondenceModel.genericView
 	}
 
-	override getVaveModel() {
-		this.vaveModel
-	}
+//	override getVaveModel() {
+//		this.vaveModel
+//	}
 	
 
 	override getModel(URI modelURI) {

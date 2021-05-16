@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @Utility
 class VaveModelFactory {
-	static def createVaveModel(URI resourceUri) {
-		return new InternalVaveModelImpl(resourceUri);
-	}
+//	static def createVaveModel(URI resourceUri) {
+//		return new InternalVaveModelImpl(resourceUri);
+//	}
 }

@@ -11,8 +11,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.propagation,
  org.eclipse.xtend.lib,
  org.eclipse.emf.ecore.xmi,
- edu.kit.ipd.sdq.activextendannotations,
- edu.kit.ipd.sdq.vavemodel;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.helper;x-internal:=true,
  tools.vitruv.framework.vsum.internal;x-internal:=true

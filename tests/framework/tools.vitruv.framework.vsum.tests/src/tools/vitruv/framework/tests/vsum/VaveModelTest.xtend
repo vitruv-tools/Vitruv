@@ -90,10 +90,10 @@ class VaveModelTest {
 		vsum.propagateChangedState(umlResource)
 	}
 	
-	@Test
-	def void testVaveModelCreation() {
-		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		val InternalVaveModel vavemodel = vsum.getVaveModel()
-		assertNotNull(vavemodel, "Vave Model is null")
-	}
+//	@Test
+//	def void testVaveModelCreation() {
+//		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
+//		val InternalVaveModel vavemodel = vsum.getVaveModel()
+//		assertNotNull(vavemodel, "Vave Model is null")
+//	}
 }

@@ -7,7 +7,7 @@ import tools.vitruv.framework.vsum.variability.InternalVaveModel
 
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel()
-	def InternalVaveModel getVaveModel()
+//	def InternalVaveModel getVaveModel()
 	def ModelInstance getModelInstance(URI modelUri)
 	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
 	def void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
