@@ -6,11 +6,16 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Automatic-Module-Name: tools.vitruv.variability.vave
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: vavemodel,
+Export-Package: tools.vitruv.variability.vave,
+ tools.vitruv.variability.vave.impl,
+ vavemodel,
  vavemodel.impl,
  vavemodel.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ tools.vitruv.framework.vsum;bundle-version="2.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Import-Package: tools.vitruv.framework.userinteraction,
+ tools.vitruv.framework.vsum

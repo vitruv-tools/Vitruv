@@ -14,3 +14,5 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.uml2.uml,
  org.junit.jupiter.api,
  org.hamcrest.core
+Import-Package: tools.vitruv.variability.vave,
+ tools.vitruv.variability.vave.impl
