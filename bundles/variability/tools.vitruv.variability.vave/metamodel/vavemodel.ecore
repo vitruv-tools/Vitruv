@@ -15,7 +15,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="systemrevision" upperBound="-1"
         eType="#//SystemRevision" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Feature">
+  <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//FeatureOption">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="treeconstraint" upperBound="-1"
         eType="#//TreeConstraint" containment="true"/>
@@ -24,7 +24,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CrossTreeConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-        eType="#//Expression" containment="true"/>
+        containment="true">
+      <eGenericType eClassifier="#//Expression">
+        <eTypeArguments eClassifier="#//Option"/>
+      </eGenericType>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//GroupType"/>
@@ -47,6 +51,9 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="#//Option"/>
     </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableOption">
+      <eGenericType eTypeParameter="#//Variable/T"/>
+    </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//Expression">
       <eTypeArguments eTypeParameter="#//Variable/T"/>
     </eGenericSuperTypes>
@@ -59,7 +66,7 @@
       <eTypeArguments eTypeParameter="#//Expression/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Term" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="Term" abstract="true">
     <eTypeParameters name="T">
       <eBounds eClassifier="#//Option"/>
     </eTypeParameters>
@@ -131,10 +138,7 @@
       <eTypeArguments eTypeParameter="#//Not/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="option" upperBound="-1"
-        eType="#//FeatureOption"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Option" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="option" upperBound="-1"
