@@ -13,7 +13,6 @@ import org.eclipse.emf.common.util.URI
 
 class VsumFileSystemLayout {
 	static final String CORRESPONDENCES_FILE = "correspondences.correspondence";
-	static final String VAVE_FILE = "vavemodel.vavemodel"
 	static final String MODELS_FILE = "models.models";
 	static final String VSUM_FOLDER_NAME = "vsum";
     static final String CONSISTENCY_METADATA_FOLDER_NAME = "consistencymetadata";
@@ -70,11 +69,7 @@ class VsumFileSystemLayout {
 		checkPrepared()
 		return vsumFolder.resolve(CORRESPONDENCES_FILE).toFile.createFileURI()
 	}
-	
-		def URI getVaveURI() {
-		checkPrepared()
-		return vsumFolder.resolve(VAVE_FILE).toFile.createFileURI()
-	}
+
 	
 	def Path getModelsNamesFilesPath() {
 			checkPrepared()

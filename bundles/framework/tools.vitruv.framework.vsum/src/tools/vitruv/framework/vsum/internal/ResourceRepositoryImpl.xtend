@@ -20,9 +20,7 @@ import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
-//import static tools.vitruv.framework.vsum.variability.VaveModelFactory.createVaveModel
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.vsum.variability.InternalVaveModel
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -31,12 +29,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
 	val ResourceSet modelsResourceSet
 	val ResourceSet correspondencesResourceSet
-	val ResourceSet	vaveResourceSet
 	val VitruvDomainRepository domainRepository
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
-//	val InternalVaveModel vaveModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 	var isLoading = false
@@ -47,8 +43,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
-		this.vaveResourceSet = new ResourceSetImpl().withGlobalFactories()
-//		this.vaveModel = createVaveModel(fileSystemLayout.vaveURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [
 			if(!isLoading) getCreateOrLoadModel(it.URI)
 		]
@@ -80,11 +74,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	override getCorrespondenceModel() {
 		correspondenceModel.genericView
 	}
-
-//	override getVaveModel() {
-//		this.vaveModel
-//	}
-	
 
 	override getModel(URI modelURI) {
 		modelInstances.get(modelURI)
@@ -180,7 +169,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
 		correspondencesResourceSet.resources.clear()
-		vaveResourceSet.resources.clear()
 	}
 
 }

@@ -51,10 +51,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override synchronized getCorrespondenceModel() {
 		this.resourceRepository.correspondenceModel
 	}
-	
-//	override synchronized getVaveModel() {
-//		this.resourceRepository.vaveModel
-//	}
 
 	override synchronized getModelInstance(URI modelUri) {
 		this.resourceRepository.getModel(modelUri)

@@ -4,15 +4,12 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.vsum.variability.InternalVaveModel
 import tools.vitruv.framework.change.description.VitruviusChange
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def VitruviusChange applyChange(VitruviusChange change)
 
 	def CorrespondenceModel getCorrespondenceModel()
-	
-//	def InternalVaveModel getVaveModel()
 
 	/**
 	 * Returns the model at the given {@link URI} if it was already loaded to or created in
