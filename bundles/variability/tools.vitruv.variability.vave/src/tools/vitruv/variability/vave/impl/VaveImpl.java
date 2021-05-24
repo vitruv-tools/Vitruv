@@ -1,64 +1,89 @@
 package tools.vitruv.variability.vave.impl;
 
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
+import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
+import tools.vitruv.framework.propagation.ChangePropagationSpecification;
+import tools.vitruv.framework.propagation.ChangePropagationSpecificationRepository;
+import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
-import tools.vitruv.framework.vsum.VirtualModel;
-import tools.vitruv.framework.vsum.VirtualModelBuilder;
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModelManager;
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.variability.vave.Vave;
+import tools.vitruv.variability.vave.VirtualModelProduct;
+import vavemodel.DeltaModule;
 import vavemodel.VavemodelFactory;
 
 public class VaveImpl implements Vave {
 
-	private VitruvDomainRepository domainRepo;
+	private VitruvDomainRepository domainRepository = null;
 	private final vavemodel.System system;
 
-	public VaveImpl(VitruvDomainRepository domainRepo) {
+	public VaveImpl(VitruvDomainRepository domainRepository) {
 		this.system = VavemodelFactory.eINSTANCE.createSystem();
-		this.domainRepo = domainRepo;
+		this.domainRepository = domainRepository;
 	}
 
-	public VirtualModel externalizeProduct(Path storageFolder) { // TODO: add configuration parameter
+	public VirtualModelProduct externalizeProduct(Path storageFolder, String configuration) throws Exception {
 
-		final InternalVirtualModel virtualModel = new VirtualModelBuilder().withStorageFolder(storageFolder)
-				.withDomainRepository(this.domainRepo)
-				.withUserInteractor(UserInteractionFactory.instance.createUserInteractor(
-						UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
-				.buildAndInitialize();
+//		final VirtualModelProductImpl vsum = new VirtualModelProductBuilder().withStorageFolder(storageFolder)
+//				.withDomainRepository(this.domainRepository)
+//				.withUserInteractor(UserInteractionFactory.instance.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
+//				.buildAndInitialize();
 
-		// TODO: create model instances (for every domain) in the vsum instance
+		final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
+		InternalUserInteractor userInteractor = UserInteractionFactory.instance
+				.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null));
 
-		// TODO: check what of the following should be part of eP and part of Test
-//		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-//		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
-//		changeRecorder.addToRecording(resourceSet);
-//		changeRecorder.beginRecording();
-//		Resource _createResource = resourceSet.createResource(this.createTestModelResourceUri(""));
-//		final Procedure1<Resource> _function = (Resource it) -> {
-//			EList<EObject> _contents = it.getContents();
-//			Root _Root = AllElementTypesCreators.aet.Root();
-//			final Procedure1<Root> _function_1 = (Root it_1) -> {
-//				it_1.setId("root");
-//			};
-//			Root _doubleArrow = ObjectExtensions.<Root>operator_doubleArrow(_Root, _function_1);
-//			_contents.add(_doubleArrow);
-//		};
-//		final Resource monitoredResource = ObjectExtensions.<Resource>operator_doubleArrow(_createResource, _function);
-//		final TransactionalChange recordedChange = changeRecorder.endRecording();
-//		virtualModel.propagateChange(recordedChange);
-//		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri(""));
-//		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
+		if (storageFolder == null)
+			throw new Exception("No storage folder was configured!");
+		if (userInteractor == null)
+			throw new Exception("No user interactor was configured!");
+		final ChangePropagationSpecificationRepository changeSpecificationRepository = new ChangePropagationSpecificationRepository(
+				changePropagationSpecifications);
+//		for (final ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
+//			{
+//				Preconditions.checkState(
+//						IterableExtensions.contains(this.domainRepository,
+//								changePropagationSpecification.getSourceDomain()),
+//						"The change propagation specification’s source domain ‹%s› has not been configured: %s",
+//						changePropagationSpecification.getSourceDomain(), changePropagationSpecification);
+//				Preconditions.checkState(
+//						IterableExtensions.contains(this.domainRepository,
+//								changePropagationSpecification.getTargetDomain()),
+//						"The change propagation specification’s target domain ‹%s› has not been configured: %s",
+//						changePropagationSpecification.getTargetDomain(), changePropagationSpecification);
+//			}
+//		}
+		for (final ChangePropagationSpecification changePropagationSpecification_1 : changePropagationSpecifications) {
+			changePropagationSpecification_1.setUserInteractor(userInteractor);
+		}
+		final VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
+		fileSystemLayout.prepare();
+		final VirtualModelProductImpl vsum = new VirtualModelProductImpl(configuration, fileSystemLayout,
+				userInteractor, this.domainRepository, changeSpecificationRepository);
+		vsum.loadExistingModels();
+		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
+		// TODO: create model instances (for every domain) in the vsum instance by applying the stored deltas
+		// for each delta: check if its mapping is true given configuration. if yes: propagate it in vsum.
+		
 		// return vsum instance
-		return virtualModel;
-
+		return vsum;
 	}
 
-	public void internalizeChanges(VirtualModel virtualModel) { // TODO: add expression parameter
-		// store deltas of vsum in vave and map them to expression
-
+	public void internalizeChanges(VirtualModelProduct virtualModel) { // TODO: add expression parameter
+		// TODO: store deltas of vsum in vave and map them to expression
+		for (VitruviusChange change : virtualModel.getDeltas()) {
+			System.out.println("DELTA: " + change);
+			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
+			dm.setDelta(change);
+			this.system.getDeltamodule().add(dm);
+		}
+		virtualModel.clearDeltas();
 	}
 
 }

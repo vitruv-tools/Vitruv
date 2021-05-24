@@ -12,6 +12,7 @@ Export-Package: tools.vitruv.variability.vave,
  vavemodel.impl,
  vavemodel.util
 Require-Bundle: org.eclipse.core.runtime,
+ tools.vitruv.framework.propagation,
  org.eclipse.emf.ecore;visibility:=reexport,
  tools.vitruv.framework.vsum;bundle-version="2.1.0",
  org.eclipse.emf.ecore.change;bundle-version="2.14.0",
@@ -19,5 +20,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Import-Package: tools.vitruv.framework.userinteraction,
+Import-Package: tools.vitruv.framework.propagation,
+ tools.vitruv.framework.userinteraction,
  tools.vitruv.framework.vsum

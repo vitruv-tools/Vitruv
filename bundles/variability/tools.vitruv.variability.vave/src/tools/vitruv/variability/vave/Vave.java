@@ -2,10 +2,10 @@ package tools.vitruv.variability.vave;
 
 import java.nio.file.Path;
 
-import tools.vitruv.framework.vsum.VirtualModel;
-
 public interface Vave {
 
-	public VirtualModel externalizeProduct(Path storageFolder);
+	public VirtualModelProduct externalizeProduct(Path storageFolder, String configuration) throws Exception;
+
+	public void internalizeChanges(VirtualModelProduct virtualModel);
 
 }
