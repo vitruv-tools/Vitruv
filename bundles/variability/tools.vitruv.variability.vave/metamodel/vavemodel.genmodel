@@ -14,6 +14,7 @@
       <genEnumLiterals ecoreEnumLiteral="vavemodel.ecore#//GroupType/XORNONE"/>
       <genEnumLiterals ecoreEnumLiteral="vavemodel.ecore#//GroupType/ORNONE"/>
     </genEnums>
+    <genDataTypes ecoreDataType="vavemodel.ecore#//VitruviusChange"/>
     <genClasses ecoreClass="vavemodel.ecore#//System">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//System/constraint"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vavemodel.ecore#//System/name"/>
@@ -37,6 +38,7 @@
     <genClasses ecoreClass="vavemodel.ecore#//FeatureRevision"/>
     <genClasses ecoreClass="vavemodel.ecore#//DeltaModule">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//DeltaModule/deltamodule"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vavemodel.ecore#//DeltaModule/delta"/>
     </genClasses>
     <genClasses ecoreClass="vavemodel.ecore#//Variable">
       <genTypeParameters ecoreTypeParameter="vavemodel.ecore#//Variable/T"/>
