@@ -42,7 +42,7 @@
     </genClasses>
     <genClasses ecoreClass="vavemodel.ecore#//Variable">
       <genTypeParameters ecoreTypeParameter="vavemodel.ecore#//Variable/T"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vavemodel.ecore#//Variable/variableOption"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Variable/option"/>
     </genClasses>
     <genClasses image="false" ecoreClass="vavemodel.ecore#//Expression">
       <genTypeParameters ecoreTypeParameter="vavemodel.ecore#//Expression/T"/>

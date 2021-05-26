@@ -26,7 +26,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         containment="true">
       <eGenericType eClassifier="#//Expression">
-        <eTypeArguments eClassifier="#//Option"/>
+        <eTypeArguments eClassifier="#//FeatureOption"/>
       </eGenericType>
     </eStructuralFeatures>
   </eClassifiers>
@@ -51,7 +51,7 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="#//Option"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableOption">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="option" lowerBound="1">
       <eGenericType eTypeParameter="#//Variable/T"/>
     </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//Expression">
@@ -66,7 +66,7 @@
       <eTypeArguments eTypeParameter="#//Expression/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Term" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="Term" abstract="true" interface="true">
     <eTypeParameters name="T">
       <eBounds eClassifier="#//Option"/>
     </eTypeParameters>
