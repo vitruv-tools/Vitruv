@@ -107,34 +107,7 @@ public class VaveTest {
 
 	@Test
 	public void testVSUMPropagationAndConsistency() throws Exception {
-		Set<VitruvDomain> domains = new HashSet<>();
-		domains.add(new AllElementTypesDomainProvider().getDomain());
-		final VitruvDomainRepositoryImpl targetDomains = new VitruvDomainRepositoryImpl(domains);
-		Vave vave = new VaveImpl(targetDomains);
-		final VirtualModelProduct virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), "");
 
-		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
-		changeRecorder.addToRecording(resourceSet);
-		changeRecorder.beginRecording();
-		Resource _createResource = resourceSet.createResource(this.createTestModelResourceUri("", this.projectFolder));
-		final Procedure1<Resource> _function = (Resource it) -> {
-			EList<EObject> _contents = it.getContents();
-			Root _Root = AllElementTypesCreators.aet.Root();
-			final Procedure1<Root> _function_1 = (Root it_1) -> {
-				it_1.setId("root");
-			};
-			Root _doubleArrow = ObjectExtensions.<Root>operator_doubleArrow(_Root, _function_1);
-			_contents.add(_doubleArrow);
-		};
-		final Resource monitoredResource = ObjectExtensions.<Resource>operator_doubleArrow(_createResource, _function);
-		final TransactionalChange recordedChange = changeRecorder.endRecording();
-		virtualModel.propagateChange(recordedChange);
-		final ModelInstance vsumModel = virtualModel
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
-		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
-
-		vave.internalizeChanges(virtualModel);
 	}
 	
 	@Test 
