@@ -2,7 +2,12 @@ package tools.vitruv.variability.vave.impl;
 
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
@@ -68,9 +73,18 @@ public class VaveImpl implements Vave {
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
-		// TODO: create model instances (for every domain) in the vsum instance by applying the stored deltas
-		// for each delta: check if its mapping is true given configuration. if yes: propagate it in vsum.
-		
+		// TODO: create model instances (for every domain) in the vsum instance by
+		// applying the stored deltas
+		// for each delta: check if its mapping is true given configuration. if yes:
+		// propagate it in vsum.
+
+		EList<DeltaModule> deltamodules = this.system.getDeltamodule();
+		for (DeltaModule deltamodule : deltamodules) {
+			EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("delta");
+			VitruviusChange vitruvchange = (VitruviusChange) deltamodule.eGet(eStructFeature);
+			vsum.propagateChange(vitruvchange);
+		}
+
 		// return vsum instance
 		return vsum;
 	}
