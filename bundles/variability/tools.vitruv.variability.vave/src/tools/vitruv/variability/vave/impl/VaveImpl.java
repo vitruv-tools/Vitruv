@@ -2,15 +2,15 @@ package tools.vitruv.variability.vave.impl;
 
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
+import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl;
 import tools.vitruv.framework.propagation.ChangePropagationSpecification;
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationRepository;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
@@ -26,10 +26,14 @@ public class VaveImpl implements Vave {
 
 	private VitruvDomainRepository domainRepository = null;
 	private final vavemodel.System system;
+	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 
-	public VaveImpl(VitruvDomainRepository domainRepository) {
+	public VaveImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications) {
 		this.system = VavemodelFactory.eINSTANCE.createSystem();
-		this.domainRepository = domainRepository;
+
+		this.domainRepository = new VitruvDomainRepositoryImpl(domains);
+
+		this.changePropagationSpecifications.addAll(changePropagationSpecifications);
 	}
 
 	public VirtualModelProduct externalizeProduct(Path storageFolder, String configuration) throws Exception {
@@ -39,35 +43,48 @@ public class VaveImpl implements Vave {
 //				.withUserInteractor(UserInteractionFactory.instance.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
 //				.buildAndInitialize();
 
-		final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
+//		final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 		InternalUserInteractor userInteractor = UserInteractionFactory.instance
 				.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null));
 
 		if (storageFolder == null)
 			throw new Exception("No storage folder was configured!");
+
 		if (userInteractor == null)
 			throw new Exception("No user interactor was configured!");
+
 		final ChangePropagationSpecificationRepository changeSpecificationRepository = new ChangePropagationSpecificationRepository(
 				changePropagationSpecifications);
-//		for (final ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
-//			{
-//				Preconditions.checkState(
-//						IterableExtensions.contains(this.domainRepository,
-//								changePropagationSpecification.getSourceDomain()),
-//						"The change propagation specification’s source domain ‹%s› has not been configured: %s",
-//						changePropagationSpecification.getSourceDomain(), changePropagationSpecification);
-//				Preconditions.checkState(
-//						IterableExtensions.contains(this.domainRepository,
-//								changePropagationSpecification.getTargetDomain()),
-//						"The change propagation specification’s target domain ‹%s› has not been configured: %s",
-//						changePropagationSpecification.getTargetDomain(), changePropagationSpecification);
-//			}
-//		}
-		for (final ChangePropagationSpecification changePropagationSpecification_1 : changePropagationSpecifications) {
+		for (final ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
+			{
+				boolean containsSourceDomain = false;
+				boolean containsTargetDomain = false;
+				for (VitruvDomain domain : this.domainRepository) {
+					if (domain.equals(changePropagationSpecification.getSourceDomain())) {
+						containsSourceDomain = true;
+					}
+					if (domain.equals(changePropagationSpecification.getTargetDomain())) {
+						containsTargetDomain = true;
+					}
+				}
+				if (!containsTargetDomain)
+					throw new Exception("The change propagation specification’s source domain ‹"
+							+ changePropagationSpecification.getSourceDomain() + "› has not been configured: "
+							+ changePropagationSpecification);
+				if (!containsSourceDomain)
+					throw new Exception("The change propagation specification’s target domain ‹"
+							+ changePropagationSpecification.getTargetDomain() + "› has not been configured: "
+							+ changePropagationSpecification);
+			}
+		}
+
+		for (final ChangePropagationSpecification changePropagationSpecification_1 : this.changePropagationSpecifications) {
 			changePropagationSpecification_1.setUserInteractor(userInteractor);
 		}
+
 		final VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
 		fileSystemLayout.prepare();
+
 		final VirtualModelProductImpl vsum = new VirtualModelProductImpl(configuration, fileSystemLayout,
 				userInteractor, this.domainRepository, changeSpecificationRepository);
 		vsum.loadExistingModels();
