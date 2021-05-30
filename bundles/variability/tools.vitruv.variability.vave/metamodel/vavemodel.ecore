@@ -158,6 +158,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="enablesoptions" upperBound="-1"
         eType="#//FeatureOption"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="enablesconstraints" upperBound="-1"
-        eType="#//CrossTreeConstraint"/>
+        eType="#//Constraint"/>
   </eClassifiers>
 </ecore:EPackage>
