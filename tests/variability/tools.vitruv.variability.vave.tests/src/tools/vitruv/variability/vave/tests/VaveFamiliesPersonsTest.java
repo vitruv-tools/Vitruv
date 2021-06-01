@@ -227,4 +227,90 @@ public class VaveFamiliesPersonsTest {
 		MatcherAssert.<Resource>assertThat(this.resourceAt(PERSONS_MODEL), ModelMatchers.exists());
 	}
 
+	@Test
+	public void testCreateFamilySon(@TestProject final Path testProjectPath) throws Exception {
+		FamilyRegister register = this.from(FamilyRegister.class, FAMILIES_MODEL);
+
+		this.propagate(register, (FamilyRegister f) -> {
+			Family family = this.ourFamily();
+			Member son = FamiliesFactory.eINSTANCE.createMember();
+			son.setFirstName(FIRST_NAME_SON);
+			son.setFamilySon(family);
+			family.getSons().add(son);
+			f.getFamilies().add(family);
+		});
+
+		MatcherAssert.<Resource>assertThat(this.resourceAt(PERSONS_MODEL), ModelMatchers.exists());
+	}
+
+	@Test
+	public void testCreateFamilyMother(@TestProject final Path testProjectPath) throws Exception {
+		FamilyRegister register = this.from(FamilyRegister.class, FAMILIES_MODEL);
+
+		this.propagate(register, (FamilyRegister f) -> {
+			Family family = this.ourFamily();
+			Member mother = FamiliesFactory.eINSTANCE.createMember();
+			mother.setFirstName(FIRST_NAME_MOTHER);
+			mother.setFamilyMother(family);
+			family.setMother(mother);
+			f.getFamilies().add(family);
+		});
+
+		MatcherAssert.<Resource>assertThat(this.resourceAt(PERSONS_MODEL), ModelMatchers.exists());
+	}
+
+	@Test
+	public void testCreateFamilyDaughter(@TestProject final Path testProjectPath) throws Exception {
+		FamilyRegister register = this.from(FamilyRegister.class, FAMILIES_MODEL);
+
+		this.propagate(register, (FamilyRegister f) -> {
+			Family family = this.ourFamily();
+			Member daughter = FamiliesFactory.eINSTANCE.createMember();
+			daughter.setFirstName(FIRST_NAME_DAUGHTER);
+			daughter.setFamilyDaughter(family);
+			family.getDaughters().add(daughter);
+			f.getFamilies().add(family);
+		});
+
+		MatcherAssert.<Resource>assertThat(this.resourceAt(PERSONS_MODEL), ModelMatchers.exists());
+	}
+
+	@Test
+	public void testDeleteMember(@TestProject final Path testProjectPath) throws Exception {
+		FamilyRegister register = this.from(FamilyRegister.class, FAMILIES_MODEL);
+
+		this.propagate(register, (FamilyRegister f) -> {
+			Family family = this.ourFamily();
+			Member daughter = FamiliesFactory.eINSTANCE.createMember();
+			daughter.setFirstName(FIRST_NAME_DAUGHTER);
+			daughter.setFamilyDaughter(family);
+			family.getDaughters().add(daughter);
+			f.getFamilies().add(family);
+		});
+		
+		this.propagate(register, (FamilyRegister f) -> {
+			f.getFamilies().get(0).getDaughters().remove(0);
+		});
+
+		MatcherAssert.<Resource>assertThat(this.resourceAt(PERSONS_MODEL), ModelMatchers.exists());
+	}
+
+//	@Test
+//	def void testDeleteMember() {
+//		FamilyRegister.from(FAMILIES_MODEL).propagate [
+//			val family = ourFamily()
+//			families += family => [
+//				daughters += FamiliesFactory.eINSTANCE.createMember => [
+//					firstName = FIRST_NAME_DAUGHTER
+//					familyDaughter = family
+//				]
+//			]
+//		]
+//		FamilyRegister.from(FAMILIES_MODEL).propagate [
+//			families.get(0).daughters.remove(0)
+//		]
+//
+//		assertThat(resourceAt(PERSONS_MODEL), exists)
+//	}
+
 }
