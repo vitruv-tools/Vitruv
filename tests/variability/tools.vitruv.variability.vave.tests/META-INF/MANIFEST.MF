@@ -20,7 +20,9 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.core.runtime,
  tools.vitruv.variability.vave;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.junit;visibility:=reexport
+ org.junit;visibility:=reexport,
+ tools.vitruv.domains.demo,
+ tools.vitruv.applications.demo.familiespersons;bundle-version="2.1.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: tools.vitruv.variability.vave,
  tools.vitruv.variability.vave.impl
