@@ -141,38 +141,32 @@ public class VaveImpl implements Vave {
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
-		// TODO: create model instances (for every domain) in the vsum instance by
-		// applying the stored deltas
-		// for each delta: check if its mapping is true given configuration. if yes:
-		// propagate it in vsum.
+		// TODO for each delta: check if its mapping is true given configuration. if yes: propagate it in vsum.
 
+		// One VitruviusChange per DeltaModule
 		EList<DeltaModule> deltamodules = this.system.getDeltamodule();
 		if (!deltamodules.isEmpty()) {
-			List<EChange> echanges = new ArrayList<>();
 
 			for (DeltaModule deltamodule : deltamodules) {
-				EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
-				echanges.add((EChange) deltamodule.eGet(eStructFeature));
+//				EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
+//				echanges.add((EChange) deltamodule.eGet(eStructFeature));
+				VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
+				vsum.propagateChange(vitruvchange);
 			}
-			
-			VitruviusChange vitruvchange = new TransactionalChangeImpl(echanges);
-			vsum.propagateChange(vitruvchange);
 		}
 
 		// return vsum instance
 		return vsum;
 	}
 
-	public void internalizeChanges(VirtualModelProduct virtualModel) throws IOException { // TODO: add expression
-																							// parameter
-		// TODO: store deltas of vsum in vave and map them to expression
+	public void internalizeChanges(VirtualModelProduct virtualModel) throws IOException { // TODO: add expression parameter and map deltas to expression
 		for (VitruviusChange change : virtualModel.getDeltas()) {
+			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
 			System.out.println("DELTA: " + change);
 			for (EChange echange : change.getEChanges()) {
-				DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
-				dm.setChange(echange);
-				this.system.getDeltamodule().add(dm);
+				dm.getChange().add(echange);
 			}
+			this.system.getDeltamodule().add(dm);
 		}
 		virtualModel.clearDeltas();
 		this.save();

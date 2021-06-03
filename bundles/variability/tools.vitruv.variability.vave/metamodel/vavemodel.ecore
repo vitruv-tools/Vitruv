@@ -44,7 +44,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeltaModule">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" upperBound="-1"
         eType="#//DeltaModule"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="change" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="change" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Variable">
