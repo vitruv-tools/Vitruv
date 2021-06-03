@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.variability.vave/src-gen" modelPluginID="tools.vitruv.variability.vave"
-    modelName="Vavemodel" editPluginClass="tools.vitruv.variability.vavemodel.provider.VavemodelEditPlugin"
-    editorPluginClass="tools.vitruv.variability.vavemodel.presentation.VavemodelEditorPlugin"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testSuiteClass="tools.vitruv.variability.vavemodel.tests.VavemodelAllTests"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="tools.vitruv.variability.vave/src-gen" editDirectory="/tools.vitruv.variability.vave.edit/src-gen"
+    editorDirectory="/tools.vitruv.variability.vave.editor/src-gen" modelPluginID="tools.vitruv.variability.vave"
+    modelName="Vavemodel" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="/tools.vitruv.variability.vave.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../tools.vitruv.framework.change.echange/metamodel/echange.genmodel#//echange"
     operationReflection="true" importOrganizing="true">
   <foreignModel>vavemodel.ecore</foreignModel>
   <genPackages prefix="Vavemodel" disposableProviderFactory="true" ecorePackage="vavemodel.ecore#/">
@@ -14,7 +14,6 @@
       <genEnumLiterals ecoreEnumLiteral="vavemodel.ecore#//GroupType/XORNONE"/>
       <genEnumLiterals ecoreEnumLiteral="vavemodel.ecore#//GroupType/ORNONE"/>
     </genEnums>
-    <genDataTypes ecoreDataType="vavemodel.ecore#//VitruviusChange"/>
     <genClasses ecoreClass="vavemodel.ecore#//System">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//System/constraint"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vavemodel.ecore#//System/name"/>
@@ -38,7 +37,7 @@
     <genClasses ecoreClass="vavemodel.ecore#//FeatureRevision"/>
     <genClasses ecoreClass="vavemodel.ecore#//DeltaModule">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//DeltaModule/deltamodule"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vavemodel.ecore#//DeltaModule/delta"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//DeltaModule/change"/>
     </genClasses>
     <genClasses ecoreClass="vavemodel.ecore#//Variable">
       <genTypeParameters ecoreTypeParameter="vavemodel.ecore#//Variable/T"/>

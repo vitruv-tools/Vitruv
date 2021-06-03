@@ -1,13 +1,30 @@
 package tools.vitruv.variability.vave.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
+import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl;
@@ -25,15 +42,49 @@ import vavemodel.VavemodelFactory;
 public class VaveImpl implements Vave {
 
 	private VitruvDomainRepository domainRepository = null;
-	private final vavemodel.System system;
+	private vavemodel.System system;
+	private Resource resource;
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 
-	public VaveImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications) {
-		this.system = VavemodelFactory.eINSTANCE.createSystem();
+	public VaveImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications,
+			Path storageFolder) throws Exception {
+//		try {
+//		this.resource = resSet.getResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()),
+//				true);
+//	} catch (Exception e) {
+//		this.resource = resSet.getResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()),
+//				false);
+//	}
+		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
+			// load
+			this.resource = new XMIResourceImpl();
+			File source = new File(storageFolder.resolve("vavemodel.vave").toString());
+			this.resource.load(new FileInputStream(source), new HashMap<Object, Object>());
+			this.system = vavemodel.System.class.cast(this.resource.getContents().get(0));
+		} else {
+			// create
+			Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+			Map<String, Object> m = reg.getExtensionToFactoryMap();
+			m.put("vave", new XMIResourceFactoryImpl());
+			ResourceSet resSet = new ResourceSetImpl();
+			this.resource = resSet
+					.createResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()));
+			this.system = VavemodelFactory.eINSTANCE.createSystem();
+			this.resource.getContents().add(this.system);
+			try {
+				this.resource.save(Collections.EMPTY_MAP);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		this.domainRepository = new VitruvDomainRepositoryImpl(domains);
 
 		this.changePropagationSpecifications.addAll(changePropagationSpecifications);
+	}
+
+	public void init(Path storageFolder) throws IOException {
+
 	}
 
 	public VirtualModelProduct externalizeProduct(Path storageFolder, String configuration) throws Exception {
@@ -96,9 +147,15 @@ public class VaveImpl implements Vave {
 		// propagate it in vsum.
 
 		EList<DeltaModule> deltamodules = this.system.getDeltamodule();
-		for (DeltaModule deltamodule : deltamodules) {
-			EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("delta");
-			VitruviusChange vitruvchange = (VitruviusChange) deltamodule.eGet(eStructFeature);
+		if (!deltamodules.isEmpty()) {
+			List<EChange> echanges = new ArrayList<>();
+
+			for (DeltaModule deltamodule : deltamodules) {
+				EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
+				echanges.add((EChange) deltamodule.eGet(eStructFeature));
+			}
+			
+			VitruviusChange vitruvchange = new TransactionalChangeImpl(echanges);
 			vsum.propagateChange(vitruvchange);
 		}
 
@@ -106,15 +163,23 @@ public class VaveImpl implements Vave {
 		return vsum;
 	}
 
-	public void internalizeChanges(VirtualModelProduct virtualModel) { // TODO: add expression parameter
+	public void internalizeChanges(VirtualModelProduct virtualModel) throws IOException { // TODO: add expression
+																							// parameter
 		// TODO: store deltas of vsum in vave and map them to expression
 		for (VitruviusChange change : virtualModel.getDeltas()) {
 			System.out.println("DELTA: " + change);
-			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
-			dm.setDelta(change);
-			this.system.getDeltamodule().add(dm);
+			for (EChange echange : change.getEChanges()) {
+				DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
+				dm.setChange(echange);
+				this.system.getDeltamodule().add(dm);
+			}
 		}
 		virtualModel.clearDeltas();
+		this.save();
+	}
+
+	private void save() throws IOException {
+		this.resource.save(Collections.EMPTY_MAP);
 	}
 
 }

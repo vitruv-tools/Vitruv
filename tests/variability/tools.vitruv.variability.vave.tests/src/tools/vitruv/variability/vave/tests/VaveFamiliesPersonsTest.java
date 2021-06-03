@@ -18,6 +18,7 @@ import org.eclipse.xtext.xbase.lib.ObjectExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -29,6 +30,9 @@ import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory;
 import edu.kit.ipd.sdq.metamodels.families.Family;
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister;
 import edu.kit.ipd.sdq.metamodels.families.Member;
+import edu.kit.ipd.sdq.metamodels.persons.Male;
+import edu.kit.ipd.sdq.metamodels.persons.PersonRegister;
+import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory;
 import tools.vitruv.applications.demo.familiespersons.FamiliesPersonsApplication;
 import tools.vitruv.domains.demo.families.FamiliesDomainProvider;
 import tools.vitruv.domains.demo.persons.PersonsDomainProvider;
@@ -55,6 +59,10 @@ public class VaveFamiliesPersonsTest {
 	private static final String FIRST_NAME_SON = "Sohn";
 	private static final String FIRST_NAME_DAUGHTER = "Tochter";
 	private static final String FIRST_NAME_MOTHER = "Erika";
+
+	private static final String MALE_PERSON_NAME = "Max Mustermann";
+	private static final String SECOND_MALE_PERSON_NAME = "Bernd Mustermann";
+	private static final String FEMALE_PERSON_NAME = "Erika Mustermann";
 
 	private static final Path PERSONS_MODEL = DomainUtil.getModelFileName("model/persons", new PersonsDomainProvider());
 	private static final Path FAMILIES_MODEL = DomainUtil.getModelFileName("model/model", new FamiliesDomainProvider());
@@ -192,7 +200,7 @@ public class VaveFamiliesPersonsTest {
 		Set<VitruvDomain> domains = fpa.getVitruvDomains();
 		Set<ChangePropagationSpecification> changePropagationSpecifications = fpa.getChangePropagationSpecifications();
 
-		this.vave = new VaveImpl(domains, changePropagationSpecifications);
+		this.vave = new VaveImpl(domains, changePropagationSpecifications, testProjectPath);
 
 		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), "");
 
@@ -287,7 +295,7 @@ public class VaveFamiliesPersonsTest {
 			family.getDaughters().add(daughter);
 			f.getFamilies().add(family);
 		});
-		
+
 		this.propagate(register, (FamilyRegister f) -> {
 			f.getFamilies().get(0).getDaughters().remove(0);
 		});
@@ -296,21 +304,56 @@ public class VaveFamiliesPersonsTest {
 	}
 
 //	@Test
-//	def void testDeleteMember() {
+//	def void testChangeFirstName() {
+//		val daughter = FamiliesFactory.eINSTANCE.createMember
 //		FamilyRegister.from(FAMILIES_MODEL).propagate [
 //			val family = ourFamily()
 //			families += family => [
-//				daughters += FamiliesFactory.eINSTANCE.createMember => [
+//				daughters += daughter => [
 //					firstName = FIRST_NAME_DAUGHTER
-//					familyDaughter = family
 //				]
 //			]
 //		]
-//		FamilyRegister.from(FAMILIES_MODEL).propagate [
-//			families.get(0).daughters.remove(0)
+//		
+//		FamilyRegister.from(FAMILIES_MODEL).families.claimOne.daughters.claimOne.propagate[firstName = FIRST_NAME_MOTHER]
+//		val personsWithMothersName = PersonRegister.from(PERSONS_MODEL).persons.filter[fullName.split(" ").get(0) == FIRST_NAME_MOTHER]
+//		assertEquals(1, personsWithMothersName.length) 
+//	}
+
+	@Test
+	@Disabled("The personsToFamilies is broken")
+	public void testCreateMalePerson() throws IOException {
+		PersonRegister register = this.from(PersonRegister.class, PERSONS_MODEL);
+		this.propagate(register, (PersonRegister f) -> {
+			Male male = PersonsFactory.eINSTANCE.createMale();
+			male.setFullName(MALE_PERSON_NAME);
+			f.getPersons().add(male);
+		});
+		MatcherAssert.<Resource>assertThat(resourceAt(FAMILIES_MODEL), ModelMatchers.exists());
+	}
+
+//	@Test
+////	@Disabled("The personsToFamilies is broken")
+//	def void testCreateMale() {
+//		PersonRegister.from(PERSONS_MODEL).propagate [
+//			persons += PersonsFactory.eINSTANCE.createMale => [
+//				fullName = MALE_PERSON_NAME
+//			]
 //		]
 //
-//		assertThat(resourceAt(PERSONS_MODEL), exists)
+//		assertThat(resourceAt(FAMILIES_MODEL), exists);
+//	}
+//
+//	@Test
+////	@Disabled("The personsToFamilies is broken")
+//	def void testCreateFemale() {
+//		PersonRegister.from(PERSONS_MODEL).propagate [
+//			persons += PersonsFactory.eINSTANCE.createFemale => [
+//				fullName = FEMALE_PERSON_NAME
+//			]
+//		]
+//
+//		assertThat(resourceAt(FAMILIES_MODEL), exists);
 //	}
 
 }

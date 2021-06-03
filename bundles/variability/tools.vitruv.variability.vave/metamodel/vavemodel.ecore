@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="vavemodel" nsURI="edu.kit.ipd.sdq.vavemodel" nsPrefix="vavemodel">
-  <eClassifiers xsi:type="ecore:EDataType" name="VitruviusChange" instanceClassName="tools.vitruv.framework.change.description.VitruviusChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="System">
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraint" upperBound="-1"
         eType="#//CrossTreeConstraint" containment="true"/>
@@ -45,7 +44,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeltaModule">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" upperBound="-1"
         eType="#//DeltaModule"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="delta" eType="#//VitruviusChange"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="change" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Variable">
     <eTypeParameters name="T">

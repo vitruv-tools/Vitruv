@@ -2,10 +2,10 @@
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
   <viewpoint:DAnalysis uid="_ZJuusLZSEeu_GeVussK5pQ" selectedViews="_ZWpwYLZSEeu_GeVussK5pQ _ZW5A8LZSEeu_GeVussK5pQ _ZW6PELZSEeu_GeVussK5pQ _ZXAVsLZSEeu_GeVussK5pQ" version="14.3.1.202003261200">
     <semanticResources>vavemodel.ecore</semanticResources>
-    <semanticResources>vavemodel.genmodel</semanticResources>
+    <semanticResources>platform:/resource/tools.vitruv.framework.change.echange/metamodel/echange.ecore</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_ZWpwYLZSEeu_GeVussK5pQ">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_PiJLcLzLEeuII7asa2lVnw" name="vavemodel class diagram" repPath="#_PiH9ULzLEeuII7asa2lVnw" changeId="eff6af92-9c42-44c2-8a66-254edca20e17">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_PiJLcLzLEeuII7asa2lVnw" name="vavemodel class diagram" repPath="#_PiH9ULzLEeuII7asa2lVnw" changeId="222e848f-eb08-4761-bfd7-bc614791eeec">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="vavemodel.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -23,19 +23,6 @@
   <diagram:DSemanticDiagram uid="_PiH9ULzLEeuII7asa2lVnw">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_PiKZkLzLEeuII7asa2lVnw" source="GMF_DIAGRAMS">
       <data xmi:type="notation:Diagram" xmi:id="_PiKZkbzLEeuII7asa2lVnw" type="Sirius" element="_PiH9ULzLEeuII7asa2lVnw" measurementUnit="Pixel">
-        <children xmi:type="notation:Node" xmi:id="_P4BU0LzLEeuII7asa2lVnw" type="2003" element="_P3l3ALzLEeuII7asa2lVnw">
-          <children xmi:type="notation:Node" xmi:id="_P4B74LzLEeuII7asa2lVnw" type="5007"/>
-          <children xmi:type="notation:Node" xmi:id="_P4B74bzLEeuII7asa2lVnw" type="7004">
-            <children xmi:type="notation:Node" xmi:id="_P4GNW7zLEeuII7asa2lVnw" type="3010" element="_P32VuLzLEeuII7asa2lVnw">
-              <styles xmi:type="notation:FontStyle" xmi:id="_P4GNXLzLEeuII7asa2lVnw" fontName="Segoe UI" fontHeight="8" italic="true"/>
-              <layoutConstraint xmi:type="notation:Location" xmi:id="_P4GNXbzLEeuII7asa2lVnw"/>
-            </children>
-            <styles xmi:type="notation:SortingStyle" xmi:id="_P4B74rzLEeuII7asa2lVnw"/>
-            <styles xmi:type="notation:FilteringStyle" xmi:id="_P4B747zLEeuII7asa2lVnw"/>
-          </children>
-          <styles xmi:type="notation:ShapeStyle" xmi:id="_P4BU0bzLEeuII7asa2lVnw" fontName="Segoe UI" fontHeight="8"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_P4BU0rzLEeuII7asa2lVnw"/>
-        </children>
         <children xmi:type="notation:Node" xmi:id="_P4B75LzLEeuII7asa2lVnw" type="2003" element="_P3meEbzLEeuII7asa2lVnw">
           <children xmi:type="notation:Node" xmi:id="_P4B757zLEeuII7asa2lVnw" type="5007"/>
           <children xmi:type="notation:Node" xmi:id="_P4B76LzLEeuII7asa2lVnw" type="7004">
@@ -121,9 +108,9 @@
         <children xmi:type="notation:Node" xmi:id="_P4CjCbzLEeuII7asa2lVnw" type="2003" element="_P3oTQLzLEeuII7asa2lVnw">
           <children xmi:type="notation:Node" xmi:id="_P4DKALzLEeuII7asa2lVnw" type="5007"/>
           <children xmi:type="notation:Node" xmi:id="_P4DKAbzLEeuII7asa2lVnw" type="7004">
-            <children xmi:type="notation:Node" xmi:id="_P4G0brzLEeuII7asa2lVnw" type="3010" element="_P3zSYLzLEeuII7asa2lVnw">
-              <styles xmi:type="notation:FontStyle" xmi:id="_P4G0b7zLEeuII7asa2lVnw" fontName="Segoe UI" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Location" xmi:id="_P4G0cLzLEeuII7asa2lVnw"/>
+            <children xmi:type="notation:Node" xmi:id="_arwIQMSOEeu-OfTTD_PUsg" type="3010" element="_arRnIMSOEeu-OfTTD_PUsg">
+              <styles xmi:type="notation:FontStyle" xmi:id="_arwIQcSOEeu-OfTTD_PUsg" fontName="Segoe UI" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_arwIQsSOEeu-OfTTD_PUsg"/>
             </children>
             <styles xmi:type="notation:SortingStyle" xmi:id="_P4DKArzLEeuII7asa2lVnw"/>
             <styles xmi:type="notation:FilteringStyle" xmi:id="_P4DKA7zLEeuII7asa2lVnw"/>
@@ -969,26 +956,6 @@
         </computedStyleDescriptions>
       </data>
     </ownedAnnotationEntries>
-    <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_P3l3ALzLEeuII7asa2lVnw" name="VitruviusChange" tooltipText="" width="14" height="5">
-      <target xmi:type="ecore:EDataType" href="vavemodel.ecore#//VitruviusChange"/>
-      <semanticElements xmi:type="ecore:EDataType" href="vavemodel.ecore#//VitruviusChange"/>
-      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_P3l3AbzLEeuII7asa2lVnw" borderSize="1" borderSizeComputationExpression="1" borderColor="125,125,125" backgroundStyle="Liquid" foregroundColor="255,250,191">
-        <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EDataType']/@style"/>
-      </ownedStyle>
-      <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EDataType']"/>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_P32VuLzLEeuII7asa2lVnw" name="tools.vitruv.framework.change.description.VitruviusChange" tooltipText="">
-        <target xmi:type="ecore:EDataType" href="vavemodel.ecore#//VitruviusChange"/>
-        <semanticElements xmi:type="ecore:EDataType" href="vavemodel.ecore#//VitruviusChange"/>
-        <decorations xmi:type="viewpoint:Decoration" uid="_P32VubzLEeuII7asa2lVnw">
-          <description xmi:type="description:SemanticBasedDecoration" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@decorationDescriptionsSet/@decorationDescriptions[name='External']"/>
-        </decorations>
-        <ownedStyle xmi:type="diagram:BundledImage" uid="_P328wLzLEeuII7asa2lVnw" showIcon="false">
-          <labelFormat>italic</labelFormat>
-          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EDataType']/@subNodeMappings[name='EC_DataType_InstanceClassName']/@style"/>
-        </ownedStyle>
-        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EDataType']/@subNodeMappings[name='EC_DataType_InstanceClassName']"/>
-      </ownedElements>
-    </ownedDiagramElements>
     <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_P3meEbzLEeuII7asa2lVnw" name="System" tooltipText="" outgoingEdges="_P328wbzLEeuII7asa2lVnw _P33j2bzLEeuII7asa2lVnw _P33j4LzLEeuII7asa2lVnw _P34K5rzLEeuII7asa2lVnw _P34K7bzLEeuII7asa2lVnw" width="12" height="10">
       <target xmi:type="ecore:EClass" href="vavemodel.ecore#//System"/>
       <semanticElements xmi:type="ecore:EClass" href="vavemodel.ecore#//System"/>
@@ -1102,17 +1069,17 @@
     <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_P3oTQLzLEeuII7asa2lVnw" name="DeltaModule" tooltipText="" outgoingEdges="_P36AF7zLEeuII7asa2lVnw" incomingEdges="_P33j4LzLEeuII7asa2lVnw _P36AF7zLEeuII7asa2lVnw _P37ONrzLEeuII7asa2lVnw" width="12" height="10">
       <target xmi:type="ecore:EClass" href="vavemodel.ecore#//DeltaModule"/>
       <semanticElements xmi:type="ecore:EClass" href="vavemodel.ecore#//DeltaModule"/>
-      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_P3oTQbzLEeuII7asa2lVnw" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
+      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_arN8ycSOEeu-OfTTD_PUsg" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_P3zSYLzLEeuII7asa2lVnw" name="delta : VitruviusChange" tooltipText="">
-        <target xmi:type="ecore:EAttribute" href="vavemodel.ecore#//DeltaModule/delta"/>
-        <semanticElements xmi:type="ecore:EAttribute" href="vavemodel.ecore#//DeltaModule/delta"/>
-        <ownedStyle xmi:type="diagram:BundledImage" uid="_P3zSYbzLEeuII7asa2lVnw" labelAlignment="LEFT">
-          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']/@style"/>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_arRnIMSOEeu-OfTTD_PUsg" name=" change : EChange" tooltipText="">
+        <target xmi:type="ecore:EReference" href="vavemodel.ecore#//DeltaModule/change"/>
+        <semanticElements xmi:type="ecore:EReference" href="vavemodel.ecore#//DeltaModule/change"/>
+        <ownedStyle xmi:type="diagram:BundledImage" uid="_arRnIcSOEeu-OfTTD_PUsg" labelAlignment="LEFT" color="114,159,207">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EReferenceNode']/@style"/>
         </ownedStyle>
-        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EReferenceNode']"/>
       </ownedElements>
     </ownedDiagramElements>
     <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_P3oTQ7zLEeuII7asa2lVnw" name="Variable" tooltipText="" outgoingEdges="_P39DZ7zLEeuII7asa2lVnw _Ol4XYL5TEeuII7asa2lVnw" width="12" height="10">
