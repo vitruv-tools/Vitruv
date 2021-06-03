@@ -23,6 +23,8 @@ xtend-gen/
 # Maven
 target/
 .polyglot.build.properties
+.polyglot.feature.xml
+.polyglot.META-INF
 .mvn/wrapper/maven-wrapper.jar
 
 # Custom

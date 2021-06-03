@@ -335,7 +335,7 @@ public class VaveTest {
 	}
 
 	@Test
-	@Disabled
+//	@Disabled
 	public void saveAndLoad() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
@@ -384,7 +384,7 @@ public class VaveTest {
 				"");
 
 		final ModelInstance vsumModel3 = virtualModel3
-				.getModelInstance(this.createTestModelResourceUri("blubb", this.projectFolder));
+				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 
 		MatcherAssert.<Resource>assertThat(vsumModel3.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 

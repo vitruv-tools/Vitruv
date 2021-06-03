@@ -16,7 +16,7 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="resource" unique="false"
-        eType="#//Resource">
+        eType="#//Resource" transient="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;The resource where the root element will be inserted or removed from.&#xA;Is only valid in resolved changes."/>
       </eAnnotations>
