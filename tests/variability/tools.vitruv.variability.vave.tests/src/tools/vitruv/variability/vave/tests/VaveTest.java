@@ -26,7 +26,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -73,8 +72,7 @@ public class VaveTest {
 			return URI.createFileURI(_plus_1);
 		}
 
-		public RedundancyChangePropagationSpecification(final VitruvDomain sourceDomain,
-				final VitruvDomain targetDomain) {
+		public RedundancyChangePropagationSpecification(final VitruvDomain sourceDomain, final VitruvDomain targetDomain) {
 			super(sourceDomain, targetDomain);
 		}
 
@@ -88,8 +86,7 @@ public class VaveTest {
 		}
 
 		@Override
-		public void propagateChange(final EChange change, final CorrespondenceModel correspondenceModel,
-				@Extension final ResourceAccess resourceAccess) {
+		public void propagateChange(final EChange change, final CorrespondenceModel correspondenceModel, @Extension final ResourceAccess resourceAccess) {
 			boolean _doesHandleChange = this.doesHandleChange(change, correspondenceModel);
 			boolean _not = (!_doesHandleChange);
 			if (_not) {
@@ -97,9 +94,7 @@ public class VaveTest {
 			}
 			final InsertRootEObject<Root> typedChange = ((InsertRootEObject<Root>) change);
 			final Root insertedRoot = typedChange.getNewValue();
-			final Iterable<Root> correspondingRoots = Iterables.<Root>filter(
-					CorrespondenceModelUtil.<Correspondence>getCorrespondingEObjects(correspondenceModel, insertedRoot),
-					Root.class);
+			final Iterable<Root> correspondingRoots = Iterables.<Root>filter(CorrespondenceModelUtil.<Correspondence>getCorrespondingEObjects(correspondenceModel, insertedRoot), Root.class);
 			Root _xifexpression = null;
 			int _size = IterableExtensions.size(correspondingRoots);
 			boolean _equals = (_size == 1);
@@ -113,8 +108,7 @@ public class VaveTest {
 						it.setId(insertedRoot.getId());
 					};
 					final Root newRoot = ObjectExtensions.<Root>operator_doubleArrow(_Root, _function);
-					correspondenceModel.createAndAddCorrespondence(List.<EObject>of(insertedRoot),
-							List.<EObject>of(newRoot));
+					correspondenceModel.createAndAddCorrespondence(List.<EObject>of(insertedRoot), List.<EObject>of(newRoot));
 					_xblockexpression = newRoot;
 				}
 				_xifexpression = _xblockexpression;
@@ -123,16 +117,13 @@ public class VaveTest {
 			EObject _eContainer = insertedRoot.eContainer();
 			boolean _tripleNotEquals = (_eContainer != null);
 			if (_tripleNotEquals) {
-				final Set<Root> correspondingObjects = CorrespondenceModelUtil
-						.<Root, Correspondence>getCorrespondingEObjects(correspondenceModel, insertedRoot.eContainer(),
-								Root.class);
+				final Set<Root> correspondingObjects = CorrespondenceModelUtil.<Root, Correspondence>getCorrespondingEObjects(correspondenceModel, insertedRoot.eContainer(), Root.class);
 				Assertions.assertEquals(1, correspondingObjects.size());
 				Root _get = ((Root[]) Conversions.unwrapArray(correspondingObjects, Root.class))[0];
 				_get.setRecursiveRoot(correspondingRoot);
 			}
 			final URI resourceURI = typedChange.getResource().getURI();
-			resourceAccess.persistAsRoot(correspondingRoot,
-					RedundancyChangePropagationSpecification.getTargetResourceUri(resourceURI));
+			resourceAccess.persistAsRoot(correspondingRoot, RedundancyChangePropagationSpecification.getTargetResourceUri(resourceURI));
 		}
 	}
 
@@ -168,15 +159,13 @@ public class VaveTest {
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
 		changeRecorder.addToRecording(resourceSet);
 		changeRecorder.beginRecording();
-		Resource monitoredResource = resourceSet
-				.createResource(this.createTestModelResourceUri("", this.projectFolder));
+		Resource monitoredResource = resourceSet.createResource(this.createTestModelResourceUri("", this.projectFolder));
 		monitoredResource.getContents().add(AllElementTypesCreators.aet.Root());
 		AllElementTypesCreators.aet.Root().setId("root");
 
 		final TransactionalChange recordedChange = changeRecorder.endRecording();
 		virtualModel.propagateChange(recordedChange);
-		final ModelInstance vsumModel = virtualModel
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		vave.internalizeChanges(virtualModel);
@@ -189,8 +178,7 @@ public class VaveTest {
 		domains.add(aetDomain);
 
 		Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<>();
-		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(
-				aetDomain, aetDomain);
+		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
 		Vave vave = new VaveImpl(domains, changePropagationSpecifications, this.projectFolder);
@@ -202,8 +190,7 @@ public class VaveTest {
 		changeRecorder.addToRecording(resourceSet);
 		changeRecorder.beginRecording();
 
-		Resource monitoredResource = resourceSet
-				.createResource(this.createTestModelResourceUri("", this.projectFolder));
+		Resource monitoredResource = resourceSet.createResource(this.createTestModelResourceUri("", this.projectFolder));
 		monitoredResource.getContents().add(AllElementTypesCreators.aet.Root());
 		AllElementTypesCreators.aet.Root().setId("root");
 
@@ -211,15 +198,11 @@ public class VaveTest {
 
 		virtualModel.propagateChange(recordedChange);
 
-		final ModelInstance sourceModel = virtualModel
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
-		final ModelInstance targetModel = virtualModel.getModelInstance(RedundancyChangePropagationSpecification
-				.getTargetResourceUri(this.createTestModelResourceUri("", this.projectFolder)));
+		final ModelInstance sourceModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance targetModel = virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(this.createTestModelResourceUri("", this.projectFolder)));
 
 		MatcherAssert.<Resource>assertThat(targetModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
-		Assertions.assertEquals(1,
-				CorrespondenceModelUtil.<Correspondence>getCorrespondingEObjects(virtualModel.getCorrespondenceModel(),
-						sourceModel.getResource().getContents().get(0)).size());
+		Assertions.assertEquals(1, CorrespondenceModelUtil.<Correspondence>getCorrespondingEObjects(virtualModel.getCorrespondenceModel(), sourceModel.getResource().getContents().get(0)).size());
 	}
 
 	@Test
@@ -247,20 +230,18 @@ public class VaveTest {
 		final Resource monitoredResource = ObjectExtensions.<Resource>operator_doubleArrow(_createResource, _function);
 		final TransactionalChange recordedChange = changeRecorder.endRecording();
 		virtualModel.propagateChange(recordedChange);
-		final ModelInstance vsumModel = virtualModel
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		vave.internalizeChanges(virtualModel);
 		final VirtualModelProduct virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), "");
 
-		final ModelInstance vsumModel2 = virtualModel2
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 	}
 
 	@Test // Test wrt. problem space
-	public Resource testVaveModelCreation() {
+	public Resource testCarVaveModelCreation() {
 		// create tree content of simple vave model instance
 		vavemodel.System system = VavemodelFactory.eINSTANCE.createSystem();
 		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
@@ -317,8 +298,7 @@ public class VaveTest {
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("vave", new XMIResourceFactoryImpl());
 		ResourceSet resSet = new ResourceSetImpl();
-		Resource resource = resSet
-				.createResource(URI.createFileURI(this.projectFolder.resolve("models/car.vave").toString()));
+		Resource resource = resSet.createResource(URI.createFileURI(this.projectFolder.resolve("models/car.vave").toString()));
 		resource.getContents().add(system);
 		try {
 			resource.save(Collections.EMPTY_MAP);
@@ -366,25 +346,21 @@ public class VaveTest {
 		final Resource monitoredResource = ObjectExtensions.<Resource>operator_doubleArrow(_createResource, _function);
 		final TransactionalChange recordedChange = changeRecorder.endRecording();
 		virtualModel.propagateChange(recordedChange);
-		final ModelInstance vsumModel = virtualModel
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		vaveSaved.internalizeChanges(virtualModel);
 		final VirtualModelProduct virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), "");
 
-		final ModelInstance vsumModel2 = virtualModel2
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		Vave vaveLoaded = new VaveImpl(domains, new HashSet<>(), this.projectFolder);
 		vaveLoaded.init(this.projectFolder);
 
-		final VirtualModelProduct virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"),
-				"");
+		final VirtualModelProduct virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), "");
 
-		final ModelInstance vsumModel3 = virtualModel3
-				.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
+		final ModelInstance vsumModel3 = virtualModel3.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 
 		MatcherAssert.<Resource>assertThat(vsumModel3.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 

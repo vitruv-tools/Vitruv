@@ -5,20 +5,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
@@ -46,9 +44,8 @@ public class VaveImpl implements Vave {
 	private Resource resource;
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 
-	public VaveImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications,
-			Path storageFolder) throws Exception {
-//		try {
+	public VaveImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, Path storageFolder) throws Exception {
+//	try {
 //		this.resource = resSet.getResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()),
 //				true);
 //	} catch (Exception e) {
@@ -67,8 +64,7 @@ public class VaveImpl implements Vave {
 			Map<String, Object> m = reg.getExtensionToFactoryMap();
 			m.put("vave", new XMIResourceFactoryImpl());
 			ResourceSet resSet = new ResourceSetImpl();
-			this.resource = resSet
-					.createResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()));
+			this.resource = resSet.createResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()));
 			this.system = VavemodelFactory.eINSTANCE.createSystem();
 			this.resource.getContents().add(this.system);
 			try {
@@ -95,8 +91,7 @@ public class VaveImpl implements Vave {
 //				.buildAndInitialize();
 
 //		final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
-		InternalUserInteractor userInteractor = UserInteractionFactory.instance
-				.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null));
+		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null));
 
 		if (storageFolder == null)
 			throw new Exception("No storage folder was configured!");
@@ -104,8 +99,7 @@ public class VaveImpl implements Vave {
 		if (userInteractor == null)
 			throw new Exception("No user interactor was configured!");
 
-		final ChangePropagationSpecificationRepository changeSpecificationRepository = new ChangePropagationSpecificationRepository(
-				changePropagationSpecifications);
+		final ChangePropagationSpecificationRepository changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications);
 		for (final ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			{
 				boolean containsSourceDomain = false;
@@ -119,13 +113,9 @@ public class VaveImpl implements Vave {
 					}
 				}
 				if (!containsTargetDomain)
-					throw new Exception("The change propagation specification’s source domain ‹"
-							+ changePropagationSpecification.getSourceDomain() + "› has not been configured: "
-							+ changePropagationSpecification);
+					throw new Exception("The change propagation specification’s source domain ‹" + changePropagationSpecification.getSourceDomain() + "› has not been configured: " + changePropagationSpecification);
 				if (!containsSourceDomain)
-					throw new Exception("The change propagation specification’s target domain ‹"
-							+ changePropagationSpecification.getTargetDomain() + "› has not been configured: "
-							+ changePropagationSpecification);
+					throw new Exception("The change propagation specification’s target domain ‹" + changePropagationSpecification.getTargetDomain() + "› has not been configured: " + changePropagationSpecification);
 			}
 		}
 
@@ -136,8 +126,7 @@ public class VaveImpl implements Vave {
 		final VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
 		fileSystemLayout.prepare();
 
-		final VirtualModelProductImpl vsum = new VirtualModelProductImpl(configuration, fileSystemLayout,
-				userInteractor, this.domainRepository, changeSpecificationRepository);
+		final VirtualModelProductImpl vsum = new VirtualModelProductImpl(configuration, fileSystemLayout, userInteractor, this.domainRepository, changeSpecificationRepository);
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
@@ -164,7 +153,7 @@ public class VaveImpl implements Vave {
 			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
 			System.out.println("DELTA: " + change);
 			for (EChange echange : change.getEChanges()) {
-				dm.getChange().add(echange);
+				dm.getChange().add(EcoreUtil.copy(echange));
 			}
 			this.system.getDeltamodule().add(dm);
 		}
