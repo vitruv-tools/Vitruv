@@ -12,16 +12,16 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
-import tools.vitruv.variability.vave.VirtualModelProduct;
+import tools.vitruv.variability.vave.VirtualProductModel;
 
-public class VirtualModelProductImpl extends VirtualModelImpl implements VirtualModelProduct {
+public class VirtualProductModelImpl extends VirtualModelImpl implements VirtualProductModel {
 
 	private String configuration;
 
 	// original changes
 	private Collection<VitruviusChange> deltas = new ArrayList<>();
 
-	public VirtualModelProductImpl(final String configuration, final VsumFileSystemLayout fileSystemLayout,
+	public VirtualProductModelImpl(final String configuration, final VsumFileSystemLayout fileSystemLayout,
 			final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository,
 			final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		super(fileSystemLayout, userInteractor, domainRepository, changePropagationSpecificationProvider);

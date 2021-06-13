@@ -32,19 +32,19 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.VirtualModelManager;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
-import tools.vitruv.variability.vave.Vave;
-import tools.vitruv.variability.vave.VirtualModelProduct;
+import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.VirtualProductModel;
 import vavemodel.DeltaModule;
 import vavemodel.VavemodelFactory;
 
-public class VaveImpl implements Vave {
+public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 	private VitruvDomainRepository domainRepository = null;
 	private vavemodel.System system;
 	private Resource resource;
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 
-	public VaveImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, Path storageFolder) throws Exception {
+	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, Path storageFolder) throws Exception {
 //	try {
 //		this.resource = resSet.getResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()),
 //				true);
@@ -83,7 +83,7 @@ public class VaveImpl implements Vave {
 
 	}
 
-	public VirtualModelProduct externalizeProduct(Path storageFolder, String configuration) throws Exception {
+	public VirtualProductModel externalizeProduct(Path storageFolder, String configuration) throws Exception {
 
 //		final VirtualModelProductImpl vsum = new VirtualModelProductBuilder().withStorageFolder(storageFolder)
 //				.withDomainRepository(this.domainRepository)
@@ -126,7 +126,7 @@ public class VaveImpl implements Vave {
 		final VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
 		fileSystemLayout.prepare();
 
-		final VirtualModelProductImpl vsum = new VirtualModelProductImpl(configuration, fileSystemLayout, userInteractor, this.domainRepository, changeSpecificationRepository);
+		final VirtualProductModelImpl vsum = new VirtualProductModelImpl(configuration, fileSystemLayout, userInteractor, this.domainRepository, changeSpecificationRepository);
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
@@ -148,7 +148,7 @@ public class VaveImpl implements Vave {
 		return vsum;
 	}
 
-	public void internalizeChanges(VirtualModelProduct virtualModel) throws IOException { // TODO: add expression parameter and map deltas to expression
+	public void internalizeChanges(VirtualProductModel virtualModel) throws IOException { // TODO: add expression parameter and map deltas to expression
 		for (VitruviusChange change : virtualModel.getDeltas()) {
 			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
 			System.out.println("DELTA: " + change);

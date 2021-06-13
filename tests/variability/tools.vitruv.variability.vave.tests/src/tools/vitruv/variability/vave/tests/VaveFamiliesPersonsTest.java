@@ -48,9 +48,9 @@ import tools.vitruv.testutils.TestProjectManager;
 import tools.vitruv.testutils.UriMode;
 import tools.vitruv.testutils.domains.DomainUtil;
 import tools.vitruv.testutils.matchers.ModelMatchers;
-import tools.vitruv.variability.vave.Vave;
-import tools.vitruv.variability.vave.VirtualModelProduct;
-import tools.vitruv.variability.vave.impl.VaveImpl;
+import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.VirtualProductModel;
+import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveFamiliesPersonsTest {
@@ -73,8 +73,8 @@ public class VaveFamiliesPersonsTest {
 	private Path persistenceDirectory;
 	private UriMode uriMode;
 
-	private Vave vave;
-	private VirtualModelProduct virtualModel;
+	private VirtualVaVeModel vave;
+	private VirtualProductModel virtualModel;
 
 	private Resource resourceAt(final Path viewRelativePath) {
 		return this.resourceAt(this.getUri(viewRelativePath));
@@ -200,7 +200,7 @@ public class VaveFamiliesPersonsTest {
 		Set<VitruvDomain> domains = fpa.getVitruvDomains();
 		Set<ChangePropagationSpecification> changePropagationSpecifications = fpa.getChangePropagationSpecifications();
 
-		this.vave = new VaveImpl(domains, changePropagationSpecifications, testProjectPath);
+		this.vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, testProjectPath);
 
 		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), "");
 

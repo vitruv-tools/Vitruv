@@ -5,7 +5,7 @@ import java.util.Collection;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
-public interface VirtualModelProduct extends InternalVirtualModel {
+public interface VirtualProductModel extends InternalVirtualModel {
 
 	public String getConfiguration();
 
