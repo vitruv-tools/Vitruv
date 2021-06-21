@@ -13,6 +13,8 @@
         eType="#//Feature" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="systemrevision" upperBound="-1"
         eType="#//SystemRevision" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="configuration" upperBound="-1"
+        eType="#//Configuration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//FeatureOption">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -160,5 +162,9 @@
         eType="#//FeatureOption"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="enablesconstraints" upperBound="-1"
         eType="#//Constraint"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Configuration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="option" upperBound="-1"
+        eType="#//Option"/>
   </eClassifiers>
 </ecore:EPackage>

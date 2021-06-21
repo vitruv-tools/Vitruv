@@ -21,6 +21,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//System/deltamodule"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//System/feature"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//System/systemrevision"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//System/configuration"/>
     </genClasses>
     <genClasses ecoreClass="vavemodel.ecore#//Feature">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vavemodel.ecore#//Feature/name"/>
@@ -87,6 +88,9 @@
     <genClasses ecoreClass="vavemodel.ecore#//SystemRevision">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//SystemRevision/enablesoptions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//SystemRevision/enablesconstraints"/>
+    </genClasses>
+    <genClasses ecoreClass="vavemodel.ecore#//Configuration">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Configuration/option"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
