@@ -29,9 +29,13 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import vavemodel.Configuration;
+import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveMultiProductEditTest {
+	
+	Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 
 	private URI createTestModelResourceUri(final String suffix, Path projectFolder) {
 		return URI.createFileURI(projectFolder.resolve((("root" + suffix) + ".allElementTypes")).toString());
@@ -46,7 +50,7 @@ public class VaveMultiProductEditTest {
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), projectFolder);
 
 		// externalize virtual model products (vmp)
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), ""); // empty product
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
 
 		// modify vmp1
 		// record changes
@@ -76,7 +80,7 @@ public class VaveMultiProductEditTest {
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), projectFolder);
 
 		// externalize virtual model product (vmp)
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), ""); // empty product
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
 		Resource vmp1Resource = null;
 		Resource vmp1copyResource = null;
 		Resource vmp1extResource = null;
@@ -104,13 +108,13 @@ public class VaveMultiProductEditTest {
 
 		vave.internalizeChanges(vmp1); // system revision 1
 
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), "");
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
 		final ModelInstance vmp1extModelInstance = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		vmp1extResource = vmp1extModelInstance.getResource();
 		Assert.assertEquals(vmp1extResource.getContents().size(), 1);
 		MatcherAssert.<Resource>assertThat(vmp1extResource, ModelMatchers.containsModelOf(vmp1copyResource));
 
-		final VirtualProductModel vmp1ext4 = vave.externalizeProduct(projectFolder.resolve("vmp1ext4"), "");
+		final VirtualProductModel vmp1ext4 = vave.externalizeProduct(projectFolder.resolve("vmp1ext4"), config);
 		final ModelInstance vmp1ext4ModelInstance = vmp1ext4.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		Resource vmp1ext4Resource = vmp1ext4ModelInstance.getResource();
 		Assert.assertEquals(vmp1extResource.getContents().size(), 1);
@@ -141,7 +145,7 @@ public class VaveMultiProductEditTest {
 //		MatcherAssert.<Resource>assertThat(vmp1Resource, ModelMatchers.containsModelOf(monitoredResource2));
 
 		// before internalization of changes the product must contain only one root
-		final VirtualProductModel vmp1ext2 = vave.externalizeProduct(projectFolder.resolve("vmp1ext2"), "");
+		final VirtualProductModel vmp1ext2 = vave.externalizeProduct(projectFolder.resolve("vmp1ext2"), config);
 		final ModelInstance vmp1ext2ModelInstance = vmp1ext2.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		Resource vmp1ext2Resource = vmp1ext2ModelInstance.getResource();
 		Assert.assertEquals(vmp1ext2Resource.getContents().size(), 1);
@@ -151,7 +155,7 @@ public class VaveMultiProductEditTest {
 		vave.internalizeChanges(vmp1); // system revision 2
 
 		// after internalization of changes the product must contain two roots
-		final VirtualProductModel vmp1ext3 = vave.externalizeProduct(projectFolder.resolve("vmp1ext3"), "");
+		final VirtualProductModel vmp1ext3 = vave.externalizeProduct(projectFolder.resolve("vmp1ext3"), config);
 		final ModelInstance vmp1ext3ModelInstance = vmp1ext3.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		Resource vmp1ext3Resource = vmp1ext3ModelInstance.getResource();
 		Assert.assertEquals(vmp1ext2Resource.getContents().size(), 1);

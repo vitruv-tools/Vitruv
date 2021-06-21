@@ -13,15 +13,16 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.variability.vave.VirtualProductModel;
+import vavemodel.Configuration;
 
 public class VirtualProductModelImpl extends VirtualModelImpl implements VirtualProductModel {
 
-	private String configuration;
+	private Configuration configuration;
 
 	// original changes
 	private Collection<VitruviusChange> deltas = new ArrayList<>();
 
-	public VirtualProductModelImpl(final String configuration, final VsumFileSystemLayout fileSystemLayout,
+	public VirtualProductModelImpl(final Configuration configuration, final VsumFileSystemLayout fileSystemLayout,
 			final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository,
 			final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		super(fileSystemLayout, userInteractor, domainRepository, changePropagationSpecificationProvider);
@@ -35,8 +36,8 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	}
 
 	@Override
-	public String getConfiguration() {
-		return this.configuration;
+	public Configuration getConfiguration() {
+		return this.configuration ;
 	}
 
 	@Override

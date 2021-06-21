@@ -2,11 +2,13 @@ package tools.vitruv.variability.vave.tests;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -51,6 +53,8 @@ import tools.vitruv.testutils.matchers.ModelMatchers;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import vavemodel.Configuration;
+import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveFamiliesPersonsTest {
@@ -202,7 +206,8 @@ public class VaveFamiliesPersonsTest {
 
 		this.vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, testProjectPath);
 
-		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), "");
+		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), config);
 
 		this.resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 

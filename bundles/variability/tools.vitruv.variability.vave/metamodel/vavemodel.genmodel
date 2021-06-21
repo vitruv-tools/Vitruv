@@ -76,8 +76,8 @@
     <genClasses image="false" ecoreClass="vavemodel.ecore#//Constraint"/>
     <genClasses image="false" ecoreClass="vavemodel.ecore#//Option"/>
     <genClasses ecoreClass="vavemodel.ecore#//Mapping">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Mapping/option"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Mapping/deltamodule"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Mapping/expression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="vavemodel.ecore#//Revision">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Revision/successors"/>

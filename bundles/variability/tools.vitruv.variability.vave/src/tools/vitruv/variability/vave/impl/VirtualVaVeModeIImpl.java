@@ -32,9 +32,11 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.VirtualModelManager;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
-import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.VirtualProductModel;
+import tools.vitruv.variability.vave.VirtualVaVeModel;
+import vavemodel.Configuration;
 import vavemodel.DeltaModule;
+import vavemodel.Mapping;
 import vavemodel.VavemodelFactory;
 
 public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
@@ -83,7 +85,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 	}
 
-	public VirtualProductModel externalizeProduct(Path storageFolder, String configuration) throws Exception {
+	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws Exception {
 
 //		final VirtualModelProductImpl vsum = new VirtualModelProductBuilder().withStorageFolder(storageFolder)
 //				.withDomainRepository(this.domainRepository)
@@ -130,25 +132,33 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
-		// TODO for each delta: check if its mapping is true given configuration. if yes: propagate it in vsum.
+		EList<Mapping> mappings = this.system.getMapping();
+		EList<Configuration> config = this.system.getConfiguration();
+		EList<DeltaModule> deltamodules = this.system.getDeltamodule(); // One VitruviusChange per DeltaModule
 
-		// One VitruviusChange per DeltaModule
-		EList<DeltaModule> deltamodules = this.system.getDeltamodule();
-		if (!deltamodules.isEmpty()) {
+		// optional: add configuration to unified system
+		config.add(configuration);
 
-			for (DeltaModule deltamodule : deltamodules) {
-//				EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
-//				echanges.add((EChange) deltamodule.eGet(eStructFeature));
-				VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
-				vsum.propagateChange(vitruvchange);
+		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+
+		for (Mapping mapping : mappings) {
+
+			if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
+
+				for (DeltaModule deltamodule : mapping.getDeltamodule()) {
+					// EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
+					// echanges.add((EChange) deltamodule.eGet(eStructFeature));
+					VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
+					vsum.propagateChange(vitruvchange);
+				}
 			}
 		}
-
-		// return vsum instance
 		return vsum;
 	}
 
 	public void internalizeChanges(VirtualProductModel virtualModel) throws IOException { // TODO: add expression parameter and map deltas to expression
+		Mapping mapping = VavemodelFactory.eINSTANCE.createMapping();
+		this.system.getMapping().add(mapping);
 		for (VitruviusChange change : virtualModel.getDeltas()) {
 			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
 			System.out.println("DELTA: " + change);
@@ -156,6 +166,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 				dm.getChange().add(EcoreUtil.copy(echange));
 			}
 			this.system.getDeltamodule().add(dm);
+			mapping.getDeltamodule().add(dm);
 		}
 		virtualModel.clearDeltas();
 		this.save();

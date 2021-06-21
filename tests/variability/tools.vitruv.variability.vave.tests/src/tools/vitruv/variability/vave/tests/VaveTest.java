@@ -1,6 +1,8 @@
 package tools.vitruv.variability.vave.tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -53,15 +55,23 @@ import tools.vitruv.testutils.domains.AllElementTypesDomain;
 import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.testutils.matchers.ModelMatchers;
 import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
-import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.VirtualProductModel;
+import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.impl.ExpressionEvaluator;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import vavemodel.Configuration;
+import vavemodel.Conjunction;
+import vavemodel.Feature;
 import vavemodel.FeatureOption;
 import vavemodel.FeatureRevision;
+import vavemodel.Option;
+import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveTest {
+
+	Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 
 	public static class RedundancyChangePropagationSpecification extends AbstractChangePropagationSpecification {
 		public static URI getTargetResourceUri(final URI sourceUri) {
@@ -144,7 +154,7 @@ public class VaveTest {
 	public void testVSUMCreation() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		VirtualProductModel vsum = vave.externalizeProduct(this.projectFolder, "");
+		VirtualProductModel vsum = vave.externalizeProduct(this.projectFolder, config);
 		assertNotNull(vsum);
 	}
 
@@ -153,7 +163,7 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), "");
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -183,7 +193,7 @@ public class VaveTest {
 
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, this.projectFolder);
 
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), "");
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -210,8 +220,8 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), ""); // empty
-																													// product
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty
+																														// product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -234,7 +244,7 @@ public class VaveTest {
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		vave.internalizeChanges(virtualModel);
-		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), "");
+		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
@@ -326,8 +336,8 @@ public class VaveTest {
 		m.put("vave", new XMIResourceFactoryImpl());
 
 		vaveSaved.init(this.projectFolder);
-		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), ""); // empty
-																														// product
+		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty
+																															// product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -350,7 +360,7 @@ public class VaveTest {
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		vaveSaved.internalizeChanges(virtualModel);
-		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), "");
+		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
@@ -358,12 +368,37 @@ public class VaveTest {
 		VirtualVaVeModel vaveLoaded = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
 		vaveLoaded.init(this.projectFolder);
 
-		final VirtualProductModel virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), "");
+		final VirtualProductModel virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), config);
 
 		final ModelInstance vsumModel3 = virtualModel3.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 
 		MatcherAssert.<Resource>assertThat(vsumModel3.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
+	}
+
+	@Test
+	public void conjunctionEvalTest() {
+		Feature a = VavemodelFactory.eINSTANCE.createFeature();
+		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+
+		Conjunction<Option> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
+		va.setOption(a);
+		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
+		vb.setOption(b);
+		conjunction.getTerm().add(va);
+		conjunction.getTerm().add(vb);
+
+		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+		configuration.getOption().add(a);
+
+		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+
+		assertFalse(ee.eval(conjunction));
+
+		configuration.getOption().add(b);
+
+		assertTrue(ee.eval(conjunction));
 	}
 
 }

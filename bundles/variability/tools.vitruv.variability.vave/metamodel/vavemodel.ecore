@@ -144,10 +144,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Option" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="option" upperBound="-1"
-        eType="#//Option"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" lowerBound="1"
         upperBound="-1" eType="#//DeltaModule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        containment="true">
+      <eGenericType eClassifier="#//Expression">
+        <eTypeArguments eClassifier="#//Option"/>
+      </eGenericType>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Revision" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="successors" upperBound="-1"
