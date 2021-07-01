@@ -61,6 +61,7 @@ package final class NotificationToEChangeConverter {
 					case ADD_MANY: handleMultiInsertReference(notification)
 					case REMOVE: handleRemoveReference(notification)
 					case REMOVE_MANY: handleMultiRemoveReference(notification)
+					case MOVE: handleMove(notification)
 					default: emptyList()
 				}
 			case notifier instanceof Resource:
@@ -239,6 +240,13 @@ package final class NotificationToEChangeConverter {
 		] + notifierResource.contents.flatMapFixedIndexed [ index, value |
 			createInsertRootChange(value, notifierResource, initialIndex + index).
 				surroundWithCreateAndFeatureChangesIfNecessary()
+		]
+	}
+	
+	private def Iterable<? extends EChange> handleMove(extension NotificationInfo notification) {
+		#[
+			createRemoveReferenceChange(notifierModelElement, reference, newModelElementValue, oldValue as Integer),
+			createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, position)
 		]
 	}
 
