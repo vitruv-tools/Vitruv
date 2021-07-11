@@ -61,10 +61,15 @@ import tools.vitruv.variability.vave.impl.ExpressionEvaluator;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
+import vavemodel.Disjunction;
+import vavemodel.Expression;
 import vavemodel.Feature;
 import vavemodel.FeatureOption;
 import vavemodel.FeatureRevision;
+import vavemodel.Implication;
+import vavemodel.Not;
 import vavemodel.Option;
+import vavemodel.System;
 import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 
@@ -136,6 +141,21 @@ public class VaveTest {
 			resourceAccess.persistAsRoot(correspondingRoot, RedundancyChangePropagationSpecification.getTargetResourceUri(resourceURI));
 		}
 	}
+	
+	private Expression<FeatureOption> createExpression(System system) {
+		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		system.getFeature().add(car);
+		system.getFeature().add(engineType);
+		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		variable1.setOption(car);
+		variable2.setOption(engineType);
+		conjunction.getTerm().add(variable1);
+		conjunction.getTerm().add(variable2);
+		return conjunction;
+	}
 
 	private static final String MODEL_PATH = "models";
 
@@ -163,8 +183,9 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
+		Expression<FeatureOption> expression = createExpression(vave.getSystem());
+		
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
-
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
 		changeRecorder.addToRecording(resourceSet);
@@ -178,7 +199,7 @@ public class VaveTest {
 		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		vave.internalizeChanges(virtualModel);
+		vave.internalizeChanges(virtualModel, expression);
 	}
 
 	@Test
@@ -220,6 +241,7 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
+		Expression<FeatureOption> expression = createExpression(vave.getSystem());
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty
 																														// product
 
@@ -243,7 +265,7 @@ public class VaveTest {
 		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		vave.internalizeChanges(virtualModel);
+		vave.internalizeChanges(virtualModel, expression);
 		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
@@ -330,7 +352,7 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vaveSaved = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-
+		Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("vave", new XMIResourceFactoryImpl());
@@ -359,7 +381,7 @@ public class VaveTest {
 		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		vaveSaved.internalizeChanges(virtualModel);
+		vaveSaved.internalizeChanges(virtualModel, expression);
 		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
@@ -400,5 +422,87 @@ public class VaveTest {
 
 		assertTrue(ee.eval(conjunction));
 	}
+	
+	@Test
+	public void implicationEvalTest() {
+		Feature a = VavemodelFactory.eINSTANCE.createFeature();
+		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+
+		Implication<Option> implication = VavemodelFactory.eINSTANCE.createImplication();
+		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
+		va.setOption(a);
+		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
+		vb.setOption(b);
+		implication.getTerm().add(va);
+		implication.getTerm().add(vb);
+
+		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+		configuration.getOption().add(a);
+
+		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+
+		assertFalse(ee.eval(implication));
+
+		configuration.getOption().add(b);
+
+		assertTrue(ee.eval(implication));
+	}
+	
+	@Test
+	public void disjunctionEvalTest() {
+		Feature a = VavemodelFactory.eINSTANCE.createFeature();
+		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+
+		Disjunction<Option> disjunction = VavemodelFactory.eINSTANCE.createDisjunction();
+		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
+		va.setOption(a);
+		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
+		vb.setOption(b);
+		disjunction.getTerm().add(va);
+		disjunction.getTerm().add(vb);
+
+		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+		
+		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+		
+		assertFalse(ee.eval(disjunction));
+		
+		configuration.getOption().add(a);
+
+		assertTrue(ee.eval(disjunction));
+
+		configuration.getOption().add(b);
+
+		assertTrue(ee.eval(disjunction));
+	}
+	
+	@Test
+	public void disjunctionNotEvalTest() {
+		Feature a = VavemodelFactory.eINSTANCE.createFeature();
+		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+
+		Disjunction<Option> disjunction = VavemodelFactory.eINSTANCE.createDisjunction();
+		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
+		va.setOption(a);
+		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
+		vb.setOption(b);
+		disjunction.getTerm().add(va);
+		disjunction.getTerm().add(vb);
+		
+		Not<Option> not = VavemodelFactory.eINSTANCE.createNot();
+		not.setTerm(disjunction);
+
+		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+		configuration.getOption().add(a);
+
+		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+
+		assertFalse(ee.eval(not));
+
+		configuration.getOption().add(b);
+
+		assertFalse(ee.eval(not));
+	}
+
 
 }

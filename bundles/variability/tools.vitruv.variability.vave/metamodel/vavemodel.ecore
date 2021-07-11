@@ -42,7 +42,7 @@
     <eLiterals name="XORNONE" value="2"/>
     <eLiterals name="ORNONE" value="3"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureRevision" eSuperTypes="#//Revision"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureRevision" eSuperTypes="#//Revision #//FeatureOption"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeltaModule">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" upperBound="-1"
         eType="#//DeltaModule"/>

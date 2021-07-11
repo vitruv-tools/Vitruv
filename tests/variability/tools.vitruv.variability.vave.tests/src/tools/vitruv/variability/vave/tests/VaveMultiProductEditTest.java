@@ -26,16 +26,22 @@ import tools.vitruv.testutils.TestProjectManager;
 import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.testutils.matchers.ModelMatchers;
 import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
-import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.VirtualProductModel;
+import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
 import vavemodel.Configuration;
+import vavemodel.Conjunction;
+import vavemodel.Expression;
+import vavemodel.FeatureOption;
 import vavemodel.VavemodelFactory;
+import vavemodel.System;
+
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveMultiProductEditTest {
 	
 	Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+	
 
 	private URI createTestModelResourceUri(final String suffix, Path projectFolder) {
 		return URI.createFileURI(projectFolder.resolve((("root" + suffix) + ".allElementTypes")).toString());
@@ -73,11 +79,24 @@ public class VaveMultiProductEditTest {
 	// Products are indepedent over time (multiple system revisions)
 	@Test
 	public void MultipleEditAndInternalizationSteps(@TestProject final Path projectFolder) throws Exception {
+		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+		
 		// collect domains
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		// create vave system
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), projectFolder);
+		System system = vave.getSystem();
+		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		system.getFeature().add(car);
+		system.getFeature().add(engineType);
+		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		variable1.setOption(car);
+		variable2.setOption(engineType);
+		conjunction.getTerm().add(variable1);
+		conjunction.getTerm().add(variable2);
 
 		// externalize virtual model product (vmp)
 		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
@@ -106,7 +125,7 @@ public class VaveMultiProductEditTest {
 		Assert.assertEquals(vmp1copyResource.getContents().size(), 1);
 		MatcherAssert.<Resource>assertThat(vmp1Resource, ModelMatchers.containsModelOf(monitoredResource));
 
-		vave.internalizeChanges(vmp1); // system revision 1
+		vave.internalizeChanges(vmp1, conjunction); // system revision 1
 
 		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
 		final ModelInstance vmp1extModelInstance = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder));
@@ -152,7 +171,7 @@ public class VaveMultiProductEditTest {
 		Assert.assertEquals(vmp1ext4Resource.getContents().size(), 1);
 		MatcherAssert.<Resource>assertThat(vmp1ext2Resource, ModelMatchers.containsModelOf(vmp1copyResource));
 
-		vave.internalizeChanges(vmp1); // system revision 2
+		vave.internalizeChanges(vmp1, conjunction); // system revision 2
 
 		// after internalization of changes the product must contain two roots
 		final VirtualProductModel vmp1ext3 = vave.externalizeProduct(projectFolder.resolve("vmp1ext3"), config);
