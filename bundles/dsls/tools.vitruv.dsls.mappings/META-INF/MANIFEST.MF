@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Vitruv DSLs Mappings Language
 Bundle-Version: 2.1.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: %providerName
+Bundle-Vendor: vitruv.tools
 Bundle-SymbolicName: tools.vitruv.dsls.mappings; singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.mappings
 Require-Bundle: tools.vitruv.dsls.reactions;visibility:=reexport,
