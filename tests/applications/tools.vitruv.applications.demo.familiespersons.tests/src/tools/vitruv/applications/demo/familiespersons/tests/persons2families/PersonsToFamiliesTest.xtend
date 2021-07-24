@@ -36,7 +36,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	}
 
 	@Test
-	@Disabled("The personsToFamilies is broken")
+//	@Disabled("The personsToFamilies is broken")
 	def void testCreateMalePerson() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
@@ -52,7 +52,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	}
 
 	@Test
-	@Disabled("The personsToFamilies is broken")
+//	@Disabled("The personsToFamilies is broken")
 	def void testCreateMale() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
@@ -64,7 +64,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	}
 
 	@Test
-	@Disabled("The personsToFamilies is broken")
+//	@Disabled("The personsToFamilies is broken")
 	def void testCreateFemale() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
@@ -76,7 +76,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	}
 
 	@Test
-	@Disabled("The personsToFamilies is broken")
+//	@Disabled("The personsToFamilies is broken")
 	def void testChangeFirstName() {
 		val person = PersonsFactory.eINSTANCE.createMale => [
 			fullName = MALE_PERSON_NAME
