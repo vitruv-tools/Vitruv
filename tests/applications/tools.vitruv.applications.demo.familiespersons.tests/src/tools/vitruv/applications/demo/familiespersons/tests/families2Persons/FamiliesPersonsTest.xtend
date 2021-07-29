@@ -6,8 +6,8 @@ import org.hamcrest.core.*
 import org.hamcrest.*
 import org.hamcrest.org.hamcrest.*;
 
-import org.hamcrest.Matchers;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+//import org.hamcrest.Matchers;
+//import static org.hamcrest.Matchers.containsInAnyOrder;
 
 
 import static org.hamcrest.CoreMatchers.hasItem
@@ -50,6 +50,8 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import edu.kit.ipd.sdq.metamodels.persons.Male
 import edu.kit.ipd.sdq.metamodels.persons.Female
+import tools.vitruv.testutils.TestUserInteraction
+import tools.vitruv.testutils.TestUserInteraction.MultipleChoiceInteractionDescription
 
 //import static org.junit.Assert.isEquals
 
@@ -767,12 +769,13 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
 		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
 		
-		val MaleImpl new_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Albert Meier"; birthday = null]) as MaleImpl;
+		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
+		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "ParDad Meier_2"; birthday = null]) as MaleImpl;
 		
-		println("\n\n===ExistingDad START===\n")
+		println("\n\n===testInsertDadIfDadAlreadyExists - Preparation===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
 		println("\n===END===\n\n")
-		
+				
 		//Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
@@ -786,61 +789,97 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
 		println("precondition done")
-		
+				
 		//===== ACTUAL TEST =====
-		//Propagate changes
+//		var TestUserInteraction ui = new TestUserInteraction();
+		
+		//===== PART 1 - do nothing =====
+//		ui.onMultipleChoiceSingleSelection([rand|true])
+		userInteraction.addNextSingleSelection(0)
+		
 		FamilyRegister.from(FAMILIES_MODEL).propagate[
 			val fam = families.findFirst[x|x.lastName.equals("Meier")]
-			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "Albert"; familyFather = fam]			
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]			
 		]
-		println("propagation done")
-		
-		
-		println("\n\n===ExistingDad START===\n")
-		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
-		println("\n===END===\n\n")		
-		
-		
-		
-		val int doNothing  = 0;
-		val int replaceOld = 1;
-		val int createNewFamily = 2;
-		val int chosenCase = 0;
 		
 		
 		//Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+		val personListAfter0 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_son)], true)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,replacing_dad)], false)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,parallel_dad)], false)
+		println("part 1 done")	
 		
+//		this
+//.virtualModel as VirtualModelImpl
+//.resourceRepository as ResourceRepositoryImpl
+//.correspondenceModel as InternalCorrespondenceModelImpl
+//.correspondences as CorrespondencesImpl
+//.correspondences as EObjectContainmentWithInverseEList<E>
+//.get(0) as ReactionsCorrespondenceImpl
+				
+		//===== PART 2 - replace old dad =====
+		userInteraction.addNextSingleSelection(1)
+		FamilyRegister.from(FAMILIES_MODEL).propagate[
+			val fam = families.findFirst[x|x.lastName.equals("Meier")]
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]			
+		]
+		//Check correct execution	
+		println("\n\n===testInsertDadIfDadAlreadyExists - Part2 propagation Done===\n")
+		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
+		println("\n===END===\n\n")
 		
-//		assertThat(personListAfter, not(existsInAnyOrder(old_dau, old_son)))
+		assertThat(resourceAt(PERSONS_MODEL), exists)
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		val personListAfter1 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_son)], true)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
 		
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_dad)], false)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,replacing_dad)], true)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,parallel_dad)], false)
+		println("part 2 done")
+		if(true) return;
 		
-		switch(chosenCase){
-			case doNothing:{				
-				assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
-				assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-				assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-				assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dad)], false)
-			}
-			case replaceOld:{				
-				assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
-				assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-				assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], false)
-				assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dad)], true)
-			}
-			case createNewFamily:{				
-				assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 6); 
-				assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 5);
-				assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-				assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dad)], true)
-			}
-		}				
+		//===== PART 3 - insert dad in a new family =====
+		userInteraction.addNextSingleSelection(2)
+		FamilyRegister.from(FAMILIES_MODEL).propagate[
+			val fam = families.findFirst[x|x.lastName.equals("Meier")]
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]			
+		]
+		//Check correct execution	
+		assertThat(resourceAt(PERSONS_MODEL), exists)
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		val personListAfter2 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_son)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+						
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 6); 
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 5);
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,replacing_dad)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,parallel_dad)], true)
+		println("part 3 done")		
+		
+		println("\n\n===testInsertDadIfDadAlreadyExists - Propagation Done===\n")
+		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
+		println("\n===END===\n\n")
+		println("test done")
 	}
 
 //===BEGIN=REGION=TESTS======================================================================================
@@ -876,12 +915,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 //	}
 //=====END=REGION=TESTS======================================================================================
 	def dprint(FamilyRegisterImpl fri) {
-		val String str = '''FamilyRegister Â«IF fri.id != nullÂ»Â«fri.idÂ»Â«ELSEÂ»<no id>Â«ENDIFÂ»
-Â«FOR f : fri.familiesÂ»	Family Â«f.lastNameÂ»
-Â«IF f.father != nullÂ»		Father Â«f.father.firstNameÂ»Â«ENDIFÂ»
-Â«IF f.mother != nullÂ»		Mother Â«f.mother.firstNameÂ»Â«ENDIFÂ»
-Â«FOR s : f.sons BEFORE '		Sons (' SEPARATOR ', ' AFTER ')'Â»Â«s.firstNameÂ»Â«ENDFORÂ»
-Â«FOR d : f.daughters BEFORE '		Daughters (' SEPARATOR ', ' AFTER ')'Â»Â«d.firstNameÂ»Â«ENDFORÂ»Â«ENDFORÂ»''';
+		val String str = '''FamilyRegister «IF fri.id != null»«fri.id»«ELSE»<no id>«ENDIF»
+«FOR f : fri.families»	Family «f.lastName»
+«IF f.father != null»		Father «f.father.firstName»«ENDIF»
+«IF f.mother != null»		Mother «f.mother.firstName»«ENDIF»
+«FOR s : f.sons BEFORE '		Sons (' SEPARATOR ', ' AFTER ')'»«s.firstName»«ENDFOR»
+«FOR d : f.daughters BEFORE '		Daughters (' SEPARATOR ', ' AFTER ')'»«d.firstName»«ENDFOR»«ENDFOR»''';
 		println(str)
 	}
 }
