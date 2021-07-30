@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
-Bundle-SymbolicName: tools.vitruv.extensions.dslsruntime.mappings
+Bundle-Name: Vitruv Extension Mappings Language Runtime
+Bundle-SymbolicName: tools.vitruv.extensions.dslsruntime.mappings;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.dslsruntime.mappings
 Bundle-Version: 2.1.0.qualifier
-Bundle-Vendor: %providerName
+Bundle-Vendor: vitruv.tools
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport

@@ -23,7 +23,7 @@
         <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
         <features name="edu.kit.ipd.sdq.metamodels.insurance.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
       </repositories>
-      <repositories location="http://download.eclipse.org/releases/2020-12" mirrorArtifacts="false">
+      <repositories location="http://download.eclipse.org/releases/2021-06" mirrorArtifacts="false">
         <features name="org.eclipse.emf.ecore.edit.feature.group"/>
         <features name="org.eclipse.emf.transaction.feature.group"/>
         <features name="org.eclipse.xtend.sdk.feature.group"/>
