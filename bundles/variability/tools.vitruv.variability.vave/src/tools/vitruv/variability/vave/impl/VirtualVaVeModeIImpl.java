@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -37,6 +36,7 @@ import tools.vitruv.framework.vsum.VirtualModelManager;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import vavemodel.BinaryExpression;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
 import vavemodel.Constraint;
@@ -48,8 +48,11 @@ import vavemodel.FeatureRevision;
 import vavemodel.Mapping;
 import vavemodel.Option;
 import vavemodel.SystemRevision;
+import vavemodel.Term;
+import vavemodel.UnaryExpression;
 import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
+import vavemodel.util.VavemodelSwitch;
 
 public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
@@ -97,7 +100,18 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 	}
 
+	private void save() throws IOException {
+		this.resource.save(Collections.EMPTY_MAP);
+	}
+
+	@Override
+	public vavemodel.System getSystem() {
+		return this.system;
+	}
+
 	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws Exception {
+
+		// FIRST WE DO THE VITRUV STUFF
 
 //		final VirtualModelProductImpl vsum = new VirtualModelProductBuilder().withStorageFolder(storageFolder)
 //				.withDomainRepository(this.domainRepository)
@@ -144,58 +158,58 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
-		EList<Mapping> mappings = this.system.getMapping();
-		EList<Configuration> config = this.system.getConfiguration();
-		EList<DeltaModule> deltamodules = this.system.getDeltamodule(); // One VitruviusChange per DeltaModule
+		// HERE STARTS THE VAVE STUFF
 
 		// optional: add configuration to unified system
-		config.add(configuration);
+		//this.system.getConfiguration().add(configuration);
 
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
-		for (Mapping mapping : mappings) {
-
-		//	if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
-
+		for (Mapping mapping : this.system.getMapping()) {
+			// retrieve only these delta modules whose mapping evaluates to true
+			if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
 				for (DeltaModule deltamodule : mapping.getDeltamodule()) {
 					// EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
 					// echanges.add((EChange) deltamodule.eGet(eStructFeature));
+					// One VitruviusChange per DeltaModule
 					VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
 					vsum.propagateChange(vitruvchange);
 				}
-	//		}
+			}
 		}
 		return vsum;
 	}
 
-	public void internalizeChanges(VirtualProductModel virtualModel, Expression<FeatureOption> expression) throws Exception {
+	public void internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws Exception {
+		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
 
-		boolean expressionIsValid = new ExpressionValidator().doSwitch(expression);
-		if (!expressionIsValid) {
-			throw new IllegalArgumentException("Expression is not valid");
+		// NOTE: the following could be achieved with an OCL constraint
+		boolean expressionIsWellFormed = new ExpressionValidator().doSwitch(expression);
+		if (!expressionIsWellFormed) {
+			throw new IllegalArgumentException("Expression is not well formed");
 		}
 
 		// create a new system revision and link it to predecessor system revision
-		SystemRevision cursysrev = null;
+		SystemRevision tempcursysrev = null;
 		SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
-		this.system.getSystemrevision().add(newsysrev);
 		if (system.getSystemrevision().isEmpty()) {
 			newsysrev.setRevisionID(1);
-
 		} else {
-			cursysrev = system.getSystemrevision().get(system.getSystemrevision().size() - 1); // TODO add branch and merge points
-			cursysrev.getSuccessors().add(newsysrev);
-			newsysrev.getPredecessors().add(cursysrev);
-			newsysrev.setRevisionID(cursysrev.getRevisionID() + 1);
+			tempcursysrev = this.system.getSystemrevision().get(this.system.getSystemrevision().size() - 1); // TODO add branch (by using sys rev of product) and merge points
+			tempcursysrev.getSuccessors().add(newsysrev);
+			newsysrev.getPredecessors().add(tempcursysrev);
+			newsysrev.setRevisionID(tempcursysrev.getRevisionID() + 1);
 		}
+		this.system.getSystemrevision().add(newsysrev);
+		final SystemRevision cursysrev = tempcursysrev;
 
 		// create new feature revisions for features that appear in expression
 		Collection<Option> options = new FeatureCollector().doSwitch(expression);
 		List<FeatureRevision> newFeatureRevisions = new ArrayList<>();
 		for (Option option : options) {
-			FeatureRevision featurerev = VavemodelFactory.eINSTANCE.createFeatureRevision();
 			if (option instanceof Feature) {
 				Feature feature = (Feature) option;
+				FeatureRevision featurerev = VavemodelFactory.eINSTANCE.createFeatureRevision();
 				if (feature.getFeaturerevision().isEmpty()) {
 					featurerev.setRevisionID(1);
 				} else {
@@ -210,30 +224,32 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			}
 		}
 
-		// enable same features and feature revisions as the predecessor system revision
-		for (FeatureOption featureoption : cursysrev.getEnablesoptions()) {
-			if (!(featureoption instanceof FeatureRevision) || !options.contains(featureoption.eContainer()))
-				newsysrev.getEnablesoptions().add(featureoption);
+		if (cursysrev != null) {
+			// enable same features and feature revisions as the current system revision also in the new system revision, except those for which a new feature revision was created.
+			for (FeatureOption featureoption : cursysrev.getEnablesoptions()) {
+				if (!(featureoption instanceof FeatureRevision) || !options.contains(featureoption.eContainer()))
+					newsysrev.getEnablesoptions().add(featureoption);
+			}
+
+			// enable the same constraints
+			for (Constraint constraint : cursysrev.getEnablesconstraints()) {
+				newsysrev.getEnablesconstraints().add(constraint);
+			}
 		}
 
-		for (Constraint constraint : cursysrev.getEnablesconstraints()) {
-			newsysrev.getEnablesconstraints().add(constraint);
-		}
-
-		// Every delta receives a new expression such that it contains the new system revision, the new feature revisions and features, and add expression to mapping.
+		// Every mapping receives a new expression such that it contains the new system revision, the new feature revisions and features, and add expression to mapping.
 
 		// create mapping for new fragments
 		Mapping mapping = VavemodelFactory.eINSTANCE.createMapping();
 
 		// create mapping expression
-		// NOTE: for now, we assume the user provides expression consisting only of conjunctions of variables (feature revisions)
-
 		Expression<Option> mappingExpression;
 		if (newFeatureRevisions.isEmpty()) {
 			Variable<Option> srvariable = VavemodelFactory.eINSTANCE.createVariable();
 			srvariable.setOption(newsysrev);
 			mappingExpression = srvariable;
 		} else {
+			// NOTE: for now, we assume the user provides expression consisting only of conjunctions of variables (features)
 			Conjunction<Option> initialConjunction = VavemodelFactory.eINSTANCE.createConjunction();
 			mappingExpression = initialConjunction;
 			vavemodel.Variable<Option> expression_sysrev = VavemodelFactory.eINSTANCE.createVariable();
@@ -253,18 +269,18 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			}
 			// add last feature revision
 			vavemodel.Variable<Option> expression_featurerev = VavemodelFactory.eINSTANCE.createVariable();
-			expression_featurerev.setOption(newFeatureRevisions.get(newFeatureRevisions.size()-1));
+			expression_featurerev.setOption(newFeatureRevisions.get(newFeatureRevisions.size() - 1));
 			currentConjunction.getTerm().add(expression_featurerev);
 		}
+
+		// set expression of mapping
+		mapping.setExpression(mappingExpression);
 
 		// add mapping to us
 		this.system.getMapping().add(mapping);
 
-		// set expressin of mapping
-		mapping.setExpression(mappingExpression);
-
 		// set fragments (i.e., deltas recorded in product) of mapping
-		for (VitruviusChange change : virtualModel.getDeltas()) {
+		for (VitruviusChange change : virtualProductModel.getDeltas()) {
 			DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
 			System.out.println("DELTA: " + change);
 			for (EChange echange : change.getEChanges()) {
@@ -275,22 +291,47 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		}
 
 		// clear deltas in product
-		virtualModel.clearDeltas();
+		virtualProductModel.clearDeltas();
 
 		// create new mappings (where old system revision is replaced by new system revision) for every existing mapping with the old system revision in its expression
-		// TODO
+		for (Mapping oldMapping : new ArrayList<>(system.getMapping())) {
+			Collection<Option> mappingOptions = new FeatureCollector().doSwitch(oldMapping.getExpression());
+			if (mappingOptions.contains(cursysrev)) {
+				Mapping newMapping = VavemodelFactory.eINSTANCE.createMapping();
+				newMapping.getDeltamodule().addAll(oldMapping.getDeltamodule());
+				newMapping.setExpression(EcoreUtil.copy(mappingExpression));
+
+				VavemodelSwitch<Object> exprSwitch = new VavemodelSwitch<>() {
+					@Override
+					public <T extends Option> Collection<Option> caseBinaryExpression(BinaryExpression<T> e) {
+						for (Term t : e.getTerm())
+							doSwitch(t);
+						return null;
+					}
+
+					@Override
+					public <T extends Option> Collection<Option> caseUnaryExpression(UnaryExpression<T> e) {
+						doSwitch(e.getTerm());
+						return null;
+					}
+
+					@Override
+					public <T extends Option> Collection<Option> caseVariable(Variable<T> v) {
+						if (v.getOption() instanceof SystemRevision && v.getOption().equals(cursysrev)) {
+							Variable<SystemRevision> vcast = (Variable<SystemRevision>) v;
+							vcast.setOption(newsysrev);
+						}
+						return null;
+					}
+				};
+				exprSwitch.doSwitch(newMapping.getExpression());
+
+				this.system.getMapping().add(newMapping);
+			}
+		}
 
 		// save us
 		this.save();
-	}
-
-	private void save() throws IOException {
-		this.resource.save(Collections.EMPTY_MAP);
-	}
-
-	@Override
-	public vavemodel.System getSystem() {
-		return this.system;
 	}
 
 }

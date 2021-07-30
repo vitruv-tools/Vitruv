@@ -3,9 +3,11 @@ package tools.vitruv.variability.vave.impl;
 import vavemodel.Conjunction;
 import vavemodel.Disjunction;
 import vavemodel.Equivalence;
+import vavemodel.False;
 import vavemodel.Implication;
 import vavemodel.Not;
 import vavemodel.Option;
+import vavemodel.True;
 import vavemodel.Variable;
 import vavemodel.util.VavemodelSwitch;
 
@@ -41,6 +43,16 @@ public class ExpressionValidator extends VavemodelSwitch<Boolean> {
 		if (variable.getOption() == null) {
 			return false;
 		}
+		return true;
+	}
+
+	@Override
+	public <T extends Option> Boolean caseTrue(True<T> constant) {
+		return true;
+	}
+
+	@Override
+	public <T extends Option> Boolean caseFalse(False<T> constant) {
 		return true;
 	}
 

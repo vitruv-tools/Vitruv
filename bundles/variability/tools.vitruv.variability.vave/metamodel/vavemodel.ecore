@@ -171,4 +171,20 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="option" upperBound="-1"
         eType="#//Option"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="True">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//Option"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//True/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="False">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//Option"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//False/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
 </ecore:EPackage>

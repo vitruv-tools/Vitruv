@@ -37,7 +37,7 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 
 	@Override
 	public Configuration getConfiguration() {
-		return this.configuration ;
+		return this.configuration;
 	}
 
 	@Override

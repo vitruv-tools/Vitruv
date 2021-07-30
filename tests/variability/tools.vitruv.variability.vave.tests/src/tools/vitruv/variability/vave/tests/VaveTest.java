@@ -241,9 +241,9 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		Expression<FeatureOption> expression = createExpression(vave.getSystem());
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty
-																														// product
+		//Expression<FeatureOption> expression = createExpression(vave.getSystem());
+		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -265,7 +265,10 @@ public class VaveTest {
 		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		vave.internalizeChanges(virtualModel, expression);
+		vave.internalizeChanges(virtualModel, trueConstant);
+
+		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
+		
 		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
@@ -352,14 +355,14 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vaveSaved = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
+		//Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
+		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("vave", new XMIResourceFactoryImpl());
 
 		vaveSaved.init(this.projectFolder);
-		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty
-																															// product
+		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -381,7 +384,10 @@ public class VaveTest {
 		final ModelInstance vsumModel = virtualModel.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		vaveSaved.internalizeChanges(virtualModel, expression);
+		vaveSaved.internalizeChanges(virtualModel, trueConstant);
+		
+		config.getOption().add(vaveSaved.getSystem().getSystemrevision().get(0));
+		
 		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
@@ -390,6 +396,9 @@ public class VaveTest {
 		VirtualVaVeModel vaveLoaded = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
 		vaveLoaded.init(this.projectFolder);
 
+		config.getOption().clear();
+		config.getOption().add(vaveLoaded.getSystem().getSystemrevision().get(0));
+	
 		final VirtualProductModel virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), config);
 
 		final ModelInstance vsumModel3 = virtualModel3.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));

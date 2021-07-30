@@ -92,5 +92,11 @@
     <genClasses ecoreClass="vavemodel.ecore#//Configuration">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vavemodel.ecore#//Configuration/option"/>
     </genClasses>
+    <genClasses ecoreClass="vavemodel.ecore#//True">
+      <genTypeParameters ecoreTypeParameter="vavemodel.ecore#//True/T"/>
+    </genClasses>
+    <genClasses ecoreClass="vavemodel.ecore#//False">
+      <genTypeParameters ecoreTypeParameter="vavemodel.ecore#//False/T"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
