@@ -8,8 +8,6 @@ import org.hamcrest.org.hamcrest.*;
 
 //import org.hamcrest.Matchers;
 //import static org.hamcrest.Matchers.containsInAnyOrder;
-
-
 import static org.hamcrest.CoreMatchers.hasItem
 import tools.vitruv.testutils.matchers.ModelMatchers;
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
@@ -40,6 +38,7 @@ import tools.vitruv.domains.demo.families.FamiliesDomainProvider
 import tools.vitruv.domains.demo.persons.PersonsDomainProvider
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.testutils.domains.DomainUtil
+//import tools.vitruv.framework.vsum.*
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
@@ -52,9 +51,14 @@ import edu.kit.ipd.sdq.metamodels.persons.Male
 import edu.kit.ipd.sdq.metamodels.persons.Female
 import tools.vitruv.testutils.TestUserInteraction
 import tools.vitruv.testutils.TestUserInteraction.MultipleChoiceInteractionDescription
+//import tools.vitruv.framework.vsum.internal.VirtualModelImpl
+//import tools.vitruv.framework.correspondence.impl.InternalCorrespondenceModelImpl
+import java.util.List
+import tools.vitruv.framework.correspondence.impl.InternalCorrespondenceModelImpl
+import tools.vitruv.framework.vsum.internal.VirtualModelImpl
+import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 //import static org.junit.Assert.isEquals
-
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(FamiliesPersonsTest);
 // Es gibt auch noch einen ModelPrinting
@@ -76,6 +80,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@BeforeEach
 	def void insertRegister() {
+		val SimpleLayout layout = new SimpleLayout();
+		val ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+		logger.addAppender(consoleAppender);
+		logger.setLevel(Level.INFO)
 		resourceAt(FAMILIES_MODEL).propagate[contents += createRegister()]
 	}
 
@@ -111,8 +119,6 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	def getExistingFamily(String lastName) {
 		FamilyRegister.from(FAMILIES_MODEL).families.findFirst[x|x.lastName.equals(lastName)]
 	}
-
-
 
 	@Test
 	def void testInsertFamilyWithFather() {
@@ -221,8 +227,6 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	// Test if object implements interface, instance-of-matcher von hamcrest
 	}
 
-
-
 	def void createFamilyBeforeTesting() {
 		val String last = "Meier";
 		val String fa = "Anton";
@@ -234,7 +238,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			families += fam;
 			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = fa; familyFather = fam;]
 			fam.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = mo; familyMother = fam]
-			fam.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = so; familySon = fam]		
+			fam.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = so; familySon = fam]
 			fam.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = da; familyDaughter = fam]
 		]
 	}
@@ -252,58 +256,60 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		val boolean bothBirthdayNotNull = bothNotNull && (p1.birthday != null) && (p2.birthday != null);
 		val boolean bothBirthdayEqual = bothNotNull && bothBirthdayNotNull && p1.birthday.equals(p2.birthday);
 
-		return bothNull || ((bothNotNull && bothSameType) && (bothNamesNull || bothNamesEqual) && (bothBirthdayNull || bothBirthdayEqual));
+		return bothNull || ((bothNotNull && bothSameType) && (bothNamesNull || bothNamesEqual) &&
+			(bothBirthdayNull || bothBirthdayEqual));
 	}
-
-
 
 	@Test
 	def void testDeleteFatherFromFamily() {
-		//===== PRECONDITION =====
-		//Set up the family
+		// ===== PRECONDITION =====
+		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
-		assertThat(personListBefore.get(0), ModelMatchers.equalsDeeply(dad))
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dau)], true)
-		println("precondition done")		
 
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertThat(personListBefore.get(0), ModelMatchers.equalsDeeply(dad))
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dau)], true)
+		println("precondition done")
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.father.firstName.equals("Anton")]
-			selectedFamily.father = null			
+			selectedFamily.father = null
 		]
 		println("propagation done")
-		
-		//Check correct execution	
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); //!
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); //!
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
-		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(mom)) //!
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dad)], false) //!
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dau)], true)
-		
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(mom)) // !
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], false) // !
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
+
 //		personList.forEach[x, i|println(i + ": " + equalPersons(x as PersonImpl,dad))]
 //		assertThat(
 //			resourceAt(PERSONS_MODEL).contents.get(0).eContents as EList<PersonImpl>, 
@@ -318,99 +324,107 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testDeleteSonFromFamily() {
-		//===== PRECONDITION =====
-		//Set up the family
+		// ===== PRECONDITION =====
+		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 //		assertThat(personListBefore, Matchers .anyOf((ModelMatchers.equalsDeeply(dad)))			
 //		)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dau)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
-			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.sons.exists[y|y.firstName.equals("Chris")]]
-			val sonToDelete = selectedFamily.sons.findFirst[x|x.firstName.equals("Chris")]			
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val selectedFamily = families.findFirst [ x |
+				x.lastName.equals("Meier") && x.sons.exists[y|y.firstName.equals("Chris")]
+			]
+			val sonToDelete = selectedFamily.sons.findFirst[x|x.firstName.equals("Chris")]
 			selectedFamily.sons.remove(sonToDelete)
 		]
 		println("propagation done")
-		
-		//Check correct execution	
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); //!
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); //!
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
-		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad)) 
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dad)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,son)], false) //!
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dau)], true)
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad))
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], false) // !
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
 	}
 
 	@Test
 	def void testDeleteMotherFromFamily() {
-		//===== PRECONDITION =====
-		//Set up the family
+		// ===== PRECONDITION =====
+		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0) , instanceOf(PersonRegister));
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;		
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dau)], true)
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.mother.firstName.equals("Berta")]
 			selectedFamily.mother = null
 		]
 		println("propagation done")
-		
-		//Check correct execution	
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); //!
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0) , instanceOf(PersonRegister));	
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); //!
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dad)], true) //!
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,mom)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dau)], true)
-		
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true) // !
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
+
 //		personList.forEach[x, i|println(i + ": " + equalPersons(x as PersonImpl,dad))]
 //		assertThat(
 //			resourceAt(PERSONS_MODEL).contents.get(0).eContents as EList<PersonImpl>, 
@@ -425,457 +439,502 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testDeleteDaughterFromFamily() {
-		//===== PRECONDITION =====
-		//Set up the family
+		// ===== PRECONDITION =====
+		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertThat(personListBefore.get(0), ModelMatchers.equalsDeeply(dad))
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,dau)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
-			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.daughters.exists[y|y.firstName.equals("Daria")]]
-			val daughterToDelete = selectedFamily.daughters.findFirst[x|x.firstName.equals("Daria")]			
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val selectedFamily = families.findFirst [ x |
+				x.lastName.equals("Meier") && x.daughters.exists[y|y.firstName.equals("Daria")]
+			]
+			val daughterToDelete = selectedFamily.daughters.findFirst[x|x.firstName.equals("Daria")]
 			selectedFamily.daughters.remove(daughterToDelete)
 		]
 		println("propagation done")
-		
-		//Check correct execution	
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); //!
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0) , instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); //!
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;			
-		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad)) 
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dad)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,son)], true) //!
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,dau)], false)
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad))
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], true) // !
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], false)
 	}
 
-
-
 	@Test
-	def void testChangeLastName(){
-		//===== PRECONDITION =====
-		//Set up the family
+	def void testChangeLastName() {
+		// ===== PRECONDITION =====
+		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		val MaleImpl new_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Schulze"; birthday = null]) as MaleImpl;
-		val FemaleImpl new_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Schulze"; birthday = null]) as FemaleImpl;
-		val MaleImpl new_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Schulze"; birthday = null]) as MaleImpl;
-		val FemaleImpl new_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Schulze"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		val MaleImpl new_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Schulze"; birthday = null]) as MaleImpl;
+		val FemaleImpl new_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Schulze"; birthday = null]) as FemaleImpl;
+		val MaleImpl new_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Schulze"; birthday = null]) as MaleImpl;
+		val FemaleImpl new_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Schulze"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier")]
-			selectedFamily.lastName = "Schulze"	
+			selectedFamily.lastName = "Schulze"
 		]
 		println("propagation done")
-		
+
 		logger.info("\n\n===SON START===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
 		logger.info("\n===END===\n\n")
-		
-		//Check correct execution	
-		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_mom)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_son)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dau)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dad)], true) 
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dau)], true)
-		
-	}
-	
-	
-	
-	@Test
-	def void testChangeFirstNameFather(){
-		//===== PRECONDITION =====
-		//Set up the family
-		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		val MaleImpl new_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Adam Meier"; birthday = null]) as MaleImpl;
-		
-		//Check correct setup				
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0) , instanceOf(PersonRegister));
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_mom)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_son)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dau)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_dad)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_son)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_dau)], true)
+
+	}
+
+	@Test
+	def void testChangeFirstNameFather() {
+		// ===== PRECONDITION =====
+		// Set up the family
+		this.createFamilyBeforeTesting();
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		val MaleImpl new_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Adam Meier"; birthday = null]) as MaleImpl;
+
+		// Check correct setup				
+		assertThat(resourceAt(PERSONS_MODEL), exists)
+		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.father.firstName.equals("Anton")]
 			selectedFamily.father.firstName = "Adam"
 		]
 		println("propagation done")
-		
+
 		logger.info("\n\n===Father START===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
 		logger.info("\n===END===\n\n")
-		
-		//Check correct execution	
-		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dad)], true) 
-		
-	}
-	
-	@Test
-	def void testChangeFirstNameSon(){
-		//===== PRECONDITION =====
-		//Set up the family
-		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		val MaleImpl new_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Charles Meier"; birthday = null]) as MaleImpl;
-		
-		//Check correct setup				
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0) , instanceOf(PersonRegister));
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_dad)], true)
+
+	}
+
+	@Test
+	def void testChangeFirstNameSon() {
+		// ===== PRECONDITION =====
+		// Set up the family
+		this.createFamilyBeforeTesting();
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		val MaleImpl new_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Charles Meier"; birthday = null]) as MaleImpl;
+
+		// Check correct setup				
+		assertThat(resourceAt(PERSONS_MODEL), exists)
+		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
-			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.sons.exists[y|y.firstName.equals("Chris")]]
-			val sonToChange = selectedFamily.sons.findFirst[x|x.firstName.equals("Chris")]			
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val selectedFamily = families.findFirst [ x |
+				x.lastName.equals("Meier") && x.sons.exists[y|y.firstName.equals("Chris")]
+			]
+			val sonToChange = selectedFamily.sons.findFirst[x|x.firstName.equals("Chris")]
 			sonToChange.firstName = "Charles"
 		]
 		println("propagation done")
-		
+
 		logger.info("\n\n===Son START===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
 		logger.info("\n===END===\n\n")
-		
-		//Check correct execution	
-		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_son)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_son)], true) 
-		
-	}
-	
-	@Test
-	def void testChangeFirstNameMother(){
-		//===== PRECONDITION =====
-		//Set up the family
-		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		val FemaleImpl new_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Birgit Meier"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_son)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_son)], true)
+
+	}
+
+	@Test
+	def void testChangeFirstNameMother() {
+		// ===== PRECONDITION =====
+		// Set up the family
+		this.createFamilyBeforeTesting();
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		val FemaleImpl new_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Birgit Meier"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
+		assertThat(resourceAt(PERSONS_MODEL), exists)
+		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.mother.firstName.equals("Berta")]
 			selectedFamily.mother.firstName = "Birgit"
 		]
 		println("propagation done")
-		
+
 		logger.info("\n\n===Mother START===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
 		logger.info("\n===END===\n\n")
-		
-		//Check correct execution	
-		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_mom)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_mom)], true) 
-		
-	}
-	
-	@Test
-	def void testChangeFirstNameDaughter(){
-		//===== PRECONDITION =====
-		//Set up the family
-		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		val FemaleImpl new_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daniela Meier"; birthday = null]) as FemaleImpl;
-		
-		//Check correct setup				
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
 		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_mom)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_mom)], true)
+
+	}
+
+	@Test
+	def void testChangeFirstNameDaughter() {
+		// ===== PRECONDITION =====
+		// Set up the family
+		this.createFamilyBeforeTesting();
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		val FemaleImpl new_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daniela Meier"; birthday = null]) as FemaleImpl;
+
+		// Check correct setup				
+		assertThat(resourceAt(PERSONS_MODEL), exists)
+		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 		println("precondition done")
-		
-		//===== ACTUAL TEST =====
-		//Propagate changes		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
-			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.daughters.exists[y|y.firstName.equals("Daria")]]
-			val daughterToChange = selectedFamily.daughters.findFirst[x|x.firstName.equals("Daria")]			
+
+		// ===== ACTUAL TEST =====
+		// Propagate changes		
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val selectedFamily = families.findFirst [ x |
+				x.lastName.equals("Meier") && x.daughters.exists[y|y.firstName.equals("Daria")]
+			]
+			val daughterToChange = selectedFamily.daughters.findFirst[x|x.firstName.equals("Daria")]
 			daughterToChange.firstName = "Daniela"
 		]
 		println("propagation done")
-		
+
 		logger.info("\n\n===Daughter START===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
 		logger.info("\n===END===\n\n")
-		
-		//Check correct execution	
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,old_dau)], false)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl,new_dau)], true) 
-		
+
+		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dau)], false)
+		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, new_dau)], true)
+
 	}
 
 //	static val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
 //	static val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
 //	static val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
 //	static val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-
 	@Test
-	def void testInsertDadIfDadAlreadyExists(){
-		//===== PRECONDITION =====
-		//Set up the family
+	def void testInsertDadIfDadAlreadyExists() {
+		// ===== PRECONDITION =====
+		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-		
-		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
-		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "ParDad Meier_2"; birthday = null]) as MaleImpl;
-		
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
+		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
+		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [
+			fullName = "ParDad Meier_2";
+			birthday = null
+		]) as MaleImpl;
+
 		println("\n\n===testInsertDadIfDadAlreadyExists - Preparation===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
 		println("\n===END===\n\n")
-				
-		//Check correct setup				
+
+		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
-		
-		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+
+		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 		println("precondition done")
-				
-		//===== ACTUAL TEST =====
+
+		// ===== ACTUAL TEST =====
 //		var TestUserInteraction ui = new TestUserInteraction();
-		
-		//===== PART 1 - do nothing =====
+		// ===== PART 1 - do nothing =====
 //		ui.onMultipleChoiceSingleSelection([rand|true])
 		userInteraction.addNextSingleSelection(0)
-		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val fam = families.findFirst[x|x.lastName.equals("Meier")]
-			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]			
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]
 		]
-		
-		
-		//Check correct execution	
+
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		val personListAfter0 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
+		val personListAfter0 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
+		println("\n\n===testInsertDadIfDadAlreadyExists - Preparation===\n")
+		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
+		println("\n===END===\n\n")
+
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,replacing_dad)], false)
-		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl,parallel_dad)], false)
-		println("part 1 done")	
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, replacing_dad)], false)
+		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, parallel_dad)], false)
+		println("part 1 done")
+
+		var List<EObject> li = new ArrayList<EObject>();
+		li.add(old_mom)		
+		val VirtualModelImpl vsum = this.virtualModel as VirtualModelImpl
+//		val modelInstance = vsum.getModelInstance(/*URI here */)
+		val CorrespondenceModel correspondenceModel = vsum.getCorrespondenceModel() as CorrespondenceModel
+//		val cors2 = correspondenceModel.getCorrespondences(li) -> is private
+
+		//Ziel:
+//		assertEquals(listOfCorrespondences.exists[x|x.leftObject.equals(old_mom_fam) && x.rightObject.equals(old_mom_per], true)
+//		assertEquals(listOfCorrespondences.size(), 9)
 		
-//		this
-//.virtualModel as VirtualModelImpl
-//.resourceRepository as ResourceRepositoryImpl
-//.correspondenceModel as InternalCorrespondenceModelImpl
-//.correspondences as CorrespondencesImpl
-//.correspondences as EObjectContainmentWithInverseEList<E>
-//.get(0) as ReactionsCorrespondenceImpl
-				
-		//===== PART 2 - replace old dad =====
+
+		// ===== PART 2 - replace old dad =====
 		userInteraction.addNextSingleSelection(1)
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val fam = families.findFirst[x|x.lastName.equals("Meier")]
-			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]			
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]
 		]
-		//Check correct execution	
+		// Check correct execution	
 		println("\n\n===testInsertDadIfDadAlreadyExists - Part2 propagation Done===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
 		println("\n===END===\n\n")
-		
+
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		val personListAfter1 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
-		
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5); 
+		val personListAfter1 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
+
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
-		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,old_dad)], false)
-		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,replacing_dad)], true)
-		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl,parallel_dad)], false)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, replacing_dad)], true)
+		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, parallel_dad)], false)
 		println("part 2 done")
 		if(true) return;
-		
-		//===== PART 3 - insert dad in a new family =====
+		// ===== PART 3 - insert dad in a new family =====
 		userInteraction.addNextSingleSelection(2)
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val fam = families.findFirst[x|x.lastName.equals("Meier")]
-			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "RepDad"; familyFather = fam]			
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "ParDad"; familyFather = fam]
 		]
-		//Check correct execution	
+		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		val personListAfter2 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;	
-		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_mom)], true)
-		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_son)], true)
-		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_dau)], true)
-						
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 6); 
+		val personListAfter2 = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_son)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
+
+		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 6);
 		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 5);
-		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,old_dad)], true)
-		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,replacing_dad)], true)
-		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl,parallel_dad)], true)
-		println("part 3 done")		
-		
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, replacing_dad)], true)
+		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, parallel_dad)], true)
+		println("part 3 done")
+
 		println("\n\n===testInsertDadIfDadAlreadyExists - Propagation Done===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
 		println("\n===END===\n\n")
