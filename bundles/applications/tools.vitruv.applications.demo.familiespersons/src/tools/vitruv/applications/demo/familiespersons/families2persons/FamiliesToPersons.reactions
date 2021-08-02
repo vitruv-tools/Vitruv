@@ -270,6 +270,24 @@ routine changeFullNameFromLast(families::Family family){
 			}
 	}
 }
+
+//reaction EditedFather1 {
+//	after element families::Member replaced at families::Family[father]
+//	call s()
+//}
+//reaction EditedFather2 {
+//	after element families::Member replaced at families::Family[father]
+//	call s()
+//}
+//routine s(){
+//	action{
+//		call{
+//			if(true){
+//				return			
+//			}			
+//		}
+//	}
+//}
 //========== START EDITING ==========
 reaction EditedFather {
 	after element families::Member replaced at families::Family[father]
@@ -326,14 +344,12 @@ routine setFather(families::Member newDad, families::Member oldDad){
 								recreateFather(newDad, oldDad)
 								//Nachdem der alte Vater hier widerhergestellt wird, wird noch die Delete-Member-Reaction ausgelöst.
 								//Das Löschen muss vermutlich spezifischer sein und auch zwischen Vater, Mutter, Sohn und Tochter unterscheiden	
-								return
 							}
 							case 1:{
 								//replace old father
 								replaceFather(newDad, oldDad)
 //								deletePerson(oldDad)
-//								createFather(newDad)	
-														
+//								createFather(newDad)
 							}
 							case 2:{
 								//create new family and insert new father there
