@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -62,13 +64,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 
 	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, Path storageFolder) throws Exception {
-//	try {
-//		this.resource = resSet.getResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()),
-//				true);
-//	} catch (Exception e) {
-//		this.resource = resSet.getResource(URI.createFileURI(storageFolder.resolve("vavemodel.vave").toString()),
-//				false);
-//	}
+
 		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
 			// load
 			this.resource = new XMIResourceImpl();
@@ -107,6 +103,15 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	@Override
 	public vavemodel.System getSystem() {
 		return this.system;
+	}
+
+	public static <K, V> K getKey(Map<K, V> map, V value) {
+		for (Map.Entry<K, V> entry : map.entrySet()) {
+			if (value.equals(entry.getValue())) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws Exception {
@@ -161,7 +166,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		// HERE STARTS THE VAVE STUFF
 
 		// optional: add configuration to unified system
-		//this.system.getConfiguration().add(configuration);
+		// this.system.getConfiguration().add(configuration);
 
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
@@ -212,6 +217,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 				FeatureRevision featurerev = VavemodelFactory.eINSTANCE.createFeatureRevision();
 				if (feature.getFeaturerevision().isEmpty()) {
 					featurerev.setRevisionID(1);
+					feature.getFeaturerevision().add(featurerev);
 				} else {
 					FeatureRevision curfeaturerev = feature.getFeaturerevision().get(feature.getFeaturerevision().size() - 1);
 					featurerev.setRevisionID(featurerev.getRevisionID() + 1);
@@ -260,6 +266,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 				for (int i = 0; i < newFeatureRevisions.size() - 1; i++) {
 					Conjunction<Option> newConjunction = VavemodelFactory.eINSTANCE.createConjunction();
 					FeatureRevision featrev = newFeatureRevisions.get(i);
+
 					vavemodel.Variable<Option> expression_featurerev = VavemodelFactory.eINSTANCE.createVariable();
 					expression_featurerev.setOption(featrev);
 					newConjunction.getTerm().add(expression_featurerev);
@@ -267,6 +274,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 					currentConjunction = newConjunction;
 				}
 			}
+
 			// add last feature revision
 			vavemodel.Variable<Option> expression_featurerev = VavemodelFactory.eINSTANCE.createVariable();
 			expression_featurerev.setOption(newFeatureRevisions.get(newFeatureRevisions.size() - 1));
