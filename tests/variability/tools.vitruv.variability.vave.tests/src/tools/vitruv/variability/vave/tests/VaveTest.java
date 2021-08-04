@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -19,6 +20,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -69,7 +71,6 @@ import vavemodel.FeatureRevision;
 import vavemodel.Implication;
 import vavemodel.Not;
 import vavemodel.Option;
-import vavemodel.System;
 import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 
@@ -142,7 +143,7 @@ public class VaveTest {
 		}
 	}
 	
-	private Expression<FeatureOption> createExpression(System system) {
+	private Expression<FeatureOption> createExpression(vavemodel.System system) {
 		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
 		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
@@ -270,13 +271,75 @@ public class VaveTest {
 		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
 		
 		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
-
+		
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 	}
+	
+	@Test // Test wrt. problem space and feature revisions
+	public void testCarVaveModelCreationWithFeaturesOnly() {
+		// create tree content of simple vave model instance
+		vavemodel.System system = VavemodelFactory.eINSTANCE.createSystem();
+		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		vavemodel.Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
+		vavemodel.Feature electric = VavemodelFactory.eINSTANCE.createFeature();
+		vavemodel.Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
+		car.setName("car");
+		engineType.setName("engineType");
+		gasoline.setName("gasoline");
+		electric.setName("electric");
+		smogControl.setName("smogControl");
+		system.getFeature().add(car);
+		vavemodel.TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr1.setType(vavemodel.GroupType.XOR);
+		// Make Engine Type mandatory by adding a tree constraint of type XOR to its
+		// parent feature Car
+		addContainment(car, treeconstr1, "treeconstraint");
+		addContainment(treeconstr1, engineType, "feature");
+		// Make Smog Control optional
+		vavemodel.TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr2.setType(vavemodel.GroupType.ORNONE);
+		addContainment(car, treeconstr2, "treeconstraint");
+		addContainment(treeconstr2, smogControl, "feature");
+		// Make OR-Group between Gasoline and Electric with Engine Type parent
+		vavemodel.TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr3.setType(vavemodel.GroupType.OR);
+		addContainment(engineType, treeconstr3, "treeconstraint");
+		addContainment(treeconstr3, gasoline, "feature");
+		addContainment(treeconstr3, electric, "feature");
+		// create cross-tree constraint implication: gasoline implies smog control
+		vavemodel.CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
+		vavemodel.Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
+		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		crosstreeconstr1.setExpression(implication1);
+		implication1.getTerm().add(variable1);
+		implication1.getTerm().add(variable2);
+		variable1.setOption(gasoline);
+		variable2.setOption(smogControl);
+		system.getConstraint().add(crosstreeconstr1);
 
-	@Test // Test wrt. problem space
-	public Resource testCarVaveModelCreation() {
+		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+		Map<String, Object> m = reg.getExtensionToFactoryMap();
+		m.put("vavemodel", new XMIResourceFactoryImpl());
+		ResourceSet resSet = new ResourceSetImpl();
+		Resource resource = resSet.createResource(URI.createFileURI(this.projectFolder.resolve("models/car_withFeatures.vavemodel").toString()));
+		resource.getContents().add(system);
+		
+		Diagnostic d = Diagnostician.INSTANCE.validate(system);
+		System.out.println("MESSAGE: " + d.getMessage());
+		
+		try {
+			resource.save(Collections.EMPTY_MAP);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("FOLDER: " + this.projectFolder);
+	}
+
+	@Test // Test wrt. problem space and feature revisions
+	public void testCarVaveModelCreationWithFeatureRevisions() {
 		// create tree content of simple vave model instance
 		vavemodel.System system = VavemodelFactory.eINSTANCE.createSystem();
 		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
@@ -331,16 +394,15 @@ public class VaveTest {
 
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
-		m.put("vave", new XMIResourceFactoryImpl());
+		m.put("vavemodel", new XMIResourceFactoryImpl());
 		ResourceSet resSet = new ResourceSetImpl();
-		Resource resource = resSet.createResource(URI.createFileURI(this.projectFolder.resolve("models/car.vave").toString()));
+		Resource resource = resSet.createResource(URI.createFileURI(this.projectFolder.resolve("models/car_withFeatureRevisions.vavemodel").toString()));
 		resource.getContents().add(system);
 		try {
 			resource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return resource;
 	}
 
 	private void addContainment(EObject container, EObject containment, String structFeature) {
@@ -350,7 +412,6 @@ public class VaveTest {
 	}
 
 	@Test
-//	@Disabled
 	public void saveAndLoad() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());

@@ -5,7 +5,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated vavemodel -->
       <package
-            uri="edu.kit.ipd.sdq.vavemodel"
+            uri="http://tools.vitruv/Vave/1.0"
             class="vavemodel.VavemodelPackage"
             genModel="metamodel/vavemodel.genmodel"/>
    </extension>
