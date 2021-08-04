@@ -299,7 +299,7 @@ public class VaveTest {
 		addContainment(treeconstr1, engineType, "feature");
 		// Make Smog Control optional
 		vavemodel.TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr2.setType(vavemodel.GroupType.ORNONE);
+		treeconstr2.setType(vavemodel.GroupType.XORNONE);
 		addContainment(car, treeconstr2, "treeconstraint");
 		addContainment(treeconstr2, smogControl, "feature");
 		// Make OR-Group between Gasoline and Electric with Engine Type parent
@@ -372,7 +372,7 @@ public class VaveTest {
 		addContainment(car, treeconstr1, "treeconstraint");
 		addContainment(treeconstr1, engineType, "feature");
 		vavemodel.TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr2.setType(vavemodel.GroupType.ORNONE);
+		treeconstr2.setType(vavemodel.GroupType.XORNONE);
 		addContainment(car, treeconstr2, "treeconstraint");
 		addContainment(treeconstr2, smogControl, "feature");
 		vavemodel.TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
