@@ -100,6 +100,23 @@ routine createFather(families::Member member){
 		add correspondence between member.familyFather and person
 	}
 }
+routine createMother(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
+	action{
+		val person = create persons::Female and initialize {
+			person.fullName = member.firstName +" "+member.familyMother.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
+		}
+		add correspondence between member and person
+		add correspondence between member.familyMother and person
+	}
+}
+
+
 routine createFatherInDifferentFamily(families::Member member){
 	match {
 		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
@@ -124,23 +141,30 @@ routine createFatherInDifferentFamily(families::Member member){
 
 //routine createNewFamily()...
 
-routine createMother(families::Member member){
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
-	}
-	action{
-		val person = create persons::Female and initialize {
-			person.fullName = member.firstName +" "+member.familyMother.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between member and person
-		add correspondence between member.familyMother and person
-	}
+//routine createMother(families::Member member){
+//	match {
+//		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+//	}
+//	action{
+//		val person = create persons::Female and initialize {
+//			person.fullName = member.firstName +" "+member.familyMother.lastName
+//		}
+//		update personsRegister {
+//			personsRegister.persons += person;
+//		}
+//		add correspondence between member and person
+//		add correspondence between member.familyMother and person
+//	}
+//}
+
+reaction DeletedSon {
+	after element families::Member deleted and removed from families::Family[sons] 
+	call deletePerson(oldValue)
 }
-
-
+reaction DeletedDaughter {
+	after element families::Member deleted and removed from families::Family[daughters] 
+	call deletePerson(oldValue)
+}
 
 reaction CreatedSon {
 	after element families::Member created  and inserted in families::Family[sons]
@@ -218,10 +242,10 @@ routine deletePersonsOfFamily(families::Family family){
 
 
 
-reaction DeletedMember {
-	after element families::Member deleted 
-	call deletePerson(affectedEObject)
-}
+//reaction DeletedMember {
+//	after element families::Member deleted 
+//	call deletePerson(affectedEObject)
+//}
 
 routine deletePerson(families::Member member) {
 	match{		
@@ -292,12 +316,11 @@ routine changeFullNameFromLast(families::Family family){
 reaction EditedFather {
 	after element families::Member replaced at families::Family[father]
 	call setFather(newValue, oldValue)
-}//ReplaceSingleValuedEReference
+}
 routine setFather(families::Member newDad, families::Member oldDad){
 	match{
 		val newPersonXX = retrieve optional persons::Person corresponding to newDad
-		val oldPersonXX = retrieve optional persons::Person corresponding to oldDad
-		
+		val oldPersonXX = retrieve optional persons::Person corresponding to oldDad		
 //		val newFamilyXX = retrieve optional families::Family corresponding to newPersonXX
 //		val oldFamilyXX = retrieve optional families::Family corresponding to oldPersonXX
 	}
@@ -309,7 +332,7 @@ routine setFather(families::Member newDad, families::Member oldDad){
 				}
 				else{
 					//Delete existing father
-					deletePerson(newDad)					
+					deletePerson(oldDad)			
 				}
 			}
 			else{
@@ -364,6 +387,80 @@ routine setFather(families::Member newDad, families::Member oldDad){
 }
 
 
+reaction EditedMother {
+	after element families::Member replaced at families::Family[mother]
+	call setMother(newValue, oldValue)
+}
+routine setMother(families::Member newMom, families::Member oldMom){
+	match{
+		val newPersonXX = retrieve optional persons::Person corresponding to newMom
+		val oldPersonXX = retrieve optional persons::Person corresponding to oldMom		
+//		val newFamilyXX = retrieve optional families::Family corresponding to newPersonXX
+//		val oldFamilyXX = retrieve optional families::Family corresponding to oldPersonXX
+	}
+	action{
+		call{
+			if(newMom == null){
+				if(oldMom == null){
+					return
+				}
+				else{
+					//Delete existing father
+					deletePerson(oldMom)			
+				}
+			}
+			else{
+				val fam = newMom.familyFather
+				if(oldMom == null){
+					//Create new father since there is no old one
+					createMother(newMom)
+				}
+				else{
+					if(true) return;
+					if(newMom.equals(oldMom)){
+						//MessageBox "Nothing happend because there was no real change"
+						return
+					}
+					else{
+						val String newMomName = newMom.firstName
+						val String oldMomName = oldMom.firstName
+						val String familyName = fam.lastName	
+						var String msg = "You tried to insert a new father, named " + newMomName
+						msg += ", into the " + familyName + "-family but there already exists a father named " + oldMomName
+						msg += ".\nPlease select one option how this conflict shall be solved."
+						val String opt1 = "do nothing"
+						val String opt2 = "replace old father"
+						val String opt3 = "create new family and add the new mom"				
+						var ArrayList<String> options = new ArrayList<String>();
+						options.addAll(opt1,opt2,opt3)				
+						val int selectedChoice = userInteractor.singleSelectionDialogBuilder.message(msg)
+						.choices(options).windowModality(WindowModality.MODAL).startInteraction()
+//						val int selectedChoice = 2
+						switch(selectedChoice){
+							case 0:{
+								//do nothing
+								recreateFather(newMom, oldMom)
+								//Nachdem der alte Vater hier widerhergestellt wird, wird noch die Delete-Member-Reaction ausgelöst.
+								//Das Löschen muss vermutlich spezifischer sein und auch zwischen Vater, Mutter, Sohn und Tochter unterscheiden	
+							}
+							case 1:{
+								//replace old father
+								replaceFather(newMom, oldMom)
+//								deletePerson(oldMom)
+//								createFather(newMom)
+							}
+							case 2:{
+								//create new family and insert new father there
+								createFatherInDifferentFamily(newMom)
+							}
+						}
+					}					
+				}
+			}		
+		}
+	}
+}
+
 //routine createOrReplaceFather(families::Member member) {
 //	match{
 //		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
@@ -385,22 +482,4 @@ routine setFather(families::Member newDad, families::Member oldDad){
 //		}		
 //	}
 //}
-	
-
-reaction EditedMother {
-	after element families::Member replaced at families::Family[mother]
-	call setMother(newValue)
-}
-routine setMother(families::Member member){	
-	action{
-		call{	
-			if(member == null){
-				deletePerson(member)
-			}
-			else{	
-				createMother(member)	
-			}		
-		}
-	}
-}
 //========== END EDITING ==========
