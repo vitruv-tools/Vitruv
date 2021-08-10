@@ -2,6 +2,7 @@ import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembe
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -37,37 +38,24 @@ routine createPersonRegister(families::FamilyRegister familyRegister){
 
 routine replaceFather(families::Member newDad, families::Member oldDad){
 	match{
-//		val newPerson = retrieve persons::Person corresponding to newDad
-//		val newFamily = retrieve families::Family corresponding to newPerson
-//		val oldPerson = retrieve persons::Person corresponding to oldDad
-//		val oldFamily = retrieve families::Family corresponding to oldPerson
 		val personsRegister = retrieve persons::PersonRegister corresponding to newDad.eContainer.eContainer		
 	}
 	action{
 		call{
-//			println("newPerson: " + newPerson)
-//			println("newFamily: " + newFamily)
-//			println("oldPerson: " + oldPerson)
-//			println("oldFamily: " + oldFamily)
 			println("personsRegister: " + personsRegister)
-			deletePerson(newDad)			
+			deletePerson(oldDad)			
 		}
-		val newPerson2 = create persons::Male and initialize {
-			newPerson2.fullName = newDad.firstName +" "+newDad.familyFather.lastName			
+		val newPerson = create persons::Male and initialize {
+			newPerson.fullName = newDad.firstName +" "+newDad.familyFather.lastName			
 		}
 		update personsRegister {
-//			personsRegister.persons -= oldPerson;
-			personsRegister.persons += newPerson2;
+			personsRegister.persons += newPerson;
 		}
-//		remove correspondence between newDad.familyFather and oldPerson
-//		delete oldPerson
-		add correspondence between newDad.familyFather and newPerson2
+		add correspondence between newDad and newPerson
+		add correspondence between newDad.familyFather and newPerson
 	}
 }
 routine recreateFather(families::Member newDad, families::Member oldDad){
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newDad.eContainer.eContainer 
-	}
 	action{
 		call {
 			//changes are already applied so we have to reverse them
@@ -76,13 +64,6 @@ routine recreateFather(families::Member newDad, families::Member oldDad){
 			oldDad.familyFather = newDad.familyFather
 			newDad.familyFather = null 
 		}
-		val person = create persons::Male and initialize {
-			person.fullName = oldDad.firstName +" "+oldDad.familyFather.lastName			
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between oldDad.familyFather and person
 	}
 }
 routine createFather(families::Member member){
@@ -91,7 +72,7 @@ routine createFather(families::Member member){
 	}
 	action{
 		val person = create persons::Male and initialize {
-			person.fullName = member.firstName +" "+member.familyFather.lastName
+			person.fullName = member.firstName + " " + member.familyFather.lastName
 		}
 		update personsRegister {
 			personsRegister.persons += person;
@@ -117,25 +98,22 @@ routine createMother(families::Member member){
 }
 
 
-routine createFatherInDifferentFamily(families::Member member){
+routine createFatherInDifferentFamily(families::Member newDad, families::Member oldDad){
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+		val personsRegister = retrieve persons::PersonRegister corresponding to newDad.eContainer.eContainer		
+		val familyRegister = retrieve families::FamilyRegister corresponding to personsRegister
 	}
 	action{
 		val newFam = create families::Family and initialize {
-			newFam.lastName = member.familyFather.lastName + "_2" 			
+			newFam.lastName = newDad.familyFather.lastName + "_2" 			
 		}
 		call{
-			member.familyFather = newFam			
+			familyRegister.families += newFam
+			oldDad.familyFather = newDad.familyFather 
+			newFam.father = newDad
+//			newDad.familyFather = newFam
+			createFather(newDad)			
 		}
-		val person = create persons::Male and initialize {
-			person.fullName = member.firstName +" "+member.familyFather.lastName			
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between member and person
-		add correspondence between member.familyFather and person
 	}
 }
 
@@ -376,7 +354,7 @@ routine setFather(families::Member newDad, families::Member oldDad){
 							}
 							case 2:{
 								//create new family and insert new father there
-								createFatherInDifferentFamily(newDad)
+								createFatherInDifferentFamily(newDad, oldDad)
 							}
 						}
 					}					
@@ -451,7 +429,7 @@ routine setMother(families::Member newMom, families::Member oldMom){
 							}
 							case 2:{
 								//create new family and insert new father there
-								createFatherInDifferentFamily(newMom)
+								createFatherInDifferentFamily(newMom, oldMom)
 							}
 						}
 					}					
