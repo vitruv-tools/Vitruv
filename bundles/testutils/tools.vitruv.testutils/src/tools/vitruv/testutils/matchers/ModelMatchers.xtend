@@ -10,6 +10,7 @@ import org.hamcrest.Matcher
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.common.util.EList
 
 @Utility
 class ModelMatchers {
@@ -31,6 +32,10 @@ class ModelMatchers {
 
 	def static Matcher<? super Resource> contains(EObject root, ModelDeepEqualityOption... options) {
 		contains(ModelMatchers.equalsDeeply(root, options))
+	}
+	
+	def static Matcher<? super EList<EObject>> containsInAnyOder(EList<Object> roots, ModelDeepEqualityOption... options){
+		new EListContainmentMatcher(roots, options)
 	}
 
 	def static Matcher<? super Resource> contains(Matcher<? super EObject> rootMatcher) {
