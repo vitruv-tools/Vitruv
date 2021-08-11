@@ -13,6 +13,8 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
+import tools.vitruv.framework.vsum.internal.VirtualModelImpl
 
 import static com.google.common.base.Preconditions.checkState
 

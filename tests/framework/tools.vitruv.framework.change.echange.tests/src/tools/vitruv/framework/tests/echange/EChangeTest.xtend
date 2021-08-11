@@ -6,12 +6,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.junit.jupiter.api.BeforeEach
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -20,8 +16,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import java.nio.file.Path
 import org.junit.jupiter.api.io.TempDir
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import tools.vitruv.framework.tests.echange.util.EChangeAssertHelper
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Default class for testing EChange changes.
@@ -37,14 +35,14 @@ abstract class EChangeTest {
 	@Accessors(PROTECTED_GETTER)
 	var Resource resource
 	var ResourceSet resourceSet
-	@Accessors(PROTECTED_GETTER)
-	var UuidGeneratorAndResolver uuidGeneratorAndResolver
+	var IdResolver idResolver
 
 	@Accessors(PROTECTED_GETTER)
 	var TypeInferringAtomicEChangeFactory atomicFactory
 	@Accessors(PROTECTED_GETTER)
 	var TypeInferringCompoundEChangeFactory compoundFactory
-
+	protected var extension EChangeAssertHelper helper
+	 
 	/**
 	 * Sets up a new model and the two model instances before every test.
 	 * The model is stored in a temporary file with filename {@link MODEL_FILE_NAME} 
@@ -67,9 +65,10 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
-		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
+		idResolver = IdResolver.create(resourceSet)
+		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(idResolver)
+		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(idResolver)
+		helper = new EChangeAssertHelper(idResolver)
 	}
 
 	protected def final getResourceContent() {
@@ -90,12 +89,16 @@ abstract class EChangeTest {
 	 */
 	def protected static void assertIsResolved(List<? extends EChange> changes) {
 		for (change : changes) {
-			assertTrue(change.isResolved)
+			change.assertIsResolved()
 		}
+	}
+	
+	def protected static void assertIsResolved(EChange change) {
+		assertTrue(change.isResolved)
 	}
 
 	def protected EChange resolveBefore(EChange change) {
-		return change.resolveBefore(uuidGeneratorAndResolver)
+		return change.resolveBefore(idResolver)
 	}
 
 	def protected List<EChange> resolveBefore(List<? extends EChange> changes) {
@@ -104,31 +107,18 @@ abstract class EChangeTest {
 		return result
 	}
 
-	def protected EChange resolveAfter(EChange change) {
-		return change.resolveAfter(uuidGeneratorAndResolver)
-	}
-
-	def protected List<EChange> resolveAfter(List<? extends EChange> changes) {
-		val result = newArrayList
-		result += changes.reverseView.map[resolveAfter]
-		return result.reverse
-	}
-
-	static def protected boolean applyBackward(List<EChange> changes) {
+	def protected void applyBackward(List<EChange> changes) {
 		assertIsResolved(changes)
-		var result = true
-		for (change : changes.reverseView) {
-			result = result && change.applyBackward
-		}
-		return result
+		changes.reverseView.forEach[applyBackward]
 	}
 
-	static def protected boolean applyForward(List<EChange> changes) {
-		assertIsResolved(changes)
-		var result = true
-		for (change : changes) {
-			result = result && change.applyForward
-		}
-		return result
+	def protected void applyForward(List<EChange> changes) {
+		changes.forEach[applyForward]
 	}
+	
+	def protected void applyForward(EChange change) {
+		assertIsResolved(change)
+		change.assertApplyForward
+	}
+	
 }

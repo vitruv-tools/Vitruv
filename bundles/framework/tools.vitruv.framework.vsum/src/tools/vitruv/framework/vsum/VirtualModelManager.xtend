@@ -1,8 +1,9 @@
 package tools.vitruv.framework.vsum
 
-import java.nio.file.Path
 import java.util.Map
 import java.util.concurrent.ConcurrentHashMap
+import java.nio.file.Path
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 final class VirtualModelManager {
 	Map<Path, InternalVirtualModel> folderToVirtualModelMap;

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.propagation.impl
 
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import java.util.List
 import java.util.ArrayList
@@ -12,6 +11,7 @@ import tools.vitruv.framework.propagation.ChangePropagationObserver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.propagation.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.change.echange.EChange
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
@@ -56,13 +56,13 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		}
 	}
 
-	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel,
+	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		propagateChangeViaPreprocessors(change, correspondenceModel, resourceAccess);
 		propagateChangeViaMainprocessors(change, correspondenceModel, resourceAccess);
 	}
 	
-	protected def propagateChangeViaPreprocessors(TransactionalChange change, CorrespondenceModel correspondenceModel,
+	protected def propagateChangeViaPreprocessors(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (changeProcessor : changePreprocessors) {
 			logger.trace('''Calling change preprocessor «changeProcessor» for change event «change»''');
@@ -70,7 +70,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		}
 	}
 	
-	protected def propagateChangeViaMainprocessors(TransactionalChange change, CorrespondenceModel correspondenceModel,
+	protected def propagateChangeViaMainprocessors(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (changeProcessor : changeMainprocessors) {
 			logger.trace('''Calling change mainprocessor «changeProcessor» for change event «change»''');
@@ -78,7 +78,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		}
 	}
 
-	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+	override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 		for (changeProcessor : allProcessors) {
 			if (changeProcessor.doesHandleChange(change, correspondenceModel)) {
 				return true;

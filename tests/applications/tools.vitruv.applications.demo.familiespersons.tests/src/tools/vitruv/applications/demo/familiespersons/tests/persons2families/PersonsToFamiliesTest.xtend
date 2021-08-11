@@ -1,6 +1,5 @@
 package tools.vitruv.applications.demo.familiespersons.tests.persons2families
 
-import edu.kit.ipd.sdq.metamodels.families.Member
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import org.junit.jupiter.api.BeforeEach
@@ -8,13 +7,15 @@ import org.junit.jupiter.api.Test
 import tools.vitruv.domains.demo.families.FamiliesDomainProvider
 import tools.vitruv.domains.demo.persons.PersonsDomainProvider
 
-import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import org.junit.jupiter.api.Disabled
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.testutils.domains.DomainUtil
 import tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification
+import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
+import java.util.List
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class PersonsToFamiliesTest extends VitruvApplicationTest {
 	static val MALE_PERSON_NAME = "Max Mustermann"
@@ -82,10 +83,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		PersonRegister.from(PERSONS_MODEL).propagate[persons += person]
 		person.propagate[fullName = SECOND_MALE_PERSON_NAME]
-		val Iterable<Member> members = correspondenceModel.getCorrespondingEObjects(#[person]).filter(Member)
-
-		assertThat(members.length, is(1))
-		val member = members.get(0)
-		assertThat(member.firstName, is(person.fullName.split(" ").get(0)))
+		
+		val personFirstName = person.fullName.split(" ").get(0)
+		val membersWithFirstName = FamilyRegister.from(FAMILIES_MODEL).families
+			.flatMap[daughters + sons + List.of(mother) + List.of(father)]
+			.filter[personFirstName == it?.firstName]
+		assertEquals(1, membersWithFirstName.length)
 	}
 }

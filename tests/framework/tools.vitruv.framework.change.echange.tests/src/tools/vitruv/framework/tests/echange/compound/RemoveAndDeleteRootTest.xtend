@@ -29,9 +29,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		newRootObject = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject)
 		newRootObject2 = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject2)
 		prepareStateBefore
 
 	}
@@ -53,27 +51,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
 		assertIsStateBefore
-	}
-
-	/**
-	 * Resolves the {@link RemoveAndDeleteRoot} EChange. The model is in state
-	 * after the change was applied, so the staging area and object in progress
-	 * are empty, and the root element was deleted.
-	 */
-	@Test
-	def void resolveAftertTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved
-		// State after
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(newRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		assertIsStateAfter
 	}
 
 	/**
@@ -153,15 +130,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		resourceContent.add(newRootObject)
 		resourceContent.add(newRootObject2)
 		assertIsStateBefore
-	}
-
-	/**
-	 * Sets the state of the model after the changes.
-	 */
-	def private void prepareStateAfter() {
-		resourceContent.remove(newRootObject)
-		resourceContent.remove(newRootObject2)
-		assertIsStateAfter
 	}
 
 	/**

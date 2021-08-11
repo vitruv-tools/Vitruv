@@ -33,10 +33,8 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		oldNonRootObject = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldNonRootObject)
 		prepareStateBefore
 	}
 
@@ -51,37 +49,11 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
 		unresolvedChange.assertIsNotResolved
 
-		// Set state after
-		prepareStateAfter
-
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
+		val resolvedChange = unresolvedChange.resolveBefore
 		resolvedChange.assertIsResolved(affectedEObject, oldNonRootObject)
 
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
-	}
-
-	/**
-	 * Resolves a {@link ReplaceAndDeleteNonRoot} EChange. The model is in state
-	 * after the change, so the old non root element is deleted and the single valued
-	 * containment reference is null.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, oldNonRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
+		assertIsStateBefore
 	}
 
 	/**

@@ -4,7 +4,6 @@ import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -15,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 /**
  * Test class for the concrete {@link RemoveRootEObject} EChange,
@@ -28,8 +28,6 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	@BeforeEach
 	def void prepareState() {
 		prepareStateBefore
-		uuidGeneratorAndResolver.generateUuid(newRootObject) // Used as existing element, so must have a UUID
-		uuidGeneratorAndResolver.generateUuid(newRootObject2) // Used as existing element, so must have a UUID
 	}
 
 	/**
@@ -48,22 +46,6 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		val resolvedChange = unresolvedChange.resolveBefore as RemoveRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 		assertIsStateBefore
-	}
-
-	/**
-	 * Test resolves a {@link RemoveRootEObject} EChange, with a root
-	 * object in the staging area. This happens when the model is
-	 * in state after the change was applied.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved(newRootObject)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as RemoveRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource)
 	}
 
 	/**
@@ -143,11 +125,10 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def void invalidIndexTest() {
-		var index = 5
+		val index = 5
 
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore as RemoveRootEObject<Root>
-		assertNull(resolvedChange)
+		assertThrows(IllegalStateException) [createUnresolvedChange(newRootObject, index).resolveBefore as RemoveRootEObject<Root>]
 	}
 
 	/**

@@ -4,7 +4,6 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -119,7 +118,6 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def void invalidAttributeTest() {
 		val affectedNonRootEObject = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(affectedNonRootEObject)
 		resource.contents.add(affectedNonRootEObject)
 
 		// Create change and resolve

@@ -54,7 +54,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EClassMetaclass" eSuperTypes="#//Metaclass">
     <eOperations name="forEClass" lowerBound="1" eType="#//EClassMetaclass">
-      <eParameters name="eClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+      <eParameters name="eClass" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
     </eOperations>
     <eOperations name="withClassifierProvider" lowerBound="1" eType="#//EClassMetaclass">
       <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
@@ -67,7 +67,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EDataTypeClassifier" eSuperTypes="#//Classifier">
     <eOperations name="forEDataType" lowerBound="1" eType="#//EDataTypeClassifier">
-      <eParameters name="eDataType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
+      <eParameters name="eDataType" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EDataType"/>
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VitruviusDomain" eSuperTypes="#//Domain">
@@ -92,7 +92,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EFeatureAttribute" eSuperTypes="#//Attribute">
     <eOperations name="forEFeature" lowerBound="1" eType="#//EFeatureAttribute">
-      <eParameters name="eFeature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      <eParameters name="eFeature" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
     </eOperations>
     <eOperations name="withClassifierProvider" lowerBound="1" eType="#//EFeatureAttribute">
       <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>

@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -30,7 +29,6 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	@BeforeEach
 	def void prepareElements() {
 		oldValue = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldValue)
 	}
 
 	/**
@@ -69,50 +67,6 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore as ReplaceSingleValuedEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
-	}
-
-	/**
-	 * Test resolves a {@link ReplaceSingleValuedEReference} EChange with correct parameters.
-	 * The model is in the state after the change.
-	 * The reference is a non containment reference, so the old value is in the resource.
-	 */
-	@Test
-	def void resolveAfterSingleValuedNonContainmentTest() {
-		// Set state before
-		isNonContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
-
-		// Set state after
-		prepareReference(newValue)
-
-		// Resolve	
-		val resolvedChange = unresolvedChange.resolveAfter as ReplaceSingleValuedEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
-	}
-
-	/**
-	 * Test resolves a {@link ReplaceSingleValuedEReference} EChange with correct parameters.
-	 * The model is in the state after the change.
-	 * The reference is a containment reference, so the old value is in the staging area.
-	 */
-	@Test
-	def void resolveAfterSingleValuedContainmentTest() {
-		// Set state before
-		isContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
-
-		// Set state after
-		prepareReference(newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 	}
 

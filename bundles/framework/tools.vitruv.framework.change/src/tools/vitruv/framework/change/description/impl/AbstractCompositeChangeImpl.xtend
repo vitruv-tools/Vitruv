@@ -3,7 +3,6 @@ package tools.vitruv.framework.change.description.impl
 import java.util.List
 import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.uuid.UuidResolver
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.LinkedHashSet
 
@@ -30,32 +29,12 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		return changes.flatMapFixed [EChanges]
 	}
 	
-	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
-		changes.forEach [resolveBeforeAndApplyForward(uuidResolver)]
-	}
-
-	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
-		changes.reverseView.forEach [resolveAfterAndApplyBackward(uuidResolver)]
-	}
-	
 	override getAffectedEObjects() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjects]
 	}
 	
-	override getAffectedEObjectIds() {
-		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjectIds]
-	}
-
 	override getAffectedAndReferencedEObjects() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjects]
-	}
-
-	override getAffectedAndReferencedEObjectIds() {
-		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjectIds]
-	}
-
-	override unresolveIfApplicable() {
-		changes.forEach [unresolveIfApplicable]
 	}
 
 	override getUserInteractions() {

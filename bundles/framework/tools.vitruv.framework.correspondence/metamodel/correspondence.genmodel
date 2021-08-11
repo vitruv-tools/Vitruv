@@ -3,8 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.correspondence/src-gen"
     modelPluginID="tools.vitruv.framework.correspondence" modelName="Correspondence"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
-    operationReflection="true" importOrganizing="true">
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>correspondence.ecore</foreignModel>
   <genPackages prefix="Correspondence" basePackage="tools.vitruv.framework" disposableProviderFactory="true"
       ecorePackage="correspondence.ecore#/">
@@ -15,9 +14,9 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/parent"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependsOn"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependedOnBy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aUuids"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bUuids"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/tag"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/leftEObjects"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/rightEObjects"/>
     </genClasses>
     <genClasses ecoreClass="correspondence.ecore#//ManualCorrespondence"/>
   </genPackages>

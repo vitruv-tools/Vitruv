@@ -15,13 +15,13 @@ import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
 /**
  * Utility class to unresolve a given EChange.
  */
-class EChangeUnresolver {
-	private new() {}
-	
+@Utility
+package class EChangeUnresolver {
 	/**
 	 * Unresolves the attributes of the {@link RootEChange} class.
 	 * @param The RootEChange.
@@ -95,7 +95,6 @@ class EChangeUnresolver {
 	 */	
 	def dispatch static void unresolve(DeleteEObject<EObject> change) {
 		change.unresolveEObjectExistenceEChange
-		change.consequentialRemoveChanges.forEach[unresolve];
 	}
 	
 	/**

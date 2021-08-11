@@ -60,28 +60,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 	}
 
 	/**
-	 * Resolves the {@link CreateAndInsertRoot} EChange. The model is in state 
-	 * after the change was applied, so the staging area and object in progress are empty,
-	 * and the root object is in the resource.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after		
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(newRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
-	}
-
-	/**
 	 * Tests whether resolving the {@link CreateAndInsertRoot} EChange
 	 * returns the same class.
 	 */
@@ -152,15 +130,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 
 		// State before
 		assertIsStateBefore
-	}
-
-	/**
-	 * Sets the state of the model after the changes.
-	 */
-	def private void prepareStateAfter() {
-		resourceContent.add(newRootObject)
-		resourceContent.add(newRootObject2)
-		assertIsStateAfter
 	}
 
 	/**

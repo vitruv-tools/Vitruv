@@ -17,19 +17,30 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/singleValuedUnsettableContainmentEReference"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypes.ecore#//Root/multiValuedEAttribute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypes.ecore#//Root/multiValuedUnsettableEAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypes.ecore#//Root/multiValuedUnorderedEAttribute"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedNonContainmentEReference"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedUnsettableNonContainmentEReference"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedUnorderedNonContainmentEReference"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedContainmentEReference"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedUnsettableContainmentEReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedUnorderedContainmentEReference"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/nonRootObjectContainerHelper"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/recursiveRoot"/>
     </genClasses>
-    <genClasses ecoreClass="allElementTypes.ecore#//NonRoot"/>
+    <genClasses ecoreClass="allElementTypes.ecore#//NonRoot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypes.ecore#//NonRoot/value"/>
+    </genClasses>
     <genClasses ecoreClass="allElementTypes.ecore#//NonRootObjectContainerHelper">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//NonRootObjectContainerHelper/nonRootObjectsContainment"/>
     </genClasses>
     <genClasses ecoreClass="allElementTypes.ecore#//Identified">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypes.ecore#//Identified/id"/>
     </genClasses>
+    <genClasses ecoreClass="allElementTypes.ecore#//ValueBased">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypes.ecore#//ValueBased/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//ValueBased/children"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//ValueBased/referenced"/>
+    </genClasses>
+    <genClasses ecoreClass="allElementTypes.ecore#//Containable"/>
   </genPackages>
 </genmodel:GenModel>

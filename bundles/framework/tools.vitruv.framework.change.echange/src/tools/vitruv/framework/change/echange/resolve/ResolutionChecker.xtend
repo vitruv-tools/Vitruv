@@ -9,16 +9,16 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
+@Utility
 class ResolutionChecker {
 	static def dispatch isResolved(EChange echange) {
 		return true;
 	}
 	
 	static def dispatch isResolved(EObjectExistenceEChange<?> existenceChange) {
-		return (existenceChange.getAffectedEObject() !== null &&
-			!existenceChange.getAffectedEObject().eIsProxy());// && 
-			//existenceChange.getStagingArea() !== null);
+		return existenceChange.getAffectedEObject() !== null
 	}
 	
 	static def dispatch isResolved(FeatureEChange<?,?> featureChange) {
@@ -66,8 +66,7 @@ class ResolutionChecker {
 	}
 	
 	static def dispatch isResolved(RemoveRootEObject<?> removeRootChange) {
-		return removeRootChange.oldValue !== null &&
-			!removeRootChange.oldValue.eIsProxy && 
+		return removeRootChange.oldValue !== null && 
 			removeRootChange.isRootChangeResolved;
 	}
 	

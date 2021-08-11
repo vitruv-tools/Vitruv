@@ -4,7 +4,7 @@
     editDirectory="" editorDirectory="" modelPluginID="tools.vitruv.framework.change.echange"
     modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="" containmentProxies="true" complianceLevel="8.0" copyrightFields="false"
-    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
+    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
     operationReflection="true" importOrganizing="true">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
     <genAnnotations source="selectedPackages">
@@ -72,6 +72,7 @@
   </genPackages>
   <genPackages prefix="EChange" basePackage="tools.vitruv.framework.change" disposableProviderFactory="true"
       ecorePackage="echange.ecore#/">
+    <genDataTypes ecoreDataType="echange.ecore#//Id"/>
     <genClasses image="false" ecoreClass="echange.ecore#//EChange">
       <genOperations ecoreOperation="echange.ecore#//EChange/isResolved" body="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
     </genClasses>
@@ -81,6 +82,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="echange.ecore#//SubtractiveEChange">
       <genTypeParameters ecoreTypeParameter="echange.ecore#//SubtractiveEChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute echange.ecore#//SubtractiveEChange/Test"/>
       <genOperations ecoreOperation="echange.ecore#//SubtractiveEChange/getOldValue"/>
     </genClasses>
   </genPackages>
@@ -168,7 +170,6 @@
     </genClasses>
     <genClasses ecoreClass="eobject.ecore#//DeleteEObject">
       <genTypeParameters ecoreTypeParameter="eobject.ecore#//DeleteEObject/A"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//DeleteEObject/consequentialRemoveChanges"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Root" basePackage="tools.vitruv.framework.change.echange" disposableProviderFactory="true"

@@ -54,25 +54,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> {
 	public boolean hasCorrespondences();
 	
 	/**
-	 * Returns the elements corresponding to the given ones in the given correspondence.
-	 * 
-	 * @param correspondence
-	 *            - the correspondence to investigate
-	 * @param eObjects
-	 *            - the objects to get the corresponding ones for
-	 * @return the elements corresponding to the given ones
-	 */
-	public List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, 
-			List<EObject> eObjects);
-	
-	/**
-	 * Returns all correspondences in this correspondence model.
-	 * 
-	 * @return all correspondences in this correspondence model
-	 */
-	public List<Correspondence> getAllCorrespondences();
-
-	/**
 	 * Returns a view on the {@link GenericCorrespondenceModel} restricted to the
 	 * specified kind of {@link Correspondence}. The functions of the view will only
 	 * act on the given implementation of {@link Correspondence}s.

@@ -10,14 +10,12 @@ import pcm_mockup.PInterface
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.vsum.InternalVirtualModel
 import uml_mockup.UInterface
 import uml_mockup.UPackage
 
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 
 import org.junit.jupiter.api.Test
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -37,6 +35,8 @@ import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import static org.hamcrest.CoreMatchers.instanceOf
 import static org.hamcrest.MatcherAssert.assertThat
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 class CorrespondenceTest {
@@ -135,7 +135,7 @@ class CorrespondenceTest {
 		val UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-		correspondenceModel.createAndAddCorrespondence(repo, pkg)
+		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg))
 		removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
 		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
@@ -148,7 +148,7 @@ class CorrespondenceTest {
 		val UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-		correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
+		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg)) // execute the test
 		moveUMLPackageTo(pkg, vsum, correspondenceModel)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
@@ -157,7 +157,7 @@ class CorrespondenceTest {
 		// get the correspondence of repo
 		correspondenceModel.getCorrespondences(List.of(repo)).claimOne
 		val correspondingObjects = correspondenceModel.getCorrespondingEObjects(List.of(repo)).flatten
-		assertEquals(1, correspondingObjects.size(), "Only one corresonding object is expected for the repository.")
+		assertEquals(1, correspondingObjects.size(), "Only one corresponding object is expected for the repository.")
 		for (correspondingObject : correspondingObjects) {
 			assertNotNull(correspondingObject, "Corresponding object is null")
 			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(
@@ -200,9 +200,10 @@ class CorrespondenceTest {
 		val Repository repo2 = testLoadObject(vsum2, alternativePcmInstanceURI, Repository)
 		val UPackage pkg2 = testLoadObject(vsum2, alterantiveUMLInstanceURI, UPackage)
 		val CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
-		corresp2.createAndAddCorrespondence(repo2, pkg2)
+		corresp2.createAndAddCorrespondence(List.of(repo2), List.of(pkg2))
 		assertTrue(corresp2.hasCorrespondences()) // obtain
-		val Correspondence repo2pkg2 = corresp2.claimUniqueCorrespondence(List.of(repo2), List.of(pkg2))
+		val Correspondence repo2pkg2 = corresp2.getCorrespondences(List.of(repo2)).claimOne
+		assertEquals(Set.of(repo2, pkg2), (repo2pkg2.leftEObjects + repo2pkg2.rightEObjects).toSet)
 		// test everything as if the correspondence would just have been created
 		testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2)
 	}
@@ -224,19 +225,17 @@ class CorrespondenceTest {
 	def private Correspondence createRepo2PkgCorrespondence(Repository repo, UPackage pkg,
 		CorrespondenceModel corresp) {
 		// until this point the correspondence instance is empty
-		val Correspondence repo2pkg = corresp.createAndAddCorrespondence(repo, pkg)
+		val Correspondence repo2pkg = corresp.createAndAddCorrespondence(List.of(repo), List.of(pkg))
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		return repo2pkg
 	}
 
 	def private void testAllClaimersAndGettersForEObjectCorrespondences(Repository repo, UPackage pkg,
 		CorrespondenceModel corresp, Correspondence repo2pkg) {
-		// claimAllCorrespondence is already indirectly tested via claimUniqueCorrespondence
-		val Correspondence uniqueRepoCorrespondence = corresp.claimUniqueCorrespondence(repo)
+		val Correspondence uniqueRepoCorrespondence = corresp.getCorrespondences(List.of(repo)).claimOne
 		assertEquals(uniqueRepoCorrespondence, repo2pkg)
-		val Correspondence uniquePkgCorrespondence = corresp.claimUniqueCorrespondence(pkg)
-		assertEquals(uniquePkgCorrespondence, repo2pkg) // claimCorrespondingEObject is already indirectly tested via
-		// claimUniqueCorrespondingEObject
+		val Correspondence uniquePkgCorrespondence = corresp.getCorrespondences(List.of(repo)).claimOne
+		assertEquals(uniquePkgCorrespondence, repo2pkg)
 		val EObject correspForRepo = corresp.getCorrespondingEObjects(repo).claimOne
 		assertEquals(correspForRepo, pkg)
 		val EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
@@ -251,16 +250,10 @@ class CorrespondenceTest {
 		val Set<Correspondence> allPkgCorrespondences = corresp.getCorrespondences(List.of(pkg))
 		assertEquals(allPkgCorrespondences.size(), 1)
 		assertTrue(allPkgCorrespondences.contains(repo2pkg))
-		val Set<Repository> allRepoTypeCorresp = corresp.getAllEObjectsOfTypeInCorrespondences(Repository)
-		assertTrue(allRepoTypeCorresp.contains(repo))
-		val Set<UPackage> allPkgTypeCorresp = corresp.getAllEObjectsOfTypeInCorrespondences(UPackage)
-		assertTrue(allPkgTypeCorresp.contains(pkg))
-		val Set<EObject> allCorrespForRepo = corresp.getCorrespondingEObjects(repo)
-		assertEquals(allCorrespForRepo.size(), 1)
-		assertTrue(allCorrespForRepo.contains(pkg))
-		val Set<EObject> allCorrespForPkg = corresp.getCorrespondingEObjects(pkg)
-		assertEquals(allCorrespForPkg.size(), 1)
-		assertTrue(allCorrespForPkg.contains(repo))
+		val correspondingPkg = corresp.getCorrespondingEObjects(repo).claimOne
+		assertEquals(pkg, correspondingPkg)
+		val correspondingRepo = corresp.getCorrespondingEObjects(pkg).claimOne
+		assertEquals(repo, correspondingRepo)
 	}
 
 	def private PInterface testHasCorrespondences(Repository repo, UPackage pkg, CorrespondenceModel corresp) {
@@ -281,7 +274,7 @@ class CorrespondenceTest {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// add correspondence
-		corresp.createAndAddCorrespondence(repoInterface, pkgInterface) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		corresp.createAndAddCorrespondence(List.of(repoInterface), List.of(pkgInterface)) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// 3. EOC: pcmIfac _tAgfwPxjEeOD3p0i_uuRbQ <=> umlIface _vWjxIPxjEeOD3p0i_uuRbQ
 		// remove correspondence
@@ -296,10 +289,6 @@ class CorrespondenceTest {
 		assertTrue(correspForRepoInterface.isEmpty())
 		val Set<EObject> correspForPkgInterface = corresp.getCorrespondingEObjects(pkgInterface)
 		assertTrue(correspForPkgInterface.isEmpty())
-		val Set<PInterface> correspForRepoInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(PInterface)
-		assertTrue(correspForRepoInterfaceType.isEmpty())
-		val Set<UInterface> correspForPkgInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(UInterface)
-		assertTrue(correspForPkgInterfaceType.isEmpty())
 	}
 
 	def private void testRecursiveRemove(Repository repo, UPackage pkg, CorrespondenceModel corresp,
@@ -316,10 +305,6 @@ class CorrespondenceTest {
 		assertTrue(correspForRepo.isEmpty())
 		val Set<EObject> correspForPkg = corresp.getCorrespondingEObjects(pkg)
 		assertTrue(correspForPkg.isEmpty())
-		val Set<Repository> correspForRepoType = corresp.getAllEObjectsOfTypeInCorrespondences(Repository)
-		assertTrue(correspForRepoType.isEmpty())
-		val Set<UPackage> correspForPkgType = corresp.getAllEObjectsOfTypeInCorrespondences(UPackage)
-		assertTrue(correspForPkgType.isEmpty())
 	}
 
 }

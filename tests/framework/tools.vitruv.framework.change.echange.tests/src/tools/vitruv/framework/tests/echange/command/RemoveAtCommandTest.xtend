@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertSame
 import tools.vitruv.framework.change.echange.command.RemoveAtCommand
-import tools.vitruv.framework.change.echange.util.EChangeUtil
+import static extension tools.vitruv.framework.change.echange.command.ChangeCommandUtil.getEditingDomain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
@@ -30,7 +30,7 @@ class RemoveAtCommandTest extends CommandTest {
 	def final void beforeTest() {
 		owner = aet.Root
 		feature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
-		editingDomain = EChangeUtil.getEditingDomain(owner)
+		editingDomain = owner.editingDomain
 		list = owner.eGet(feature) as EList<Integer>
 		for (var i = 0; i < 10; i++) {
 			list.add(i)

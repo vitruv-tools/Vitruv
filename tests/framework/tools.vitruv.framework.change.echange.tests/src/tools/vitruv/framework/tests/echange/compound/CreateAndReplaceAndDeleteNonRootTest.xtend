@@ -33,7 +33,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@BeforeEach
 	def void prepareState() {
 		oldValue = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldValue)
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareStateBefore
 	}
@@ -55,42 +54,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		assertIsStateBefore
-	}
-
-	/**
-	 * Resolves a {@link CreateAndReplaceAndDeleteNonRoot} EChange. The 
-	 * model is in state after the change, so old value doesn't exist and 
-	 * the new value is in the containment reference.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newValue)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after change	
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		assertIsStateAfter
-	}
-
-	/**
-	 * Tests whether resolving the {@link CreateAndReplaceAndDeleteNonRoot} EChange
-	 * returns the same class.
-	 */
-	@Test
-	def void resolveToCorrectType() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 
 	/**
@@ -131,7 +94,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 
 		// Apply backward
-		assertTrue(resolvedChange.applyBackward)
+		resolvedChange.applyBackward
 
 		// State before
 		assertIsStateBefore

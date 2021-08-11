@@ -1,38 +1,38 @@
 package tools.vitruv.framework.correspondence.impl
 
 import java.util.HashSet
+import java.util.LinkedHashSet
 import java.util.List
-import java.util.Map
 import java.util.Set
+import java.util.function.Predicate
 import java.util.function.Supplier
+import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
-import tools.vitruv.framework.correspondence.Correspondences
-import tools.vitruv.framework.uuid.UuidResolver
-
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
-import java.util.function.Predicate
-import java.util.LinkedHashSet
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import tools.vitruv.framework.correspondence.Correspondences
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+
 import static com.google.common.base.Preconditions.checkState
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+
 class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
-	static val saveAndLoadOptions = Map.of("PROCESS_DANGLING_HREF", "DISCARD")
+	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
 	val Correspondences correspondences
-	val UuidResolver uuidResolver
 	val Resource correspondencesResource
 
-	new(UuidResolver uuidResolver, URI resourceUri) {
-		this.uuidResolver = uuidResolver
+	new(URI resourceUri) {
 		this.correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences()
 		this.correspondencesResource = if (resourceUri !== null)
 			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
@@ -40,19 +40,59 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 			]
 	}
 
-	override loadSerializedCorrespondences() {
+	override loadSerializedCorrespondences(ResourceSet resolveIn) {
 		checkState(correspondencesResource !== null,
 			"Correspondences resource must be specified to load existing correspondences")
-		val loadedResource = (new ResourceSetImpl().withGlobalFactories => [loadOptions += saveAndLoadOptions]).
-			loadOrCreateResource(correspondencesResource.URI)
+		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(correspondencesResource.URI)
 		if (!loadedResource.contents.empty) {
 			val loadedCorrespondences = loadedResource.contents.get(0) as Correspondences
+			for (correspondence : loadedCorrespondences.correspondences) {
+				correspondence.leftEObjects => [
+					val resolvedObjects = it.resolve(resolveIn)
+					it.clear()
+					it += resolvedObjects	
+				]
+				correspondence.rightEObjects => [
+					val resolvedObjects = it.resolve(resolveIn)
+					it.clear()
+					it += resolvedObjects	
+				]
+			}
 			this.correspondences.correspondences += loadedCorrespondences.correspondences
 		}
 	}
 	
+	private static def resolve(Iterable<EObject> eObjects, ResourceSet resolveIn) {
+		val resolvedEObjects = eObjects.mapFixed[EcoreUtil.resolve(it, resolveIn)]
+		for (resolvedEObject : resolvedEObjects) {
+			checkState(!resolvedEObject.eIsProxy, "object %s is referenced in correspondence but could not be resolved", resolvedEObject)
+		}
+		return resolvedEObjects
+	}
+
 	override save() {
-		this.correspondencesResource?.save(saveAndLoadOptions)
+		removeCorrespondencesForRemovedElements()
+		this.correspondencesResource?.save(null)
+	}
+	
+	private def void removeCorrespondencesForRemovedElements() {
+		val iterator = correspondences.correspondences.iterator
+		while (iterator.hasNext()) {
+			val element = iterator.next()
+			if (element.leftEObjects.exists[!isInManagedResource] || element.rightEObjects.exists[!isInManagedResource]) {
+				checkState(element.leftEObjects.forall[!isInManagedResource] || element.leftEObjects.forall[!isInManagedResource],
+					"Correspondence between %s and %s contains elements %s that are not contained in a resource anymore.",
+					element.leftEObjects, element.rightEObjects, (element.leftEObjects + element.rightEObjects).filter[!isInManagedResource])
+				iterator.remove()
+				if (logger.traceEnabled) {
+					logger.trace('''Correspondence between «element.leftEObjects» and «element.rightEObjects» has been removed as all its elements have been removed from resources.''')
+				}
+			}
+		}
+	}
+	
+	private def static isInManagedResource(EObject object) {
+		object instanceof EClass || object.eResource?.resourceSet !== null
 	}
 
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
@@ -70,20 +110,8 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 	def private <C extends Correspondence> C createAndAddCorrespondence(List<EObject> firstObjects,
 		List<EObject> secondObjects, String tag, C correspondence) {
 		correspondence => [
-			AUuids += firstObjects.map [
-				if (uuidResolver.hasPotentiallyCachedUuid(it)) {
-					uuidResolver.getPotentiallyCachedUuid(it)
-				} else {
-					uuidResolver.registerCachedEObject(it)
-				}
-			]
-			BUuids += secondObjects.map [
-				if (uuidResolver.hasPotentiallyCachedUuid(it)) {
-					uuidResolver.getPotentiallyCachedUuid(it)
-				} else {
-					uuidResolver.registerCachedEObject(it)
-				}
-			]
+			leftEObjects += firstObjects
+			rightEObjects += secondObjects
 			it.tag = tag
 		]
 		this.correspondences.correspondences += correspondence
@@ -96,15 +124,16 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 
 	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesBetween(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
-		getCorrespondences(correspondenceType, correspondencesFilter, aEObjects, tag)
-			.filter[EcoreUtil.equals(bEObjects, resolveCorrespondingObjects(aEObjects))]
-			.flatMapFixedTo(new LinkedHashSet) [removeCorrespondencesAndDependendCorrespondences()]
+		getCorrespondences(correspondenceType, correspondencesFilter, aEObjects, tag).filter [
+			EcoreUtil.equals(bEObjects, getCorrespondingEObjects(aEObjects))
+		].flatMapFixedTo(new LinkedHashSet)[removeCorrespondencesAndDependendCorrespondences()]
 	}
 
 	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesFor(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
-		getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag)
-			.flatMapFixedTo(new LinkedHashSet) [removeCorrespondencesAndDependendCorrespondences()]
+		getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag).flatMapFixedTo(new LinkedHashSet) [
+			removeCorrespondencesAndDependendCorrespondences()
+		]
 	}
 
 	private def Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
@@ -125,48 +154,28 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 
 	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
-		val correspondences = new HashSet<Correspondence>()
-		val uuids = eObjects.mapFixed [uuidResolver.getPotentiallyCachedUuid(it)]
-		correspondences += getCorrespondencesForUuids(uuids)
-
-		return correspondences
-			.filter(correspondenceType).filter(correspondencesFilter)
-			.filter[tag === null || it.tag == tag].toSet
+		return eObjects.getCorrespondences().filter(correspondenceType).filter(correspondencesFilter).filter [
+			tag === null || it.tag == tag
+		].toSet
 	}
 
-	private def Set<Correspondence> getCorrespondencesForUuids(List<String> uuids) {
-		return this.correspondences.correspondences.filter[AUuids.containsAll(uuids) || BUuids.containsAll(uuids)].toSet
+	private def Set<Correspondence> getCorrespondences(List<EObject> eObjects) {
+		return this.correspondences.correspondences.filter [ correspondence |
+			eObjects == correspondence.leftEObjects || eObjects == correspondence.rightEObjects
+		].toSet
 	}
 
 	override <C extends Correspondence> Set<List<EObject>> getCorrespondingEObjects(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
-		return getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag)
-			.mapFixedTo(new LinkedHashSet) [resolveCorrespondingObjects(eObjects)]
+		return getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag).mapFixedTo(
+			new LinkedHashSet)[getCorrespondingEObjects(eObjects)]
 	}
 
-	override List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence,
-		List<EObject> eObjects) {
-		resolveCorrespondingObjects(correspondence, eObjects)
-	}
-
-	private def List<EObject> resolveCorrespondingObjects(Correspondence correspondence, List<EObject> eObjects) {
-		val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)]
-		val correspondingUuids = correspondence.getCorrespondingUuids(uuids)
-		return correspondingUuids.mapFixed[resolveEObjectFromUuid]
-	}
-
-	private static def getCorrespondingUuids(Correspondence correspondence, List<String> uuids) {
-		var List<String> aUuids = correspondence.AUuids
-		var List<String> bUuids = correspondence.BUuids
-		if (aUuids === null || bUuids === null || aUuids.size == 0 || bUuids.size == 0) {
-			throw new IllegalStateException(
-				'''The correspondence '«»«correspondence»' links to an empty Uuid '«»«aUuids»' or '«»«bUuids»'!'''.
-					toString)
-		}
-		if (aUuids.equals(uuids)) {
-			return bUuids
+	private def List<EObject> getCorrespondingEObjects(Correspondence correspondence, List<EObject> eObjects) {
+		return if (correspondence.leftEObjects == eObjects) {
+			correspondence.rightEObjects
 		} else {
-			return aUuids
+			correspondence.leftEObjects
 		}
 	}
 
@@ -179,22 +188,6 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 		return correspondences !== null && correspondences.size() > 0
 	}
 
-	override getAllCorrespondences() {
-		return correspondences.correspondences
-	}
-
-	override <E, C extends Correspondence> getAllEObjectsOfTypeInCorrespondences(Class<C> correspondenceType,
-		Predicate<C> correspondencesFilter, Class<E> type) {
-		allCorrespondences
-			.filter(correspondenceType).filter(correspondencesFilter)
-			.flatMap[(it.AUuids + it.BUuids).map[resolveEObjectFromUuid]]
-			.filter(type).toSet
-	}
-
-	private def resolveEObjectFromUuid(String uuid) {
-		return uuidResolver.getPotentiallyCachedEObject(uuid)
-	}
-	
 	override <V extends CorrespondenceModelView<?>> getView(
 		CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
 		return correspondenceModelViewFactory.createCorrespondenceModelView(this)

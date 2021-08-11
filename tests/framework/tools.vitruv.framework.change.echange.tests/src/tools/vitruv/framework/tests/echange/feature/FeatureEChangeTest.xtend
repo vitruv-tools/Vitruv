@@ -10,9 +10,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
@@ -34,19 +33,18 @@ class FeatureEChangeTest extends EChangeTest {
 	var EAttribute affectedFeature
 
 	// Second model instance
-	var UuidResolver uuidResolver2
+	var IdResolver idResolver2
 	var Resource resource2
 
 	@BeforeEach
 	def final void beforeTest() {
 		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
 
 		// Load model in second resource
 		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
 		this.resource2 = resourceSet2.getResource(resource.URI, true)
-		this.uuidResolver2 = createUuidGeneratorAndResolver(resourceSet2)
+		this.idResolver2 = IdResolver.create(resourceSet2)
 	}
 
 	/**
@@ -81,8 +79,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(uuidResolver2) as FeatureEChange<Root, EAttribute>
-		assertNull(resolvedChange)
+		assertThrows(IllegalStateException)[unresolvedChange.resolveBefore(idResolver2)]
 	}
 
 	/**
@@ -106,14 +103,7 @@ class FeatureEChangeTest extends EChangeTest {
 		affectedEObject = null
 
 		// Create change	
-		assertThrows(IllegalStateException, [createUnresolvedChange()])
-// 		assertFalse(unresolvedChange.isResolved)
-// 		assertNull(unresolvedChange.affectedEObject)
-// 		
-// 		// Resolve		
-// 		val resolvedChange = unresolvedChange.resolveBefore 
-// 			as FeatureEChange<Root, EAttribute>
-//		assertNull(resolvedChange)			
+		assertThrows(IllegalArgumentException) [createUnresolvedChange()]
 	}
 
 	/**
@@ -128,22 +118,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, null)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore as FeatureEChange<Root, EAttribute>
-		assertNull(resolvedChange)
-	}
-
-	/**
-	 * Tests whether resolving the EFeatureChange fails by giving a null uuidGeneratorAndResolver
-	 */
-	@Test
-	def void resolveEFeatureuuidGeneratorAndResolverNull() {
-		// Create change	
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(null) as FeatureEChange<Root, EAttribute>
-		assertNull(resolvedChange)
+		assertThrows(IllegalArgumentException) [unresolvedChange.resolveBefore]
 	}
 
 	/**
@@ -151,7 +126,6 @@ class FeatureEChangeTest extends EChangeTest {
 	 */
 	def private Root prepareSecondRoot() {
 		val root = aet.Root
-		uuidGeneratorAndResolver.generateUuid(root)
 		resource.contents.add(root)
 		return root
 	}

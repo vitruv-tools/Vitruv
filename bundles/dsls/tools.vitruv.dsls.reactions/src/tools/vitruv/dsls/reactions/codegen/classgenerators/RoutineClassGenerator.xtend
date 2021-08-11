@@ -40,6 +40,7 @@ import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementReference
 import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
+import java.util.stream.Stream
 
 class RoutineClassGenerator extends ClassGenerator {
 	static val MISSING_NAME = "/* Name missing */"
@@ -235,6 +236,9 @@ class RoutineClassGenerator extends ClassGenerator {
 		val getElementMethod = generateMethodGetElement(deleteElement.element, currentlyAccessibleElements, typeRef(EObject));
 		val getElementMethodCall = getElementMethod?.userExecutionMethodCallString;
 		return '''
+			«Stream».of(new «Object»[] {«FOR accessibleElement : currentlyAccessibleElements SEPARATOR  ', '»«accessibleElement.name»«IF accessibleElement.optional».orElse(null)«ENDIF»«ENDFOR»})
+				.filter(it -> it instanceof «EObject»).map(it -> (EObject) it).forEach(accessibleElement ->
+					removeCorrespondenceBetween(«getElementMethodCall», accessibleElement, null));		
 			deleteObject(«getElementMethodCall»);
 		'''
 	}
@@ -313,10 +317,12 @@ class RoutineClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
 			body = '''
-				getLogger().trace("Called routine «routineClassNameGenerator.simpleName» with input:");
-				«FOR inputParameter : inputParameters»
-					getLogger().trace("   «inputParameter.name»: " + this.«inputParameter.name»);
-				«ENDFOR»
+				if (getLogger().isTraceEnabled()) {
+					getLogger().trace("Called routine «routineClassNameGenerator.simpleName» with input:");
+					«FOR inputParameter : inputParameters»
+						getLogger().trace("   «inputParameter.name»: " + this.«inputParameter.name»);
+					«ENDFOR»
+				}
 				
 				«FOR matcherStatement : matcherStatements»
 					«matcherStatementsMap.get(matcherStatement)»

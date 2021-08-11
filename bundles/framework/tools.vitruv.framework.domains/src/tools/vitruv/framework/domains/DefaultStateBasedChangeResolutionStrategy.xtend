@@ -9,16 +9,9 @@ import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.uuid.UuidResolver
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
-import java.util.Set
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
 
 /**
@@ -27,71 +20,52 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
  * @author Timur Saglam
  */
 class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
-	val VitruviusChangeFactory changeFactory
-	val VitruvDomainRepository domainRepository
-	
-	/**
-	 * Creates the strategy.
-	 */
-	new(Set<VitruvDomain> domains) {
-		domainRepository = new VitruvDomainRepositoryImpl(domains)
-		changeFactory = VitruviusChangeFactory.instance
-	}
-	
 	private def checkNoProxies(Resource resource, String stateNotice) {
 		val proxies = resource.referencedProxies
-		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice, resource.URI, String.join(", ", proxies.map[toString]))
+		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice,
+			resource.URI, String.join(", ", proxies.map[toString]))
 	}
 
-	override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver resolver) {
-		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+	override getChangeSequenceBetween(Resource newState, Resource oldState) {
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
-		val oldResourceSet = new ResourceSetImpl()
-		val newResourceSet = new ResourceSetImpl()
-		val currentStateCopy = oldState.copyInto(oldResourceSet)
-		val newStateCopy = newState.copyInto(newResourceSet)
-		val diffs = currentStateCopy.record(resolver) [
+		val monitoredResourceSet = new ResourceSetImpl()
+		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
+		return currentStateCopy.record [
 			if (oldState.URI != newState.URI) {
-				currentStateCopy.URI = newStateCopy.URI
+				currentStateCopy.URI = newState.URI
 			}
-			compareStatesAndReplayChanges(newStateCopy, currentStateCopy)
+			compareStatesAndReplayChanges(newState, currentStateCopy)
 		]
-		return changeFactory.createCompositeChange(diffs)
 	}
-	
-	override getChangeSequenceForCreated(Resource newState, UuidResolver resolver) {
-		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+
+	override getChangeSequenceForCreated(Resource newState) {
 		checkArgument(newState !== null, "new state must not be null!")
 		newState.checkNoProxies("new state")
 		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
 		// Thus, we create the resource and then monitor the re-insertion of the elements
-		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
-		val newResource = resourceSet.createResource(newState.URI)
+		val monitoredResourceSet = new ResourceSetImpl()
+		val newResource = monitoredResourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val diffs = newResource.record(resolver) [
+		return newResource.record [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
-		return changeFactory.createCompositeChange(diffs)
 	}
-	
-	override getChangeSequenceForDeleted(Resource oldState, UuidResolver resolver) {
-		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+
+	override getChangeSequenceForDeleted(Resource oldState) {
 		checkArgument(oldState !== null, "old state must not be null!")
 		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
-		val copyResourceSet = new ResourceSetImpl()
-		val currentStateCopy = oldState.copyInto(copyResourceSet)
-		val diffs = currentStateCopy.record(resolver) [
+		val monitoredResourceSet = new ResourceSetImpl()
+		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
+		return currentStateCopy.record [
 			currentStateCopy.contents.clear()
 		]
-		return changeFactory.createCompositeChange(diffs)
 	}
-	
-	private def <T extends Notifier> record(Resource resource, UuidResolver parentResolver, () => void function) {
-		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(parentResolver, resource.resourceSet)
-		try (val changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)) {
+
+	private def <T extends Notifier> record(Resource resource, ()=>void function) {
+		try (val changeRecorder = new ChangeRecorder(resource.resourceSet)) {
 			changeRecorder.beginRecording
 			changeRecorder.addToRecording(resource)
 			function.apply()
@@ -118,7 +92,9 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	private def Resource copyInto(Resource resource, ResourceSet resourceSet) {
 		val uri = resource.URI
 		val copy = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-		copy.contents.addAll(EcoreUtil.copyAll(resource.contents))
+		val elementsCopy = EcoreUtil.copyAll(resource.contents)
+		elementsCopy.forEach[eAdapters.clear]
+		copy.contents.addAll(elementsCopy)
 		resourceSet.resources += copy
 		return copy
 	}

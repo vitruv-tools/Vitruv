@@ -5,34 +5,33 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.change.echange.EChangeIdManager
 import static org.eclipse.emf.common.notify.Notification.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import static extension tools.vitruv.framework.change.recording.EChangeCreationUtil.*
 
 /** 
  * Converts an EMF notification to an {@link EChange}.
  * @author Heiko Klare
  */
 @FinalFieldsConstructor
-final class NotificationToEChangeConverter {
-	val EChangeIdManager eChangeIdManager
+package final class NotificationToEChangeConverter {
 	extension val TypeInferringAtomicEChangeFactory changeFactory = TypeInferringAtomicEChangeFactory.instance
+	
+	val (EObject, EObject)=>boolean isCreateChange
 
 	def createDeleteChange(EObjectSubtractedEChange<?> change) {
-		val deleteChange = createDeleteEObjectChange(change.oldValue).withGeneratedId()
-		deleteChange.consequentialRemoveChanges += allSubstractiveChangesForChangeRelevantFeatures(change.oldValue) //
-		.mapFixed[withGeneratedId()]
+		val deleteChange = createDeleteEObjectChange(change.oldValue)
 		return deleteChange
 	}
-
+	
 	/** 
 	 * Converts the given notification to a list of {@link EChange}s.
 	 * @param n the notification to convert
@@ -85,12 +84,6 @@ final class NotificationToEChangeConverter {
 			default:
 				emptyList()
 		}
-	//
-	// case Notification.MOVE:
-	// if (n.isAttributeNotification()) {
-	// return handleAttributeMove(n)
-	// }
-	// return handleReferenceMove(n)
 	}
 
 	def private Iterable<? extends EChange> handleSetAttribute(extension NotificationInfo notification) {
@@ -127,7 +120,7 @@ final class NotificationToEChangeConverter {
 		return if (!attribute.isMany) {
 			handleSetAttribute(notification)
 		} else {
-			List.of(createUnsetFeatureChange(notifierModelElement, attribute).withGeneratedId())
+			List.of(createUnsetFeatureChange(notifierModelElement, attribute))
 		}
 	}
 
@@ -135,7 +128,7 @@ final class NotificationToEChangeConverter {
 		if (!reference.isMany) {
 			handleSetReference(notification)
 		} else {
-			List.of(createUnsetFeatureChange(notifierModelElement, reference).withGeneratedId())
+			List.of(createUnsetFeatureChange(notifierModelElement, reference))
 		}
 	}
 
@@ -146,18 +139,18 @@ final class NotificationToEChangeConverter {
 		change.affectedFeature = attribute
 		change.affectedEObject = notifierModelElement
 		change.isUnset = wasUnset
-		return List.of(change.withGeneratedId())
+		return List.of(change)
 	}
 
 	private def Iterable<? extends EChange> handleReplaceReference(extension NotificationInfo notification) {
 		val change = createReplaceSingleReferenceChange(notifierModelElement, reference, oldModelElementValue,
 			newModelElementValue)
 		change.isUnset = notification.wasUnset
-		return change.surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
+		return change.surroundWithCreateAndFeatureChangesIfNecessary()
 	}
 
 	private def handleRemoveAttribute(extension NotificationInfo notification) {
-		createRemoveAttributeChange(notifierModelElement, attribute, position, oldValue).withGeneratedId().
+		createRemoveAttributeChange(notifierModelElement, attribute, position, oldValue).
 			addUnsetChangeIfNecessary(notification)
 	}
 
@@ -167,7 +160,7 @@ final class NotificationToEChangeConverter {
 			val oldValues = oldValue as List<?>
 			oldValues.reverseView.mapFixedIndexed [ index, value |
 				val valueIndex = initialIndex + oldValues.size - 1 - index
-				createRemoveAttributeChange(notifierModelElement, attribute, valueIndex, value).withGeneratedId()
+				createRemoveAttributeChange(notifierModelElement, attribute, valueIndex, value)
 			].addUnsetChangeIfNecessary(notification)
 		} else {
 			unsetChangeOrEmpty(notification)
@@ -175,7 +168,7 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def Iterable<? extends EChange> handleRemoveReference(extension NotificationInfo notification) {
-		createRemoveReferenceChange(notifierModelElement, reference, oldModelElementValue, position).withGeneratedId().
+		createRemoveReferenceChange(notifierModelElement, reference, oldModelElementValue, position).
 			addUnsetChangeIfNecessary(notification)
 	}
 
@@ -184,7 +177,7 @@ final class NotificationToEChangeConverter {
 			val oldValues = oldValue as List<EObject>
 			oldValues.reverseView.mapFixedIndexed [ index, value |
 				val valueIndex = initialIndex + oldValues.size - 1 - index
-				createRemoveReferenceChange(notifierModelElement, reference, value, valueIndex).withGeneratedId()
+				createRemoveReferenceChange(notifierModelElement, reference, value, valueIndex)
 			].addUnsetChangeIfNecessary(notification)
 		} else {
 			unsetChangeOrEmpty(notification)
@@ -192,48 +185,48 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def handleInsertAttribute(extension NotificationInfo notification) {
-		List.of(createInsertAttributeChange(notifierModelElement, attribute, position, newValue).withGeneratedId())
+		List.of(createInsertAttributeChange(notifierModelElement, attribute, position, newValue))
 	}
 
 	private def handleMultiInsertAttribute(extension NotificationInfo notification) {
 		(newValue as List<?>).mapFixedIndexed [ index, value |
-			createInsertAttributeChange(notifierModelElement, attribute, initialIndex + index, value).withGeneratedId()
+			createInsertAttributeChange(notifierModelElement, attribute, initialIndex + index, value)
 		]
 	}
 
 	private def Iterable<? extends EChange> handleInsertReference(extension NotificationInfo notification) {
 		createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, position).
-			surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
+			surroundWithCreateAndFeatureChangesIfNecessary()
 	}
 
 	private def Iterable<? extends EChange> handleMultiInsertReference(extension NotificationInfo notification) {
 		(newValue as List<EObject>).flatMapFixedIndexed [ index, value |
 			createInsertReferenceChange(notifierModelElement, reference, value, initialIndex + index).
-				surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
+				surroundWithCreateAndFeatureChangesIfNecessary()
 		]
 	}
 
 	private def handleInsertRootChange(extension NotificationInfo notification) {
 		createInsertRootChange(newModelElementValue, notifierResource, position).
-			surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
+			surroundWithCreateAndFeatureChangesIfNecessary()
 	}
 
 	private def handleMultiInsertRootChange(extension NotificationInfo notification) {
 		(notification.newValue as List<EObject>).flatMapFixedIndexed [ index, value |
 			createInsertRootChange(value, notifierResource, initialIndex + index).
-				surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
+				surroundWithCreateAndFeatureChangesIfNecessary()
 		]
 	}
 
 	private def handleRemoveRootChange(extension NotificationInfo notification) {
-		List.of(createRemoveRootChange(oldModelElementValue, notifierResource, position).withGeneratedId())
+		List.of(createRemoveRootChange(oldModelElementValue, notifierResource, position))
 	}
 
 	private def handleMultiRemoveRootChange(extension NotificationInfo notification) {
 		val oldValues = notification.oldValue as List<EObject>
 		oldValues.reverseView.mapFixedIndexed [ index, value |
 			val valueIndex = initialIndex + oldValues.size - 1 - index
-			createRemoveRootChange(value, notifierResource, valueIndex).withGeneratedId()
+			createRemoveRootChange(value, notifierResource, valueIndex)
 		]
 	}
 
@@ -241,29 +234,21 @@ final class NotificationToEChangeConverter {
 		val oldUri = notification.oldValue as URI
 		notifierResource.contents.mapFixedIndexed [ index, value |
 			val valueIndex = initialIndex + notifierResource.contents.size - 1 - index
-			createRemoveRootChange(value, notifierResource, oldUri, valueIndex).withGeneratedId()
+			val oldResource = notifierResource.resourceSet.createResource(oldUri)
+			createRemoveRootChange(value, oldResource, oldUri, valueIndex)
 		] + notifierResource.contents.flatMapFixedIndexed [ index, value |
 			createInsertRootChange(value, notifierResource, initialIndex + index).
-				surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
+				surroundWithCreateAndFeatureChangesIfNecessary()
 		]
 	}
 
-	def private Iterable<? extends EChange> allAdditiveChangesForChangeRelevantFeatures(EObject eObject) {
-		eObject.walkChangeRelevantFeatures(
-			[object, attribute|createAdditiveChangesForValue(object, attribute)],
-			[object, reference|if (reference.isContainment) createAdditiveCreateChangesForValue(object, reference)]
-		) + eObject.walkChangeRelevantFeatures(null) [ object, reference |
-			if (!reference.isContainment) createAdditiveChangesForValue(object, reference)
+	def private Iterable<? extends EChange> allAdditiveChangesForChangeRelevantFeatures(EObjectAddedEChange<?> change, EObject eObject) {
+		change.newValue.walkChangeRelevantFeatures(
+			[object, attribute|createAdditiveEChangeForAttribute(object, attribute)],
+			[object, reference|if (reference.isContainment) createAdditiveEChangeForReferencedObject(object, reference, [referencedObject | isCreateChange.apply(object, referencedObject)])]
+		) + change.newValue.walkChangeRelevantFeatures(null) [ object, reference |
+			if (!reference.isContainment) createAdditiveEChangeForReferencedObject(object, reference, [false])
 		]
-	}
-
-	def private Iterable<? extends EChange> allSubstractiveChangesForChangeRelevantFeatures(EObject eObject) {
-		eObject.walkChangeRelevantFeatures(null) [ object, reference |
-			if (!reference.isContainment) createSubtractiveChangesForValue(object, reference)
-		] + eObject.walkChangeRelevantFeatures(
-			[object, attribute|createSubtractiveChangesForValue(object, attribute)],
-			[object, reference|if (reference.isContainment) createSubtractiveChangesForValue(object, reference)]
-		)
 	}
 
 	def private static Iterable<? extends EChange> walkChangeRelevantFeatures(
@@ -319,15 +304,11 @@ final class NotificationToEChangeConverter {
 
 	private def Iterable<? extends EChange> surroundWithCreateAndFeatureChangesIfNecessary(
 		EObjectAddedEChange<?> change) {
-		return if (eChangeIdManager.isCreateChange(change)) {
+		return if (isCreateChange.apply(if (change instanceof UpdateReferenceEChange<?>) change.affectedEObject, change.newValue)) {
 			val createChange = createCreateEObjectChange(change.newValue)
-			List.of(createChange, change) + allAdditiveChangesForChangeRelevantFeatures(change.newValue)
+			List.of(createChange, change) + allAdditiveChangesForChangeRelevantFeatures(change, change.newValue)
 		} else
 			List.of(change)
 	}
 
-	def private <T extends EChange> withGeneratedId(T change) {
-		eChangeIdManager.setOrGenerateIds(change)
-		return change
-	}
 }

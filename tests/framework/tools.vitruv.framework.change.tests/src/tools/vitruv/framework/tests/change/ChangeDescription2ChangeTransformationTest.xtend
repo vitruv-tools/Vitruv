@@ -4,9 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
@@ -20,20 +17,25 @@ import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import tools.vitruv.testutils.domains.TestDomainsRepository
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.eclipse.emf.ecore.util.EcoreUtil
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertNotNull
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var ChangeRecorder changeRecorder
-	var UuidGeneratorAndResolver uuidGeneratorAndResolver
+	var IdResolver idResolver
 	var ResourceSet resourceSet
 	var Path tempFolder
 	
@@ -43,9 +45,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@BeforeEach
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
+		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
+		this.idResolver = IdResolver.create(resourceSet)
+		this.changeRecorder = new ChangeRecorder(resourceSet)
 		this.resourceSet.startRecording
 	}
 
@@ -56,7 +58,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 
 	protected def <T extends Notifier> record(T objectToRecord, Consumer<T> operationToRecord) {
 		val recordedChanges = objectToRecord.recordComposite(operationToRecord)
-		return prepareChanges(recordedChanges)
+		return validateChange(recordedChanges)
 	}
 	
 	protected def <T extends Notifier> recordComposite(T objectToRecord, Consumer<T> operationToRecord) {
@@ -64,9 +66,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		objectToRecord.startRecording
 		operationToRecord.accept(objectToRecord)
 		objectToRecord.stopRecording
-		val recordedChanges = changeRecorder.changes
+		val recordedChange = changeRecorder.change
 		resourceSet.startRecording
-		return recordedChanges
+		return recordedChange
 	}
 
 	protected def resourceAt(String name) {
@@ -100,18 +102,49 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		this.changeRecorder.removeFromRecording(notifier)
 	}
 
-	private def List<EChange> prepareChanges(List<? extends TransactionalChange> changeDescriptions) {
-		val monitoredChanges = changeDescriptions.map[EChanges].flatten
-		monitoredChanges.forEach[EChangeUnresolver.unresolve(it)]
-		val resultingChanges = newArrayList
-		for (change : monitoredChanges.toList.reverseView) {
-			resultingChanges += change.resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver)
+	private def List<EChange> validateChange(TransactionalChange change) {
+		// Rollback changes, copy the state before their execution, reapply the changes to restore the state
+		// and re-resolve the changes for the copied state and apply them to check whether they can properly
+		// be applied to a different state
+		val monitoredChanges = change.EChanges
+		monitoredChanges.reverseView.forEach[monitoredChange|
+			monitoredChange.applyBackward
+		]
+		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories()
+		val comparisonIdResolver = IdResolver.create(comparisonResourceSet)
+		resourceSet.copyTo(comparisonResourceSet)
+		monitoredChanges.map[
+			applyForward(idResolver)
+			EcoreUtil.copy(it)
+		].forEach[
+			val unresolvedChange = it.unresolve()
+			val resolvedChange = unresolvedChange.resolveBefore(comparisonIdResolver)
+			resolvedChange.applyForward(comparisonIdResolver)
+		]
+		resourceSet.assertContains(comparisonResourceSet)
+		comparisonResourceSet.assertContains(resourceSet)
+		return monitoredChanges
+	}
+	
+	private static def copyTo(ResourceSet original, ResourceSet target) {
+		for (originalResource : original.resources) {
+			val comparisonResource = target.createResource(originalResource.URI)
+			if (!originalResource.contents.empty) {
+				comparisonResource.contents += EcoreUtil.copyAll(originalResource.contents)
+			}
 		}
-		resultingChanges.reverse
-		for (change : resultingChanges) {
-			change.applyForward
+	}
+	
+	private static def assertContains(ResourceSet first, ResourceSet second) {
+		for (originalResource : second.resources) {
+			val comparisonResource = first.getResource(originalResource.URI, false)
+			assertNotNull(comparisonResource)
+			if (!originalResource.contents.empty) {
+				assertThat(comparisonResource.firstRootEObject, equalsDeeply(originalResource.firstRootEObject))	
+			} else {
+				assertTrue(comparisonResource.contents.empty)
+			}	
 		}
-		return resultingChanges
 	}
 
 	static def assertChangeCount(Iterable<? extends EChange> changes, int expectedCount) {

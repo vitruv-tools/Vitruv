@@ -35,8 +35,6 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	def void prepareState() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		uuidGeneratorAndResolver.generateUuid(newValue) // used as old value, so no UUID generated
-		uuidGeneratorAndResolver.generateUuid(newValue2) // used as old value, so no UUID generated
 		prepareStateBefore
 	}
 
@@ -56,27 +54,6 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		assertIsStateBefore
-	}
-
-	/**
-	 * Resolves a {@link RemoveAndDeleteNonRoot} EChange. The model is in state
-	 * after the change, so the non root element was deleted.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after change
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, newValue)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		assertIsStateAfter
 	}
 
 	/**
@@ -156,15 +133,6 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		referenceContent.add(newValue)
 		referenceContent.add(newValue2)
 		assertIsStateBefore
-	}
-
-	/**
-	 * Sets the state of the model after the changes.
-	 */
-	def private void prepareStateAfter() {
-		referenceContent.remove(newValue)
-		referenceContent.remove(newValue2)
-		assertIsStateAfter
 	}
 
 	/**

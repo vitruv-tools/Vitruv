@@ -3,7 +3,6 @@ package tools.vitruv.framework.tests.echange.eobject
 import allElementTypes.Root
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -15,8 +14,6 @@ class DeleteEObjectTest extends EObjectTest {
 	@BeforeEach
 	def void beforeTest() {
 		prepareStateBefore(createdObject)
-		uuidGeneratorAndResolver.generateUuid(createdObject) // Is used as existing object, so needs to have a UUID
-		uuidGeneratorAndResolver.generateUuid(createdObject2) // Is used as existing object, so needs to have a UUID
 	}
 
 	/**
@@ -67,11 +64,9 @@ class DeleteEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def void applyBackwardTest() {
-		// Set state after
-		prepareStateAfter
-
 		// Create change and resolve 1
-		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter as DeleteEObject<Root>
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore as DeleteEObject<Root>
+		resolvedChange.assertApplyForward
 
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -80,11 +75,10 @@ class DeleteEObjectTest extends EObjectTest {
 		assertIsStateBefore(createdObject)
 
 		// Now another change would be applied and the object would be inserted in.
-		prepareStateAfter
-
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveAfter as DeleteEObject<Root>
-
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore as DeleteEObject<Root>
+		resolvedChange2.assertApplyForward
+		
 		// Apply backward 1
 		resolvedChange2.assertApplyBackward
 
@@ -97,13 +91,6 @@ class DeleteEObjectTest extends EObjectTest {
 	 */
 	def private void prepareStateBefore(Root stagingAreaObject) {
 		assertIsStateBefore(stagingAreaObject)
-	}
-
-	/**
-	 * Sets the state of the model after a change.
-	 */
-	def private void prepareStateAfter() {
-		assertIsStateAfter
 	}
 
 	/**

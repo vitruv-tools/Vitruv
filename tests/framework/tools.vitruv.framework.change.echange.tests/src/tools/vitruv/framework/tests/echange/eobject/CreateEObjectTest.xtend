@@ -3,7 +3,6 @@ package tools.vitruv.framework.tests.echange.eobject
 import allElementTypes.Root
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 
@@ -65,11 +64,9 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def void applyBackwardTest() {
-		// Set state after
-		prepareStateAfter(createdObject)
-
-		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter as CreateEObject<Root>
+		// Create change, resolve it and apply it forward
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore as CreateEObject<Root>
+		resolvedChange.assertApplyForward
 
 		// Apply backward
 		resolvedChange.assertApplyBackward
@@ -80,13 +77,6 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	def private void prepareStateBefore() {
 		assertIsStateBefore
-	}
-
-	/** 
-	 * Sets the state of the model after the change.
-	 */
-	def private void prepareStateAfter(Root object) {
-		assertIsStateAfter(object)
 	}
 
 	/**

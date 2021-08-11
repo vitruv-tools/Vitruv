@@ -11,26 +11,27 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import tools.vitruv.framework.change.description.CompositeTransactionalChange
-import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 import static com.google.common.base.Preconditions.checkState
 import static org.eclipse.emf.common.notify.Notification.*
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
-import static extension tools.vitruv.framework.change.echange.util.EChangeUtil.*
+import static extension tools.vitruv.framework.change.echange.EChangeUtil.*
 import org.eclipse.emf.ecore.EReference
 import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__CONTENTS
 import static extension org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyForward
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyBackward
+import tools.vitruv.framework.change.echange.id.IdResolver
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -47,31 +48,50 @@ class ChangeRecorder implements AutoCloseable {
 	// not recording: unmodifiable list with results of last recording.
 	// recording: modifiable list collecting the changes. Must never be handed out.
 	// closed: null
-	List<CompositeTransactionalChange> resultChanges = emptyList
+	List<EChange> resultChanges = emptyList
 	val NotificationToEChangeConverter converter
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	val IdResolver idResolver
+	val EChangeIdManager eChangeIdManager
+	val Set<EObject> existingObjects = new HashSet
+	val Set<Notifier> toDesinfect = new HashSet
+	val ResourceSet resourceSet
+	
+	new(ResourceSet resourceSet) {
+		this.resourceSet = resourceSet
+		this.idResolver = IdResolver.create(resourceSet)
+		this.eChangeIdManager = new EChangeIdManager(idResolver)
+		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
+	}
 
-	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
-		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
-		this.converter = new NotificationToEChangeConverter(new EChangeIdManager(uuidGeneratorAndResolver))
+	private def boolean isCreateChange(EObject affectedObject, EObject addedObject) {
+		// We do not check the containment of the reference, because an element may be inserted into a non-containment
+		// reference before inserting it into a containment reference so that the create change has to be added
+		// for the insertion into the non-containment reference
+		var create = addedObject !== null && !existingObjects.contains(addedObject)
+		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
+		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
+		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
+		create = create && (addedObject.eResource === null || affectedObject === null || addedObject.eResource == affectedObject.eResource)
+		if (create) existingObjects += addedObject
+		return create;
 	}
 
 	/**
 	 * Add the given elements and all its contained elements ({@link Resource}s, {@link EObject}s) to the recorder.
-	 * Register all existing elements at the {@link UuidGeneratorAndResolver} with existing UUIDs.
+	 * Register all existing elements at the {@link IdResolverAndRepository} with existing UUIDs.
 	 * 
 	 * @param notifier - the {@link Notifier} to add the recorder to
-	 * @throws IllegalStateException if no UUID exists yet for some of the existing elements or if the recorder is already disposed
+	 * @throws IllegalStateException if the recorder is already disposed
 	 */
 	def void addToRecording(Notifier notifier) {
 		checkNotDisposed()
 		checkNotNull(notifier, "notifier")
 		checkArgument(notifier.isInOurResourceSet,
-			"cannot record changes in a different resource set than that of our UUID resolver!")
+			"cannot record changes in a different resource set than that of our ID resolver!")
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if(it instanceof EObject) uuidGeneratorAndResolver.registerEObject(it)
+				if (it instanceof EObject) existingObjects.add(it)
 				addAdapter()
 			]
 		}
@@ -94,6 +114,8 @@ class ChangeRecorder implements AutoCloseable {
 	def beginRecording() {
 		checkNotDisposed()
 		checkState(!isRecording, "This recorder is already recording!")
+		toDesinfect.forEach[recursively [removeAdapter()]]
+		toDesinfect.clear()
 		isRecording = true
 		resultChanges = new ArrayList
 	}
@@ -116,40 +138,51 @@ class ChangeRecorder implements AutoCloseable {
 	 * are treated as deleted and a delete change is created for them, inserted right after
 	 * the change describing the removal from the container.
 	 */
-	def endRecording() {
+	def TransactionalChange endRecording() {
 		checkNotDisposed()
+		checkState(isRecording, "This recorder is not recording")
 		isRecording = false
-		resultChanges = List.copyOf(postprocessRemovals(resultChanges))
+		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
+		idResolver.endTransaction()
+		return getChange()
+		
+	}
+	
+	def private List<EChange> assignIds(List<EChange> changes) {
+		changes.toList.reverseView.forEach[applyBackward]
+		changes.forEach[assignIds]
+		changes
+	}
+	
+	def private void assignIds(EChange change) {
+		eChangeIdManager.setOrGenerateIds(change)
+		change.applyForward(idResolver)
 	}
 
-	def private postprocessRemovals(List<CompositeTransactionalChange> changes) {
+	def private postprocessRemovals(List<EChange> changes) {
 		if(changes.isEmpty) return changes
 
-		val Set<String> removedIds = new HashSet
-		for (eChange : changes.flatMap[EChanges]) {
+		val Set<EObject> removedElements = new HashSet
+		for (eChange : changes) {
 			switch (eChange) {
 				EObjectSubtractedEChange<?> case eChange.isContainmentRemoval:
-					removedIds += eChange.oldValueID
+					removedElements += eChange.oldValue
 				EObjectAddedEChange<?> case eChange.isContainmentInsertion:
-					removedIds -= eChange.newValueID
+					removedElements -= eChange.newValue
 			}
 		}
 
-		return if (removedIds.isEmpty) {
+		return if (removedElements.isEmpty) {
 			changes
 		} else {
-			changes.mapFixed [
-				insertChanges [ innerChange |
-					switch (eChange: innerChange.EChange) {
-						EObjectSubtractedEChange<?> case eChange.isContainmentRemoval &&
-							removedIds.contains(eChange.oldValueID):
-							VitruviusChangeFactory.instance.createConcreteApplicableChange(
-								converter.createDeleteChange(eChange)
-							)
-						default:
-							null
-					}
-				]
+			changes.insertChanges [ eChange |
+				switch (eChange) {
+					EObjectSubtractedEChange<?> case eChange.isContainmentRemoval &&
+						removedElements.contains(eChange.oldValue):
+						converter.createDeleteChange(eChange)
+					default:
+						null
+				}
 			]
 		}
 	}
@@ -161,47 +194,34 @@ class ChangeRecorder implements AutoCloseable {
 	 * @param inserter a function that receives a {@link ConcreteChange} and returns a change to insert directly
 	 * 		after the received {@link ConcreteChange}. Can return {@code null} to not insert a change.
 	 */
-	def private static CompositeTransactionalChange insertChanges(
-		CompositeTransactionalChange target,
-		(ConcreteChange)=>TransactionalChange inserter
+	def private static List<EChange> insertChanges(
+		List<EChange> changes,
+		(EChange)=>EChange inserter
 	) {
-		var List<TransactionalChange> resultChanges = null
-		for (val subchanges = target.changes, var i = 0; i < subchanges.size; i += 1) {
-			switch (change: subchanges.get(i)) {
-				ConcreteChange: {
-					resultChanges?.add(change)
-					val additional = inserter.apply(change)
-					if (additional !== null) {
-						if (resultChanges === null) {
-							resultChanges = new ArrayList(subchanges.size + 1)
-							resultChanges.addAll(subchanges.subList(0, i + 1))
-						}
-						resultChanges.add(additional)
-					}
+		var List<EChange> resultEChanges = null
+		for (var k = 0; k < changes.size; k++) {
+			val eChange = changes.get(k)
+			resultEChanges?.add(eChange)
+			val additional = inserter.apply(eChange)
+			if (additional !== null) {
+				if (resultEChanges === null) {
+					resultEChanges = new ArrayList(changes.size + 1)
+					resultEChanges.addAll(changes.subList(0, k + 1))
 				}
-				CompositeTransactionalChange: {
-					val result = insertChanges(change, inserter)
-					if (result !== change && resultChanges === null) {
-						resultChanges = new ArrayList(subchanges.size)
-						resultChanges.addAll(subchanges.subList(0, i))
-					}
-					resultChanges?.add(result)
-				}
-				default:
-					throw new IllegalStateException('''unexpected change type «change.class.simpleName»: «change»''')
+				resultEChanges.add(additional)
 			}
 		}
-		return if (resultChanges !== null) {
-			VitruviusChangeFactory.instance.createCompositeTransactionalChange(resultChanges)
+		return if (resultEChanges !== null) {
+			resultEChanges
 		} else {
-			target
+			changes
 		}
 	}
 
-	def List<? extends TransactionalChange> getChanges() {
+	def TransactionalChange getChange() {
 		checkNotDisposed()
 		checkState(!isRecording, "This recorder is still recording!")
-		resultChanges
+		VitruviusChangeFactory.instance.createTransactionalChange(resultChanges)
 	}
 
 	def isRecording() {
@@ -246,7 +266,7 @@ class ChangeRecorder implements AutoCloseable {
 			case null: true
 			EObject: isInOurResourceSet(notifier?.eResource)
 			Resource: isInOurResourceSet(notifier?.resourceSet)
-			ResourceSet: notifier == uuidGeneratorAndResolver.resourceSet
+			ResourceSet: notifier == resourceSet
 			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
 		}
 	}
@@ -277,22 +297,28 @@ class ChangeRecorder implements AutoCloseable {
 				}
 			}
 
-			if (isRecording) {
-				val newChanges = converter.convert(new NotificationInfo(notification))
-				if (!newChanges.isEmpty) {
-					resultChanges += VitruviusChangeFactory.instance.createCompositeTransactionalChange(
-						newChanges.map[VitruviusChangeFactory.instance.createConcreteApplicableChange(it)]
-					)
+			val newChanges = converter.convert(new NotificationInfo(notification))
+			if (!newChanges.isEmpty) {
+				// Register any added object as existing, even if we are not recording
+				newChanges.forEach[
+					if (it instanceof EObjectAddedEChange<?>) {
+						existingObjects += newValue
+						if (it instanceof UpdateReferenceEChange<?>) existingObjects += affectedEObject 	
+					}
+				]
+				if (isRecording) {
+					resultChanges += newChanges
 				}
 			}
 		}
 
 		private def infect(Object newValue) {
-			(newValue as Notifier)?.recursively[addAdapter()]
+			(newValue as Notifier)?.recursively[toDesinfect -= it; addAdapter()]
 		}
 
 		private def desinfect(Object oldValue) {
-			(oldValue as Notifier)?.recursively[removeAdapter()]
+			// Defer desinfect to ensure that elements moved from removed element containments to new containments are recognized properly
+			if (oldValue instanceof Notifier) toDesinfect += oldValue
 		}
 
 		override getTarget() { null }

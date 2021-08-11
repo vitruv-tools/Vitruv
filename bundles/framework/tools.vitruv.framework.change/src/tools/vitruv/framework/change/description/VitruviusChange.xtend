@@ -3,11 +3,11 @@ package tools.vitruv.framework.change.description
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.emf.ecore.resource.Resource
 import java.util.Set
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -29,24 +29,16 @@ interface VitruviusChange {
 	/**
 	 * Resolves the change and applies it forward so that the model is in the state after the change afterwards.
 	 * It has to be ensured that the model is in a state the change can be applied to before calling this method.
+	 * Returns the resolved change.
 	 * 
-	 * @throws RuntimeException if the change cannot be resolved or is already resolved.
+	 * @throws IllegalStateException if the change cannot be resolved or is already resolved.
 	 */
-	def void resolveBeforeAndApplyForward(UuidResolver uuidResolver)
+	def VitruviusChange resolveAndApply(ResourceSet resourceSet)
 
 	/**
-	 * Resolves the change and applies it backward so that the model is in the state before the change afterwards.
-	 * It has to be ensured that the model is in a state the change can be applied to before calling this method.
-	 *
-	 * @throws RuntimeException if the change cannot be resolved or is already resolved.
+	 * Returns an unresolved change, such that all its affected and referenced {@link EObjects} are removed.
 	 */
-	def void resolveAfterAndApplyBackward(UuidResolver uuidResolver)
-
-	/**
-	 * Unresolves the change if it can be applied to a resource. If it is not applicable, it will not be unresolved
-	 * (as a new resolution is impossible).
-	 */
-	def void unresolveIfApplicable()
+	def VitruviusChange unresolve()
 	
 	/**
 	 * Returns all {@link EObject}s directly affected by this change. This does not include referenced elements.
@@ -54,21 +46,10 @@ interface VitruviusChange {
 	def Set<EObject> getAffectedEObjects()
 	
 	/**
-	 * Returns the ID all {@link EObject}s directly affected by this change. This does not include referenced elements.
-	 */
-	def Set<String> getAffectedEObjectIds()
-
-	/**
 	 * Returns all {@link EObject}s affected by this change, including both the elements of which an attribute or
 	 * reference was changes, as well as the referenced elements.
 	 */
 	def Set<EObject> getAffectedAndReferencedEObjects()
-
-	/**
-	 * Returns the IDs of all {@link EObject}s affected by this change, including both the elements of which an attribute or
-	 * reference was changes, as well as the referenced elements.
-	 */
-	def Set<String> getAffectedAndReferencedEObjectIds()
 
 	/**
 	 * Returns the {@link URI}s of all {@link Resource}s changed by this change, i.e. the resources containing the 

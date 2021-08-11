@@ -32,7 +32,6 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		newNonRootObject = aet.NonRoot
 		prepareStateBefore
@@ -55,28 +54,6 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
 		assertIsStateBefore
-	}
-
-	/**
-	 * Resolves a {@link CreateAndReplaceNonRoot} EChange. The model is in state
-	 * after the change, so the new non root element is already created and
-	 * in the single valued containment reference.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newNonRootObject)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, newNonRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
 	}
 
 	/**

@@ -57,27 +57,6 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	}
 
 	/**
-	 * Resolves a {@link CreateAndInsertNonRoot} EChange. The model is in state
-	 * after the change, so the new non root element is in a containment reference.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after
-		prepareStateAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, newValue)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.		
-		assertIsStateAfter
-	}
-
-	/**
 	 * Tests whether resolving the {@link CreateAndInsertNonRoot} EChange
 	 * returns the same class.
 	 */
@@ -146,15 +125,6 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 
 		// State after
 		assertIsStateBefore
-	}
-
-	/**
-	 * Sets the state of the model after the changes.
-	 */
-	def private void prepareStateAfter() {
-		referenceContent.add(newValue)
-		referenceContent.add(newValue2)
-		assertIsStateAfter
 	}
 
 	/**

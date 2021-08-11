@@ -5,7 +5,7 @@ import java.util.Collection
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.vsum.ModelInstance
+import tools.vitruv.framework.vsum.internal.ModelInstance
 
 /**
  * A basic read-only view on a model that passes through only some of the model elements.

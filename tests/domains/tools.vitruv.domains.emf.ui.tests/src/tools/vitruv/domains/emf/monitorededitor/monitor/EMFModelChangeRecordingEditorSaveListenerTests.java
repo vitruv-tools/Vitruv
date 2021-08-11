@@ -13,8 +13,6 @@ package tools.vitruv.domains.emf.monitorededitor.monitor;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -28,12 +26,11 @@ import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock.SaveEventKind;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
-import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations.TestVirtualModel;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
 
 public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;
@@ -43,7 +40,6 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
     private IEditorPartAdapter editorPartAdapter;
 
     private final EObject DUMMY_EOBJECT = EcoreFactory.eINSTANCE.createEClass();
-    private TestVirtualModel virtualModel;
     
     @BeforeEach
     public void setUp() {
@@ -54,8 +50,6 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
                 Files.ECORE_FILE_EXTENSION);
         editorPart = eclipseCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
         editorPartAdapter = adapterFactory.createAdapter(editorPart);
-        this.virtualModel = TestVirtualModel.createInstance();
-        this.virtualModel.registerExistingModel(Files.EXAMPLEMODEL_ECORE);
     }
 
     @AfterEach
@@ -70,13 +64,13 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
-                assert changeDescriptions != null;
-                changeDescriptions.forEach((TransactionalChange descr) -> assertTrue(descr.getEChanges().isEmpty()));
+            protected void onSavedResource(VitruviusChange changeDescription) {
+                assert changeDescription != null;
+                assertTrue(changeDescription.getEChanges().isEmpty());
                 ensureExecuted.markExecuted();
             }
         };
-        listener.initialize(virtualModel);
+        listener.initialize();
 
         eclipseCtrl.issueSaveEvent(SaveEventKind.SAVE);
 
@@ -94,14 +88,9 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
-                assert changeDescriptions != null;
-                // assert changeDescriptions.size() == 1;
-                int counter = 0;
-                for (TransactionalChange descr : changeDescriptions) {
-                    counter += descr.getEChanges().size();
-                }
-                assert counter == 1;
+            protected void onSavedResource(VitruviusChange changeDescription) {
+                assert changeDescription != null;
+                assert changeDescription.getEChanges().size() == 1;
 
                 // assert
                 // changeDescriptions.get(0).getChangeDescription().getObjectChanges().containsKey(rootObj);
@@ -109,7 +98,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
                 ensureExecuted.markExecuted();
             }
         };
-        listener.initialize(virtualModel);
+        listener.initialize();
 
         // Change the model.
         rootObj.setName(newRootObjName);
@@ -131,11 +120,11 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
+            protected void onSavedResource(VitruviusChange changeDescription) {
                 ensureNotExecuted.markExecuted();
             }
         };
-        listener.initialize(virtualModel);
+        listener.initialize();
 
         eclipseCtrl.issueSaveEvent(SaveEventKind.SAVE);
 

@@ -7,15 +7,14 @@ import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.tests.echange.EChangeTest
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static org.junit.jupiter.api.Assertions.assertThrows
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 
@@ -33,7 +32,6 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
 		oldValue = DEFAULT_ROOT_NAME
 		newValue = "New Root ID"
@@ -96,7 +94,6 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	def void invalidAttributeTest() {
 		// NonRoot element has no int attribute.
 		val affectedNonRootEObject = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(affectedNonRootEObject)
 		resource.contents.add(affectedNonRootEObject)
 		val affectedRootFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_EATTRIBUTE
 		val oldIntValue = DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE

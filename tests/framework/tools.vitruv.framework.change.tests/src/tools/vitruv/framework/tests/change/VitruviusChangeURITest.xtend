@@ -25,7 +25,7 @@ class VitruviusChangeURITest extends ChangeDescription2ChangeTransformationTest 
 			]
 		]
 		
-		result.flatMap[changedURIs].forEach[assertEquals(it, resource.URI)]
+		result.changedURIs.forEach[assertEquals(it, resource.URI)]
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ class VitruviusChangeURITest extends ChangeDescription2ChangeTransformationTest 
 		]
 		
 		resource.allContents.forEach[assertTrue(it.eIsProxy)]
-		result.flatMap[changedURIs].forEach[assertEquals(it, resource.URI)]
+		result.changedURIs.forEach[assertEquals(it, resource.URI)]
 	}
 	
 }

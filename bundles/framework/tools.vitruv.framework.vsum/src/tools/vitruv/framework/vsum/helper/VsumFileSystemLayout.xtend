@@ -8,14 +8,15 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static java.nio.charset.StandardCharsets.UTF_8
 import static java.nio.file.Files.createDirectories
-import static tools.vitruv.framework.vsum.VsumConstants.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import org.eclipse.emf.common.util.URI
 
 class VsumFileSystemLayout {
-	static final String CORRESPONDENCES_FILE_EXT = "correspondence";
-	static final String UUID_FILE_EXT = "uuid";
-	
+	static final String CORRESPONDENCES_FILE = "correspondences.correspondence";
+	static final String MODELS_FILE = "models.models";
+	static final String VSUM_FOLDER_NAME = "vsum";
+    static final String CONSISTENCY_METADATA_FOLDER_NAME = "consistencymetadata";
+    
 	val Path vsumProjectFolder
 	var prepared = false
 	
@@ -24,8 +25,6 @@ class VsumFileSystemLayout {
 	}
 	
 	def void prepare() throws IOException {
-		createDirectories(uuidProviderAndResolverFolder) 
-		createDirectories(correspondenceFolder) 
 		createDirectories(vsumFolder) 
 		createDirectories(consistencyMetadataFolder) 
 		prepared = true 
@@ -68,17 +67,12 @@ class VsumFileSystemLayout {
 	
 	def URI getCorrespondencesURI() {
 		checkPrepared()
-		return correspondenceModelPath.toFile.createFileURI()
+		return vsumFolder.resolve(CORRESPONDENCES_FILE).toFile.createFileURI()
 	}
 	
-	def private getCorrespondenceModelPath() {
-		correspondenceFolder.resolve('''Correspondences.«CORRESPONDENCES_FILE_EXT»''')
-	}
-	
-	def URI getUuidProviderAndResolverURI() {
+	def Path getModelsNamesFilesPath() {
 		checkPrepared()
-		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid.«UUID_FILE_EXT»''')
-		return uuidPath.toFile.createFileURI() 
+		return vsumFolder.resolve(MODELS_FILE)
 	}
 	
 	def Path getVsumProjectFolder() {
@@ -89,21 +83,8 @@ class VsumFileSystemLayout {
 		vsumProjectFolder.resolve(VSUM_FOLDER_NAME) 
 	}
 
-	def private getCorrespondenceFolder() {
-		vsumProjectFolder.resolve(CORRESPONDENCE_FOLDER_NAME) 
-	}
-
-	def private getUuidProviderAndResolverFolder() {
-		vsumProjectFolder.resolve(UUID_PROVIDER_AND_RESOLVER_FOLDER_NAME) 
-	}
-
 	def private Path getConsistencyMetadataFolder() {
 		vsumProjectFolder.resolve(CONSISTENCY_METADATA_FOLDER_NAME) 
-	}
-	
-	def Path getVsumInstancesFile() {
-		checkPrepared() 
-		vsumFolder.resolve(VSUM_INSTANCES_FILE_NAME) 
 	}
 	
 	override String toString() {

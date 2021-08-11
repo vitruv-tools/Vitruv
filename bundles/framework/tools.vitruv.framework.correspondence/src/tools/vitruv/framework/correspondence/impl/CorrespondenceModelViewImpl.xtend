@@ -57,33 +57,12 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.hasCorrespondences();
 	}
 	
-	override getAllCorrespondences() {
-		correspondenceModelDelegate.allCorrespondences;
-	}
-	
-	
 	override getCorrespondences(List<EObject> eObjects) {
 		getCorrespondences(eObjects, null);
 	}
 	
 	override getCorrespondences(List<EObject> eObjects, String tag) {
 		correspondenceModelDelegate.getCorrespondences(correspondenceType, defaultCorrespondenceFilter, eObjects, tag).toSet();
-	}
-
-	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
-		val correspondencesA = getCorrespondences(aEObjects)
-		val correspondencesB = getCorrespondences(bEObjects)
-		correspondencesA.retainAll(correspondencesB);
-		if (correspondencesA.size > 1) {
-			throw new IllegalStateException("Only one correspondence for " + aEObjects + " and " + bEObjects + " expected, but found more");
-		} else if (correspondencesA.size == 0) {
-			throw new IllegalStateException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
-		}
-		return correspondencesA.get(0);
-	}
-	
-	override getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjectsInCorrespondence(correspondence, eObjects);
 	}
 
 	override getCorrespondingEObjects(List<EObject> eObjects) {
@@ -94,10 +73,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, defaultCorrespondenceFilter, eObjects, tag);
 	}
 
-	override <E> getAllEObjectsOfTypeInCorrespondences(Class<E> type) {
-		correspondenceModelDelegate.getAllEObjectsOfTypeInCorrespondences(correspondenceType, defaultCorrespondenceFilter, type);
-	}
-	
 	override removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, defaultCorrespondenceFilter, aEObjects, bEObjects, tag);
 	}

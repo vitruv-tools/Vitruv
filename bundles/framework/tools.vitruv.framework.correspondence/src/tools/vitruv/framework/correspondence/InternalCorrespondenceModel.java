@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * An internal representation of the {@link GenericCorrespondenceModel},
@@ -17,8 +18,11 @@ import org.eclipse.emf.ecore.EObject;
 public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<Correspondence> {
 	/**
 	 * Loads the correspondence model from its persistence if existing.
+	 * 
+	 * @param resolveIn
+	 * 			- the {@link ResourceSet} to resolve the corresponding objects in
 	 */
-	public void loadSerializedCorrespondences();
+	public void loadSerializedCorrespondences(ResourceSet resolveIn);
 	
 	/**
 	 * Saves this correspondence model instance.
@@ -77,21 +81,6 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
 	 */
 	public <C extends Correspondence> Set<List<EObject>> getCorrespondingEObjects(Class<C> correspondenceType,
 			Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag);
-
-	/**
-	 * Returns all elements of a given type that are present in any of the stored
-	 * correspondences.
-	 * 
-	 * @param correspondenceType
-	 *            - the type of correspondence to filter for
-	 * @param correspondencesFilter
-	 *            - the filter for getting the correspondences of interest
-	 * @param type
-	 *            - the object type to search for in the correspondences
-	 * @return the elements in any of the correspondences having the specified type
-	 */
-	public <E, C extends Correspondence> Set<E> getAllEObjectsOfTypeInCorrespondences(Class<C> correspondenceType,
-			Predicate<C> correspondencesFilter, Class<E> type);
 
 	/**
 	 * Removes the correspondences of the given type and with the given type between

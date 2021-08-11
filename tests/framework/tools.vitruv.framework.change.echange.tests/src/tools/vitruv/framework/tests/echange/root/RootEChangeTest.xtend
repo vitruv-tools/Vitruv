@@ -16,14 +16,11 @@ abstract class RootEChangeTest extends EChangeTest {
 	var Root newRootObject2 = null
 
 	/**
-	 * Calls setup of superclass and creates two new root elements 
-	 * which can be used in the tests.
+	 * Creates two new root elements which can be used in the tests.
 	 */
 	@BeforeEach
 	def final void beforeTest() {
 		newRootObject = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject)
 		newRootObject2 = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject2)
 	}
 }

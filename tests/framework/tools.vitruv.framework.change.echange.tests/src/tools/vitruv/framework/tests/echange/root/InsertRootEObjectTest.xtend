@@ -4,7 +4,6 @@ import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
@@ -38,26 +36,6 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		val resolvedChange = unresolvedChange.resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 		assertIsStateBefore
-	}
-
-	/**
-	 * Test resolves a {@link InsertRootEObject} EChange with a root object which is already
-	 * in the resource. This happens when the model is in state after the change
-	 * and the change will be applied backward.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved(newRootObject)
-		assertIsStateBefore
-
-		// Set state after
-		resourceContent.add(1, newRootObject)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as InsertRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource)
 	}
 
 	/**
