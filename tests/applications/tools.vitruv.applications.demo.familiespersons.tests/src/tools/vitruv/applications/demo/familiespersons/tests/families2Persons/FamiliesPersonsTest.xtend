@@ -1,4 +1,5 @@
 package tools.vitruv.applications.demo.familiespersons.tests.families2Persons
+
 //assertThat\(.*\)
 import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,12 +12,7 @@ import org.hamcrest.org.hamcrest.*;
 import static org.hamcrest.CoreMatchers.hasItem
 import tools.vitruv.testutils.matchers.ModelMatchers;
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
-import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static org.hamcrest.CoreMatchers.*
-import static org.hamcrest.CoreMatchers.is
-import static org.hamcrest.CoreMatchers.instanceOf
-import static org.hamcrest.CoreMatchers.notNullValue
 
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
@@ -39,7 +35,6 @@ import tools.vitruv.domains.demo.persons.PersonsDomainProvider
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.testutils.domains.DomainUtil
 //import tools.vitruv.framework.vsum.*
-
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import tools.vitruv.testutils.matchers.ModelDeepEqualityOption
@@ -59,21 +54,36 @@ import tools.vitruv.framework.vsum.internal.VirtualModelImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.metamodels.families.Family
 import org.eclipse.emf.common.util.BasicEList
+import edu.kit.ipd.sdq.metamodels.persons.Person
 
 //import static org.junit.Assert.isEquals
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(FamiliesPersonsTest);
 // Es gibt auch noch einen ModelPrinting
-	static String FAMILY_NAME = "Mustermann"
-	static String FIRST_NAME_FATHER = "Anton"
-	static String FIRST_NAME_MOTHER = "Berta"
-	static String FIRST_NAME_SON = "Charlie"
-	static String FIRST_NAME_DAUGHTER = "Dalia"
+	static String FAMILY_NAME = "Meier"
+	static String FIRST_FATHER = "Anton"
+	static String FIRST_MOTHER = "Berta"
+	static String FIRST_SON = "Chris"
+	static String FIRST_DAUGHTER = "Daria"
 	static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
 	static Path FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
 
+	static Male DAD = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_FATHER + " " + FAMILY_NAME]
+	static Female MOM = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOTHER + " " + FAMILY_NAME]
+	static Male SON = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON + " " + FAMILY_NAME]
+	static Female DAU = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAUGHTER + " " + FAMILY_NAME]
+
 	override protected getChangePropagationSpecifications() {
 		return #[new FamiliesToPersonsChangePropagationSpecification()]
+	}
+
+	def static Matcher<? super EList<EObject>> containsInAnyOder(EList<EObject> searchedItems,
+		ModelDeepEqualityOption... options) {
+		new EListMultipleContainmentMatcher(searchedItems, options)
+	}
+
+	def static Matcher<? super EList<EObject>> listContains(EObject searchedItem, ModelDeepEqualityOption... options) {
+		new EListSingleContainmentMatcher(searchedItem, options)
 	}
 
 	def createRegister() {
@@ -85,7 +95,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 //		val SimpleLayout layout = new SimpleLayout();
 //		val ConsoleAppender consoleAppender = new ConsoleAppender(layout);
 //		logger.addAppender(consoleAppender);
-		logger.setLevel(Level.INFO)
+//		logger.setLevel(Level.INFO)
+		logger.setLevel(Level.DEBUG)
 		resourceAt(FAMILIES_MODEL).propagate[contents += createRegister()]
 	}
 
@@ -101,21 +112,20 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	def void testInsertRegister() {
 		// insertRegister(); -> Schon erledigt durch @Before Each
 		assertThat(resourceAt(PERSONS_MODEL), exists);
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 1);
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegisterImpl));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 0);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(0, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 	}
 
 	@Test
 	def void testInsertNewFamily() {
-		val String familieName = "Meier";
-		insertFamily(familieName)
+		insertFamily(FAMILY_NAME)
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 1);
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegisterImpl));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 0);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
+		assertEquals(0, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 	}
 
 	def getExistingFamily(String lastName) {
@@ -124,128 +134,108 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testInsertFamilyWithFather() {
-		val String last = "Meier";
-		val String first = "Anton";
-		val fam = createFamily(last);
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		val fam = createFamily(FAMILY_NAME);
+		logger.info(name + " - preparation done")
+		dprint()
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += fam;
-			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = first; familyFather = fam]
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_FATHER; familyFather = fam]
 		]
-
-		logger.debug("\n\n===FATHER START===\n")
-		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.debug(i + ": " + x.toString())]
-		logger.debug("\n===END===\n\n")
-
-//	testInsertFamilyWithMember("Berta", "Schulze", 1);
-//	testInsertFamilyWithMember("Chris", "Schmidt", 2);
-//	testInsertFamilyWithMember("Daria", "Krause", 3);
+		logger.info(name + " - propagation done")
+		dprint()
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		logger.addAppender(new ConsoleAppender(new SimpleLayout()))
-		logger.setLevel(Level.INFO);
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 2);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(2, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 1);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), instanceOf(Male));
-		val MaleImpl father = resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0) as MaleImpl;
-		assertEquals(father.fullName, "Anton Meier");
-		assertEquals(father.birthday, null);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), equalsDeeply(DAD));
+		logger.info(name + " - finished without errors")
 	}
 
 	@Test
 	def void testInsertFamilyWithMother() {
-		val String last = "Meier";
-		val String first = "Berta";
-		val fam = createFamily(last);
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		val fam = createFamily(FAMILY_NAME);
+		logger.info(name + " - preparation done")
+		dprint()
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += fam;
-			fam.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = first; familyMother = fam]
+			fam.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOTHER; familyMother = fam]
 		]
-
-		logger.debug("\n\n===MOTHER START===\n")
-		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.debug(i + ": " + x.toString())]
-		logger.debug("\n===END===\n\n")
-
+		logger.info(name + " - propagation done")
+		dprint()
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 2);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(2, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 1);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), instanceOf(Female));
-		val FemaleImpl newMember = resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0) as FemaleImpl;
-		assertEquals(newMember.fullName, "Berta Meier");
-		assertEquals(newMember.birthday, null);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), equalsDeeply(MOM));
+		logger.info(name + " - finished without errors")
 	}
 
 	@Test
 	def void testInsertFamilyWithSon() {
-		val String last = "Meier";
-		val String first = "Chris";
-		val fam = createFamily(last);
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		val fam = createFamily(FAMILY_NAME);
+		logger.info(name + " - preparation done")
+		dprint()
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += fam;
-			fam.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = first; familySon = fam]
+			fam.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON; familySon = fam]
 		]
-
-		logger.debug("\n\n===SON START===\n")
-		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.debug(i + ": " + x.toString())]
-		logger.debug("\n===END===\n\n")
-
+		logger.info(name + " - propagation done")
+		dprint()
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 2);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(2, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 1);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), instanceOf(Male));
-		val MaleImpl son = resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0) as MaleImpl;
-		assertEquals(son.fullName, "Chris Meier");
-		assertEquals(son.birthday, null);
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), equalsDeeply(SON));
+		logger.info(name + " - finished without errors")
 	}
 
 	@Test
 	def void testInsertFamilyWithDaughter() {
-		val String last = "Meier";
-		val String first = "Daria";
-		val fam = createFamily(last);
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		val fam = createFamily(FAMILY_NAME);
+		logger.info(name + " - preparation done")
+		dprint()
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += fam;
-			fam.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = first; familyDaughter = fam]
+			fam.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAUGHTER; familyDaughter = fam]
 		]
-
-		logger.debug("\n\n===DAUGHTER START===\n")
-		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.debug(i + ": " + x.toString())]
-		logger.debug(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0).class)
-		logger.debug("\n===END===\n\n")
-
+		logger.info(name + " - propagation done")
+		dprint()
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 2);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(2, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 1);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), instanceOf(Female));
-		val FemaleImpl daughter = resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0) as FemaleImpl;
-		assertEquals(daughter.fullName, "Daria Meier");
-		assertEquals(daughter.birthday, null);
-	// Test if object implements interface, instance-of-matcher von hamcrest
+		assertThat(resourceAt(PERSONS_MODEL).contents.get(0).eContents.get(0), equalsDeeply(DAU));
+		logger.info(name + " - finished without errors")
 	}
 
 	def void createFamilyBeforeTesting() {
-		val String last = "Meier";
-		val String fa = "Anton";
-		val String mo = "Berta";
-		val String so = "Chris";
-		val String da = "Daria";
-		val fam = createFamily(last);
+		val fam = createFamily(FAMILY_NAME);
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += fam;
-			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = fa; familyFather = fam;]
-			fam.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = mo; familyMother = fam]
-			fam.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = so; familySon = fam]
-			fam.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = da; familyDaughter = fam]
+			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_FATHER; familyFather = fam;]
+			fam.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOTHER; familyMother = fam]
+			fam.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON; familySon = fam]
+			fam.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAUGHTER; familyDaughter = fam]
 		]
 	}
 
-	def boolean equalPersons(PersonImpl p1, PersonImpl p2) {
+	def static boolean equalPersons(PersonImpl p1, PersonImpl p2) {
 		val boolean bothNull = (p1 == null) && (p2 == null);
 		val boolean bothNotNull = (p1 != null) && (p2 != null);
 		val boolean bothSameType = bothNotNull && (p1.class == p2.class);
@@ -264,64 +254,64 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testDeleteFatherFromFamily() {
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		
+		
 		// ===== PRECONDITION =====
 		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl dad = (PersonsFactory.eINSTANCE.createMale =>
-			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl mom = (PersonsFactory.eINSTANCE.createFemale =>
-			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl son = (PersonsFactory.eINSTANCE.createMale =>
-			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl dau = (PersonsFactory.eINSTANCE.createFemale =>
-			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
+
+		var EList<EObject> list = new BasicEList<EObject>();
+		list.addAll(DAD, MOM, SON, DAU)
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
-		assertThat(personListBefore.get(0), ModelMatchers.equalsDeeply(dad))
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, mom)],true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, son)], true)
-		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dau)], true)
-		println("precondition done")
+//		assertThat(personListBefore.get(0), ModelMatchers.equalsDeeply(dad))
+		assertThat(personListBefore, containsInAnyOder(list))
+		
+//		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, DAD)], true)
+//		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, MOM)], true)
+//		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, SON)], true)
+//		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, DAU)], true)
+		logger.info(name + " - preparation done")
+		dprint()
 
 		// ===== ACTUAL TEST =====
 		// Propagate changes		
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
-			val selectedFamily = families.findFirst[x|x.lastName.equals("Meier") && x.father.firstName.equals("Anton")]
+			val selectedFamily = families.findFirst[x|x.lastName.equals(FAMILY_NAME) && x.father.firstName.equals(FIRST_FATHER)]
 			selectedFamily.father = null
 		]
-		println("propagation done")
+		logger.info(name + " - propagation done")
+		dprint()
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(4, resourceAt(PERSONS_MODEL).allContents.size); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		assertEquals(3, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size); // !
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
-		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(mom)) // !
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], false) // !
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
-
-//		personList.forEach[x, i|println(i + ": " + equalPersons(x as PersonImpl,dad))]
-//		assertThat(
-//			resourceAt(PERSONS_MODEL).contents.get(0).eContents as EList<PersonImpl>, 
-//			Matchers.containsInAnyOrder(
-//				Matchers.equalTo(dad as PersonImpl),
-//				Matchers.equalTo(mom as PersonImpl),
-//				Matchers.equalTo(son as PersonImpl),
-//				Matchers.equalTo(dau as PersonImpl)
-//			)
-//		)
+		
+		var EList<EObject> list2 = new BasicEList<EObject>();
+		list2.addAll(MOM, SON, DAU)
+		assertThat(personListAfter, containsInAnyOder(list2))
+		assertThat(personListAfter, not(listContains(DAD)))
+		
+//		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(mom)) // !
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], false) // !
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], true)
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
+		
+		logger.info(name + " - finished without errors")
 	}
 
 	@Test
@@ -340,20 +330,46 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 //		assertThat(personListBefore, Matchers .anyOf((ModelMatchers.equalsDeeply(dad)))			
 //		)
-//		var EList<Object> asdf = new BasicEList<Object>();
-//		asdf.add(dad);
-//		asdf.add(mom);
-//		asdf.add(son);
-//		asdf.add(dau);		
-//		
+		var EList<EObject> asdf = new BasicEList<EObject>();
+		asdf.add(dad);
+		asdf.add(mom);
+		asdf.add(son);
+		asdf.add(dau);
+		var EList<EObject> asdf2 = new BasicEList<EObject>();
+		asdf2.add(dad);
+		asdf2.add(son);
+		asdf2.add(dau)
+
+		assertThat(personListBefore, listContains(dad))
+		assertThat(personListBefore, listContains(mom))
+		assertThat(personListBefore, listContains(son))
+		assertThat(personListBefore, listContains(dau))
+
+		assertThat(asdf, listContains(dad))
+		assertThat(asdf, listContains(mom))
+		assertThat(asdf, listContains(son))
+		assertThat(asdf, listContains(dau))
+
+		assertThat(asdf2, listContains(dad))
+		assertThat(asdf2, listContains(son))
+		assertThat(asdf2, listContains(dau))
+
+		assertThat(personListBefore, containsInAnyOder(asdf))
+		assertThat(personListBefore, containsInAnyOder(asdf2))
+		assertThat(asdf, containsInAnyOder(asdf2))
+
+		assertThat(asdf2, not(containsInAnyOder(asdf)))
+		assertThat(asdf2, not(listContains(mom)))
+
+//		assertThat(asdf2, containsInAnyOder(asdf))
 //		assertThat(personListBefore, containsInAnyOder(asdf))
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, mom)], true)
@@ -374,10 +390,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(4, resourceAt(PERSONS_MODEL).allContents.size); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		assertEquals(3, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size); // !
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad))
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true)
@@ -402,10 +418,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, dad)], true)
@@ -424,10 +440,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(4, resourceAt(PERSONS_MODEL).allContents.size); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		assertEquals(3, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size); // !
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true) // !
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], false)
@@ -462,10 +478,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertThat(personListBefore.get(0), ModelMatchers.equalsDeeply(dad))
@@ -488,10 +504,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 4); // !
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(4, resourceAt(PERSONS_MODEL).allContents.size); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 3); // !
+		assertEquals(3, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size); // !
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad))
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true)
@@ -525,10 +541,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -551,10 +567,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
@@ -587,10 +603,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -613,10 +629,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
@@ -646,10 +662,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -675,10 +691,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -708,10 +724,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -734,10 +750,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -767,10 +783,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListBefore = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -796,10 +812,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(resourceAt(PERSONS_MODEL).contents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
+		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 
 		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
 		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
@@ -811,14 +827,19 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	}
 
 	@Test
-	def void testInsertDadIfDadAlreadyExists_DiscardChanges(){
+	def void testInsertDadIfDadAlreadyExists_DiscardChanges() {
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
 
-		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
+		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
 
 		println("\n\n===testInsertDadIfDadAlreadyExists - Preparation===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
@@ -859,8 +880,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|logger.info(i + ": " + x.toString())]
 		logger.info("\n===END===\n\n")
 
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
 		assertEquals(personListAfter0.exists[x|equalPersons(x as PersonImpl, replacing_dad)], false)
 	}
@@ -870,13 +891,21 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		// ===== PRECONDITION =====
 		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
 
-		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
-		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "ParDad Meier_2"; birthday = null]) as MaleImpl;
+		val MaleImpl replacing_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "RepDad Meier"; birthday = null]) as MaleImpl;
+		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [
+			fullName = "ParDad Meier_2";
+			birthday = null
+		]) as MaleImpl;
 
 		println("\n\n===testInsertDadIfDadAlreadyExists - Preparation===\n")
 		resourceAt(PERSONS_MODEL).allContents.forEach[x, i|println(i + ": " + x.toString())]
@@ -915,24 +944,31 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_son)], true)
 		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 5);
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 4);
+		assertEquals(5, resourceAt(PERSONS_MODEL).allContents.size);
+		assertEquals(4, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
 		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, replacing_dad)], true)
 		assertEquals(personListAfter1.exists[x|equalPersons(x as PersonImpl, parallel_dad)], false)
 	}
-	
+
 	@Test
 	def void testInsertDadIfDadAlreadyExists_MoveToNewFamily() {
 		// ===== PRECONDITION =====
 		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
 
-		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "ParDad Meier_2"; birthday = null]) as MaleImpl;
+		val MaleImpl parallel_dad = (PersonsFactory.eINSTANCE.createMale => [
+			fullName = "ParDad Meier_2";
+			birthday = null
+		]) as MaleImpl;
 
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
@@ -946,7 +982,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)], true)
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)], true)
 		assertEquals(personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
-		
+
 		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
 
 		// ===== ACTUAL TEST =====
@@ -955,9 +991,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			val fam = families.findFirst[x|x.lastName.equals("Meier")]
 			fam.father = FamiliesFactory.eINSTANCE.createMember => [firstName = "ParDad"; familyFather = fam]
 		]
-		
+
 		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
-		
+
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
@@ -967,8 +1003,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_son)], true)
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_dau)], true)
 
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 6);
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 5);
+		assertEquals(6, resourceAt(PERSONS_MODEL).allContents.size);
+		assertEquals(5, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_dad)], true)
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, parallel_dad)], true)
 	}
@@ -978,11 +1014,15 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		// ===== PRECONDITION =====
 		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-				
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
@@ -995,15 +1035,15 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(true, personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)])
 		assertEquals(true, personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)])
 		assertEquals(true, personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)])
-		
+
 		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
-		
-		FamilyRegister.from(FAMILIES_MODEL).propagate[
+
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families.removeIf([x|x.lastName.equals("Meier")])
 		]
-		
+
 		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
-		
+
 		// Check correct execution	
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
@@ -1013,8 +1053,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_son)], false)
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_dau)], false)
 		assertEquals(personListAfter2.exists[x|equalPersons(x as PersonImpl, old_dad)], false)
-		assertEquals(resourceAt(PERSONS_MODEL).allContents.size, 1);
-		assertEquals(resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size, 0);
+		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size);
+		assertEquals(0, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 	}
 
 	@Test
@@ -1022,11 +1062,15 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		// ===== PRECONDITION =====
 		// Set up the family
 		this.createFamilyBeforeTesting();
-		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale => [fullName = "Anton Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
-		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale => [fullName = "Chris Meier"; birthday = null]) as MaleImpl;
-		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale => [fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
-				
+		val MaleImpl old_dad = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Anton Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_mom = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Berta Meier"; birthday = null]) as FemaleImpl;
+		val MaleImpl old_son = (PersonsFactory.eINSTANCE.createMale =>
+			[fullName = "Chris Meier"; birthday = null]) as MaleImpl;
+		val FemaleImpl old_dau = (PersonsFactory.eINSTANCE.createFemale =>
+			[fullName = "Daria Meier"; birthday = null]) as FemaleImpl;
+
 		// Check correct setup				
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
@@ -1039,34 +1083,37 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(true, personListBefore.exists[x|equalPersons(x as PersonImpl, old_mom)])
 		assertEquals(true, personListBefore.exists[x|equalPersons(x as PersonImpl, old_son)])
 		assertEquals(true, personListBefore.exists[x|equalPersons(x as PersonImpl, old_dau)])
-		
-		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
-		
+
+		dprint()
+
 		resourceAt(FAMILIES_MODEL).propagate[contents.clear()]
-		
+
 		assertThat(resourceAt(FAMILIES_MODEL), not(exists))
 		assertThat(resourceAt(PERSONS_MODEL), not(exists))
 	}
-	
+
+	def dprint() {
+		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
+	}
+
 	def dprint(FamilyRegister fr, PersonRegister pr) {
 		var String fs = ''
 		var String ps = ''
-		if(fr != null)
-			fs = '''FamilyRegister «IF fr.id != null»«fr.id»«ELSE»<no id>«ENDIF»
-«FOR f : fr.families SEPARATOR '\n'»	Family «f.lastName»
-«IF f.father != null»		Father «f.father.firstName»«ENDIF»
-«IF f.mother != null»		Mother «f.mother.firstName»«ENDIF»
-«FOR s : f.sons BEFORE '		Sons (' SEPARATOR ', ' AFTER ')'»«s.firstName»«ENDFOR»
-«FOR d : f.daughters BEFORE '		Daughters (' SEPARATOR ', ' AFTER ')'»«d.firstName»«ENDFOR»«ENDFOR»''';
-		if(pr == null)	
-			ps = '''PersonRegister «IF pr.id != null»«pr.id»«ELSE»<no id>«ENDIF»
-«FOR p : pr.persons»
-«IF p instanceof Male»	Male: «ELSE»	Female: «ENDIF»«p.fullName» («IF p.birthday != null»«p.birthday»«ELSE»-«ENDIF»)
-«ENDFOR»''';
-		logger.info('\n' + fs + '\n\n' + ps)
+		if (fr != null)
+			fs = '''FamilyRegister Â«IF fr.id != nullÂ»Â«fr.idÂ»Â«ELSEÂ»<no id>Â«ENDIFÂ»
+Â«FOR f : fr.families SEPARATOR '\n'Â»	Family Â«f.lastNameÂ»
+Â«IF f.father != nullÂ»		Father Â«f.father.firstNameÂ»Â«ENDIFÂ»
+Â«IF f.mother != nullÂ»		Mother Â«f.mother.firstNameÂ»Â«ENDIFÂ»
+Â«FOR s : f.sons BEFORE '		Sons (' SEPARATOR ', ' AFTER ')'Â»Â«s.firstNameÂ»Â«ENDFORÂ»
+Â«FOR d : f.daughters BEFORE '		Daughters (' SEPARATOR ', ' AFTER ')'Â»Â«d.firstNameÂ»Â«ENDFORÂ»Â«ENDFORÂ»''';
+		if (pr != null)
+			ps = '''PersonRegister Â«IF pr.id != nullÂ»Â«pr.idÂ»Â«ELSEÂ»<no id>Â«ENDIFÂ»
+Â«FOR p : pr.personsÂ»
+Â«IF p instanceof MaleÂ»	Male: Â«ELSEÂ»	Female: Â«ENDIFÂ»Â«p.fullNameÂ» (Â«IF p.birthday != nullÂ»Â«p.birthdayÂ»Â«ELSEÂ»-Â«ENDIFÂ»)
+Â«ENDFORÂ»''';
+		logger.debug('\n' + fs + '\n' + ps)
 	}
 }
-
 //		var List<EObject> li = new ArrayList<EObject>();
 //		li.add(old_mom)		
 //		val VirtualModelImpl vsum = this.virtualModel as VirtualModelImpl
