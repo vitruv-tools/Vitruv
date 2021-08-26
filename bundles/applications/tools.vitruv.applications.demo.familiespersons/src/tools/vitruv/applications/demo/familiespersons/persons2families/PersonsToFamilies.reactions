@@ -1,8 +1,10 @@
 import edu.kit.ipd.sdq.metamodels.families.Family
 import java.util.ArrayList
 import java.util.List
+import java.util.Date
 import org.eclipse.emf.common.util.EList
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
+import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -42,109 +44,349 @@ routine deleteFamilyRegister(persons::PersonRegister personsRegister){
 }
 
 
+
 reaction CreatedMale {
 	after element persons::Male created  and inserted in persons::PersonRegister[persons]
-	call createMaleMemberOfFamily(newValue)
+	call createMale(newValue)
 }
 
-routine createMaleMemberOfFamily(persons::Male person){
+routine createMale(persons::Male newPerson){
 	match{
-		val familiesRegister = retrieve families::FamilyRegister corresponding to person.eContainer
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
 	}
 	action{
-		val member = create families::Member and initialize {
-		member.firstName = person.fullName.split(" ").get(0)
-		}
-		add correspondence between person and member
-		
 		call{
-		// Let user select the family
-		var EList<Family> existingFamilies = familiesRegister.families
-		val selectedFamily = if (existingFamilies.size == 0) {
-			throw new IllegalStateException("no families exist yet!")
-		} else if (existingFamilies.size == 1) {
-			existingFamilies.get(0)
-		} else {
-			val familiesNames = existingFamilies.map [lastName]
-			val String selectMsg = "Please select the family to which the person belongs."
-			val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg)
-	            .choices(familiesNames).windowModality(WindowModality.MODAL).startInteraction()
-			existingFamilies.get(selected)
+			val newPersonFirstName = newPerson.fullName.split(" ").get(0)
+			val newPersonLastName = newPerson.fullName.split(" ").get(1)
+			
+			var String msg = "You are about to insert a new male person into the family register. Is this person the father of a family or a son?"			
+			val String opt1 = "Father"
+			val String opt2 = "Son"				
+			var ArrayList<String> options = new ArrayList<String>();
+			options.addAll(opt1,opt2)				
+			val int fatherOrSon = userInteractor.singleSelectionDialogBuilder.message(msg)
+			.choices(options).windowModality(WindowModality.MODAL).startInteraction()				
+			
+			
+			// Let user select the family
+			var String msg2 = "Please choose whether you want to create a new family or insert " 
+				+ newPerson.fullName + " into one of the existing families."
+			var EList<Family> existingFamilies = familiesRegister.families
+			var int selectedFamily = 0
+			var Family chosenFamily = null
+			if(existingFamilies.size != 0){				
+				val List<String> famOptions = new ArrayList<String>();
+				famOptions.^add("insert in a new family")
+				existingFamilies.forEach[
+					fam | 
+					var ret = fam.lastName + ": "; 
+					if(fam.father != null){ ret += "F: " + fam.father.firstName + ";"}
+					if(fam.mother != null){ ret += "M: " + fam.mother.firstName + ";"}
+					if(fam.sons != null && fam.sons.size > 0) { ret += fam.sons.join("S: (",", ",")",[son|son.firstName]) }
+					if(fam.daughters != null && fam.daughters.size > 0) { ret += fam.daughters.join("S: (",", ",")",[dau|dau.firstName]) }
+					famOptions.^add(ret)
+				]			
+				selectedFamily = userInteractor.singleSelectionDialogBuilder.message(msg2)
+				.choices(famOptions).windowModality(WindowModality.MODAL).startInteraction()
+				chosenFamily = existingFamilies.get(selectedFamily-1)
+			}
+			
+			switch(fatherOrSon){
+				case 0:{
+					//It is a father
+					if(selectedFamily == 0){
+						createFatherInNewFamily(newPerson)						
+					}
+					else{
+						if(chosenFamily.lastName.equals(newPersonLastName)){
+							//names match
+							createFatherInMatchingFamily(newPerson,chosenFamily)
+						}
+						else{
+							//different lastnames
+							createFatherInDifferentlyNamedFamily(newPerson,chosenFamily)							
+						}
+					}
+				}
+				case 1:{
+					//It is a son
+					if(selectedFamily == 0){
+						createSonInNewFamily(newPerson)						
+					}
+					else{
+						if(chosenFamily.lastName.equals(newPersonLastName)){
+							//names match
+							createSonInExistingFamily(newPerson,chosenFamily)
+						}
+						else{
+							//different lastnames
+							createSonInDifferentlyNamedFamily(newPerson,chosenFamily)							
+						}
+					}
+				}
+			}	
 		}
-	
-		selectedFamily.lastName = person.fullName.split(" ").get(1)
-		
-		
-		// Let user choose whether the person is a father or a son.
-		var List<String> collectionRoles = new ArrayList
-		collectionRoles += #["Father", "Son"] 
-		val String selectMsgRoles = "Please select whether the person is a father or a son."
-		val int selectedRole = userInteractor.singleSelectionDialogBuilder.message(selectMsgRoles)
-		    .choices(collectionRoles).windowModality(WindowModality.MODAL).startInteraction()
-		if(selectedRole == 0){
-			selectedFamily.father = member			
-		} else {
-			selectedFamily.sons += member
-		}
-		addCorr(person, selectedFamily)			
-		}
-		
 	}
 }
 
-routine addCorr(persons::Person person,families::Family family){
-	action{
-		add correspondence between person and family
+
+routine createFatherInMatchingFamily(persons::Male newPerson, families::Family family){
+	action{	
+		call{
+			//CHECK FOR BIRTHDATE COMPATIBILITY
+			//TODO
+			//CHECK IF FAMILY ALREADY HAS A FATHER
+			if(family.father == null){
+				createFatherInExistingFamily(newPerson, family)
+			}
+			else{
+				// Let user select the family
+				var String msg = "The selected family (" + family.lastName + ") already has a father, named " 
+					+ family.father.firstName + ". Please choose how to continue."				
+				var List<String> options = new ArrayList<String>();
+				options.addAll(
+					"abort and revert all changes",
+					"continue and replace the existing father",			
+					"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as father"
+				)
+				val int selection = userInteractor.singleSelectionDialogBuilder.message(msg)
+				.choices(options).windowModality(WindowModality.MODAL).startInteraction()
+				
+				switch(selection){
+					case 0:{
+						discardNewPerson(newPerson)
+					}
+					case 1:{
+						replaceFatherInExistingFamily(newPerson, family)						
+					}
+					case 2:{
+						createFatherInNewFamily(newPerson)
+					}					
+				}					
+			}
+		}
 	}
 }
 
-reaction CreatedFemale {
-	after element persons::Female created  and inserted in persons::PersonRegister[persons]
-	call createFemaleMemberOfFamily(newValue)
-}
-
-routine createFemaleMemberOfFamily(persons::Female person){
+routine createFatherInNewFamily(persons::Male newPerson){
 	match{
-		val familyRegister = retrieve families::FamilyRegister corresponding to person.eContainer
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
 	}
-	action{
-		val member = create families::Member and initialize {
-		member.firstName = person.fullName.split(" ").get(0)
+	action{	
+		val family = create families::Family and initialize{
+			family.lastName = newPerson.fullName.split(" ").get(1)
 		}
-		add correspondence between person and member
-	
-	
+		val father = create families::Member and initialize {
+			father.firstName = newPerson.fullName.split(" ").get(0)			
+		}
 		call{
-		// Let user select the family
-		var EList<Family> existingFamilies = familyRegister.families
-		val selectedFamily = if (existingFamilies.size == 0) {
-			throw new IllegalStateException("no families exist yet!")
-		} else if (existingFamilies.size == 1) {
-			existingFamilies.get(0)
-		} else {
-			val familiesNames = existingFamilies.map [lastName]
-			val String selectMsg = "Please select the family to which the person belongs."
-			val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg)
-	            .choices(familiesNames).windowModality(WindowModality.MODAL).startInteraction()
-			existingFamilies.get(selected)
+			family.father = father
+			father.familyFather = family 
+			familiesRegister.families += family
 		}
-		selectedFamily.lastName = person.fullName.split(" ").get(1)
-		
-		// Let user choose whether the person is a mother or a daughter.
-		var List<String> collectionRoles = new ArrayList
-		collectionRoles += #["Mother", "Daughter"]
-		val String selectMsgRoles = "Please select whether the person is a mother or a daughter."
-		val int selectedRole = userInteractor.singleSelectionDialogBuilder.message(selectMsgRoles)
-            .choices(collectionRoles).windowModality(WindowModality.MODAL).startInteraction()
-		if(selectedRole == 0){
-			selectedFamily.mother = member			
-		} else {
-			selectedFamily.daughters += member
-		}
-		addCorr(person, selectedFamily)	
-		}		
+		add correspondence between newPerson and father
+		add correspondence between newPerson and family		
 	}
 }
+
+routine createFatherInExistingFamily(persons::Male newPerson, families::Family family){
+	action{
+		val father = create families::Member and initialize {
+			father.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.father = father
+			father.familyFather = family
+		}
+		add correspondence between newPerson and father
+		add correspondence between newPerson and family				
+	}
+} 
+
+routine replaceFatherInExistingFamily(persons::Male newPerson, families::Family family){
+	action{
+		val newFather = create families::Member and initialize{
+			newFather.firstName = newPerson.fullName.split(" ").get(0)
+		}
+		call{
+			family.father.familyFather = null
+			family.father = null			
+			family.father = newFather
+			newFather.familyFather = family			
+		}
+		add correspondence between newPerson and newFather
+		add correspondence between newPerson and family	
+	}
+}
+
+routine createFatherInDifferentlyNamedFamily(persons::Male newPerson, families::Family family){
+	action{
+		call{			
+			//CHECK FOR BIRTHDATE COMPATIBILITY
+			//TODO
+			//CHECK IF FAMILY ALREADY HAS A FATHER
+			if(family.father == null){
+				var String msg = "The selected family has a different surname (" + family.lastName + "). Please choose how to continue."				
+				var List<String> options = new ArrayList<String>();
+				options.addAll(
+					"abort and revert all changes",
+					"change the fathers surname to " + family.lastName,
+					"change the family surname to " + newPerson.fullName.split(" ").get(1),					
+					"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as father"
+				)
+				val int selection = userInteractor.singleSelectionDialogBuilder.message(msg)
+				.choices(options).windowModality(WindowModality.MODAL).startInteraction()
+				
+				switch(selection){
+					case 0:{
+						discardNewPerson(newPerson)
+					}
+					case 1:{
+						val first = newPerson.fullName.split(" ").get(0)
+						newPerson.fullName = first + " " + family.lastName
+						createFatherInExistingFamily(newPerson,family)
+					}
+					case 2:{
+						family.lastName = newPerson.fullName.split(" ").get(1)
+						createFatherInExistingFamily(newPerson,family)
+					}
+					case 3:{
+						createFatherInNewFamily(newPerson)						
+					}
+				}
+			}
+			else{
+				// Let user decide how to deal with the already existing father
+				var String msg1 = "The selected family (" + family.lastName + ") already has a father, named " 
+					+ family.father.firstName + ". Please choose how to continue."				
+				var List<String> fatherOptions = new ArrayList<String>();
+				fatherOptions.addAll(
+					"abort and revert all changes, keep old father",
+					"continue and replace the existing father",		
+					"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as father"
+				)				
+				val int fatherSelection = userInteractor.singleSelectionDialogBuilder.message(msg1)
+				.choices(fatherOptions).windowModality(WindowModality.MODAL).startInteraction()
+				
+				
+				switch(fatherSelection){
+					case 0:{
+						discardNewPerson(newPerson)
+					}
+					case 1:{
+						// Let user decide how to deal with the different family name
+						var String msg2 = "The selected family has a different surname (" + family.lastName + "). Please choose how to continue."				
+						var List<String> surnameOptions = new ArrayList<String>();
+						surnameOptions.addAll(
+							"abort and revert all changes, keep old father",
+							"change the fathers surname to " + family.lastName,
+							"change the family surname to " + newPerson.fullName.split(" ").get(1),					
+							"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as father"
+						)
+						val int surnameSelection = userInteractor.singleSelectionDialogBuilder.message(msg2)
+						.choices(surnameOptions).windowModality(WindowModality.MODAL).startInteraction()	
+						
+						switch(surnameSelection){
+							case 0:{
+								discardNewPerson(newPerson)
+							}
+							case 1:{
+								val first = newPerson.fullName.split(" ").get(0)
+								newPerson.fullName = first + " " + family.lastName
+								replaceFatherInExistingFamily(newPerson,family)
+							}
+							case 2:{
+								family.lastName = newPerson.fullName.split(" ").get(1)
+								replaceFatherInExistingFamily(newPerson,family)								
+							}
+							case 3:{
+								createFatherInNewFamily(newPerson)								
+							}
+						}			
+					}
+					case 2:{
+						createFatherInNewFamily(newPerson)
+					}					
+				}
+			}
+		}
+	}
+}
+
+
+routine createSonInExistingFamily(persons::Male newPerson, families::Family family){
+	action{
+		val son = create families::Member and initialize {
+			son.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.sons += son
+			son.familySon = family
+		}
+		add correspondence between newPerson and son
+		add correspondence between newPerson and family				
+	}	
+}
+
+routine createSonInNewFamily(persons::Male newPerson){
+	match{
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action{	
+		val family = create families::Family and initialize{
+			family.lastName = newPerson.fullName.split(" ").get(1)
+		}
+		val son = create families::Member and initialize {
+			son.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.sons += son
+			son.familySon = family
+			familiesRegister.families += family
+		}
+		add correspondence between newPerson and son
+		add correspondence between newPerson and family		
+	}
+}
+
+routine createSonInDifferentlyNamedFamily(persons::Male newPerson, families::Family family){
+	action{
+		call{	
+			// Let user decide how to deal with the different family name
+			var String msg2 = "The selected family has a different surname (" + family.lastName + "). Please choose how to continue."				
+			var List<String> surnameOptions = new ArrayList<String>();
+			surnameOptions.addAll(
+				"abort and revert all changes",
+				"change the sons surname to " + family.lastName,
+				"change the family surname to " + newPerson.fullName.split(" ").get(1),					
+				"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as a son"
+			)
+			val int surnameSelection = userInteractor.singleSelectionDialogBuilder.message(msg2)
+			.choices(surnameOptions).windowModality(WindowModality.MODAL).startInteraction()	
+			
+			switch(surnameSelection){
+				case 0:{
+					discardNewPerson(newPerson)
+				}
+				case 1:{
+					val first = newPerson.fullName.split(" ").get(0)
+					newPerson.fullName = first + " " + family.lastName
+					createSonInExistingFamily(newPerson,family)
+				}
+				case 2:{
+					family.lastName = newPerson.fullName.split(" ").get(1)
+					createSonInExistingFamily(newPerson,family)								
+				}
+				case 3:{
+					createSonInNewFamily(newPerson)								
+				}
+			}
+		}
+	}	
+}
+
+
+
 
 reaction ChangedFullName {
 	after attribute replaced at persons::Person[fullName]
@@ -174,9 +416,372 @@ reaction DeletePerson {
 routine deleteMember(persons::Person person){
 	match{
 		val member = retrieve families::Member corresponding to person
-	}
-	
+		val family = retrieve families::Family corresponding to person
+	}	
 	action{
 		delete member
+		call{
+			val boolean f = (family.father != null)
+			val boolean m = (family.mother != null)
+			val boolean s = (family.sons != null && family.sons.size != 0)
+			val boolean d = (family.daughters != null && family.daughters.size != 0)
+			if(f || m || s || d){
+				return
+			}
+		}
+		delete family
 	}
 }
+
+routine discardNewPerson(persons::Person newPerson){
+	action{
+		call{
+			var PersonRegister personRegister = newPerson.eContainer as PersonRegister
+			personRegister.persons.^remove(newPerson)			
+		}		
+	}
+}
+
+
+
+
+reaction CreatedFemale {
+	after element persons::Female created and inserted in persons::PersonRegister[persons]
+	call createFemale(newValue)
+}
+
+routine createFemale(persons::Female newPerson){
+	match{
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action{
+		call{
+			val newPersonFirstName = newPerson.fullName.split(" ").get(0)
+			val newPersonLastName = newPerson.fullName.split(" ").get(1)
+			
+			var String msg = "You are about to insert a new female person into the family register. Is this person the mother of a family or a daughter?"			
+			val String opt1 = "Mother"
+			val String opt2 = "Daughter"				
+			var ArrayList<String> options = new ArrayList<String>();
+			options.addAll(opt1,opt2)				
+			val int motherOrDaughter = userInteractor.singleSelectionDialogBuilder.message(msg)
+			.choices(options).windowModality(WindowModality.MODAL).startInteraction()				
+			
+			
+			// Let user select the family
+			var String msg2 = "Please choose whether you want to create a new family or insert " 
+				+ newPerson.fullName + " into one of the existing families."
+			var EList<Family> existingFamilies = familiesRegister.families
+			var int selectedFamily = 0
+			var Family chosenFamily = null
+			if(existingFamilies.size != 0){				
+				val List<String> famOptions = new ArrayList<String>();
+				famOptions.^add("insert in a new family")
+				existingFamilies.forEach[
+					fam | 
+					var ret = fam.lastName + ": "; 
+					if(fam.father != null){ ret += "F: " + fam.father.firstName + ";"}
+					if(fam.mother != null){ ret += "M: " + fam.mother.firstName + ";"}
+					if(fam.sons != null && fam.sons.size > 0) { ret += fam.sons.join("S: (",", ",")",[son|son.firstName]) }
+					if(fam.daughters != null && fam.daughters.size > 0) { ret += fam.daughters.join("S: (",", ",")",[dau|dau.firstName]) }
+					famOptions.^add(ret)
+				]			
+				selectedFamily = userInteractor.singleSelectionDialogBuilder.message(msg2)
+				.choices(famOptions).windowModality(WindowModality.MODAL).startInteraction()
+				chosenFamily = existingFamilies.get(selectedFamily-1)
+			}
+			
+			switch(motherOrDaughter){
+				case 0:{
+					//It is a mother
+					if(selectedFamily == 0){
+						createMotherInNewFamily(newPerson)						
+					}
+					else{
+						if(chosenFamily.lastName.equals(newPersonLastName)){
+							//names match
+							createMotherInMatchingFamily(newPerson,chosenFamily)
+						}
+						else{
+							//different lastnames
+							createMotherInDifferentlyNamedFamily(newPerson,chosenFamily)							
+						}
+					}
+				}
+				case 1:{
+					//It is a daughter
+					if(selectedFamily == 0){
+						createDaughterInNewFamily(newPerson)						
+					}
+					else{
+						if(chosenFamily.lastName.equals(newPersonLastName)){
+							//names match
+							createDaughterInExistingFamily(newPerson,chosenFamily)
+						}
+						else{
+							//different lastnames
+							createDaughterInDifferentlyNamedFamily(newPerson,chosenFamily)							
+						}
+					}
+				}
+			}	
+		}
+	}
+}
+
+
+routine createMotherInMatchingFamily(persons::Female newPerson, families::Family family){
+	action{	
+		call{
+			//CHECK FOR BIRTHDATE COMPATIBILITY
+			//TODO
+			//CHECK IF FAMILY ALREADY HAS A MOTHER
+			if(family.mother == null){
+				createMotherInExistingFamily(newPerson, family)
+			}
+			else{
+				// Let user select the family
+				var String msg = "The selected family (" + family.lastName + ") already has a mother, named " 
+					+ family.mother.firstName + ". Please choose how to continue."				
+				var List<String> options = new ArrayList<String>();
+				options.addAll(
+					"abort and revert all changes",
+					"continue and replace the existing mother",			
+					"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as mother"
+				)
+				val int selection = userInteractor.singleSelectionDialogBuilder.message(msg)
+				.choices(options).windowModality(WindowModality.MODAL).startInteraction()
+				
+				switch(selection){
+					case 0:{
+						discardNewPerson(newPerson)
+					}
+					case 1:{
+						replaceMotherInExistingFamily(newPerson, family)						
+					}
+					case 2:{
+						createMotherInNewFamily(newPerson)
+					}					
+				}					
+			}
+		}
+	}
+}
+
+routine createMotherInNewFamily(persons::Female newPerson){
+	match{
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action{	
+		val family = create families::Family and initialize{
+			family.lastName = newPerson.fullName.split(" ").get(1)
+		}
+		val mother = create families::Member and initialize {
+			mother.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.mother = mother
+			mother.familyMother = family 
+			familiesRegister.families += family
+		}
+		add correspondence between newPerson and mother
+		add correspondence between newPerson and family		
+	}
+}
+
+routine createMotherInExistingFamily(persons::Female newPerson, families::Family family){
+	action{
+		val mother = create families::Member and initialize {
+			mother.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.mother = mother
+			mother.familyMother = family
+		}
+		add correspondence between newPerson and mother
+		add correspondence between newPerson and family				
+	}
+} 
+
+routine replaceMotherInExistingFamily(persons::Female newPerson, families::Family family){
+	action{
+		val newMother = create families::Member and initialize{
+			newMother.firstName = newPerson.fullName.split(" ").get(0)
+		}
+		call{
+			family.mother.familyMother = null
+			family.mother = null			
+			family.mother = newMother
+			newMother.familyMother = family			
+		}
+		add correspondence between newPerson and newMother
+		add correspondence between newPerson and family	
+	}
+}
+
+routine createMotherInDifferentlyNamedFamily(persons::Female newPerson, families::Family family){
+	action{
+		call{			
+			//CHECK FOR BIRTHDATE COMPATIBILITY
+			//TODO
+			//CHECK IF FAMILY ALREADY HAS A MOTHER
+			if(family.mother == null){
+				var String msg = "The selected family has a different surname (" + family.lastName + "). Please choose how to continue."				
+				var List<String> options = new ArrayList<String>();
+				options.addAll(
+					"abort and revert all changes",
+					"change the mothers surname to " + family.lastName,
+					"change the family surname to " + newPerson.fullName.split(" ").get(1),					
+					"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as mother"
+				)
+				val int selection = userInteractor.singleSelectionDialogBuilder.message(msg)
+				.choices(options).windowModality(WindowModality.MODAL).startInteraction()
+				
+				switch(selection){
+					case 0:{
+						discardNewPerson(newPerson)
+					}
+					case 1:{
+						val first = newPerson.fullName.split(" ").get(0)
+						newPerson.fullName = first + " " + family.lastName
+						createMotherInExistingFamily(newPerson,family)
+					}
+					case 2:{
+						family.lastName = newPerson.fullName.split(" ").get(1)
+						createMotherInExistingFamily(newPerson,family)
+					}
+					case 3:{
+						createMotherInNewFamily(newPerson)						
+					}
+				}
+			}
+			else{
+				// Let user decide how to deal with the already existing mother
+				var String msg1 = "The selected family (" + family.lastName + ") already has a mother, named " 
+					+ family.mother.firstName + ". Please choose how to continue."				
+				var List<String> motherOptions = new ArrayList<String>();
+				motherOptions.addAll(
+					"abort and revert all changes, keep old mother",
+					"continue and replace the existing mother",		
+					"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as mother"
+				)				
+				val int motherSelection = userInteractor.singleSelectionDialogBuilder.message(msg1)
+				.choices(motherOptions).windowModality(WindowModality.MODAL).startInteraction()
+				
+				
+				switch(motherSelection){
+					case 0:{
+						discardNewPerson(newPerson)
+					}
+					case 1:{
+						// Let user decide how to deal with the different family name
+						var String msg2 = "The selected family has a different surname (" + family.lastName + "). Please choose how to continue."				
+						var List<String> surnameOptions = new ArrayList<String>();
+						surnameOptions.addAll(
+							"abort and revert all changes, keep old mother",
+							"change the mothers surname to " + family.lastName,
+							"change the family surname to " + newPerson.fullName.split(" ").get(1),					
+							"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as mother"
+						)
+						val int surnameSelection = userInteractor.singleSelectionDialogBuilder.message(msg2)
+						.choices(surnameOptions).windowModality(WindowModality.MODAL).startInteraction()	
+						
+						switch(surnameSelection){
+							case 0:{
+								discardNewPerson(newPerson)
+							}
+							case 1:{
+								val first = newPerson.fullName.split(" ").get(0)
+								newPerson.fullName = first + " " + family.lastName
+								replaceMotherInExistingFamily(newPerson,family)
+							}
+							case 2:{
+								family.lastName = newPerson.fullName.split(" ").get(1)
+								replaceMotherInExistingFamily(newPerson,family)								
+							}
+							case 3:{
+								createMotherInNewFamily(newPerson)								
+							}
+						}			
+					}
+					case 2:{
+						createMotherInNewFamily(newPerson)
+					}					
+				}
+			}
+		}
+	}
+}
+
+
+routine createDaughterInExistingFamily(persons::Female newPerson, families::Family family){
+	action{
+		val daughter = create families::Member and initialize {
+			daughter.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.daughters += daughter
+			daughter.familyDaughter = family
+		}
+		add correspondence between newPerson and daughter
+		add correspondence between newPerson and family				
+	}	
+}
+
+routine createDaughterInNewFamily(persons::Female newPerson){
+	match{
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action{	
+		val family = create families::Family and initialize{
+			family.lastName = newPerson.fullName.split(" ").get(1)
+		}
+		val daughter = create families::Member and initialize {
+			daughter.firstName = newPerson.fullName.split(" ").get(0)			
+		}
+		call{
+			family.daughters += daughter
+			daughter.familyDaughter = family
+			familiesRegister.families += family
+		}
+		add correspondence between newPerson and daughter
+		add correspondence between newPerson and family		
+	}
+}
+
+routine createDaughterInDifferentlyNamedFamily(persons::Female newPerson, families::Family family){
+	action{
+		call{	
+			// Let user decide how to deal with the different family name
+			var String msg2 = "The selected family has a different surname (" + family.lastName + "). Please choose how to continue."				
+			var List<String> surnameOptions = new ArrayList<String>();
+			surnameOptions.addAll(
+				"abort and revert all changes",
+				"change the daughters surname to " + family.lastName,
+				"change the family surname to " + newPerson.fullName.split(" ").get(1),					
+				"create a new family " + newPerson.fullName.split(" ").get(1) + " with " + newPerson.fullName + " as a daughter"
+			)
+			val int surnameSelection = userInteractor.singleSelectionDialogBuilder.message(msg2)
+			.choices(surnameOptions).windowModality(WindowModality.MODAL).startInteraction()	
+			
+			switch(surnameSelection){
+				case 0:{
+					discardNewPerson(newPerson)
+				}
+				case 1:{
+					val first = newPerson.fullName.split(" ").get(0)
+					newPerson.fullName = first + " " + family.lastName
+					createDaughterInExistingFamily(newPerson,family)
+				}
+				case 2:{
+					family.lastName = newPerson.fullName.split(" ").get(1)
+					createDaughterInExistingFamily(newPerson,family)								
+				}
+				case 3:{
+					createDaughterInNewFamily(newPerson)								
+				}
+			}
+		}
+	}	
+}
+
