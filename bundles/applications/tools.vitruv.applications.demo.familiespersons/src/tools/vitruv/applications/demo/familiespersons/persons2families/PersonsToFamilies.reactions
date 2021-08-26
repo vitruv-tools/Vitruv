@@ -204,13 +204,17 @@ routine createFatherInExistingFamily(persons::Male newPerson, families::Family f
 } 
 
 routine replaceFatherInExistingFamily(persons::Male newPerson, families::Family family){
+	match{
+		val oldFatherPerson = retrieve persons::Male corresponding to family.father
+	}
 	action{
 		val newFather = create families::Member and initialize{
 			newFather.firstName = newPerson.fullName.split(" ").get(0)
 		}
+		delete oldFatherPerson
 		call{
 			family.father.familyFather = null
-			family.father = null			
+			family.father = null
 			family.father = newFather
 			newFather.familyFather = family			
 		}
@@ -419,17 +423,19 @@ routine deleteMember(persons::Person person){
 		val family = retrieve families::Family corresponding to person
 	}	
 	action{
+		remove correspondence between person and member
+		remove correspondence between person and family
 		delete member
-		call{
-			val boolean f = (family.father != null)
-			val boolean m = (family.mother != null)
-			val boolean s = (family.sons != null && family.sons.size != 0)
-			val boolean d = (family.daughters != null && family.daughters.size != 0)
-			if(f || m || s || d){
-				return
-			}
-		}
-		delete family
+//		call{
+//			val boolean f = (family.father != null)
+//			val boolean m = (family.mother != null)
+//			val boolean s = (family.sons != null && family.sons.size != 0)
+//			val boolean d = (family.daughters != null && family.daughters.size != 0)
+//			if(f || m || s || d){
+//				return
+//			}
+//		}
+//		delete family
 	}
 }
 
@@ -604,10 +610,14 @@ routine createMotherInExistingFamily(persons::Female newPerson, families::Family
 } 
 
 routine replaceMotherInExistingFamily(persons::Female newPerson, families::Family family){
+	match{
+		val oldMotherPerson = retrieve persons::Female corresponding to family.mother
+	}
 	action{
 		val newMother = create families::Member and initialize{
 			newMother.firstName = newPerson.fullName.split(" ").get(0)
 		}
+		delete oldMotherPerson
 		call{
 			family.mother.familyMother = null
 			family.mother = null			
