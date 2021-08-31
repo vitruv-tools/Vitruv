@@ -251,7 +251,7 @@ routine createFatherInDifferentlyNamedFamily(persons::Male newPerson, families::
 						createFatherInExistingFamily(newPerson,family)
 					}
 					case 2:{
-						family.lastName = newPerson.fullName.split(" ").get(1)
+						changeFamilyLastName(family, newPerson.fullName.split(" ").get(1))
 						createFatherInExistingFamily(newPerson,family)
 					}
 					case 3:{
@@ -300,7 +300,7 @@ routine createFatherInDifferentlyNamedFamily(persons::Male newPerson, families::
 								replaceFatherInExistingFamily(newPerson,family)
 							}
 							case 2:{
-								family.lastName = newPerson.fullName.split(" ").get(1)
+								changeFamilyLastName(family, newPerson.fullName.split(" ").get(1))
 								replaceFatherInExistingFamily(newPerson,family)								
 							}
 							case 3:{
@@ -317,6 +317,20 @@ routine createFatherInDifferentlyNamedFamily(persons::Male newPerson, families::
 	}
 }
 
+
+routine changeFamilyLastName(families::Family family, String newLastName){
+	match{
+		val persons = retrieve many persons::Person corresponding to family
+	}
+	action {
+		update family {
+			family.lastName = newLastName
+		}
+		call{
+			persons.forEach[p|p.fullName = p.fullName.split(" ").get(0) + " " + newLastName]
+		}
+	}
+}
 
 routine createSonInExistingFamily(persons::Male newPerson, families::Family family){
 	action{
@@ -378,7 +392,7 @@ routine createSonInDifferentlyNamedFamily(persons::Male newPerson, families::Fam
 					createSonInExistingFamily(newPerson,family)
 				}
 				case 2:{
-					family.lastName = newPerson.fullName.split(" ").get(1)
+					changeFamilyLastName(family, newPerson.fullName.split(" ").get(1))
 					createSonInExistingFamily(newPerson,family)								
 				}
 				case 3:{
@@ -403,8 +417,8 @@ routine changeNames(persons::Person person){
 		val member = retrieve families::Member corresponding to person
 	}
 	action{
-		update family {
-			family.lastName = person.fullName.split(" ").get(1)
+		call {
+			changeFamilyLastName(family, person.fullName.split(" ").get(1))
 		}
 		update member {
 			member.firstName = person.fullName.split(" ").get(0)
@@ -657,7 +671,7 @@ routine createMotherInDifferentlyNamedFamily(persons::Female newPerson, families
 						createMotherInExistingFamily(newPerson,family)
 					}
 					case 2:{
-						family.lastName = newPerson.fullName.split(" ").get(1)
+						changeFamilyLastName(family, newPerson.fullName.split(" ").get(1))
 						createMotherInExistingFamily(newPerson,family)
 					}
 					case 3:{
@@ -706,7 +720,7 @@ routine createMotherInDifferentlyNamedFamily(persons::Female newPerson, families
 								replaceMotherInExistingFamily(newPerson,family)
 							}
 							case 2:{
-								family.lastName = newPerson.fullName.split(" ").get(1)
+								changeFamilyLastName(family, newPerson.fullName.split(" ").get(1))
 								replaceMotherInExistingFamily(newPerson,family)								
 							}
 							case 3:{
@@ -784,7 +798,7 @@ routine createDaughterInDifferentlyNamedFamily(persons::Female newPerson, famili
 					createDaughterInExistingFamily(newPerson,family)
 				}
 				case 2:{
-					family.lastName = newPerson.fullName.split(" ").get(1)
+					changeFamilyLastName(family, newPerson.fullName.split(" ").get(1))
 					createDaughterInExistingFamily(newPerson,family)								
 				}
 				case 3:{
