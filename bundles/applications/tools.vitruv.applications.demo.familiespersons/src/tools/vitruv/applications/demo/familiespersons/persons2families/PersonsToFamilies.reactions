@@ -440,16 +440,16 @@ routine deleteMember(persons::Person person){
 		remove correspondence between person and member
 		remove correspondence between person and family
 		delete member
-//		call{
-//			val boolean f = (family.father != null)
-//			val boolean m = (family.mother != null)
-//			val boolean s = (family.sons != null && family.sons.size != 0)
-//			val boolean d = (family.daughters != null && family.daughters.size != 0)
-//			if(f || m || s || d){
-//				return
-//			}
-//		}
-//		delete family
+		call{
+			val boolean f = (family.father != null)
+			val boolean m = (family.mother != null)
+			val boolean s = (family.sons != null && family.sons.size != 0)
+			val boolean d = (family.daughters != null && family.daughters.size != 0)
+			if(f || m || s || d){
+				return
+			}
+		}
+		delete family
 	}
 }
 

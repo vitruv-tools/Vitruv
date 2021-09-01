@@ -38,14 +38,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	static String FIRST_SON_2 = "Charles"
 	static String FIRST_DAUGHTER_2 = "Daniela"	
 	
-//	static Male DAD_1 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1]
-//	static Female MOM_1 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1]
-//	static Male SON_1 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + FAMILY_NAME_1]
-//	static Female DAU_1 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1]
-
-//	static val MALE_PERSON_NAME = "Max Mustermann"
-//	static val SECOND_MALE_PERSON_NAME = "Bernd Mustermann"
-//	static val FEMALE_PERSON_NAME = "Erika Mustermann"
 	static val FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
 	static val PERSONS_MODEL = DomainUtil.getModelFileName('model/model', new PersonsDomainProvider)
 
@@ -2346,11 +2338,276 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	}
 
 
+	//========== CREATE FAMILY ==========
+	@Test
+	def void createFamilyForTesting(){
+		//Create father and mother 
+		testCreateFemale_Mother_InsertInMatchingFamily_NoMother()
+		//Son
+		userInteraction.addNextSingleSelection(1)
+		//Insert in first family
+		userInteraction.addNextSingleSelection(1)
+		//Daughter
+		userInteraction.addNextSingleSelection(1)
+		//Insert in first family
+		userInteraction.addNextSingleSelection(1)
+		dprint()
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_1 + " " + FAMILY_NAME_1
+			]
+		]
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
+			]
+		]
+		dprint()
+		val pm = resourceAt(PERSONS_MODEL)
+		val fm = resourceAt(FAMILIES_MODEL)
+		assertThat(pm, exists)
+		assertThat(fm, exists)
+		assertEquals(1, pm.contents.size);
+		assertEquals(1, fm.contents.size);
+		assertEquals(5, pm.allContents.size);
+		assertEquals(6, fm.allContents.size);
+		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
+		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = FAMILY_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_FATHER_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOTHER_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAUGHTER_1]
+			]
+		]
+		val PersonRegister perEq = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
+			]
+		]
+		val famReg = fm.contents.get(0)
+		assertThat(famReg, instanceOf(FamilyRegister));
+		val FamilyRegister castedFamReg = famReg as FamilyRegister
+		assertThat(castedFamReg, equalsDeeply(famEq));
+		val perReg = pm.contents.get(0)
+		assertThat(perReg, instanceOf(PersonRegister));
+		val PersonRegister castedPerReg = perReg as PersonRegister
+		assertThat(castedPerReg, equalsDeeply(perEq));
+	}
+	
+	//========== EDITING ==========	
+	@Test
+	def void testRenamingOfFirstname(){
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		createFamilyForTesting()
+		logger.info(name + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searched = persons.findFirst[x|x.fullName.equals(FIRST_FATHER_1 + " " + FAMILY_NAME_1)]
+			searched.fullName = FIRST_FATHER_2 + " " + searched.fullName.split(" ").get(1)
+		]		
+		logger.info(name + " - propagation done")
+		dprint()
+		val pm = resourceAt(PERSONS_MODEL)
+		val fm = resourceAt(FAMILIES_MODEL)
+		assertThat(pm, exists)
+		assertThat(fm, exists)
+		assertEquals(1, pm.contents.size);
+		assertEquals(1, fm.contents.size);
+		assertEquals(5, pm.allContents.size);
+		assertEquals(6, fm.allContents.size);
+		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
+		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = FAMILY_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_FATHER_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOTHER_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAUGHTER_1]
+			]
+		]
+		val PersonRegister perEq = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
+			]
+		]
+		val famReg = fm.contents.get(0)
+		assertThat(famReg, instanceOf(FamilyRegister));
+		val FamilyRegister castedFamReg = famReg as FamilyRegister
+		assertThat(castedFamReg, equalsDeeply(famEq));
+		val perReg = pm.contents.get(0)
+		assertThat(perReg, instanceOf(PersonRegister));
+		val PersonRegister castedPerReg = perReg as PersonRegister
+		assertThat(castedPerReg, equalsDeeply(perEq));		
+		logger.info(name + " - finished without errors")		
+	}
+	@Test
+	def void testRenamingOfLastname(){
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		createFamilyForTesting()
+		logger.info(name + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searched = persons.findFirst[x|x.fullName.equals(FIRST_FATHER_1 + " " + FAMILY_NAME_1)]
+			searched.fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_2
+		]		
+		logger.info(name + " - propagation done")
+		dprint()
+		val pm = resourceAt(PERSONS_MODEL)
+		val fm = resourceAt(FAMILIES_MODEL)
+		assertThat(pm, exists)
+		assertThat(fm, exists)
+		assertEquals(1, pm.contents.size);
+		assertEquals(1, fm.contents.size);
+		assertEquals(5, pm.allContents.size);
+		assertEquals(6, fm.allContents.size);
+		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
+		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = FAMILY_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_FATHER_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOTHER_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAUGHTER_1]
+			]
+		]
+		val PersonRegister perEq = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_2
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_2
+			]
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_1 + " " + FAMILY_NAME_2
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_2
+			]
+		]
+		val famReg = fm.contents.get(0)
+		assertThat(famReg, instanceOf(FamilyRegister));
+		val FamilyRegister castedFamReg = famReg as FamilyRegister
+		assertThat(castedFamReg, equalsDeeply(famEq));
+		val perReg = pm.contents.get(0)
+		assertThat(perReg, instanceOf(PersonRegister));
+		val PersonRegister castedPerReg = perReg as PersonRegister
+		assertThat(castedPerReg, equalsDeeply(perEq));		
+		logger.info(name + " - finished without errors")		
+	}
 
+	//========== DELETION ==========
+	@Test
+	def void testDeletePerson_NotLastInFamily(){
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		createFamilyForTesting()
+		logger.info(name + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searched = persons.findFirst[x|x.fullName.equals(FIRST_FATHER_1 + " " + FAMILY_NAME_1)]
+			persons.remove(searched)
+		]		
+		logger.info(name + " - propagation done")
+		dprint()
+		val pm = resourceAt(PERSONS_MODEL)
+		val fm = resourceAt(FAMILIES_MODEL)
+		assertThat(pm, exists)
+		assertThat(fm, exists)
+		assertEquals(1, pm.contents.size);
+		assertEquals(1, fm.contents.size);
+		assertEquals(4, pm.allContents.size);
+		assertEquals(5, fm.allContents.size);
+		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
+		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = FAMILY_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOTHER_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAUGHTER_1]
+			]
+		]
+		val PersonRegister perEq = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_1 + " " + FAMILY_NAME_1
+			]
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
+			]
+		]
+		val famReg = fm.contents.get(0)
+		assertThat(famReg, instanceOf(FamilyRegister));
+		val FamilyRegister castedFamReg = famReg as FamilyRegister
+		assertThat(castedFamReg, equalsDeeply(famEq));
+		val perReg = pm.contents.get(0)
+		assertThat(perReg, instanceOf(PersonRegister));
+		val PersonRegister castedPerReg = perReg as PersonRegister
+		assertThat(castedPerReg, equalsDeeply(perEq));		
+		logger.info(name + " - finished without errors")		
+	} 
+	@Test
+	def void testDeletePerson_LastInFamily(){
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")
+		testCreateMale_Father_InsertInNewFamily()
+		logger.info(name + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searched = persons.findFirst[x|x.fullName.equals(FIRST_FATHER_1 + " " + FAMILY_NAME_1)]
+			persons.remove(searched)
+		]		
+		logger.info(name + " - propagation done")
+		dprint()
+		val pm = resourceAt(PERSONS_MODEL)
+		val fm = resourceAt(FAMILIES_MODEL)
+		assertThat(pm, exists)
+		assertThat(fm, exists)
+		assertEquals(1, pm.contents.size);
+		assertEquals(1, fm.contents.size);
+		assertEquals(1, pm.allContents.size);
+		assertEquals(1, fm.allContents.size);
+		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
+		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => []
+		val PersonRegister perEq = PersonsFactory.eINSTANCE.createPersonRegister => []
+		val famReg = fm.contents.get(0)
+		assertThat(famReg, instanceOf(FamilyRegister));
+		val FamilyRegister castedFamReg = famReg as FamilyRegister
+		assertThat(castedFamReg, equalsDeeply(famEq));
+		val perReg = pm.contents.get(0)
+		assertThat(perReg, instanceOf(PersonRegister));
+		val PersonRegister castedPerReg = perReg as PersonRegister
+		assertThat(castedPerReg, equalsDeeply(perEq));		
+		logger.info(name + " - finished without errors")		
+	} 
+	
 	def dprint() {
 		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
 	}
-
 	def dprint(FamilyRegister fr, PersonRegister pr) {
 		var String fs = ''
 		var String ps = ''
@@ -2368,29 +2625,4 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 «ENDFOR»''';
 		logger.debug('\n' + fs + '\n' + ps)
 	}
-
-
-
-
-
-
-
-
-
-//
-//	@Test
-////	@Disabled("The personsToFamilies is broken")
-//	def void testChangeFirstName() {
-//		val person = PersonsFactory.eINSTANCE.createMale => [
-//			fullName = MALE_PERSON_NAME
-//		]
-//		PersonRegister.from(PERSONS_MODEL).propagate[persons += person]
-//		person.propagate[fullName = SECOND_MALE_PERSON_NAME]
-//		
-//		val personFirstName = person.fullName.split(" ").get(0)
-//		val membersWithFirstName = FamilyRegister.from(FAMILIES_MODEL).families
-//			.flatMap[daughters + sons + List.of(mother) + List.of(father)]
-//			.filter[personFirstName == it?.firstName]
-//		assertEquals(1, membersWithFirstName.length)
-//	}
 }
