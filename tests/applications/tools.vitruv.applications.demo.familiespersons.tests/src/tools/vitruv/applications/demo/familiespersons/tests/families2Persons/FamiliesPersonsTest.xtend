@@ -1,6 +1,5 @@
 package tools.vitruv.applications.demo.familiespersons.tests.families2Persons
 
-//assertThat\(.*\)
 import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.hamcrest.core.*
@@ -56,7 +55,6 @@ import edu.kit.ipd.sdq.metamodels.families.Family
 import org.eclipse.emf.common.util.BasicEList
 import edu.kit.ipd.sdq.metamodels.persons.Person
 
-//import static org.junit.Assert.isEquals
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(FamiliesPersonsTest);
 // Es gibt auch noch einen ModelPrinting
@@ -79,11 +77,15 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	def static Matcher<? super EList<EObject>> containsInAnyOder(EList<EObject> searchedItems,
 		ModelDeepEqualityOption... options) {
-		new EListMultipleContainmentMatcher(searchedItems, options)
+		new EListMultipleContainmentMatcher(searchedItems, true, options)
+	}
+	def static Matcher<? super EList<EObject>> containsNoneOfList(EList<EObject> searchedItems,
+		ModelDeepEqualityOption... options) {
+		new EListMultipleContainmentMatcher(searchedItems, false, options)
 	}
 
 	def static Matcher<? super EList<EObject>> listContains(EObject searchedItem, ModelDeepEqualityOption... options) {
-		new EListSingleContainmentMatcher(searchedItem, options)
+		new EListSingleContainmentMatcher(searchedItem, true, options)
 	}
 
 	def createRegister() {
@@ -394,12 +396,25 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(4, resourceAt(PERSONS_MODEL).allContents.size); // !
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(3, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size); // !
-		val personListAfter = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
-		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad))
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], false) // !
-		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
+		val personListInTheEnde = resourceAt(PERSONS_MODEL).contents.get(0).eContents;
+		
+		var EList<EObject> l_yes = new BasicEList<EObject>();
+		l_yes.add(dad);
+		l_yes.add(mom);
+		l_yes.add(dau);
+		var EList<EObject> l_no = new BasicEList<EObject>();
+		l_no.add(son);
+		l_no.add(son);
+		l_no.add(son);
+		
+		assertThat(personListInTheEnde, containsInAnyOder(l_yes))
+		assertThat(personListInTheEnde, containsNoneOfList(l_no))
+		
+//		assertThat(personListAfter.get(0), ModelMatchers.equalsDeeply(dad))
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dad)], true)
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, mom)], true)
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, son)], false) // !
+//		assertEquals(personListAfter.exists[x|equalPersons(x as PersonImpl, dau)], true)
 	}
 
 	@Test
@@ -1114,13 +1129,3 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.debug('\n' + fs + '\n' + ps)
 	}
 }
-//		var List<EObject> li = new ArrayList<EObject>();
-//		li.add(old_mom)		
-//		val VirtualModelImpl vsum = this.virtualModel as VirtualModelImpl
-////		val modelInstance = vsum.getModelInstance(/*URI here */)
-//		val CorrespondenceModel correspondenceModel = vsum.getCorrespondenceModel() as CorrespondenceModel
-////		val cors2 = correspondenceModel.getCorrespondences(li) -> is private
-//
-//		//Ziel:
-////		assertEquals(listOfCorrespondences.exists[x|x.leftObject.equals(old_mom_fam) && x.rightObject.equals(old_mom_per], true)
-////		assertEquals(listOfCorrespondences.size(), 9)

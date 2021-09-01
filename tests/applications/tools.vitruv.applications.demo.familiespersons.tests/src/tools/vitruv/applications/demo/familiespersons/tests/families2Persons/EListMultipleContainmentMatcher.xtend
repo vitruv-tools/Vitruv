@@ -20,11 +20,11 @@ package class EListMultipleContainmentMatcher extends TypeSafeMatcher<EList<EObj
 	ModelDeepEqualityOption[] options;
 	Matcher base;
 	
-	package new(EList<EObject> list, ModelDeepEqualityOption[] options) {
+	package new(EList<EObject> list, boolean included, ModelDeepEqualityOption[] options) {
 		this.shouldBeContained = list;
 		this.options = options;
 		val ArrayList<Matcher> lm = new ArrayList<Matcher>()		
-		shouldBeContained.forEach[x| lm.add(new EListSingleContainmentMatcher(x, options))]		
+		shouldBeContained.forEach[x| lm.add(new EListSingleContainmentMatcher(x, included, options))]		
 		this.base = CoreMatchers.allOf(lm)
 	}
 	
