@@ -13,14 +13,16 @@ import org.hamcrest.CoreMatchers
 class EListSingleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
 	EObject searchedItem;
 	ModelDeepEqualityOption[] options;
+	boolean included;
 	
-	new(Object searchedItem, ModelDeepEqualityOption[] options) {
+	new(Object searchedItem, boolean included, ModelDeepEqualityOption[] options) {
 		this.searchedItem = searchedItem as EObject
 		this.options = options;	
+		this.included = included;
 	}
 	
 	override protected matchesSafely(EList<EObject> items) {
-		items.exists[x| equalsDeeply(searchedItem,options).matches(x)]
+		items.exists[x| equalsDeeply(searchedItem,options).matches(x)] == included
 	}
 	
 	override describeTo(Description description) {
