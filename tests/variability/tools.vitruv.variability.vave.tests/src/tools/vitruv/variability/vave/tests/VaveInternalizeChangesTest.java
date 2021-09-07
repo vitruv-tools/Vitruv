@@ -340,4 +340,92 @@ public class VaveInternalizeChangesTest {
 			assertEquals(3, vave.getSystem().getDeltamodule().size());
 		}
 	}
+	
+	@Test
+	public void InternalizationOptionalDeltaTest(@TestProject final Path projectFolder) throws Exception {
+		VirtualVaVeModel vave = setupVave(projectFolder);
+		
+		// Feature a, Feature b
+		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
+		featureA.setName("featureA");
+		vave.getSystem().getFeature().add(featureA);
+		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
+		featureB.setName("featureB");
+		vave.getSystem().getFeature().add(featureB);
+
+		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+
+		{
+			// add fragment for feature a
+			final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
+			final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
+			changeRecorder.addToRecording(resourceSet);
+			changeRecorder.beginRecording();
+			final Resource monitoredResource = resourceSet.createResource(this.createTestModelResourceUri("", projectFolder));
+			Root root = AllElementTypesCreators.aet.Root();
+			root.setId("elementA");
+			monitoredResource.getContents().add(root);
+			final TransactionalChange recordedChange = changeRecorder.endRecording();
+			// propagate recorded changes into vmp1
+			vmp1.propagateChange(recordedChange);
+		}
+
+		// internalize product with feature A
+		vavemodel.Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
+		variableA.setOption(featureA);
+		vave.internalizeChanges(vmp1, variableA); // system revision 1
+
+		assertEquals(1, vave.getSystem().getDeltamodule().size());
+
+		// externalize product with feature A
+		config.getOption().clear();
+		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
+		config.getOption().add(featureA.getFeaturerevision().get(0));
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+
+		assertEquals(0, vmp1ext.getDeltas().size());
+
+		{
+			// add fragment for feature b
+			final ResourceSet resourceSet2 = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
+			final ChangeRecorder changeRecorder2 = new ChangeRecorder(resourceSet2);
+			changeRecorder2.addToRecording(resourceSet2);
+			changeRecorder2.beginRecording();
+			final Resource monitoredResource2 = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource();
+			Root root2 = AllElementTypesCreators.aet.Root();
+			root2.setId("elementB");
+			monitoredResource2.getContents().add(root2);
+			final TransactionalChange recordedChange2 = changeRecorder2.endRecording();
+			vmp1ext.propagateChange(recordedChange2);
+		}
+
+		// internalize product with features A and B
+		vavemodel.Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
+		variableB.setOption(featureB);
+		vave.internalizeChanges(vmp1ext, variableB); // system revision 2 and feature revision 1 of feature B
+
+		assertEquals(2, vave.getSystem().getDeltamodule().size());
+
+		// externalize product with feature a and b
+		config.getOption().clear();
+		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
+		config.getOption().add(featureA.getFeaturerevision().get(0));
+		config.getOption().add(featureB.getFeaturerevision().get(0));
+		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config);
+
+		// externalize product with feature a
+		config.getOption().clear();
+		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
+		config.getOption().add(featureA.getFeaturerevision().get(0));
+		final VirtualProductModel vmp3ext = vave.externalizeProduct(projectFolder.resolve("vmp3ext"), config);
+
+		// externalize product with feature b
+		config.getOption().clear();
+		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
+		config.getOption().add(featureB.getFeaturerevision().get(0));
+		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config);
+	}
+
 }
