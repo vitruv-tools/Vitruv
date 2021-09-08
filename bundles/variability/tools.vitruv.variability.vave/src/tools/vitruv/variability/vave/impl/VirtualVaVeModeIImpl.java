@@ -40,15 +40,18 @@ import vavemodel.BinaryExpression;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
 import vavemodel.Constraint;
+import vavemodel.CrossTreeConstraint;
 import vavemodel.DeltaModule;
 import vavemodel.Expression;
 import vavemodel.Feature;
 import vavemodel.FeatureOption;
 import vavemodel.FeatureRevision;
+import vavemodel.GroupType;
 import vavemodel.Mapping;
 import vavemodel.Option;
 import vavemodel.SystemRevision;
 import vavemodel.Term;
+import vavemodel.TreeConstraint;
 import vavemodel.UnaryExpression;
 import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
@@ -112,6 +115,14 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		return null;
 	}
 
+	/**
+	 * Externalizes a view on the product based on a provided configuration.
+	 * 
+	 * @param storageFolder A path to which all models are stored
+	 * @param configuration The configuration of the product
+	 * @return The Virtual Product Model which consists of one or multiple dependent models representing the configuration
+	 * @throws Exception
+	 */
 	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws Exception {
 
 		// FIRST WE DO THE VITRUV STUFF
@@ -184,6 +195,13 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		return vsum;
 	}
 
+	/**
+	 * Internalizes the changes performed on a view of the product into the unified system based on a manually provided expression. A new system revision is added and linked to the current system revision, new feature revisions are created for the features appearing in the expression and linked to current revisions of that features, and new deltas are added to the mapping based on the expression.
+	 * 
+	 * @param virtualProductModel The virtual product model that has been externalized to perform the changes on
+	 * @param expression          The expression (currently a conjunction of variables (features) to which the recorded deltas should be mapped and which is provided manually by the user
+	 * @throws Exception
+	 */
 	public void internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws Exception {
 		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
 
@@ -341,6 +359,91 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 		// save us
 		this.save();
+	}
+
+	/**
+	 * Externalizes a view on the domain of the unified system based on the time of a system revision.
+	 * 
+	 * @param system The unified system
+	 * @param sysrev The system revision as point in time for which the domain view should be externalized
+	 * @return The domain of the unified system in the form of a feature model
+	 * @throws Exception
+	 */
+	public FeatureModel externalizeDomain(SystemRevision sysrev) throws Exception {
+		if (sysrev != null && sysrev.getEnablesoptions() == null) {
+			throw new Exception("There are no enabled options by that system revision.");
+		}
+		if (sysrev == null) {
+			return new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
+		}
+
+		// copy all feature options and store them in two separate lists: one with only features and one with both features and feature revisions.
+		HashMap<Feature, Feature> mapOriginalCopiedFeatures = new HashMap<Feature, Feature>();
+		HashMap<FeatureOption, FeatureOption> mapOriginalCopiedLiterals = new HashMap<FeatureOption, FeatureOption>();
+		for (FeatureOption fo : sysrev.getEnablesoptions()) {
+			if (fo instanceof Feature) {
+				Feature copiedFeature = VavemodelFactory.eINSTANCE.createFeature();
+				mapOriginalCopiedFeatures.put((Feature) fo, copiedFeature);
+				mapOriginalCopiedLiterals.put(fo, copiedFeature);
+			} else if (fo instanceof FeatureRevision) {
+				FeatureRevision copiedFO = VavemodelFactory.eINSTANCE.createFeatureRevision();
+				mapOriginalCopiedLiterals.put(fo, copiedFO);
+			}
+		}
+
+		Set<TreeConstraint> treeConstraints = new HashSet<>();
+		Set<CrossTreeConstraint> crossTreeConstraints = new HashSet<>();
+		for (Constraint constraint : sysrev.getEnablesconstraints()) {
+			// copy tree constraints setting parent (container) and children from previously copied features
+			if (constraint instanceof TreeConstraint) {
+				TreeConstraint copiedTC = VavemodelFactory.eINSTANCE.createTreeConstraint();
+				copiedTC.setType(((TreeConstraint) constraint).getType());
+
+				// find copied parent feature via original and set that copied feature as container
+				Feature containingFeature = mapOriginalCopiedFeatures.get(constraint.eContainer());
+				containingFeature.getTreeconstraint().add(copiedTC);
+				for (Feature childFeature : ((TreeConstraint) constraint).getFeature()) {
+					copiedTC.getFeature().add(mapOriginalCopiedFeatures.get(childFeature));
+				}
+
+				treeConstraints.add(copiedTC);
+			} else if (constraint instanceof CrossTreeConstraint) {
+				// copy cross tree constraints
+				CrossTreeConstraint copiedCTC = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
+				// TODO: copy CTC expression
+			}
+		}
+
+		// obtain root feature for sysrev
+		List<Feature> enabledRootFeatures = new ArrayList<>(this.system.getFeature());
+		enabledRootFeatures.retainAll(sysrev.getEnablesconstraints());
+		if (enabledRootFeatures.size() > 1)
+			throw new Exception("More than one root feature is enabled by the system revision " + sysrev);
+		else if (enabledRootFeatures.size() < 1)
+			throw new Exception("No root feature is enabled by the system revision " + sysrev);
+		Feature rootFeature = enabledRootFeatures.get(0);
+
+		FeatureModel featuremodel = new FeatureModel(rootFeature, sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
+
+		return featuremodel;
+	}
+
+	// NOTE: fm stores (copy of) root node, ctcs, sysrev
+	public void internalizeDomain(FeatureModel fm) throws Exception {
+		FeatureModel oldFMatSysrev = this.externalizeDomain(fm.getSysrev());
+
+		// create new sysrev, set predecessor and successor
+		// TODO
+
+		// diff the updated fm with the old fm
+		// TODO
+
+		// enable unchanged features, cts and ctcs in new sysrev
+		// TODO
+
+		// create new features and constraints if necessary and enable them in new sysrev
+		// TODO
+
 	}
 
 }

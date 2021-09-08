@@ -342,7 +342,7 @@ public class VaveInternalizeChangesTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void InternalizationOptionalDeltaTest(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 		
@@ -429,7 +429,8 @@ public class VaveInternalizeChangesTest {
 		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config);
 	}
 
-	@Test
+
+//	@Test
 	public void InternalizationOptionalDeltaTestMetamodelConform(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 		
