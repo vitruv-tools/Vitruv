@@ -12,8 +12,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -198,8 +202,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	/**
 	 * Internalizes the changes performed on a view of the product into the unified system based on a manually provided expression. A new system revision is added and linked to the current system revision, new feature revisions are created for the features appearing in the expression and linked to current revisions of that features, and new deltas are added to the mapping based on the expression.
 	 * 
-	 * @param virtualProductModel The virtual product model that has been externalized to perform the changes on
-	 * @param expression          The expression (currently a conjunction of variables (features) to which the recorded deltas should be mapped and which is provided manually by the user
+	 * @param virtualProductModel The virtual product model that has been externalized before
+	 * @param expression          The expression (currently a conjunction of variables (features) to which the recorded deltas should be mapped and which is provided manually by the user)
 	 * @throws Exception
 	 */
 	public void internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws Exception {
@@ -362,7 +366,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	}
 
 	/**
-	 * Externalizes a view on the domain of the unified system based on the time of a system revision.
+	 * Externalizes a view on the domain of the unified system based on a system revision.
 	 * 
 	 * @param system The unified system
 	 * @param sysrev The system revision as point in time for which the domain view should be externalized
@@ -383,6 +387,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		for (FeatureOption fo : sysrev.getEnablesoptions()) {
 			if (fo instanceof Feature) {
 				Feature copiedFeature = VavemodelFactory.eINSTANCE.createFeature();
+				copiedFeature.setName(((Feature) fo).getName());
 				mapOriginalCopiedFeatures.put((Feature) fo, copiedFeature);
 				mapOriginalCopiedLiterals.put(fo, copiedFeature);
 			} else if (fo instanceof FeatureRevision) {
@@ -415,12 +420,11 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		}
 
 		// obtain root feature for sysrev
-		List<Feature> enabledRootFeatures = new ArrayList<>(this.system.getFeature());
-		enabledRootFeatures.retainAll(sysrev.getEnablesconstraints());
-		if (enabledRootFeatures.size() > 1)
-			throw new Exception("More than one root feature is enabled by the system revision " + sysrev);
-		else if (enabledRootFeatures.size() < 1)
-			throw new Exception("No root feature is enabled by the system revision " + sysrev);
+		List<Feature> enabledRootFeatures = this.system.getFeature().stream().filter(p -> sysrev.getEnablesoptions().contains(p) && p.eContainer() instanceof vavemodel.System).collect(Collectors.toList());
+//		if (enabledRootFeatures.size() > 1)
+//			throw new Exception("More than one root feature is enabled by the system revision " + sysrev);
+//		else if (enabledRootFeatures.size() < 1)
+//			throw new Exception("No root feature is enabled by the system revision " + sysrev);
 		Feature rootFeature = enabledRootFeatures.get(0);
 
 		FeatureModel featuremodel = new FeatureModel(rootFeature, sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
@@ -430,19 +434,133 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 	// NOTE: fm stores (copy of) root node, ctcs, sysrev
 	public void internalizeDomain(FeatureModel fm) throws Exception {
-		FeatureModel oldFMatSysrev = this.externalizeDomain(fm.getSysrev());
+		if (fm.getSysrev() == null) { // if we create the very first system revision, we don't need to do a diff
+			// create a new system revision and link it to predecessor system revision
+			SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
+			newsysrev.setRevisionID(1);
+			//newsysrev.getEnablesoptions().add(fm.getRootFeature());
+			newsysrev.getEnablesoptions().addAll(fm.getFeatureOptions());
+			newsysrev.getEnablesconstraints().addAll(fm.getTreeConstraints());
+			newsysrev.getEnablesconstraints().addAll(fm.getCrossTreeConstraints());
+			this.system.getSystemrevision().add(newsysrev);
 
-		// create new sysrev, set predecessor and successor
-		// TODO
+			// add very first features and constraints in fm to system
+			//this.system.getFeature().add(fm.getRootFeature());
+			// this.system.getFeature().addAll((Collection<? extends Feature>) unchangedFeatureOptions.stream().filter(p -> p instanceof Feature));
+			Set<Feature> features = fm.getFeatureOptions().stream().filter(p -> p instanceof Feature).map(v -> (Feature) v).collect(Collectors.toSet());
+			this.system.getFeature().addAll(features);
+			if (features.size() != fm.getFeatureOptions().size())
+				throw new Exception("It is now allowed to add new feature revisions to the domain manually!");
+			this.system.getConstraint().addAll(fm.getCrossTreeConstraints());
+		}
 
-		// diff the updated fm with the old fm
-		// TODO
+		else { // if we are here, there is at least one system revision and a feature model of that system revision
+				// create new system revision
+			SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
+			SystemRevision cursysrev = this.system.getSystemrevision().get(this.system.getSystemrevision().indexOf(fm.getSysrev())); // TODO add branch (by using sys rev of product) and merge points
+			cursysrev.getSuccessors().add(newsysrev);
+			newsysrev.getPredecessors().add(cursysrev);
+			newsysrev.setRevisionID(cursysrev.getRevisionID() + 1);
+			this.system.getSystemrevision().add(newsysrev);
 
-		// enable unchanged features, cts and ctcs in new sysrev
-		// TODO
+			// retrieve state of feature model before it was modified
+			FeatureModel fmAtOldSysrev = this.externalizeDomain(fm.getSysrev());
 
-		// create new features and constraints if necessary and enable them in new sysrev
-		// TODO
+			// diff the updated fm with the old fm
+
+			Map<String, Feature> featureNameMap = new HashMap<>();
+
+			// first do the feature options
+			for (FeatureOption fo : fm.getFeatureOptions()) {
+				// if it is a feature revision
+				if (fo instanceof FeatureRevision) {
+					// it must have existed before!
+					Optional<FeatureRevision> oldFR = fmAtOldSysrev.getFeatureOptions().stream().filter(p -> p instanceof FeatureRevision && ((Feature) p.eContainer()).getName().equals(((Feature) fo.eContainer()).getName()) && ((FeatureRevision) p).getRevisionID() == ((FeatureRevision) fo).getRevisionID()).map(v -> (FeatureRevision) v).findAny();
+					if (oldFR.isEmpty())
+						throw new Exception("It is now allowed to add new feature revisions to the domain manually or use feature revisions that were not part of the previously externalized feature model!");
+					// retrieve instances of feature and feature revision from unified system
+					Optional<Feature> containingF = this.system.getFeature().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(((Feature) oldFR.get().eContainer()).getName())).map(v -> (Feature) v).findAny();
+					if (containingF.isEmpty())
+						throw new Exception("Feature does not exist in system!");
+					Optional<FeatureRevision> containingFR = containingF.get().getFeaturerevision().stream().filter(p -> p.getRevisionID() == ((FeatureRevision) fo).getRevisionID()).findAny();
+					if (containingFR.isEmpty())
+						throw new Exception("Feature revision does not exist in feature!");
+					// enable it by the new system revision
+					newsysrev.getEnablesoptions().add(containingF.get());
+					newsysrev.getEnablesoptions().add(containingFR.get());
+				}
+				// if it is a feature
+				else if (fo instanceof Feature) {
+					// check if it is new or existed before
+					Optional<Feature> oldF = fmAtOldSysrev.getFeatureOptions().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(((Feature) fo).getName())).map(v -> (Feature) v).findAny();
+					// if it is new
+					if (oldF.isEmpty()) {
+						// we need to create new instance for feature!
+						Feature newF = VavemodelFactory.eINSTANCE.createFeature();
+						newF.setName(((Feature)fo).getName());
+						featureNameMap.put(newF.getName(), newF);
+						// enable it by the new system revision
+						newsysrev.getEnablesoptions().add(newF);
+						this.system.getFeature().add(newF);
+					}
+					// if it is old
+					else if (oldF.isPresent()) {
+						// retrieve containing feature
+						Optional<Feature> containingF = this.system.getFeature().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(oldF.get().getName())).map(v -> (Feature) v).findAny();
+						if (containingF.isEmpty())
+							throw new Exception("Feature does not exist in system: " + oldF.get().getName());
+						// enable it by the new system revision
+						newsysrev.getEnablesoptions().add(containingF.get());
+						featureNameMap.put(containingF.get().getName(), containingF.get());
+					}
+				}
+			}
+
+			// next do the tree constraints
+			for (TreeConstraint tc : fm.getTreeConstraints()) {
+				Optional<TreeConstraint> oldTC = fmAtOldSysrev.getTreeConstraints().stream()
+						.filter(p -> p.getType() == tc.getType() && ((Feature) p.eContainer()).getName().equals(((Feature) tc.eContainer()).getName()) && p.getFeature().size() == tc.getFeature().size() && p.getFeature().stream().allMatch(p2 -> tc.getFeature().stream().filter(p3 -> p3.getName().equals(p2.getName())).findAny().isPresent())).findAny();
+				if (oldTC.isPresent()) {
+					// retrieve containing feature instance from unified system
+					Optional<Feature> containingF = this.system.getFeature().stream().filter(p -> p.getName().equals(((Feature) oldTC.get().eContainer()).getName())).findAny();
+					if (containingF.isEmpty()) {
+						throw new Exception("The containing feature of the constraint does, for some reason, not exist in the unified system!");
+					} else {
+						// retrieve instance of tree constraint from feature in the unified system
+						Optional<TreeConstraint> containedTC = containingF.get().getTreeconstraint().stream().filter(p -> p.getType() == tc.getType() && p.getFeature().size() == tc.getFeature().size() && p.getFeature().stream().allMatch(p2 -> tc.getFeature().stream().filter(p3 -> p3.getName().equals(p2.getName())).findAny().isPresent())).findAny();
+						// if the tree constraint is not a child of the same feature in the unified system, it means that it was moved as a child of another feature. in this case we also create a new instance of the constraint.
+						if (containedTC.isEmpty()) {
+							throw new Exception("The constraint existed in the externalized feature model but, for some reason, does not exist as a child of the same feature in the unified system!");
+						}
+						// the tree constraint was not modified in the externalized domain, the containing feature was found in the system, and the containing feature contained the same constraint (this case should always happen!)
+						else {
+							// enable it by new system revision
+							newsysrev.getEnablesconstraints().add(containedTC.get());
+						}
+					}
+				} else if (oldTC.isEmpty()) {
+					// create new constraint
+					TreeConstraint newTC = VavemodelFactory.eINSTANCE.createTreeConstraint();
+					newTC.setType(tc.getType());
+					Feature containedParentFeature = featureNameMap.get(((Feature) tc.eContainer()).getName());
+					if (containedParentFeature == null)
+						throw new Exception("Parent feature should have been contained in internalized FM but was not!");
+					containedParentFeature.getTreeconstraint().add(newTC);
+					for (Feature childFeature : tc.getFeature()) {
+						Feature containedChildFeature = featureNameMap.get(childFeature.getName());
+						if (containedChildFeature == null)
+							throw new Exception("Child feature should have been contained in internalized FM but was not!");
+						newTC.getFeature().add(containedChildFeature);
+					}
+					newsysrev.getEnablesconstraints().add(newTC);
+				}
+			}
+
+			// finally do the cross tree constraints
+			for (CrossTreeConstraint ctc : fm.getCrossTreeConstraints()) {
+				// TODO
+			}
+		}
 
 	}
 

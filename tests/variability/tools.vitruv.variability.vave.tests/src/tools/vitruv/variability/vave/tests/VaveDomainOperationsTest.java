@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +32,7 @@ import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveDomainOperationsTest {
-	
+
 	private VirtualVaVeModel setupVave(final Path projectFolder) throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		final AllElementTypesDomain aetDomain = new AllElementTypesDomainProvider().getDomain();
@@ -44,11 +45,10 @@ public class VaveDomainOperationsTest {
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, projectFolder);
 		return vave;
 	}
-	
-	@Test
-	public void InternalizeFirstFeatureModelTest(@TestProject final Path projectFolder) throws Exception {
+
+	private FeatureModel setupFM() {
 		FeatureModel fm = new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
-		
+
 		// Feature a, Feature b, Feature c
 		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
@@ -56,23 +56,104 @@ public class VaveDomainOperationsTest {
 		featureB.setName("featureB");
 		Feature featureC = VavemodelFactory.eINSTANCE.createFeature();
 		featureC.setName("featureC");
-		
-		fm.getFeatures().add(featureA);
-		fm.getFeatures().add(featureB);
-		fm.getFeatures().add(featureC);
-		
+
+		fm.getFeatureOptions().add(featureA);
+		fm.getFeatureOptions().add(featureB);
+		fm.getFeatureOptions().add(featureC);
+
 		TreeConstraint treeCstr = VavemodelFactory.eINSTANCE.createTreeConstraint();
 		treeCstr.setType(GroupType.OR);
 		treeCstr.getFeature().add(featureB);
 		treeCstr.getFeature().add(featureC);
 		featureA.getTreeconstraint().add(treeCstr);
 		fm.setRootFeature(featureA);
-		
+		fm.getTreeConstraints().add(treeCstr);
+		return fm;
+	}
+
+	@Test
+	public void InternalizeFirstFeatureModelTest(@TestProject final Path projectFolder) throws Exception {
+		FeatureModel fm = setupFM();
 		VirtualVaVeModel vave = setupVave(projectFolder);
 		vave.internalizeDomain(fm);
+
+		assertEquals(1, vave.getSystem().getSystemrevision().size());
+		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getEnablesconstraints().size());
+		assertEquals(3, vave.getSystem().getSystemrevision().get(0).getEnablesoptions().size());
+	}
+
+	@Test
+	public void InternalizeFeatureModelSystemRevisionsTest(@TestProject final Path projectFolder) throws Exception {
+		FeatureModel fm = setupFM();
+		VirtualVaVeModel vave = setupVave(projectFolder);
+		vave.internalizeDomain(fm);
+
+		assertEquals(1, vave.getSystem().getSystemrevision().size());
+		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getEnablesconstraints().size());
+		assertEquals(3, vave.getSystem().getSystemrevision().get(0).getEnablesoptions().size());
+
+		// add new feature to or group
+		fm = vave.externalizeDomain(vave.getSystem().getSystemrevision().get(0));
+
+		Feature featureD = VavemodelFactory.eINSTANCE.createFeature();
+		featureD.setName("featureD");
+
+		fm.getFeatureOptions().add(featureD);
+		fm.getTreeConstraints().iterator().next().getFeature().add(featureD);
+
+		vave.internalizeDomain(fm);
+
+		assertEquals(2, vave.getSystem().getSystemrevision().size());
+		assertEquals(1, vave.getSystem().getSystemrevision().get(1).getEnablesconstraints().size());
+		assertEquals(4, vave.getSystem().getSystemrevision().get(1).getEnablesoptions().size());
+	}
+	
+	@Test
+	public void InternalizeFeatureModelRootTest(@TestProject final Path projectFolder) throws Exception {
+		FeatureModel fm = setupFM();
+		VirtualVaVeModel vave = setupVave(projectFolder);
+		vave.internalizeDomain(fm); // internalize changes of fm setup
+
+		assertEquals(1, vave.getSystem().getSystemrevision().size());
+		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getEnablesconstraints().size());
+		assertEquals(3, vave.getSystem().getSystemrevision().get(0).getEnablesoptions().size());
+		assertEquals(3, vave.getSystem().getFeature().size());
+		assertEquals(1, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().eContents().size());
+		assertEquals(2, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().getTreeconstraint().get(0).getFeature().size());
 		
-//		assertEquals(1, vave.getSystem().getSystemrevision().size());
-//		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getEnablesconstraints().size());
+		// add new feature to or group
+		fm = vave.externalizeDomain(vave.getSystem().getSystemrevision().get(0));
+
+		assertEquals(3, fm.getFeatureOptions().size());
+		assertEquals(1, fm.getTreeConstraints().size());
+		
+		Feature featureD = VavemodelFactory.eINSTANCE.createFeature();
+		featureD.setName("featureD");
+
+		fm.getFeatureOptions().add(featureD);
+		fm.getTreeConstraints().iterator().next().getFeature().add(featureD);
+		EList<Feature> test = fm.getTreeConstraints().iterator().next().getFeature();
+
+		vave.internalizeDomain(fm);
+
+		assertEquals(2, vave.getSystem().getSystemrevision().size());
+		assertEquals(1, vave.getSystem().getSystemrevision().get(1).getEnablesconstraints().size());
+		assertEquals(4, vave.getSystem().getSystemrevision().get(1).getEnablesoptions().size());
+		assertEquals(4, vave.getSystem().getFeature().size());
+		assertEquals(2, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().eContents().size()); // this should return 2 as they are now two cross-tree constraints
+		assertEquals(3, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().getTreeconstraint().get(1).getFeature().size());
+		
+		// change root feature 
+		fm = vave.externalizeDomain(vave.getSystem().getSystemrevision().get(1));
+		Feature featureE = VavemodelFactory.eINSTANCE.createFeature();
+		featureE.setName("featureE");
+		fm.setRootFeature(featureE);
+		//fm.getFeatureOptions().remove(featureA);
+		vave.internalizeDomain(fm);
+		
+		assertEquals(3, vave.getSystem().getSystemrevision().size());
+		assertEquals(1, vave.getSystem().getSystemrevision().get(1).getEnablesconstraints().size());
+		assertEquals(4, vave.getSystem().getSystemrevision().get(1).getEnablesoptions().size());
 	}
 
 }

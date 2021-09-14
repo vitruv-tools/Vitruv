@@ -12,14 +12,14 @@ import vavemodel.TreeConstraint;
 public class FeatureModel {
 	private Feature rootFeature;
 	private final SystemRevision sysrev;
-	private final Set<FeatureOption> features = new HashSet<FeatureOption>();
+	private final Set<FeatureOption> featureOptions = new HashSet<FeatureOption>();
 	private final Set<TreeConstraint> treeConstraints = new HashSet<TreeConstraint>();
 	private final Set<CrossTreeConstraint> crossTreeConstraints = new HashSet<CrossTreeConstraint>();
 
-	public FeatureModel(Feature rootfeature, SystemRevision sysrev, Set<FeatureOption> features, Set<TreeConstraint> treeConstraints, Set<CrossTreeConstraint> crossTreeConstraints) {
+	public FeatureModel(Feature rootfeature, SystemRevision sysrev, Set<FeatureOption> featureOptions, Set<TreeConstraint> treeConstraints, Set<CrossTreeConstraint> crossTreeConstraints) {
 		this.rootFeature = rootfeature;
 		this.sysrev = sysrev;
-		this.features.addAll(features);
+		this.featureOptions.addAll(featureOptions);
 		this.treeConstraints.addAll(treeConstraints);
 		this.crossTreeConstraints.addAll(crossTreeConstraints);
 	}
@@ -36,8 +36,8 @@ public class FeatureModel {
 		return sysrev;
 	}
 
-	public Set<FeatureOption> getFeatures() {
-		return features;
+	public Set<FeatureOption> getFeatureOptions() {
+		return featureOptions;
 	}
 
 	public Set<TreeConstraint> getTreeConstraints() {

@@ -8,12 +8,15 @@ import vavemodel.Configuration;
 import vavemodel.Expression;
 import vavemodel.FeatureOption;
 import vavemodel.System;
+import vavemodel.SystemRevision;
 
 
 public interface VirtualVaVeModel {
 
 	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws Exception;
 
+	public FeatureModel externalizeDomain(SystemRevision sysrev) throws Exception;
+	
 	public void internalizeChanges(VirtualProductModel virtualModel, Expression<FeatureOption> expression) throws Exception;
 	
 	public void internalizeDomain(FeatureModel fm) throws Exception;

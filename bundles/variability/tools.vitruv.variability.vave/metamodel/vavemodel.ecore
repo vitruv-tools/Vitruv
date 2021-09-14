@@ -34,7 +34,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="TreeConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//GroupType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" lowerBound="1"
-        upperBound="-1" eType="#//Feature" containment="true"/>
+        upperBound="-1" eType="#//Feature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="GroupType">
     <eLiterals name="XOR"/>
