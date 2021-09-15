@@ -69,6 +69,24 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertEquals(0, resourceAt(FAMILIES_MODEL).contents.get(0).eAllContents().size);
 	}		
 	
+	def void checkCorrectRegisters(FamilyRegister famEq, PersonRegister perEq){
+		val pm = resourceAt(PERSONS_MODEL)
+		val fm = resourceAt(FAMILIES_MODEL)
+		assertThat(pm, exists)
+		assertThat(fm, exists)
+		assertEquals(1, pm.contents.size);
+		assertEquals(1, fm.contents.size);
+		val famReg = fm.contents.get(0)
+		assertThat(famReg, instanceOf(FamilyRegister));
+		val FamilyRegister castedFamReg = famReg as FamilyRegister
+		assertThat(castedFamReg, equalsDeeply(famEq));
+		val perReg = pm.contents.get(0)
+		assertThat(perReg, instanceOf(PersonRegister));
+		val PersonRegister castedPerReg = perReg as PersonRegister
+		assertThat(castedPerReg, equalsDeeply(perEq));
+	} 
+	
+	
 	//=====================================
 	//             CREATE MALE
 	//=====================================
@@ -89,16 +107,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -110,14 +118,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -139,16 +140,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -163,15 +154,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
-		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		]		
+		checkCorrectRegisters(famEq, perEq)		
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -194,16 +178,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -215,14 +189,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -245,16 +212,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -266,14 +223,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -296,16 +246,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -324,14 +264,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -355,16 +288,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -376,14 +299,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -406,16 +322,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -431,14 +337,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -460,17 +359,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.info(name + " - propagation done")
-		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));		
+		dprint()	
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -486,14 +375,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -516,16 +398,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -544,14 +416,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -575,16 +440,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -596,14 +451,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -628,16 +476,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -649,14 +487,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -681,16 +512,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -702,14 +523,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -734,16 +548,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -755,14 +559,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -787,16 +584,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -815,14 +602,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -845,16 +625,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -873,14 +643,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -900,16 +663,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -921,14 +674,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -949,16 +695,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -974,14 +710,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1004,16 +733,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1025,14 +744,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1055,16 +767,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1080,14 +782,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1109,17 +804,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.info(name + " - propagation done")
-		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		dprint()		
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -1135,14 +820,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1164,17 +842,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.info(name + " - propagation done")
-		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
+		dprint()		
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1193,14 +861,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 
@@ -1223,17 +884,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]		
 		logger.info(name + " - propagation done")
-		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));		
+		dprint()		
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1245,14 +896,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -1272,16 +916,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1297,14 +931,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1327,16 +954,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1348,14 +965,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1378,16 +988,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1399,14 +999,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1429,16 +1022,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1457,14 +1040,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -1488,16 +1064,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1509,14 +1075,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1539,16 +1098,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1564,14 +1113,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1594,16 +1136,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -1619,14 +1151,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1649,16 +1174,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1677,14 +1192,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -1708,16 +1216,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1729,14 +1227,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1761,16 +1252,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1782,14 +1263,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1814,16 +1288,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1835,14 +1299,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1867,16 +1324,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -1888,14 +1335,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1915,21 +1355,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		dprint()
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
-				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_2
+				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_2				
 			]
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -1948,14 +1378,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -1978,16 +1401,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)		
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2006,14 +1419,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOTHER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	
@@ -2033,16 +1439,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2054,14 +1450,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -2082,16 +1471,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2107,14 +1486,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -2137,16 +1509,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(2, pm.allContents.size);
-		assertEquals(3, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2158,14 +1520,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -2188,16 +1543,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2213,14 +1558,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_2 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -2243,16 +1581,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(4, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -2268,14 +1596,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 	@Test
@@ -2298,16 +1619,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(3, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2326,14 +1637,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_2 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")
 	}
 
@@ -2363,16 +1667,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(5, pm.allContents.size);
-		assertEquals(6, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2396,14 +1690,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));
+		checkCorrectRegisters(famEq, perEq)
 	}
 	
 	//========== EDITING ==========	
@@ -2419,16 +1706,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]		
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(5, pm.allContents.size);
-		assertEquals(6, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2452,14 +1729,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));		
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")		
 	}
 	@Test
@@ -2474,16 +1744,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]		
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(5, pm.allContents.size);
-		assertEquals(6, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_2
@@ -2507,14 +1767,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_2
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));		
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")		
 	}
 
@@ -2531,16 +1784,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]		
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(4, pm.allContents.size);
-		assertEquals(5, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = FAMILY_NAME_1
@@ -2560,14 +1803,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAUGHTER_1 + " " + FAMILY_NAME_1
 			]
 		]
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));		
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")		
 	} 
 	@Test
@@ -2582,26 +1818,9 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]		
 		logger.info(name + " - propagation done")
 		dprint()
-		val pm = resourceAt(PERSONS_MODEL)
-		val fm = resourceAt(FAMILIES_MODEL)
-		assertThat(pm, exists)
-		assertThat(fm, exists)
-		assertEquals(1, pm.contents.size);
-		assertEquals(1, fm.contents.size);
-		assertEquals(1, pm.allContents.size);
-		assertEquals(1, fm.allContents.size);
-		assertThat(pm.contents.get(0), instanceOf(PersonRegister));
-		assertThat(fm.contents.get(0), instanceOf(FamilyRegister));
 		val FamilyRegister famEq = FamiliesFactory.eINSTANCE.createFamilyRegister => []
 		val PersonRegister perEq = PersonsFactory.eINSTANCE.createPersonRegister => []
-		val famReg = fm.contents.get(0)
-		assertThat(famReg, instanceOf(FamilyRegister));
-		val FamilyRegister castedFamReg = famReg as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(famEq));
-		val perReg = pm.contents.get(0)
-		assertThat(perReg, instanceOf(PersonRegister));
-		val PersonRegister castedPerReg = perReg as PersonRegister
-		assertThat(castedPerReg, equalsDeeply(perEq));		
+		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")		
 	} 
 	
