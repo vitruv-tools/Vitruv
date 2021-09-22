@@ -1,4 +1,4 @@
-package tools.vitruv.applications.demo.familiespersons.tests.families2Persons
+package tools.vitruv.testutils.matchers
 
 import org.hamcrest.TypeSafeMatcher
 import org.eclipse.emf.ecore.EObject
@@ -26,6 +26,7 @@ class EListSingleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
 	}
 	
 	override describeTo(Description description) {
+		description.appendText("a list which contains something deeply equal to " + searchedItem.toString())
 	}
 	
 }
