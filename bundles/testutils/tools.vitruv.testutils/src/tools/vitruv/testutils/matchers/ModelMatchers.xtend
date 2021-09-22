@@ -39,6 +39,19 @@ class ModelMatchers {
 		new ResourceContainmentMatcher(rootMatcher)
 	}
 
+	def static Matcher<? super EList<EObject>> containsAllOf(EList<EObject> searchedItems,
+		ModelDeepEqualityOption... options) {
+		new EListMultipleContainmentMatcher(searchedItems, true, options)
+	}
+	def static Matcher<? super EList<EObject>> containsNoneOf(EList<EObject> searchedItems,
+		ModelDeepEqualityOption... options) {
+		new EListMultipleContainmentMatcher(searchedItems, false, options)
+	}
+
+	def static Matcher<? super EList<EObject>> listContains(EObject searchedItem, ModelDeepEqualityOption... options) {
+		new EListSingleContainmentMatcher(searchedItem, true, options)
+	}
+
 	def static Matcher<? super URI> isResource() {
 		new ResourceExistingMatcher(true)
 	}
