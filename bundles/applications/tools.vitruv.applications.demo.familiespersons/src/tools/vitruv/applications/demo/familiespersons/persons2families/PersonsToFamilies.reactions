@@ -35,9 +35,8 @@ reaction DeletedPersonRegister{
 
 routine deleteFamilyRegister(persons::PersonRegister personsRegister){
 	match{
-		val familyRegister = retrieve persons::PersonRegister corresponding to personsRegister
-	}
-	
+		val familyRegister = retrieve families::FamilyRegister corresponding to personsRegister
+	}	
 	action{
 		delete familyRegister
 	}
@@ -448,7 +447,7 @@ routine deleteMember(persons::Person person){
 			if(f && m && s && d){
 				deleteFamilyAfterLastMemberWasDeleted(family)
 			}
-		}
+		} 
 	}
 }
 

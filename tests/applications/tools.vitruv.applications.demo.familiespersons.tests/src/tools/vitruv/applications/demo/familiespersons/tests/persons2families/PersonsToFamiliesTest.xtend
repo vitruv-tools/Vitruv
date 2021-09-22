@@ -84,7 +84,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertThat(perReg, instanceOf(PersonRegister));
 		val PersonRegister castedPerReg = perReg as PersonRegister
 		assertThat(castedPerReg, equalsDeeply(perEq));
-	} 
+	}
 	
 	
 	//=====================================
@@ -1823,10 +1823,36 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, perEq)
 		logger.info(name + " - finished without errors")		
 	} 
-	
-	def dprint() {
-		dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
+	@Test
+	def void testDeletePersonsRegister() {
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.info(name + " - begin")	
+		this.createFamilyForTesting();
+		logger.info(name + " - preparation done")
+		dprint()
+		resourceAt(PERSONS_MODEL).propagate[contents.clear()]		
+		logger.info(name + " - propagation done")
+		dprint()
+		assertEquals(0, resourceAt(FAMILIES_MODEL).contents.size())
+		assertEquals(0, resourceAt(PERSONS_MODEL).contents.size())
+		assertThat(resourceAt(FAMILIES_MODEL), not(exists))
+		assertThat(resourceAt(PERSONS_MODEL), not(exists))
+		logger.info(name + " - finished without errors")
 	}
+
+	def dprint() {
+		val fsize = resourceAt(FAMILIES_MODEL).contents.size()
+		val psize = resourceAt(PERSONS_MODEL).contents.size()
+		if(fsize == 0){
+			logger.debug('\nResource at ' + FAMILIES_MODEL + ' is empty.')
+		}
+		if(psize == 0){
+			logger.debug('\nResource at ' + PERSONS_MODEL + ' is empty.')
+		}
+		if(fsize > 0 && psize > 0){		
+			dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
+		}
+	}	
 	def dprint(FamilyRegister fr, PersonRegister pr) {
 		var String fs = ''
 		var String ps = ''
