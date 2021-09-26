@@ -48,6 +48,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.propagation.ChangePropagationSpecification;
 import tools.vitruv.framework.propagation.ResourceAccess;
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.internal.ModelInstance;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
@@ -142,7 +143,7 @@ public class VaveTest {
 			resourceAccess.persistAsRoot(correspondingRoot, RedundancyChangePropagationSpecification.getTargetResourceUri(resourceURI));
 		}
 	}
-	
+
 	private Expression<FeatureOption> createExpression(vavemodel.System system) {
 		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
@@ -174,7 +175,7 @@ public class VaveTest {
 	@Test
 	public void testVSUMCreation() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		VirtualProductModel vsum = vave.externalizeProduct(this.projectFolder, config);
 		assertNotNull(vsum);
 	}
@@ -183,9 +184,9 @@ public class VaveTest {
 	public void testVSUMPropagation() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		Expression<FeatureOption> expression = createExpression(vave.getSystem());
-		
+
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -213,7 +214,7 @@ public class VaveTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
 
@@ -241,8 +242,8 @@ public class VaveTest {
 	public void testDeltaApplication() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		//Expression<FeatureOption> expression = createExpression(vave.getSystem());
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		// Expression<FeatureOption> expression = createExpression(vave.getSystem());
 		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
 
@@ -269,13 +270,13 @@ public class VaveTest {
 		vave.internalizeChanges(virtualModel, trueConstant);
 
 		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
-		
+
 		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
-		
+
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 	}
-	
+
 	@Test // Test wrt. problem space and feature revisions
 	public void testCarVaveModelCreationWithFeaturesOnly() {
 		// create tree content of simple vave model instance
@@ -326,10 +327,10 @@ public class VaveTest {
 		ResourceSet resSet = new ResourceSetImpl();
 		Resource resource = resSet.createResource(URI.createFileURI(this.projectFolder.resolve("models/car_withFeatures.vavemodel").toString()));
 		resource.getContents().add(system);
-		
+
 		Diagnostic d = Diagnostician.INSTANCE.validate(system);
 		System.out.println("MESSAGE: " + d.getMessage());
-		
+
 		try {
 			resource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
@@ -415,8 +416,8 @@ public class VaveTest {
 	public void saveAndLoad() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
-		VirtualVaVeModel vaveSaved = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
-		//Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
+		VirtualVaVeModel vaveSaved = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		// Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
 		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
@@ -446,20 +447,20 @@ public class VaveTest {
 		MatcherAssert.<Resource>assertThat(vsumModel.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		vaveSaved.internalizeChanges(virtualModel, trueConstant);
-		
+
 		config.getOption().add(vaveSaved.getSystem().getSystemrevision().get(0));
-		
+
 		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		VirtualVaVeModel vaveLoaded = new VirtualVaVeModeIImpl(domains, new HashSet<>(), this.projectFolder);
+		VirtualVaVeModel vaveLoaded = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		vaveLoaded.init(this.projectFolder);
 
 		config.getOption().clear();
 		config.getOption().add(vaveLoaded.getSystem().getSystemrevision().get(0));
-	
+
 		final VirtualProductModel virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), config);
 
 		final ModelInstance vsumModel3 = virtualModel3.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
@@ -492,7 +493,7 @@ public class VaveTest {
 
 		assertTrue(ee.eval(conjunction));
 	}
-	
+
 	@Test
 	public void implicationEvalTest() {
 		Feature a = VavemodelFactory.eINSTANCE.createFeature();
@@ -517,7 +518,7 @@ public class VaveTest {
 
 		assertTrue(ee.eval(implication));
 	}
-	
+
 	@Test
 	public void disjunctionEvalTest() {
 		Feature a = VavemodelFactory.eINSTANCE.createFeature();
@@ -532,11 +533,11 @@ public class VaveTest {
 		disjunction.getTerm().add(vb);
 
 		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-		
+
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
-		
+
 		assertFalse(ee.eval(disjunction));
-		
+
 		configuration.getOption().add(a);
 
 		assertTrue(ee.eval(disjunction));
@@ -545,7 +546,7 @@ public class VaveTest {
 
 		assertTrue(ee.eval(disjunction));
 	}
-	
+
 	@Test
 	public void disjunctionNotEvalTest() {
 		Feature a = VavemodelFactory.eINSTANCE.createFeature();
@@ -558,7 +559,7 @@ public class VaveTest {
 		vb.setOption(b);
 		disjunction.getTerm().add(va);
 		disjunction.getTerm().add(vb);
-		
+
 		Not<Option> not = VavemodelFactory.eINSTANCE.createNot();
 		not.setTerm(disjunction);
 
@@ -573,6 +574,5 @@ public class VaveTest {
 
 		assertFalse(ee.eval(not));
 	}
-
 
 }

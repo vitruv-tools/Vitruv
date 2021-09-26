@@ -14,10 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -34,6 +32,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl;
 import tools.vitruv.framework.propagation.ChangePropagationSpecification;
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationRepository;
+import tools.vitruv.framework.userinteraction.InteractionResultProvider;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.VirtualModelManager;
@@ -50,7 +49,6 @@ import vavemodel.Expression;
 import vavemodel.Feature;
 import vavemodel.FeatureOption;
 import vavemodel.FeatureRevision;
-import vavemodel.GroupType;
 import vavemodel.Mapping;
 import vavemodel.Option;
 import vavemodel.SystemRevision;
@@ -67,8 +65,9 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	private vavemodel.System system;
 	private Resource resource;
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
+	private InteractionResultProvider irp;
 
-	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, Path storageFolder) throws Exception {
+	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws Exception {
 
 		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
 			// load
@@ -95,6 +94,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		this.domainRepository = new VitruvDomainRepositoryImpl(domains);
 
 		this.changePropagationSpecifications.addAll(changePropagationSpecifications);
+
+		this.irp = irp;
 	}
 
 	public void init(Path storageFolder) throws IOException {
@@ -137,7 +138,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 //				.buildAndInitialize();
 
 //		final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
-		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null));
+
+		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(this.irp);
 
 		if (storageFolder == null)
 			throw new Exception("No storage folder was configured!");
@@ -438,14 +440,14 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			// create a new system revision and link it to predecessor system revision
 			SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
 			newsysrev.setRevisionID(1);
-			//newsysrev.getEnablesoptions().add(fm.getRootFeature());
+			// newsysrev.getEnablesoptions().add(fm.getRootFeature());
 			newsysrev.getEnablesoptions().addAll(fm.getFeatureOptions());
 			newsysrev.getEnablesconstraints().addAll(fm.getTreeConstraints());
 			newsysrev.getEnablesconstraints().addAll(fm.getCrossTreeConstraints());
 			this.system.getSystemrevision().add(newsysrev);
 
 			// add very first features and constraints in fm to system
-			//this.system.getFeature().add(fm.getRootFeature());
+			// this.system.getFeature().add(fm.getRootFeature());
 			// this.system.getFeature().addAll((Collection<? extends Feature>) unchangedFeatureOptions.stream().filter(p -> p instanceof Feature));
 			Set<Feature> features = fm.getFeatureOptions().stream().filter(p -> p instanceof Feature).map(v -> (Feature) v).collect(Collectors.toSet());
 			this.system.getFeature().addAll(features);
@@ -497,7 +499,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 					if (oldF.isEmpty()) {
 						// we need to create new instance for feature!
 						Feature newF = VavemodelFactory.eINSTANCE.createFeature();
-						newF.setName(((Feature)fo).getName());
+						newF.setName(((Feature) fo).getName());
 						featureNameMap.put(newF.getName(), newF);
 						// enable it by the new system revision
 						newsysrev.getEnablesoptions().add(newF);

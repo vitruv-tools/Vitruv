@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.propagation.ChangePropagationSpecification;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
 import tools.vitruv.testutils.TestProject;
@@ -42,7 +42,7 @@ public class VaveDomainOperationsTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 		return vave;
 	}
 
@@ -107,7 +107,7 @@ public class VaveDomainOperationsTest {
 		assertEquals(1, vave.getSystem().getSystemrevision().get(1).getEnablesconstraints().size());
 		assertEquals(4, vave.getSystem().getSystemrevision().get(1).getEnablesoptions().size());
 	}
-	
+
 	@Test
 	public void InternalizeFeatureModelRootTest(@TestProject final Path projectFolder) throws Exception {
 		FeatureModel fm = setupFM();
@@ -120,13 +120,13 @@ public class VaveDomainOperationsTest {
 		assertEquals(3, vave.getSystem().getFeature().size());
 		assertEquals(1, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().eContents().size());
 		assertEquals(2, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().getTreeconstraint().get(0).getFeature().size());
-		
+
 		// add new feature to or group
 		fm = vave.externalizeDomain(vave.getSystem().getSystemrevision().get(0));
 
 		assertEquals(3, fm.getFeatureOptions().size());
 		assertEquals(1, fm.getTreeConstraints().size());
-		
+
 		Feature featureD = VavemodelFactory.eINSTANCE.createFeature();
 		featureD.setName("featureD");
 
@@ -142,15 +142,15 @@ public class VaveDomainOperationsTest {
 		assertEquals(4, vave.getSystem().getFeature().size());
 		assertEquals(2, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().eContents().size()); // this should return 2 as they are now two cross-tree constraints
 		assertEquals(3, vave.getSystem().getFeature().stream().filter(p -> p.getName().equals("featureA")).findAny().get().getTreeconstraint().get(1).getFeature().size());
-		
-		// change root feature 
+
+		// change root feature
 		fm = vave.externalizeDomain(vave.getSystem().getSystemrevision().get(1));
 		Feature featureE = VavemodelFactory.eINSTANCE.createFeature();
 		featureE.setName("featureE");
 		fm.setRootFeature(featureE);
-		//fm.getFeatureOptions().remove(featureA);
+		// fm.getFeatureOptions().remove(featureA);
 		vave.internalizeDomain(fm);
-		
+
 		assertEquals(3, vave.getSystem().getSystemrevision().size());
 		assertEquals(1, vave.getSystem().getSystemrevision().get(1).getEnablesconstraints().size());
 		assertEquals(4, vave.getSystem().getSystemrevision().get(1).getEnablesoptions().size());

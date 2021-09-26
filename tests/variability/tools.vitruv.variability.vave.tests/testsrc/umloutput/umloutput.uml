@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_mZfN0B77Eey3vbBwC1HMHg" name="umloutput">
+  <packagedElement xmi:type="uml:Package" xmi:id="_mauj8B77Eey3vbBwC1HMHg" name="main">
+    <packagedElement xmi:type="uml:Class" xmi:id="_mbA30B77Eey3vbBwC1HMHg" name="Person" visibility="public">
+      <ownedAttribute xmi:id="_mbFJQB77Eey3vbBwC1HMHg" name="name" visibility="public">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_mbL28B77Eey3vbBwC1HMHg" name="test" visibility="public">
+        <ownedParameter xmi:id="_mbUZ0B77Eey3vbBwC1HMHg" name="returnParameter" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_mbyT4B77Eey3vbBwC1HMHg" name="Main" visibility="public">
+      <ownedOperation xmi:id="_mby68B77Eey3vbBwC1HMHg" name="main" visibility="public" isStatic="true">
+        <ownedParameter xmi:id="_mbziAB77Eey3vbBwC1HMHg" name="returnParameter" direction="return"/>
+        <ownedParameter xmi:id="_mb1XMB77Eey3vbBwC1HMHg" name="args">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

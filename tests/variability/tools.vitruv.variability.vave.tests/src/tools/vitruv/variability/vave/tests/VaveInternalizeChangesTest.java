@@ -22,6 +22,7 @@ import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.propagation.ChangePropagationSpecification;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
 import tools.vitruv.testutils.TestProject;
@@ -58,7 +59,7 @@ public class VaveInternalizeChangesTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 		return vave;
 	}
 
@@ -341,11 +342,11 @@ public class VaveInternalizeChangesTest {
 			assertEquals(3, vave.getSystem().getDeltamodule().size());
 		}
 	}
-	
+
 //	@Test
 	public void InternalizationOptionalDeltaTest(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
-		
+
 		// Feature a, Feature b
 		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
@@ -429,11 +430,10 @@ public class VaveInternalizeChangesTest {
 		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config);
 	}
 
-
 //	@Test
 	public void InternalizationOptionalDeltaTestMetamodelConform(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
-		
+
 		// Feature a, Feature b
 		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
@@ -444,7 +444,6 @@ public class VaveInternalizeChangesTest {
 
 		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 
-		
 		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
 
 		{
@@ -466,8 +465,6 @@ public class VaveInternalizeChangesTest {
 
 		assertEquals(1, vave.getSystem().getDeltamodule().size());
 
-		
-
 		// externalize product with empty config
 		config.getOption().clear();
 		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
@@ -475,7 +472,6 @@ public class VaveInternalizeChangesTest {
 
 		assertEquals(0, vmp0ext.getDeltas().size());
 
-		
 		{
 			// add fragment for feature a
 			final ResourceSet resourceSet = vmp0ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
@@ -492,8 +488,7 @@ public class VaveInternalizeChangesTest {
 			// propagate recorded changes into vmp1
 			vmp0ext.propagateChange(recordedChange);
 		}
-		
-		
+
 		// internalize product with feature A
 		vavemodel.Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
 		variableA.setOption(featureA);

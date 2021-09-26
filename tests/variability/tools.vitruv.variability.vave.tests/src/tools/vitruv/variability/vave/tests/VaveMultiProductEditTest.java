@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUt
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.internal.ModelInstance;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
@@ -50,7 +51,7 @@ public class VaveMultiProductEditTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		// create vave system
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 
 		// externalize virtual model products (vmp)
 		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
@@ -82,7 +83,7 @@ public class VaveMultiProductEditTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		// create vave system
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 //		System system = vave.getSystem();
 //		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
 //		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();

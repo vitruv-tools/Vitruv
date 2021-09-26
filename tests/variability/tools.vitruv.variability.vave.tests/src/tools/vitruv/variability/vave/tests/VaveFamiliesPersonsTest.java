@@ -2,13 +2,11 @@ package tools.vitruv.variability.vave.tests;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -42,6 +40,7 @@ import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.propagation.ChangePropagationSpecification;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.testutils.ChangePublishingTestView;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
@@ -50,8 +49,8 @@ import tools.vitruv.testutils.TestProjectManager;
 import tools.vitruv.testutils.UriMode;
 import tools.vitruv.testutils.domains.DomainUtil;
 import tools.vitruv.testutils.matchers.ModelMatchers;
-import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.VirtualProductModel;
+import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
 import vavemodel.Configuration;
 import vavemodel.VavemodelFactory;
@@ -90,13 +89,11 @@ public class VaveFamiliesPersonsTest {
 
 	private URI getUri(final Path viewRelativePath) {
 		Preconditions.checkArgument((viewRelativePath != null), "The viewRelativePath must not be null!");
-		Preconditions.checkArgument(!IterableExtensions.isEmpty(viewRelativePath),
-				"The viewRelativePath must not be empty!");
+		Preconditions.checkArgument(!IterableExtensions.isEmpty(viewRelativePath), "The viewRelativePath must not be empty!");
 		if (this.uriMode == null)
 			return null;
 		else if (this.uriMode == UriMode.PLATFORM_URIS)
-			return URI.createPlatformResourceURI(IterableExtensions
-					.join(this.persistenceDirectory.getFileName().resolve(viewRelativePath).normalize(), "/"), true);
+			return URI.createPlatformResourceURI(IterableExtensions.join(this.persistenceDirectory.getFileName().resolve(viewRelativePath).normalize(), "/"), true);
 		else if (this.uriMode == UriMode.FILE_URIS)
 			return URIUtil.createFileURI(this.persistenceDirectory.resolve(viewRelativePath).normalize().toFile());
 		else
@@ -113,8 +110,7 @@ public class VaveFamiliesPersonsTest {
 	}
 
 	private <T extends EObject> T from(final Class<T> clazz, final Resource resource) {
-		Preconditions.checkState(!resource.getContents().isEmpty(),
-				"The resource at " + resource.getURI() + " is empty!");
+		Preconditions.checkState(!resource.getContents().isEmpty(), "The resource at " + resource.getURI() + " is empty!");
 		return clazz.cast(resource.getContents().get(0));
 	}
 
@@ -132,8 +128,7 @@ public class VaveFamiliesPersonsTest {
 		return notifier;
 	}
 
-	private <T extends Notifier> List<PropagatedChange> propagate(final T notifier, final Consumer<T> consumer)
-			throws IOException {
+	private <T extends Notifier> List<PropagatedChange> propagate(final T notifier, final Consumer<T> consumer) throws IOException {
 		Resource toSave = this.determineResource(notifier);
 
 		try {
@@ -204,7 +199,7 @@ public class VaveFamiliesPersonsTest {
 		Set<VitruvDomain> domains = fpa.getVitruvDomains();
 		Set<ChangePropagationSpecification> changePropagationSpecifications = fpa.getChangePropagationSpecifications();
 
-		this.vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, testProjectPath);
+		this.vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), testProjectPath);
 
 		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), config);
