@@ -38,6 +38,16 @@
 			<layout>p2</layout>
 			<url>https://vitruv-tools.github.io/updatesite/nightly/</url>
 		</repository>
+		<repository>
+			<id>Papyrus</id>
+			<layout>p2</layout>
+			<url>https://download.eclipse.org/modeling/mdt/papyrus/components/designer/</url>
+		</repository>
+		<repository>
+			<id>Eclipse</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/2021-03</url>
+		</repository>
 	</repositories>
 
 	<build>
