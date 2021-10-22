@@ -1,7 +1,9 @@
 package tools.vitruv.framework.vsum.views
 
+import java.util.Collection
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.impl.AdapterImpl
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -39,9 +41,13 @@ class BasicModelView implements View {
         for (resource : modelResourceSet.resources) {
             val uri = resource.URI
             val newResource = viewResourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-            newResource.contents.addAll(EcoreUtil.copyAll(resource.contents))
+            newResource.contents.addAll(EcoreUtil.copyAll(resource.contents.filter))
             viewResourceSet.resources += resource
         }
+    }
+
+    def protected Collection<EObject> filter(Collection<EObject> contents) {
+        return contents // Default: Do not filter at all.
     }
 
     override commit() {

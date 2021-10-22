@@ -4,8 +4,6 @@ import java.util.ArrayList
 import java.util.Collection
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * A basic read-only view on a model that passes through only some of the model elements.
@@ -20,19 +18,10 @@ class FilterableModelView extends BasicModelView {
         update
     }
 
-    override update() { // TODO TS duplicated code from super class
+    override protected filter(Collection<EObject> contents) {
         if(elementsToShow === null) {
-            super.update
-        } else {
-            modelChanged = false
-            viewResourceSet = new ResourceSetImpl()
-            for (resource : modelResourceSet.resources) {
-                val uri = resource.URI
-                val newResource = viewResourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-                val filteredContent = resource.contents.filter[elementsToShow.contains(it)].toList
-                newResource.contents.addAll(EcoreUtil.copyAll(filteredContent))
-                viewResourceSet.resources += resource
-            }
+            return contents
         }
+        return contents.filter[elementsToShow.contains(it)].toList
     }
 }
