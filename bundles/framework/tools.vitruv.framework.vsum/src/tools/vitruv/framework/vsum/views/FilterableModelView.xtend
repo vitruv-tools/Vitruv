@@ -3,9 +3,9 @@ package tools.vitruv.framework.vsum.views
 import java.util.ArrayList
 import java.util.Collection
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.vsum.internal.ModelInstance
 
 /**
  * A basic read-only view on a model that passes through only some of the model elements.
@@ -14,8 +14,8 @@ import tools.vitruv.framework.vsum.internal.ModelInstance
 class FilterableModelView extends BasicModelView {
     val Collection<EObject> elementsToShow
 
-    new(ModelInstance model, Iterable<EObject> elementsToShow) {
-        super(model)
+    new(ResourceSet modelResourceSet, Iterable<EObject> elementsToShow) {
+        super(modelResourceSet)
         this.elementsToShow = new ArrayList(elementsToShow.toList)
         update
     }
@@ -25,12 +25,14 @@ class FilterableModelView extends BasicModelView {
             super.update
         } else {
             modelChanged = false
-            val resourceSet = new ResourceSetImpl()
-            val uri = model.resource.URI
-            resource = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-            val filteredContent = model.resource.contents.filter[elementsToShow.contains(it)].toList
-            resource.contents.addAll(EcoreUtil.copyAll(filteredContent))
-            resourceSet.resources += resource
+            viewResourceSet = new ResourceSetImpl()
+            for (resource : modelResourceSet.resources) {
+                val uri = resource.URI
+                val newResource = viewResourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
+                val filteredContent = resource.contents.filter[elementsToShow.contains(it)].toList
+                newResource.contents.addAll(EcoreUtil.copyAll(filteredContent))
+                viewResourceSet.resources += resource
+            }
         }
     }
 }

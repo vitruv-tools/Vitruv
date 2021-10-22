@@ -1,25 +1,25 @@
 package tools.vitruv.framework.vsum.views
 
-import tools.vitruv.framework.vsum.internal.ModelInstance
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 class BasicViewType implements ViewType {
 
-    val ModelInstance model
+    val ResourceSet modelResourceSet
     val String name
 
-    new(String name, ModelInstance model) {
+    new(String name, ResourceSet modelResourceSet) {
         this.name = name
-        this.model = model
+        this.modelResourceSet = modelResourceSet
     }
 
     override createSelector() {
-        return new BasicViewSelector(this, model.resource.allContents.toList)
+        return new BasicViewSelector(this, modelResourceSet.resources.map[allContents.toList].flatten.toList)
     }
 
     override createView(ViewSelector selector) {
-        return new FilterableModelView(model, selector.selectedElements)
+        return new FilterableModelView(modelResourceSet, selector.selectedElements)
     }
 
     override getName() {
