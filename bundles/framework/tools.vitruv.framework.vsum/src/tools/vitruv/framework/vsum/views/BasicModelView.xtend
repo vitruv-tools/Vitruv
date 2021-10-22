@@ -7,6 +7,9 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.common.util.URI
+
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 
 /**
  * A basic read-only view that passes by default the entirety of its underlying model as it is.
@@ -23,12 +26,12 @@ class BasicModelView implements View {
         update
     }
 
-    override getResource() {
-        return resource
+    override getResource(URI uri) {
+        modelResourceSet.loadOrCreateResource(uri)
     }
 
-    override isModified() {
-        return resource.modified
+    override isModified() { // TODO TS: Alternatively this can be done via a model change listener
+        return viewResourceSet.resources.stream.anyMatch[isModified]
     }
 
     override hasVSUMChanged() {
