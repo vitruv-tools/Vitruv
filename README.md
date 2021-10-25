@@ -14,7 +14,7 @@ Vitruv can be installed in Eclipse via the [nightly update site](http://vitruv.t
 Vitruv is short for Vitruvius (VIew-cenTRic engineering Using a VIrtual Underlying Single model) and is developed at the
 Chair for Software Design and Quality (SDQ) at the Karlsruhe Institute of Technology (KIT): http://sdq.ipd.kit.edu/
 
-The project page can be found at: https://sdqweb.ipd.kit.edu/wiki/Vitruvius
+The project page can be found in the GitHub wiki: http://vitruv.tools
 
 ## Project Basics
 
