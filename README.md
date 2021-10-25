@@ -18,11 +18,10 @@ The project page can be found in the GitHub wiki: http://vitruv.tools
 
 ## Project Basics
 
-Vitruv is realized as Eclipse Plug-ins and makes use of the Eclipse Modeling Framework (EMF).
-It depends on the following Eclipse tools:
-- EMF
-- Xtext
-- Xtend
+Vitruv is realized as Eclipse Plug-ins and depends on the following Eclipse tools:
+- Eclipse Modeling Framework (EMF) _as the modelling environment_
+- Xtext _for language development_
+- Xtend _for code_
 
 ## Project Structure
 
