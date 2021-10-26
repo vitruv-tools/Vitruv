@@ -25,26 +25,38 @@ import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
+import static tools.vitruv.testutils.matchers.ModelMatchers.containsAllOf
+import static tools.vitruv.testutils.matchers.ModelMatchers.containsNoneOf
+import edu.kit.ipd.sdq.metamodels.families.Family
 
+/**Test to validate the transfer of changes from the FamilyModel to the PersonModel.
+ * @author Dirk Neumann   
+ */
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(FamiliesPersonsTest);
-// Es gibt auch noch einen ModelPrinting
 
+	//First Set of reused static strings
 	final static String FAMILY_NAME_1 = "Meier"
 	final static String FIRST_FATHER_1 = "Anton"
 	final static String FIRST_MOTHER_1 = "Berta"
 	final static String FIRST_SON_1 = "Chris"
 	final static String FIRST_DAUGHTER_1 = "Daria"	
 	
+	//Second Set of reused static strings
 	final static String FAMILY_NAME_2 = "Schulze"
 	final static String FIRST_FATHER_2 = "Adam"
 	final static String FIRST_MOTHER_2 = "Birgit"
 	final static String FIRST_SON_2 = "Charles"
 	final static String FIRST_DAUGHTER_2 = "Daniela"	
 
+	//Model Paths
 	final static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
 	final static Path FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
 
+	/* Static reusable predefined Persons.
+	 * The first number indicates from which string set (above) the forename is.
+	 * the second number indicates from which string set (above) the lastname is. 
+	 */ 
 	final static Male DAD11 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_FATHER_1 + " " + FAMILY_NAME_1]
 	final static Female MOM11 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOTHER_1 + " " + FAMILY_NAME_1]
 	final static Male SON11 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + FAMILY_NAME_1]
@@ -60,35 +72,19 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	final static Male SON21 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + FAMILY_NAME_1]
 	final static Female DAU21 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAUGHTER_2 + " " + FAMILY_NAME_1]
 
+	/**Set the correct set of reations and routines for this test suite
+	 */
 	override protected getChangePropagationSpecifications() {
 		return #[new FamiliesToPersonsChangePropagationSpecification()]
 	}
 
-	def createRegister() {
-		FamiliesFactory.eINSTANCE.createFamilyRegister
-	}
-
+	/**Before each test a new {@link FamilyRegister} is created as starting point.
+	 * This is checked by several assertions to ensure correct preconditions for the tests. 
+	 */
 	@BeforeEach
 	def void insertRegister() {
-//		val SimpleLayout layout = new SimpleLayout();
-//		val ConsoleAppender consoleAppender = new ConsoleAppender(layout);
-//		logger.addAppender(consoleAppender);
-//		logger.setLevel(Level.INFO)
 		logger.setLevel(Level.DEBUG)
-		resourceAt(FAMILIES_MODEL).propagate[contents += createRegister()]
-	}
-
-	def createFamily(String familieName) {
-		FamiliesFactory.eINSTANCE.createFamily => [lastName = familieName]
-	}
-
-	def void insertFamily(String familieName) {
-		FamilyRegister.from(FAMILIES_MODEL).propagate[families += createFamily(familieName)]
-	}
-
-	@Test
-	def void testInsertRegister() {
-		// insertRegister(); -> Schon erledigt durch @Before Each
+		resourceAt(FAMILIES_MODEL).propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
 		assertThat(resourceAt(PERSONS_MODEL), exists);
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size);
@@ -96,21 +92,35 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertEquals(0, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
 	}
 
+	//Creates a family with the given lastname. Used by the "insertFamilyWith"-tests
+	/**Creates a {@link Family} with the given familieName. Used by the "insertFamilyWith..."-tests
+	 */
+	def createFamily(String familieName) {
+		FamiliesFactory.eINSTANCE.createFamily => [lastName = familieName]
+	}
+
+	/**Insert a new {@link Family}. This should not have any effect on the Persons-Model.
+	 */
 	@Test
-	def void testInsertNewFamily() {
-		insertFamily(FAMILY_NAME_1)
+	def void testInsertNewFamily() {		
+		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
+		logger.trace(name + " - begin")
+		val fam = createFamily(FAMILY_NAME_1);
+		logger.trace(name + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate[families += createFamily(FAMILY_NAME_1)]
+		logger.trace(name + " - propagation done")
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size);
 		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size);
 		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister));
 		assertEquals(0, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size);
-	}
-
-	def getExistingFamily(String lastName) {
-		FamilyRegister.from(FAMILIES_MODEL).families.findFirst[x|x.lastName.equals(lastName)]
-	}
+		logger.trace(name + " - finished without errors")		
+	}	
 	
-	
+	/**Check up method to first check the correct basic structure of both models and then compare
+	 * the resulting {@link FamilyRegister} with a predefined one and to check for the existence
+	 * and abscence of predefined {@link Persons}. Basically encapsulate the assertion part of each test.
+	 */
 	def void checkCorrectRegisters(FamilyRegister famEq, EList<EObject> allOf, EList<EObject> noneOf){
 		val pm = resourceAt(PERSONS_MODEL)
 		val fm = resourceAt(FAMILIES_MODEL)
@@ -131,6 +141,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertThat(e, containsNoneOf(noneOf));
 	} 
 
+	/**Insert a new {@link Family} and insert a father into it afterwards.
+	 */
 	@Test
 	def void testInsertFamilyWithFather() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -154,6 +166,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Insert a new {@link Family} and insert a mother into it afterwards.
+	 */
 	@Test
 	def void testInsertFamilyWithMother() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -177,6 +191,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Insert a new {@link Family} and insert a son into it afterwards.
+	 */
 	@Test
 	def void testInsertFamilyWithSon() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -200,6 +216,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Insert a new {@link Family} and insert a daughter into it afterwards.
+	 */
 	@Test
 	def void testInsertFamilyWithDaughter() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -224,6 +242,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(name + " - finished without errors")
 	}
 
+	/**This is used to build the starting point for many other tests like deleting and renaming operations.
+	 * Creates a {@link Family} including a father, a mother, a son and a daughter and maps this
+	 * changes to the {@link PersonRegister} which then includes two {@link Male} and two {@link Female}.
+	 */
 	def void createFamilyBeforeTesting() {
 		val fam = createFamily(FAMILY_NAME_1);
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
@@ -248,23 +270,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 	}
 
-	def static boolean equalPersons(PersonImpl p1, PersonImpl p2) {
-		val boolean bothNull = (p1 === null) && (p2 === null);
-		val boolean bothNotNull = (p1 !== null) && (p2 !== null);
-		val boolean bothSameType = bothNotNull && (p1.class == p2.class);
-
-		val boolean bothNamesNull = bothNotNull && (p1.fullName === null) && (p2.fullName === null);
-		val boolean bothNamesNotNull = bothNotNull && (p1.fullName !== null) && (p2.fullName !== null);
-		val boolean bothNamesEqual = bothNotNull && bothNamesNotNull && p1.fullName.equals(p2.fullName);
-
-		val boolean bothBirthdayNull = bothNotNull && (p1.birthday === null) && (p2.birthday === null);
-		val boolean bothBirthdayNotNull = bothNotNull && (p1.birthday !== null) && (p2.birthday !== null);
-		val boolean bothBirthdayEqual = bothNotNull && bothBirthdayNotNull && p1.birthday.equals(p2.birthday);
-
-		return bothNull || ((bothNotNull && bothSameType) && (bothNamesNull || bothNamesEqual) &&
-			(bothBirthdayNull || bothBirthdayEqual));
-	}
-
+	/**Deletes a father from a {@link Family} and the corresponding {@link Male} from the {@link PersonRegister}.
+	 */
 	@Test
 	def void testDeleteFatherFromFamily() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -295,6 +302,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Deletes a son from a {@link Family} and the corresponding {@link Male} from the {@link PersonRegister}.
+	 */	
 	@Test
 	def void testDeleteSonFromFamily() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -328,6 +337,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Deletes a mother from a {@link Family} and the corresponding {@link Female} from the {@link PersonRegister}.
+	 */	
 	@Test
 	def void testDeleteMotherFromFamily() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -358,6 +369,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Deletes a daughter from a {@link Family} and the corresponding {@link Female} from the {@link PersonRegister}.
+	 */
 	@Test
 	def void testDeleteDaughterFromFamily() {		
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -392,6 +405,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(name + " - finished without errors")
 	}
 
+	/**Changes the lastname of a {@link Family} and should edit the fullnames of
+	 * all corresponding {@link Person}s from the {@link PersonRegister}.
+	 */
 	@Test
 	def void testChangeLastName() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -424,6 +440,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(name + " - finished without errors")
 	}
 
+	/**Changes the firstname of a father of a {@link Family} and should edit the 
+	 * fullname of the corresponding {@link Male} in the {@link PersonRegister}.
+	 */
 	@Test
 	def void testChangeFirstNameFather() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -455,6 +474,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Changes the firstname of a son of a {@link Family} and should edit the 
+	 * fullname of the corresponding {@link Male} in the {@link PersonRegister}.
+	 */
 	@Test
 	def void testChangeFirstNameSon() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -489,6 +511,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Changes the firstname of a mother of a {@link Family} and should edit the 
+	 * fullname of the corresponding {@link Female} in the {@link PersonRegister}.
+	 */
 	@Test
 	def void testChangeFirstNameMother() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -520,6 +545,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Changes the firstname of a daughter of a {@link Family} and should edit the 
+	 * fullname of the corresponding {@link Female} in the {@link PersonRegister}.
+	 */
 	@Test
 	def void testChangeFirstNameDaughter() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -555,6 +583,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(name + " - finished without errors")
 	}
 
+	/**Tries to insert a new father into a {@link Family} which already has a father.
+	 * In this scenario the user decides to discard the changes. Therefore all changes
+	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister}  
+	 * should not be edited. The rest of the family stays the same as well.
+	 */
 	@Test
 	def void testInsertDadIfDadAlreadyExists_DiscardChanges() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -587,6 +620,17 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Tries to insert a new father into a {@link Family} which already has a father.
+	 * In this scenario the user decides to replace the existing father. Therefore the
+	 * previous father will be deleted from the {@link FamilyRegister} and replaced by 
+	 * the new one. In the {@link PersonsRegister} the old {@link Male} should be either
+	 * deleted and replaced by a new and matching {@link Male} or the old one is renamed.
+	 * Currently, the the old {@link Male} is deleted and replaced by a new {@link Male}.
+	 * Here, one should mind the differences concerning the birthday attribute of the {@link Male}
+	 * in the {@link PersonRegister}. Renaming would keep the birthday
+	 * which is already covered by a previous test case.
+	 * The rest of the family stays the same.
+	 */
 	@Test
 	def void testInsertDadIfDadAlreadyExists_ReplaceExisting() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -619,6 +663,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Tries to insert a new father into a {@link Family} which already has a father.
+	 * In this scenario the user decides to not replace the existing father but to insert
+	 * the new father into a new family. This family will receive the same lastname but
+	 * will not contain any of the other {@link Member}s from the old family, nor copies of them.
+	 * Therefore changes concerning the old {@link Family} will be reverted.
+	 */
 	@Test
 	def void testInsertDadIfDadAlreadyExists_MoveToNewFamily() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -655,8 +705,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(name + " - finished without errors")		
 	}
 
-
-
+	/**Tries to insert a new mother into a {@link Family} which already has a mother.
+	 * In this scenario the user decides to discard the changes. Therefore all changes
+	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister}  
+	 * should not be edited. The rest of the family stays the same as well.
+	 */
 	@Test
 	def void testInsertMomIfMomAlreadyExists_DiscardChanges() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -689,6 +742,17 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Tries to insert a new mother into a {@link Family} which already has a mother.
+	 * In this scenario the user decides to replace the existing mother. Therefore the
+	 * previous mother will be deleted from the {@link FamilyRegister} and replaced by 
+	 * the new one. In the {@link PersonsRegister} the old {@link Female} should be either
+	 * deleted and replaced by a new and matching {@link Female} or the old one is renamed.
+	 * Currently, the the old {@link Female} is deleted and replaced by a new {@link Female}.
+	 * Here, one should mind the differences concerning the birthday attribute of the {@link Female}
+	 * in the {@link PersonRegister}. Renaming would keep the birthday
+	 * which is already covered by a previous test case.
+	 * The rest of the family stays the same.
+	 */
 	@Test
 	def void testInsertMomIfMomAlreadyExists_ReplaceExisting() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -721,6 +785,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")
 	}
+	/**Tries to insert a new mother into a {@link Family} which already has a mother.
+	 * In this scenario the user decides to not replace the existing mother but to insert
+	 * the new mother into a new family. This family will receive the same lastname but
+	 * will not contain any of the other {@link Member}s from the old family, nor copies of them.
+	 * Therefore changes concerning the old {@link Family} will be reverted.
+	 */
 	@Test
 	def void testInsertMomIfMomAlreadyExists_MoveToNewFamily() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -757,11 +827,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(name + " - finished without errors")		
 	}
 
-
-
-//FrameworkTestChange
+	/**Deletes all {@link Family}s with matching lastname from the {@link FamilyRegister}.
+	 * All {@link Member}s which were contained in these families will be deleted together
+	 * with there corresponding {@link Person}s in the {@link PersonRegister} as well.
+	 * If only families without members are deleted, the {@link PersonRegister} 
+	 * will not be affected.
+	 */
 	@Test
-	def void testDeleteFamily() {
+	def void testDeleteAllFamiliesWithMatchingName() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
 		logger.trace(name + " - begin")		
 		// ===== PRECONDITION =====
@@ -781,7 +854,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		checkCorrectRegisters(famEq, allOf, noneOf)
 		logger.trace(name + " - finished without errors")		
 	}
-
+	/**Deletes the {@link FamilyRegister} with all its contents which leads to
+	 * the deletion of the corresponding {@link PersonRegister} with all its contents.
+	 */
 	@Test
 	def void testDeleteFamilyRegister() {
 		val String name = new Object() {}.getClass().getEnclosingMethod().getName().toFirstUpper();
@@ -800,36 +875,4 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertThat(resourceAt(PERSONS_MODEL), not(exists))
 		logger.trace(name + " - finished without errors")
 	}
-
-//	def dprint() {
-//		val fsize = resourceAt(FAMILIES_MODEL).contents.size()
-//		val psize = resourceAt(PERSONS_MODEL).contents.size()
-//		if(fsize == 0){
-//			logger.debug('\nResource at ' + FAMILIES_MODEL + ' is empty.')
-//		}
-//		if(psize == 0){
-//			logger.debug('\nResource at ' + PERSONS_MODEL + ' is empty.')
-//		}
-//		if(fsize > 0 && psize > 0){		
-//			dprint(FamilyRegister.from(FAMILIES_MODEL), PersonRegister.from(PERSONS_MODEL))
-//		}
-//	}
-//
-//	def dprint(FamilyRegister fr, PersonRegister pr) {
-//		var String fs = ''
-//		var String ps = ''
-//		if (fr !== null)
-//			fs = '''FamilyRegister «IF fr.id !== null»«fr.id»«ELSE»<no id>«ENDIF»
-//«FOR f : fr.families SEPARATOR '\n'»	Family «f.lastName»
-//«IF f.father !== null»		Father «f.father.firstName»«ENDIF»
-//«IF f.mother !== null»		Mother «f.mother.firstName»«ENDIF»
-//«FOR s : f.sons BEFORE '		Sons (' SEPARATOR ', ' AFTER ')'»«s.firstName»«ENDFOR»
-//«FOR d : f.daughters BEFORE '		Daughters (' SEPARATOR ', ' AFTER ')'»«d.firstName»«ENDFOR»«ENDFOR»''';
-//		if (pr !== null)
-//			ps = '''PersonRegister «IF pr.id !== null»«pr.id»«ELSE»<no id>«ENDIF»
-//«FOR p : pr.persons»
-//«IF p instanceof Male»	Male: «ELSE»	Female: «ENDIF»«p.fullName» («IF p.birthday !== null»«p.birthday»«ELSE»-«ENDIF»)
-//«ENDFOR»''';
-//		logger.debug('\n' + fs + '\n' + ps)
-//	}
 }

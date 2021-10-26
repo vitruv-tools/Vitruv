@@ -23,52 +23,51 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import static org.hamcrest.CoreMatchers.*
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import edu.kit.ipd.sdq.metamodels.families.Family
+import java.nio.file.Path
 
+/**Test to validate the transfer of changes from the PersonModel to the FamilyModel.
+ * @author Dirk Neumann   
+ */
 class PersonsToFamiliesTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(PersonsToFamiliesTest);
 	
+	//First Set of reused static strings
 	final static String FAMILY_NAME_1 = "Meier"
 	final static String FIRST_FATHER_1 = "Anton"
 	final static String FIRST_MOTHER_1 = "Berta"
 	final static String FIRST_SON_1 = "Chris"
 	final static String FIRST_DAUGHTER_1 = "Daria"	
 	
+	//Second Set of reused static strings
 	final static String FAMILY_NAME_2 = "Schulze"
 	final static String FIRST_FATHER_2 = "Adam"
 	final static String FIRST_MOTHER_2 = "Birgit"
 	final static String FIRST_SON_2 = "Charles"
 	final static String FIRST_DAUGHTER_2 = "Daniela"	
-	
-	static val FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
-	static val PERSONS_MODEL = DomainUtil.getModelFileName('model/model', new PersonsDomainProvider)
 
+	//Model Paths
+	final static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
+	final static Path FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
+
+	/**Set the correct set of reations and routines for this test suite
+	 */
 	override protected getChangePropagationSpecifications() {
 		return #[new PersonsToFamiliesChangePropagationSpecification()]
 	}
 
-	def createRegister() {
-		PersonsFactory.eINSTANCE.createPersonRegister
-	}
-	
+	/**Before each test a new {@link PersonRegister} is created as starting point.
+	 * This is checked by several assertions to ensure correct preconditions for the tests. 
+	 */
 	@BeforeEach
 	def void insertRegister() {
-//		val SimpleLayout layout = new SimpleLayout();
-//		val ConsoleAppender consoleAppender = new ConsoleAppender(layout);
-//		logger.addAppender(consoleAppender);
-//		logger.setLevel(Level.INFO)
 		logger.setLevel(Level.DEBUG)
-		resourceAt(PERSONS_MODEL).propagate[contents += createRegister()]
-	}
-	
-	@Test
-	def void testInsertRegister() {
-		// insertRegister(); -> Schon erledigt durch @Before Each
+		resourceAt(PERSONS_MODEL).propagate[contents += PersonsFactory.eINSTANCE.createPersonRegister]
 		assertThat(resourceAt(FAMILIES_MODEL), exists);
 		assertEquals(1, resourceAt(FAMILIES_MODEL).contents.size);
 		assertEquals(1, resourceAt(FAMILIES_MODEL).allContents.size);
 		assertThat(resourceAt(FAMILIES_MODEL).contents.get(0), instanceOf(FamilyRegister));
 		assertEquals(0, resourceAt(FAMILIES_MODEL).contents.get(0).eAllContents().size);
-	}		
+	}
 	
 	def void checkCorrectRegisters(FamilyRegister famEq, PersonRegister perEq){
 		val pm = resourceAt(PERSONS_MODEL)
