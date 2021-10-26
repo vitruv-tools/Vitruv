@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.variability.vave.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/javapp.jar
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Automatic-Module-Name: tools.vitruv.variability.vave.tests

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_g-kf8DY2EeyqHLc1VdoFdw" name="umloutput">
+  <packagedElement xmi:type="uml:Package" xmi:id="_g_1rQDY2EeyqHLc1VdoFdw" name="main">
+    <packagedElement xmi:type="uml:Class" xmi:id="_hAEUwDY2EeyqHLc1VdoFdw" name="Inner1" isAbstract="true"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_hAGJ8DY2EeyqHLc1VdoFdw" name="Main" visibility="public">
+      <ownedOperation xmi:id="_hAMQkDY2EeyqHLc1VdoFdw" name="main" visibility="public" isStatic="true">
+        <ownedParameter xmi:id="_hBAI4DY2EeyqHLc1VdoFdw" name="returnParameter" direction="return"/>
+        <ownedParameter xmi:id="_hBAv8DY2EeyqHLc1VdoFdw" name="args">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_hAM3oDY2EeyqHLc1VdoFdw" name="testMethod" visibility="public">
+        <ownedParameter xmi:id="_hAS-QDY2EeyqHLc1VdoFdw" name="returnParameter" direction="return"/>
+        <ownedParameter xmi:id="_hAd9YDY2EeyqHLc1VdoFdw" name="o"/>
+        <ownedParameter xmi:id="_hAekcDY2EeyqHLc1VdoFdw" name="s">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

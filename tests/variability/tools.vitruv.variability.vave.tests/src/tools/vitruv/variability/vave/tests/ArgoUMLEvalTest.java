@@ -145,7 +145,8 @@ public class ArgoUMLEvalTest {
 		};
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
-				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")) {
+				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")
+						&& !f.getFileName().toString().startsWith("bin") && !f.getFileName().toString().startsWith("template")) {
 					Path packageInfoPath = f.resolve(Paths.get("package-info.java"));
 					try {
 						if (!Files.exists(packageInfoPath)) {

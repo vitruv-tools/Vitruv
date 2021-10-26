@@ -42,6 +42,10 @@ import tools.vitruv.domains.java.JamoppLibraryHelper;
 import tools.vitruv.domains.java.JavaDomainProvider;
 import tools.vitruv.domains.uml.UmlDomainProvider;
 import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.framework.change.interaction.FreeTextUserInteraction;
 import tools.vitruv.framework.change.interaction.UserInteractionBase;
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl;
@@ -58,6 +62,7 @@ import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
 import vavemodel.Configuration;
+import vavemodel.FeatureOption;
 import vavemodel.VavemodelFactory;
 
 /**
@@ -183,15 +188,15 @@ public class ArgoUMLTest {
 
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
-		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src"),
-				Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-app\\src")
-				// , Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-umlpropertypanels\\src"),
-				// , Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-diagrams-sequence2\\src")
-		};
-//		Path[] sourceFolders = new Path[] { Paths.get("testsrc") };
+//		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src"),
+//				Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-app\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-diagrams-sequence2\\src")
+//				// , Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-umlpropertypanels\\src")
+//		};
+		Path[] sourceFolders = new Path[] { Paths.get("testsrc4") };
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
-				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")) {
+				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")
+						&& !f.getFileName().toString().startsWith("bin") && !f.getFileName().toString().startsWith("template")) {
 					Path packageInfoPath = f.resolve(Paths.get("package-info.java"));
 					try {
 						if (!Files.exists(packageInfoPath)) {
@@ -295,36 +300,41 @@ public class ArgoUMLTest {
 		final TransactionalChange recordedChange = changeRecorder.endRecording();
 		changeRecorder.close();
 
-//		// order recorded changes
-//		System.out.println("ORDERING CHANGES");
-//		ArrayList<EChange> newEChanges = new ArrayList<>();
-//		ArrayList<EChange> toAppend = new ArrayList<>();
-//		ArrayList<EChange> toAppend2 = new ArrayList<>();
-//		for (EChange change : recordedChange.getEChanges()) {
-//			if ((change instanceof ReplaceSingleValuedEReference) && !((EObject) ((ReplaceSingleValuedEReference) change).getNewValue()).eResource().getURI().equals(((ReplaceSingleValuedEReference) change).getAffectedEObject().eResource().getURI())) {
-//				toAppend2.add(change);
-//				System.out.println("moved change to back: " + change);
-//			} else if ((change instanceof InsertEReference) && !((EObject) ((InsertEReference) change).getNewValue()).eResource().getURI().equals(((InsertEReference) change).getAffectedEObject().eResource().getURI())) {
-//				toAppend.add(change);
-//				System.out.println("moved change to back: " + change);
-//			} else {
-//				newEChanges.add(change);
-//			}
-//		}
-//		ArrayList<EChange> orderedChanges = new ArrayList<>();
-//		orderedChanges.addAll(newEChanges);
-//		orderedChanges.addAll(toAppend);
-//		orderedChanges.addAll(toAppend2);
-//		TransactionalChange orderedChange = new TransactionalChangeImpl(orderedChanges);
-//
-//		// propagate changes into product
-//		System.out.println("PROPAGATING CHANGES INTO PRODUCT");
-//		vmp1.propagateChange(orderedChange);
-//
-//		// internalize changes in product into system
-//		System.out.println("INTERNALIZING CHANGES IN PRODUCT INTO SYSTEM");
-//		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
-//		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
+		// order recorded changes
+		System.out.println("ORDERING CHANGES");
+		ArrayList<EChange> newEChanges = new ArrayList<>();
+		ArrayList<EChange> toAppend = new ArrayList<>();
+		ArrayList<EChange> toAppend2 = new ArrayList<>();
+		for (EChange change : recordedChange.getEChanges()) {
+			if ((change instanceof ReplaceSingleValuedEReference) && ((ReplaceSingleValuedEReference) change).getNewValueID().contains("pathmap") && ((ReplaceSingleValuedEReference) change).getNewValueID().contains(".java#/1")) {
+				// this is the workaround for the the problem vitruvius has with the ".length" field of arrays of all types outside of the actually parsed source code (e.g., java.lang.Object or java.lang.Byte).
+				System.out.println("IGNORE: " + change);
+			} else if ((change instanceof ReplaceSingleValuedEReference) && !((EObject) ((ReplaceSingleValuedEReference) change).getNewValue()).eResource().getURI().equals(((ReplaceSingleValuedEReference) change).getAffectedEObject().eResource().getURI())) {
+				toAppend2.add(change);
+				System.out.println("moved change to back: " + change);
+			} else if ((change instanceof InsertEReference) && !((EObject) ((InsertEReference) change).getNewValue()).eResource().getURI().equals(((InsertEReference) change).getAffectedEObject().eResource().getURI())) {
+				toAppend.add(change);
+				System.out.println("moved change to back: " + change);
+			} else {
+				newEChanges.add(change);
+			}
+		}
+		ArrayList<EChange> orderedChanges = new ArrayList<>();
+		orderedChanges.addAll(newEChanges);
+		orderedChanges.addAll(toAppend);
+		orderedChanges.addAll(toAppend2);
+		TransactionalChange orderedChange = new TransactionalChangeImpl(orderedChanges);
+
+		// propagate changes into product
+		System.out.println("PROPAGATING CHANGES INTO PRODUCT");
+		vmp1.propagateChange(orderedChange);
+
+		// internalize changes in product into system
+		System.out.println("INTERNALIZING CHANGES IN PRODUCT INTO SYSTEM");
+		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
+
+		System.out.println("DONE");
 	}
 
 	protected static void resolveAllProxies(ResourceSet rs) {
