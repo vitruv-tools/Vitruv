@@ -39,15 +39,29 @@ class ModelMatchers {
 		new ResourceContainmentMatcher(rootMatcher)
 	}
 
+	/**Checks if for all items from {@paramref searchedItems} a similar one is included in the given list.
+	 * Formally: assertThat(L1, containsAllOf(L2)) == \forall(x in L2): \exists(y in L1): equals(x,y) 
+	 * @param searchedItems items, of which all should be contained.
+	 * @param options ... 
+	 */
 	def static Matcher<? super EList<EObject>> containsAllOf(EList<EObject> searchedItems,
 		ModelDeepEqualityOption... options) {
 		new EListMultipleContainmentMatcher(searchedItems, true, options)
 	}
+	/**Checks if for all items from {@paramref searchedItems} no similar one is included in the given list.
+	 * Formally: assertThat(L1, containsNoneOf(L2)) == \forall(x in L2): \not \exists(y in L1): equals(x,y) 
+	 * @param searchedItems items, of which none should be contained.
+	 * @param options ... 
+	 */
 	def static Matcher<? super EList<EObject>> containsNoneOf(EList<EObject> searchedItems,
 		ModelDeepEqualityOption... options) {
 		new EListMultipleContainmentMatcher(searchedItems, false, options)
-	}
-
+	}	
+	/**Checks if for the item {@paramref searchedItem} a similar one is included in the given list.
+	 * Formally: assertThat(L1, listContains(e)) == \exists(y in L1): equals(e,y) 
+	 * @param searchedItem item, which should be contained.
+	 * @param options ... 
+	 */
 	def static Matcher<? super EList<EObject>> listContains(EObject searchedItem, ModelDeepEqualityOption... options) {
 		new EListSingleContainmentMatcher(searchedItem, true, options)
 	}

@@ -10,11 +10,19 @@ import org.hamcrest.Matcher
 import java.util.ArrayList
 import org.hamcrest.CoreMatchers
 
+/**Class to instantiate either a listContains-matcher or a listDoesNotContain-matcher (not yet).
+ * @author Dirk Neumann 
+ */
 class EListSingleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
 	EObject searchedItem;
 	ModelDeepEqualityOption[] options;
 	boolean included;
 	
+	/**Constructor.	 * 
+	 * @param searchedItem item of interest
+	 * @param included should the item be included (true) or not (false)
+	 * @param options ...
+	 */
 	new(Object searchedItem, boolean included, ModelDeepEqualityOption[] options) {
 		this.searchedItem = searchedItem as EObject
 		this.options = options;	

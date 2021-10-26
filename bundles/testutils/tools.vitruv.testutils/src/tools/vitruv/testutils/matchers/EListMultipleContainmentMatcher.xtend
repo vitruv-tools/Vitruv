@@ -13,12 +13,20 @@ import org.hamcrest.CoreMatchers
 import java.util.List
 import java.util.ArrayList
 
+/**Class to instantiate either a containsAllOf-matcher or a containsNoneOf-matcher.
+ * @author Dirk Neumann 
+ */
 package class EListMultipleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
 	EList<EObject> shouldBeContained;
 	ModelDeepEqualityOption[] options;
 	Matcher base;
 	boolean included;
 	
+	/**Constructor.	 * 
+	 * @param list items of interest
+	 * @param included should all of them (true) or none of them (false) be included
+	 * @param options ...
+	 */
 	package new(EList<EObject> list, boolean included, ModelDeepEqualityOption[] options) {
 		this.shouldBeContained = list;
 		this.options = options;
