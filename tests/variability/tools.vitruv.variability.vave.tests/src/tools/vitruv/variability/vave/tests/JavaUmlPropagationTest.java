@@ -1,6 +1,7 @@
 package tools.vitruv.variability.vave.tests;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -254,9 +255,9 @@ public class JavaUmlPropagationTest {
 		org.eclipse.uml2.uml.Parameter eFirstParameter = (org.eclipse.uml2.uml.Parameter) eOperation.getOwnedParameters().get(1);
 		org.eclipse.uml2.uml.Parameter eSecondParameter = (org.eclipse.uml2.uml.Parameter) eOperation.getOwnedParameters().get(2);
 
-		assertNotNull(eReturnParameter.getDirection() == ParameterDirectionKind.RETURN_LITERAL);
-		assertNotNull(eFirstParameter.getDirection() == ParameterDirectionKind.IN_LITERAL);
-		assertNotNull(eSecondParameter.getDirection() == ParameterDirectionKind.IN_LITERAL);
+		assertTrue(eReturnParameter.getDirection() == ParameterDirectionKind.RETURN_LITERAL);
+		assertTrue(eFirstParameter.getDirection() == ParameterDirectionKind.IN_LITERAL);
+		assertTrue(eSecondParameter.getDirection() == ParameterDirectionKind.IN_LITERAL);
 
 		assertNotNull(eSecondParameter.getType()); // success (should be String)
 		assertNotNull(eFirstParameter.getType()); // fail (should be Object)
