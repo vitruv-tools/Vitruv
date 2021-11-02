@@ -1,6 +1,5 @@
 package tools.vitruv.variability.vave.tests;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,13 +31,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emftext.language.java.JavaClasspath;
 import org.emftext.language.java.JavaPackage;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
 import tools.vitruv.applications.umljava.JavaToUmlChangePropagationSpecification;
-import tools.vitruv.domains.java.JamoppLibraryHelper;
 import tools.vitruv.domains.java.JavaDomainProvider;
 import tools.vitruv.domains.uml.UmlDomainProvider;
 import tools.vitruv.framework.change.description.TransactionalChange;
@@ -69,69 +66,8 @@ import vavemodel.VavemodelFactory;
  * Experiments with ArgoUML, JaMoPP, EMFCompare, and Vitruv Java-UML consistency preservation.
  */
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
-@Disabled
+//@Disabled
 public class ArgoUMLTest {
-
-	@Test
-	// @Disabled
-	public void singleFileParseTest(@TestProject final Path projectFolder) throws Exception {
-		// create vave instance
-		Set<VitruvDomain> domains = new HashSet<>();
-		domains.add(new JavaDomainProvider().getDomain());
-		domains.add(new UmlDomainProvider().getDomain());
-
-		Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<>();
-		JavaToUmlChangePropagationSpecification javaumlcps = new JavaToUmlChangePropagationSpecification();
-		changePropagationSpecifications.add(javaumlcps);
-
-		PredefinedInteractionResultProvider irp = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null);
-		FreeTextUserInteraction ftui = new InteractionFactoryImpl().createFreeTextUserInteraction();
-		ftui.setText("umloutput");
-		irp.addUserInteractions(new UserInteractionBase[] { ftui, ftui });
-
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, irp, projectFolder);
-
-		// set up jamopp
-		JamoppLibraryHelper.registerStdLib();
-
-		ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-		resourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
-		resourceSet.getLoadOptions().put("DISABLE_LOCATION_MAP", Boolean.TRUE);
-		EPackage.Registry.INSTANCE.put("http://www.emftext.org/java", JavaPackage.eINSTANCE);
-
-		// register jar files
-		System.out.println("REGISTERING JAR FILES");
-		JavaClasspath cp = JavaClasspath.get(resourceSet);
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("C:\\FZI\\argouml\\jars\\rt.jar").toString()));
-//		FileSystem fs = FileSystems.getFileSystem(java.net.URI.create("jrt:/"));
-//		Path objClassFilePath = fs.getPath("modules", "java.beans", "java/beans/Object.class");
-//		cp.registerClassifierJar(URI.createFileURI(Paths.get("C:\\FZI\\argouml\\jars\\sax2.jar").toString()));
-		List<Path> jarFiles = new ArrayList<>();
-		// Path[] libraryFolders = new Path[] { Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-infra\\lib"), Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-model-euml\\lib"), Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-model-mdr\\lib") };
-		Path[] libraryFolders = new Path[] { Paths.get("C:\\FZI\\argouml\\argouml\\src\\") };
-		for (Path libraryFolder : libraryFolders) {
-			Files.walk(libraryFolder).forEach(f -> {
-				if (Files.isRegularFile(f) && f.getFileName().toString().endsWith(".jar")) {
-					jarFiles.add(f);
-					System.out.println("ADDED JAR FILE: " + f);
-				}
-			});
-		}
-		for (Path jarFile : jarFiles) {
-			cp.registerClassifierJar(URI.createFileURI(jarFile.toString()));
-		}
-
-		// parse files
-		System.out.println("PARSING JAVA FILES");
-		List<Resource> resources = new ArrayList<>();
-		Path javaFile = Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-app\\src\\org\\argouml\\ui\\cmd\\GenericArgoMenuBar.java");
-		System.out.println("FILE: " + javaFile);
-		long timeStart = System.currentTimeMillis();
-		Resource resource = resourceSet.getResource(URI.createFileURI(javaFile.toString()), true);
-		long timeDiff = System.currentTimeMillis() - timeStart;
-		System.out.println("TIME: " + timeDiff);
-		resources.add(resource);
-	}
 
 	@Test
 	// @Disabled
@@ -188,26 +124,32 @@ public class ArgoUMLTest {
 
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
+		Path location = Paths.get("C:/FZI/git/argouml-spl-revisions-variants-temp/V/src");
+		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), location.resolve("argouml-core-model-mdr\\src"),
+//				location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") 
+		};
 //		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src"),
 //				Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-app\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-diagrams-sequence2\\src")
 //				// , Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-umlpropertypanels\\src")
 //		};
-		Path[] sourceFolders = new Path[] { Paths.get("testsrc4") };
+//		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src") };
+//		Path[] sourceFolders = new Path[] { Paths.get("testsrc7/p1"), Paths.get("testsrc7/p2") };
+//		Path[] sourceFolders = new Path[] { Paths.get("testsrc8") };
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
 				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")
 						&& !f.getFileName().toString().startsWith("bin") && !f.getFileName().toString().startsWith("template")) {
-					Path packageInfoPath = f.resolve(Paths.get("package-info.java"));
-					try {
-						if (!Files.exists(packageInfoPath)) {
-							Files.createFile(packageInfoPath);
-							Files.writeString(packageInfoPath, "package " + sourceFolder.relativize(f).toString().replace(java.io.File.separator, ".") + ";");
-						}
-						javaFiles.add(packageInfoPath);
-						System.out.println("ADDED PACKAGE INFO FILE: " + packageInfoPath);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+//					Path packageInfoPath = f.resolve(Paths.get("package-info.java"));
+//					try {
+//						if (!Files.exists(packageInfoPath)) {
+//							Files.createFile(packageInfoPath);
+//							Files.writeString(packageInfoPath, "package " + sourceFolder.relativize(f).toString().replace(java.io.File.separator, ".") + ";");
+//						}
+//						javaFiles.add(packageInfoPath);
+//						System.out.println("ADDED PACKAGE INFO FILE: " + packageInfoPath);
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
 				} else if (Files.isRegularFile(f) && f.getFileName().toString().endsWith(".java") && !f.getFileName().toString().equals("package-info.java")) {
 					javaFiles.add(f);
 					System.out.println("ADDED JAVA FILE: " + f);

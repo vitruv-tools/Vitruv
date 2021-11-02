@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_MzjWEDmBEeyWmbebvWEbIA" name="umloutput">
+  <packagedElement xmi:type="uml:Package" xmi:id="_M0xeEDmBEeyWmbebvWEbIA" name="main">
+    <packagedElement xmi:type="uml:Class" xmi:id="_M05Z4DmBEeyWmbebvWEbIA" name="Main" visibility="public">
+      <ownedAttribute xmi:id="_M09EQDmBEeyWmbebvWEbIA" name="test" visibility="public" type="_M2gjcDmBEeyWmbebvWEbIA"/>
+      <ownedAttribute xmi:id="_M09rUDmBEeyWmbebvWEbIA" name="test2" visibility="public" type="_M2fVUDmBEeyWmbebvWEbIA"/>
+      <ownedOperation xmi:id="_M1DK4DmBEeyWmbebvWEbIA" name="testMethod" visibility="public">
+        <ownedParameter xmi:id="_M1LGsDmBEeyWmbebvWEbIA" name="" type="_M1Ws4DmBEeyWmbebvWEbIA" direction="return"/>
+        <ownedParameter xmi:id="_M1YiEDmBEeyWmbebvWEbIA" name="a">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_M1ZJIDmBEeyWmbebvWEbIA" name="b" type="_M1Ws4DmBEeyWmbebvWEbIA"/>
+        <ownedParameter xmi:id="_M144YDmBEeyWmbebvWEbIA" name="a">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_M2gjcDmBEeyWmbebvWEbIA" name="Main2" visibility="public">
+      <ownedAttribute xmi:id="_M2iYoDmBEeyWmbebvWEbIA" name="val" visibility="public">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_M2i_sDmBEeyWmbebvWEbIA" name="blubb" visibility="public">
+        <ownedParameter xmi:id="_M2kN0DmBEeyWmbebvWEbIA" name="" type="_M05Z4DmBEeyWmbebvWEbIA" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_M1UQoDmBEeyWmbebvWEbIA" name="java">
+    <packagedElement xmi:type="uml:Package" xmi:id="_M1UQoTmBEeyWmbebvWEbIA" name="lang">
+      <packagedElement xmi:type="uml:Class" xmi:id="_M1Ws4DmBEeyWmbebvWEbIA" name="Object" visibility="public"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_M2fVUDmBEeyWmbebvWEbIA" name="Throwable" visibility="public"/>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

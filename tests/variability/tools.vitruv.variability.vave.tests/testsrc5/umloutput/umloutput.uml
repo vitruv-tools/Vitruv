@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_vQf-4DdyEey1_8CS2TtRqw" name="umloutput">
+  <packagedElement xmi:type="uml:Package" xmi:id="_vRy_YDdyEey1_8CS2TtRqw" name="main">
+    <packagedElement xmi:type="uml:Class" xmi:id="_vSAawDdyEey1_8CS2TtRqw" name="Main" visibility="public">
+      <ownedOperation xmi:id="_vSGhYDdyEey1_8CS2TtRqw" name="testMethod" visibility="public">
+        <ownedParameter xmi:id="_vSMA8DdyEey1_8CS2TtRqw" name="" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_vSWZADdyEey1_8CS2TtRqw" name="o">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_vSXAEDdyEey1_8CS2TtRqw" name="s">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_vS1hMDdyEey1_8CS2TtRqw" name="test">
+    <packagedElement xmi:type="uml:Package" xmi:id="_vS2IQDdyEey1_8CS2TtRqw" name="main">
+      <packagedElement xmi:type="uml:Class" xmi:id="_vS3WYDdyEey1_8CS2TtRqw" name="Main2" visibility="public">
+        <ownedOperation xmi:id="_vS39cDdyEey1_8CS2TtRqw" name="testMethod" visibility="public">
+          <ownedParameter xmi:id="_vS4kgDdyEey1_8CS2TtRqw" name="" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_vS5LkDdyEey1_8CS2TtRqw" name="o">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_vS5yoDdyEey1_8CS2TtRqw" name="s">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_vS9dADdyEey1_8CS2TtRqw" name="Main3" visibility="public">
+      <ownedOperation xmi:id="_vS9dATdyEey1_8CS2TtRqw" name="testMethod" visibility="public">
+        <ownedParameter xmi:id="_vS-EEDdyEey1_8CS2TtRqw" name="" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_vS-rIDdyEey1_8CS2TtRqw" name="o">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_vS_SMDdyEey1_8CS2TtRqw" name="s">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>
