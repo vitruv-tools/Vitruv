@@ -1,34 +1,37 @@
 package tools.vitruv.testutils
 
 import java.nio.file.Path
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.common.notify.Notifier
-import java.util.function.Consumer
 import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
-import org.eclipse.emf.ecore.resource.Resource
+import java.util.function.Consumer
+import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
-import static com.google.common.base.Preconditions.checkArgument
-import static extension java.nio.file.Files.move
-import static java.nio.file.Files.createDirectories
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+
+import static com.google.common.base.Preconditions.checkArgument
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import static java.nio.file.Files.createDirectories
+import static java.nio.file.Files.move
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
+
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
- */ 
+ */
 class BasicTestView implements TestView {
 	val Path persistenceDirectory
 	val ResourceSet resourceSet
 	@Accessors
 	val TestUserInteraction userInteraction
 	val UriMode uriMode
-	
+
 	/**
 	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
 	 *  provided {@code persistenceDirectory}, and use the provided {@code uriMode}.
@@ -55,10 +58,10 @@ class BasicTestView implements TestView {
 			uriMode
 		)
 	}
-	
+
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory}, access
-	 * resources through the provided {@code resourceSet}, allow to program interactions through the provided 
+	 * resources through the provided {@code resourceSet}, allow to program interactions through the provided
 	 * {@code userInteraction}, and use the provided {@code uriMode}.
 	 */
 	new(
@@ -72,7 +75,7 @@ class BasicTestView implements TestView {
 		this.userInteraction = userInteraction
 		this.uriMode = uriMode
 	}
-	
+
 	override resourceAt(URI modelUri) {
 		resourceSet.loadOrCreateResource(modelUri)
 	}
@@ -93,7 +96,7 @@ class BasicTestView implements TestView {
 		(toSave ?: determineResource(notifier))?.saveOrDelete()
 		return emptyList()
 	}
-	
+
 	override moveTo(Resource resource, Path newViewRelativePath) {
 		resource.URI.absolutePath.moveSafelyTo(persistenceDirectory.resolve(newViewRelativePath))
 		resource.URI = newViewRelativePath.uri
@@ -103,7 +106,7 @@ class BasicTestView implements TestView {
 		resource.URI.absolutePath.moveSafelyTo(newUri.absolutePath)
 		resource.URI = newUri
 	}
-	
+
 	def private moveSafelyTo(Path source, Path target) {
 		createDirectories(target.parent)
 		move(source, target)
@@ -116,7 +119,7 @@ class BasicTestView implements TestView {
 			resource.save(emptyMap)
 		}
 	}
-	 
+
 	override getUri(Path viewRelativePath) {
 		checkArgument(viewRelativePath !== null, "The viewRelativePath must not be null!")
 		checkArgument(!viewRelativePath.isEmpty, "The viewRelativePath must not be empty!")
@@ -129,7 +132,7 @@ class BasicTestView implements TestView {
 				createFileURI(persistenceDirectory.resolve(viewRelativePath).normalize().toFile())
 		}
 	}
-	
+
 	def private getAbsolutePath(URI uri) {
 		if (uri.isFile) {
 			checkArgument(uri.hasAbsolutePath, '''«uri» is a file URI but does not have an absolute path!''')
@@ -153,4 +156,25 @@ class BasicTestView implements TestView {
 		resourceSet.resources.forEach [unload()]
 		resourceSet.resources.clear()
 	}
+
+    override isModified() {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
+    }
+
+    override hasVSUMChanged() {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
+    }
+
+    override update() {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
+    }
+
+    override commitChanges() {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
+    }
+
+    override rootObjects() {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
+    }
+
 }

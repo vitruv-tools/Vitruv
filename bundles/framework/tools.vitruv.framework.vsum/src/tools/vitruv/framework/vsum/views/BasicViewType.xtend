@@ -19,7 +19,7 @@ class BasicViewType implements ViewType {
     }
 
     override createView(ViewSelector selector) {
-        return new FilterableModelView(modelResourceSet, selector.selectedElements)
+        return new FilterableModelView(modelResourceSet.resources, selector.selectedElements)
     }
 
     override getName() {

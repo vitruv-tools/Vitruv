@@ -1,11 +1,15 @@
 package tools.vitruv.framework.vsum.views
 
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.common.util.URI
+import java.util.Collection
+import org.eclipse.emf.ecore.EObject
 
 interface View {
 
-    def Resource getResource(URI uri)
+    def Collection<EObject> rootObjects()
+
+    def <T> Collection<T> rootObjects(Class<T> clazz) {
+        rootObjects.filter[clazz.isInstance(it)].map[clazz.cast(it)].toList
+    }
 
     def boolean isModified()
 
@@ -13,5 +17,5 @@ interface View {
 
     def void update()
 
-    def boolean commit()
+    def boolean commitChanges()
 }
