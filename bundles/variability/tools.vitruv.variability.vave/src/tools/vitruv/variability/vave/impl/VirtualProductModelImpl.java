@@ -22,9 +22,7 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	// original changes
 	private Collection<VitruviusChange> deltas = new ArrayList<>();
 
-	public VirtualProductModelImpl(final Configuration configuration, final VsumFileSystemLayout fileSystemLayout,
-			final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository,
-			final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
+	public VirtualProductModelImpl(final Configuration configuration, final VsumFileSystemLayout fileSystemLayout, final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository, final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		super(fileSystemLayout, userInteractor, domainRepository, changePropagationSpecificationProvider);
 		this.configuration = configuration;
 	}

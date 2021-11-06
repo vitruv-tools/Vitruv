@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.emftext.language.java.JavaClasspath;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
@@ -178,6 +180,38 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		vsum.loadExistingModels();
 		VirtualModelManager.getInstance().putVirtualModel(vsum);
 
+		// THE FOLLOWING IS A TEMPORARY WORKAROUND FOR ARGOUML
+
+		ResourceSet dummyResourceSet = vsum.getResourceSet();
+		dummyResourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
+		dummyResourceSet.getLoadOptions().put("DISABLE_LOCATION_MAP", Boolean.TRUE);
+		dummyResourceSet.getLoadOptions().put(JavaClasspath.OPTION_USE_LOCAL_CLASSPATH, Boolean.TRUE);
+		dummyResourceSet.getLoadOptions().put(JavaClasspath.OPTION_REGISTER_STD_LIB, Boolean.FALSE);
+		JavaClasspath dummyCP = JavaClasspath.get(dummyResourceSet, JavaClasspath.getInitializers());
+
+		// register jar files
+		System.out.println("REGISTERING JAR FILES");
+		JavaClasspath cp = dummyCP; // JavaClasspath.get(dummyResourceSet);
+		// cp.registerClassifierJar(URI.createFileURI(Paths.get("C:\\FZI\\argouml\\jars\\rt.jar").toString()));
+		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\rt.jar").toAbsolutePath().toString()));
+		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jmi.jar").toAbsolutePath().toString()));
+		List<Path> jarFiles = new ArrayList<>();
+		// Path[] libraryFolders = new Path[] { location };
+		Path[] libraryFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\") };
+		for (Path libraryFolder : libraryFolders) {
+			Files.walk(libraryFolder).forEach(f -> {
+				if (Files.isRegularFile(f) && f.getFileName().toString().endsWith(".jar")) {
+					jarFiles.add(f);
+					System.out.println("ADDED JAR FILE: " + f);
+				}
+			});
+		}
+		for (Path jarFile : jarFiles) {
+			cp.registerClassifierJar(URI.createFileURI(jarFile.toString()));
+		}
+
+		// END WORKAROUND
+
 		// HERE STARTS THE VAVE STUFF
 
 		// optional: add configuration to unified system
@@ -186,8 +220,10 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
 		for (Mapping mapping : this.system.getMapping()) {
+			System.out.println("Evaluating Mapping: " + mapping.getExpression());
 			// retrieve only these delta modules whose mapping evaluates to true
 			if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
+				System.out.println("Selected Mapping: " + mapping.getExpression());
 				for (DeltaModule deltamodule : mapping.getDeltamodule()) {
 					// EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
 					// echanges.add((EChange) deltamodule.eGet(eStructFeature));
@@ -351,7 +387,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			// set fragments (i.e., deltas recorded in product) of mapping
 			for (VitruviusChange change : virtualProductModel.getDeltas()) {
 				DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
-				System.out.println("DELTA: " + change);
+//				System.out.println("DELTA: " + change);
 				for (EChange echange : change.getEChanges()) {
 					dm.getChange().add(EcoreUtil.copy(echange));
 				}
@@ -364,7 +400,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		}
 
 		// save us
-		this.save();
+//		this.save();
 	}
 
 	/**

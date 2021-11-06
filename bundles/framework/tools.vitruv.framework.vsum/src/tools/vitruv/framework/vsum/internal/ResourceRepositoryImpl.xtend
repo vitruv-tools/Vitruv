@@ -118,13 +118,18 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	override void saveOrDeleteModels() {
 		if(logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 		val modelInstancesIterator = modelInstances.entrySet.iterator
+		
+		System.out.println("NUM RESOURCES IN MI: " + modelInstances.size());
+		
 		while (modelInstancesIterator.hasNext()) {
 			val modelInstance = modelInstancesIterator.next().value
-			if (modelInstance.empty) {
-				modelInstance.delete()
-				modelInstancesIterator.remove()
-			} else {
-				modelInstance.save()
+			if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
+				if (modelInstance.empty) {
+					modelInstance.delete()
+					modelInstancesIterator.remove()
+				} else {
+					modelInstance.save()
+				}
 			}
 		}
 		correspondenceModel.save()
@@ -169,6 +174,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
 		correspondencesResourceSet.resources.clear()
+	}
+	
+	override getResourceSet() {
+		this.modelsResourceSet;
 	}
 
 }

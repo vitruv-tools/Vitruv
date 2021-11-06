@@ -1,10 +1,11 @@
 package tools.vitruv.framework.vsum.internal
 
-import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.propagation.ResourceAccess
-import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.propagation.ResourceAccess
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def VitruviusChange applyChange(VitruviusChange change)
@@ -16,6 +17,8 @@ package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	 * the repository. Returns <code>null</code> otherwise.
 	 */
 	def ModelInstance getModel(URI modelUri)
+
+	def ResourceSet getResourceSet();
 
 	def void loadExistingModels()
 

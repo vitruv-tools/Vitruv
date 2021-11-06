@@ -124,14 +124,14 @@ public class ArgoUMLTest {
 
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
-		Path location = Paths.get("C:/FZI/git/argouml-spl-revisions-variants-temp/V/src");
-		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), location.resolve("argouml-core-model-mdr\\src"),
-//				location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") 
-		};
-//		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src"),
-//				Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-app\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-diagrams-sequence2\\src")
-//				// , Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-umlpropertypanels\\src")
+//		Path location = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants-selection\\R0_variants\\V-LOGG\\src");
+//		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), location.resolve("argouml-core-model-mdr\\src"),
+////				location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") 
 //		};
+		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src"),
+//				Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-app\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-diagrams-sequence2\\src")
+				// , Paths.get("C:\\FZI\\argouml\\argouml\\src\\argouml-core-umlpropertypanels\\src")
+		};
 //		Path[] sourceFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-euml\\src"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java"), Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\src") };
 //		Path[] sourceFolders = new Path[] { Paths.get("testsrc7/p1"), Paths.get("testsrc7/p2") };
 //		Path[] sourceFolders = new Path[] { Paths.get("testsrc8") };
@@ -179,6 +179,13 @@ public class ArgoUMLTest {
 //			resourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
 //			resourceSet.getLoadOptions().put("DISABLE_LOCATION_MAP", Boolean.TRUE);
 
+			for (Resource resource : resourceSet.getResources()) {
+				if (resource.getURI().toString().contains(javaFile.getFileName().toString()) && resource.getURI().toString().contains("pathmap")) {
+					System.out.println("FFF: " + javaFile.getFileName().toString() + " / " + resource.getURI());
+					System.out.println("RESOLVED: " +  resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
+				}
+			}
+			
 			long localTimeStart = System.currentTimeMillis();
 			Resource resource = resourceSet.getResource(URI.createFileURI(javaFile.toString()), true);
 			long localTimeDiff = System.currentTimeMillis() - localTimeStart;
@@ -186,6 +193,14 @@ public class ArgoUMLTest {
 
 			resources.add(resource);
 //			resourceSets.add(resourceSet);
+
+			for (Resource resource2 : resourceSet.getResources()) {
+				if (resource2.getURI().toString().contains(javaFile.getFileName().toString()) && resource2.getURI().toString().contains("pathmap")) {
+					System.out.println("GGG: " + resource2.getURI());
+					System.out.println("RESOLVED2: " +  resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
+				}
+			}
+			
 		}
 
 //		// workaround attempt for slow parsing: merge all resources into a single resource set to use from here onward
@@ -196,9 +211,49 @@ public class ArgoUMLTest {
 //			resourceSet.getResources().addAll(tempResourceSet.getResources());
 //		}
 
+		System.out.println("NUM RESOURCES PARSED: " + resources.size());
+
+		System.out.println("NUM RESOURCES IN RS: " + resourceSet.getResources().size());
+
+		for (Resource resource : resources) {
+			if (resource.getURI().toString().contains("argouml") && resource.getURI().toString().contains("pathmap"))
+				System.out.println("DDD: " + resource.getURI());
+		}
+
+		for (Resource resource : resourceSet.getResources()) {
+			if (resource.getURI().toString().contains("argouml") && resource.getURI().toString().contains("pathmap"))
+				System.out.println("EEE: " + resource.getURI());
+		}
+
 		// resolve proxies
 		System.out.println("RESOLVING PROXIES");
 		resolveAllProxies(resourceSet);
+
+//		// change uri of resources
+//		final Path vaveResourceLocation = Paths.get("C:\\FZI\\vave-resource-location");
+//		final Path extCodeLocation = Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\argouml-core-model-mdr\\build\\java");
+//		for (Resource resource : resources) {
+//			Path relativeResourcePath = null;
+//			Path resourcePath = Paths.get(resource.getURI().toFileString());
+//			if (resourcePath.startsWith(location))
+//				relativeResourcePath = location.relativize(resourcePath);
+//			else if (resourcePath.startsWith(extCodeLocation)) {
+//				relativeResourcePath = Paths.get("src-ext").resolve(extCodeLocation.relativize(resourcePath));
+//			}
+//				
+//			URI vaveURI = URI.createFileURI(vaveResourceLocation.resolve(relativeResourcePath).toString());
+//			System.out.println("URI: " + vaveURI);
+//			resource.setURI(vaveURI);
+//		}
+		
+		System.out.println("NUM RESOURECES AFTER PROXY RESOLUTIONS: " + resources.size());
+
+		System.out.println("NUM RESOURCES IN RS AFTER PROXY RESOLUTIONS: " + resourceSet.getResources().size());
+
+		for (Resource resource : resourceSet.getResources()) {
+			if (resource.getURI().toString().contains("argouml") && resource.getURI().toString().contains("pathmap"))
+				System.out.println("CCC: " + resource.getURI());
+		}
 
 		List<Object[]> sortedRuntimeList = runtimemap.stream().sorted((o1, o2) -> Long.valueOf(((Long) o1[0]) - ((Long) o2[0])).intValue()).collect(Collectors.toList());
 		for (Object[] entry : sortedRuntimeList) {
