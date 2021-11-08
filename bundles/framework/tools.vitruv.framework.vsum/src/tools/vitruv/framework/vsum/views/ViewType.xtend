@@ -2,6 +2,9 @@ package tools.vitruv.framework.vsum.views
 
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
+/**
+ * A Vitruv viewtype on the virtual model, providing a view selector and allows creating views.
+ */
 interface ViewType {
 
     def ViewSelector createSelector()

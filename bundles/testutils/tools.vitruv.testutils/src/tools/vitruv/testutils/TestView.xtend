@@ -8,14 +8,13 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.vsum.views.View
 
 import static com.google.common.base.Preconditions.checkState
 
 /**
  * A Vitruv view for testing purposes.
  */
-interface TestView extends View, AutoCloseable {
+interface TestView extends AutoCloseable {
     /**
      * Gets the resource at the provided {@code modelUri}. If the resource does not exist yet, it will be
      * created virtually, without being persisted.

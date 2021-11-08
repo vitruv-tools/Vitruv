@@ -1,20 +1,20 @@
 package tools.vitruv.testutils
 
 import java.nio.file.Path
+import java.util.List
+import org.eclipse.xtend.lib.annotations.Delegate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel
-
-import org.eclipse.xtend.lib.annotations.Delegate
-import static tools.vitruv.testutils.UriMode.*
-import java.util.List
-import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.vsum.VirtualModel
+import tools.vitruv.framework.vsum.VirtualModelBuilder
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
+
+import static tools.vitruv.testutils.UriMode.*
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class VitruvApplicationTest implements TestView {

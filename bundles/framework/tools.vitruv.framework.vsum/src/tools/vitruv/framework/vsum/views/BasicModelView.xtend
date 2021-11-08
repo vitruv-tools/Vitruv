@@ -1,27 +1,35 @@
 package tools.vitruv.framework.vsum.views
 
 import java.util.Collection
+import java.util.function.Consumer
 import org.eclipse.emf.common.notify.Notification
+import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.vsum.VirtualModel
 
 /**
  * A basic read-only view that passes by default the entirety of its underlying model as it is.
- * IMPORTANT: This is a prototypical implementation for concept exploration and therefore only temporary.
+ * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
-class BasicModelView implements View {
+class BasicModelView implements View, AutoCloseable {
     protected ResourceSet viewResourceSet
-    protected Collection<Resource> modelResources
+    val Collection<Resource> modelResources
     protected boolean modelChanged
+    val ChangeRecorder changeRecorder
+    val VirtualModel virtualModel
 
-    new(Collection<Resource> modelResources) {
+    new(Collection<Resource> modelResources, VirtualModel virtualModel) {
         this.modelResources = modelResources
+        this.virtualModel = virtualModel
         modelResources.registerModelChangeListener
         update
+        changeRecorder = new ChangeRecorder(viewResourceSet)
     }
 
     override rootObjects() {
@@ -47,12 +55,50 @@ class BasicModelView implements View {
         }
     }
 
-    def protected Collection<EObject> filter(Collection<EObject> contents) {
-        return contents // Default: Do not filter at all.
+    override <T extends Notifier> commitChanges(T notifier, Consumer<T> consumer) {
+        /*
+         * TODO TS: It seems there is two ways how to control recording:
+         * 1. Always record but add or remove notifiers from the recorder to control when to record
+         * 2. Only start/stop recording when actually required
+         * What is the correct way here?
+         */
+        changeRecorder.addToRecording(notifier)
+        changeRecorder.beginRecording()
+
+        val toSave = determineResource(notifier)
+        consumer.accept(notifier)
+        (toSave ?: determineResource(notifier))?.saveOrDelete()
+
+        changeRecorder.endRecording()
+        changeRecorder.removeFromRecording(notifier)
+
+        val propagatedChanges = virtualModel.propagateChange(changeRecorder.change)
+        // TODO TS: the change publishing test view will renewResourceCache() here if required. When and why?
+        return propagatedChanges
     }
 
-    override commitChanges() {
-        return false // read only // TODO TS: should be done like in tests
+    def private determineResource(Notifier notifier) { // TODO TS: Copied from basic test view
+        switch (notifier) {
+            Resource: notifier
+            EObject: notifier.eResource
+            default: null
+        }
+    }
+
+    def private saveOrDelete(Resource resource) { // TODO TS: Copied from basic test view
+        if(resource.contents.isEmpty) {
+            resource.delete(emptyMap)
+        } else {
+            resource.save(emptyMap)
+        }
+    }
+
+    /**
+     * Filters objects from the model resources when updating the view from the model.
+     * Can be overridden in subclasses in order to only show selected elements.
+     */
+    def protected Collection<EObject> filter(Iterable<EObject> contents) {
+        return contents.toList // Default: Do not filter at all.
     }
 
     def private registerModelChangeListener(Collection<Resource> modelResources) {
@@ -64,4 +110,9 @@ class BasicModelView implements View {
             })
         ]
     }
+
+    override close() throws Exception {
+        changeRecorder.close()
+    }
+
 }

@@ -156,25 +156,4 @@ class BasicTestView implements TestView {
 		resourceSet.resources.forEach [unload()]
 		resourceSet.resources.clear()
 	}
-
-    override isModified() {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
-    }
-
-    override hasVSUMChanged() {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
-    }
-
-    override update() {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
-    }
-
-    override commitChanges() {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
-    }
-
-    override rootObjects() {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub") // TODO should be merged with test view functionality?
-    }
-
 }

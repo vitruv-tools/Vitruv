@@ -14,7 +14,7 @@ class ViewTypeRepositoryTest extends VirtualModelTest {
     def void testViewTypeRepository() {
         val name = "test view type"
         val repository = new ViewTypeRepository
-        val viewType = new BasicViewType(name, null)
+        val viewType = new BasicViewType(name, null, null)
         assertTrue(repository.viewTypes.empty)
         repository.register(viewType)
         assertEquals(viewType, repository.findViewType(name))
