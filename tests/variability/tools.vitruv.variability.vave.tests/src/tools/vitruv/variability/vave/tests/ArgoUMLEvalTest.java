@@ -1,17 +1,14 @@
 package tools.vitruv.variability.vave.tests;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,13 +24,7 @@ import org.eclipse.emf.compare.diff.DiffBuilder;
 import org.eclipse.emf.compare.diff.FeatureFilter;
 import org.eclipse.emf.compare.diff.IDiffEngine;
 import org.eclipse.emf.compare.diff.IDiffProcessor;
-import org.eclipse.emf.compare.match.DefaultComparisonFactory;
-import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory;
-import org.eclipse.emf.compare.match.DefaultMatchEngine;
-import org.eclipse.emf.compare.match.IComparisonFactory;
 import org.eclipse.emf.compare.match.IMatchEngine;
-import org.eclipse.emf.compare.match.eobject.IEObjectMatcher;
-import org.eclipse.emf.compare.match.eobject.IdentifierEObjectMatcher;
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl;
 import org.eclipse.emf.compare.merge.BatchMerger;
 import org.eclipse.emf.compare.merge.IBatchMerger;
@@ -42,7 +33,6 @@ import org.eclipse.emf.compare.rcp.EMFCompareRCPPlugin;
 import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.compare.utils.EqualityHelper;
-import org.eclipse.emf.compare.utils.UseIdentifiers;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -56,12 +46,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emftext.language.java.JavaClasspath;
 import org.emftext.language.java.JavaClasspath.Initializer;
 import org.emftext.language.java.JavaPackage;
-import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import com.google.common.base.Function;
 import com.google.common.cache.CacheBuilder;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
@@ -83,7 +71,6 @@ import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvide
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
-import tools.vitruv.testutils.TestProject;
 import tools.vitruv.testutils.TestProjectManager;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
@@ -97,7 +84,9 @@ import vavemodel.CrossTreeConstraint;
 import vavemodel.Expression;
 import vavemodel.Feature;
 import vavemodel.FeatureOption;
+import vavemodel.FeatureRevision;
 import vavemodel.GroupType;
+import vavemodel.SystemRevision;
 import vavemodel.TreeConstraint;
 import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
@@ -138,7 +127,6 @@ public class ArgoUMLEvalTest {
 		this.vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, irp, projectFolder);
 
 		// set up jamopp
-//		this.resetJamopp();
 		JavaClasspath.getInitializers().clear();
 		JavaClasspath.getInitializers().add(new Initializer() {
 			@Override
@@ -160,10 +148,6 @@ public class ArgoUMLEvalTest {
 		this.productNumber = 0;
 	}
 
-	protected void resetJamopp() {
-//		JavaClasspath.reset();
-	}
-
 	protected Collection<Resource> parse(Path location) throws Exception {
 		ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		resourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
@@ -178,7 +162,6 @@ public class ArgoUMLEvalTest {
 		// register jar files
 		System.out.println("REGISTERING JAR FILES");
 		JavaClasspath cp = JavaClasspath.get(resourceSet);
-		// cp.registerClassifierJar(URI.createFileURI(Paths.get("C:\\FZI\\argouml\\jars\\rt.jar").toString()));
 		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\rt.jar").toAbsolutePath().toString()));
 		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jmi.jar").toAbsolutePath().toString()));
 		List<Path> jarFiles = new ArrayList<>();
@@ -199,21 +182,22 @@ public class ArgoUMLEvalTest {
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
 		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src"), location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
+		// Path[] sourceFolders = new Path[] { location };
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
 				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")
 						&& !f.getFileName().toString().startsWith("bin") && !f.getFileName().toString().startsWith("template")) {
-					Path packageInfoPath = f.resolve(Paths.get("package-info.java"));
-					try {
-						if (!Files.exists(packageInfoPath)) {
-							Files.createFile(packageInfoPath);
-							Files.writeString(packageInfoPath, "package " + sourceFolder.relativize(f).toString().replace(java.io.File.separator, ".") + ";");
-						}
-						javaFiles.add(packageInfoPath);
-						System.out.println("ADDED PACKAGE INFO FILE: " + packageInfoPath);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+//					Path packageInfoPath = f.resolve(Paths.get("package-info.java"));
+//					try {
+//						if (!Files.exists(packageInfoPath)) {
+//							Files.createFile(packageInfoPath);
+//							Files.writeString(packageInfoPath, "package " + sourceFolder.relativize(f).toString().replace(java.io.File.separator, ".") + ";");
+//						}
+//						javaFiles.add(packageInfoPath);
+//						System.out.println("ADDED PACKAGE INFO FILE: " + packageInfoPath);
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
 				} else if (Files.isRegularFile(f) && f.getFileName().toString().endsWith(".java") && !f.getFileName().toString().equals("package-info.java")) {
 					javaFiles.add(f);
 					System.out.println("ADDED JAVA FILE: " + f);
@@ -231,15 +215,24 @@ public class ArgoUMLEvalTest {
 				}
 			});
 		}
-//		// manual workaround for now
-////		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.model.mdr.UndoCoreHelperDecorator$StringSetter.java"), URI.createURI("file:/C:/FZI/git/argouml-workaround/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UndoCoreHelperDecorator$StringSetter.java"));
+		// manual workaround for now
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.model.mdr.UndoCoreHelperDecorator$StringSetter.java"), URI.createFileURI(location.resolve("argouml-core-model-mdr/src/org/argouml/model/mdr/UndoCoreHelperDecorator.java").toString()));
-//		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.model.euml.EUMLModelImplementation$1.java"), URI.createFileURI(location.resolve("argouml-core-model-euml/src/org/argouml/model/euml/EUMLModelImplementation.java").toString()));
-//		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.model.euml$EUMLModelImplementation.java"), URI.createFileURI(location.resolve("argouml-core-model-euml/src/org/argouml/model/euml/EUMLModelImplementation.java").toString()));
-//		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.model.euml.ModelEventPumpEUMLImpl$1.java"), URI.createFileURI(location.resolve("argouml-core-model-euml/src/org/argouml/model/euml/ModelEventPumpEUMLImpl.java").toString()));
-//		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.model.euml$ModelEventPumpEUMLImpl.java"), URI.createFileURI(location.resolve("argouml-core-model-euml/src/org/argouml/model/euml/ModelEventPumpEUMLImpl.java").toString()));
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.diagram.DiagramFactory$DiagramType.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/diagram/DiagramFactory.java").toString()));
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.diagram.sequence.ui.FigLifeLine$FigLifeLineHandler.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/diagram/sequence/ui/FigLifeLine.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.diagram.DiagramSettings$StereotypeStyle.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/diagram/DiagramSettings.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.diagram.sequence.ui.FigClassifierRole$TempFig.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/diagram/sequence/ui/FigClassifierRole.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.ui.ProjectBrowser$Position.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/ui/ProjectBrowser.java").toString()));
+
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$Setting.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$Setting2.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$UniqueSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$UniqueSelection2.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$UserString.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$UserString2.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$BooleanSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$BooleanSelection2.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$PathSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$PathListSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
 
 		// parse files
 		System.out.println("PARSING JAVA FILES");
@@ -248,26 +241,12 @@ public class ArgoUMLEvalTest {
 		for (Path javaFile : javaFiles) {
 			System.out.println("FILE: " + javaFile);
 
-			for (Resource resource : resourceSet.getResources()) {
-				if (resource.getURI().toString().contains(javaFile.getFileName().toString()) && resource.getURI().toString().contains("pathmap")) {
-					System.out.println("FFF: " + javaFile.getFileName().toString() + " / " + resource.getURI());
-					System.out.println("RESOLVED: " + resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
-				}
-			}
-
 			long localTimeStart = System.currentTimeMillis();
 			Resource resource = resourceSet.getResource(URI.createFileURI(javaFile.toString()), true);
 			long localTimeDiff = System.currentTimeMillis() - localTimeStart;
 			runtimemap.add(new Object[] { localTimeDiff, javaFile.toString() });
 
 			resources.add(resource);
-
-			for (Resource resource2 : resourceSet.getResources()) {
-				if (resource2.getURI().toString().contains(javaFile.getFileName().toString()) && resource2.getURI().toString().contains("pathmap")) {
-					System.out.println("GGG: " + resource2.getURI());
-					System.out.println("RESOLVED2: " + resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
-				}
-			}
 		}
 
 		System.out.println("NUM RESOURCES PARSED: " + resources.size());
@@ -309,7 +288,6 @@ public class ArgoUMLEvalTest {
 		}
 
 		// change uri of resources
-//		final Path vaveResourceLocation = Paths.get("C:\\FZI\\vave-resource-location");
 		for (Resource resource : resources) {
 			Path relativeResourcePath = null;
 			String fileString = resource.getURI().toFileString();
@@ -326,28 +304,6 @@ public class ArgoUMLEvalTest {
 		}
 
 		System.out.println("NUM RESOURCES IN RS AFTER PROXY RESOLUTIONS: " + resourceSet.getResources().size());
-
-//		// -----------------
-//
-//		for (Resource resource : resourceSet.getResources()) {
-//			if ((resource.getURI().toString().contains("argouml") || resource.getURI().toString().contains("omg")) && resource.getURI().toString().contains("pathmap"))
-//				System.out.println("CCC: " + resource.getURI());
-//		}
-//
-//		Map<String, List<String>> tempMap = cp.getPackageClassifierMap();
-//
-//		URIConverter uric = resourceSet.getURIConverter();
-//		for (Entry<URI, URI> oldEntry : uric.getURIMap().entrySet()) {
-//			URI oldKey = oldEntry.getKey();
-//			String oldKeyString = oldKey.toString();
-//			if (oldKeyString.startsWith(JavaUniquePathConstructor.JAVA_CLASSIFIER_PATHMAP) && oldKeyString.contains("argouml")) {
-//				System.out.println("BAM: " + oldKeyString + " / " + oldEntry.getValue().toString());
-//			}
-//		}
-//
-//		System.out.println("BREAK");
-//
-//		// --------------------
 
 		List<Object[]> sortedRuntimeList = runtimemap.stream().sorted((o1, o2) -> Long.valueOf(((Long) o1[0]) - ((Long) o2[0])).intValue()).collect(Collectors.toList());
 		for (Object[] entry : sortedRuntimeList) {
@@ -369,77 +325,14 @@ public class ArgoUMLEvalTest {
 	}
 
 	protected void internalize(Path productLocation, VirtualProductModel vmp, Collection<Resource> resources, Expression<FeatureOption> e) throws Exception {
-//		final Path vaveResourceLocation = Paths.get("C:\\FZI\\vave-resource-location");
-
 		if (!Files.exists(vaveProjectMarker))
 			Files.createDirectories(vaveProjectMarker);
 
-		Map<Resource, Set<String>> idsMap = new HashMap<>();
-		Function<EObject, String> idFunction = new Function<EObject, String>() {
-			public String apply(EObject input) {
-				String id = null;
+		final MatchEngineFactoryImpl matchEngineFactory = new HierarchicalMatchEngineFactory(new EqualityHelper(EqualityHelper.createDefaultCache(CacheBuilder.newBuilder())), new SimilarityChecker());
+		matchEngineFactory.setRanking(20);
 
-				if (input == null)
-					return null;
-
-				if (input instanceof CompilationUnit) {
-					id = ((CompilationUnit) input).getName();
-				}
-
-				if (id != null) {
-					id = id + " - " + input.eClass().getName();
-				}
-
-				if (id != null) {
-					Set<String> ids = idsMap.get(input.eResource());
-					if (ids == null) {
-						ids = new HashSet<>();
-						idsMap.put(input.eResource(), ids);
-					}
-					if (ids.contains(id)) {
-						int i = 0;
-						while (ids.contains(id + "-" + i))
-							i++;
-						ids.add(id + "-" + i);
-						id = id + "-" + i;
-						System.out.println("ERROR: " + id);
-					}
-//					if (ids.contains(id))
-//						throw new RuntimeException("ERROR: " + id);
-					ids.add(id);
-				}
-
-//				System.out.println("ID: " + id);
-//				if (id == null)
-//					System.out.println("INPUT: " + input);
-
-				return id;
-			}
-		};
-		// Using this matcher as fall back, EMF Compare will still search for XMI IDs on EObjects for which we had no custom id function.
-		IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
-		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, idFunction);
-		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
-
-		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl(customIDMatcher, comparisonFactory);
-		matchEngineFactory.setRanking(20); // default engine ranking is 10, must be higher to override.
-
-		// IMatchEngine.Factory.Registry registry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
-		// for OSGi (IDE, RCP) usage
 		IMatchEngine.Factory.Registry registry = EMFCompareRCPPlugin.getDefault().getMatchEngineFactoryRegistry();
 		registry.add(matchEngineFactory);
-
-		// ----------
-
-//		EqualityHelperExtensionProvider.Descriptor.Registry descRegistryImpl = EqualityHelperExtensionProviderDescriptorRegistryImpl.createStandaloneInstance();
-//		descRegistryImpl.put(key, new SimilarityCheckerBasedEqualityHelperExtensionProviderDescriptor(simChecker));
-		final MatchEngineFactoryImpl engineFactory = new HierarchicalMatchEngineFactory(new EqualityHelper(EqualityHelper.createDefaultCache(CacheBuilder.newBuilder())), new SimilarityChecker());
-		engineFactory.setRanking(20);
-
-		IMatchEngine.Factory.Registry engineRegistry = EMFCompareRCPPlugin.getDefault().getMatchEngineFactoryRegistry();
-		engineRegistry.add(engineFactory);
-
-		// ----------
 
 		IDiffProcessor diffProcessor = new DiffBuilder();
 		IDiffEngine diffEngine = new DefaultDiffEngine(diffProcessor) {
@@ -466,23 +359,18 @@ public class ArgoUMLEvalTest {
 
 		// diff changes
 		System.out.println("DIFFING");
-		// ResourceSet dummyResourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-		ResourceSet dummyResourceSet = vmp.getResourceSet();
+		ResourceSet referenceResourceSet = vmp.getResourceSet();
 
-		// -------------------
-
-		dummyResourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
-		dummyResourceSet.getLoadOptions().put("DISABLE_LOCATION_MAP", Boolean.TRUE);
-		dummyResourceSet.getLoadOptions().put(JavaClasspath.OPTION_USE_LOCAL_CLASSPATH, Boolean.TRUE);
-		dummyResourceSet.getLoadOptions().put(JavaClasspath.OPTION_REGISTER_STD_LIB, Boolean.FALSE);
-		JavaClasspath dummyCP = JavaClasspath.get(dummyResourceSet, JavaClasspath.getInitializers());
+		referenceResourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
+		referenceResourceSet.getLoadOptions().put("DISABLE_LOCATION_MAP", Boolean.TRUE);
+		referenceResourceSet.getLoadOptions().put(JavaClasspath.OPTION_USE_LOCAL_CLASSPATH, Boolean.TRUE);
+		referenceResourceSet.getLoadOptions().put(JavaClasspath.OPTION_REGISTER_STD_LIB, Boolean.FALSE);
+		JavaClasspath refRSCP = JavaClasspath.get(referenceResourceSet, JavaClasspath.getInitializers());
 
 		// register jar files
 		System.out.println("REGISTERING JAR FILES");
-		JavaClasspath cp = dummyCP; // JavaClasspath.get(dummyResourceSet);
-		// cp.registerClassifierJar(URI.createFileURI(Paths.get("C:\\FZI\\argouml\\jars\\rt.jar").toString()));
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\rt.jar").toAbsolutePath().toString()));
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jmi.jar").toAbsolutePath().toString()));
+		refRSCP.registerClassifierJar(URI.createFileURI(Paths.get("resources\\rt.jar").toAbsolutePath().toString()));
+		refRSCP.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jmi.jar").toAbsolutePath().toString()));
 		List<Path> jarFiles = new ArrayList<>();
 		// Path[] libraryFolders = new Path[] { location };
 		Path[] libraryFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\") };
@@ -495,13 +383,11 @@ public class ArgoUMLEvalTest {
 			});
 		}
 		for (Path jarFile : jarFiles) {
-			cp.registerClassifierJar(URI.createFileURI(jarFile.toString()));
+			refRSCP.registerClassifierJar(URI.createFileURI(jarFile.toString()));
 		}
 
-		// -------------------
-
-		final ChangeRecorder changeRecorder = new ChangeRecorder(dummyResourceSet);
-		changeRecorder.addToRecording(dummyResourceSet);
+		final ChangeRecorder changeRecorder = new ChangeRecorder(referenceResourceSet);
+		changeRecorder.addToRecording(referenceResourceSet);
 		changeRecorder.beginRecording();
 
 		for (Resource resource : resources) {
@@ -509,6 +395,7 @@ public class ArgoUMLEvalTest {
 			EMFCompare comparator = EMFCompare.builder().setMatchEngineFactoryRegistry(registry).setDiffEngine(diffEngine).build();
 
 			Resource referenceResource;
+
 //			Path relativeResourcePath = productLocation.relativize(Paths.get(resource.getURI().toFileString()));
 //			URI vaveURI = URI.createFileURI(vaveResourceLocation.resolve(relativeResourcePath).toString());
 //			System.out.println("URI: " + vaveURI);
@@ -517,15 +404,25 @@ public class ArgoUMLEvalTest {
 //			} else {
 //				referenceResource = dummyResourceSet.createResource(vaveURI);
 //			}
-			if (vmp.getModelInstance(resource.getURI()) != null) {
-				referenceResource = vmp.getModelInstance(resource.getURI()).getResource();
-			} else {
-				referenceResource = dummyResourceSet.createResource(resource.getURI());
+
+//			if (vmp.getModelInstance(resource.getURI()) != null) {
+//				referenceResource = vmp.getModelInstance(resource.getURI()).getResource();
+//			} else {
+//				referenceResource = referenceResourceSet.createResource(resource.getURI());
+//			}
+
+			referenceResource = referenceResourceSet.getResource(resource.getURI(), false);
+			if (referenceResource == null) {
+				System.out.println("NEW RESOURCE DETECTED: " + resource.getURI());
+				referenceResource = referenceResourceSet.createResource(resource.getURI());
 			}
 
 			IComparisonScope scope = new DefaultComparisonScope(resource, referenceResource, null);
 			Comparison comparison = comparator.compare(scope);
 			List<Diff> differences = comparison.getDifferences();
+
+			System.out.println("NUM DIFFS: " + differences.size());
+			System.out.println("RESOURCE: " + resource.getURI() + " - " + referenceResource.getURI());
 
 			IMerger.Registry mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance();
 			IBatchMerger merger = new BatchMerger(mergerRegistry);
@@ -668,10 +565,10 @@ public class ArgoUMLEvalTest {
 
 		Feature Fcore = VavemodelFactory.eINSTANCE.createFeature();
 		Fcore.setName("Core"); // this represents the ArgoUML root feature as well as the mandatory features Diagrams and Class of the original ArgoUML feature model
-		Feature Flogging = VavemodelFactory.eINSTANCE.createFeature();
-		Flogging.setName("Logging");
 		Feature Fcognitive = VavemodelFactory.eINSTANCE.createFeature();
 		Fcognitive.setName("Cognitive");
+		Feature Flogging = VavemodelFactory.eINSTANCE.createFeature();
+		Flogging.setName("Logging");
 		Feature Factivity = VavemodelFactory.eINSTANCE.createFeature();
 		Factivity.setName("Activity");
 		Feature Fsequence = VavemodelFactory.eINSTANCE.createFeature();
@@ -686,8 +583,8 @@ public class ArgoUMLEvalTest {
 		Fdeployment.setName("Deployment");
 
 		fm.getFeatureOptions().add(Fcore);
-		fm.getFeatureOptions().add(Flogging);
 		fm.getFeatureOptions().add(Fcognitive);
+		fm.getFeatureOptions().add(Flogging);
 		fm.getFeatureOptions().add(Factivity);
 		fm.getFeatureOptions().add(Fsequence);
 		fm.getFeatureOptions().add(Fstate);
@@ -703,142 +600,936 @@ public class ArgoUMLEvalTest {
 		Fcore.getTreeconstraint().add(treeCstr);
 		fm.getTreeConstraints().add(treeCstr);
 
+		int core_rev = -1;
+		int logg_rev = -1;
+		int cogn_rev = -1;
+
 		this.vave.internalizeDomain(fm);
 		sysrev++;
 
 		Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants-selection");
 
-		// # REVISION 0 (ArgoUML-SPL)
-		System.out.println("START REV 0");
+		{ // # REVISION 0 (ArgoUML-SPL)
+			Path revision0VariantsLocation = variantsLocation.resolve("R0_variants");
+			System.out.println("START REV 0");
 
-		// Path revision0Variants = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants\\R0_variants");
-		Path revision0VariantsLocation = variantsLocation.resolve("R0_variants");
+			{ // CORE
+				long timeStart = System.currentTimeMillis();
 
-		{
-			long timeStart = System.currentTimeMillis();
+				System.out.println("START REV 0 PROD 0");
+				// externalize empty product with expression TRUE
+				VirtualProductModel vmp = this.externalize(VavemodelFactory.eINSTANCE.createConfiguration(), vaveResourceLocation.getParent().resolve("R0-V-empty-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-empty-ext"));
 
-			System.out.println("START REV 0 PROD 0");
-			// externalize empty product with expression TRUE
-			VirtualProductModel vmp = this.externalize(VavemodelFactory.eINSTANCE.createConfiguration(), revision0VariantsLocation.resolve("V-empty-ext\\src\\"));
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-empty-ext"));
+				// internalize ArgoUML R0 Product P0 (Core) generated by generator with expression Core
+				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V\\src\\"));
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG-ACTI-COLL-DEPL-SEQU-STAT-USEC\\src\\"));
+				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("argouml-workaround\\src\\"));
+				Variable<FeatureOption> expression = VavemodelFactory.eINSTANCE.createVariable();
+				expression.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-int-vsum\\src\\"), vmp, resources, expression);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-int"));
 
-			// internalize ArgoUML R0 Product P0 (Core) generated by generator with expression Core
-			// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V\\src\\"));
-			Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("argouml-workaround\\src\\"));
-			Variable<FeatureOption> expression = VavemodelFactory.eINSTANCE.createVariable();
-			expression.setOption(Fcore);
-			this.internalize(revision0VariantsLocation.resolve("V-int\\src\\"), vmp, resources, expression);
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-int"));
-			this.resetJamopp();
+				core_rev++;
 
-			long timeDiff = System.currentTimeMillis() - timeStart;
-			System.out.println("TOTAL TIME: " + timeDiff);
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COGNITIVE
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 1");
+				// externalize Core.1
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				// add features and feature revisions to configuration
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext"));
+
+				// internalize ArgoUML R0 Product P1 (Core, Cognitive) generated by generator with expression Cognitive
+				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN\\src"));
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG-ACTI-COLL-DEPL-SEQU-STAT-USEC\\src\\"));
+				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("argouml-workaround\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcognitive);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-int"));
+
+				cogn_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // LOGGING
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 2");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext2-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext2"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Flogging);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COGNITIVE && LOGGING
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 3");
+				// externalize Core.1, Cognitive.1, Logging.1
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcognitive.getFeaturerevision().get(cogn_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-ext"));
+
+				// internalize ArgoUML R0 Product P3 (Core, Cognitive, Logging) with Cognitive && Logging
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fcognitive);
+				variable2.setOption(Flogging);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-int"));
+
+				cogn_rev++;
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// repeat above for every feature and every pair of features
+			// internalize ArgoUML R0 Product P? (Core, ... three-wise ...) with ... && ... && ...
+
+			{ // ACTIVITYDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 4");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext4-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext4"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-ACTI\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Factivity);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-ACTI-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ACTI-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // ACTIVITYDIAGRAM_and_LOGGING
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 5");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Factivity.getFeaturerevision().get(Factivity.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-ACTI\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Factivity);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COLLABORATIONDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 6");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext6-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext6"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COLL\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcollaboration);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COLL-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COLL-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COLLABORATIONDIAGRAM_and_LOGGING
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 7");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Fcollaboration.getFeaturerevision().get(Fcollaboration.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-COLL\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Fcollaboration);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // DEPLOYMENTDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 8");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext8-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext8"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-DEPL\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fdeployment);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-DEPL-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-DEPL-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COGNITIVE_and_DEPLOYMENTDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 9");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcognitive.getFeaturerevision().get(cogn_rev));
+				configuration.getOption().add(Fdeployment.getFeaturerevision().get(Fdeployment.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-DEPL\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fcognitive);
+				variable2.setOption(Fdeployment);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-int"));
+
+				cogn_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // DEPLOYMENTDIAGRAM_and_LOGGING
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 10");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Fdeployment.getFeaturerevision().get(Fdeployment.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-DEPL\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Fdeployment);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // SEQUENCEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 11");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext11-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext11"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-SEQU\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fsequence);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-SEQU-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-SEQU-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COGNITIVE_and_SEQUENCEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 12");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcognitive.getFeaturerevision().get(cogn_rev));
+				configuration.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-SEQU\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fcognitive);
+				variable2.setOption(Fsequence);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-int"));
+
+				cogn_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // LOGGING_and_SEQUENCEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 13");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-SEQU\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Fsequence);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // STATEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 14");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext14-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext14"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-STAT\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fstate);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-STAT-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-STAT-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // LOGGING_and_STATEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 15");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Fstate.getFeaturerevision().get(Fstate.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-STAT\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Fstate);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // USECASEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 16");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext16-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext16"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-USEC\\src"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fusecase);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-USEC-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-USEC-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // LOGGING_and_USECASEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 17");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Fusecase.getFeaturerevision().get(Fusecase.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-USEC\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Fusecase);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // ACTIVITYDIAGRAM_and_STATEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 18");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Factivity.getFeaturerevision().get(Factivity.getFeaturerevision().size() - 1));
+				configuration.getOption().add(Fstate.getFeaturerevision().get(Fstate.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-ACTI-STAT\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Factivity);
+				variable2.setOption(Fstate);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COLLABORATIONDIAGRAM_and_SEQUENCEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 19");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcollaboration.getFeaturerevision().get(Fcollaboration.getFeaturerevision().size() - 1));
+				configuration.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COLL-SEQU\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fcollaboration);
+				variable2.setOption(Fsequence);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // DEPLOYMENTDIAGRAM_and_USECASEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 20");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fdeployment.getFeaturerevision().get(Fdeployment.getFeaturerevision().size() - 1));
+				configuration.getOption().add(Fusecase.getFeaturerevision().get(Fusecase.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-DEPL-USEC\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fdeployment);
+				variable2.setOption(Fusecase);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // SEQUENCEDIAGRAM_and_STATEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 21");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
+				configuration.getOption().add(Fstate.getFeaturerevision().get(Fstate.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-SEQU-STAT\\src"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fsequence);
+				variable2.setOption(Fstate);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-int"));
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			{ // COLLABORATIONDIAGRAM_and_LOGGING_and_SEQUENCEDIAGRAM
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 0 PROD 22");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(Fcollaboration.getFeaturerevision().get(Fcollaboration.getFeaturerevision().size() - 1));
+				configuration.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-ext"));
+
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-COLL-SEQU\\src"));
+				Conjunction<FeatureOption> conjunction1 = VavemodelFactory.eINSTANCE.createConjunction();
+				Conjunction<FeatureOption> conjunction2 = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable3 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Flogging);
+				variable2.setOption(Fcollaboration);
+				variable3.setOption(Fsequence);
+				conjunction1.getTerm().add(conjunction2);
+				conjunction1.getTerm().add(variable1);
+				conjunction2.getTerm().add(variable2);
+				conjunction2.getTerm().add(variable3);
+				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-int-vsum\\src\\"), vmp, resources, conjunction1);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// at this point R0 should be fully supported
+
+			// EVALUATION: externalize all configurations (or sample) for later comparison with ground truth
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R0-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
-		{
-			long timeStart = System.currentTimeMillis();
+		{ // # REVISION 1 (ArgoUML future revisions merged successively into ArgoUML-SPL)
+			Path revisionVariantsLocation = variantsLocation.resolve("R1_variants");
+			System.out.println("START REV 1");
+			{
+				long timeStart = System.currentTimeMillis();
 
-			System.out.println("START REV 0 PROD 1");
-			// externalize Core.1
-			Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-			// add features and feature revisions to configuration
-			configuration.getOption().add(Fcore.getFeaturerevision().get(0));
-			configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
-			VirtualProductModel vmp = this.externalize(configuration, revision0VariantsLocation.resolve("V-ext\\src\\"));
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext"));
+				System.out.println("START REV 1 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R1-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R1-V-ext"));
 
-			// internalize ArgoUML R0 Product P1 (Core, Cognitive) generated by generator with expression Activity
-			// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN\\src"));
-			Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("argouml-workaround\\src\\"));
-			Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
-			variable.setOption(Fcognitive);
-			this.internalize(revision0VariantsLocation.resolve("V-COGN-int\\src\\"), vmp, resources, variable);
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-int"));
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R1-V-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R1-V-int"));
 
-			long timeDiff = System.currentTimeMillis() - timeStart;
-			System.out.println("TOTAL TIME: " + timeDiff);
+				core_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
 		}
 
-		{
-			long timeStart = System.currentTimeMillis();
+		{ // # REVISION 2
+			Path revisionVariantsLocation = variantsLocation.resolve("R2_variants");
+			System.out.println("START REV 2");
+			{
+				long timeStart = System.currentTimeMillis();
 
-			System.out.println("START REV 0 PROD 2");
-			// externalize Core.1
-			Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-			configuration.getOption().add(Fcore.getFeaturerevision().get(0));
-			configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
-			VirtualProductModel vmp = this.externalize(configuration, revision0VariantsLocation.resolve("V-ext2\\src\\"));
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext2"));
+				System.out.println("START REV 2 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R2-V-LOGG-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R2-V-LOGG-ext"));
 
-			// internalize ArgoUML R0 Product P2 (Core, Logging) with Logging
-			Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG\\src"));
-			Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
-			variable.setOption(Flogging);
-			this.internalize(revision0VariantsLocation.resolve("V-LOGG-int\\src\\"), vmp, resources, variable);
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-int"));
-			this.resetJamopp();
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-LOGG\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Flogging);
+				this.internalize(vaveResourceLocation.getParent().resolve("R2-V-COGN-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R2-V-LOGG-int"));
 
-			long timeDiff = System.currentTimeMillis() - timeStart;
-			System.out.println("TOTAL TIME: " + timeDiff);
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
 		}
 
-		{
-			long timeStart = System.currentTimeMillis();
+		{ // # REVISION 3
+			Path revisionVariantsLocation = variantsLocation.resolve("R3_variants");
+			System.out.println("START REV 3");
+			{
+				long timeStart = System.currentTimeMillis();
 
-			System.out.println("START REV 0 PROD 3");
-			// externalize Core.1, Cognitive.1, Logging.1
-			Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-			configuration.getOption().add(Fcore.getFeaturerevision().get(0));
-			configuration.getOption().add(Fcognitive.getFeaturerevision().get(0));
-			configuration.getOption().add(Flogging.getFeaturerevision().get(0));
-			configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
-			VirtualProductModel vmp = this.externalize(configuration, revision0VariantsLocation.resolve("V-COGN-LOGG-ext\\src\\"));
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-ext"));
+				System.out.println("START REV 3 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R3-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R3-V-ext"));
 
-			// internalize ArgoUML R0 Product P3 (Core, Cognitive, Logging) with Cognitive && Logging
-			Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG\\src"));
-			Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
-			Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-			Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
-			variable1.setOption(Fcognitive);
-			variable2.setOption(Flogging);
-			conjunction.getTerm().add(variable1);
-			conjunction.getTerm().add(variable2);
-			this.internalize(revision0VariantsLocation.resolve("V-COGN-LOGG-int\\src\\"), vmp, resources, conjunction);
-			Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-int"));
-			this.resetJamopp();
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R3-V-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R3-V-int"));
 
-			long timeDiff = System.currentTimeMillis() - timeStart;
-			System.out.println("TOTAL TIME: " + timeDiff);
+				core_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
 		}
 
-		// ...
+		{ // # REVISION 4
+			Path revisionVariantsLocation = variantsLocation.resolve("R4_variants");
+			System.out.println("START REV 4");
+			{
+				long timeStart = System.currentTimeMillis();
 
-		// TODO: repeat above for every feature and every pair of features
+				System.out.println("START REV 4 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcognitive.getFeaturerevision().get(cogn_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R4-V-COGN-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R4-V-COGN-ext"));
 
-		// ...
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-COGN\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcognitive);
+				this.internalize(vaveResourceLocation.getParent().resolve("R4-V-COGN-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R4-V-COGN-int"));
 
-		// internalize ArgoUML R0 Product P? (Core, ... three-wise ...) with ... && ... && ...
+				cogn_rev++;
 
-		// at this point R0 should be fully supported
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
 
-		// # REVISION 1 (ArgoUML future revisions merged successively into ArgoUML-SPL)
+			// TODO: externalize for eval
+		}
 
-		// TODO: to be determined
+		{ // # REVISION 5
+			Path revisionVariantsLocation = variantsLocation.resolve("R5_variants");
+			System.out.println("START REV 5");
+			{
+				long timeStart = System.currentTimeMillis();
 
-		// ---------------------------------
+				System.out.println("START REV 5 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcognitive.getFeaturerevision().get(cogn_rev));
+				configuration.getOption().add(Flogging.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-ext"));
 
-		// TODO: externalize all configurations
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-COGN-LOGG\\src\\"));
+				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
+				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+				Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+				variable1.setOption(Fcognitive);
+				variable2.setOption(Flogging);
+				conjunction.getTerm().add(variable1);
+				conjunction.getTerm().add(variable2);
+				this.internalize(vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-int-vsum\\src\\"), vmp, resources, conjunction);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-int"));
 
-		// ---------------------------------
+				cogn_rev++;
+				logg_rev++;
 
-		// # REVISION 2
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
 
-		// TODO: to be determined
+			// TODO: externalize for eval
+		}
 
-		// # REVISION N
+		{ // # REVISION 6
+			Path revisionVariantsLocation = variantsLocation.resolve("R6_variants");
+			System.out.println("START REV 6");
+			{
+				long timeStart = System.currentTimeMillis();
 
-		// TODO: to be determined
+				System.out.println("START REV 6 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R6-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R6-V-ext"));
+
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R6-V-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R6-V-int"));
+
+				core_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
+		}
+
+		{ // # REVISION 7
+			Path revisionVariantsLocation = variantsLocation.resolve("R7_variants");
+			System.out.println("START REV 7");
+			{
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 7 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R7-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-ext"));
+
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R7-V-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-int"));
+
+				core_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+			{
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 7 PROD 1");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcore.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R7-V-LOGG-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-LOGG-ext"));
+
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-LOGG\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Flogging);
+				this.internalize(vaveResourceLocation.getParent().resolve("R7-V-LOGG-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-LOGG-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
+		}
+
+		{ // # REVISION 8
+			Path revisionVariantsLocation = variantsLocation.resolve("R8_variants");
+			System.out.println("START REV 8");
+			{
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 8 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R8-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R8-V-ext"));
+
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R8-V-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R8-V-int"));
+
+				core_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
+		}
+
+		{ // # REVISION 9
+			Path revisionVariantsLocation = variantsLocation.resolve("R9_variants");
+			System.out.println("START REV 9");
+			{
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 9 PROD 0");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R9-V-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-ext"));
+
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Fcore);
+				this.internalize(vaveResourceLocation.getParent().resolve("R9-V-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-int"));
+
+				core_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+			{
+				long timeStart = System.currentTimeMillis();
+
+				System.out.println("START REV 9 PROD 1");
+				Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
+				configuration.getOption().add(Fcore.getFeaturerevision().get(logg_rev));
+				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext"));
+
+				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-LOGG\\src\\"));
+				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
+				variable.setOption(Flogging);
+				this.internalize(vaveResourceLocation.getParent().resolve("R9-V-LOGG-int-vsum\\src\\"), vmp, resources, variable);
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-LOGG-int"));
+
+				logg_rev++;
+
+				long timeDiff = System.currentTimeMillis() - timeStart;
+				System.out.println("TOTAL TIME: " + timeDiff);
+			}
+
+			// TODO: externalize for eval
+		}
+
+		// --------------------------------------
 
 		// AUSWERTUNG: compare ground truth UML diagrams for certain variants (extracted from Java code via some external tool) with UML diagrams that was created via Vitruv change propagation for certain variants.
 
@@ -855,57 +1546,65 @@ public class ArgoUMLEvalTest {
 
 	}
 
-	/**
-	 * This test starts from a product with all features and removes individual features.
-	 * 
-	 * @param projectFolder
-	 * @throws Exception
-	 */
-	@Test
-	// @Disabled
-	public void EvalTestSubtractive(@TestProject final Path projectFolder) throws Exception {
-		// initialize vave system
+	private void createEvalVariants(Path targetLocation) throws Exception {
+		List<Feature> optionalFeatures = this.vave.getSystem().getFeature().stream().filter(f -> !f.getName().equals("Core")).collect(Collectors.toList());
+		SystemRevision latestSysRev = this.vave.getSystem().getSystemrevision().get(this.vave.getSystem().getSystemrevision().size() - 1);
+		Feature coreFeature = this.vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Core")).findFirst().get();
+		FeatureRevision coreFeatureRev = coreFeature.getFeaturerevision().get(coreFeature.getFeaturerevision().size() - 1);
 
-		// TODO
+		// only core
+		Configuration emptyConfig = VavemodelFactory.eINSTANCE.createConfiguration();
+		emptyConfig.getOption().add(latestSysRev);
+		emptyConfig.getOption().add(coreFeatureRev);
+		this.externalize(emptyConfig, targetLocation.resolve("V-vsum"));
+		Files.move(vaveResourceLocation, targetLocation.resolve("V"));
 
-		// # REVISION 0 (ArgoUML-SPL)
+		// single features
+		for (Feature optionalFeature : optionalFeatures) {
+			Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+			config.getOption().add(latestSysRev);
+			config.getOption().add(coreFeatureRev);
+			config.getOption().add(optionalFeature.getFeaturerevision().get(optionalFeature.getFeaturerevision().size() - 1));
+			this.externalize(config, targetLocation.resolve("V-" + optionalFeature.getName().substring(0, 4) + "-vsum"));
+			Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeature.getName().substring(0, 4)));
+		}
 
-		// externalize empty product with expression TRUE
+		// pair-wise feature interactions
+		for (int i = 0; i < optionalFeatures.size(); i++) {
+			for (int j = i + 1; j < optionalFeatures.size(); j++) {
+				Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+				config.getOption().add(latestSysRev);
+				config.getOption().add(coreFeatureRev);
+				config.getOption().add(optionalFeatures.get(i).getFeaturerevision().get(optionalFeatures.get(i).getFeaturerevision().size() - 1));
+				config.getOption().add(optionalFeatures.get(j).getFeaturerevision().get(optionalFeatures.get(j).getFeaturerevision().size() - 1));
+				this.externalize(config, targetLocation.resolve("V-" + optionalFeatures.get(i).getName().substring(0, 4) + "-" + optionalFeatures.get(j).getName() + "-vsum"));
+				Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeatures.get(i).getName().substring(0, 4) + "-" + optionalFeatures.get(j).getName()));
+			}
+		}
 
-		// internalize ArgoUML R0 Product P0 (Core, ... ALL)
+		// selected three-wise feature interactions
+		Configuration threeWiseConfig = VavemodelFactory.eINSTANCE.createConfiguration();
+		threeWiseConfig.getOption().add(coreFeatureRev);
 
-		// externalize Core.1, ... ALL
+		Feature Flogging = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Logging")).findFirst().get();
+		Feature Fcollaboration = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Collaboration")).findFirst().get();
+		Feature Fsequence = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Sequence")).findFirst().get();
+		threeWiseConfig.getOption().add(Flogging.getFeaturerevision().get(Flogging.getFeaturerevision().size() - 1));
+		threeWiseConfig.getOption().add(Fcollaboration.getFeaturerevision().get(Fcollaboration.getFeaturerevision().size() - 1));
+		threeWiseConfig.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
 
-		// internalize ArgoUML R0 Product P1 (Core, ALL - Activity) with !Activity
+		this.externalize(threeWiseConfig, targetLocation.resolve("V-" + Flogging.getName().substring(0, 4) + "-" + Fcollaboration.getName().substring(0, 4) + "-" + Fsequence.getName().substring(0, 4) + "-vsum"));
+		Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext"));
 
-		// externalize Core.1, ... ALL
-
-		// internalize ArgoUML R0 Product P2 (Core, Logging) with Logging
-
-		// externalize Core.1, Activity.1, Logging.1
-
-		// internalize ArgoUML R0 Product P3 (Core, Activity, Logging) with Activity && Logging
-
-		// ...
-
-		// TODO: repeat above for every feature and every pair of features
-
-		// ...
-
-		// internalize ArgoUML R0 Product P? (Core, ... three-wise ...) with ... && ... && ...
-
-		// # REVISION 1 (ArgoUML future revisions merged successively into ArgoUML-SPL)
-
-		// TODO: to be determined
-
-		// # REVISION 2
-
-		// TODO: to be determined
-
-		// # REVISION N
-
-		// TODO: to be determined
-
+		// all features
+		Configuration allConfig = VavemodelFactory.eINSTANCE.createConfiguration();
+		allConfig.getOption().add(latestSysRev);
+		allConfig.getOption().add(coreFeatureRev);
+		allConfig.getOption().addAll(optionalFeatures.stream().map(f -> {
+			return f.getFeaturerevision().get(f.getFeaturerevision().size() - 1);
+		}).collect(Collectors.toList()));
+		this.externalize(allConfig, targetLocation.resolve("V-" + optionalFeatures.stream().map(f -> f.getName()).collect(Collectors.joining("-")) + "-vsum"));
+		Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeatures.stream().map(f -> f.getName()).collect(Collectors.joining("-"))));
 	}
 
 }

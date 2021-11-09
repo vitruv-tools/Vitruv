@@ -1,16 +1,4 @@
-package tools.vitruv.variability.vave.tests.comparator;
-
-/*******************************************************************************
- * Copyright (c) 2014
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Benjamin Klatt - initial API and implementation and/or initial documentation
- *******************************************************************************/
+package tools.vitruv.variability.vave.tests.umlcomp;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,16 +7,11 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.uml2.uml.UMLPackage;
 
 import com.google.common.collect.Maps;
 
-/**
- * Checker for the similarity of two elements specific for the java application model.
- *
- * TODO: Check caching for this similarity checker. Would require to pass this to the similarity switch as well!
- *
- */
-public class SimilarityChecker {
+public class UMLSimilarityChecker {
 
 	public boolean areEqual(EObject left, EObject right) {
 		Boolean similar = this.isSimilar(left, right);
@@ -38,9 +21,8 @@ public class SimilarityChecker {
 		return false;
 	}
 
-	/** The logger for this class. */
 	@SuppressWarnings("unused")
-	private Logger logger = Logger.getLogger(SimilarityChecker.class);
+	private Logger logger = Logger.getLogger(UMLSimilarityChecker.class);
 
 	private LinkedHashMap<Pattern, String> classifierNormalizations = null;
 	private LinkedHashMap<Pattern, String> compilationUnitNormalizations = null;
@@ -53,7 +35,7 @@ public class SimilarityChecker {
 	 * @param compilationUnitNormalizations A list of patterns replace any match in a compilation unit name with the defined replacement string.
 	 * @param packageNormalizations         The normalizations to replace expressions.
 	 */
-	public SimilarityChecker(LinkedHashMap<Pattern, String> classifierNormalizations, LinkedHashMap<Pattern, String> compilationUnitNormalizations, LinkedHashMap<Pattern, String> packageNormalizations) {
+	public UMLSimilarityChecker(LinkedHashMap<Pattern, String> classifierNormalizations, LinkedHashMap<Pattern, String> compilationUnitNormalizations, LinkedHashMap<Pattern, String> packageNormalizations) {
 		this.classifierNormalizations = classifierNormalizations;
 		this.compilationUnitNormalizations = compilationUnitNormalizations;
 		this.packageNormalizations = packageNormalizations;
@@ -62,7 +44,7 @@ public class SimilarityChecker {
 	/**
 	 * Default constructor for a similarity checker without any normalization configurations.
 	 */
-	public SimilarityChecker() {
+	public UMLSimilarityChecker() {
 		this.classifierNormalizations = Maps.newLinkedHashMap();
 		this.compilationUnitNormalizations = Maps.newLinkedHashMap();
 		this.packageNormalizations = Maps.newLinkedHashMap();
@@ -135,18 +117,22 @@ public class SimilarityChecker {
 
 		// check the elements to be of the same type
 		if (!element1.getClass().equals(element2.getClass())) {
-			System.out.println("MISMATCH1: " + element1);
-			return Boolean.FALSE;
+			// we want to compare classes and interfaces
+			if ((element1.eClass() == UMLPackage.Literals.INTERFACE || element1.eClass() == UMLPackage.Literals.CLASS) && (element2.eClass() == UMLPackage.Literals.INTERFACE || element2.eClass() == UMLPackage.Literals.CLASS)) {
+			} else {
+				System.out.println("MISMATCH1: " + element1);
+				return Boolean.FALSE;
+			}
 		}
 
 		// check type specific similarity
-		Boolean value =  this.checkSimilarityForResolvedAndSameType(element1, element2, checkStatementPosition);
-		
+		Boolean value = this.checkSimilarityForResolvedAndSameType(element1, element2, false);
+
 		if (value.equals(Boolean.FALSE))
 			System.out.println("MISMATCH: " + element1);
 		if (value == null)
 			System.out.println("MISMATCH3: " + element1);
-		
+
 		return value;
 	}
 
@@ -159,7 +145,7 @@ public class SimilarityChecker {
 	 * @return true if the EObjects are similar. null if they cannot be compared. false otherwise.
 	 */
 	protected Boolean checkSimilarityForResolvedAndSameType(EObject element1, EObject element2, boolean checkStatementPosition) {
-		return new SimilaritySwitch(element2, checkStatementPosition, classifierNormalizations, compilationUnitNormalizations, packageNormalizations).doSwitch(element1);
+		return new UMLSimilaritySwitch(element2, checkStatementPosition, classifierNormalizations, compilationUnitNormalizations, packageNormalizations).doSwitch(element1);
 	}
 
 	/**

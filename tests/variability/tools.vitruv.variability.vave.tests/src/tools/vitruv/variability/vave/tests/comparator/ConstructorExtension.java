@@ -131,10 +131,10 @@ public class ConstructorExtension {
 				if (!parameterType.eIsProxy() || !argumentType.eIsProxy()) {
 					long argumentArrayDimension = argument.getArrayDimension();
 					if (needsPerfectMatch) {
-						long parameterArrayDimension = parameter.getTypeReference().getArrayDimension();
+						long parameterArrayDimension = parameter.getArrayDimension();
 						parametersMatch = parametersMatch && argumentType.equalsType(argumentArrayDimension, parameterType, parameterArrayDimension);
 					} else {
-						parametersMatch = parametersMatch && argumentType.isSuperType(argumentArrayDimension, parameterType, parameter.getTypeReference());
+						parametersMatch = parametersMatch && argumentType.isSuperType(argumentArrayDimension, parameterType, parameter);
 					}
 				} else {
 					return false;

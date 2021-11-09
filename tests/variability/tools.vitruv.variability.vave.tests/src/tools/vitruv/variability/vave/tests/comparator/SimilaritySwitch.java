@@ -14,6 +14,7 @@ package tools.vitruv.variability.vave.tests.comparator;
  *******************************************************************************/
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -211,8 +212,16 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 				return Boolean.FALSE;
 			}
 
-			String namespace1 = instance1.getNamespacesAsString();
-			String namespace2 = instance2.getNamespacesAsString();
+//			String namespace1 = instance1.getNamespacesAsString();
+//			String namespace2 = instance2.getNamespacesAsString();
+//			if (namespace1 == null) {
+//				return (namespace2 == null);
+//			} else {
+//				return (namespace1.equals(namespace2));
+//			}
+
+			List<String> namespace1 = instance1.getNamespaces();
+			List<String> namespace2 = instance2.getNamespaces();
 			if (namespace1 == null) {
 				return (namespace2 == null);
 			} else {
@@ -281,6 +290,9 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 			String name1 = NormalizationUtil.normalize(classifier1.getQualifiedName(), classifierNormalizationPatterns);
 			String name2 = Strings.nullToEmpty(classifier2.getQualifiedName());
 
+//			if (name1.contains("Object") || name2.contains("Object"))
+//				System.out.println("BAM!!! " + name1 + " / " + name2);
+			
 			return (name1.equals(name2));
 		}
 
@@ -366,9 +378,14 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 				return Boolean.FALSE;
 			}
 
-			String namespaceString1 = NormalizationUtil.normalizeNamespace(unit1.getNamespacesAsString(), packageNormalizations);
-			String namespaceString2 = Strings.nullToEmpty(unit2.getNamespacesAsString());
-			if (!namespaceString1.equals(namespaceString2)) {
+//			String namespaceString1 = NormalizationUtil.normalizeNamespace(unit1.getNamespacesAsString(), packageNormalizations);
+//			String namespaceString2 = Strings.nullToEmpty(unit2.getNamespacesAsString());
+//
+//			if (!namespaceString1.equals(namespaceString2)) {
+//				return Boolean.FALSE;
+//			}
+
+			if (!unit1.getNamespaces().equals(unit2.getNamespaces())) {
 				return Boolean.FALSE;
 			}
 
@@ -628,7 +645,8 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 		@Override
 		public Boolean caseExtendsTypeArgument(ExtendsTypeArgument eta1) {
 			ExtendsTypeArgument eta2 = (ExtendsTypeArgument) compareElement;
-			return similarityChecker.isSimilar(eta1.getExtendType(), eta2.getExtendType());
+			// return similarityChecker.isSimilar(eta1.getExtendType(), eta2.getExtendType());
+			return similarityChecker.isSimilar(eta1.getExtendTypes().get(0), eta2.getExtendTypes().get(0));
 		}
 
 		@Override
@@ -663,9 +681,11 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 				return Boolean.FALSE;
 			}
 
-			String namespace1 = Strings.nullToEmpty(import1.getNamespacesAsString());
-			String namespace2 = Strings.nullToEmpty(import2.getNamespacesAsString());
-			return (namespace1.equals(namespace2));
+//			String namespace1 = Strings.nullToEmpty(import1.getNamespacesAsString());
+//			String namespace2 = Strings.nullToEmpty(import2.getNamespacesAsString());
+//			return (namespace1.equals(namespace2));
+
+			return import1.getNamespaces().equals(import2.getNamespaces());
 		}
 
 		@Override
@@ -685,9 +705,11 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 				}
 			}
 
-			String namespace1 = Strings.nullToEmpty(import1.getNamespacesAsString());
-			String namespace2 = Strings.nullToEmpty(import2.getNamespacesAsString());
-			return (namespace1.equals(namespace2));
+//			String namespace1 = Strings.nullToEmpty(import1.getNamespacesAsString());
+//			String namespace2 = Strings.nullToEmpty(import2.getNamespacesAsString());
+//			return (namespace1.equals(namespace2));
+
+			return import1.getNamespaces().equals(import2.getNamespaces());
 		}
 	}
 
@@ -928,7 +950,8 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 				if (typeSimilarity == Boolean.FALSE) {
 					return Boolean.FALSE;
 				}
-				if (param1.getTypeReference().getArrayDimension() != param2.getTypeReference().getArrayDimension()) {
+				// if (param1.getTypeReference().getArrayDimension() != param2.getTypeReference().getArrayDimension()) {
+				if (param1.getArrayDimension() != param2.getArrayDimension()) {
 					return Boolean.FALSE;
 				}
 			}
@@ -1553,9 +1576,13 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 
 			NamespaceClassifierReference ref2 = (NamespaceClassifierReference) compareElement;
 
-			String namespace1 = Strings.nullToEmpty(ref1.getNamespacesAsString());
-			String namespace2 = Strings.nullToEmpty(ref2.getNamespacesAsString());
-			if (!namespace1.equals(namespace2)) {
+//			String namespace1 = Strings.nullToEmpty(ref1.getNamespacesAsString());
+//			String namespace2 = Strings.nullToEmpty(ref2.getNamespacesAsString());
+//			if (!namespace1.equals(namespace2)) {
+//				return Boolean.FALSE;
+//			}
+
+			if (!ref1.getNamespaces().equals(ref2.getNamespaces())) {
 				return Boolean.FALSE;
 			}
 
@@ -1578,16 +1605,16 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 			return Boolean.TRUE;
 		}
 
-		/**
-		 * Inferable types are considered to be similar.
-		 * 
-		 * @param type The element to compare with the compare element.
-		 * @return true.
-		 */
-		@Override
-		public Boolean caseInferableType(InferableType type) {
-			return Boolean.TRUE;
-		}
+//		/**
+//		 * Inferable types are considered to be similar.
+//		 * 
+//		 * @param type The element to compare with the compare element.
+//		 * @return true.
+//		 */
+//		@Override
+//		public Boolean caseInferableType(InferableType type) {
+//			return Boolean.TRUE;
+//		}
 
 		/**
 		 * Primitive type elements are strongly typed and the exact type is already checked by the outer {@link SimilarityChecker}. <br>

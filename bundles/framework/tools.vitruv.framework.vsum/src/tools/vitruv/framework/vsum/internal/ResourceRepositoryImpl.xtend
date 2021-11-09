@@ -1,29 +1,31 @@
 package tools.vitruv.framework.vsum.internal
 
+import java.nio.file.Files
+import java.nio.file.NoSuchFileException
+import java.util.ArrayList
 import java.util.HashMap
 import java.util.Map
 import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
-import tools.vitruv.framework.change.recording.ChangeRecorder
-import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
+
+import static com.google.common.base.Preconditions.checkState
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
-import org.eclipse.emf.common.util.URI
-import java.nio.file.Files
-import java.nio.file.NoSuchFileException
-import tools.vitruv.framework.change.description.VitruviusChange
+
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -117,21 +119,31 @@ package class ResourceRepositoryImpl implements ModelRepository {
 
 	override void saveOrDeleteModels() {
 		if(logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
-		val modelInstancesIterator = modelInstances.entrySet.iterator
+//		val modelInstancesIterator = modelInstances.entrySet.iterator
 		
 		System.out.println("NUM RESOURCES IN MI: " + modelInstances.size());
 		
-		while (modelInstancesIterator.hasNext()) {
-			val modelInstance = modelInstancesIterator.next().value
+		// NOTE: the following is a workaround for a concurrentmodificationexception that occurs here during saving
+		val toDelete = new ArrayList
+		for (Map.Entry<URI, ModelInstance> modelInstanceEntry : new ArrayList(modelInstances.entrySet)) {
+//		while (modelInstancesIterator.hasNext()) {
+//			val modelInstance = modelInstancesIterator.next().value
+			val modelInstance = modelInstanceEntry.value
+			System.out.println("MODEL INSTANCE: " + modelInstance.resource.URI);
 			if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 				if (modelInstance.empty) {
+					System.out.println("DELETE MODEL INSTANCE: " + modelInstance.resource.URI);
 					modelInstance.delete()
-					modelInstancesIterator.remove()
+					//modelInstancesIterator.remove()
+					toDelete.add(modelInstanceEntry.key)
 				} else {
+					System.out.println("SAVE MODEL INSTANCE: " + modelInstance.resource.URI);
 					modelInstance.save()
 				}
 			}
 		}
+		for (URI uri : toDelete)
+			modelInstances.remove(uri)
 		correspondenceModel.save()
 		writeModelsFile()
 	}
