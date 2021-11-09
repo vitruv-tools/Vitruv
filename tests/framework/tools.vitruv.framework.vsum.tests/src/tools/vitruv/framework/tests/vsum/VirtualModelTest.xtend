@@ -1,48 +1,50 @@
 package tools.vitruv.framework.tests.vsum
 
-import org.junit.jupiter.api.Test
-import tools.vitruv.framework.vsum.VirtualModelBuilder
-import tools.vitruv.testutils.TestProject
+import allElementTypes.Root
 import java.nio.file.Path
-import tools.vitruv.framework.change.recording.ChangeRecorder
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import java.util.List
 import org.eclipse.emf.common.util.URI
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
-import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
-import static org.hamcrest.MatcherAssert.assertThat
-import tools.vitruv.testutils.TestProjectManager
-import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
-import static org.junit.jupiter.api.Assertions.assertNotEquals
-import static org.junit.jupiter.api.Assertions.assertEquals
-import static org.junit.jupiter.api.Assertions.assertNull
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.propagation.ResourceAccess
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import allElementTypes.Root
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import java.util.List
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.domains.VitruvDomain
+import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.framework.vsum.VirtualModelBuilder
+import tools.vitruv.testutils.TestProject
+import tools.vitruv.testutils.TestProjectManager
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNotEquals
+import static org.junit.jupiter.api.Assertions.assertNull
+import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
+
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
-	var Path projectFolder
+	protected var Path projectFolder
 
 	@BeforeEach
 	def void initializeProjectFolder(@TestProject Path projectFolder) {
 		this.projectFolder = projectFolder
 	}
 
-	private static def createAndLoadTestVirtualModel(Path folder) {
+	protected static def createAndLoadTestVirtualModel(Path folder) {
 		return new VirtualModelBuilder().withStorageFolder(folder).withDomain(
 			new AllElementTypesDomainProvider().domain).withUserInteractor(
 			UserInteractionFactory.instance.createUserInteractor(
@@ -59,7 +61,7 @@ class VirtualModelTest {
 			buildAndInitialize()
 	}
 
-	private def createTestModelResourceUri(String suffix) {
+	protected def createTestModelResourceUri(String suffix) {
 		URI.createFileURI(projectFolder.resolve("root" + suffix + ".allElementTypes").toString)
 	}
 
@@ -247,7 +249,7 @@ class VirtualModelTest {
 		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
 		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).size)
 	}
-	
+
 	@Test
 	@DisplayName("move element such that corresponding element is moved from one resource to another and back")
 	def void moveCorrespondingToOtherResourceAndBack() {
@@ -316,7 +318,7 @@ class VirtualModelTest {
 				correspondenceModel.createAndAddCorrespondence(List.of(insertedRoot), List.of(newRoot))
 				newRoot
 			}
-			
+
 			if (insertedRoot.eContainer !== null) {
 				val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, Root)
 				assertEquals(1, correspondingObjects.size)
@@ -326,5 +328,5 @@ class VirtualModelTest {
 			persistAsRoot(correspondingRoot, resourceURI.targetResourceUri)
 		}
 	}
-	
+
 }
