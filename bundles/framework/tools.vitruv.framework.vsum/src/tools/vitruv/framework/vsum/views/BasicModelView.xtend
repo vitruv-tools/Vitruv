@@ -14,7 +14,8 @@ import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.VirtualModel
 
 /**
- * A basic read-only view that passes by default the entirety of its underlying model as it is.
+ *
+ * A basic view that passes by default the entirety of its underlying model as it is.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
 class BasicModelView implements View, AutoCloseable {
@@ -33,7 +34,7 @@ class BasicModelView implements View, AutoCloseable {
     }
 
     override rootObjects() {
-        modelResources.map[contents].flatten.toList
+        viewResourceSet.resources.map[contents].flatten.toList
     }
 
     override isModified() { // TODO TS: Alternatively this could be done via a model change listener, what is better?
@@ -51,7 +52,7 @@ class BasicModelView implements View, AutoCloseable {
             val uri = resource.URI
             val newResource = viewResourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
             newResource.contents.addAll(EcoreUtil.copyAll(resource.contents.filter))
-            viewResourceSet.resources += resource
+            viewResourceSet.resources += newResource
         }
     }
 
@@ -77,6 +78,18 @@ class BasicModelView implements View, AutoCloseable {
         return propagatedChanges
     }
 
+    override close() throws Exception {
+        changeRecorder.close()
+    }
+
+    /**
+     * Filters objects from the model resources when updating the view from the model.
+     * Can be overridden in subclasses in order to only show selected elements.
+     */
+    def protected Collection<EObject> filter(Iterable<EObject> contents) {
+        return contents.toList // Default: Do not filter at all.
+    }
+
     def private determineResource(Notifier notifier) { // TODO TS: Copied from basic test view
         switch (notifier) {
             Resource: notifier
@@ -93,26 +106,20 @@ class BasicModelView implements View, AutoCloseable {
         }
     }
 
-    /**
-     * Filters objects from the model resources when updating the view from the model.
-     * Can be overridden in subclasses in order to only show selected elements.
-     */
-    def protected Collection<EObject> filter(Iterable<EObject> contents) {
-        return contents.toList // Default: Do not filter at all.
-    }
-
     def private registerModelChangeListener(Collection<Resource> modelResources) {
         modelResources.forEach [
-            eAdapters.add(new AdapterImpl {
+            it.eAdapters.add(new AdapterImpl {
                 override notifyChanged(Notification notification) {
                     modelChanged = true
                 }
             })
+            // TODO TS: Why is observing the resource not enough?
+            it.allContents.forEach[eAdapters.add(new AdapterImpl {
+                override notifyChanged(Notification notification) {
+                    modelChanged = true
+                }
+            })]
         ]
-    }
-
-    override close() throws Exception {
-        changeRecorder.close()
     }
 
 }
