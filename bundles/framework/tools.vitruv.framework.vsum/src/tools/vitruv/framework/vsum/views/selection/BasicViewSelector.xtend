@@ -6,7 +6,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.views.ViewType
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 
 /**
  * Basic view selector for a view that represents a set of model elements.

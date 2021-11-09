@@ -7,8 +7,14 @@ import tools.vitruv.framework.vsum.views.selection.ViewSelector
  */
 interface ViewType {
 
+    /**
+     * Returns the view selector of the viewtype, which allows configuring views.
+     */
     def ViewSelector createSelector()
 
+    /**
+     * Instantiates a view based on a selection made in the specified view selector.
+     */
     def View createView(ViewSelector selector)
 
     /**

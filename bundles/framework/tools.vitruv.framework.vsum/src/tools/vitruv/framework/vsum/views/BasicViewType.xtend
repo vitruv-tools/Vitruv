@@ -11,7 +11,7 @@ class BasicViewType implements ViewType {
     val String name
     val VirtualModel virtualModel
 
-    new(String name, ResourceSet modelResourceSet, VirtualModel virtualModel) {
+    new(String name, ResourceSet modelResourceSet, VirtualModel virtualModel) { // TODO TS: How should the viewtype access the models?
         this.name = name
         this.modelResourceSet = modelResourceSet
         this.virtualModel = virtualModel

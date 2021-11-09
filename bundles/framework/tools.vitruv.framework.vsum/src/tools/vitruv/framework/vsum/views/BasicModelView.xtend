@@ -45,7 +45,7 @@ class BasicModelView implements View, AutoCloseable {
         return modelChanged
     }
 
-    override update() { // TODO TS: should be delegated to viewtype, so a view has no access on model resources
+    override update() { // TODO TS: should this be delegated to the viewtype, so a view has no access on model resources?
         modelChanged = false
         viewResourceSet = new ResourceSetImpl()
         for (resource : modelResources) {
@@ -64,13 +64,13 @@ class BasicModelView implements View, AutoCloseable {
          * What is the correct way here?
          */
         changeRecorder.addToRecording(notifier)
-        changeRecorder.beginRecording()
+        changeRecorder.beginRecording
 
         val toSave = determineResource(notifier)
         consumer.accept(notifier)
         (toSave ?: determineResource(notifier))?.saveOrDelete()
 
-        changeRecorder.endRecording()
+        changeRecorder.endRecording
         changeRecorder.removeFromRecording(notifier)
 
         val propagatedChanges = virtualModel.propagateChange(changeRecorder.change)
@@ -79,7 +79,7 @@ class BasicModelView implements View, AutoCloseable {
     }
 
     override close() throws Exception {
-        changeRecorder.close()
+        changeRecorder.close
     }
 
     /**
@@ -108,18 +108,17 @@ class BasicModelView implements View, AutoCloseable {
 
     def private registerModelChangeListener(Collection<Resource> modelResources) {
         modelResources.forEach [
-            it.eAdapters.add(new AdapterImpl {
-                override notifyChanged(Notification notification) {
-                    modelChanged = true
-                }
-            })
-            // TODO TS: Why is observing the resource not enough?
-            it.allContents.forEach[eAdapters.add(new AdapterImpl {
-                override notifyChanged(Notification notification) {
-                    modelChanged = true
-                }
-            })]
+            eAdapters.add(createModelChangeListener)
+            allContents.forEach[eAdapters.add(createModelChangeListener)] // TODO TS: Why is observing the resource not enough?
         ]
+    }
+
+    def private AdapterImpl createModelChangeListener() {
+        new AdapterImpl {
+            override notifyChanged(Notification notification) {
+                modelChanged = true
+            }
+        }
     }
 
 }

@@ -11,10 +11,10 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
-class ViewTypeTest extends VirtualModelTest {
+class ViewTypeTest extends VirtualModelTest { // TODO TS: This currently re-runs tests from superclass
 
-    private val String ROOT_ID = "RootId1"
-     private val String ROOT_ID_2 = "RootId2"
+    val String ROOT_ID = "RootId1"
+    val String ROOT_ID_2 = "RootId2"
 
     @Test
     def void testBasicViewType() {

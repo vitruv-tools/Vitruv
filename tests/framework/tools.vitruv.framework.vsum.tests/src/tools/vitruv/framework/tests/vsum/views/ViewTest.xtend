@@ -18,10 +18,10 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
-class ViewTest extends VirtualModelTest { // TODO TS: This currently runs tests from superclass
+class ViewTest extends VirtualModelTest { // TODO TS: This currently re-runs tests from superclass
 
-    private val String NON_ROOT_ID = "NonRootId"
-    private val String ROOT_ID = "RootId"
+    val String NON_ROOT_ID = "NonRootId"
+    val String ROOT_ID = "RootId"
 
     @Test
     def void testBasicModelView() {
