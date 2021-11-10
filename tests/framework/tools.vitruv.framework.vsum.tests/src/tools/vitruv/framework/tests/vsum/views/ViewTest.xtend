@@ -4,11 +4,13 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import java.util.Collection
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import tools.vitruv.framework.tests.vsum.VirtualModelTest
 import tools.vitruv.framework.vsum.views.BasicModelView
 import tools.vitruv.framework.vsum.views.View
 
+import static com.google.common.base.Preconditions.checkNotNull
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertIterableEquals
@@ -19,11 +21,11 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 class ViewTest extends VirtualModelTest { // TODO TS: This currently re-runs tests from superclass
-
     val String NON_ROOT_ID = "NonRootId"
     val String ROOT_ID = "RootId"
 
     @Test
+    @DisplayName("Test basic view functionality")
     def void testBasicModelView() {
         // Create test model:
         val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
@@ -35,7 +37,7 @@ class ViewTest extends VirtualModelTest { // TODO TS: This currently re-runs tes
         ]
 
         // Create view and check initial state:
-        var View basicView = new BasicModelView(#[modelResource], virtualModel);
+        var View basicView = checkNotNull(new BasicModelView(#[modelResource], virtualModel), "Cannot create view!");
         assertNotNull(basicView.rootObjects)
         assertEquals(basicView.rootObjects.oneAndOnly, basicView.rootObjects(Root).oneAndOnly)
         assertEquals(ROOT_ID, basicView.rootObjects(Root).oneAndOnly.id)
@@ -62,5 +64,4 @@ class ViewTest extends VirtualModelTest { // TODO TS: This currently re-runs tes
         assertEquals(1, collection.size)
         return collection.get(0)
     }
-
 }
