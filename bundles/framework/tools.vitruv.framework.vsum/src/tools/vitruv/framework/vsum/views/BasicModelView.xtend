@@ -13,6 +13,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.VirtualModel
 
+import static com.google.common.base.Preconditions.checkNotNull
+
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+
 /**
  *
  * A basic view that passes by default the entirety of its underlying model as it is.
@@ -47,7 +51,7 @@ class BasicModelView implements View, AutoCloseable {
 
     override update() { // TODO TS: should this be delegated to the viewtype, so a view has no access on model resources?
         modelChanged = false
-        viewResourceSet = new ResourceSetImpl()
+        viewResourceSet = checkNotNull(new ResourceSetImpl().withGlobalFactories, "Could not create view resource set!")
         for (resource : modelResources) {
             val uri = resource.URI
             val newResource = viewResourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
