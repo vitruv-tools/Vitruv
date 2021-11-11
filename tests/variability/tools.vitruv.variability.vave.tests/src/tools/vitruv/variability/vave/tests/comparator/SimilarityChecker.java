@@ -140,13 +140,13 @@ public class SimilarityChecker {
 		}
 
 		// check type specific similarity
-		Boolean value =  this.checkSimilarityForResolvedAndSameType(element1, element2, checkStatementPosition);
-		
-		if (value.equals(Boolean.FALSE))
-			System.out.println("MISMATCH: " + element1);
+		Boolean value = this.checkSimilarityForResolvedAndSameType(element1, element2, checkStatementPosition);
+
 		if (value == null)
 			System.out.println("MISMATCH3: " + element1);
-		
+		else if (value.equals(Boolean.FALSE))
+			System.out.println("MISMATCH: " + element1);
+
 		return value;
 	}
 

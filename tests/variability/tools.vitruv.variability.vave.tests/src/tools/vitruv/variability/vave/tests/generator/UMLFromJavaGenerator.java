@@ -63,6 +63,7 @@ public class UMLFromJavaGenerator {
 	public void processJavaFile(Path file) {
 		System.out.println("try to reverse file (" + file + ")");
 		try {
+			System.out.println("REVERSING: " + file);
 			CompilationUnit cu = JavaParser.parse(file.toFile());
 			javaAnalyser.processCompilationUnit(cu);
 			// Add the name to the reversed list

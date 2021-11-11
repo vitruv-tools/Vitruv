@@ -57,6 +57,7 @@ import tools.vitruv.applications.umljava.JavaToUmlChangePropagationSpecification
 import tools.vitruv.domains.java.JavaDomainProvider;
 import tools.vitruv.domains.uml.UmlDomainProvider;
 import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
@@ -181,7 +182,7 @@ public class ArgoUMLEvalTest {
 
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
-		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src"), location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
+		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src") }; // , location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
 		// Path[] sourceFolders = new Path[] { location };
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
@@ -324,7 +325,7 @@ public class ArgoUMLEvalTest {
 		return vmp;
 	}
 
-	protected void internalize(Path productLocation, VirtualProductModel vmp, Collection<Resource> resources, Expression<FeatureOption> e) throws Exception {
+	protected void internalize(VirtualProductModel vmp, VirtualProductModel vmp2, Collection<Resource> resources, Expression<FeatureOption> e) throws Exception {
 		if (!Files.exists(vaveProjectMarker))
 			Files.createDirectories(vaveProjectMarker);
 
@@ -442,13 +443,13 @@ public class ArgoUMLEvalTest {
 		for (EChange change : recordedChange.getEChanges()) {
 			if ((change instanceof ReplaceSingleValuedEReference) && ((ReplaceSingleValuedEReference) change).getNewValueID() != null && ((ReplaceSingleValuedEReference) change).getNewValueID().contains("pathmap") && ((ReplaceSingleValuedEReference) change).getNewValueID().contains(".java#/1")) {
 				// this is the workaround for the the problem vitruvius has with the ".length" field of arrays of all types outside of the actually parsed source code (e.g., java.lang.Object or java.lang.Byte).
-//				System.out.println("IGNORE: " + change);
+				// System.out.println("IGNORE: " + change);
 			} else if ((change instanceof ReplaceSingleValuedEReference) && ((ReplaceSingleValuedEReference) change).getNewValueID() != null && ((ReplaceSingleValuedEReference) change).getAffectedEObject() != null && !((EObject) ((ReplaceSingleValuedEReference) change).getNewValue()).eResource().getURI().equals(((ReplaceSingleValuedEReference) change).getAffectedEObject().eResource().getURI())) {
 				toAppend2.add(change);
-//				System.out.println("moved change to back: " + change);
+				// System.out.println("moved change to back: " + change);
 			} else if ((change instanceof InsertEReference) && ((InsertEReference) change).getNewValue() != null && ((InsertEReference) change).getAffectedEObject() != null && !((EObject) ((InsertEReference) change).getNewValue()).eResource().getURI().equals(((InsertEReference) change).getAffectedEObject().eResource().getURI())) {
 				toAppend.add(change);
-//				System.out.println("moved change to back: " + change);
+				// System.out.println("moved change to back: " + change);
 			} else {
 				newEChanges.add(change);
 			}
@@ -461,13 +462,18 @@ public class ArgoUMLEvalTest {
 
 		System.out.println("NUM CHANGES: " + orderedChange.getEChanges().size());
 
+		// unresolve change
+		VitruviusChange unresolvedChange = orderedChange.unresolve();
+
 		// propagate changes into product
 		System.out.println("PROPAGATING CHANGES INTO PRODUCT");
-		vmp.propagateChange(orderedChange);
+		// vmp2.propagateChange(recordedChange);
+		// vmp2.propagateChange(orderedChange);
+		vmp2.propagateChange(unresolvedChange);
 
 		// internalize changes in product into system
 		System.out.println("INTERNALIZING CHANGES IN PRODUCT INTO SYSTEM");
-		vave.internalizeChanges(vmp, e);
+		vave.internalizeChanges(vmp2, e);
 
 		sysrev++;
 	}
@@ -607,7 +613,8 @@ public class ArgoUMLEvalTest {
 		this.vave.internalizeDomain(fm);
 		sysrev++;
 
-		Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants-selection");
+		Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
+		// Path variantsLocation = Paths.get("C:\\FZI\\git\\test-variants-2");
 
 		{ // # REVISION 0 (ArgoUML-SPL)
 			Path revision0VariantsLocation = variantsLocation.resolve("R0_variants");
@@ -621,13 +628,15 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(VavemodelFactory.eINSTANCE.createConfiguration(), vaveResourceLocation.getParent().resolve("R0-V-empty-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-empty-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(VavemodelFactory.eINSTANCE.createConfiguration(), vaveResourceLocation.getParent().resolve("R0-V-empty-ext-int-vsum\\src\\"));
+
 				// internalize ArgoUML R0 Product P0 (Core) generated by generator with expression Core
-				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V\\src\\"));
-				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG-ACTI-COLL-DEPL-SEQU-STAT-USEC\\src\\"));
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V\\src\\"));
+				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG-ACTI-COLL-DEPL-SEQU-STAT-USEC\\src\\"));
 				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("argouml-workaround\\src\\"));
 				Variable<FeatureOption> expression = VavemodelFactory.eINSTANCE.createVariable();
 				expression.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-int-vsum\\src\\"), vmp, resources, expression);
+				this.internalize(vmp, vmp2, resources, expression);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-int"));
 
 				core_rev++;
@@ -645,16 +654,18 @@ public class ArgoUMLEvalTest {
 				// add features and feature revisions to configuration
 				configuration.getOption().add(Fcore.getFeaturerevision().get(core_rev));
 				configuration.getOption().add(vave.getSystem().getSystemrevision().get(sysrev));
-				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext-vsum\\src\\"));
-				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext"));
+				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext1-vsum\\src\\"));
+				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext1"));
+
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext1-int-vsum\\src\\"));
 
 				// internalize ArgoUML R0 Product P1 (Core, Cognitive) generated by generator with expression Cognitive
-				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN\\src"));
-				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG-ACTI-COLL-DEPL-SEQU-STAT-USEC\\src\\"));
+				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN\\src"));
+				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG-ACTI-COLL-DEPL-SEQU-STAT-USEC\\src\\"));
 				// Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("argouml-workaround\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcognitive);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-int"));
 
 				cogn_rev++;
@@ -673,10 +684,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext2-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext2"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext2-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Flogging);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-int"));
 
 				logg_rev++;
@@ -698,6 +711,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-ext-int-vsum\\src\\"));
+
 				// internalize ArgoUML R0 Product P3 (Core, Cognitive, Logging) with Cognitive && Logging
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-LOGG\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
@@ -707,7 +722,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Flogging);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-LOGG-int"));
 
 				cogn_rev++;
@@ -730,10 +745,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext4-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext4"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext4-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-ACTI\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Factivity);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-ACTI-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ACTI-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -752,6 +769,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-ACTI\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -760,7 +779,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Factivity);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-ACTI-int"));
 
 				logg_rev++;
@@ -779,10 +798,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext6-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext6"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext6-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COLL\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcollaboration);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COLL-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COLL-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -801,6 +822,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-COLL\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -809,7 +832,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fcollaboration);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-int"));
 
 				logg_rev++;
@@ -828,10 +851,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext8-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext8"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext8-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-DEPL\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fdeployment);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-DEPL-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-DEPL-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -850,6 +875,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-DEPL\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -858,7 +885,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fdeployment);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-DEPL-int"));
 
 				cogn_rev++;
@@ -879,6 +906,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-DEPL\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -887,7 +916,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fdeployment);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-DEPL-int"));
 
 				logg_rev++;
@@ -906,10 +935,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext11-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext11"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext11-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-SEQU\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fsequence);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-SEQU-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-SEQU-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -928,6 +959,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COGN-SEQU\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -936,7 +969,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fsequence);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COGN-SEQU-int"));
 
 				cogn_rev++;
@@ -957,6 +990,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-SEQU\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -965,7 +1000,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fsequence);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-SEQU-int"));
 
 				logg_rev++;
@@ -984,10 +1019,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext14-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext14"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext14-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-STAT\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fstate);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-STAT-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-STAT-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -1006,6 +1043,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-STAT\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1014,7 +1053,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fstate);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-STAT-int"));
 
 				logg_rev++;
@@ -1033,10 +1072,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext16-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ext16"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ext16-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-USEC\\src"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fusecase);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-USEC-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-USEC-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -1055,6 +1096,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-USEC\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1063,7 +1106,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fusecase);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-USEC-int"));
 
 				logg_rev++;
@@ -1084,6 +1127,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-ACTI-STAT\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1092,7 +1137,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fstate);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-ACTI-STAT-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -1111,6 +1156,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-COLL-SEQU\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1119,7 +1166,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fsequence);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-COLL-SEQU-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -1138,6 +1185,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-DEPL-USEC\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1146,7 +1195,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fusecase);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-DEPL-USEC-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -1165,6 +1214,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-SEQU-STAT\\src"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1173,7 +1224,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Fstate);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-SEQU-STAT-int"));
 
 				long timeDiff = System.currentTimeMillis() - timeStart;
@@ -1193,6 +1244,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revision0VariantsLocation.resolve("V-LOGG-COLL-SEQU\\src"));
 				Conjunction<FeatureOption> conjunction1 = VavemodelFactory.eINSTANCE.createConjunction();
 				Conjunction<FeatureOption> conjunction2 = VavemodelFactory.eINSTANCE.createConjunction();
@@ -1206,7 +1259,7 @@ public class ArgoUMLEvalTest {
 				conjunction1.getTerm().add(variable1);
 				conjunction2.getTerm().add(variable2);
 				conjunction2.getTerm().add(variable3);
-				this.internalize(vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-int-vsum\\src\\"), vmp, resources, conjunction1);
+				this.internalize(vmp, vmp2, resources, conjunction1);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R0-V-LOGG-COLL-SEQU-int"));
 
 				logg_rev++;
@@ -1236,10 +1289,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R1-V-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R1-V-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R1-V-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R1-V-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R1-V-int"));
 
 				core_rev++;
@@ -1248,7 +1303,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R1-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 2
@@ -1265,10 +1322,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R2-V-LOGG-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R2-V-LOGG-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R2-V-LOGG-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-LOGG\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Flogging);
-				this.internalize(vaveResourceLocation.getParent().resolve("R2-V-COGN-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R2-V-LOGG-int"));
 
 				logg_rev++;
@@ -1277,7 +1336,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R2-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 3
@@ -1293,10 +1354,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R3-V-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R3-V-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R3-V-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R3-V-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R3-V-int"));
 
 				core_rev++;
@@ -1305,7 +1368,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R3-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 4
@@ -1322,10 +1387,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R4-V-COGN-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R4-V-COGN-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R4-V-COGN-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-COGN\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcognitive);
-				this.internalize(vaveResourceLocation.getParent().resolve("R4-V-COGN-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R4-V-COGN-int"));
 
 				cogn_rev++;
@@ -1334,7 +1401,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R4-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 5
@@ -1352,6 +1421,8 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-COGN-LOGG\\src\\"));
 				Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 				Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
@@ -1360,7 +1431,7 @@ public class ArgoUMLEvalTest {
 				variable2.setOption(Flogging);
 				conjunction.getTerm().add(variable1);
 				conjunction.getTerm().add(variable2);
-				this.internalize(vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-int-vsum\\src\\"), vmp, resources, conjunction);
+				this.internalize(vmp, vmp2, resources, conjunction);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R5-V-COGN-LOGG-int"));
 
 				cogn_rev++;
@@ -1370,7 +1441,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R5-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 6
@@ -1386,10 +1459,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R6-V-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R6-V-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R6-V-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R6-V-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R6-V-int"));
 
 				core_rev++;
@@ -1398,7 +1473,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R6-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 7
@@ -1414,10 +1491,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R7-V-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R7-V-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R7-V-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-int"));
 
 				core_rev++;
@@ -1436,10 +1515,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R7-V-LOGG-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-LOGG-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R7-V-LOGG-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-LOGG\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Flogging);
-				this.internalize(vaveResourceLocation.getParent().resolve("R7-V-LOGG-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R7-V-LOGG-int"));
 
 				logg_rev++;
@@ -1448,7 +1529,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R7-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 8
@@ -1464,10 +1547,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R8-V-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R8-V-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R8-V-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R8-V-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R8-V-int"));
 
 				core_rev++;
@@ -1476,7 +1561,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R8-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		{ // # REVISION 9
@@ -1492,10 +1579,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R9-V-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R9-V-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Fcore);
-				this.internalize(vaveResourceLocation.getParent().resolve("R9-V-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-int"));
 
 				core_rev++;
@@ -1514,10 +1603,12 @@ public class ArgoUMLEvalTest {
 				VirtualProductModel vmp = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext-vsum\\src\\"));
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext"));
 
+				VirtualProductModel vmp2 = this.externalize(configuration, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext-int-vsum\\src\\"));
+
 				Collection<Resource> resources = this.parse(revisionVariantsLocation.resolve("V-LOGG\\src\\"));
 				Variable<FeatureOption> variable = VavemodelFactory.eINSTANCE.createVariable();
 				variable.setOption(Flogging);
-				this.internalize(vaveResourceLocation.getParent().resolve("R9-V-LOGG-int-vsum\\src\\"), vmp, resources, variable);
+				this.internalize(vmp, vmp2, resources, variable);
 				Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-LOGG-int"));
 
 				logg_rev++;
@@ -1526,7 +1617,9 @@ public class ArgoUMLEvalTest {
 				System.out.println("TOTAL TIME: " + timeDiff);
 			}
 
-			// TODO: externalize for eval
+			Path evalVariantsLocation = vaveResourceLocation.getParent().resolve("R9-eval-variants");
+			Files.createDirectory(evalVariantsLocation);
+			this.createEvalVariants(evalVariantsLocation);
 		}
 
 		// --------------------------------------

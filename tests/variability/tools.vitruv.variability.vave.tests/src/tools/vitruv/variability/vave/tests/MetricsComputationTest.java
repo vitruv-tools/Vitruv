@@ -139,7 +139,7 @@ public class MetricsComputationTest {
 		// aggregate over revisions and total? or use excel or R for that?
 	}
 
-	public int compareModelsOfArgoUMLVariants(Path model1, Path model2) {
+	public int compareModelsOfArgoUMLVariants(Path model1Location, Path model2Location) {
 		final MatchEngineFactoryImpl matchEngineFactory = new UMLMatchEngineFactory(new EqualityHelper(EqualityHelper.createDefaultCache(CacheBuilder.newBuilder())));
 		matchEngineFactory.setRanking(20);
 
@@ -174,7 +174,7 @@ public class MetricsComputationTest {
 		// ------------------------------------
 
 		ResourceSet resourceSet1 = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-		Resource resource1 = resourceSet1.getResource(URI.createFileURI("C:\\FZI\\model-tests\\papyrus-models\\model-full-v2.uml"), true);
+		Resource resource1 = resourceSet1.getResource(URI.createFileURI(model1Location.toString()), true);
 		System.out.println("LOADED FIRST RESOURCE");
 
 		// HERE START THE FIXES
@@ -287,7 +287,7 @@ public class MetricsComputationTest {
 		}
 
 		ResourceSet resourceSet2 = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-		Resource resource2 = resourceSet2.getResource(URI.createFileURI("C:\\FZI\\model-tests\\vitruvius-models\\umloutput-full-v2.uml"), true);
+		Resource resource2 = resourceSet2.getResource(URI.createFileURI(model2Location.toString()), true);
 		System.out.println("LOADED SECOND RESOURCE");
 
 		org.eclipse.uml2.uml.Package model2 = (org.eclipse.uml2.uml.Package) ((org.eclipse.uml2.uml.Package) ((Model) resource2.getContents().stream().filter(v -> (v instanceof Model)).findFirst().get()));

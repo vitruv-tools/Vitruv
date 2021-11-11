@@ -1,5 +1,6 @@
 package tools.vitruv.variability.vave.tests;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,6 +63,66 @@ public class GeneratorTest {
 			String[] allConfig = optional.clone();
 			this.createVariant(allConfig, splLocation, targetLocation);
 		}
+	}
+
+	@Test
+	public void createSpecificFilesForArgoUMLVariantsJavaForInternalization() throws IOException {
+		Path targetLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
+		Path splLocations = Paths.get("C:\\FZI\\git\\argouml-spl-revisions");
+
+		for (int rev = 0; rev <= 9; rev++) {
+			Path splLocation = splLocations.resolve("R" + rev);
+
+			// only core
+			String[] emptyConfig = new String[] {};
+			this.createOrUpdateSpecificFilesForVariant(emptyConfig, splLocation, targetLocation);
+
+			// single features
+			for (int i = 0; i < optional.length; i++) {
+				String[] config = new String[] { optional[i] };
+				this.createOrUpdateSpecificFilesForVariant(config, splLocation, targetLocation);
+			}
+
+			// pair-wise feature interactions
+			for (int i = 0; i < optional.length; i++) {
+				for (int j = i + 1; j < optional.length; j++) {
+					String[] config = { optional[i], optional[j] };
+					this.createOrUpdateSpecificFilesForVariant(config, splLocation, targetLocation);
+				}
+			}
+
+			// selected three-wise feature interactions
+			String[] threeWiseConfig = new String[] { LOGGING, COLLABORATIONDIAGRAM, SEQUENCEDIAGRAM };
+			this.createOrUpdateSpecificFilesForVariant(threeWiseConfig, splLocation, targetLocation);
+
+			// all features
+			String[] allConfig = optional.clone();
+			this.createOrUpdateSpecificFilesForVariant(allConfig, splLocation, targetLocation);
+		}
+	}
+
+	private void createOrUpdateSpecificFilesForVariant(String[] currentArray, Path splLocation, Path targetLocation) throws IOException {
+		List<String> current = new ArrayList<>(Arrays.asList(currentArray));
+
+		String variantName = current.stream().map(s -> s.substring(0, 4)).collect(Collectors.joining("-"));
+
+		System.out.println("BEGIN: " + variantName);
+
+		current.addAll(Arrays.asList(mandatory));
+
+		Path variantsLocation = targetLocation.resolve(splLocation.getFileName().toString() + "_variants");
+		Path variantLocation = variantsLocation.resolve("V" + (variantName.isEmpty() ? "" : "-") + variantName);
+
+		Path splSourceFolder = splLocation.resolve("src");
+
+		Files.createDirectories(variantLocation);
+
+		JavaPpGenerator generator = new JavaPpGenerator(splSourceFolder.toFile(), current.toArray(new String[current.size()]));
+
+		// TODO: update specific files here!
+		generator.generateFile(variantLocation.toFile(), new File(splSourceFolder.toFile(), "argouml-app\\src\\org\\argouml\\ui\\explorer\\rules\\GoNamespaceToDiagram.java"));
+
+		System.out.println("END: " + variantName);
 	}
 
 	/**
@@ -129,12 +190,10 @@ public class GeneratorTest {
 
 		Files.createDirectories(variantLocation);
 
-		JavaPpGenerator generator = new JavaPpGenerator(splSourceFolder.toFile());
-		generator.setFeatures(current.toArray(new String[current.size()]));
+		JavaPpGenerator generator = new JavaPpGenerator(splSourceFolder.toFile(), current.toArray(new String[current.size()]));
 		generator.generateFiles(variantLocation.toFile());
 
 		System.out.println("END: " + variantName);
-
 	}
 
 	/**
@@ -152,7 +211,7 @@ public class GeneratorTest {
 	public void addPapyrusUMLModelToAllArgoUMLVariants() throws IOException {
 		Path targetLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
 
-		for (int rev = 0; rev <= 9; rev++) {
+		for (int rev = 7; rev <= 9; rev++) {
 			Path revisionLocation = targetLocation.resolve("R" + rev + "_variants");
 
 			Collection<Path> variantLocations = Files.list(revisionLocation).collect(Collectors.toList());
@@ -257,7 +316,11 @@ public class GeneratorTest {
 //				}
 //			}
 
-				resource.save(null);
+				try {
+					resource.save(null);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 			}
 		}
 	}
@@ -299,8 +362,7 @@ public class GeneratorTest {
 
 				Files.createDirectories(variantLocation);
 
-				JavaPpGenerator generator = new JavaPpGenerator(splSourceFolder.toFile());
-				generator.setFeatures(current.toArray(new String[current.size()]));
+				JavaPpGenerator generator = new JavaPpGenerator(splSourceFolder.toFile(), current.toArray(new String[current.size()]));
 				generator.generateFiles(variantLocation.toFile());
 
 				System.out.println("END: " + variantName);

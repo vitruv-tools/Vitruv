@@ -63,6 +63,11 @@ import tools.vitruv.variability.vave.tests.comparator.SimilarityChecker;
 //@Disabled
 public class JamoppCompareTests {
 
+//	public void dummyMethod() {
+//		org.emftext.language.java.statements.impl.ExpressionStatementImpl;
+//		org.emftext.language.java.expressions.Expression;
+//	}
+	
 	@BeforeEach
 	public void setUp() throws Exception {
 		JavaClasspath.getInitializers().clear();

@@ -23,27 +23,46 @@ public class JavaPpGenerator {
 
 	private String[] features;
 
-	public JavaPpGenerator(File templatesFolder) {
-		this.templatesFolder = templatesFolder;
-		this.features = null;
-	}
+	public JavaPpGenerator(File templatesFolder, String[] features) {
+		if (features == null)
+			throw new IllegalArgumentException("Features was null.");
 
-	public void setFeatures(String[] args) {
-		this.features = args;
+		this.templatesFolder = templatesFolder;
+		this.features = features;
+
+		Hashtable<Object, Object> env = new Hashtable<Object, Object>();
+		for (String feature : this.features) {
+			env.put(feature, "on");
+		}
+		this.pp = new JavaPp(prefix, env);
 	}
 
 	public void generateFiles(File dir) {
-		if (this.features == null)
-			return;
-
-		init();
-
 		outputFolder = new File(dir, "src");
 		if (!outputFolder.exists())
 			outputFolder.mkdirs();
 
 		// Generate Java files
 		this.generateFilesRecursively(this.templatesFolder);
+	}
+
+	public void generateFile(File dir, File f) {
+		outputFolder = new File(dir, "src");
+		if (!outputFolder.exists())
+			outputFolder.mkdirs();
+
+		if (f.isFile()) {
+			if (f.getName().endsWith(".java")) {
+				String pathname = f.getPath().substring(f.getPath().indexOf(this.templatesFolder.getPath()) + this.templatesFolder.getPath().length());
+
+				File srcfile = new File(this.outputFolder, pathname);
+
+				if (!srcfile.exists())
+					srcfile.getParentFile().mkdirs();
+
+				this.generateClass(srcfile, f.getPath());
+			}
+		}
 	}
 
 	private void generateFilesRecursively(File dir) {
@@ -65,17 +84,6 @@ public class JavaPpGenerator {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Initialisation.
-	 */
-	private void init() {
-		Hashtable<Object, Object> env = new Hashtable<Object, Object>();
-		for (String feature : this.features) {
-			env.put(feature, "on");
-		}
-		this.pp = new JavaPp(prefix, env);
 	}
 
 	/** Generates the file for a class. */
