@@ -17,7 +17,7 @@ interface VirtualModel {
 
 	def void addChangePropagationListener(ChangePropagationListener propagationListener)
 	def void removeChangePropagationListener(ChangePropagationListener propagationListener)
-	
+
 	def List<PropagatedChange> propagateChange(VitruviusChange change)
 
 	/**
@@ -49,5 +49,7 @@ interface VirtualModel {
 	 */
 	@Deprecated
 	@Beta
-	def ResourceSet getResourceSet()
+	def ResourceSet getResourceSet() {
+	    return null // prevents test models to be adapted
+	}
 }

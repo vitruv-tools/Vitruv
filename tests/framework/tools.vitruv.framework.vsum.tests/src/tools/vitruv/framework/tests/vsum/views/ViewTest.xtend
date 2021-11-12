@@ -3,9 +3,12 @@ package tools.vitruv.framework.tests.vsum.views
 import allElementTypes.NonRoot
 import allElementTypes.Root
 import java.util.Collection
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.tests.vsum.VirtualModelTest
 import tools.vitruv.framework.vsum.views.BasicModelView
 import tools.vitruv.framework.vsum.views.View
@@ -26,28 +29,34 @@ class ViewTest extends VirtualModelTest { // TODO TS: This currently re-runs tes
 
     @Test
     @DisplayName("Test basic view functionality")
-    def void testBasicModelView() {
-        // Create test model:
+    def void testBasicModelView() { // TODO TS split into multiple test, cover commit mechanism
+    // Create test model:
         val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
         val resourceSet = new ResourceSetImpl().withGlobalFactories
-        val modelResource = resourceSet.createResource(createTestModelResourceUri("")) => [
-            contents += aet.Root => [
-                id = ROOT_ID
+        virtualModel.propagateChange(recordChanges(resourceSet, [
+            resourceSet.createResource(createTestModelResourceUri("")) => [
+                contents += aet.Root => [
+                    id = ROOT_ID
+                ]
             ]
-        ]
+        ]))
+        val modelResource = resourceSet.resources.oneAndOnly
 
         // Create view and check initial state:
-        var View basicView = checkNotNull(new BasicModelView(#[modelResource], virtualModel), "Cannot create view!");
+        var View basicView = checkNotNull(new BasicModelView(virtualModel.resourceSet.resources, virtualModel),
+            "Cannot create view!");
         assertNotNull(basicView.rootObjects)
         assertEquals(basicView.rootObjects.oneAndOnly, basicView.rootObjects(Root).oneAndOnly)
         assertEquals(ROOT_ID, basicView.rootObjects(Root).oneAndOnly.id)
         assertFalse(basicView.hasVSUMChanged)
 
         // Modify model
-        val modelRoot = modelResource.contents.oneAndOnly as Root
-        val NonRoot element = aet.NonRoot
-        element.id = NON_ROOT_ID
-        modelRoot.multiValuedContainmentEReference.add(element)
+        virtualModel.propagateChange(recordChanges(resourceSet, [
+            val modelRoot = modelResource.contents.oneAndOnly as Root
+            val NonRoot element = aet.NonRoot
+            element.id = NON_ROOT_ID
+            modelRoot.multiValuedContainmentEReference.add(element)
+        ]))
 
         // Assert VSUM changed but view not modified:
         assertTrue(basicView.hasVSUMChanged)
@@ -58,6 +67,14 @@ class ViewTest extends VirtualModelTest { // TODO TS: This currently re-runs tes
         assertFalse(basicView.hasVSUMChanged)
         val viewRoot = basicView.rootObjects(Root).oneAndOnly
         assertEquals(NON_ROOT_ID, viewRoot.multiValuedContainmentEReference.oneAndOnly.id)
+    }
+
+    def VitruviusChange recordChanges(ResourceSet resourceSet, Runnable changesToPerform) {
+        val recorder = new ChangeRecorder(resourceSet)
+        recorder.addToRecording(resourceSet)
+        recorder.beginRecording
+        changesToPerform.run()
+        return recorder.endRecording
     }
 
     def private <T> T getOneAndOnly(Collection<T> collection) {
