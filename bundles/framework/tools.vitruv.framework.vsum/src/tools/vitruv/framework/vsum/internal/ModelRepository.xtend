@@ -5,6 +5,7 @@ import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.description.VitruviusChange
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def VitruviusChange applyChange(VitruviusChange change)
@@ -24,4 +25,11 @@ package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def void startRecording()
 
 	def Iterable<? extends TransactionalChange> endRecording()
+
+	/**
+     * IMPORTANT: This method is only temporary, and should be replaced a inversion of control based mechanism to supply
+     * viewtypes with the necessary resources for view creation.
+     */
+    @Deprecated
+    def ResourceSet getResourceSet()
 }

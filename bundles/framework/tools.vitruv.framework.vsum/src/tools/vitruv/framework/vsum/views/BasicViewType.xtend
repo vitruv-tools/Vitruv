@@ -1,28 +1,25 @@
 package tools.vitruv.framework.vsum.views
 
-import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
-import tools.vitruv.framework.vsum.VirtualModel
 
 class BasicViewType implements ViewType {
 
-    val ResourceSet modelResourceSet
     val String name
     val VirtualModel virtualModel
 
-    new(String name, ResourceSet modelResourceSet, VirtualModel virtualModel) { // TODO TS: How should the viewtype access the models?
+    new(String name, VirtualModel virtualModel) { // TODO TS: How should the viewtype access the models? inversion of control?
         this.name = name
-        this.modelResourceSet = modelResourceSet
-        this.virtualModel = virtualModel
+        this.virtualModel = virtualModel // TODO
     }
 
     override createSelector() {
-        return new BasicViewSelector(this, modelResourceSet.resources.map[allContents.toList].flatten.toList)
+        return new BasicViewSelector(this, virtualModel.resourceSet.resources.map[allContents.toList].flatten.toList)
     }
 
     override createView(ViewSelector selector) {
-        return new FilterableModelView(modelResourceSet.resources, selector.selectedElements, virtualModel)
+        return new FilterableModelView(virtualModel.resourceSet.resources, selector.selectedElements, virtualModel)
     }
 
     override getName() {

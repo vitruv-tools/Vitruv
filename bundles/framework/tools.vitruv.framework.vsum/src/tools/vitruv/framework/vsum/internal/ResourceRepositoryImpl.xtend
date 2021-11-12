@@ -66,7 +66,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 				modelsResourceSet.loadOrCreateResource(uri)
 				createOrLoadModel(uri)
 			}
-		} catch (NoSuchFileException e) {
+		} catch(NoSuchFileException e) {
 			// There are no existing models, so don't do anything
 		}
 	}
@@ -87,7 +87,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	def private createOrLoadModel(URI modelURI) {
 		checkState(getDomainForURI(modelURI) !== null,
 			"Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
-		val resource = if ((modelURI.isFile || modelURI.isPlatform)) {
+		val resource = if((modelURI.isFile || modelURI.isPlatform)) {
 				modelsResourceSet.getOrCreateResource(modelURI)
 			} else {
 				modelsResourceSet.loadOrCreateResource(modelURI)
@@ -100,12 +100,12 @@ package class ResourceRepositoryImpl implements ModelRepository {
 
 	def private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
-		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
+		if(modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 			val recorder = domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
 				new ChangeRecorder(modelsResourceSet)
 			]
 			recorder.addToRecording(modelInstance.resource)
-			if (this.isRecording && !recorder.isRecording) {
+			if(this.isRecording && !recorder.isRecording) {
 				recorder.beginRecording()
 			}
 		}
@@ -118,9 +118,9 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	override void saveOrDeleteModels() {
 		if(logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 		val modelInstancesIterator = modelInstances.entrySet.iterator
-		while (modelInstancesIterator.hasNext()) {
+		while(modelInstancesIterator.hasNext()) {
 			val modelInstance = modelInstancesIterator.next().value
-			if (modelInstance.empty) {
+			if(modelInstance.empty) {
 				modelInstance.delete()
 				modelInstancesIterator.remove()
 			} else {
@@ -169,6 +169,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
 		correspondencesResourceSet.resources.clear()
+	}
+
+	override getResourceSet() {
+		return modelsResourceSet
 	}
 
 }

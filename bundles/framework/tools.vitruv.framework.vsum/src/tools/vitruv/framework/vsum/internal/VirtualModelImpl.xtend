@@ -132,7 +132,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 		return propagateChange(compositeChange)
 	}
-	
+
 	private def retrieveCurrentModelState(URI location) {
 		if (location !== null) {
 			resourceRepository.getModel(location)?.resource
@@ -200,12 +200,16 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 	}
 
-    override void dispose() {
-        resourceRepository.close()
-    }
+	override void dispose() {
+		resourceRepository.close()
+	}
 
-    override getViewTypes() {
-        return viewTypeRepository.viewTypes
-    }
+	override getViewTypes() {
+		return viewTypeRepository.viewTypes
+	}
+
+	override getResourceSet() {
+		return resourceRepository.resourceSet
+	}
 
 }
