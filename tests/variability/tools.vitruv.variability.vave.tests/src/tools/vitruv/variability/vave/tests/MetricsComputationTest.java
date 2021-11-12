@@ -45,6 +45,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
@@ -70,6 +71,12 @@ import tools.vitruv.variability.vave.tests.umlcomp.UMLMatchEngineFactory;
 //@Disabled
 public class MetricsComputationTest {
 
+	@Test
+	public void dummytest() {
+		EcoreUtil.getID(null);
+		EcoreUtil.setID(null, null);
+	}
+	
 	@Test
 	public void computeMetricsForEval() throws IOException {
 		Path groundTruthLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");

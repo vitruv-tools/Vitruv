@@ -37,7 +37,6 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecificationReposito
 import tools.vitruv.framework.userinteraction.InteractionResultProvider;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
-import tools.vitruv.framework.vsum.VirtualModelManager;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
@@ -178,7 +177,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 		final VirtualProductModelImpl vsum = new VirtualProductModelImpl(configuration, fileSystemLayout, userInteractor, this.domainRepository, changeSpecificationRepository);
 		vsum.loadExistingModels();
-		VirtualModelManager.getInstance().putVirtualModel(vsum);
+		// VirtualModelManager.getInstance().putVirtualModel(vsum);
 
 		// THE FOLLOWING IS A TEMPORARY WORKAROUND FOR ARGOUML
 

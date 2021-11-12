@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emftext.language.java.JavaClasspath;
 import org.emftext.language.java.JavaClasspath.Initializer;
 import org.emftext.language.java.JavaPackage;
+import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -182,8 +183,8 @@ public class ArgoUMLEvalTest {
 
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
-		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src") }; // , location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
-		// Path[] sourceFolders = new Path[] { location };
+		// Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src"), location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
+		Path[] sourceFolders = new Path[] { location };
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
 				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")
@@ -235,6 +236,9 @@ public class ArgoUMLEvalTest {
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$PathSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$PathListSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
 
+		// TODO: remove this again
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/main.ProjectBrowser$Position.java"), URI.createFileURI(location.resolve("main/ProjectBrowser.java").toString()));
+
 		// parse files
 		System.out.println("PARSING JAVA FILES");
 		List<Object[]> runtimemap = new ArrayList<>();
@@ -255,7 +259,8 @@ public class ArgoUMLEvalTest {
 		System.out.println("NUM RESOURCES IN RS: " + resourceSet.getResources().size());
 
 		for (Resource resource : resources) {
-			if (resource.getURI().toString().contains("argouml") && resource.getURI().toString().contains("pathmap"))
+			// if (resource.getURI().toString().contains("argouml") && resource.getURI().toString().contains("pathmap"))
+			if (resource.getURI().toString().contains("pathmap"))
 				System.out.println("DDD: " + resource.getURI());
 		}
 
@@ -270,22 +275,38 @@ public class ArgoUMLEvalTest {
 
 		// convert pathmap uris to filesystem uris
 		for (Resource resource : resources) {
-			if (resource.getURI().toString().contains("pathmap:/javaclass/org.argouml"))
-				if (resourceSet.getURIConverter().getURIMap().get(resource.getURI()) != null)
-					resource.setURI(resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
-				else if (resource.getURI().toString().contains("$")) {
-					String uriString = resource.getURI().toString().replace("$", ".");
-					URI tempUri = resourceSet.getURIConverter().getURIMap().get(URI.createURI(uriString));
-					if (tempUri != null)
-						resource.setURI(tempUri);
-					// TODO: add mapping to uri converter?
+			// if (resource.getURI().toString().contains("pathmap:/javaclass/org.argouml")) {
+			if (resource.getURI().toString().contains("pathmap:/javaclass/")) {
+				if (resource.getURI().toString().contains("$")) {
+					// change name of compilation unit
+					if (resource.getContents().size() == 1 && resource.getContents().get(0) instanceof CompilationUnit) {
+						CompilationUnit cu = (CompilationUnit) resource.getContents().get(0);
+						if (cu.getName().contains("$")) {
+							cu.setName(cu.getName().substring(0, cu.getName().lastIndexOf("$")) + ".java");
+						}
+					} else {
+						System.out.println("FFF: " + resource.getURI());
+					}
 				}
+				if (resourceSet.getURIConverter().getURIMap().get(resource.getURI()) != null) {
+					resource.setURI(resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
+				} else {
+					System.out.println("GGG: " + resource.getURI());
+				}
+//				else if (resource.getURI().toString().contains("$")) {
+//					String uriString = resource.getURI().toString().replace("$", ".");
+//					URI tempUri = resourceSet.getURIConverter().getURIMap().get(URI.createURI(uriString));
+//					if (tempUri != null)
+//						resource.setURI(tempUri);
+//					// TODO: add mapping to uri converter?
+//				}
 //				else {
 //					String filePathString = resource.getURI().toString().substring(0, resource.getURI().toString().lastIndexOf("$")) + ".java";
 //					resourceSet.getURIConverter().getURIMap().put(resource.getURI(), URI.createURI(filePathString));
 //					resource.setURI(resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
 //					System.out.println("XXX: " + resource.getURI());
 //				}
+			}
 		}
 
 		// change uri of resources
@@ -613,8 +634,8 @@ public class ArgoUMLEvalTest {
 		this.vave.internalizeDomain(fm);
 		sysrev++;
 
-		Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
-		// Path variantsLocation = Paths.get("C:\\FZI\\git\\test-variants-2");
+		// Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
+		Path variantsLocation = Paths.get("C:\\FZI\\git\\test-variants-4");
 
 		{ // # REVISION 0 (ArgoUML-SPL)
 			Path revision0VariantsLocation = variantsLocation.resolve("R0_variants");
