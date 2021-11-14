@@ -1,15 +1,21 @@
 package tools.vitruv.framework.change.echange.id
 
-import org.eclipse.emf.ecore.EObject
+import java.util.HashMap
+import org.eclipse.emf.common.notify.Adapter
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 
 interface IdResolver {
+	def HashMap<String, String> cleanupOutsideElements()
+	
 	/**
 	 * Returns whether an {@link EObject} is registered for the given ID or not. 
 	 */
 	def boolean hasEObject(String id)
+
+	def String getAndUpdateId(EObject eObject, String id)
 
 	/**
 	 * Calculates and returns the ID of the given {@link EObject} and updates the stored ID.
@@ -46,4 +52,20 @@ interface IdResolver {
 	static def IdResolver create(ResourceSet resourceSet) {
 		return new IdResolverImpl(resourceSet)
 	}
+	
+	public static def IdResolver get(ResourceSet resourceSet) {
+		for (Adapter adapter : resourceSet.eAdapters()) {
+			if (adapter instanceof IdResolver) {
+				return adapter as IdResolver
+			}
+		}
+
+		// if no id resolver was found, a new one is created ...
+		val idResolver = IdResolver.create(resourceSet)
+		// ... and attached to the resource set
+		resourceSet.eAdapters().add(idResolver as Adapter)
+
+		return idResolver
+	}
+	
 }

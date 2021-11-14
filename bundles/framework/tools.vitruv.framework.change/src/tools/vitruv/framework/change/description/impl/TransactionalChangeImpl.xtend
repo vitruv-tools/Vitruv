@@ -1,40 +1,43 @@
 package tools.vitruv.framework.change.description.impl
 
-import tools.vitruv.framework.change.echange.EChange
-import java.util.List
-import tools.vitruv.framework.change.interaction.UserInteractionBase
 import java.util.ArrayList
-import static com.google.common.base.Preconditions.checkNotNull
+import java.util.Collections
+import java.util.Iterator
+import java.util.List
+import java.util.Set
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.InternalEObject
-import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.UnsetFeature
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
-import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
-import java.util.Set
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
-import org.eclipse.emf.common.util.URI
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
-import tools.vitruv.framework.change.description.TransactionalChange
-import java.util.Collections
-import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.change.echange.id.IdResolver
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.change.echange.root.RootEChange
+import tools.vitruv.framework.change.interaction.UserInteractionBase
+
+import static com.google.common.base.Preconditions.checkNotNull
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 class TransactionalChangeImpl implements TransactionalChange {
 	var List<? extends EChange> eChanges
@@ -65,13 +68,52 @@ class TransactionalChangeImpl implements TransactionalChange {
 	}
 
 	override resolveAndApply(ResourceSet resourceSet) {
-		val idResolver = IdResolver.create(resourceSet)
-		val resolvedChanges = eChanges.mapFixed[
-			val resolvedChange = resolveBefore(idResolver)
-			resolvedChange.applyForward(idResolver)
-			resolvedChange
-		]
+		//val idResolver = IdResolver.create(resourceSet)
+		val idResolver = IdResolver.get(resourceSet)
+		
+		val resolvedChanges = new ArrayList<EChange>()
+		var numChangesBefore = Integer.MAX_VALUE
+		val remainingChanges = new ArrayList<EChange>(eChanges)
+		while (numChangesBefore > remainingChanges.size) {
+			System.out.println("NEW BATCH: " + numChangesBefore + " / " + remainingChanges.size)
+			numChangesBefore = remainingChanges.size
+			val changeIt = remainingChanges.iterator
+			while (changeIt.hasNext) {
+				val eChange = changeIt.next
+				
+				var resolved = false
+				val resolvedChange = try {
+					val resolvedChange = eChange.resolveBefore(idResolver)
+					resolved = true
+					resolvedChange
+				} catch (Exception e) {
+					// ignore
+					System.out.println(e.message)
+					null
+				}
+				if (resolved) {
+					resolvedChange.applyForward(idResolver)
+					resolvedChanges.add(resolvedChange)
+					changeIt.remove
+				}
+			}
+		}
+		if (!remainingChanges.isEmpty) {
+			//throw new IllegalStateException("Not all changes could be resolved and applied! Remaining: " + remainingChanges.size)
+			// NOTE: instead of throwing an exception we issue warnings so that we can deal with temporary inconsistencies (i.e., conflicting deltas) in views due to, e.g., not yet known/fixed feature interactions.
+			System.out.println("WARNING: The following " + remainingChanges.size + " changes could not be resolved and were not applied!")
+			for (EChange change : remainingChanges) {
+				System.out.println("CHANGE: " + change)
+			}
+		}
 		return new TransactionalChangeImpl(resolvedChanges)
+		
+//		val resolvedChanges = eChanges.mapFixed[
+//			val resolvedChange = resolveBefore(idResolver)
+//			resolvedChange.applyForward(idResolver)
+//			resolvedChange
+//		]
+//		return new TransactionalChangeImpl(resolvedChanges)
 	}
 
 	override unresolve() {

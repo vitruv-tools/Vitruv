@@ -121,7 +121,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		if(logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 //		val modelInstancesIterator = modelInstances.entrySet.iterator
 		
-		System.out.println("NUM RESOURCES IN MI: " + modelInstances.size());
+//		System.out.println("NUM RESOURCES IN MI: " + modelInstances.size());
 		
 		// NOTE: the following is a workaround for a concurrentmodificationexception that occurs here during saving
 		val toDelete = new ArrayList
@@ -129,15 +129,15 @@ package class ResourceRepositoryImpl implements ModelRepository {
 //		while (modelInstancesIterator.hasNext()) {
 //			val modelInstance = modelInstancesIterator.next().value
 			val modelInstance = modelInstanceEntry.value
-			System.out.println("MODEL INSTANCE: " + modelInstance.resource.URI);
+//			System.out.println("MODEL INSTANCE: " + modelInstance.resource.URI);
 			if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 				if (modelInstance.empty) {
-					System.out.println("DELETE MODEL INSTANCE: " + modelInstance.resource.URI);
+//					System.out.println("DELETE MODEL INSTANCE: " + modelInstance.resource.URI);
 					modelInstance.delete()
 					//modelInstancesIterator.remove()
 					toDelete.add(modelInstanceEntry.key)
 				} else {
-					System.out.println("SAVE MODEL INSTANCE: " + modelInstance.resource.URI);
+//					System.out.println("SAVE MODEL INSTANCE: " + modelInstance.resource.URI);
 					modelInstance.save()
 				}
 			}

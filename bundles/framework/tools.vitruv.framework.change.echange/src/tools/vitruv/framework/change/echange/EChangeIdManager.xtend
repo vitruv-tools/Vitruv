@@ -1,13 +1,16 @@
 package tools.vitruv.framework.change.echange
 
-import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import java.util.UUID
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.id.IdResolver
+
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Provides logic for initializing the IDs within changes. 
@@ -67,6 +70,7 @@ class EChangeIdManager {
 		val affectedEObject = existenceChange.affectedEObject
 		checkArgument(affectedEObject !== null, "existence change must have an affected EObject: %s", existenceChange)
 		existenceChange.affectedEObjectID = affectedEObject.id	
+//		existenceChange.idAttributeValue = existenceChange.affectedEObjectID
 	}
 
 	private def void setOrGenerateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {

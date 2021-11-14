@@ -6,6 +6,7 @@ import vavemodel.Disjunction;
 import vavemodel.Equivalence;
 import vavemodel.Expression;
 import vavemodel.False;
+import vavemodel.FeatureRevision;
 import vavemodel.Implication;
 import vavemodel.Not;
 import vavemodel.Option;
@@ -52,7 +53,10 @@ public class ExpressionEvaluator extends VavemodelSwitch<Boolean> {
 
 	@Override
 	public <T extends Option> Boolean caseVariable(Variable<T> variable) {
-		return this.configuration.getOption().contains(variable.getOption());
+		// return this.configuration.getOption().contains(variable.getOption());
+		// for feature revisions: check if the configuration contains this feature or a newer one
+		return this.configuration.getOption().contains(variable.getOption())
+				|| variable.getOption() instanceof FeatureRevision && this.configuration.getOption().stream().filter(o -> o instanceof FeatureRevision && ((FeatureRevision) o).eContainer().equals(((FeatureRevision) variable.getOption()).eContainer()) && ((FeatureRevision) o).getRevisionID() >= ((FeatureRevision) variable.getOption()).getRevisionID()).findAny().isPresent();
 	}
 
 	@Override

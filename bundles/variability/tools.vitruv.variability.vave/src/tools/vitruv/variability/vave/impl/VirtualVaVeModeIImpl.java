@@ -219,10 +219,15 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
 		for (Mapping mapping : this.system.getMapping()) {
-			System.out.println("Evaluating Mapping: " + mapping.getExpression());
+			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + new FeatureCollector().doSwitch(mapping.getExpression()).stream().map(o -> {
+				if (o instanceof FeatureRevision)
+					return (((Feature) ((FeatureRevision) o).eContainer()).getName() + "." + ((FeatureRevision) o).getRevisionID());
+				else
+					return o.toString();
+			}).collect(Collectors.joining(", ")));
 			// retrieve only these delta modules whose mapping evaluates to true
 			if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
-				System.out.println("Selected Mapping: " + mapping.getExpression());
+				System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + new FeatureCollector().doSwitch(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
 				for (DeltaModule deltamodule : mapping.getDeltamodule()) {
 					// EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
 					// echanges.add((EChange) deltamodule.eGet(eStructFeature));

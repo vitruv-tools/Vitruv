@@ -183,8 +183,8 @@ public class ArgoUMLEvalTest {
 
 		// collect files to parse
 		List<Path> javaFiles = new ArrayList<>();
-		// Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src"), location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
-		Path[] sourceFolders = new Path[] { location };
+		Path[] sourceFolders = new Path[] { location.resolve("argouml-core-model\\src"), location.resolve("argouml-core-model-euml\\src"), location.resolve("argouml-core-model-mdr\\src") }; // , location.resolve("argouml-app\\src"), location.resolve("argouml-core-diagrams-sequence2\\src") };
+		// Path[] sourceFolders = new Path[] { location };
 		for (Path sourceFolder : sourceFolders) {
 			Files.walk(sourceFolder).forEach(f -> {
 				if (Files.isDirectory(f) && !f.equals(sourceFolder) && !f.getFileName().toString().startsWith(".") && !f.getFileName().toString().equals("META-INF") && !f.getFileName().toString().equals("test_project.marker_vitruv") && !f.getFileName().toString().equals("umloutput") && !f.getFileName().toString().contains("-") && !f.getFileName().toString().startsWith("build-eclipse")
@@ -213,7 +213,7 @@ public class ArgoUMLEvalTest {
 							sb.append(".");
 					}
 					resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/" + sb.toString()), URI.createFileURI(f.toString()));
-					System.out.println("PATHMAP: " + URI.createURI("pathmap:/javaclass/" + sb.toString()));
+//					System.out.println("PATHMAP: " + URI.createURI("pathmap:/javaclass/" + sb.toString()));
 				}
 			});
 		}
@@ -235,9 +235,6 @@ public class ArgoUMLEvalTest {
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$BooleanSelection2.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$PathSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/org.argouml.uml.reveng.SettingsTypes$PathListSelection.java"), URI.createFileURI(location.resolve("argouml-app/src/org/argouml/uml/reveng/SettingsTypes.java").toString()));
-
-		// TODO: remove this again
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap:/javaclass/main.ProjectBrowser$Position.java"), URI.createFileURI(location.resolve("main/ProjectBrowser.java").toString()));
 
 		// parse files
 		System.out.println("PARSING JAVA FILES");
@@ -293,19 +290,6 @@ public class ArgoUMLEvalTest {
 				} else {
 					System.out.println("GGG: " + resource.getURI());
 				}
-//				else if (resource.getURI().toString().contains("$")) {
-//					String uriString = resource.getURI().toString().replace("$", ".");
-//					URI tempUri = resourceSet.getURIConverter().getURIMap().get(URI.createURI(uriString));
-//					if (tempUri != null)
-//						resource.setURI(tempUri);
-//					// TODO: add mapping to uri converter?
-//				}
-//				else {
-//					String filePathString = resource.getURI().toString().substring(0, resource.getURI().toString().lastIndexOf("$")) + ".java";
-//					resourceSet.getURIConverter().getURIMap().put(resource.getURI(), URI.createURI(filePathString));
-//					resource.setURI(resourceSet.getURIConverter().getURIMap().get(resource.getURI()));
-//					System.out.println("XXX: " + resource.getURI());
-//				}
 			}
 		}
 
@@ -456,6 +440,37 @@ public class ArgoUMLEvalTest {
 
 		System.out.println("NUM RECORDED CHANGES: " + recordedChange.getEChanges().size());
 
+//		// TODO: move this into changeRecorder.close()
+//		// cleanup outside elements
+//		IdResolver idResolver = IdResolver.get(referenceResourceSet);
+//		HashMap<String, String> oldToNewIdsMap = idResolver.cleanupOutsideElements();
+//		for (Map.Entry<String, String> entry : oldToNewIdsMap.entrySet()) {
+//			System.out.println("MAPPING: " + entry.getKey() + " / " + idResolver.getEObject(entry.getValue()));
+//		}
+//		System.out.println("REPLACING OLD IDS IN CHANGES WITH NEW IDS");
+//		for (EChange change : recordedChange.getEChanges()) {
+//			if (change instanceof EObjectAddedEChange) {
+//				String oldId = ((EObjectAddedEChange) change).getNewValueID();
+//				if (oldToNewIdsMap.containsKey(oldId))
+//					((EObjectAddedEChange) change).setNewValueID(oldToNewIdsMap.get(oldId));
+//			}
+//			if (change instanceof EObjectSubtractedEChange) {
+//				String oldId = ((EObjectSubtractedEChange) change).getOldValueID();
+//				if (oldToNewIdsMap.containsKey(oldId))
+//					((EObjectSubtractedEChange) change).setOldValueID(oldToNewIdsMap.get(oldId));
+//			}
+//			if (change instanceof EObjectExistenceEChange) {
+//				String oldId = ((EObjectExistenceEChange) change).getAffectedEObjectID();
+//				if (oldToNewIdsMap.containsKey(oldId))
+//					((EObjectExistenceEChange) change).setAffectedEObjectID(oldToNewIdsMap.get(oldId));
+//			}
+//			if (change instanceof FeatureEChange) {
+//				String oldId = ((FeatureEChange) change).getAffectedEObjectID();
+//				if (oldToNewIdsMap.containsKey(oldId))
+//					((FeatureEChange) change).setAffectedEObjectID(oldToNewIdsMap.get(oldId));
+//			}
+//		}
+
 		// order recorded changes
 		System.out.println("ORDERING CHANGES");
 		ArrayList<EChange> newEChanges = new ArrayList<>();
@@ -533,33 +548,23 @@ public class ArgoUMLEvalTest {
 			return true;
 		}
 
-		System.out.println("Resolving cross-references of " + eobjects.size() + " EObjects.");
+//		System.out.println("Resolving cross-references of " + eobjects.size() + " EObjects.");
 		int resolved = 0;
 		int notResolved = 0;
 		int eobjectCnt = 0;
 		for (EObject next : eobjects) {
 			eobjectCnt++;
-			if (eobjectCnt % 1000 == 0) {
-				System.out.println(eobjectCnt + "/" + eobjects.size() + " done: Resolved " + resolved + " crossrefs, " + notResolved + " crossrefs could not be resolved.");
-			}
+//			if (eobjectCnt % 1000 == 0) {
+//				System.out.println(eobjectCnt + "/" + eobjects.size() + " done: Resolved " + resolved + " crossrefs, " + notResolved + " crossrefs could not be resolved.");
+//			}
 
 			InternalEObject nextElement = (InternalEObject) next;
-//			boolean relevant2 = false;
-//			if (nextElement.eResource().getURI().toString().contains("argouml") && nextElement.eResource().getURI().toString().contains("pathmap"))
-//				relevant2 = true;
 			nextElement = (InternalEObject) EcoreUtil.resolve(nextElement, rs);
-//			if (relevant2 && nextElement.eIsProxy())
-//				System.out.println("AAA: " + nextElement.eResource().getURI());
 			for (EObject crElement : nextElement.eCrossReferences()) {
 //				if (crElement.eIsProxy()) {
 				crElement = EcoreUtil.resolve(crElement, rs);
 				// nextElement.eResolveProxy((InternalEObject) crElement);
-//				boolean relevant = false;
-//				if (crElement.eResource().getURI().toString().contains("argouml") && crElement.eResource().getURI().toString().contains("pathmap"))
-//					relevant = true;
 				if (crElement.eIsProxy()) {
-//					if (relevant)
-//						System.out.println("BBB: " + crElement.eResource().getURI());
 					failure = true;
 					notResolved++;
 					System.out.println("Can not find referenced element in classpath: " + ((InternalEObject) crElement).eProxyURI());
@@ -570,7 +575,7 @@ public class ArgoUMLEvalTest {
 			}
 		}
 
-		System.out.println(eobjectCnt + "/" + eobjects.size() + " done: Resolved " + resolved + " crossrefs, " + notResolved + " crossrefs could not be resolved.");
+//		System.out.println(eobjectCnt + "/" + eobjects.size() + " done: Resolved " + resolved + " crossrefs, " + notResolved + " crossrefs could not be resolved.");
 
 		// call this method again, because the resolving might have triggered loading of additional resources that may also contain references that need to be resolved.
 		return !failure && resolveAllProxiesRecursive(rs, resourcesProcessed);
@@ -634,8 +639,8 @@ public class ArgoUMLEvalTest {
 		this.vave.internalizeDomain(fm);
 		sysrev++;
 
-		// Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
-		Path variantsLocation = Paths.get("C:\\FZI\\git\\test-variants-4");
+		Path variantsLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
+		// Path variantsLocation = Paths.get("C:\\FZI\\git\\test-variants-4");
 
 		{ // # REVISION 0 (ArgoUML-SPL)
 			Path revision0VariantsLocation = variantsLocation.resolve("R0_variants");
@@ -1661,6 +1666,8 @@ public class ArgoUMLEvalTest {
 	}
 
 	private void createEvalVariants(Path targetLocation) throws Exception {
+		System.out.println("CREATING EVAL VARIANTS");
+
 		List<Feature> optionalFeatures = this.vave.getSystem().getFeature().stream().filter(f -> !f.getName().equals("Core")).collect(Collectors.toList());
 		SystemRevision latestSysRev = this.vave.getSystem().getSystemrevision().get(this.vave.getSystem().getSystemrevision().size() - 1);
 		Feature coreFeature = this.vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Core")).findFirst().get();
@@ -1679,36 +1686,34 @@ public class ArgoUMLEvalTest {
 			config.getOption().add(latestSysRev);
 			config.getOption().add(coreFeatureRev);
 			config.getOption().add(optionalFeature.getFeaturerevision().get(optionalFeature.getFeaturerevision().size() - 1));
-			this.externalize(config, targetLocation.resolve("V-" + optionalFeature.getName().substring(0, 4) + "-vsum"));
-			Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeature.getName().substring(0, 4)));
+			this.externalize(config, targetLocation.resolve("V-" + optionalFeature.getName().substring(0, 4).toUpperCase() + "-vsum"));
+			Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeature.getName().substring(0, 4).toUpperCase()));
 		}
 
-		// pair-wise feature interactions
-		for (int i = 0; i < optionalFeatures.size(); i++) {
-			for (int j = i + 1; j < optionalFeatures.size(); j++) {
-				Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-				config.getOption().add(latestSysRev);
-				config.getOption().add(coreFeatureRev);
-				config.getOption().add(optionalFeatures.get(i).getFeaturerevision().get(optionalFeatures.get(i).getFeaturerevision().size() - 1));
-				config.getOption().add(optionalFeatures.get(j).getFeaturerevision().get(optionalFeatures.get(j).getFeaturerevision().size() - 1));
-				this.externalize(config, targetLocation.resolve("V-" + optionalFeatures.get(i).getName().substring(0, 4) + "-" + optionalFeatures.get(j).getName() + "-vsum"));
-				Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeatures.get(i).getName().substring(0, 4) + "-" + optionalFeatures.get(j).getName()));
-			}
-		}
-
-		// selected three-wise feature interactions
-		Configuration threeWiseConfig = VavemodelFactory.eINSTANCE.createConfiguration();
-		threeWiseConfig.getOption().add(coreFeatureRev);
-
-		Feature Flogging = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Logging")).findFirst().get();
-		Feature Fcollaboration = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Collaboration")).findFirst().get();
-		Feature Fsequence = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Sequence")).findFirst().get();
-		threeWiseConfig.getOption().add(Flogging.getFeaturerevision().get(Flogging.getFeaturerevision().size() - 1));
-		threeWiseConfig.getOption().add(Fcollaboration.getFeaturerevision().get(Fcollaboration.getFeaturerevision().size() - 1));
-		threeWiseConfig.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
-
-		this.externalize(threeWiseConfig, targetLocation.resolve("V-" + Flogging.getName().substring(0, 4) + "-" + Fcollaboration.getName().substring(0, 4) + "-" + Fsequence.getName().substring(0, 4) + "-vsum"));
-		Files.move(vaveResourceLocation, vaveResourceLocation.getParent().resolve("R9-V-LOGG-ext"));
+//		// pair-wise feature interactions
+//		for (int i = 0; i < optionalFeatures.size(); i++) {
+//			for (int j = i + 1; j < optionalFeatures.size(); j++) {
+//				Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+//				config.getOption().add(latestSysRev);
+//				config.getOption().add(coreFeatureRev);
+//				config.getOption().add(optionalFeatures.get(i).getFeaturerevision().get(optionalFeatures.get(i).getFeaturerevision().size() - 1));
+//				config.getOption().add(optionalFeatures.get(j).getFeaturerevision().get(optionalFeatures.get(j).getFeaturerevision().size() - 1));
+//				this.externalize(config, targetLocation.resolve("V-" + optionalFeatures.get(i).getName().substring(0, 4).toUpperCase() + "-" + optionalFeatures.get(j).getName() + "-vsum"));
+//				Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeatures.get(i).getName().substring(0, 4).toUpperCase() + "-" + optionalFeatures.get(j).getName()));
+//			}
+//		}
+//
+//		// selected three-wise feature interactions
+//		Configuration threeWiseConfig = VavemodelFactory.eINSTANCE.createConfiguration();
+//		threeWiseConfig.getOption().add(coreFeatureRev);
+//		Feature Flogging = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Logging")).findFirst().get();
+//		Feature Fcollaboration = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Collaboration")).findFirst().get();
+//		Feature Fsequence = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("Sequence")).findFirst().get();
+//		threeWiseConfig.getOption().add(Flogging.getFeaturerevision().get(Flogging.getFeaturerevision().size() - 1));
+//		threeWiseConfig.getOption().add(Fcollaboration.getFeaturerevision().get(Fcollaboration.getFeaturerevision().size() - 1));
+//		threeWiseConfig.getOption().add(Fsequence.getFeaturerevision().get(Fsequence.getFeaturerevision().size() - 1));
+//		this.externalize(threeWiseConfig, targetLocation.resolve("V-" + Flogging.getName().substring(0, 4).toUpperCase() + "-" + Fcollaboration.getName().substring(0, 4).toUpperCase() + "-" + Fsequence.getName().substring(0, 4).toUpperCase() + "-vsum"));
+//		Files.move(vaveResourceLocation, targetLocation.resolve("V-" + Flogging.getName().substring(0, 4).toUpperCase() + "-" + Fcollaboration.getName().substring(0, 4).toUpperCase() + "-" + Fsequence.getName().substring(0, 4).toUpperCase()));
 
 		// all features
 		Configuration allConfig = VavemodelFactory.eINSTANCE.createConfiguration();
@@ -1717,8 +1722,8 @@ public class ArgoUMLEvalTest {
 		allConfig.getOption().addAll(optionalFeatures.stream().map(f -> {
 			return f.getFeaturerevision().get(f.getFeaturerevision().size() - 1);
 		}).collect(Collectors.toList()));
-		this.externalize(allConfig, targetLocation.resolve("V-" + optionalFeatures.stream().map(f -> f.getName()).collect(Collectors.joining("-")) + "-vsum"));
-		Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeatures.stream().map(f -> f.getName()).collect(Collectors.joining("-"))));
+		this.externalize(allConfig, targetLocation.resolve("V-" + optionalFeatures.stream().map(f -> f.getName().substring(0, 4).toUpperCase()).collect(Collectors.joining("-")) + "-vsum"));
+		Files.move(vaveResourceLocation, targetLocation.resolve("V-" + optionalFeatures.stream().map(f -> f.getName().substring(0, 4).toUpperCase()).collect(Collectors.joining("-"))));
 	}
 
 }

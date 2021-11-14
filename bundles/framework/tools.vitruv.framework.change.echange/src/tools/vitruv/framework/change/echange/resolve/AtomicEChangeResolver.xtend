@@ -67,8 +67,9 @@ package class AtomicEChangeResolver {
 			} else {
 				// Create new one
 				val newObject = EcoreUtil.create(change.affectedEObjectType) as A
+				//EcoreUtil.setID(newObject, change.idAttributeValue)
 				change.affectedEObject = newObject
-				val id = idResolver.getAndUpdateId(newObject)
+				val id = idResolver.getAndUpdateId(newObject, change.affectedEObjectID)
 				checkState(id == change.affectedEObjectID, "generated ID %s does not match the original ID %s on element creation", id, change.affectedEObjectID)
 			}
 		} else {

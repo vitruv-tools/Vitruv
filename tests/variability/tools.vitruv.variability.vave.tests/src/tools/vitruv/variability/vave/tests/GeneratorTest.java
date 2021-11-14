@@ -70,7 +70,7 @@ public class GeneratorTest {
 		Path targetLocation = Paths.get("C:\\FZI\\git\\argouml-spl-revisions-variants");
 		Path splLocations = Paths.get("C:\\FZI\\git\\argouml-spl-revisions");
 
-		for (int rev = 0; rev <= 9; rev++) {
+		for (int rev = 1; rev <= 9; rev++) {
 			Path splLocation = splLocations.resolve("R" + rev);
 
 			// only core
@@ -120,7 +120,8 @@ public class GeneratorTest {
 		JavaPpGenerator generator = new JavaPpGenerator(splSourceFolder.toFile(), current.toArray(new String[current.size()]));
 
 		// TODO: update specific files here!
-		generator.generateFile(variantLocation.toFile(), new File(splSourceFolder.toFile(), "argouml-app\\src\\org\\argouml\\ui\\explorer\\rules\\GoNamespaceToDiagram.java"));
+		generator.generateFile(variantLocation.toFile(), new File(splSourceFolder.toFile(), "argouml-core-model-euml/src/org/argouml/model/euml/CoreHelperEUMLImpl.java"));
+		generator.generateFile(variantLocation.toFile(), new File(splSourceFolder.toFile(), "argouml-core-model-euml/src/org/argouml/model/euml/DataTypesHelperEUMLImpl.java"));
 
 		System.out.println("END: " + variantName);
 	}

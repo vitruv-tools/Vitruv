@@ -55,12 +55,19 @@ class RemoveAtCommand extends RemoveCommand {
 	}
 
 	override boolean prepare() {
-		var result = super.prepare() && 0 <= index && index < ownerList.size() && (collection.size() == 1);
+//		var result = super.prepare() && 0 <= index && index < ownerList.size() && (collection.size() == 1);
+//		if (!result) {
+//			return false;
+//		}
+//		// Check if get(index) == object		
+//		return ownerList.get(index).equals(collection.get(0))
+		var result = super.prepare() && (collection.size() == 1);
 		if (!result) {
 			return false;
 		}
 		// Check if get(index) == object		
-		return ownerList.get(index).equals(collection.get(0))
+		this.index = ownerList.indexOf(collection.get(0))
+		return (index != -1)
 	}
 
 	override void doUndo() {

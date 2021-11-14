@@ -32,6 +32,10 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import tools.vitruv.framework.change.echange.id.IdResolver
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.EChange
+import java.util.HashMap
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import java.util.Map
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -58,7 +62,8 @@ class ChangeRecorder implements AutoCloseable {
 	
 	new(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet
-		this.idResolver = IdResolver.create(resourceSet)
+		//this.idResolver = IdResolver.create(resourceSet)
+		this.idResolver = IdResolver.get(resourceSet)
 		this.eChangeIdManager = new EChangeIdManager(idResolver)
 		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
 	}
@@ -144,8 +149,37 @@ class ChangeRecorder implements AutoCloseable {
 		isRecording = false
 		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
 		idResolver.endTransaction()
-		return getChange()
 		
+		// cleanup elements outside of resource set and update object ids in changes
+		val oldToNewIdsMap = idResolver.cleanupOutsideElements();
+//		for (Map.Entry<String, String> entry : oldToNewIdsMap.entrySet()) {
+//			System.out.println("MAPPING: " + entry.getKey() + " / " + idResolver.getEObject(entry.getValue()));
+//		}
+		System.out.println("REPLACING OLD IDS IN CHANGES WITH NEW IDS");
+		for (EChange change : resultChanges) {
+			if (change instanceof EObjectAddedEChange) {
+				val oldId = (change as EObjectAddedEChange).newValueID;
+				if (oldToNewIdsMap.containsKey(oldId))
+					(change as EObjectAddedEChange).newValueID = oldToNewIdsMap.get(oldId);
+			}
+			if (change instanceof EObjectSubtractedEChange) {
+				val oldId = (change as EObjectSubtractedEChange).getOldValueID();
+				if (oldToNewIdsMap.containsKey(oldId))
+					(change as EObjectSubtractedEChange).oldValueID = oldToNewIdsMap.get(oldId);
+			}
+			if (change instanceof EObjectExistenceEChange) {
+				val oldId = (change as EObjectExistenceEChange).getAffectedEObjectID();
+				if (oldToNewIdsMap.containsKey(oldId))
+					(change as EObjectExistenceEChange).affectedEObjectID = oldToNewIdsMap.get(oldId);
+			}
+			if (change instanceof FeatureEChange) {
+				val oldId = (change as FeatureEChange).getAffectedEObjectID();
+				if (oldToNewIdsMap.containsKey(oldId))
+					(change as FeatureEChange).affectedEObjectID = oldToNewIdsMap.get(oldId);
+			}
+		}
+		
+		return getChange()
 	}
 	
 	def private List<EChange> assignIds(List<EChange> changes) {
