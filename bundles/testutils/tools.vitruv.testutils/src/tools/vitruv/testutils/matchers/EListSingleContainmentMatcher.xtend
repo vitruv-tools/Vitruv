@@ -1,19 +1,15 @@
 package tools.vitruv.testutils.matchers
 
-import org.hamcrest.TypeSafeMatcher
 import org.eclipse.emf.ecore.EObject
 import org.hamcrest.Description
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption
+import org.hamcrest.TypeSafeMatcher
+
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import org.eclipse.emf.common.util.EList
-import org.hamcrest.Matcher
-import java.util.ArrayList
-import org.hamcrest.CoreMatchers
 
 /**Class to instantiate either a listContains-matcher or a listDoesNotContain-matcher (not yet).
  * @author Dirk Neumann 
  */
-class EListSingleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
+class EListSingleContainmentMatcher extends TypeSafeMatcher<Iterable<? extends EObject>>{
 	EObject searchedItem;
 	ModelDeepEqualityOption[] options;
 	boolean included;
@@ -23,14 +19,14 @@ class EListSingleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
 	 * @param included should the item be included (true) or not (false)
 	 * @param options ...
 	 */
-	new(Object searchedItem, boolean included, ModelDeepEqualityOption[] options) {
+	new(EObject searchedItem, boolean included, ModelDeepEqualityOption[] options) {
 		this.searchedItem = searchedItem as EObject
 		this.options = options;	
 		this.included = included;
 	}
 	
-	override protected matchesSafely(EList<EObject> items) {
-		items.exists[x| equalsDeeply(searchedItem,options).matches(x)] == included
+	override protected matchesSafely(Iterable<? extends EObject> items) {
+		(items as Iterable<EObject>).exists[equalsDeeply(searchedItem, options).matches(it)] == included
 	}
 	
 	override describeTo(Description description) {
