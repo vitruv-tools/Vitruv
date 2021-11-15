@@ -159,7 +159,11 @@ public class SimilarityChecker {
 	 * @return true if the EObjects are similar. null if they cannot be compared. false otherwise.
 	 */
 	protected Boolean checkSimilarityForResolvedAndSameType(EObject element1, EObject element2, boolean checkStatementPosition) {
-		return new SimilaritySwitch(element2, checkStatementPosition, classifierNormalizations, compilationUnitNormalizations, packageNormalizations).doSwitch(element1);
+		try {
+			return new SimilaritySwitch(element2, checkStatementPosition, classifierNormalizations, compilationUnitNormalizations, packageNormalizations).doSwitch(element1);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**

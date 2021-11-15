@@ -51,8 +51,10 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(InsertEAttributeValue<EObject, Object> change) {
 		val editingDomain = change.affectedEObject.editingDomain
-		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
-				change.index)]
+		// this is a temporary workaround until proper predecessors and successors (in the form of object id lists) are saved in changes instead of an index.
+		val ownerList = AddCommand.getOwnerList(change.affectedEObject, change.affectedFeature)
+		val index = if (ownerList === null || ownerList !== null && change.index <= ownerList.size) change.index else ownerList.size - 1
+		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, index)]
 	}
 
 	/**
@@ -85,8 +87,10 @@ package class ApplyForwardCommandSwitch {
 			} 
 			return #[];
 		}
-		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
-			change.index)];
+		// this is a temporary workaround until proper predecessors and successors (in the form of object id lists) are saved in changes instead of an index.
+		val ownerList = AddCommand.getOwnerList(change.affectedEObject, change.affectedFeature)
+		val index = if (ownerList === null || ownerList !== null && change.index <= ownerList.size) change.index else ownerList.size - 1
+		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, index)];
 	}
 	
 	/**
@@ -126,7 +130,10 @@ package class ApplyForwardCommandSwitch {
 	def package dispatch static List<Command> getCommands(InsertRootEObject<EObject> change) {
 		val editingDomain = change.newValue.editingDomain
 		// Will be automatically removed from resource because object can only be in one resource.	
-		return #[new AddCommand(editingDomain, change.resource.getContents, change.newValue, change.index)]
+		// this is a temporary workaround until proper predecessors and successors (in the form of object id lists) are saved in changes instead of an index.
+		val ownerList = change.resource.getContents
+		val index = if (ownerList === null || ownerList !== null && change.index <= ownerList.size) change.index else ownerList.size - 1
+		return #[new AddCommand(editingDomain, change.resource.getContents, change.newValue, index)]
 	}
 
 	/**

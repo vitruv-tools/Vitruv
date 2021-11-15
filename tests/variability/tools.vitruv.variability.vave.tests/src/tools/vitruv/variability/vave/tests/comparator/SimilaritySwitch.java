@@ -290,9 +290,6 @@ public class SimilaritySwitch extends ComposedSwitch<Boolean> {
 			String name1 = NormalizationUtil.normalize(classifier1.getQualifiedName(), classifierNormalizationPatterns);
 			String name2 = Strings.nullToEmpty(classifier2.getQualifiedName());
 
-//			if (name1.contains("Object") || name2.contains("Object"))
-//				System.out.println("BAM!!! " + name1 + " / " + name2);
-			
 			return (name1.equals(name2));
 		}
 

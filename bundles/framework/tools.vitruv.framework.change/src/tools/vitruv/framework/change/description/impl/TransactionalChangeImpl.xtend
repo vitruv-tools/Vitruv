@@ -81,21 +81,26 @@ class TransactionalChangeImpl implements TransactionalChange {
 			while (changeIt.hasNext) {
 				val eChange = changeIt.next
 				
-				var resolved = false
-				val resolvedChange = try {
+//				var resolved = false
+//				val resolvedChange = 
+				try {
 					val resolvedChange = eChange.resolveBefore(idResolver)
-					resolved = true
-					resolvedChange
-				} catch (Exception e) {
-					// ignore
-					System.out.println(e.message)
-					null
-				}
-				if (resolved) {
+//					resolved = true
 					resolvedChange.applyForward(idResolver)
 					resolvedChanges.add(resolvedChange)
 					changeIt.remove
+//					resolvedChange
+				} catch (Exception e) {
+					// ignore
+					//System.out.println(e.message)
+					e.printStackTrace
+//					null
 				}
+//				if (resolved) {
+//					resolvedChange.applyForward(idResolver)
+//					resolvedChanges.add(resolvedChange)
+//					changeIt.remove
+//				}
 			}
 		}
 		if (!remainingChanges.isEmpty) {
