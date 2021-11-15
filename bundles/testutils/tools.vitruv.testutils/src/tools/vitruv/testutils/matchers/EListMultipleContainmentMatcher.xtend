@@ -1,25 +1,17 @@
 package tools.vitruv.testutils.matchers
 
-import org.hamcrest.TypeSafeMatcher
-import org.hamcrest.Description
-import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import org.hamcrest.Matcher
-import org.hamcrest.BaseMatcher
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import org.hamcrest.CoreMatchers
-import java.util.List
-import java.util.ArrayList
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
 
 /**Class to instantiate either a containsAllOf-matcher or a containsNoneOf-matcher.
  * @author Dirk Neumann 
  */
-package class EListMultipleContainmentMatcher extends TypeSafeMatcher<EList<EObject>>{
-	EList<EObject> shouldBeContained;
-	ModelDeepEqualityOption[] options;
-	Matcher base;
+package class EListMultipleContainmentMatcher extends TypeSafeMatcher<Iterable<? extends EObject>>{
+	Iterable<? extends EObject> shouldBeContained;
+	Matcher<Object> base;
 	boolean included;
 	
 	/**Constructor.	 * 
@@ -27,16 +19,14 @@ package class EListMultipleContainmentMatcher extends TypeSafeMatcher<EList<EObj
 	 * @param included should all of them (true) or none of them (false) be included
 	 * @param options ...
 	 */
-	package new(EList<EObject> list, boolean included, ModelDeepEqualityOption[] options) {
+	package new(Iterable<? extends EObject> list, boolean included, ModelDeepEqualityOption[] options) {
 		this.shouldBeContained = list;
-		this.options = options;
-		this.included = included;
-		val ArrayList<Matcher> lm = new ArrayList<Matcher>()		
-		shouldBeContained.forEach[x| lm.add(new EListSingleContainmentMatcher(x, included, options))]		
-		this.base = CoreMatchers.allOf(lm)
+		this.included = included;		
+		val matchers = shouldBeContained.map[new EListSingleContainmentMatcher(it, included, options)]		
+		this.base = CoreMatchers.allOf(matchers)
 	}
 	
-	override protected matchesSafely(EList<EObject> items) {
+	override protected matchesSafely(Iterable<? extends EObject> items) {
 		this.base.matches(items)
 	}
 	
