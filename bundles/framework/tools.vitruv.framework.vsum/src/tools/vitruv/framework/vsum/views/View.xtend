@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum.views
 
 import java.util.Collection
 import java.util.List
-import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.vsum.ChangePropagationListener
@@ -36,21 +35,20 @@ interface View extends ChangePropagationListener {
     def boolean hasVSUMChanged()
 
     /**
-     * Updates the view from the underlying virtual model.
-     * TODO TS: Document that UnsupExc if change recorder still has changes, meaning view is dirty, and add Issue that this needs to change
+     * Updates the view from the underlying virtual model, thus invalidating its previous state and now
+     * providing a updated view on the virtual model. This can only be done for an unmodified view.
+     * TODO TS: Add issue - in the long term we need to changes this!
+     * @throws UnsupportedOperationException if the update is called for a dirty view.
      */
     def void update()
 
     /**
-     * {@linkplain #record Records} the changes to {@code notifier} created by the provided {@code consumer},
-     * saves the modified resource and propagates all recorded changes (including changes that have been recorded
-     * before calling this method). Where the changes are propagated to depends on this view.
-     * <p>
-     * Whether changes will effectively be recorded depends on this view. It is permissible for a view not to record
-     * any changes if it deems them irrelevant. In this case, the returned list will be empty.
-     *
+     * Commits the changes made to the view and its containing elements to the virtual model. This explicitly includes all
+     * changes that have been made before calling this method. Whether changes will effectively be recorded depends on this view.
+     * It is permissible for a view not to record any changes if it deems them irrelevant.
+     * Note that committing changes will automatically be followed by an {@link #update} from the virtual model to keep both
+     * the view and the virtual model synchronized.
      * @return the changes resulting from propagating the recorded changes.
      */
-    def <T extends Notifier> List<PropagatedChange> commitChanges(T notifier) // TODO TS: Doc that update will follow
-    // TODO TS: There may be views that do not always record changes, and thus require explicit changes provided upon commit
+    def List<PropagatedChange> commitChanges() // TODO TS: Some views may not always record changes, and thus require transactional record-and-commit.
 }

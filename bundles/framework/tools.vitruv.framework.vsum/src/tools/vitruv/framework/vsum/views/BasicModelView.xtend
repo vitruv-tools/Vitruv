@@ -1,7 +1,6 @@
 package tools.vitruv.framework.vsum.views
 
 import java.util.Collection
-import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -69,10 +68,8 @@ class BasicModelView implements View, AutoCloseable {
         changeRecorder.beginRecording
     }
 
-    override <T extends Notifier> commitChanges(T notifier) {
+    override commitChanges() { // TODO TS: Should the view save all its resources here?
         changeRecorder.endRecording
-        // val toSave = determineResource(notifier)  // from basic test view
-        // (toSave ?: determineResource(notifier))?.saveOrDelete() // from basic test view
         val propagatedChanges = virtualModel.propagateChange(changeRecorder.change)
         update // view shall not be dirty, thus update on commit
         return propagatedChanges
