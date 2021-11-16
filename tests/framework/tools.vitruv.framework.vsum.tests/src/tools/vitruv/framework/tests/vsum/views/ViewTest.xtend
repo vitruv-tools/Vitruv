@@ -8,8 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.vsum.views.BasicModelView
-import tools.vitruv.framework.vsum.views.View
+import tools.vitruv.framework.vsum.views.BasicViewType
 import tools.vitruv.testutils.TestProject
 import tools.vitruv.testutils.TestProjectManager
 
@@ -18,16 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertIterableEquals
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertTrue
+import static tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.*
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.claimOne
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createAndLoadTestVirtualModel
-import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createAndLoadTestVirtualModelWithConsistencyPreservation
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
-
 
 @ExtendWith(TestProjectManager)
 class ViewTest {
@@ -44,7 +41,7 @@ class ViewTest {
     @Test
     @DisplayName("Test basic view functionality")
     def void testBasicModelView() { // TODO TS split into multiple test, cover commit mechanism
-    // Create test model:
+        // Create test model:
         val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
         val resourceSet = new ResourceSetImpl().withGlobalFactories
         virtualModel.propagateChange(resourceSet.recordChanges [
@@ -57,8 +54,9 @@ class ViewTest {
         val modelResource = resourceSet.resources.claimOne.checkNotNull
 
         // Create view and check initial state:
-        var View basicView = checkNotNull(new BasicModelView(virtualModel.resourceSet.resources, virtualModel),
-            "Cannot create view!");
+        val viewType = checkNotNull(new BasicViewType("", virtualModel), "Cannot create view type!")
+        val selector = checkNotNull(viewType.createSelector, "Cannot create selector!")
+        val basicView = checkNotNull(selector.createView, "Cannot create view from selector!")
         assertNotNull(basicView.rootObjects)
         assertEquals(basicView.rootObjects.claimOne.checkNotNull, basicView.rootObjects(Root).claimOne.checkNotNull)
         assertEquals(ROOT_ID, basicView.rootObjects(Root).claimOne.checkNotNull.id)

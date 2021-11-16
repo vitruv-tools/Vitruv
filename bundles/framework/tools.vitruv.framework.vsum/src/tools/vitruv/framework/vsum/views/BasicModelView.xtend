@@ -1,33 +1,25 @@
 package tools.vitruv.framework.vsum.views
 
-import java.util.Collection
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.VirtualModel
 
-import static com.google.common.base.Preconditions.checkNotNull
-
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-
 /**
- * A basic view that passes by default the entirety of its underlying model as it is.
+ * A basic view that passes by default the entirety of its underlying model as a copy.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
-class BasicModelView implements View, AutoCloseable {
+class BasicModelView implements View {
     protected ResourceSet viewResourceSet
-    val Collection<Resource> modelResources
     protected boolean modelChanged
     ChangeRecorder changeRecorder
     val VirtualModel virtualModel
+    boolean closed
+    val ViewType viewType
 
-    new(Collection<Resource> modelResources, VirtualModel virtualModel) {
-        this.modelResources = modelResources
+    new(ViewType viewType, VirtualModel virtualModel) {
         this.virtualModel = virtualModel
+        this.viewType = viewType
         virtualModel.addChangePropagationListener(this)
         // changeRecorder = new ChangeRecorder(viewResourceSet)
         update
@@ -45,7 +37,7 @@ class BasicModelView implements View, AutoCloseable {
         return modelChanged
     }
 
-    override update() { // TODO TS: delegated to the viewtype, so a view has no access on model resources
+    override update() {
         if(changeRecorder !== null) {
             if(changeRecorder.isRecording) {
                 changeRecorder.endRecording
@@ -55,15 +47,7 @@ class BasicModelView implements View, AutoCloseable {
             }
         }
         modelChanged = false
-        viewResourceSet = new ResourceSetImpl().withGlobalFactories
-        for (modelResource : modelResources) {
-            val uri = modelResource.URI
-            val viewResource = checkNotNull(
-                viewResourceSet.resourceFactoryRegistry?.getFactory(uri)?.createResource(uri),
-                "Cannot create view resource: " + uri)
-            viewResource.contents.addAll(EcoreUtil.copyAll(modelResource.contents.filter))
-            viewResourceSet.resources += viewResource
-        }
+        viewResourceSet = viewType.updateView(this)
         changeRecorder = new ChangeRecorder(viewResourceSet)
         changeRecorder.beginRecording
     }
@@ -75,16 +59,15 @@ class BasicModelView implements View, AutoCloseable {
         return propagatedChanges
     }
 
-    override close() throws Exception {
-        changeRecorder.close
+    override close() throws Exception { // TODO TS: Proof other methods against calls when the view is closed
+        if(!closed) {
+            closed = true
+            changeRecorder.close
+        }
     }
 
-    /**
-     * Filters objects from the model resources when updating the view from the model.
-     * Can be overridden in subclasses in order to only show selected elements.
-     */
-    def protected Collection<EObject> filter(Iterable<EObject> contents) {
-        return contents.toList // Default: Do not filter at all.
+    override isClosed() {
+        return closed
     }
 
     override abortedChangePropagation(ChangePropagationAbortCause cause) {

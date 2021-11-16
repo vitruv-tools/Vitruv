@@ -20,6 +20,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.clai
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
+import org.junit.jupiter.api.Disabled
 
 @ExtendWith(TestProjectManager)
 class ViewTypeTest {
@@ -32,6 +33,7 @@ class ViewTypeTest {
         this.projectFolder = projectFolder
     }
 
+    @Disabled // TODO TS: Due to changed update functionality this is currently no longer supported.
     @Test
     @DisplayName("Test basic view type and selector functionality")
     def void testBasicViewType() {

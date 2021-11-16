@@ -11,7 +11,7 @@ interface TreeBasedViewSelector extends ViewSelector {
     def Iterable<EObject> getChildren(EObject element)
 
     def void setSelected(EObject element, boolean value) {
-        setSelected(getIndexOf(element), value) // TODO TS we need to distinguish manual selection and automatic selection.
+        setSelected(getIndexOf(element), value) // TODO TS/TK we need to distinguish manual selection and automatic selection.
     }
 
     def boolean isComplete()

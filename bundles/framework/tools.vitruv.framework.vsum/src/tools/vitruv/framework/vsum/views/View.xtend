@@ -9,7 +9,7 @@ import tools.vitruv.framework.vsum.ChangePropagationListener
 /**
  * A Vitruv view on the virtual model. Upon creation, each view must be registered at the VSUM as change propagation listener.
  */
-interface View extends ChangePropagationListener {
+interface View extends ChangePropagationListener, AutoCloseable {
 
     /**
      * Provides the root model elements of this view.
@@ -51,4 +51,9 @@ interface View extends ChangePropagationListener {
      * @return the changes resulting from propagating the recorded changes.
      */
     def List<PropagatedChange> commitChanges() // TODO TS: Some views may not always record changes, and thus require transactional record-and-commit.
+
+    /**
+     * Checks whether the view was closed. Closed view should not further be used.
+     */
+    def boolean isClosed()
 }
