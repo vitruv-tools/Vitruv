@@ -4,18 +4,21 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.VirtualModel
+import org.eclipse.emf.common.notify.impl.AdapterImpl
+import org.eclipse.emf.common.notify.Notification
 
 /**
  * A basic view that passes by default the entirety of its underlying model as a copy.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
 class BasicModelView implements View {
-    protected ResourceSet viewResourceSet
-    protected boolean modelChanged
-    ChangeRecorder changeRecorder
     val VirtualModel virtualModel
-    boolean closed
     val ViewType viewType
+    ResourceSet viewResourceSet
+    ChangeRecorder changeRecorder
+    boolean modelChanged
+    boolean viewChanged
+    boolean closed
 
     new(ViewType viewType, VirtualModel virtualModel) {
         this.virtualModel = virtualModel
@@ -29,8 +32,8 @@ class BasicModelView implements View {
         viewResourceSet.resources.map[contents].flatten.toList
     }
 
-    override isModified() { // TODO TS: Alternatively this could be done via a model change listener, what is better?
-        return viewResourceSet?.resources?.stream?.anyMatch[isModified] // FIXME TS: This does not work right now
+    override isModified() {
+        return viewChanged
     }
 
     override hasVSUMChanged() {
@@ -45,6 +48,13 @@ class BasicModelView implements View {
         changeRecorder.endRecordingAndClose
         modelChanged = false
         viewResourceSet = viewType.updateView(this)
+        viewResourceSet.allContents.forEach [
+            eAdapters += new AdapterImpl() { // TODO TS: Encapsulate this
+                override notifyChanged(Notification message) {
+                    viewChanged = true
+                }
+            }
+        ]
         changeRecorder = new ChangeRecorder(viewResourceSet)
         viewResourceSet.resources.forEach[changeRecorder.addToRecording(it)]
         changeRecorder.beginRecording
@@ -54,6 +64,7 @@ class BasicModelView implements View {
         checkNotClosed
         changeRecorder.endRecording
         val propagatedChanges = virtualModel.propagateChange(changeRecorder.change)
+        viewChanged = false
         update // view shall not be dirty, thus update on commit
         return propagatedChanges
     }
