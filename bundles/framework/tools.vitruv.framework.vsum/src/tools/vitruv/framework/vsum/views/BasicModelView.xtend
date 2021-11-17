@@ -21,16 +21,16 @@ class BasicModelView implements View {
         this.virtualModel = virtualModel
         this.viewType = viewType
         virtualModel.addChangePropagationListener(this)
-        // changeRecorder = new ChangeRecorder(viewResourceSet)
         update
     }
 
     override rootObjects() {
+        checkNotClosed
         viewResourceSet.resources.map[contents].flatten.toList
     }
 
     override isModified() { // TODO TS: Alternatively this could be done via a model change listener, what is better?
-        return viewResourceSet.resources.stream.anyMatch[isModified]
+        return viewResourceSet?.resources?.stream?.anyMatch[isModified] // FIXME TS: This does not work right now
     }
 
     override hasVSUMChanged() {
@@ -38,28 +38,27 @@ class BasicModelView implements View {
     }
 
     override update() {
-        if(changeRecorder !== null) {
-            if(changeRecorder.isRecording) {
-                changeRecorder.endRecording
-            }
-            if(!changeRecorder.change.EChanges.empty) {
-                throw new UnsupportedOperationException("Cannot update from model when view is modified.")
-            }
+        checkNotClosed
+        if(isModified) {
+            throw new UnsupportedOperationException("Cannot update from model when view is modified.")
         }
+        changeRecorder.endRecordingAndClose
         modelChanged = false
         viewResourceSet = viewType.updateView(this)
         changeRecorder = new ChangeRecorder(viewResourceSet)
+        viewResourceSet.resources.forEach[changeRecorder.addToRecording(it)]
         changeRecorder.beginRecording
     }
 
-    override commitChanges() { // TODO TS: Should the view save all its resources here?
+    override commitChanges() { // TODO TS: Should the view save all its resources/delete empty ones here?
+        checkNotClosed
         changeRecorder.endRecording
         val propagatedChanges = virtualModel.propagateChange(changeRecorder.change)
         update // view shall not be dirty, thus update on commit
         return propagatedChanges
     }
 
-    override close() throws Exception { // TODO TS: Proof other methods against calls when the view is closed
+    override close() throws Exception {
         if(!closed) {
             closed = true
             changeRecorder.close
@@ -74,12 +73,25 @@ class BasicModelView implements View {
         // do nothing
     }
 
-    override finishedChangePropagation() {
+    override finishedChangePropagation() { // TODO TS: Should views be de-registered upon closing?
         modelChanged = true
     }
 
     override startedChangePropagation() {
         // do nothing
+    }
+
+    def private void checkNotClosed() {
+        if(closed) {
+            throw new IllegalStateException("View is already closed!")
+        }
+    }
+
+    private def void endRecordingAndClose(ChangeRecorder recorder) {
+        if(recorder !== null && recorder.isRecording) {
+            recorder.endRecording
+        }
+        recorder?.close
     }
 
 }
