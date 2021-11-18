@@ -13,12 +13,16 @@ interface View extends ChangePropagationListener, AutoCloseable {
 
     /**
      * Provides the root model elements of this view.
+     * @throws IllegalStateException if called on a closed view.
+     * @see View#isClosed()
      */
     def Collection<EObject> rootObjects()
 
     /**
      * Provides all root model elements of this view that conform to a certain type.
      * @param clazz is requested root element type.
+     * @throws IllegalStateException if called on a closed view.
+     * @see View#isClosed()
      */
     def <T> Collection<T> rootObjects(Class<T> clazz) {
         rootObjects.filter[clazz.isInstance(it)].map[clazz.cast(it)].toList
@@ -39,6 +43,8 @@ interface View extends ChangePropagationListener, AutoCloseable {
      * providing a updated view on the virtual model. This can only be done for an unmodified view.
      * TODO TS: Add issue - in the long term we need to changes this!
      * @throws UnsupportedOperationException if the update is called for a dirty view.
+     * @throws IllegalStateException if called on a closed view.
+     * @see View#isClosed()
      */
     def void update()
 
@@ -49,6 +55,8 @@ interface View extends ChangePropagationListener, AutoCloseable {
      * Note that committing changes will automatically be followed by an {@link #update} from the virtual model to keep both
      * the view and the virtual model synchronized.
      * @return the changes resulting from propagating the recorded changes.
+     * @throws IllegalStateException if called on a closed view.
+     * @see View#isClosed()
      */
     def List<PropagatedChange> commitChanges() // TODO TS: Some views may not always record changes, and thus require transactional record-and-commit.
 

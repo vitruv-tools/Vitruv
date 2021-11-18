@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertIterableEquals
 import static org.junit.jupiter.api.Assertions.assertNotNull
+import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createAndLoadTestVirtualModel
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
@@ -35,22 +36,23 @@ class ViewTest {
     static val String ROOT_ID = "RootId"
 
     var Path projectFolder
+    var VirtualModel virtualModel
+    var ResourceSet resourceSet
+    var View testView
 
     @BeforeEach
-    def void initializeProjectFolder(@TestProject Path projectFolder) {
+    def void setup(@TestProject Path projectFolder) {
         this.projectFolder = projectFolder
+        virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
+        resourceSet = new ResourceSetImpl().withGlobalFactories
+        createAndPropagateRoot(resourceSet, virtualModel)
+        testView = virtualModel.createTestView
     }
 
     @Test
-    @DisplayName("Test view creation")
+    @DisplayName("Test basic view creation")
     def void testViewCreation() {
-        // Create test model:
-        val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-        val resourceSet = new ResourceSetImpl().withGlobalFactories
-        createAndPropagateRoot(resourceSet, virtualModel)
-
-        // Create view and check initial state:
-        val testView = virtualModel.createTestView
+        // Check initial state:
         assertNotNull(testView.rootObjects)
         assertEquals(testView.rootObjects.claimOne.checkNotNull, testView.rootObjects(Root).claimOne.checkNotNull)
         assertEquals(ROOT_ID, testView.rootObjects(Root).claimOne.checkNotNull.id)
@@ -61,12 +63,6 @@ class ViewTest {
     @Test
     @DisplayName("Test view update after model change")
     def void testViewUpdate() {
-        // Create test model and view:
-        val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-        val resourceSet = new ResourceSetImpl().withGlobalFactories
-        createAndPropagateRoot(resourceSet, virtualModel)
-        val testView = virtualModel.createTestView
-
         // Modify model
         virtualModel.propagateChange(recordChanges(resourceSet, [
             val resource = resourceSet.resources.claimOne.checkNotNull
@@ -92,14 +88,8 @@ class ViewTest {
     @Test
     @DisplayName("Test view commit after view change")
     def void testViewCommit() {
-        // Create test model and view:
-        val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-        val resourceSet = new ResourceSetImpl().withGlobalFactories
-        createAndPropagateRoot(resourceSet, virtualModel)
-        val testView = virtualModel.createTestView
-        assertFalse(testView.isModified)
-
         // Modify view:
+        assertFalse(testView.isModified)
         val viewRoot = testView.rootObjects(Root).claimOne.checkNotNull
         val NonRoot element = aet.NonRoot
         element.id = NON_ROOT_ID
@@ -117,6 +107,36 @@ class ViewTest {
         val modelResource = virtualModel.resourceSet.resources.claimOne.checkNotNull
         val modelRoot = modelResource.contents.claimOne.checkNotNull as Root
         assertEquals(NON_ROOT_ID, modelRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
+    }
+
+    @Test
+    @DisplayName("Test illegal update after view change")
+    def void testDirtyViewUpdate() {
+        // Modify view:
+        assertFalse(testView.isModified)
+        val viewRoot = testView.rootObjects(Root).claimOne.checkNotNull
+        val NonRoot element = aet.NonRoot
+        element.id = NON_ROOT_ID
+        viewRoot.multiValuedContainmentEReference.add(element)
+
+        // Assert view modified but VSUM not changed:
+        assertTrue(testView.modified)
+        assertFalse(testView.hasVSUMChanged)
+
+        // Assert that update not possible
+        assertThrows(UnsupportedOperationException, [testView.update])
+    }
+
+    @Test
+    @DisplayName("Test illegal call after view closed")
+    def void testClosedViewMethodCall() {
+        // Close view and check if view prevents illegal calls
+        testView.close
+        assertTrue(testView.isClosed)
+        assertThrows(IllegalStateException, [testView.update])
+        assertThrows(IllegalStateException, [testView.commitChanges])
+        assertThrows(IllegalStateException, [testView.rootObjects])
+        assertThrows(IllegalStateException, [testView.rootObjects(Root)])
     }
 
     def private createAndPropagateRoot(ResourceSet resourceSet, VirtualModel virtualModel) {

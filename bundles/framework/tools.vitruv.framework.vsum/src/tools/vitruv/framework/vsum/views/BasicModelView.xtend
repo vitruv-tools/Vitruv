@@ -1,11 +1,11 @@
 package tools.vitruv.framework.vsum.views
 
+import org.eclipse.emf.common.notify.Notification
+import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.VirtualModel
-import org.eclipse.emf.common.notify.impl.AdapterImpl
-import org.eclipse.emf.common.notify.Notification
 
 /**
  * A basic view that passes by default the entirety of its underlying model as a copy.
@@ -48,13 +48,7 @@ class BasicModelView implements View {
         changeRecorder.endRecordingAndClose
         modelChanged = false
         viewResourceSet = viewType.updateView(this)
-        viewResourceSet.allContents.forEach [
-            eAdapters += new AdapterImpl() { // TODO TS: Encapsulate this
-                override notifyChanged(Notification message) {
-                    viewChanged = true
-                }
-            }
-        ]
+        viewResourceSet.addChangeListeners
         changeRecorder = new ChangeRecorder(viewResourceSet)
         viewResourceSet.resources.forEach[changeRecorder.addToRecording(it)]
         changeRecorder.beginRecording
@@ -96,6 +90,16 @@ class BasicModelView implements View {
         if(closed) {
             throw new IllegalStateException("View is already closed!")
         }
+    }
+
+    private def void addChangeListeners(ResourceSet resourceSet) {
+        resourceSet.allContents.forEach [
+            eAdapters += new AdapterImpl() {
+                override notifyChanged(Notification message) {
+                    viewChanged = true
+                }
+            }
+        ]
     }
 
     private def void endRecordingAndClose(ChangeRecorder recorder) {
