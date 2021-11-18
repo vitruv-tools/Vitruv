@@ -100,7 +100,7 @@ public class UMLSimilarityChecker {
 		}
 
 		if (onlyOneIsNull(element1, element2)) {
-			System.out.println("MISMATCH2: " + element1);
+//			System.out.println("MISMATCH2: " + element1);
 			return Boolean.FALSE;
 		}
 
@@ -118,22 +118,48 @@ public class UMLSimilarityChecker {
 		// check the elements to be of the same type
 		if (!element1.getClass().equals(element2.getClass())) {
 			// we want to compare classes and interfaces
-			if ((element1.eClass() == UMLPackage.Literals.INTERFACE || element1.eClass() == UMLPackage.Literals.CLASS) && (element2.eClass() == UMLPackage.Literals.INTERFACE || element2.eClass() == UMLPackage.Literals.CLASS)) {
-			} else {
-				System.out.println("MISMATCH1: " + element1);
+//			if ((element1.eClass() == UMLPackage.Literals.INTERFACE || element1.eClass() == UMLPackage.Literals.CLASS) && (element2.eClass() == UMLPackage.Literals.INTERFACE || element2.eClass() == UMLPackage.Literals.CLASS)) {
+//			} else {
+//				System.out.println("MISMATCH1: " + element1 + " / " + element2);
 				return Boolean.FALSE;
-			}
+//			}
 		}
 
 		// check type specific similarity
-		Boolean value = this.checkSimilarityForResolvedAndSameType(element1, element2, false);
+		Boolean value = this.checkSimilarityForResolvedAndSameType(element1, element2, checkStatementPosition);
 
-		if (value.equals(Boolean.FALSE))
-			System.out.println("MISMATCH: " + element1);
-		if (value == null)
-			System.out.println("MISMATCH3: " + element1);
-
+//		if (value.equals(Boolean.FALSE))
+//			System.out.println("MISMATCH: " + element1 + " / " + element2);
+//		if (value == null)
+//			System.out.println("MISMATCH3: " + element1 + " / " + element2);
+//
+//		if (value.equals(Boolean.TRUE))
+//			System.out.println("MATCH: " + element1 + " / " + element2);
+		
 		return value;
+	}
+	public Boolean isSimilarIgnoringType(EObject element1, EObject element2) {
+		// check that either both or none of them is null
+		if (element1 == element2) {
+			return Boolean.TRUE;
+		}
+
+		if (onlyOneIsNull(element1, element2)) {
+			return Boolean.FALSE;
+		}
+
+		// if a proxy is present try to resolve it
+		// the other element is used as a context.
+		// TODO Clarify why it can happen that one proxy is resolved and the other is not
+		// further notes available with the issue
+		// https://sdqbuild.ipd.kit.edu/jira/browse/SPLEVO-279
+		if (element2.eIsProxy() && !element1.eIsProxy()) {
+			element2 = EcoreUtil.resolve(element2, element1);
+		} else if (element1.eIsProxy() && !element2.eIsProxy()) {
+			element1 = EcoreUtil.resolve(element1, element2);
+		}
+
+		return new UMLSimilaritySwitch(element2, false, classifierNormalizations, compilationUnitNormalizations, packageNormalizations).doSwitch(element1);
 	}
 
 	/**

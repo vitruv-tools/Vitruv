@@ -42,7 +42,6 @@ public class UMLMatchEngine implements IMatchEngine {
 
 	@Override
 	public Comparison match(IComparisonScope scope, Monitor monitor) {
-
 		final Notifier left = scope.getLeft();
 		final Notifier right = scope.getRight();
 
@@ -104,7 +103,6 @@ public class UMLMatchEngine implements IMatchEngine {
 			final Resource rightRes = mapping.getRight();
 
 			match(comparison, leftRes, rightRes, monitor);
-
 		}
 	}
 
@@ -145,7 +143,6 @@ public class UMLMatchEngine implements IMatchEngine {
 	 * @param monitor    The progress monitor.
 	 */
 	protected void match(Comparison comparison, final EObject left, final EObject right, Monitor monitor) {
-
 		List<EObject> leftElements = Lists.newArrayList(left);
 		List<EObject> rightElements = Lists.newArrayList(right);
 
@@ -163,7 +160,6 @@ public class UMLMatchEngine implements IMatchEngine {
 	 * @return The list of created matches.
 	 */
 	private List<Match> match(Comparison comparison, List<EObject> leftElements, List<EObject> rightElements, Monitor monitor) {
-
 		List<Match> matches = new ArrayList<Match>();
 
 		List<EObject> leftElementsInScope = filterIgnoredElements(leftElements);
@@ -300,7 +296,6 @@ public class UMLMatchEngine implements IMatchEngine {
 		 * @return True/False whether it should be ignored.
 		 */
 		public boolean ignore(EObject element);
-
 	}
 
 }
