@@ -30,7 +30,7 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.containsNoneOf
 import org.junit.jupiter.api.TestInfo
 
 /**Test to validate the transfer of changes from the FamilyModel to the PersonModel.
- * @author Dirk Neumann   
+ * @author Dirk Neumann
  */
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(FamiliesPersonsTest)
@@ -78,12 +78,15 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		return #[new FamiliesToPersonsChangePropagationSpecification()]
 	}
 
+	TestInfo testInfo = null
+
 	/**Before each test a new {@link FamilyRegister} is created as starting point.
 	 * This is checked by several assertions to ensure correct preconditions for the tests. 
 	 */
 	@BeforeEach
-	def void insertRegister() {
-		logger.setLevel(Level.DEBUG)
+	def void insertRegister(TestInfo testInfo) {
+		this.testInfo = testInfo
+		println(this.testInfo.getDisplayName())
 		resourceAt(FAMILIES_MODEL).propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size)
@@ -101,146 +104,121 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	/**Insert a new {@link Family}. This should not have any effect on the Persons-Model.
 	 */
 	@Test
-	def void testInsertNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		val family = createFamily(LAST_NAME_1)
 		logger.trace(surroundingMethodName + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate[families += family]
 		logger.trace(surroundingMethodName + " - propagation done")
-		assertThat(resourceAt(PERSONS_MODEL), exists)
-		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size)
-		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size)
-		assertThat(resourceAt(PERSONS_MODEL).contents.get(0), instanceOf(PersonRegister))
-		assertEquals(0, resourceAt(PERSONS_MODEL).contents.get(0).eAllContents().size)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()		
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
-
-	/**Overloading method in case there was no deletion so the noneOf-List is empty.
+	
+	/**Check if the actual {@link FamilyRegister looks like the expected one.
 	 */
-	def void checkCorrectRegisters(FamilyRegister comparisonFamilyRegister, Iterable<EObject> allOf) {
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, #[])
-	}
-
-	/**Check up method to first check the correct basic structure of both models and then compare
-	 * the resulting {@link FamilyRegister} with a predefined one and to check for the existence
-	 * and absence of predefined {@link Persons}. Basically encapsulate the assertion part of each test.
-	 */
-	def void checkCorrectRegisters(FamilyRegister comparisonFamilyRegister, Iterable<EObject> allOf,
-		Iterable<EObject> noneOf) {
-		val personModel = resourceAt(PERSONS_MODEL)
+	def void assertCorrectFamilyRegister(FamilyRegister expectedFamilyRegister){
 		val familyModel = resourceAt(FAMILIES_MODEL)
-		assertThat(personModel, exists)
 		assertThat(familyModel, exists)
-		assertEquals(1, personModel.contents.size)
-		assertEquals(1, familyModel.contents.size)
+		assertEquals(1, familyModel.contents.size)		
 		val familyRegister = familyModel.contents.get(0)
 		assertThat(familyRegister, instanceOf(FamilyRegister))
-		val FamilyRegister castedFamReg = familyRegister as FamilyRegister
-		assertThat(castedFamReg, equalsDeeply(comparisonFamilyRegister))
+		val FamilyRegister castedFamilyRegister = familyRegister as FamilyRegister
+		assertThat(castedFamilyRegister, equalsDeeply(expectedFamilyRegister))
+	}
+	
+	/**Check if the actual {@link PersonRegister looks like the expected one.
+	 */
+	def void assertCorrectPersonRegister(PersonRegister expectedPersonRegister){
+		val personModel = resourceAt(PERSONS_MODEL)
+		assertThat(personModel, exists)
+		assertEquals(1, personModel.contents.size)		
 		val personRegister = personModel.contents.get(0)
 		assertThat(personRegister, instanceOf(PersonRegister))
-		val Iterable<Person> personList = (personRegister as PersonRegister).persons
-		assertThat(personList, containsAllOf(allOf))
-		assertThat(personList, containsNoneOf(noneOf))
+		val PersonRegister castedPersonRegister = personRegister as PersonRegister
+		assertThat(castedPersonRegister, equalsDeeply(expectedPersonRegister))
 	}
-
+	
 	/**Insert a new {@link Family} and insert a father into it afterwards.
 	 */
 	@Test
-	def void testInsertFamilyWithFather(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertFamilyWithFather() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		val family = createFamily(LAST_NAME_1)
 		logger.trace(surroundingMethodName + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
-			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1; familyFather = family]
+			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_DAD_1 + " " + LAST_NAME_1 
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Insert a new {@link Family} and insert a mother into it afterwards.
 	 */
 	@Test
-	def void testInsertFamilyWithMother(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertFamilyWithMother() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		val family = createFamily(LAST_NAME_1)
 		logger.trace(surroundingMethodName + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
-			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1; familyMother = family]
+			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += MOM11
 		]
-		val Iterable<EObject> allOf = #[MOM11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Insert a new {@link Family} and insert a son into it afterwards.
 	 */
 	@Test
-	def void testInsertFamilyWithSon(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertFamilyWithSon() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		val family = createFamily(LAST_NAME_1)
 		logger.trace(surroundingMethodName + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
-			family.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1; familySon = family]
+			family.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += SON11
 		]
-		val Iterable<EObject> allOf = #[SON11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Insert a new {@link Family} and insert a daughter into it afterwards.
 	 */
 	@Test
-	def void testInsertFamilyWithDaughter(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertFamilyWithDaughter() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		val family = createFamily(LAST_NAME_1)
 		logger.trace(surroundingMethodName + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
-			family.daughters += FamiliesFactory.eINSTANCE.createMember => [
-				firstName = FIRST_DAU_1;
-				familyDaughter = family
-			]
+			family.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += DAU11
 		]
-		val Iterable<EObject> allOf = #[DAU11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -252,32 +230,22 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		val family = createFamily(LAST_NAME_1)
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
-			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1; familyFather = family]
-			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1; familyMother = family]
-			family.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1; familySon = family]
-			family.daughters += FamiliesFactory.eINSTANCE.createMember => [
-				firstName = FIRST_DAU_1;
-				familyDaughter = family
-			]
+			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+			family.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+			family.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 		]
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU11]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON11, DAU11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 
 	/**Deletes a father from a {@link Family} and the corresponding {@link Male} from the {@link PersonRegister}.
 	 */
 	@Test
-	def void testDeleteFatherFromFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeleteFatherFromFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -288,25 +256,18 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.father = null
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[MOM11, SON11, DAU11]
 		]
-		val Iterable<EObject> allOf = #[MOM11, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[DAD11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Deletes a son from a {@link Family} and the corresponding {@link Male} from the {@link PersonRegister}.
 	 */
 	@Test
-	def void testDeleteSonFromFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeleteSonFromFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -318,25 +279,18 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.sons.remove(sonToDelete)
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, DAU11]
 		]
-		val Iterable<EObject> allOf = #[MOM11, DAD11, DAU11]
-		val Iterable<EObject> noneOf = #[SON11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Deletes a mother from a {@link Family} and the corresponding {@link Female} from the {@link PersonRegister}.
 	 */
 	@Test
-	def void testDeleteMotherFromFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeleteMotherFromFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -347,25 +301,18 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.mother = null
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, SON11, DAU11]
 		]
-		val Iterable<EObject> allOf = #[DAD11, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[MOM11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Deletes a daughter from a {@link Family} and the corresponding {@link Female} from the {@link PersonRegister}.
 	 */
 	@Test
-	def void testDeleteDaughterFromFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeleteDaughterFromFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -377,17 +324,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.daughters.remove(daughterToDelete)
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11]
 		]
-		val Iterable<EObject> allOf = #[MOM11, DAD11, SON11]
-		val Iterable<EObject> noneOf = #[DAU11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -395,8 +335,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * all corresponding {@link Person}s from the {@link PersonRegister}.
 	 */
 	@Test
-	def void testChangeLastName(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testChangeLastName() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -405,18 +345,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.lastName = LAST_NAME_2
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_2
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD12, MOM12, SON12, DAU12]
 		]
-		val Iterable<EObject> allOf = #[DAD12, MOM12, SON12, DAU12]
-		val Iterable<EObject> noneOf = #[DAD11, MOM11, SON11, DAU11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -424,8 +356,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * fullname of the corresponding {@link Male} in the {@link PersonRegister}.
 	 */
 	@Test
-	def void testChangeFirstNameFather(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testChangeFirstNameFather() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -436,18 +368,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.father.firstName = FIRST_DAD_2
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD21, MOM11, SON11, DAU11]
 		]
-		val Iterable<EObject> allOf = #[DAD21, MOM11, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[DAD11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -455,8 +379,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * fullname of the corresponding {@link Male} in the {@link PersonRegister}.
 	 */
 	@Test
-	def void testChangeFirstNameSon(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testChangeFirstNameSon() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -468,18 +392,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			sonToChange.firstName = FIRST_SON_2
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON21, DAU11]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON21, DAU11]
-		val Iterable<EObject> noneOf = #[SON11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -487,8 +403,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * fullname of the corresponding {@link Female} in the {@link PersonRegister}.
 	 */
 	@Test
-	def void testChangeFirstNameMother(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testChangeFirstNameMother() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -499,18 +415,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			selectedFamily.mother.firstName = FIRST_MOM_2
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM21, SON11, DAU11]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM21, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[MOM11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -518,8 +426,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * fullname of the corresponding {@link Female} in the {@link PersonRegister}.
 	 */
 	@Test
-	def void testChangeFirstNameDaughter(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testChangeFirstNameDaughter() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -531,29 +439,21 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			daughterToChange.firstName = FIRST_DAU_2
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
-			]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU21]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON11, DAU21]
-		val Iterable<EObject> noneOf = #[DAU11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Tries to insert a new father into a {@link Family} which already has a father.
 	 * In this scenario the user decides to discard the changes. Therefore all changes
-	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister}  
+	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister} 
 	 * should not be edited. The rest of the family stays the same as well.
 	 */
 	@Test
-	def void testInsertDadIfDadAlreadyExists_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertDadIfDadAlreadyExists_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -563,7 +463,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -572,9 +472,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[DAD21]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -590,8 +492,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * The rest of the family stays the same.
 	 */
 	@Test
-	def void testInsertDadIfDadAlreadyExists_ReplaceExisting(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertDadIfDadAlreadyExists_ReplaceExisting() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -601,7 +503,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
@@ -610,9 +512,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD21, MOM11, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[DAD11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD21, MOM11, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -623,8 +527,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * Therefore changes concerning the old {@link Family} will be reverted.
 	 */
 	@Test
-	def void testInsertDadIfDadAlreadyExists_MoveToNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertDadIfDadAlreadyExists_MoveToNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -634,7 +538,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -647,19 +551,22 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON11, DAU11, DAD21]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, DAD21, MOM11, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
 	/**Tries to insert a new mother into a {@link Family} which already has a mother.
 	 * In this scenario the user decides to discard the changes. Therefore all changes
-	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister}  
+	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister} 
 	 * should not be edited. The rest of the family stays the same as well.
 	 */
 	@Test
-	def void testInsertMomIfMomAlreadyExists_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertMomIfMomAlreadyExists_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -669,7 +576,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -678,9 +585,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[MOM21]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -696,8 +605,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * The rest of the family stays the same.
 	 */
 	@Test
-	def void testInsertMomIfMomAlreadyExists_ReplaceExisting(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertMomIfMomAlreadyExists_ReplaceExisting() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -707,7 +616,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -716,9 +625,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM21, SON11, DAU11]
-		val Iterable<EObject> noneOf = #[MOM11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM21, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -729,8 +640,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * Therefore changes concerning the old {@link Family} will be reverted.
 	 */
 	@Test
-	def void testInsertMomIfMomAlreadyExists_MoveToNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testInsertMomIfMomAlreadyExists_MoveToNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -740,7 +651,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -753,8 +664,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val Iterable<EObject> allOf = #[DAD11, MOM11, SON11, DAU11, MOM21]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf)
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, MOM21, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -765,8 +679,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * will not be affected.
 	 */
 	@Test
-	def void testDeleteAllFamiliesWithMatchingName(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeleteAllFamiliesWithMatchingName() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -774,10 +688,10 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			families.removeIf([it.lastName.equals(LAST_NAME_1)])
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister
-		val Iterable<EObject> allOf = #[]
-		val Iterable<EObject> noneOf = #[DAD11, MOM11, SON11, DAU11]
-		checkCorrectRegisters(comparisonFamilyRegister, allOf, noneOf)
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister()
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -785,8 +699,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 * the deletion of the corresponding {@link PersonRegister} with all its contents.
 	 */
 	@Test
-	def void testDeleteFamilyRegister(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeleteFamilyRegister() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
