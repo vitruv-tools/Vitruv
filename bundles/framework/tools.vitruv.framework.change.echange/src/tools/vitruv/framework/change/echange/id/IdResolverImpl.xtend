@@ -120,6 +120,8 @@ package class IdResolverImpl extends AdapterImpl implements IdResolver {
 		var id = eObjectToId.get(eObject)
 		if (id === null) {
 			id = UUID.randomUUID.toString
+			while (eObjectToId.inverse.containsKey(id))
+				id = UUID.randomUUID.toString
 //			System.out.println("GENERATED ID: " + id + " / " + (eObject.eResource !== null
 //				? eObject.eResource.URI.appendFragment(eObject.hierarchicUriFragment).toString
 //				: "nores") + " / " + this)
