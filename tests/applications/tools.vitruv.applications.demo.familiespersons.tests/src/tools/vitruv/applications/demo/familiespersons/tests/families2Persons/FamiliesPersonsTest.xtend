@@ -10,12 +10,12 @@ import edu.kit.ipd.sdq.metamodels.persons.Person
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import java.nio.file.Path
-import org.apache.log4j.Level
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 import tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
+import tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification
 import tools.vitruv.domains.demo.families.FamiliesDomainProvider
 import tools.vitruv.domains.demo.persons.PersonsDomainProvider
 import tools.vitruv.testutils.VitruvApplicationTest
@@ -25,9 +25,6 @@ import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
-import static tools.vitruv.testutils.matchers.ModelMatchers.containsAllOf
-import static tools.vitruv.testutils.matchers.ModelMatchers.containsNoneOf
-import org.junit.jupiter.api.TestInfo
 
 /**Test to validate the transfer of changes from the FamilyModel to the PersonModel.
  * @author Dirk Neumann
@@ -75,7 +72,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	/**Set the correct set of reactions and routines for this test suite
 	 */
 	override protected getChangePropagationSpecifications() {
-		return #[new FamiliesToPersonsChangePropagationSpecification()]
+		return #[new FamiliesToPersonsChangePropagationSpecification(), new PersonsToFamiliesChangePropagationSpecification()]
 	}
 
 	TestInfo testInfo = null
@@ -86,7 +83,6 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@BeforeEach
 	def void insertRegister(TestInfo testInfo) {
 		this.testInfo = testInfo
-		println(this.testInfo.getDisplayName())
 		resourceAt(FAMILIES_MODEL).propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size)

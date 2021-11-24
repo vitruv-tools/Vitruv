@@ -8,10 +8,11 @@ import edu.kit.ipd.sdq.metamodels.persons.Person
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import java.nio.file.Path
-import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
+import tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
 import tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification
 import tools.vitruv.domains.demo.families.FamiliesDomainProvider
 import tools.vitruv.domains.demo.persons.PersonsDomainProvider
@@ -22,7 +23,6 @@ import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
-import org.junit.jupiter.api.TestInfo
 
 /**Test to validate the transfer of changes from the PersonModel to the FamilyModel.
  * @author Dirk Neumann 
@@ -51,7 +51,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Set the correct set of reations and routines for this test suite
 	 */
 	override protected getChangePropagationSpecifications() {
-		return #[new PersonsToFamiliesChangePropagationSpecification()]
+		return #[new FamiliesToPersonsChangePropagationSpecification(), new PersonsToFamiliesChangePropagationSpecification()]
 	}
 
 	/**Before each test a new {@link PersonRegister} is created as starting point.
