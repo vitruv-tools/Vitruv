@@ -25,9 +25,9 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import org.junit.jupiter.api.TestInfo
 
 /**Test to validate the transfer of changes from the PersonModel to the FamilyModel.
- * @author Dirk Neumann   
+ * @author Dirk Neumann 
  */
-class PersonsToFamiliesTest extends VitruvApplicationTest {  
+class PersonsToFamiliesTest extends VitruvApplicationTest { 
 	static val logger = Logger.getLogger(PersonsToFamiliesTest);	
 
 	// First Set of reused static strings
@@ -59,7 +59,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 */
 	@BeforeEach
 	def void insertRegister() {
-		logger.setLevel(Level.DEBUG)
 		resourceAt(PERSONS_MODEL).propagate[contents += PersonsFactory.eINSTANCE.createPersonRegister]
 		assertThat(resourceAt(FAMILIES_MODEL), exists);
 		assertEquals(1, resourceAt(FAMILIES_MODEL).contents.size);
@@ -68,25 +67,28 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertEquals(0, resourceAt(FAMILIES_MODEL).contents.get(0).eAllContents().size);
 	}
 
-	/**Check up method to first check the correct basic structure of both models and then compare
-	 * the resulting {@link PersonRegister} and {@link FamilyRegister} with predefined ones.
-	 * Basically encapsulate the assertion part of each test.
+	/**Check if the actual {@link FamilyRegister looks like the expected one.
 	 */
-	def void checkCorrectRegisters(FamilyRegister comparisonFamilyRegister, PersonRegister comparisonPersonRegister) {
-		val personModel = resourceAt(PERSONS_MODEL)
-		val familiesModel = resourceAt(FAMILIES_MODEL)
-		assertThat(personModel, exists)
-		assertThat(familiesModel, exists)
-		assertEquals(1, personModel.contents.size);
-		assertEquals(1, familiesModel.contents.size);
-		val familyRegister = familiesModel.contents.get(0)
-		assertThat(familyRegister, instanceOf(FamilyRegister));
+	def void assertCorrectFamilyRegister(FamilyRegister expectedFamilyRegister){
+		val familyModel = resourceAt(FAMILIES_MODEL)
+		assertThat(familyModel, exists)
+		assertEquals(1, familyModel.contents.size)		
+		val familyRegister = familyModel.contents.get(0)
+		assertThat(familyRegister, instanceOf(FamilyRegister))
 		val FamilyRegister castedFamilyRegister = familyRegister as FamilyRegister
-		assertThat(castedFamilyRegister, equalsDeeply(comparisonFamilyRegister));
+		assertThat(castedFamilyRegister, equalsDeeply(expectedFamilyRegister))
+	}
+	
+	/**Check if the actual {@link PersonRegister looks like the expected one.
+	 */
+	def void assertCorrectPersonRegister(PersonRegister expectedPersonRegister){
+		val personModel = resourceAt(PERSONS_MODEL)
+		assertThat(personModel, exists)
+		assertEquals(1, personModel.contents.size)		
 		val personRegister = personModel.contents.get(0)
-		assertThat(personRegister, instanceOf(PersonRegister));
+		assertThat(personRegister, instanceOf(PersonRegister))
 		val PersonRegister castedPersonRegister = personRegister as PersonRegister
-		assertThat(castedPersonRegister, equalsDeeply(comparisonPersonRegister));
+		assertThat(castedPersonRegister, equalsDeeply(expectedPersonRegister))
 	}
 	
 	/**Create a {@link Family} that already contains a father for further testing.
@@ -98,18 +100,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}	
 	/**Create a {@link Family} that already contains a son for further testing.
 	 */
@@ -120,18 +123,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
 		]
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 	/**Create a {@link Family} that already contains a mother for further testing.
 	 */
@@ -142,18 +146,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 	/**Create a {@link Family} that already contains a daughter for further testing.
 	 */
@@ -164,18 +169,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 
 	// =====================================
@@ -197,18 +203,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -230,14 +237,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -245,7 +252,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -270,18 +278,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -306,18 +315,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -342,7 +352,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -352,7 +362,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -360,7 +370,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -385,18 +396,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -421,14 +433,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -436,7 +448,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -461,14 +474,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 			]
@@ -476,7 +489,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -501,7 +515,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -511,7 +525,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 			]
@@ -519,7 +533,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -544,18 +559,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -583,18 +599,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -622,18 +639,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -661,18 +679,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -701,7 +720,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -711,7 +730,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -719,7 +738,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -744,7 +764,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -754,7 +774,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -762,7 +782,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -782,18 +803,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -815,14 +837,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
@@ -830,7 +852,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -855,18 +878,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -891,14 +915,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
@@ -906,7 +930,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -931,14 +956,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_2
 			]
@@ -946,7 +971,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -972,7 +998,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
@@ -982,7 +1008,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_1 + " " + LAST_NAME_1
 			]
@@ -990,7 +1016,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_SON_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1012,18 +1039,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1043,14 +1071,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -1058,7 +1086,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1083,18 +1112,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1119,18 +1149,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1155,7 +1186,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
@@ -1165,7 +1196,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
@@ -1173,7 +1204,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1198,18 +1230,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1234,14 +1267,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -1249,7 +1282,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1274,14 +1308,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 			]
@@ -1289,7 +1323,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1314,7 +1349,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -1324,7 +1359,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -1332,7 +1367,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1357,18 +1393,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1396,18 +1433,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1435,18 +1473,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1474,18 +1513,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1514,7 +1554,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
@@ -1524,7 +1564,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
@@ -1532,7 +1572,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1557,7 +1598,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
@@ -1567,7 +1608,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
@@ -1575,7 +1616,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1595,18 +1637,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1628,14 +1671,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
@@ -1643,7 +1686,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1668,18 +1712,19 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1704,14 +1749,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
@@ -1719,7 +1764,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1744,14 +1790,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_2
 			]
@@ -1759,7 +1805,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1785,7 +1832,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			]
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
@@ -1795,7 +1842,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
@@ -1803,7 +1850,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1842,7 +1890,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -1851,7 +1899,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1
 			]
@@ -1865,7 +1913,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 
 	// ========== EDITING ==========	
@@ -1883,7 +1932,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			searched.fullName = FIRST_DAD_2 + " " + searched.fullName.split(" ").get(1)
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
@@ -1892,7 +1941,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_1
 			]
@@ -1906,7 +1955,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1926,7 +1976,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			searched.fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_2
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
@@ -1935,7 +1985,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 			]
@@ -1949,7 +1999,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_2
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -1968,7 +2019,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			persons.remove(searched)
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
@@ -1976,7 +2027,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
 		]
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 			]
@@ -1987,7 +2038,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				fullName = FIRST_DAU_1 + " " + LAST_NAME_1
 			]
 		]
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -2006,9 +2058,10 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			persons.remove(searched)
 		]
 		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister comparisonFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => []
-		val PersonRegister comparisonPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => []
-		checkCorrectRegisters(comparisonFamilyRegister, comparisonPersonRegister)
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => []
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => []
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 

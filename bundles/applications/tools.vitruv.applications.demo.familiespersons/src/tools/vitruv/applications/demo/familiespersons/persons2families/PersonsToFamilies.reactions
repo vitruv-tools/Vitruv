@@ -36,7 +36,7 @@ reaction DeletedPersonRegister {
 	call deleteFamilyRegister(affectedEObject)
 }
 routine deleteFamilyRegister(persons::PersonRegister personsRegister) {
-	match{
+	match {
 		val familyRegister = retrieve families::FamilyRegister corresponding to personsRegister
 	}	
 	action {
@@ -60,8 +60,8 @@ routine createMale(persons::Male newMale) {
 	match {
 		val familiesRegister = retrieve families::FamilyRegister corresponding to newMale.eContainer
 	}
-	action{
-		call{			
+	action {
+		call {			
 			var String fatherOrSonMessage = "You are about to insert a new male person into the family register."
 			fatherOrSonMessage += " Is this person the father of a family or a son?"
 			var Iterable<String> fatherOrSonOptions = #["Father", "Son"]
@@ -93,10 +93,10 @@ routine createMale(persons::Male newMale) {
 			
 			switch(fatherOrSonSelection) {
 				case 0: {
-					evaluateFamilyDecisionForNewFather(newMale, chosenFamily)
+					callCorrectRoutineForNewFather(newMale, chosenFamily)
 				}
 				case 1: {
-					evaluateFamilyDecisionForNewSon(newMale, chosenFamily)
+					callCorrectRoutineForNewSon(newMale, chosenFamily)
 				}
 			}
 		}
@@ -107,7 +107,7 @@ routine createMale(persons::Male newMale) {
 /* The user decided what is supposed to happen. This routine encapsulates 
  * the decision tree if the user decided to create a father.
  */
-routine evaluateFamilyDecisionForNewFather(persons::Male newFather, families::Family chosenFamily) {
+routine callCorrectRoutineForNewFather(persons::Male newFather, families::Family chosenFamily) {
 	action {
 		call {
 			if (chosenFamily === null) {
@@ -115,14 +115,14 @@ routine evaluateFamilyDecisionForNewFather(persons::Male newFather, families::Fa
 			} else {
 				if (chosenFamily.lastName.equals(newFather.fullName.split(" ").get(1))) {
 					//names match
-					if (chosenFamily.father === null){
+					if (chosenFamily.father === null) {
 						createFatherInExistingMatchingFamily(newFather, chosenFamily)						
 					} else {
 						tryCreateFatherInMatchingFamily_WithFather(newFather, chosenFamily)					
 					}	
 				} else {
 					//different lastnames
-					if (chosenFamily.father === null){
+					if (chosenFamily.father === null) {
 						tryCreateFatherInDifferentlyNamedFamily_WithoutFather(newFather, chosenFamily)						
 					} else {
 						tryCreateFatherInDifferentlyNamedFamily_WithFather(newFather, chosenFamily)						
@@ -142,16 +142,8 @@ routine createFatherInNewFamily(persons::Male newFatherPerson) {
 		val newFamily = create families::Family and initialize {
 			newFamily.lastName = newFatherPerson.fullName.split(" ").get(1)
 		}
-		val newFatherMember = create families::Member and initialize {
-			newFatherMember.firstName = newFatherPerson.fullName.split(" ").get(0)			
-		}
-		call{
-			newFamily.father = newFatherMember
-			newFatherMember.familyFather = newFamily 
-			familiesRegister.families += newFamily
-		}
-		add correspondence between newFatherPerson and newFatherMember
-		add correspondence between newFatherPerson and newFamily		
+		call familiesRegister.families += newFamily
+		call createFatherInExistingMatchingFamily(newFatherPerson, newFamily)				
 	}
 }
 /* Father in matching family
@@ -164,17 +156,17 @@ routine tryCreateFatherInMatchingFamily_WithFather(persons::Male newFather, fami
 	action {	
 		call {
 			// Let user select how to proceed concerning the different lastnames.
-			var String differentLastnameMessage = "The selected family (" + family.lastName + ") already has a father, named " 
+			var String existingFatherMessage = "The selected family (" + family.lastName + ") already has a father, named " 
 				+ family.father.firstName + ". Please choose how to continue."				
-			var Iterable<String> differentLastnameOptions = #[				
+			var Iterable<String> existingFatherOptions = #[				
 				"abort and revert all changes",
 				"continue and replace the existing father",			
 				"create a new family " + newFather.fullName.split(" ").get(1) + " with " + newFather.fullName + " as father"
 			]
-			val int differentLastnameSelection = userInteractor.singleSelectionDialogBuilder.message(differentLastnameMessage)
-			.choices(differentLastnameOptions).windowModality(WindowModality.MODAL).startInteraction()
+			val int existingFatherSelection = userInteractor.singleSelectionDialogBuilder.message(existingFatherMessage)
+			.choices(existingFatherOptions).windowModality(WindowModality.MODAL).startInteraction()
 			
-			switch (differentLastnameSelection) {
+			switch (existingFatherSelection) {
 				case 0: {
 					discardNewPerson(newFather)
 				}
@@ -195,36 +187,21 @@ routine createFatherInExistingMatchingFamily(persons::Male newFatherPerson, fami
 		val newFatherMember = create families::Member and initialize {
 			newFatherMember.firstName = newFatherPerson.fullName.split(" ").get(0)			
 		}
-		call {
-			family.father = newFatherMember
-			newFatherMember.familyFather = family
-		}
+		call family.father = newFatherMember
 		add correspondence between newFatherPerson and newFatherMember
 		add correspondence between newFatherPerson and family				
 	}
-} 
-/* Family does already have a father -> in this case replace
- * 	1) delete old father-member and old father-person
- * 	2) add new father-member
- * 	3) add correspondences
+}
+/* Family does already have a father -> replace
+ * == delete currently existing father and call insertion in family without father
  */
 routine replaceFatherInExistingMatchingFamily(persons::Male newFatherPerson, families::Family family) {
 	match {
 		val oldFatherPerson = retrieve persons::Male corresponding to family.father
 	}
 	action {
-		val newFatherMember = create families::Member and initialize {
-			newFatherMember.firstName = newFatherPerson.fullName.split(" ").get(0)
-		}
 		delete oldFatherPerson
-		call {
-			family.father.familyFather = null
-			family.father = null
-			family.father = newFatherMember
-			newFatherMember.familyFather = family			
-		}
-		add correspondence between newFatherPerson and newFatherMember
-		add correspondence between newFatherPerson and family	
+		call createFatherInExistingMatchingFamily(newFatherPerson, family)
 	}
 }
 
@@ -342,7 +319,7 @@ routine tryCreateFatherInDifferentlyNamedFamily_WithFather(persons::Male newFath
 /* The user decided what is supposed to happen. This routine encapsulates 
  * the decision tree if the user decided to create a son.
  */
-routine evaluateFamilyDecisionForNewSon(persons::Male newSon, families::Family chosenFamily) {
+routine callCorrectRoutineForNewSon(persons::Male newSon, families::Family chosenFamily) {
 	action {
 		call {	
 			if (chosenFamily === null) {
@@ -366,10 +343,7 @@ routine createSonInExistingMatchingFamily(persons::Male newSonPerson, families::
 		val newSonMember = create families::Member and initialize {
 			newSonMember.firstName = newSonPerson.fullName.split(" ").get(0)			
 		}
-		call {
-			family.sons += newSonMember
-			newSonMember.familySon = family
-		}
+		call family.sons += newSonMember
 		add correspondence between newSonPerson and newSonMember
 		add correspondence between newSonPerson and family				
 	}	
@@ -384,9 +358,7 @@ routine createSonInNewFamily(persons::Male newPerson) {
 		val newFamily = create families::Family and initialize {
 			newFamily.lastName = newPerson.fullName.split(" ").get(1)
 		}
-		call {
-			familiesRegister.families += newFamily			
-		}
+		call familiesRegister.families += newFamily
 		call createSonInExistingMatchingFamily(newPerson, newFamily)	
 	}
 }
@@ -468,8 +440,8 @@ routine createFemale(persons::Female newFemale) {
 				whichFamilyOptions.^add("insert in a new family")
 				existingFamilies.forEach[
 					var newOption = it.lastName + ": "; 
-					if(it.father !== null){ newOption += "F: " + it.father.firstName + ";"}
-					if(it.mother !== null){ newOption += "M: " + it.mother.firstName + ";"}
+					if(it.father !== null) { newOption += "F: " + it.father.firstName + ";"}
+					if(it.mother !== null) { newOption += "M: " + it.mother.firstName + ";"}
 					if(it.sons !== null && it.sons.size > 0) { newOption += it.sons.join("S: (",", ",")",[it.firstName]) }
 					if(it.daughters !== null && it.daughters.size > 0) { newOption += it.daughters.join("S: (",", ",")",[it.firstName]) }
 					whichFamilyOptions.^add(newOption)
@@ -481,10 +453,10 @@ routine createFemale(persons::Female newFemale) {
 			
 			switch(motherOrDaughter) {
 				case 0: {
-					evaluateFamilyDecisionForNewMother(newFemale, chosenFamily)
+					callCorrectRoutineForNewMother(newFemale, chosenFamily)
 				}
 				case 1: {
-					evaluateFamilyDecisionForNewDaughter(newFemale, chosenFamily)
+					callCorrectRoutineForNewDaughter(newFemale, chosenFamily)
 				}
 			}
 		}
@@ -495,7 +467,7 @@ routine createFemale(persons::Female newFemale) {
 /**The user decided what is supposed to happen. This routine encapsulates 
  * the decision tree if the user decided to create a mother.
  */
-routine evaluateFamilyDecisionForNewMother(persons::Female newMother, families::Family chosenFamily) {
+routine callCorrectRoutineForNewMother(persons::Female newMother, families::Family chosenFamily) {
 	action {
 		call {
 			if (chosenFamily === null) {
@@ -503,14 +475,14 @@ routine evaluateFamilyDecisionForNewMother(persons::Female newMother, families::
 			} else {
 				if (chosenFamily.lastName.equals(newMother.fullName.split(" ").get(1))) {
 					//names match
-					if (chosenFamily.mother === null){
+					if (chosenFamily.mother === null) {
 						createMotherInExistingMatchingFamily(newMother, chosenFamily)		
 					} else {
 						tryCreateMotherInMatchingFamily_WithMother(newMother, chosenFamily)						
 					}					
 				} else {
 					//different lastnames
-					if (chosenFamily.mother === null){
+					if (chosenFamily.mother === null) {
 						tryCreateMotherInDifferentlyNamedFamily_WithoutMother(newMother, chosenFamily)						
 					} else {
 						tryCreateMotherInDifferentlyNamedFamily_WithMother(newMother, chosenFamily)						
@@ -522,24 +494,16 @@ routine evaluateFamilyDecisionForNewMother(persons::Female newMother, families::
 }
 /* Simple case, just create new family with correct lastname, create member, add correspondences
  */
-routine createMotherInNewFamily(persons::Female newMotherPerson){
-	match{
+routine createMotherInNewFamily(persons::Female newMotherPerson) {
+	match {
 		val familiesRegister = retrieve families::FamilyRegister corresponding to newMotherPerson.eContainer
 	}
-	action{	
-		val newFamily = create families::Family and initialize{
+	action {	
+		val newFamily = create families::Family and initialize {
 			newFamily.lastName = newMotherPerson.fullName.split(" ").get(1)
 		}
-		val newMotherMember = create families::Member and initialize {
-			newMotherMember.firstName = newMotherPerson.fullName.split(" ").get(0)			
-		}
-		call{
-			newFamily.mother = newMotherMember
-			newMotherMember.familyMother = newFamily
-			familiesRegister.families += newFamily
-		}
-		add correspondence between newMotherPerson and newMotherMember
-		add correspondence between newMotherPerson and newFamily		
+		call familiesRegister.families += newFamily
+		call createMotherInExistingMatchingFamily(newMotherPerson, newFamily)
 	}
 }
 /* Try to insert the new mother in a matching family which already has a mother.
@@ -548,21 +512,21 @@ routine createMotherInNewFamily(persons::Female newMotherPerson){
  * 	B) Replace mother
  * 	C) Move new mother to a new family
  */
-routine tryCreateMotherInMatchingFamily_WithMother(persons::Female newMother, families::Family family){
-	action{	
-		call{
+routine tryCreateMotherInMatchingFamily_WithMother(persons::Female newMother, families::Family family) {
+	action {	
+		call {
 			// Let user select how to proceed concerning the different lastnames.
-			var String differentLastnameMessage = "The selected family (" + family.lastName + ") already has a mother, named " 
+			var String existingMotherMessage = "The selected family (" + family.lastName + ") already has a mother, named " 
 				+ family.mother.firstName + ". Please choose how to continue."				
-			var List<String> differentLastnameOptions = #[
+			var List<String> existingMotherOptions = #[
 				"abort and revert all changes",
 				"continue and replace the existing mother",			
 				"create a new family " + newMother.fullName.split(" ").get(1) + " with " + newMother.fullName + " as mother"
 			]
-			val int differentLastnameSelection = userInteractor.singleSelectionDialogBuilder.message(differentLastnameMessage)
-			.choices(differentLastnameOptions).windowModality(WindowModality.MODAL).startInteraction()
+			val int existingMotherSelection = userInteractor.singleSelectionDialogBuilder.message(existingMotherMessage)
+			.choices(existingMotherOptions).windowModality(WindowModality.MODAL).startInteraction()
 			
-			switch(differentLastnameSelection) {
+			switch(existingMotherSelection) {
 				case 0: {
 					discardNewPerson(newMother)
 				}
@@ -578,41 +542,26 @@ routine tryCreateMotherInMatchingFamily_WithMother(persons::Female newMother, fa
 }
 /* Family does not have a mother yet -> simply insert, lastnames already match.
  */
-routine createMotherInExistingMatchingFamily(persons::Female newMotherPerson, families::Family family){
-	action{
+routine createMotherInExistingMatchingFamily(persons::Female newMotherPerson, families::Family family) {
+	action {
 		val newMotherMember = create families::Member and initialize {
 			newMotherMember.firstName = newMotherPerson.fullName.split(" ").get(0)			
 		}
-		call {
-			family.mother = newMotherMember
-			newMotherMember.familyMother = family
-		}
+		call family.mother = newMotherMember
 		add correspondence between newMotherPerson and newMotherMember
 		add correspondence between newMotherPerson and family				
 	}
 } 
-/* Family does already have a mother -> in this case replace
- * 	1) delete old mother-member and old mother-person
- * 	2) add new mother-member
- * 	3) add correspondences
+/* Family does already have a mother -> replace
+ * == delete currently existing mother and call insertion in family without mother
  */
 routine replaceMotherInExistingMatchingFamily(persons::Female newMotherPerson, families::Family family) {
 	match {
 		val oldMotherPerson = retrieve persons::Female corresponding to family.mother
 	}
 	action {
-		val newMotherMember = create families::Member and initialize {
-			newMotherMember.firstName = newMotherPerson.fullName.split(" ").get(0)
-		}
 		delete oldMotherPerson
-		call {
-			family.mother.familyMother = null
-			family.mother = null			
-			family.mother = newMotherMember
-			newMotherMember.familyMother = family			
-		}
-		add correspondence between newMotherPerson and newMotherMember
-		add correspondence between newMotherPerson and family	
+		call createMotherInExistingMatchingFamily(newMotherPerson, family)	
 	}
 }
 
@@ -729,7 +678,7 @@ routine tryCreateMotherInDifferentlyNamedFamily_WithMother(persons::Female newMo
 /* The user decided what is supposed to happen. This routine encapsulates 
  * the decision tree if the user decided to create a daughter.
  */ 
-routine evaluateFamilyDecisionForNewDaughter(persons::Female newDaughter, families::Family chosenFamily) {
+routine callCorrectRoutineForNewDaughter(persons::Female newDaughter, families::Family chosenFamily) {
 	action {
 		call {	
 			if (chosenFamily === null) {
@@ -756,7 +705,6 @@ routine createDaughterInExistingMatchingFamily(persons::Female newDaughterPerson
 		}
 		call {
 			family.daughters += newDaughterMember
-			newDaughterMember.familyDaughter = family
 		}
 		add correspondence between newDaughterPerson and newDaughterMember
 		add correspondence between newDaughterPerson and family				
@@ -764,17 +712,15 @@ routine createDaughterInExistingMatchingFamily(persons::Female newDaughterPerson
 }
 /* Create new Family beforhand, then just call "createDaughterInExistingMatchingFamily"
  */
-routine createDaughterInNewFamily(persons::Female newDaughterPerson){
-	match{
+routine createDaughterInNewFamily(persons::Female newDaughterPerson) {
+	match {
 		val familiesRegister = retrieve families::FamilyRegister corresponding to newDaughterPerson.eContainer
 	}
-	action{	
-		val newFamily = create families::Family and initialize{
+	action {	
+		val newFamily = create families::Family and initialize {
 			newFamily.lastName = newDaughterPerson.fullName.split(" ").get(1)
 		}
-		call{
-			familiesRegister.families += newFamily
-		}
+		call familiesRegister.families += newFamily
 		call createDaughterInExistingMatchingFamily(newDaughterPerson, newFamily)		
 	}
 }
@@ -835,10 +781,10 @@ routine changeNames(persons::Person person) {
 		val family = retrieve families::Family corresponding to person
 		val member = retrieve families::Member corresponding to person
 	}
-	action{
+	action {
 		call {
 			val String newLastname = person.fullName.split(" ").get(1)
-			if(!newLastname.equals(family.lastName)){
+			if(!newLastname.equals(family.lastName)) {
 				changeFamilyLastname(family, newLastname)				
 			}
 		}
@@ -850,15 +796,15 @@ routine changeNames(persons::Person person) {
 /* Whenever the family lastname has to be changed in advance to then continue with the intended manipulation.
  * Changes lastnames for all {@link Person}s in the affected {@link Family}.
  */
-routine changeFamilyLastname(families::Family family, String newLastname){
-	match{
+routine changeFamilyLastname(families::Family family, String newLastname) {
+	match {
 		val persons = retrieve many persons::Person corresponding to family
 	}
 	action {
 		update family {
 			family.lastName = newLastname
 		}
-		call{
+		call {
 			persons.forEach[it.fullName = it.fullName.split(" ").get(0) + " " + newLastname]
 		}
 	}
@@ -871,12 +817,12 @@ reaction DeletePerson {
 }
 /* Delete corresponding {@link Member}.
  */
-routine deleteMember(persons::Person person){
-	match{
+routine deleteMember(persons::Person person) {
+	match {
 		val member = retrieve families::Member corresponding to person
 		val family = retrieve families::Family corresponding to person
 	}	
-	action{
+	action {
 		remove correspondence between person and member
 		remove correspondence between person and family
 		delete member
@@ -885,23 +831,23 @@ routine deleteMember(persons::Person person){
 }
 /* If deleted {@link Member} was the last one in its {@link Family}, delete family too.
  */ 
-routine deleteFamilyIfLastMemberWasDeleted(families::Family family){
-	match{
+routine deleteFamilyIfLastMemberWasDeleted(families::Family family) {
+	match {
 		check family.father === null
 		check family.mother === null
-		check family.sons === null || family.sons.size == 0
-		check family.daughters === null || family.daughters.size == 0
+		check family.sons.empty
+		check family.daughters.empty
 	}
-	action{
+	action {
 		delete family
 	}
 }
 /* Whenever a manipulation of the person model is aborted and changes are discarded,
  * this routine deletes the already inserted {@link Persons} from the {@link PersonRegister}.
  */ 
-routine discardNewPerson(persons::Person newPerson){
-	action{
-		call{
+routine discardNewPerson(persons::Person newPerson) {
+	action {
+		call {
 			var PersonRegister personRegister = newPerson.eContainer as PersonRegister
 			personRegister.persons.^remove(newPerson)			
 		}		
