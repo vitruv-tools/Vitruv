@@ -56,7 +56,9 @@ import vavemodel.Configuration;
 import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
+@Disabled // does not work anymore as it uses test view
 public class VaveFamiliesPersonsTest {
+
 	private static final String FAMILY_NAME = "Mustermann";
 	private static final String FIRST_NAME_FATHER = "Max";
 	private static final String FIRST_NAME_SON = "Sohn";

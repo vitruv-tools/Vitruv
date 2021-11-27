@@ -69,7 +69,6 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	private InteractionResultProvider irp;
 
 	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws Exception {
-
 		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
 			// load
 			this.resource = new XMIResourceImpl();
@@ -99,10 +98,6 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		this.irp = irp;
 	}
 
-	public void init(Path storageFolder) throws IOException {
-
-	}
-
 	private void save() throws IOException {
 		this.resource.save(Collections.EMPTY_MAP);
 	}
@@ -112,24 +107,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		return this.system;
 	}
 
-	public static <K, V> K getKey(Map<K, V> map, V value) {
-		for (Map.Entry<K, V> entry : map.entrySet()) {
-			if (value.equals(entry.getValue())) {
-				return entry.getKey();
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Externalizes a view on the product based on a provided configuration.
-	 * 
-	 * @param storageFolder A path to which all models are stored
-	 * @param configuration The configuration of the product
-	 * @return The Virtual Product Model which consists of one or multiple dependent models representing the configuration
-	 * @throws Exception
-	 */
-	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws Exception {
+	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws IOException {
 
 		// FIRST WE DO THE VITRUV STUFF
 
@@ -143,10 +121,10 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(this.irp);
 
 		if (storageFolder == null)
-			throw new Exception("No storage folder was configured!");
+			throw new IllegalArgumentException("No storage folder was configured!");
 
 		if (userInteractor == null)
-			throw new Exception("No user interactor was configured!");
+			throw new IllegalArgumentException("No user interactor was configured!");
 
 		final ChangePropagationSpecificationRepository changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications);
 		for (final ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
@@ -162,9 +140,9 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 					}
 				}
 				if (!containsTargetDomain)
-					throw new Exception("The change propagation specification’s source domain ‹" + changePropagationSpecification.getSourceDomain() + "› has not been configured: " + changePropagationSpecification);
+					throw new IllegalArgumentException("The change propagation specification’s source domain ‹" + changePropagationSpecification.getSourceDomain() + "› has not been configured: " + changePropagationSpecification);
 				if (!containsSourceDomain)
-					throw new Exception("The change propagation specification’s target domain ‹" + changePropagationSpecification.getTargetDomain() + "› has not been configured: " + changePropagationSpecification);
+					throw new IllegalArgumentException("The change propagation specification’s target domain ‹" + changePropagationSpecification.getTargetDomain() + "› has not been configured: " + changePropagationSpecification);
 			}
 		}
 
@@ -191,9 +169,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		// register jar files
 		System.out.println("REGISTERING JAR FILES");
 		JavaClasspath cp = dummyCP; // JavaClasspath.get(dummyResourceSet);
-		// cp.registerClassifierJar(URI.createFileURI(Paths.get("C:\\FZI\\argouml\\jars\\rt.jar").toString()));
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\rt.jar").toAbsolutePath().toString()));
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jmi.jar").toAbsolutePath().toString()));
+		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jamopp\\rt.jar").toAbsolutePath().toString()));
+		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\argouml\\jmi.jar").toAbsolutePath().toString()));
 		List<Path> jarFiles = new ArrayList<>();
 		// Path[] libraryFolders = new Path[] { location };
 		Path[] libraryFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\") };
@@ -241,14 +218,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		return vsum;
 	}
 
-	/**
-	 * Internalizes the changes performed on a view of the product into the unified system based on a manually provided expression. A new system revision is added and linked to the current system revision, new feature revisions are created for the features appearing in the expression and linked to current revisions of that features, and new deltas are added to the mapping based on the expression.
-	 * 
-	 * @param virtualProductModel The virtual product model that has been externalized before
-	 * @param expression          The expression (currently a conjunction of variables (features) to which the recorded deltas should be mapped and which is provided manually by the user)
-	 * @throws Exception
-	 */
-	public void internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws Exception {
+	public void internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws IOException {
 		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
 
 		// NOTE: the following could be achieved with an OCL constraint
@@ -390,10 +360,10 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 			// set fragments (i.e., deltas recorded in product) of mapping
 			for (VitruviusChange change : virtualProductModel.getDeltas()) {
+				VitruviusChange unresolvedChange = change.unresolve();
 				DeltaModule dm = VavemodelFactory.eINSTANCE.createDeltaModule();
-//				System.out.println("DELTA: " + change);
-				for (EChange echange : change.getEChanges()) {
-					dm.getChange().add(EcoreUtil.copy(echange));
+				for (EChange echange : unresolvedChange.getEChanges()) {
+					dm.getChange().add(EcoreUtil.copy(echange)); // NOTE: this copy operation might be unnecessary
 				}
 				this.system.getDeltamodule().add(dm);
 				mapping.getDeltamodule().add(dm);
@@ -403,21 +373,12 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			virtualProductModel.clearDeltas();
 		}
 
-		// save us
-//		this.save();
+		this.save();
 	}
 
-	/**
-	 * Externalizes a view on the domain of the unified system based on a system revision.
-	 * 
-	 * @param system The unified system
-	 * @param sysrev The system revision as point in time for which the domain view should be externalized
-	 * @return The domain of the unified system in the form of a feature model
-	 * @throws Exception
-	 */
-	public FeatureModel externalizeDomain(SystemRevision sysrev) throws Exception {
+	public FeatureModel externalizeDomain(SystemRevision sysrev) {
 		if (sysrev != null && sysrev.getEnablesoptions() == null) {
-			throw new Exception("There are no enabled options by that system revision.");
+			throw new IllegalArgumentException("There are no enabled options by that system revision.");
 		}
 		if (sysrev == null) {
 			return new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
@@ -474,8 +435,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		return featuremodel;
 	}
 
-	// NOTE: fm stores (copy of) root node, ctcs, sysrev
-	public void internalizeDomain(FeatureModel fm) throws Exception {
+	public void internalizeDomain(FeatureModel fm) throws IOException {
+		// NOTE: fm stores (copy of) root node, ctcs, sysrev
 		if (fm.getSysrev() == null) { // if we create the very first system revision, we don't need to do a diff
 			// create a new system revision and link it to predecessor system revision
 			SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
@@ -492,7 +453,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			Set<Feature> features = fm.getFeatureOptions().stream().filter(p -> p instanceof Feature).map(v -> (Feature) v).collect(Collectors.toSet());
 			this.system.getFeature().addAll(features);
 			if (features.size() != fm.getFeatureOptions().size())
-				throw new Exception("It is now allowed to add new feature revisions to the domain manually!");
+				throw new IllegalArgumentException("It is now allowed to add new feature revisions to the domain manually!");
 			this.system.getConstraint().addAll(fm.getCrossTreeConstraints());
 		}
 
@@ -519,14 +480,14 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 					// it must have existed before!
 					Optional<FeatureRevision> oldFR = fmAtOldSysrev.getFeatureOptions().stream().filter(p -> p instanceof FeatureRevision && ((Feature) p.eContainer()).getName().equals(((Feature) fo.eContainer()).getName()) && ((FeatureRevision) p).getRevisionID() == ((FeatureRevision) fo).getRevisionID()).map(v -> (FeatureRevision) v).findAny();
 					if (oldFR.isEmpty())
-						throw new Exception("It is now allowed to add new feature revisions to the domain manually or use feature revisions that were not part of the previously externalized feature model!");
+						throw new IllegalArgumentException("It is now allowed to add new feature revisions to the domain manually or use feature revisions that were not part of the previously externalized feature model!");
 					// retrieve instances of feature and feature revision from unified system
 					Optional<Feature> containingF = this.system.getFeature().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(((Feature) oldFR.get().eContainer()).getName())).map(v -> (Feature) v).findAny();
 					if (containingF.isEmpty())
-						throw new Exception("Feature does not exist in system!");
+						throw new IllegalArgumentException("Feature does not exist in system!");
 					Optional<FeatureRevision> containingFR = containingF.get().getFeaturerevision().stream().filter(p -> p.getRevisionID() == ((FeatureRevision) fo).getRevisionID()).findAny();
 					if (containingFR.isEmpty())
-						throw new Exception("Feature revision does not exist in feature!");
+						throw new IllegalArgumentException("Feature revision does not exist in feature!");
 					// enable it by the new system revision
 					newsysrev.getEnablesoptions().add(containingF.get());
 					newsysrev.getEnablesoptions().add(containingFR.get());
@@ -550,7 +511,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 						// retrieve containing feature
 						Optional<Feature> containingF = this.system.getFeature().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(oldF.get().getName())).map(v -> (Feature) v).findAny();
 						if (containingF.isEmpty())
-							throw new Exception("Feature does not exist in system: " + oldF.get().getName());
+							throw new IllegalArgumentException("Feature does not exist in system: " + oldF.get().getName());
 						// enable it by the new system revision
 						newsysrev.getEnablesoptions().add(containingF.get());
 						featureNameMap.put(containingF.get().getName(), containingF.get());
@@ -566,13 +527,13 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 					// retrieve containing feature instance from unified system
 					Optional<Feature> containingF = this.system.getFeature().stream().filter(p -> p.getName().equals(((Feature) oldTC.get().eContainer()).getName())).findAny();
 					if (containingF.isEmpty()) {
-						throw new Exception("The containing feature of the constraint does, for some reason, not exist in the unified system!");
+						throw new IllegalStateException("The containing feature of the constraint does, for some reason, not exist in the unified system!");
 					} else {
 						// retrieve instance of tree constraint from feature in the unified system
 						Optional<TreeConstraint> containedTC = containingF.get().getTreeconstraint().stream().filter(p -> p.getType() == tc.getType() && p.getFeature().size() == tc.getFeature().size() && p.getFeature().stream().allMatch(p2 -> tc.getFeature().stream().filter(p3 -> p3.getName().equals(p2.getName())).findAny().isPresent())).findAny();
 						// if the tree constraint is not a child of the same feature in the unified system, it means that it was moved as a child of another feature. in this case we also create a new instance of the constraint.
 						if (containedTC.isEmpty()) {
-							throw new Exception("The constraint existed in the externalized feature model but, for some reason, does not exist as a child of the same feature in the unified system!");
+							throw new IllegalStateException("The constraint existed in the externalized feature model but, for some reason, does not exist as a child of the same feature in the unified system!");
 						}
 						// the tree constraint was not modified in the externalized domain, the containing feature was found in the system, and the containing feature contained the same constraint (this case should always happen!)
 						else {
@@ -586,12 +547,12 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 					newTC.setType(tc.getType());
 					Feature containedParentFeature = featureNameMap.get(((Feature) tc.eContainer()).getName());
 					if (containedParentFeature == null)
-						throw new Exception("Parent feature should have been contained in internalized FM but was not!");
+						throw new IllegalArgumentException("Parent feature should have been contained in internalized FM but was not!");
 					containedParentFeature.getTreeconstraint().add(newTC);
 					for (Feature childFeature : tc.getFeature()) {
 						Feature containedChildFeature = featureNameMap.get(childFeature.getName());
 						if (containedChildFeature == null)
-							throw new Exception("Child feature should have been contained in internalized FM but was not!");
+							throw new IllegalArgumentException("Child feature should have been contained in internalized FM but was not!");
 						newTC.getFeature().add(containedChildFeature);
 					}
 					newsysrev.getEnablesconstraints().add(newTC);
@@ -604,6 +565,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			}
 		}
 
+		this.save();
 	}
 
 }

@@ -30,7 +30,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -77,7 +76,6 @@ import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
-@Disabled // these tests need to be fixed. they do not work anymore since feature containment in unified system was changed.
 public class VaveTest {
 
 	Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
@@ -425,7 +423,6 @@ public class VaveTest {
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("vave", new XMIResourceFactoryImpl());
 
-		vaveSaved.init(this.projectFolder);
 		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
@@ -458,7 +455,6 @@ public class VaveTest {
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		VirtualVaVeModel vaveLoaded = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
-		vaveLoaded.init(this.projectFolder);
 
 		config.getOption().clear();
 		config.getOption().add(vaveLoaded.getSystem().getSystemrevision().get(0));

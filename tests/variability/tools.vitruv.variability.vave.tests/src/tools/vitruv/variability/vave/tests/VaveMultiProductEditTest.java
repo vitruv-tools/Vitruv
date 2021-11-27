@@ -159,7 +159,7 @@ public class VaveMultiProductEditTest {
 		Assert.assertEquals(vmp1extResource.getContents().size(), 2);
 		Assert.assertEquals(monitoredResource2.getContents().size(), 2);
 		Assert.assertEquals(vmp1ext4Resource.getContents().size(), 1);
-		vmp1.propagateChange(recordedChange);
+		vmp1.propagateChange(recordedChange2);
 		// assert that the modified view is equal to the model instance in vmp1 into which the changes to the view were propagated
 		Assert.assertEquals(vmp1Resource.getContents().size(), 2);
 		Assert.assertEquals(vmp1extResource.getContents().size(), 2);

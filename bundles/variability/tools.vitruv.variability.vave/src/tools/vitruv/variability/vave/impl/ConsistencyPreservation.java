@@ -71,7 +71,7 @@ public class ConsistencyPreservation {
 				}
 				solver.addClause(new VecInt(parentchild.stream().mapToInt(val -> val).toArray()));
 				solver.addClause(new VecInt(siblings.stream().mapToInt(val -> val).toArray()));
-			} else if (tc.getType() == GroupType.XOR) { //!D v !E // mandatory or alternative group
+			} else if (tc.getType() == GroupType.XOR) { // !D v !E // mandatory or alternative group
 				ArrayList<Integer> parentchild = new ArrayList<>();
 				ArrayList<Integer> siblings = new ArrayList<>();
 				parentchild.add(-featureOptionToIntMap.get(tc.eContainer()));
@@ -81,7 +81,7 @@ public class ConsistencyPreservation {
 				}
 				solver.addClause(new VecInt(parentchild.stream().mapToInt(val -> val).toArray()));
 				solver.addClause(new VecInt(siblings.stream().mapToInt(val -> val).toArray()));
-				
+
 			} else if (tc.getType() == GroupType.XORNONE) { // at most one, no parent-child relation required
 				ArrayList<Integer> siblings = new ArrayList<>();
 				for (Feature feature : tc.getFeature()) {

@@ -13,8 +13,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import allElementTypes.NonRoot;
-import allElementTypes.Root;
 import allElementTypes.ValueBased;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
 import tools.vitruv.framework.change.description.TransactionalChange;
@@ -39,8 +37,8 @@ import vavemodel.FeatureOption;
 import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
-public class VaveConsistencyTest {
-	
+public class VaveType5ConsistencyTest {
+
 	private URI createTestModelResourceUri(final String suffix, Path projectFolder) {
 		return URI.createFileURI(projectFolder.resolve((("root" + suffix) + ".allElementTypes")).toString());
 	}
@@ -57,15 +55,17 @@ public class VaveConsistencyTest {
 		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 		return vave;
 	}
-	
+
 	@Test
 	public void InternalizationOptionalDeltaTestMetamodelConform(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 
-		// Feature a, Feature b
+		// Feature A
 		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
 		vave.getSystem().getFeature().add(featureA);
+
+		// Feature B
 		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
 		featureB.setName("featureB");
 		vave.getSystem().getFeature().add(featureB);
@@ -111,7 +111,7 @@ public class VaveConsistencyTest {
 			valueBasedA.setValue("elementA");
 			ValueBased root = (ValueBased) monitoredResource.getContents().get(0);
 			root.getChildren().add(valueBasedA);
-			monitoredResource.getContents().add(root);
+			// monitoredResource.getContents().add(root);
 			final TransactionalChange recordedChange = changeRecorder.endRecording();
 			// propagate recorded changes into vmp1
 			vmp0ext.propagateChange(recordedChange);
@@ -153,36 +153,34 @@ public class VaveConsistencyTest {
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 3 and feature revision 1 of feature B
 
 		assertEquals(3, vave.getSystem().getDeltamodule().size());
-		
+
 		// externalize product with feature A and B
 		config.getOption().clear();
 		config.getOption().add(vave.getSystem().getSystemrevision().get(2));
-		config.getOption().add(featureA.getFeaturerevision().get(1));
+		config.getOption().add(featureA.getFeaturerevision().get(0));
 		config.getOption().add(featureB.getFeaturerevision().get(0));
 		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config);
-		
+
 		// add dependency on solution space between feature A and B that were independent before both on problem and solution space
 		final ResourceSet resourceSet3 = vmp2ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
 		final ChangeRecorder changeRecorder3 = new ChangeRecorder(resourceSet3);
 		changeRecorder3.addToRecording(resourceSet3);
 		changeRecorder3.beginRecording();
 		final Resource monitoredResource3 = vmp2ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource();
-		
-		ValueBased valueBasedA = (ValueBased) monitoredResource3.getContents().get(1);
-		ValueBased valueBasedB = (ValueBased) monitoredResource3.getContents().get(2);
+
+		ValueBased valueBasedA = (ValueBased) monitoredResource3.getContents().get(0).eContents().get(0);
+		ValueBased valueBasedB = (ValueBased) monitoredResource3.getContents().get(0).eContents().get(1);
 		valueBasedA.getReferenced().add(valueBasedB);
-		
+
 		final TransactionalChange recordedChange3 = changeRecorder3.endRecording();
 		vmp1ext.propagateChange(recordedChange3);
-		
-		// internalize product with features A and B. Feature a now references references feature b.
+
+		// internalize product with features A and B. Feature a now references feature b.
 //		vavemodel.Variable<FeatureOption> variableAB = VavemodelFactory.eINSTANCE.createVariable();
 //		variableAB.setOption(featureAB);
 		vavemodel.Expression<FeatureOption> expr = VavemodelFactory.eINSTANCE.createConjunction();
-		
 
 		vave.internalizeChanges(vmp2ext, variableB); // system revision 3 and feature revision 1 of feature B
-
 	}
 
 }
