@@ -40,7 +40,7 @@ package class AtomicEChangeResolver {
 		if (idResolver.hasEObject(change.affectedEObjectID)) {
 			change.affectedEObject = idResolver.getEObject(change.affectedEObjectID) as A		
 		}
-		change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
+//		change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
 	}
 
 	def private EObject resolveObject(String valueId) {
@@ -69,7 +69,7 @@ package class AtomicEChangeResolver {
 				val newObject = EcoreUtil.create(change.affectedEObjectType) as A
 				//EcoreUtil.setID(newObject, change.idAttributeValue)
 				change.affectedEObject = newObject
-				val id = idResolver.getAndUpdateId(newObject, change.affectedEObjectID)
+				val id = idResolver.setAndGetId(newObject, change.affectedEObjectID)
 				checkState(id == change.affectedEObjectID, "generated ID %s does not match the original ID %s on element creation", id, change.affectedEObjectID)
 			}
 		} else {
@@ -141,7 +141,7 @@ package class AtomicEChangeResolver {
 	def package dispatch void resolve(InsertEReference<EObject, EObject> change) {
 		change.resolveFeatureEChange()
 		change.newValue = change.newValueID.resolveObject()
-		change.newValue.checkNotNullAndNotProxy(change, "new value")
+//		change.newValue.checkNotNullAndNotProxy(change, "new value")
 	}
 
 	/**
@@ -151,7 +151,7 @@ package class AtomicEChangeResolver {
 	def package dispatch void resolve(RemoveEReference<EObject, EObject> change) {
 		change.resolveFeatureEChange()		
 		change.oldValue = change.oldValueID.resolveObject()
-		change.oldValue.checkNotNullAndNotProxy(change, "old value")
+//		change.oldValue.checkNotNullAndNotProxy(change, "old value")
 	}
 
 	/**
@@ -173,7 +173,7 @@ package class AtomicEChangeResolver {
 	def package dispatch void resolve(InsertRootEObject<EObject> change) {
 		change.resolveRootEChange()
 		change.newValue = change.resolveRootValue(change.newValue, false)
-		change.newValue.checkNotNullAndNotProxy(change, "new value")
+//		change.newValue.checkNotNullAndNotProxy(change, "new value")
 	}
 
 	/**
@@ -183,7 +183,7 @@ package class AtomicEChangeResolver {
 	def package dispatch void resolve(RemoveRootEObject<EObject> change) {
 		change.resolveRootEChange()
 		change.oldValue = change.resolveRootValue(change.oldValue, true)
-		change.oldValue.checkNotNullAndNotProxy(change, "old value")
+//		change.oldValue.checkNotNullAndNotProxy(change, "old value")
 	}
 	
 	/**

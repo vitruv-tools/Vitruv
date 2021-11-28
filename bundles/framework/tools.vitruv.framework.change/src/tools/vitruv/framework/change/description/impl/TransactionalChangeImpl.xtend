@@ -81,35 +81,20 @@ class TransactionalChangeImpl implements TransactionalChange {
 			while (changeIt.hasNext) {
 				val eChange = changeIt.next
 				
-//				var resolved = false
-//				val resolvedChange = 
-				try {
-					val resolvedChange = eChange.resolveBefore(idResolver)
-//					resolved = true
+				val resolvedChange = eChange.resolveBefore(idResolver)
+				if (resolvedChange.isResolved) {
 					resolvedChange.applyForward(idResolver)
 					resolvedChanges.add(resolvedChange)
 					changeIt.remove
-//					resolvedChange
-				} catch (Exception e) {
-					// ignore
-					//System.out.println(e.message)
-					e.printStackTrace
-//					null
 				}
-//				if (resolved) {
-//					resolvedChange.applyForward(idResolver)
-//					resolvedChanges.add(resolvedChange)
-//					changeIt.remove
-//				}
 			}
 		}
 		if (!remainingChanges.isEmpty) {
 			//throw new IllegalStateException("Not all changes could be resolved and applied! Remaining: " + remainingChanges.size)
 			// NOTE: instead of throwing an exception we issue warnings so that we can deal with temporary inconsistencies (i.e., conflicting deltas) in views due to, e.g., not yet known/fixed feature interactions.
 			System.out.println("WARNING: The following " + remainingChanges.size + " changes could not be resolved and were not applied!")
-			for (EChange change : remainingChanges) {
+			for (EChange change : remainingChanges)
 				System.out.println("CHANGE: " + change)
-			}
 		}
 		return new TransactionalChangeImpl(resolvedChanges)
 		

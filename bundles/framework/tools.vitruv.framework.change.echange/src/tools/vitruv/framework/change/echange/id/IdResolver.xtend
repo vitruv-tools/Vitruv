@@ -15,7 +15,10 @@ interface IdResolver {
 	 */
 	def boolean hasEObject(String id)
 
-	def String getAndUpdateId(EObject eObject, String id)
+	/**
+	 * Sets and returns the ID of the given {@link EObject} and updates the stored ID with the given ID value.
+	 */
+	def String setAndGetId(EObject eObject, String id)
 
 	/**
 	 * Calculates and returns the ID of the given {@link EObject} and updates the stored ID.
@@ -53,7 +56,7 @@ interface IdResolver {
 		return new IdResolverImpl(resourceSet)
 	}
 	
-	public static def IdResolver get(ResourceSet resourceSet) {
+	static def IdResolver get(ResourceSet resourceSet) {
 		for (Adapter adapter : resourceSet.eAdapters()) {
 			if (adapter instanceof IdResolver) {
 				return adapter as IdResolver

@@ -152,10 +152,6 @@ class ChangeRecorder implements AutoCloseable {
 		
 		// cleanup elements outside of resource set and update object ids in changes
 		val oldToNewIdsMap = idResolver.cleanupOutsideElements();
-//		for (Map.Entry<String, String> entry : oldToNewIdsMap.entrySet()) {
-//			System.out.println("MAPPING: " + entry.getKey() + " / " + idResolver.getEObject(entry.getValue()));
-//		}
-		System.out.println("REPLACING OLD IDS IN CHANGES WITH NEW IDS");
 		for (EChange change : resultChanges) {
 			if (change instanceof EObjectAddedEChange) {
 				val oldId = (change as EObjectAddedEChange).newValueID;
