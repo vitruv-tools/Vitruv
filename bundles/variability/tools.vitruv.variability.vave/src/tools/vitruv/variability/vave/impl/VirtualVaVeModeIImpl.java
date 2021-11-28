@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.emftext.language.java.JavaClasspath;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
@@ -39,6 +37,7 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.variability.vave.VirtualProductModel;
+import tools.vitruv.variability.vave.VirtualProductModelInitializer;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import vavemodel.BinaryExpression;
 import vavemodel.Configuration;
@@ -67,8 +66,13 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	private Resource resource;
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 	private InteractionResultProvider irp;
+	private VirtualProductModelInitializer vpmi = null;
 
-	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws Exception {
+	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws IOException {
+		this(domains, changePropagationSpecifications, irp, storageFolder, null);
+	}
+
+	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder, VirtualProductModelInitializer vpmi) throws IOException {
 		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
 			// load
 			this.resource = new XMIResourceImpl();
@@ -96,6 +100,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		this.changePropagationSpecifications.addAll(changePropagationSpecifications);
 
 		this.irp = irp;
+
+		this.vpmi = vpmi;
 	}
 
 	private void save() throws IOException {
@@ -157,36 +163,8 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		vsum.loadExistingModels();
 		// VirtualModelManager.getInstance().putVirtualModel(vsum);
 
-		// THE FOLLOWING IS A TEMPORARY WORKAROUND FOR ARGOUML
-
-		ResourceSet dummyResourceSet = vsum.getResourceSet();
-		dummyResourceSet.getLoadOptions().put("DISABLE_LAYOUT_INFORMATION_RECORDING", Boolean.TRUE);
-		dummyResourceSet.getLoadOptions().put("DISABLE_LOCATION_MAP", Boolean.TRUE);
-		dummyResourceSet.getLoadOptions().put(JavaClasspath.OPTION_USE_LOCAL_CLASSPATH, Boolean.TRUE);
-		dummyResourceSet.getLoadOptions().put(JavaClasspath.OPTION_REGISTER_STD_LIB, Boolean.FALSE);
-		JavaClasspath dummyCP = JavaClasspath.get(dummyResourceSet, JavaClasspath.getInitializers());
-
-		// register jar files
-		System.out.println("REGISTERING JAR FILES");
-		JavaClasspath cp = dummyCP; // JavaClasspath.get(dummyResourceSet);
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\jamopp\\rt.jar").toAbsolutePath().toString()));
-		cp.registerClassifierJar(URI.createFileURI(Paths.get("resources\\argouml\\jmi.jar").toAbsolutePath().toString()));
-		List<Path> jarFiles = new ArrayList<>();
-		// Path[] libraryFolders = new Path[] { location };
-		Path[] libraryFolders = new Path[] { Paths.get("C:\\FZI\\git\\argouml-workaround\\src\\") };
-		for (Path libraryFolder : libraryFolders) {
-			Files.walk(libraryFolder).forEach(f -> {
-				if (Files.isRegularFile(f) && f.getFileName().toString().endsWith(".jar")) {
-					jarFiles.add(f);
-					System.out.println("ADDED JAR FILE: " + f);
-				}
-			});
-		}
-		for (Path jarFile : jarFiles) {
-			cp.registerClassifierJar(URI.createFileURI(jarFile.toString()));
-		}
-
-		// END WORKAROUND
+		if (this.vpmi != null)
+			this.vpmi.initialize(vsum);
 
 		// HERE STARTS THE VAVE STUFF
 
