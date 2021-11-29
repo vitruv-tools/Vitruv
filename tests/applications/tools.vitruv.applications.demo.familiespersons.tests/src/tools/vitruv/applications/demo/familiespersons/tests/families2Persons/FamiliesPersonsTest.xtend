@@ -443,57 +443,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	}
 
 	/**Tries to insert a new father into a {@link Family} which already has a father.
-	 * In this scenario the user decides to discard the changes. Therefore all changes
-	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister} 
-	 * should not be edited. The rest of the family stays the same as well.
+	 * The old father is replaced and moved to a new family with the same lastname.
 	 */
 	@Test
-	def void testInsertDadIfDadAlreadyExists_DiscardChanges() {
+	def void testInsertDadIfDadAlreadyExists() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
-		userInteraction.addNextSingleSelection(0)
-		FamilyRegister.from(FAMILIES_MODEL).propagate [
-			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
-			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
-		]
-		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
-		]
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, MOM11, SON11, DAU11]
-		]
-		assertCorrectFamilyRegister(expectedFamilyRegister)
-		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
-	}
-
-	/**Tries to insert a new father into a {@link Family} which already has a father.
-	 * In this scenario the user decides to replace the existing father. Therefore the
-	 * previous father will be deleted from the {@link FamilyRegister} and replaced by 
-	 * the new one. In the {@link PersonsRegister} the old {@link Male} should be either
-	 * deleted and replaced by a new and matching {@link Male} or the old one is renamed.
-	 * Currently, the the old {@link Male} is deleted and replaced by a new {@link Male}.
-	 * Here, one should mind the differences concerning the birthday attribute of the {@link Male}
-	 * in the {@link PersonRegister}. Renaming would keep the birthday
-	 * which is already covered by a previous test case.
-	 * The rest of the family stays the same.
-	 */
-	@Test
-	def void testInsertDadIfDadAlreadyExists_ReplaceExisting() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
-		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
-		userInteraction.addNextSingleSelection(1)
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
 			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
@@ -507,44 +464,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
-		]
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD21, MOM11, SON11, DAU11]
-		]
-		assertCorrectFamilyRegister(expectedFamilyRegister)
-		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
-	}
-
-	/**Tries to insert a new father into a {@link Family} which already has a father.
-	 * In this scenario the user decides to not replace the existing father but to insert
-	 * the new father into a new family. This family will receive the same lastname but
-	 * will not contain any of the other {@link Member}s from the old family, nor copies of them.
-	 * Therefore changes concerning the old {@link Family} will be reverted.
-	 */
-	@Test
-	def void testInsertDadIfDadAlreadyExists_MoveToNewFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
-		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
-		userInteraction.addNextSingleSelection(2)
-		FamilyRegister.from(FAMILIES_MODEL).propagate [
-			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
-			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
-		]
-		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
 				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
@@ -556,57 +478,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	}
 
 	/**Tries to insert a new mother into a {@link Family} which already has a mother.
-	 * In this scenario the user decides to discard the changes. Therefore all changes
-	 * in the {@link FamilyRegister} should be reverted and the {@link PersonsRegister} 
-	 * should not be edited. The rest of the family stays the same as well.
+	 * The old mother is replaced and moved to a new family with the same lastname.
 	 */
 	@Test
-	def void testInsertMomIfMomAlreadyExists_DiscardChanges() {
+	def void testInsertMomIfMomAlreadyExists() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyBeforeTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
-		userInteraction.addNextSingleSelection(0)
-		FamilyRegister.from(FAMILIES_MODEL).propagate [
-			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
-			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
-		]
-		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
-		]
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, MOM11, SON11, DAU11]
-		]
-		assertCorrectFamilyRegister(expectedFamilyRegister)
-		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
-	}
-
-	/**Tries to insert a new mother into a {@link Family} which already has a mother.
-	 * In this scenario the user decides to replace the existing mother. Therefore the
-	 * previous mother will be deleted from the {@link FamilyRegister} and replaced by 
-	 * the new one. In the {@link PersonsRegister} the old {@link Female} should be either
-	 * deleted and replaced by a new and matching {@link Female} or the old one is renamed.
-	 * Currently, the the old {@link Female} is deleted and replaced by a new {@link Female}.
-	 * Here, one should mind the differences concerning the birthday attribute of the {@link Female}
-	 * in the {@link PersonRegister}. Renaming would keep the birthday
-	 * which is already covered by a previous test case.
-	 * The rest of the family stays the same.
-	 */
-	@Test
-	def void testInsertMomIfMomAlreadyExists_ReplaceExisting() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
-		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
-		userInteraction.addNextSingleSelection(1)
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
 			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
@@ -620,44 +499,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
-		]
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, MOM21, SON11, DAU11]
-		]
-		assertCorrectFamilyRegister(expectedFamilyRegister)
-		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
-	}
-
-	/**Tries to insert a new mother into a {@link Family} which already has a mother.
-	 * In this scenario the user decides to not replace the existing mother but to insert
-	 * the new mother into a new family. This family will receive the same lastname but
-	 * will not contain any of the other {@link Member}s from the old family, nor copies of them.
-	 * Therefore changes concerning the old {@link Family} will be reverted.
-	 */
-	@Test
-	def void testInsertMomIfMomAlreadyExists_MoveToNewFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
-		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
-		userInteraction.addNextSingleSelection(2)
-		FamilyRegister.from(FAMILIES_MODEL).propagate [
-			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
-			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
-		]
-		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
@@ -667,7 +511,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
-
+	
 	/**Deletes all {@link Family}s with matching lastname from the {@link FamilyRegister}.
 	 * All {@link Member}s which were contained in these families will be deleted together
 	 * with there corresponding {@link Person}s in the {@link PersonRegister} as well.
