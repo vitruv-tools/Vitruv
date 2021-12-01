@@ -27,22 +27,26 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.*
 /**Test to validate the transfer of changes from the PersonModel to the FamilyModel.
  * @author Dirk Neumann 
  */
-class PersonsToFamiliesTest extends VitruvApplicationTest { 
-	static val logger = Logger.getLogger(PersonsToFamiliesTest);	
+class PersonsToFamiliesTest extends VitruvApplicationTest {
+	static val logger = Logger.getLogger(PersonsToFamiliesTest)
+	TestInfo testInfo = null
 
-	// First Set of reused static strings
-	final static String LAST_NAME_1 = "Meier"
+	// First Set of reused static strings for the first names of the persons
 	final static String FIRST_DAD_1 = "Anton"
 	final static String FIRST_MOM_1 = "Berta"
 	final static String FIRST_SON_1 = "Chris"
 	final static String FIRST_DAU_1 = "Daria"
 
-	// Second Set of reused static strings
-	final static String LAST_NAME_2 = "Schulze"
+	// Second Set of reused static strings for the first names of the persons
 	final static String FIRST_DAD_2 = "Adam"
 	final static String FIRST_MOM_2 = "Birgit"
 	final static String FIRST_SON_2 = "Charles"
 	final static String FIRST_DAU_2 = "Daniela"
+
+	// Set of reused static strings for the last names of the persons	
+	final static String LAST_NAME_1 = "Meier"
+	final static String LAST_NAME_2 = "Schulze"
+	final static String LAST_NAME_3 = "Müller"
 
 	// Model Paths
 	final static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
@@ -51,14 +55,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Set the correct set of reations and routines for this test suite
 	 */
 	override protected getChangePropagationSpecifications() {
-		return #[new FamiliesToPersonsChangePropagationSpecification(), new PersonsToFamiliesChangePropagationSpecification()]
+		return #[new FamiliesToPersonsChangePropagationSpecification(),
+			new PersonsToFamiliesChangePropagationSpecification()]
 	}
 
 	/**Before each test a new {@link PersonRegister} is created as starting point.
 	 * This is checked by several assertions to ensure correct preconditions for the tests. 
 	 */
 	@BeforeEach
-	def void insertRegister() {
+	def void insertRegister(TestInfo testInfo) {
+		this.testInfo = testInfo
 		resourceAt(PERSONS_MODEL).propagate[contents += PersonsFactory.eINSTANCE.createPersonRegister]
 		assertThat(resourceAt(FAMILIES_MODEL), exists);
 		assertEquals(1, resourceAt(FAMILIES_MODEL).contents.size);
@@ -69,28 +75,28 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 
 	/**Check if the actual {@link FamilyRegister looks like the expected one.
 	 */
-	def void assertCorrectFamilyRegister(FamilyRegister expectedFamilyRegister){
+	def void assertCorrectFamilyRegister(FamilyRegister expectedFamilyRegister) {
 		val familyModel = resourceAt(FAMILIES_MODEL)
 		assertThat(familyModel, exists)
-		assertEquals(1, familyModel.contents.size)		
+		assertEquals(1, familyModel.contents.size)
 		val familyRegister = familyModel.contents.get(0)
 		assertThat(familyRegister, instanceOf(FamilyRegister))
 		val FamilyRegister castedFamilyRegister = familyRegister as FamilyRegister
 		assertThat(castedFamilyRegister, equalsDeeply(expectedFamilyRegister))
 	}
-	
+
 	/**Check if the actual {@link PersonRegister looks like the expected one.
 	 */
-	def void assertCorrectPersonRegister(PersonRegister expectedPersonRegister){
+	def void assertCorrectPersonRegister(PersonRegister expectedPersonRegister) {
 		val personModel = resourceAt(PERSONS_MODEL)
 		assertThat(personModel, exists)
-		assertEquals(1, personModel.contents.size)		
+		assertEquals(1, personModel.contents.size)
 		val personRegister = personModel.contents.get(0)
 		assertThat(personRegister, instanceOf(PersonRegister))
 		val PersonRegister castedPersonRegister = personRegister as PersonRegister
 		assertThat(castedPersonRegister, equalsDeeply(expectedPersonRegister))
 	}
-	
+
 	/**Create a {@link Family} that already contains a father for further testing.
 	 */
 	def void prepareFatherInNewFamily() {
@@ -113,10 +119,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
-	}	
+	}
+
 	/**Create a {@link Family} that already contains a son for further testing.
 	 */
-	def void prepareSonInNewFamily(){
+	def void prepareSonInNewFamily() {
 		userInteraction.addNextSingleSelection(1)
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
@@ -137,6 +144,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
+
 	/**Create a {@link Family} that already contains a mother for further testing.
 	 */
 	def void prepareMotherInNewFamily() {
@@ -160,9 +168,10 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
+
 	/**Create a {@link Family} that already contains a daughter for further testing.
 	 */
-	def void prepareDaughterInNewFamily(){
+	def void prepareDaughterInNewFamily() {
 		userInteraction.addNextSingleSelection(1)
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
@@ -184,6 +193,612 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 
+	def void prepare() {
+		FamilyRegister.from(FAMILIES_MODEL).families.clear()
+		PersonRegister.from(PERSONS_MODEL).persons.clear()
+		FamilyRegister.from(FAMILIES_MODEL).families += #[
+			FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			],
+			FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+			]
+		]
+		PersonRegister.from(PERSONS_MODEL).persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+			]
+		)
+	}
+	// =====================================
+	// CREATE MALE
+	// =====================================
+	
+	// ========== FATHER ==========
+	@Test
+	def void testCreateMale_Father_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Father
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_DAD_2 + " " + LAST_NAME_1
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_2 + " " + LAST_NAME_1]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testCreateMale_Father_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Father
+		userInteraction.addNextSingleSelection(0)
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_2 + " " + LAST_NAME_2]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testCreateMale_Father_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Father
+		userInteraction.addNextSingleSelection(0)
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_2 + " " + LAST_NAME_2]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	// ========== SON ==========
+	@Test
+	def void testCreateMale_Son_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Son
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_2 + " " + LAST_NAME_3
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_3
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_3]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testCreateMale_Son_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Son
+		userInteraction.addNextSingleSelection(1)
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_2 + " " + LAST_NAME_1
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_1]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testCreateMale_Son_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Son
+		userInteraction.addNextSingleSelection(1)
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [
+				fullName = FIRST_SON_2 + " " + LAST_NAME_2
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_2]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+	
+	// =====================================
+	// CREATE FEMALE
+	// =====================================
+	
+	// ========== MOTHER ==========
+	@Test
+	def void testCreateFemale_Mother_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Mother
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOM_2 + " " + LAST_NAME_2
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_2 + " " + LAST_NAME_2]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	
+	@Test
+	def void testCreateFemale_Mother_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Mother
+		userInteraction.addNextSingleSelection(0)
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_2 + " " + LAST_NAME_1]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	
+	@Test
+	def void testCreateFemale_Mother_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Mother
+		userInteraction.addNextSingleSelection(0)
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_2 + " " + LAST_NAME_1]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	// ========== DAUGHTHER ==========
+	@Test
+	def void testCreateFemale_Daughter_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Daughter
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAU_2 + " " + LAST_NAME_3
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_3
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_2 + " " + LAST_NAME_3]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testCreateFemale_Daughter_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Daughter
+		userInteraction.addNextSingleSelection(1)
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAU_2 + " " + LAST_NAME_1
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_2 + " " + LAST_NAME_1]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testCreateFemale_Daughter_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		prepare()
+		// Daughter
+		userInteraction.addNextSingleSelection(1)
+		// First Existing Family
+		userInteraction.addNextSingleSelection(2)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createFemale => [
+				fullName = FIRST_DAU_2 + " " + LAST_NAME_2
+			]
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
+		expectedPersonRegister.persons.addAll(
+			#[
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1],
+				PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_2 + " " + LAST_NAME_2]
+			]
+		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
 	// =====================================
 	// CREATE MALE
 	// =====================================
@@ -191,8 +806,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the creation of a father in a new family.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		// Father
 		userInteraction.addNextSingleSelection(0)
@@ -222,8 +837,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the insertion of a father in an existing family with correct lastname.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInMatchingFamily_NoFather(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInMatchingFamily_NoFather() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Father
@@ -261,8 +876,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and with existing father. Users decides to abort the process.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInMatchingFamily_HasFather_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInMatchingFamily_HasFather_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -298,8 +913,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and with existing father. Users decides to replace existing father.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInMatchingFamily_HasFather_ReplaceFather(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInMatchingFamily_HasFather_ReplaceFather() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -335,8 +950,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and with existing father. Users decides to insert new father in new family.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInMatchingFamily_HasFather_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInMatchingFamily_HasFather_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -379,8 +994,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to abort the process.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Father
@@ -416,8 +1031,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to change the lastname of the father and then to insert him.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_RenamePerson(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_RenamePerson() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Father
@@ -457,8 +1072,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to rename the family and then to insert the father.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_RenameFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_RenameFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Father
@@ -498,8 +1113,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to create a new family and then to insert the father in the new one.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_NoFather_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Father
@@ -542,8 +1157,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * already has a father. Users decides to abort the process.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -580,8 +1195,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * about either the father or the family has to be renamed, the user aborts the process.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -620,8 +1235,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * about either the father or the family has to be renamed, the user chooses to rename the father.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_RenamePerson(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_RenamePerson() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -660,8 +1275,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * about either the father or the family has to be renamed, the user chooses to rename the family.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_RenameFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_RenameFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -701,8 +1316,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * a new family for the new father.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_ReplaceFather_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -747,8 +1362,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * already has a father. Users decides to create instead a new family for the new father.
 	 */
 	@Test
-	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Father_InsertInDifferentlyNamedFamily_HasFather_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Father
@@ -791,8 +1406,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the creation of a new son into a new family.
 	 */
 	@Test
-	def void testCreateMale_Son_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Son_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		// Son
 		userInteraction.addNextSingleSelection(1)
@@ -822,8 +1437,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the insertion of a new son into an existing family with a matching lastname.
 	 */
 	@Test
-	def void testCreateMale_Son_InsertInMatchingFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Son_InsertInMatchingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareSonInNewFamily()
 		// Son
@@ -861,8 +1476,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * User decides to abort the process. 
 	 */
 	@Test
-	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareSonInNewFamily()
 		// Son
@@ -898,8 +1513,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * User decides to rename the new son and insert him afterwards. 
 	 */
 	@Test
-	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_RenamePerson(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_RenamePerson() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareSonInNewFamily()
 		// Son
@@ -939,8 +1554,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * User decides to rename the family and then insert the new son into the family. 
 	 */
 	@Test
-	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_RenameFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_RenameFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareSonInNewFamily()
 		// Son
@@ -981,8 +1596,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * inserts the new son into this new family. 
 	 */
 	@Test
-	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateMale_Son_InsertInDifferentlyNamedFamily_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareSonInNewFamily()
 		// Son
@@ -1028,8 +1643,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the creation of a father in a new family.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		userInteraction.addNextSingleSelection(0)
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -1058,8 +1673,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the insertion of a father in an existing family with correct lastname.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInMatchingFamily_NoMother(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInMatchingFamily_NoMother() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		userInteraction.addNextSingleSelection(0)
@@ -1095,8 +1710,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and with existing mother. Users decides to abort the process.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInMatchingFamily_HasMother_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInMatchingFamily_HasMother_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1132,10 +1747,10 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and with existing mother. Users decides to replace existing mother.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInMatchingFamily_HasMother_ReplaceMother(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInMatchingFamily_HasMother_ReplaceMother() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
-		prepareMotherInNewFamily()	
+		prepareMotherInNewFamily()
 		// Mother
 		userInteraction.addNextSingleSelection(0)
 		// Select Family
@@ -1169,8 +1784,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and with existing mother. Users decides to insert new mother in new family.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInMatchingFamily_HasMother_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInMatchingFamily_HasMother_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1213,8 +1828,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to abort the process.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Mother
@@ -1250,8 +1865,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to change the lastname of the mother and then to insert her.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_RenamePerson(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_RenamePerson() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Mother
@@ -1291,8 +1906,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to rename the family and then to insert the mother.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_RenameFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_RenameFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Mother
@@ -1332,8 +1947,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Users decides to create a new family and then to insert the mother in the new one.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_NoMother_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		// Mother
@@ -1376,8 +1991,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * already has a mother. Users decides to abort the process.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1414,8 +2029,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * about either the mother or the family has to be renamed, the user aborts the process.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1454,8 +2069,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * about either the mother or the family has to be renamed, the user chooses to rename the mother.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_RenamePerson(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_RenamePerson() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1494,8 +2109,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * about either the mother or the family has to be renamed, the user chooses to rename the family.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_RenameFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_RenameFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1535,8 +2150,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * a new family for the new mother.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_ReplaceMother_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1581,8 +2196,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * already has a mother. Users decides to create instead a new family for the new mother.
 	 */
 	@Test
-	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Mother_InsertInDifferentlyNamedFamily_HasMother_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareMotherInNewFamily()
 		// Mother
@@ -1625,8 +2240,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the creation of a new daughter into a new family.
 	 */
 	@Test
-	def void testCreateFemale_Daughter_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Daughter_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		// Daughter
 		userInteraction.addNextSingleSelection(1)
@@ -1656,8 +2271,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	/**Test the insertion of a new daughter into an existing family with a matching lastname.
 	 */
 	@Test
-	def void testCreateFemale_Daughter_InsertInMatchingFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Daughter_InsertInMatchingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareDaughterInNewFamily()
 		// Daughter
@@ -1695,8 +2310,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * User decides to abort the process. 
 	 */
 	@Test
-	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_DiscardChanges(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_DiscardChanges() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareDaughterInNewFamily()
 		// Daughter
@@ -1732,8 +2347,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * User decides to rename the new daughter and insert her afterwards. 
 	 */
 	@Test
-	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_RenamePerson(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_RenamePerson() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareDaughterInNewFamily()
 		// Daughter
@@ -1773,8 +2388,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * User decides to rename the family and then insert the new daughter into the family. 
 	 */
 	@Test
-	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_RenameFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_RenameFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareDaughterInNewFamily()
 		// Daughter
@@ -1815,8 +2430,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * inserts the new daughter into this new family. 
 	 */
 	@Test
-	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_InsertInNewFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testCreateFemale_Daughter_InsertInDifferentlyNamedFamily_InsertInNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareDaughterInNewFamily()
 		// Daughter
@@ -1862,8 +2477,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	@Test
 	def void createFamilyForTesting() {
 		// Father
-		prepareFatherInNewFamily() 
-		//Mother
+		prepareFatherInNewFamily()
+		// Mother
 		userInteraction.addNextSingleSelection(0)
 		// Insert in first family
 		userInteraction.addNextSingleSelection(1)
@@ -1922,8 +2537,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * and the corresponding {@link Member} in a {@link Family} in the {@link FamilyRegister}.
 	 */
 	@Test
-	def void testRenamingOfFirstname(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testRenamingOfFirstname() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		createFamilyForTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -1966,8 +2581,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * change as well.
 	 */
 	@Test
-	def void testRenamingOfLastname(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testRenamingOfLastname() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		createFamilyForTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -2009,8 +2624,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * {@link Member}s. In this case, this family and the remaining members should be untouched.
 	 */
 	@Test
-	def void testDeletePerson_NotLastInFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeletePerson_NotLastInFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		createFamilyForTesting()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -2048,8 +2663,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * Therefore, the empty family gets deleted as well.
 	 */
 	@Test
-	def void testDeletePerson_LastInFamily(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeletePerson_LastInFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		prepareFatherInNewFamily()
 		logger.trace(surroundingMethodName + " - preparation done")
@@ -2069,8 +2684,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * will be then deleted as well and all contained elements in both of the registers.
 	 */
 	@Test
-	def void testDeletePersonsRegister(TestInfo testInfo) {
-		val String surroundingMethodName = testInfo.getDisplayName()
+	def void testDeletePersonsRegister() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		this.createFamilyForTesting();
 		logger.trace(surroundingMethodName + " - preparation done")
