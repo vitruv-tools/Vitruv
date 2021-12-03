@@ -5,6 +5,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.vsum.ChangePropagationListener
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 /**
  * A Vitruv view on the virtual model. Upon creation, each view must be registered at the VSUM as change propagation listener.
@@ -64,4 +65,11 @@ interface View extends ChangePropagationListener, AutoCloseable {
      * Checks whether the view was closed. Closed view should not further be used.
      */
     def boolean isClosed()
+    
+    /**
+     * Returns the {@link ViewSelector} with which this view has been created.
+     */
+     // TODO Potentially return some read-only interface of the selector (and even store it in a view)
+    def ViewSelector getSelector()
+    
 }

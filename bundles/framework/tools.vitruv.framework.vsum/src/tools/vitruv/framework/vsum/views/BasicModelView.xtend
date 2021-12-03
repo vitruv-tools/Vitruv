@@ -6,23 +6,31 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.VirtualModel
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * A basic view that passes by default the entirety of its underlying model as a copy.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
-class BasicModelView implements View {
+package class BasicModelView implements ModifiableView {
     val VirtualModel virtualModel
-    val ViewType viewType
-    ResourceSet viewResourceSet
+    @Accessors(PUBLIC_GETTER)
+    val ViewSelector selector
+    val UpdatingViewType viewType
+    val ResourceSet viewResourceSet
     ChangeRecorder changeRecorder
     boolean modelChanged
     boolean viewChanged
     boolean closed
 
-    new(ViewType viewType, VirtualModel virtualModel) {
+    protected new(UpdatingViewType viewType, ViewSelector selector, VirtualModel virtualModel) {
         this.virtualModel = virtualModel
         this.viewType = viewType
+        this.selector = selector
+        viewResourceSet = new ResourceSetImpl().withGlobalFactories
         virtualModel.addChangePropagationListener(this)
         update
     }
@@ -47,10 +55,11 @@ class BasicModelView implements View {
         }
         changeRecorder.endRecordingAndClose
         modelChanged = false
-        viewResourceSet = viewType.updateView(this)
+        viewType.updateView(this)
+        viewChanged = false
         viewResourceSet.addChangeListeners
         changeRecorder = new ChangeRecorder(viewResourceSet)
-        viewResourceSet.resources.forEach[changeRecorder.addToRecording(it)]
+		changeRecorder.addToRecording(viewResourceSet)
         changeRecorder.beginRecording
     }
 
@@ -108,5 +117,9 @@ class BasicModelView implements View {
         }
         recorder?.close
     }
+				
+	override modifyContents((ResourceSet)=>void modificationFunction) {
+		modificationFunction.apply(viewResourceSet)
+	}
 
 }
