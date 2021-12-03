@@ -6,6 +6,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.VirtualModel
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -94,6 +98,15 @@ package class BasicModelView implements ModifiableView {
     override startedChangePropagation() {
         // do nothing
     }
+				
+	override EObject createRoot(EClass rootClass, URI persistAt) {
+		val root = EcoreUtil.create(rootClass)
+		viewResourceSet.createResource(persistAt) => [
+			contents += root
+		]
+		rootObjects += root
+		return root
+	}
 
     def private void checkNotClosed() {
         if(closed) {

@@ -5,7 +5,10 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.vsum.ChangePropagationListener
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import com.google.common.annotations.Beta
 
 /**
  * A Vitruv view on the virtual model. Upon creation, each view must be registered at the VSUM as change propagation listener.
@@ -65,6 +68,14 @@ interface View extends ChangePropagationListener, AutoCloseable {
      * Checks whether the view was closed. Closed view should not further be used.
      */
     def boolean isClosed()
+    
+    /**
+     * Creates an element of the given type and persists it at the given {@link URI}.
+     */
+    @Deprecated
+    @Beta
+    // TODO We have to think about whether this is a proper level of abstraction and whether passing URIs is necessary here, as root elements of a view must not necessarily be root elements of a resource in the underlying virtual model
+    def EObject createRoot(EClass rootClass, URI persistAt)
     
     /**
      * Returns the {@link ViewSelector} with which this view has been created.
