@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
@@ -120,6 +121,11 @@ public class DefaultImplementations {
         @Override
         public Collection<ViewType> getViewTypes() {
             return null;
+        }
+        
+        @Override
+        public ResourceSet getResourceSet() {
+        	return null;
         }
 
 	}
