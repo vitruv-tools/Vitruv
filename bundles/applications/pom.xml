@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>tools.vitruv.applications.demo.familiespersons</module>
+		<module>tools.vitruv.applications.demo.insurancepersons</module>
 	</modules>
 
 </project>
