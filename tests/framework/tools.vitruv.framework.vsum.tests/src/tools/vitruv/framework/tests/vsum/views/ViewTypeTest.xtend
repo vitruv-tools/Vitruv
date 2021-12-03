@@ -57,7 +57,7 @@ class ViewTypeTest {
         // Create view type, select first element, and create view:
         val viewType = checkNotNull(new BasicViewType("test view type", virtualModel), "Cannot create view type!")
         val selector = checkNotNull(viewType.createSelector, "Cannot create selector!")
-        selector.setSelected(0, true)
+        selector.setSelected(selector.elements.get(0), true)
         val view = checkNotNull(selector.createView, "Cannot create view from selector!")
 
         // Check view content, only first element should be provided:

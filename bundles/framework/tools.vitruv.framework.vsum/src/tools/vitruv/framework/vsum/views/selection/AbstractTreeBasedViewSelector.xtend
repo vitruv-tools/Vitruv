@@ -17,7 +17,7 @@ abstract class AbstractTreeBasedViewSelector extends BasicViewSelector implement
     }
 
     def private void addRecursively(EObject parent) {
-        selectableElements.add(new SelectableElement(parent))
+        elementsSelection.put(parent, false)
         parent.children.forEach[addRecursively]
     }
 

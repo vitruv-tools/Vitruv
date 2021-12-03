@@ -22,19 +22,18 @@ class ViewSelectorTest {
         var ViewSelector selector = new BasicViewSelector(null, #[repository1, repository2])
 
         // Check initial state:
-        assertIterableEquals(#[repository1, repository2], selector.elements)
-        assertEquals(2, selector.size)
+        assertEquals(#{repository1, repository2}, selector.elements)
+        assertEquals(2, selector.elements.size)
         assertEquals(0, selector.selectedElements.size)
         assertFalse(selector.valid)
 
         // Select the repository
-        val index = selector.getIndexOf(repository1)
-        selector.setSelected(index, true)
+        selector.setSelected(repository1, true)
 
         // Check state after selection:
         assertTrue(selector.valid)
-        assertTrue(selector.isSelected(0))
-        assertFalse(selector.isSelected(1))
+        assertTrue(selector.isSelected(repository1))
+        assertFalse(selector.isSelected(repository2))
         assertEquals(1, selector.selectedElements.size)
         assertTrue(selector.selectedElements.contains(repository1))
     }

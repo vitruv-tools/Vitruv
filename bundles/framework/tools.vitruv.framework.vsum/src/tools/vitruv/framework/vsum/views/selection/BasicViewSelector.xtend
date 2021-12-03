@@ -1,69 +1,67 @@
 package tools.vitruv.framework.vsum.views.selection
 
-import java.util.ArrayList
 import java.util.Collection
-import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.views.ViewType
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+import static extension com.google.common.base.Preconditions.checkNotNull
+import static com.google.common.base.Preconditions.checkState
+import java.util.Map
+import java.util.HashMap
 
 /**
  * Basic view selector for a view that represents a set of model elements.
+ * 
+ * After creation, all elements will be unselected.
  */
 class BasicViewSelector implements ViewSelector {
 
     val ViewType owner
-    protected val List<SelectableElement<EObject>> selectableElements
+    // TODO Discuss whether we want to guarantee some ordering in the elements. This was not document yet, but maybe we want to have it
+    // TODO Remove protected modified, as they must not be used for instance variables --> Inheritance of AbstractTreeBasedViewSelector is incorrent
+    protected val Map<EObject, Boolean> elementsSelection
 
     protected new(ViewType owner) {
         this.owner = owner
-        selectableElements = new ArrayList
+        elementsSelection = new HashMap()
     }
 
     new(ViewType owner, Collection<EObject> elements) {
         this(owner)
-        elements.forEach[this.selectableElements.add(new SelectableElement(it))]
-    }
-
-    override size() {
-        return selectableElements.size
+        elements.forEach[this.elementsSelection.put(checkNotNull(it), false)]
     }
 
     override getElements() {
-        return selectableElements.mapFixed[element]
+        return elementsSelection.keySet
+    }
+    
+    private def checkIsSelectable(EObject eObject) {
+    	checkState(elementsSelection.keySet.contains(eObject), "Given object %s must be contained in the selector elements", eObject)
     }
 
-    override setSelected(int index, boolean value) {
-        selectableElements.get(index).selected = value
+    override setSelected(EObject eObject, boolean selected) {
+    	eObject.checkIsSelectable
+        elementsSelection.put(eObject, selected) 
     }
 
-    override isSelected(int index) {
-        return selectableElements.get(index).selected
+    override isSelected(EObject eObject) {
+    	eObject.checkIsSelectable
+        return elementsSelection.get(eObject)
     }
 
     override getSelectedElements() {
-        return selectableElements.filter[selected == true].mapFixed[element]
+        return elementsSelection.filter[element, selected | selected == true].keySet
     }
 
     override createView() {
         return owner.createView(this)
     }
 
-    override getIndexOf(EObject element) {
-        for (i : 0 ..< size) {
-            if(selectableElements.get(i).element.equals(element)) {
-                return i
-            }
-        }
-        throw new IllegalArgumentException("Element is not part of this selector.")
-    }
-
     /**
      * Checks if at least one element is selected.
      */
     override isValid() {
-        return selectableElements.filter[selected].size > 0
+        return elementsSelection.values.contains(true)
     }
 
 }
