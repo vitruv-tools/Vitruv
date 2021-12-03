@@ -21,6 +21,7 @@
 		<module>tools.vitruv.dsls.feature</module>
 		<module>tools.vitruv.domains.demo.feature</module>
 		<module>tools.vitruv.applications.demo.familiespersons.feature</module>
+		<module>tools.vitruv.applications.demo.insurancepersons.feature</module>
 	</modules>
 
 </project>
