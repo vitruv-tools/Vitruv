@@ -25,7 +25,7 @@ interface View extends ChangePropagationListener, AutoCloseable {
      * @see View#isClosed()
      */
     def <T> Collection<T> rootObjects(Class<T> clazz) {
-        rootObjects.filter[clazz.isInstance(it)].map[clazz.cast(it)].toList
+        rootObjects.filter(clazz).toList
     }
 
     /**
