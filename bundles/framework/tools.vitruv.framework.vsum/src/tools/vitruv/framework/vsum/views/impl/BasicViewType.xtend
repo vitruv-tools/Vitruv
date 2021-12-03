@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views
+package tools.vitruv.framework.vsum.views.impl
 
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector

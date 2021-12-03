@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views
+package tools.vitruv.framework.vsum.views.impl
 
 import tools.vitruv.framework.vsum.views.View
 import org.eclipse.emf.ecore.resource.ResourceSet

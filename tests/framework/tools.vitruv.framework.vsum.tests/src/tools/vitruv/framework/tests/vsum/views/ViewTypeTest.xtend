@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.vsum.views.BasicViewType
 import tools.vitruv.testutils.TestProject
 import tools.vitruv.testutils.TestProjectManager
 
@@ -21,6 +20,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
 import org.junit.jupiter.api.Disabled
+import tools.vitruv.framework.vsum.views.ViewTypeFactory
 
 @ExtendWith(TestProjectManager)
 class ViewTypeTest {
@@ -55,7 +55,7 @@ class ViewTypeTest {
         assertEquals(resourceSet.resources.size, virtualModel.resourceSet.resources.size)
 
         // Create view type, select first element, and create view:
-        val viewType = checkNotNull(new BasicViewType("test view type", virtualModel), "Cannot create view type!")
+        val viewType = checkNotNull(ViewTypeFactory.createBasicViewType("test view type", virtualModel), "Cannot create view type!")
         val selector = checkNotNull(viewType.createSelector, "Cannot create selector!")
         selector.setSelected(selector.elements.get(0), true)
         val view = checkNotNull(selector.createView, "Cannot create view from selector!")

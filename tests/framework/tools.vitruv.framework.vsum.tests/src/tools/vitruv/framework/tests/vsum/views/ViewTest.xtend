@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.vsum.VirtualModel
-import tools.vitruv.framework.vsum.views.BasicViewType
 import tools.vitruv.framework.vsum.views.View
 import tools.vitruv.testutils.TestProject
 import tools.vitruv.testutils.TestProjectManager
@@ -29,6 +28,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.clai
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
+import tools.vitruv.framework.vsum.views.ViewTypeFactory
 
 @ExtendWith(TestProjectManager)
 class ViewTest {
@@ -150,7 +150,7 @@ class ViewTest {
     }
 
     def private static View createTestView(VirtualModel virtualModel) {
-        val viewType = new BasicViewType("", virtualModel).checkNotNull("Cannot create view type!")
+        val viewType = ViewTypeFactory.createBasicViewType("", virtualModel).checkNotNull("Cannot create view type!")
         val selector = viewType.createSelector.checkNotNull("Cannot create selector!")
         selector.elements.forEach[selector.setSelected(it, true)]
         return selector.createView.checkNotNull("Cannot create view from selector!")

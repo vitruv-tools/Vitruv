@@ -1,11 +1,11 @@
-package tools.vitruv.framework.vsum.views
+package tools.vitruv.framework.vsum.views.impl
 
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 import org.eclipse.xtend.lib.annotations.Accessors
 
-package abstract class AbstractViewType implements UpdatingViewType {
+abstract class AbstractViewType implements UpdatingViewType {
 
 	@Accessors(PUBLIC_GETTER)
     val String name

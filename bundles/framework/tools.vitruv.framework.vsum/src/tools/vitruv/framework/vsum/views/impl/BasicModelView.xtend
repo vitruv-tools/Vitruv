@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views
+package tools.vitruv.framework.vsum.views.impl
 
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.impl.AdapterImpl
@@ -19,7 +19,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * A basic view that passes by default the entirety of its underlying model as a copy.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
-package class BasicModelView implements ModifiableView {
+class BasicModelView implements ModifiableView {
     val VirtualModel virtualModel
     @Accessors(PUBLIC_GETTER)
     val ViewSelector selector
