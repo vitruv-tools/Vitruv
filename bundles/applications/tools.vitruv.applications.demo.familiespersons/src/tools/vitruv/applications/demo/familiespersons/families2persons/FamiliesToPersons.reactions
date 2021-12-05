@@ -76,7 +76,7 @@ reaction EditedFather {
 reaction CreatedFather {
 	after element families::Member replaced at families::Family[father]
 		with oldValue === null && newValue !== null
-	call createFather(newValue)
+	call createMale(newValue, newValue.familyFather)
 }
 reaction DeletedFather {
 	after element families::Member replaced at families::Family[father]
@@ -99,26 +99,10 @@ routine replaceFather(families::Member newFather, families::Member oldFather) {
 			familyRegister.families += newFamily
 			newFamily.father = oldFather	
 			//Create and insert new person corresponding to newFather
-			createFather(newFather)			
+			createMale(newFather, newFather.familyFather)
 		}
 		remove correspondence between newFather.familyFather and oldFatherPerson
 		add correspondence between newFamily and oldFatherPerson
-	}
-}
-//Create and insert new person corresponding to newFather. 
-routine createFather(families::Member newFather) {
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newFather.familyFather.eContainer 
-	}
-	action{
-		val person = create persons::Male and initialize {
-			person.fullName = newFather.firstName + " " + newFather.familyFather.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between newFather and person
-		add correspondence between newFather.familyFather and person
 	}
 }
 
@@ -132,7 +116,7 @@ reaction EditedMother {
 reaction CreatedMother {
 	after element families::Member replaced at families::Family[mother]
 		with oldValue === null && newValue !== null
-	call createMother(newValue)
+	call createFemale(newValue, newValue.familyMother)
 }
 
 reaction DeletedMother {
@@ -156,49 +140,17 @@ routine replaceMother(families::Member newMother, families::Member oldMother) {
 			familyRegister.families += newFamily
 			newFamily.mother = oldMother	
 			//Create and insert new person corresponding to newMother
-			createMother(newMother)			
+			createFemale(newMother, newMother.familyMother)			
 		}
 		remove correspondence between newMother.familyMother and oldMotherPerson
 		add correspondence between newFamily and oldMotherPerson
 	}
 }
 
-//Create and insert new person corresponding to newMother.
-routine createMother(families::Member newMother) {
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newMother.familyMother.eContainer 
-	}
-	action {
-		val person = create persons::Female and initialize {
-			person.fullName = newMother.firstName + " " + newMother.familyMother.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between newMother and person
-		add correspondence between newMother.familyMother and person
-	}
-}
-
 //========== SON ==========
 reaction CreatedSon {
 	after element families::Member created and inserted in families::Family[sons]
-	call createSon(newValue)
-}
-routine createSon(families::Member newSon) {
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newSon.familySon.eContainer 
-	}
-	action {
-		val person = create persons::Male and initialize {
-			person.fullName = newSon.firstName + " " + newSon.familySon.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between newSon and person
-		add correspondence between newSon.familySon and person
-	}
+	call createMale(newValue, newValue.familySon)
 }
 reaction DeletedSon {
 	after element families::Member deleted and removed from families::Family[sons] 
@@ -208,29 +160,45 @@ reaction DeletedSon {
 
 //========== DAUGHTER ==========
 reaction CreatedDaughter {
-	after element families::Member created  and inserted in families::Family[daughters]
-	call createDaughter(newValue)
-}
-routine createDaughter(families::Member newDaughter) {
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newDaughter.familyDaughter.eContainer 
-	}
-	action{
-		val person = create persons::Female and initialize {
-			person.fullName = newDaughter.firstName + " " + newDaughter.familyDaughter.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between newDaughter and person
-		add correspondence between newDaughter.familyDaughter and person
-	}
+	after element families::Member created and inserted in families::Family[daughters]
+	call createFemale(newValue, newValue.familyDaughter)
 }
 reaction DeletedDaughter {
 	after element families::Member deleted and removed from families::Family[daughters] 
 	call deletePerson(oldValue)
 }
 
+
+routine createMale(families::Member newMember, families::Family family) {
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to family.eContainer 
+	}
+	action {
+		val person = create persons::Male and initialize {
+	 		person.fullName = newMember.firstName + " " + family.lastName
+		}		
+		update personsRegister {
+			personsRegister.persons += person
+		}
+		add correspondence between newMember and person
+		add correspondence between family and person
+	}
+}
+routine createFemale(families::Member newMember, families::Family family) {
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to family.eContainer 
+	}
+	action {
+		val person = create persons::Female and initialize {
+	 		person.fullName = newMember.firstName + " " + family.lastName
+		}		
+		update personsRegister {
+			personsRegister.persons += person
+		}
+		add correspondence between newMember and person
+		add correspondence between family and person
+	}
+}
 
 //========== MEMBER IN GENERAL ==========
 //Firstname of {@link Member} changed.
