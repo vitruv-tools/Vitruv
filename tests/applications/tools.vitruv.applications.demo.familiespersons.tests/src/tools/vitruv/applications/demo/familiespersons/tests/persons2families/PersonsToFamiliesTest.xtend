@@ -310,6 +310,124 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
+	@Test
+	def void testRename_Father_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+			searchedDad.fullName = FIRST_DAD_1 + " " + LAST_NAME_3
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_3
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_3]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Father_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+			searchedDad.fullName = FIRST_DAD_1 + " " + LAST_NAME_2
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Father_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+			searchedDad.fullName = FIRST_DAD_1 + " " + LAST_NAME_2
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
 	// ========== SON ==========
 	@Test
 	def void testCreateMale_Son_EmptyRegister() {
@@ -473,6 +591,124 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 				PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_2]
 			]
 		)
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Son_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
+			searchedSon.fullName = FIRST_SON_1 + " " + LAST_NAME_3
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_3
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_3]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Son_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
+			searchedSon.fullName = FIRST_SON_1 + " " + LAST_NAME_1
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Son_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
+			searchedSon.fullName = FIRST_SON_1 + " " + LAST_NAME_1
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
@@ -649,6 +885,124 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
+	@Test
+	def void testRename_Mother_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
+			searchedMom.fullName = FIRST_MOM_1 + " " + LAST_NAME_3
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_3
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_3]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Mother_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
+			searchedMom.fullName = FIRST_MOM_1 + " " + LAST_NAME_1
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Mother_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
+			searchedMom.fullName = FIRST_MOM_1 + " " + LAST_NAME_1
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
 	// ========== DAUGHTHER ==========
 	@Test
 	def void testCreateMale_Daughter_EmptyRegister() {
@@ -817,6 +1171,124 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
+	@Test
+	def void testRename_Daughter_AutomaticNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
+			searchedDaughter.fullName = FIRST_DAU_1 + " " + LAST_NAME_3
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_3
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_3]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Daughter_ChoosingNewFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// New Family
+		userInteraction.addNextSingleSelection(0)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
+			searchedDaughter.fullName = FIRST_DAU_1 + " " + LAST_NAME_2
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_2]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testRename_Daughter_ChoosingExistingFamily() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		createFamiliesForTesting()
+		// First existing Family
+		userInteraction.addNextSingleSelection(1)
+		logger.trace(surroundingMethodName + " - preparation done")
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
+			searchedDaughter.fullName = FIRST_DAU_1 + " " + LAST_NAME_2
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += #[
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_1
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = LAST_NAME_2
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+				]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_2]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
 	// ========== EDITING ==========
 	/**Test the renaming of the firstname of a single person which should
 	 * only effect this person and the corresponding {@link Member}.
@@ -860,67 +1332,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_2 + " " + LAST_NAME_2]
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_2]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_2 + " " + LAST_NAME_1]
-		]
-		assertCorrectFamilyRegister(expectedFamilyRegister)
-		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
-	}
-
-	/**Test the editing of the lastname of a single person which should effect this person,
-	 * remove its corresponding {@link Member} from the corresponding {@link Family} and insert a new
-	 * member in a new family with the new lastname. No other {@link Person} or member should be affected.
-	 */
-	@Test
-	def void testRenamingOfLastname() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
-		createFamiliesForTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
-		PersonRegister.from(PERSONS_MODEL).propagate [
-			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
-			searchedDad.fullName = FIRST_DAD_1 + " " + LAST_NAME_3
-
-			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
-			searchedMom.fullName = FIRST_MOM_1 + " " + LAST_NAME_3
-
-			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
-			searchedSon.fullName = FIRST_SON_1 + " " + LAST_NAME_3
-
-			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
-			searchedDaughter.fullName = FIRST_DAU_1 + " " + LAST_NAME_3
-		]
-		logger.trace(surroundingMethodName + " - propagation done")
-		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_3
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_3
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_3
-				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_3
-				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
-			]
-		]
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += PersonsFactory.eINSTANCE.createMale => [
-				fullName = FIRST_DAD_1 + " " + LAST_NAME_3
-			]
-			persons += PersonsFactory.eINSTANCE.createFemale => [
-				fullName = FIRST_MOM_1 + " " + LAST_NAME_3
-			]
-			persons += PersonsFactory.eINSTANCE.createMale => [
-				fullName = FIRST_SON_1 + " " + LAST_NAME_3
-			]
-			persons += PersonsFactory.eINSTANCE.createFemale => [
-				fullName = FIRST_DAU_1 + " " + LAST_NAME_3
-			]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)

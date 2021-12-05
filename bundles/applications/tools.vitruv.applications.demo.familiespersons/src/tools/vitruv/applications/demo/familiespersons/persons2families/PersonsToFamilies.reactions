@@ -13,9 +13,6 @@ in reaction to changes in Persons
 execute actions in Families
 
 
-//========== PERSON-REGISTER ==========
-/* Creation of a {@link FamilyRegister} after a {@link PersonRegister} was created.
- */
 reaction CreatedPersonRegister {
 	after element persons::PersonRegister created and inserted as root
 	call createFamilyRegister(newValue)
@@ -29,8 +26,7 @@ routine createFamilyRegister(persons::PersonRegister personRegister) {
 		add correspondence between familyRegister and personRegister
 	}
 }
-/* Deletion of a {@link FamilyRegister} after a {@link PersonRegister} was deleted.
- */
+
 
 reaction DeletedPersonRegister {
 	after element persons::PersonRegister deleted
@@ -47,58 +43,37 @@ routine deleteFamilyRegister(persons::PersonRegister personsRegister) {
 }
 
 
-//========== MALE ==========
-reaction CreatedMale {
-	after element persons::Male created and inserted in persons::PersonRegister[persons]
-	call createMale(newValue)
+reaction CreatedPerson {
+	after element persons::Person created and inserted in persons::PersonRegister[persons]
+	call insertAsParentOrChild(newValue)
 }
 
-routine createMale(persons::Male newMale) {
+routine insertAsParentOrChild(persons::Person newPerson) {
 	action {
 		call {
-			var String fatherOrSonMessage = "You are about to insert a new male person into the family register."
-			fatherOrSonMessage += " Is this person the father of a family or a son?"
-			var Iterable<String> fatherOrSonOptions = #["Father", "Son"]
-			val int fatherOrSonSelection = userInteractor.singleSelectionDialogBuilder.message(fatherOrSonMessage)
-			.choices(fatherOrSonOptions).windowModality(WindowModality.MODAL).startInteraction()
-
-			createPerson(newMale, fatherOrSonSelection == 1)
+			var String parentOrChildMessage = "You are about to insert a new member into the family register."
+			parentOrChildMessage += " Is this member a parent of a family or a child?"
+			var Iterable<String> parentOrChildOptions = #["Parent", "Child"]
+			val int parentOrChildSelection = userInteractor
+				.singleSelectionDialogBuilder
+				.message(parentOrChildMessage)
+				.choices(parentOrChildOptions)
+				.windowModality(WindowModality.MODAL)
+				.startInteraction()
+			createMember(newPerson, parentOrChildSelection == 1)
 		}
 	}
 }
 
-
-//========== FEMALE ==========
-reaction CreatedFemale {
-	after element persons::Female created and inserted in persons::PersonRegister[persons]
-	call createFemale(newValue)
-}
-
-routine createFemale(persons::Female newFemale) {
-	action {
-		call {
-			var String motherOrDaughterMessage = "You are about to insert a new female person into the family register."
-			motherOrDaughterMessage += " Is this person the mother of a family or a daughter?"
-			var Iterable<String> motherOrDaughterOptions = #["Mother", "Daughter"]
-			val int motherOrDaughterSelection = userInteractor.singleSelectionDialogBuilder.message(motherOrDaughterMessage)
-			.choices(motherOrDaughterOptions).windowModality(WindowModality.MODAL).startInteraction()
-
-			createPerson(newFemale, motherOrDaughterSelection == 1)
-		}
-	}
-}
-
-
-//========== PERSON IN GENERAL ==========
-routine createPerson(persons::Person newPerson, Boolean isChild) {
+routine createMember(persons::Person newPerson, Boolean isChild) {
 	match {
 		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
 	}
 	action {
 		call {
-			val String newFemaleLastname = newPerson.fullName.split(" ").last
+			val String newPersonLastname = newPerson.fullName.split(" ").last
 			var boolean askUserForFamily = false
-			val Iterable<Family> matchingFamilies = familiesRegister.families.filter[it.lastName.equals(newFemaleLastname)]
+			val Iterable<Family> matchingFamilies = familiesRegister.families.filter[it.lastName.equals(newPersonLastname)]
 
 			if (isChild) {
 				askUserForFamily = !matchingFamilies.empty
@@ -124,12 +99,16 @@ routine createPerson(persons::Person newPerson, Boolean isChild) {
 					var newOption = it.lastName + ": "; 
 					if (it.father !== null) { newOption += "F: " + it.father.firstName + ";" }
 					if (it.mother !== null) { newOption += "M: " + it.mother.firstName + ";" }
-					if (it.sons !== null && it.sons.size > 0) { newOption += it.sons.join("S: (",", ",")",[it.firstName]) }
-					if (it.daughters !== null && it.daughters.size > 0) { newOption += it.daughters.join("S: (",", ",")",[it.firstName]) }
+					if (it.sons !== null && it.sons.size > 0) { newOption += it.sons.join("S: (", ", ", ")", [it.firstName]) }
+					if (it.daughters !== null && it.daughters.size > 0) { newOption += it.daughters.join("S: (", ", ", ")", [it.firstName]) }
 					whichFamilyOptions.^add(newOption)
 				]
-				whichFamilyIndex = userInteractor.singleSelectionDialogBuilder.message(whichFamilyMessage)
-				.choices(whichFamilyOptions).windowModality(WindowModality.MODAL).startInteraction()
+				whichFamilyIndex = userInteractor
+					.singleSelectionDialogBuilder
+					.message(whichFamilyMessage)
+					.choices(whichFamilyOptions)
+					.windowModality(WindowModality.MODAL)
+					.startInteraction()
 				if (whichFamilyIndex !== 0) {
 					chosenFamily = matchingFamilies.get(whichFamilyIndex-1)
 				}
@@ -181,8 +160,6 @@ routine insertInExistingFamily(persons::Person newPerson, families::Family famil
 	}
 }
 
-/* The fullname of a person changed
- */
 reaction ChangedFullName {
 	after attribute replaced at persons::Person[fullName]
 	call changeNames(affectedEObject)
@@ -221,7 +198,7 @@ routine editLastnameRemovePerson(persons::Person person, String fullName) {
 				isChild = member.familyMother !== family
 			}
 			deleteMember(person)
-			insertInNewFamily(person, isChild)
+			createMember(person, isChild)
 		}
 	}
 }
@@ -234,22 +211,18 @@ routine setMemberFirstName(families::Member member, String fullName) {
 			if (nameParts.size() == 1) {
 				firstName = fullName
 			} else {
-				firstName = nameParts.take(nameParts.size() - 1).reduce[s1, s2|s1 + " " + s2]
+				firstName = nameParts.take(nameParts.size() - 1).join(" ")
 			}
 			member.firstName = firstName
 		}
 	}
 }
 
-/* {@link Person} was deleted.
- */
 reaction DeletePerson {
 	after element persons::Person deleted
 	call deleteMember(affectedEObject)
 }
 
-/* Delete corresponding {@link Member}.
- */
 routine deleteMember(persons::Person person) {
 	match {
 		val member = retrieve families::Member corresponding to person
@@ -263,8 +236,6 @@ routine deleteMember(persons::Person person) {
 	}
 }
 
-/* If deleted {@link Member} was the last one in its {@link Family}, delete family too.
- */
 routine deleteFamilyIfLastMemberWasDeleted(families::Family family) {
 	match {
 		check family.father === null
@@ -276,16 +247,3 @@ routine deleteFamilyIfLastMemberWasDeleted(families::Family family) {
 		delete family
 	}
 }
-
-/* Whenever a manipulation of the person model is aborted and changes are discarded,
- * this routine deletes the already inserted {@link Persons} from the {@link PersonRegister}.
- */
-routine discardNewPerson(persons::Person newPerson) {
-	action {
-		call {
-			var PersonRegister personRegister = newPerson.eContainer as PersonRegister
-			personRegister.persons.^remove(newPerson)
-		}
-	}
-}
-
