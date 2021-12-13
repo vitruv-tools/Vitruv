@@ -3,11 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.variability.vave;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/org.sat4j.core.jar
 Automatic-Module-Name: tools.vitruv.variability.vave
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: tools.vitruv.variability.vave,
+Export-Package: org.sat4j,
+ tools.vitruv.variability.vave,
  tools.vitruv.variability.vave.impl,
+ tools.vitruv.variability.vave.util,
  vavemodel,
  vavemodel.impl,
  vavemodel.util

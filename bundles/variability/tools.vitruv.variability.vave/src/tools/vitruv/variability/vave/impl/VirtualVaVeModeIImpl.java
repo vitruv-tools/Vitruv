@@ -39,6 +39,9 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualProductModelInitializer;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.util.ExpressionEvaluator;
+import tools.vitruv.variability.vave.util.ExpressionValidator;
+import tools.vitruv.variability.vave.util.OptionsCollector;
 import vavemodel.BinaryExpression;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
@@ -174,7 +177,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
 		for (Mapping mapping : this.system.getMapping()) {
-			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + new FeatureCollector().doSwitch(mapping.getExpression()).stream().map(o -> {
+			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + new OptionsCollector().doSwitch(mapping.getExpression()).stream().map(o -> {
 				if (o instanceof FeatureRevision)
 					return (((Feature) ((FeatureRevision) o).eContainer()).getName() + "." + ((FeatureRevision) o).getRevisionID());
 				else
@@ -182,7 +185,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			}).collect(Collectors.joining(", ")));
 			// retrieve only these delta modules whose mapping evaluates to true
 			if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
-				System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + new FeatureCollector().doSwitch(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
+				System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + new OptionsCollector().doSwitch(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
 				for (DeltaModule deltamodule : mapping.getDeltamodule()) {
 					// EStructuralFeature eStructFeature = deltamodule.eClass().getEStructuralFeature("change");
 					// echanges.add((EChange) deltamodule.eGet(eStructFeature));
@@ -220,7 +223,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 		final SystemRevision cursysrev = tempcursysrev;
 
 		// create new feature revisions for features that appear in expression
-		Collection<Option> options = new FeatureCollector().doSwitch(expression);
+		Collection<Option> options = new OptionsCollector().doSwitch(expression);
 		List<FeatureRevision> newFeatureRevisions = new ArrayList<>();
 		for (Option option : options) {
 			if (option instanceof Feature) {
@@ -259,7 +262,7 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 		// create new mappings (where old system revision is replaced by new system revision) for every existing mapping with the old system revision in its expression
 		for (Mapping oldMapping : new ArrayList<>(system.getMapping())) {
-			Collection<Option> mappingOptions = new FeatureCollector().doSwitch(oldMapping.getExpression());
+			Collection<Option> mappingOptions = new OptionsCollector().doSwitch(oldMapping.getExpression());
 			if (mappingOptions.contains(cursysrev)) {
 				Mapping newMapping = VavemodelFactory.eINSTANCE.createMapping();
 				newMapping.getDeltamodule().addAll(oldMapping.getDeltamodule());
@@ -371,8 +374,13 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 				copiedFeature.setName(((Feature) fo).getName());
 				mapOriginalCopiedFeatures.put((Feature) fo, copiedFeature);
 				mapOriginalCopiedLiterals.put(fo, copiedFeature);
-			} else if (fo instanceof FeatureRevision) {
+			}
+		}
+		for (FeatureOption fo : sysrev.getEnablesoptions()) {
+			if (fo instanceof FeatureRevision) {
 				FeatureRevision copiedFO = VavemodelFactory.eINSTANCE.createFeatureRevision();
+				copiedFO.setRevisionID(((FeatureRevision) fo).getRevisionID());
+				mapOriginalCopiedFeatures.get(fo.eContainer()).getFeaturerevision().add(copiedFO);
 				mapOriginalCopiedLiterals.put(fo, copiedFO);
 			}
 		}
@@ -406,7 +414,9 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 //			throw new Exception("More than one root feature is enabled by the system revision " + sysrev);
 //		else if (enabledRootFeatures.size() < 1)
 //			throw new Exception("No root feature is enabled by the system revision " + sysrev);
-		Feature rootFeature = enabledRootFeatures.get(0);
+		Feature rootFeature = null;
+		if (!enabledRootFeatures.isEmpty())
+			rootFeature = enabledRootFeatures.get(0);
 
 		FeatureModel featuremodel = new FeatureModel(rootFeature, sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
 

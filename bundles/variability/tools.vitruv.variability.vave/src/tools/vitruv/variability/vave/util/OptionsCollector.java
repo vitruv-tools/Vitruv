@@ -1,4 +1,4 @@
-package tools.vitruv.variability.vave.impl;
+package tools.vitruv.variability.vave.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import vavemodel.UnaryExpression;
 import vavemodel.Variable;
 import vavemodel.util.VavemodelSwitch;
 
-public class FeatureCollector extends VavemodelSwitch<Collection<Option>> {
+public class OptionsCollector extends VavemodelSwitch<Collection<Option>> {
 	private Collection<Option> literals = new ArrayList<>();
 
 	@Override

@@ -1,4 +1,4 @@
-package tools.vitruv.variability.vave.impl;
+package tools.vitruv.variability.vave.util;
 
 import vavemodel.BinaryExpression;
 import vavemodel.False;
@@ -22,7 +22,8 @@ public class ExpressionValidator extends VavemodelSwitch<Boolean> {
 
 	@Override
 	public <T extends Option> Boolean caseVariable(Variable<T> variable) {
-		return variable.getOption() != null;
+		//return variable.getOption() != null;
+		return true;
 	}
 
 	@Override

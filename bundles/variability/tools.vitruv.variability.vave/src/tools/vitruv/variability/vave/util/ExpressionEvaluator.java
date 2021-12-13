@@ -1,4 +1,4 @@
-package tools.vitruv.variability.vave.impl;
+package tools.vitruv.variability.vave.util;
 
 import vavemodel.Configuration;
 import vavemodel.Conjunction;

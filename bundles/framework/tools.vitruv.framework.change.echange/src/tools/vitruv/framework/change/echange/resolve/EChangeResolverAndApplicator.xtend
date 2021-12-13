@@ -82,14 +82,12 @@ class EChangeResolverAndApplicator {
 	}
 
 	/**
-	 * Creates a copy of the change and resolves it using the given {@link idResolver}.
+	 * Creates a copy of the change and attempts to resolve it using the given {@link idResolver}.
 	 * 
 	 * @param change					The {@link EChange} which shall be resolved.
-	 * @param idResolver 				The {@link idResolver} to resolve {@link EObject}s from
-	 * @return 							Returns a resolved copy of the change. If the copy could not be resolved 
-	 * 									an {@link IllegalStateException} is thrown
+	 * @param idResolver 				The {@link idResolver} to resolve {@link EObject}s from.
+	 * @return 							Returns a (resolved) copy of the change.
 	 * @throws IllegalArgumentException The change is already resolved.
-	 * @throws IllegalStateException 	The change cannot be resolved.
 	 */
 	def private static EChange resolveCopy(EChange change, IdResolver idResolver) {
 		checkArgument(!change.isResolved, "change must not be resolved when trying to resolve")

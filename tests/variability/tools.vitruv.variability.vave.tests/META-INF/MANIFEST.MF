@@ -36,9 +36,11 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.jface;bundle-version="3.22.200",
  org.eclipse.jdt;bundle-version="3.18.800",
  org.eclipse.papyrus.designer.languages.java.profile;bundle-version="2.0.0",
- org.eclipse.papyrus.infra.core;bundle-version="4.1.0"
+ org.eclipse.papyrus.infra.core;bundle-version="4.1.0",
+ org.sat4j.core
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jdt.core,
  org.eclipse.jface.viewers,
+ org.sat4j.specs;version="2.3.5.v20130525",
  tools.vitruv.variability.vave,
  tools.vitruv.variability.vave.impl
