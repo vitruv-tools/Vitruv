@@ -60,7 +60,7 @@ import tools.vitruv.testutils.matchers.ModelMatchers;
 import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.util.ExpressionEvaluator;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
@@ -175,7 +175,7 @@ public class VaveTest {
 	@Test
 	public void testVSUMCreation() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		VirtualProductModel vsum = vave.externalizeProduct(this.projectFolder, config);
 		assertNotNull(vsum);
 	}
@@ -184,7 +184,7 @@ public class VaveTest {
 	public void testVSUMPropagation() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		Expression<FeatureOption> expression = createExpression(vave.getSystem());
 
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
@@ -214,7 +214,7 @@ public class VaveTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
 
@@ -242,7 +242,7 @@ public class VaveTest {
 	public void testDeltaApplication() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		// Expression<FeatureOption> expression = createExpression(vave.getSystem());
 		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
@@ -292,6 +292,10 @@ public class VaveTest {
 		electric.setName("electric");
 		smogControl.setName("smogControl");
 		system.getFeature().add(car);
+		system.getFeature().add(gasoline);
+		system.getFeature().add(electric);
+		system.getFeature().add(smogControl);
+		system.getFeature().add(engineType);
 		vavemodel.TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
 		treeconstr1.setType(vavemodel.GroupType.XOR);
 		// Make Engine Type mandatory by adding a tree constraint of type XOR to its
@@ -354,6 +358,10 @@ public class VaveTest {
 		electric.setName("electric");
 		smogControl.setName("smogControl");
 		system.getFeature().add(car);
+		system.getFeature().add(gasoline);
+		system.getFeature().add(electric);
+		system.getFeature().add(smogControl);
+		system.getFeature().add(engineType);
 		FeatureRevision car_1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
 		car_1.setRevisionID(1);
 		car.getFeaturerevision().add(car_1);
@@ -416,7 +424,7 @@ public class VaveTest {
 	public void saveAndLoad() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
-		VirtualVaVeModel vaveSaved = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		VirtualVaVeModel vaveSaved = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		// Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
 		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
@@ -454,7 +462,7 @@ public class VaveTest {
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
-		VirtualVaVeModel vaveLoaded = new VirtualVaVeModeIImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
+		VirtualVaVeModel vaveLoaded = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 
 		config.getOption().clear();
 		config.getOption().add(vaveLoaded.getSystem().getSystemrevision().get(0));

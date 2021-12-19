@@ -21,7 +21,7 @@ import tools.vitruv.testutils.domains.AllElementTypesDomain;
 import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.FeatureModel;
-import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
 import vavemodel.CrossTreeConstraint;
 import vavemodel.Feature;
@@ -42,7 +42,7 @@ public class VaveDomainOperationsTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 		return vave;
 	}
 

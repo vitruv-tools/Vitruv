@@ -14,6 +14,9 @@ import vavemodel.True;
 import vavemodel.Variable;
 import vavemodel.util.VavemodelSwitch;
 
+/**
+ * Evaluates an expression with respect to a given configuration.
+ */
 public class ExpressionEvaluator extends VavemodelSwitch<Boolean> {
 
 	private Configuration configuration;

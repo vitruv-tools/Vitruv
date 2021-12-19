@@ -32,7 +32,7 @@ import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
@@ -59,7 +59,7 @@ public class VaveInternalizeChangesTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 		return vave;
 	}
 

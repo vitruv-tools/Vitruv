@@ -2,9 +2,12 @@ package tools.vitruv.variability.vave.util;
 
 import vavemodel.Conjunction;
 import vavemodel.Disjunction;
+import vavemodel.Equivalence;
+import vavemodel.Expression;
 import vavemodel.False;
 import vavemodel.Feature;
 import vavemodel.FeatureRevision;
+import vavemodel.Implication;
 import vavemodel.Not;
 import vavemodel.Option;
 import vavemodel.SystemRevision;
@@ -12,7 +15,14 @@ import vavemodel.True;
 import vavemodel.Variable;
 import vavemodel.util.VavemodelSwitch;
 
+/**
+ * Returns a string representation of a given expression.
+ */
 public class ExpressionPrinter extends VavemodelSwitch<String> {
+
+	public String print(Expression<? extends Option> e) {
+		return this.doSwitch(e);
+	}
 
 	@Override
 	public <T extends Option> String caseConjunction(Conjunction<T> object) {
@@ -22,6 +32,16 @@ public class ExpressionPrinter extends VavemodelSwitch<String> {
 	@Override
 	public <T extends Option> String caseDisjunction(Disjunction<T> object) {
 		return doSwitch(object.getTerm().get(0)) + " OR " + doSwitch(object.getTerm().get(1));
+	}
+
+	@Override
+	public <T extends Option> String caseEquivalence(Equivalence<T> object) {
+		return doSwitch(object.getTerm().get(0)) + " <=> " + doSwitch(object.getTerm().get(1));
+	}
+
+	@Override
+	public <T extends Option> String caseImplication(Implication<T> object) {
+		return doSwitch(object.getTerm().get(0)) + " => " + doSwitch(object.getTerm().get(1));
 	}
 
 	@Override

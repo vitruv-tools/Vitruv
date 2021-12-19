@@ -51,7 +51,7 @@ import tools.vitruv.testutils.domains.DomainUtil;
 import tools.vitruv.testutils.matchers.ModelMatchers;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import vavemodel.Configuration;
 import vavemodel.VavemodelFactory;
 
@@ -201,7 +201,7 @@ public class VaveFamiliesPersonsTest {
 		Set<VitruvDomain> domains = fpa.getVitruvDomains();
 		Set<ChangePropagationSpecification> changePropagationSpecifications = fpa.getChangePropagationSpecifications();
 
-		this.vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), testProjectPath);
+		this.vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), testProjectPath);
 
 		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), config);

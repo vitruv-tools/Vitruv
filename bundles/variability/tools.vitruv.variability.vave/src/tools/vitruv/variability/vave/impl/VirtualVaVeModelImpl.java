@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,6 +40,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualProductModelInitializer;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.util.ExpressionComparator;
+import tools.vitruv.variability.vave.util.ExpressionCopier;
 import tools.vitruv.variability.vave.util.ExpressionEvaluator;
 import tools.vitruv.variability.vave.util.ExpressionValidator;
 import tools.vitruv.variability.vave.util.OptionsCollector;
@@ -62,7 +65,7 @@ import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 import vavemodel.util.VavemodelSwitch;
 
-public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
+public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 	private VitruvDomainRepository domainRepository = null;
 	private vavemodel.System system;
@@ -71,11 +74,11 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 	private InteractionResultProvider irp;
 	private VirtualProductModelInitializer vpmi = null;
 
-	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws IOException {
+	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws IOException {
 		this(domains, changePropagationSpecifications, irp, storageFolder, null);
 	}
 
-	public VirtualVaVeModeIImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder, VirtualProductModelInitializer vpmi) throws IOException {
+	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder, VirtualProductModelInitializer vpmi) throws IOException {
 		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
 			// load
 			this.resource = new XMIResourceImpl();
@@ -404,7 +407,17 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 			} else if (constraint instanceof CrossTreeConstraint) {
 				// copy cross tree constraints
 				CrossTreeConstraint copiedCTC = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
-				// TODO: copy CTC expression
+				// copy CTC expression
+				Term<FeatureOption> copiedExpression = ExpressionCopier.copy(((CrossTreeConstraint) constraint).getExpression());
+				new VavemodelSwitch<Void>() {
+					public <T extends Option> Void caseVariable(vavemodel.Variable<T> object) {
+						object.setOption((T) mapOriginalCopiedLiterals.get(object.getOption()));
+						return null;
+					};
+				}.doSwitch(copiedExpression);
+				copiedCTC.setExpression((Expression<FeatureOption>) copiedExpression);
+
+				crossTreeConstraints.add(copiedCTC);
 			}
 		}
 
@@ -549,9 +562,47 @@ public class VirtualVaVeModeIImpl implements VirtualVaVeModel {
 
 			// finally do the cross tree constraints
 			for (CrossTreeConstraint ctc : fm.getCrossTreeConstraints()) {
-				// TODO
+				Optional<CrossTreeConstraint> oldCTC = fmAtOldSysrev.getCrossTreeConstraints().stream().filter(oldCtc -> ExpressionComparator.equals(ctc.getExpression(), oldCtc.getExpression())).findAny();
+				// if ctc already existed in the externalized view then it remained unchanged and will be enabled by the new system revision
+				if (oldCTC.isPresent()) {
+					Optional<CrossTreeConstraint> containedCTC = system.getConstraint().stream().filter(ct -> ExpressionComparator.equals(ctc.getExpression(), ct.getExpression())).findAny();
+					if (containedCTC.isPresent())
+						newsysrev.getEnablesconstraints().add(containedCTC.get());
+					else
+						throw new IllegalArgumentException("Could not find matching CTC in unified system!");
+				}
+				// if ctc did not exist in the externalized view then we create it and let the new system revision enable it
+				else if (oldCTC.isEmpty()) {
+					CrossTreeConstraint newCTC = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
+					// copy CTC expression
+					Term<FeatureOption> copiedExpression = ExpressionCopier.copy(ctc.getExpression());
+
+					// replace feature option instances in expression with instances from vave model (unified system)
+					new VavemodelSwitch<Void>() {
+						public <T extends Option> Void caseVariable(vavemodel.Variable<T> object) {
+							if (object.getOption() instanceof Feature) {
+								object.setOption((T) system.getFeature().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getOption().eContainer()).getName())).findAny().get());
+							} else if (object.getOption() instanceof FeatureRevision) {
+								Feature containedFeature = system.getFeature().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getOption().eContainer()).getName())).findAny().get();
+								object.setOption((T) containedFeature.getFeaturerevision().stream().filter(fr -> fr.getRevisionID() == ((FeatureRevision) object.getOption()).getRevisionID()).findAny().get());
+							}
+							return null;
+						};
+					}.doSwitch(copiedExpression);
+
+					newCTC.setExpression((Expression<FeatureOption>) copiedExpression);
+					this.system.getConstraint().add(newCTC);
+					newsysrev.getEnablesconstraints().add(newCTC);
+				}
 			}
 		}
+
+//		// TODO: inconsistency type 2 cause
+//		
+//		// obtain feature model at previous system revision
+//		FeatureModel fm_prev = this.externalizeDomain(fm.getSysrev());
+//		// obtain new feature model
+//		FeatureModel
 
 		this.save();
 	}

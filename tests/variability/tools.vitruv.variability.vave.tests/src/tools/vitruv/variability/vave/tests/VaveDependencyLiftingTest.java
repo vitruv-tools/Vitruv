@@ -38,7 +38,7 @@ import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.DependencyLifting;
 import tools.vitruv.variability.vave.impl.FeatureModel;
-import tools.vitruv.variability.vave.impl.VirtualVaVeModeIImpl;
+import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
 import tools.vitruv.variability.vave.util.ExpressionToCNFConverter;
 import tools.vitruv.variability.vave.util.ExpressionToSATConverter;
@@ -75,7 +75,7 @@ public class VaveDependencyLiftingTest {
 		RedundancyChangePropagationSpecification _redundancyChangePropagationSpecification = new RedundancyChangePropagationSpecification(aetDomain, aetDomain);
 		changePropagationSpecifications.add(_redundancyChangePropagationSpecification);
 
-		VirtualVaVeModel vave = new VirtualVaVeModeIImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
+		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 		return vave;
 	}
 
