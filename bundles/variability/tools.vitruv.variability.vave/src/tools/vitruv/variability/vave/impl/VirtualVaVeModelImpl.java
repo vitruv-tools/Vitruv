@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +27,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.sat4j.core.VecInt;
+import org.sat4j.minisat.SolverFactory;
+import org.sat4j.specs.ContradictionException;
+import org.sat4j.specs.ISolver;
+import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
@@ -73,6 +81,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
 	private InteractionResultProvider irp;
 	private VirtualProductModelInitializer vpmi = null;
+
+	private Collection<Feature[]> hints = new ArrayList<>();
 
 	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws IOException {
 		this(domains, changePropagationSpecifications, irp, storageFolder, null);
@@ -199,6 +209,15 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			}
 		}
 		vsum.clearDeltas();
+
+		// check if any of the hinted feature interactions are contained in the configuration. if yes, then add a hint to the product.
+		for (Feature[] featureInteraction : this.hints) {
+			if (configuration.getOption().containsAll(Arrays.asList(featureInteraction))) {
+				vsum.addHint(featureInteraction);
+				System.out.println("RELEVANT HINT: " + Arrays.asList(featureInteraction));
+			}
+		}
+
 		return vsum;
 	}
 
@@ -209,6 +228,19 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		boolean expressionIsWellFormed = new ExpressionValidator().doSwitch(expression);
 		if (!expressionIsWellFormed) {
 			throw new IllegalArgumentException("Expression is not well formed");
+		}
+
+		Collection<Option> options = new OptionsCollector().doSwitch(expression);
+
+		// check if the expression covers any hints. if yes, then delete the respective hints.
+		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
+		Iterator<Feature[]> hintsIt = this.hints.iterator();
+		while (hintsIt.hasNext()) {
+			Feature[] featureInteraction = hintsIt.next();
+			if (options.containsAll(Arrays.asList(featureInteraction))) {
+				hintsIt.remove();
+				System.out.println("FIXED HINT: " + Arrays.asList(featureInteraction));
+			}
 		}
 
 		// create a new system revision and link it to predecessor system revision
@@ -226,7 +258,6 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		final SystemRevision cursysrev = tempcursysrev;
 
 		// create new feature revisions for features that appear in expression
-		Collection<Option> options = new OptionsCollector().doSwitch(expression);
 		List<FeatureRevision> newFeatureRevisions = new ArrayList<>();
 		for (Option option : options) {
 			if (option instanceof Feature) {
@@ -437,10 +468,13 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	}
 
 	public void internalizeDomain(FeatureModel fm) throws IOException {
+		FeatureModel fmAtOldSysrev = null;
+		SystemRevision newsysrev = null;
+
 		// NOTE: fm stores (copy of) root node, ctcs, sysrev
 		if (fm.getSysrev() == null) { // if we create the very first system revision, we don't need to do a diff
 			// create a new system revision and link it to predecessor system revision
-			SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
+			newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
 			newsysrev.setRevisionID(1);
 			// newsysrev.getEnablesoptions().add(fm.getRootFeature());
 			newsysrev.getEnablesoptions().addAll(fm.getFeatureOptions());
@@ -460,7 +494,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		else { // if we are here, there is at least one system revision and a feature model of that system revision
 				// create new system revision
-			SystemRevision newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
+			newsysrev = VavemodelFactory.eINSTANCE.createSystemRevision();
 			SystemRevision cursysrev = this.system.getSystemrevision().get(this.system.getSystemrevision().indexOf(fm.getSysrev())); // TODO add branch (by using sys rev of product) and merge points
 			cursysrev.getSuccessors().add(newsysrev);
 			newsysrev.getPredecessors().add(cursysrev);
@@ -468,7 +502,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			this.system.getSystemrevision().add(newsysrev);
 
 			// retrieve state of feature model before it was modified
-			FeatureModel fmAtOldSysrev = this.externalizeDomain(fm.getSysrev());
+			fmAtOldSysrev = this.externalizeDomain(fm.getSysrev());
 
 			// diff the updated fm with the old fm
 
@@ -597,12 +631,119 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			}
 		}
 
-//		// TODO: inconsistency type 2 cause
-//		
-//		// obtain feature model at previous system revision
-//		FeatureModel fm_prev = this.externalizeDomain(fm.getSysrev());
-//		// obtain new feature model
-//		FeatureModel
+		// inconsistency type 2 cause
+
+		// obtain feature model at previous system revision
+		FeatureModel fm_prev = fmAtOldSysrev;
+		// obtain new feature model
+		FeatureModel fm_cur = fm;
+
+		Collection<FeatureOption> enabledFOs = newsysrev.getEnablesoptions();
+		Collection<Feature> enabledFs = enabledFOs.stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).collect(Collectors.toList());
+
+		int currentInt = 0;
+		Map<Option, Integer> optionToIntMap = new HashMap<>();
+		for (FeatureOption fo : enabledFOs) {
+			if (fo instanceof Feature) {
+				optionToIntMap.put(fo, ++currentInt);
+				System.out.println("ASSIGN VALUE " + optionToIntMap.get(fo) + " TO FEATURE " + fo);
+			}
+		}
+		for (FeatureOption fo : enabledFOs) {
+			if (fo instanceof FeatureRevision) {
+				Feature feature = (Feature) ((FeatureRevision) fo).eContainer();
+				if (optionToIntMap.get(feature) == null) {
+					optionToIntMap.put(feature, ++currentInt);
+					System.out.println("ASSIGN VALUE " + optionToIntMap.get(feature) + " TO FEATURE " + fo);
+				}
+				optionToIntMap.put(fo, optionToIntMap.get(feature));
+				System.out.println("ASSIGN VALUE " + optionToIntMap.get(fo) + " TO FEATURE REVISION " + fo);
+			}
+		}
+
+		Set<Option> notInOldFM = new HashSet<>();
+		Collection<int[]> oldClauses = null;
+		if (fm_prev == null) {
+			oldClauses = new ArrayList<>();
+			notInOldFM.addAll(enabledFOs);
+		} else {
+			Map<FeatureOption, Integer> oldfmOptionToIntMap = new HashMap<>();
+			for (Entry<Option, Integer> entry : optionToIntMap.entrySet()) {
+				if (entry.getKey() instanceof Feature) {
+					Optional<Feature> fmFeature = fm_prev.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) entry.getKey()).getName())).findAny();
+					if (fmFeature.isPresent())
+						oldfmOptionToIntMap.put(fmFeature.get(), entry.getValue());
+					else
+						notInOldFM.add(entry.getKey());
+				} else if (entry.getKey() instanceof FeatureRevision) {
+					Optional<FeatureRevision> fmFeatureRevision = fm_prev.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) entry.getKey()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) entry.getKey()).getRevisionID()).findAny();
+					if (fmFeatureRevision.isPresent())
+						oldfmOptionToIntMap.put(fmFeatureRevision.get(), entry.getValue());
+					else
+						notInOldFM.add(entry.getKey());
+				}
+			}
+			oldClauses = fm_prev.computeClauses(oldfmOptionToIntMap);
+		}
+
+		Map<FeatureOption, Integer> newfmOptionToIntMap = new HashMap<>();
+		for (Entry<Option, Integer> entry : optionToIntMap.entrySet()) {
+			if (entry.getKey() instanceof Feature) {
+				Feature fmFeature = fm_cur.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) entry.getKey()).getName())).findAny().get();
+				newfmOptionToIntMap.put(fmFeature, entry.getValue());
+			} else if (entry.getKey() instanceof FeatureRevision) {
+				FeatureRevision fmFeatureRevision = fm_cur.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) entry.getKey()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) entry.getKey()).getRevisionID()).findAny().get();
+				newfmOptionToIntMap.put(fmFeatureRevision, entry.getValue());
+			}
+		}
+		Collection<int[]> newClauses = fm_cur.computeClauses(newfmOptionToIntMap);
+
+		for (Feature f1 : enabledFs) {
+			for (Feature f2 : enabledFs) {
+				ISolver oldFMSolver = SolverFactory.newDefault();
+				ISolver newFMSolver = SolverFactory.newDefault();
+				boolean oldSat = false;
+				boolean newSat = false;
+
+				try {
+					if (notInOldFM.contains(f1) || notInOldFM.contains(f2)) {
+						oldSat = false;
+					} else {
+						for (int[] clause : oldClauses)
+							oldFMSolver.addClause(new VecInt(clause));
+						oldFMSolver.addClause(new VecInt(new int[] { optionToIntMap.get(f1) }));
+						oldFMSolver.addClause(new VecInt(new int[] { optionToIntMap.get(f2) }));
+						oldSat = oldFMSolver.isSatisfiable();
+					}
+				} catch (ContradictionException e) {
+					oldSat = false;
+				} catch (TimeoutException e) {
+					oldSat = false;
+				}
+
+				try {
+					for (int[] clause : newClauses)
+						newFMSolver.addClause(new VecInt(clause));
+					newFMSolver.addClause(new VecInt(new int[] { optionToIntMap.get(f1) }));
+					newFMSolver.addClause(new VecInt(new int[] { optionToIntMap.get(f2) }));
+					newSat = newFMSolver.isSatisfiable();
+				} catch (ContradictionException e) {
+					newSat = false;
+				} catch (TimeoutException e) {
+					newSat = false;
+				}
+
+				if (!oldSat && newSat) {
+					// feature interaction is new
+					this.hints.add(new Feature[] { f1, f2 });
+					System.out.println("ADDED HINT: " + f1 + " / " + f2);
+				}
+			}
+		}
+
+		// TODO: suggest configuration(s) that cover(s) as many hints as possible? or with as few other features as possible?
+
+		// TODO: also consider feature interactions with negative features?
 
 		this.save();
 	}

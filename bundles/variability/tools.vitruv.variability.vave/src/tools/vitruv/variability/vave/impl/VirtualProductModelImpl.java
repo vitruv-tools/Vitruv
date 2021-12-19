@@ -14,10 +14,12 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import vavemodel.Configuration;
+import vavemodel.Feature;
 
 public class VirtualProductModelImpl extends VirtualModelImpl implements VirtualProductModel {
 
 	private Configuration configuration;
+	private Collection<Feature[]> hints;
 
 	// original changes
 	private Collection<VitruviusChange> deltas = new ArrayList<>();
@@ -46,6 +48,11 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	@Override
 	public void clearDeltas() {
 		this.deltas.clear();
+	}
+
+	@Override
+	public void addHint(Feature[] featureInteraction) {
+		this.hints.add(featureInteraction);
 	}
 
 }
