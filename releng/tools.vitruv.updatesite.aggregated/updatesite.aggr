@@ -5,10 +5,10 @@
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
     </contributions>
     <contributions label="externals">
-      <repositories location="http://vitruv-tools.github.io/updatesite/release/license/1.0.0" mirrorArtifacts="false">
+      <repositories location="https://vitruv-tools.github.io/updatesite/release/license/1.0.0" mirrorArtifacts="false">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
       </repositories>
-      <repositories location="http://kit-sdq.github.io/updatesite/release/commons/2.0.0" mirrorArtifacts="false">
+      <repositories location="https://kit-sdq.github.io/updatesite/release/commons/2.0.0" mirrorArtifacts="false">
         <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group"/>
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group"/>
         <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group"/>
@@ -23,7 +23,7 @@
         <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
         <features name="edu.kit.ipd.sdq.metamodels.insurance.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
       </repositories>
-      <repositories location="http://download.eclipse.org/releases/2021-06" mirrorArtifacts="false">
+      <repositories location="https://download.eclipse.org/releases/2021-12" mirrorArtifacts="false">
         <features name="org.eclipse.emf.ecore.edit.feature.group"/>
         <features name="org.eclipse.emf.transaction.feature.group"/>
         <features name="org.eclipse.xtend.sdk.feature.group"/>

@@ -5,9 +5,11 @@ import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
 import org.eclipse.emf.mwe2.ecore.EcoreGenerator
 
-var rootPath = ".."
-var testRootPath = "${rootPath}/../../tests/dsls"
 var projectName = "tools.vitruv.dsls.reactions"
+// This variable is adapted by the Maven build
+var workspaceRoot = "../../../"
+var rootPath = "${workspaceRoot}/bundles/dsls/"
+var testRootPath = "${workspaceRoot}/tests/dsls"
 var testBasePath = "${testRootPath}/${projectName}"
 
 Workflow {

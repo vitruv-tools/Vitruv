@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Demo Insurance-Persons Tests
+Bundle-SymbolicName: tools.vitruv.applications.demo.insurancepersons.tests
+Automatic-Module-Name: tools.vitruv.applications.demo.insurancepersons.tests
+Bundle-Version: 2.1.0.qualifier
+Fragment-Host: tools.vitruv.applications.demo.insurancepersons
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: tools.vitruv.testutils,
+ org.junit.jupiter.api,
+ org.hamcrest.core
+Bundle-Vendor: vitruv.tools

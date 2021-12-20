@@ -1,0 +1,102 @@
+module generate
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+
+var testutilsMetamodelsPluginPath = "platform:/resource/tools.vitruv.testutils.metamodels"
+
+// This variable is adapted by the Maven build
+var workspaceRoot = "../../"
+
+Workflow {
+	
+	bean = StandaloneSetup {
+		scanClassPath = true
+		platformUri = workspaceRoot
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.framework.change.echange/src-gen"
+		genModel = "platform:/resource/tools.vitruv.framework.change.echange/metamodel/echange.genmodel"
+		generateCustomClasses = false
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.framework.change.interaction/src-gen"
+		genModel = "platform:/resource/tools.vitruv.framework.change.interaction/model/interaction.genmodel"
+		generateCustomClasses = false
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.framework.correspondence/src-gen"
+		genModel = "platform:/resource/tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel"
+		generateCustomClasses = false
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.extensions.integration.correspondence/src-gen"
+		genModel = "platform:/resource/tools.vitruv.extensions.integration.correspondence/model/integration_correspondence.genmodel"
+		generateCustomClasses = false
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.extensions.dslsruntime.commonalities/src-gen"
+		genModel = "platform:/resource/tools.vitruv.extensions.dslsruntime.commonalities/model/RuntimeMetamodels.genmodel"
+		generateCustomClasses = false
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.extensions.dslsruntime.reactions/src-gen"
+		genModel = "platform:/resource/tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/metamodels/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/allElementTypes.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/allElementTypes2.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/attributeToStructureAttr.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/attributeToStructureStruct1.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/multicontainment_a.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/multicontainment_b.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/pcm_mockup.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/uml_mockup.genmodel"
+		generateCustomClasses = false
+	}
+
+}
