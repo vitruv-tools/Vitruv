@@ -3,11 +3,14 @@ module generate
 import org.eclipse.emf.mwe2.ecore.EcoreGenerator
 import org.eclipse.emf.mwe.utils.StandaloneSetup
 
+// This variable is adapted by the Maven build
+var workspaceRoot = "../../../"
+
 Workflow {
 
 	bean = StandaloneSetup {
 		scanClassPath = true
-		platformUri = "."
+		platformUri = workspaceRoot
 	}
 
 	component = EcoreGenerator {

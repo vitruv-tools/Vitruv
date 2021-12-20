@@ -10,8 +10,10 @@ var languageName = "MappingsLanguage"
 var fileExtension = "mappings"
 
 var qualifiedLanguageName = "${projectName}.${languageName}"
-var rootPath = ".."
-var testRootPath = "${rootPath}/../../tests/dsls"
+// This variable is adapted by the Maven build
+var workspaceRoot = "../../../"
+var rootPath = "${workspaceRoot}/bundles/dsls/"
+var testRootPath = "${workspaceRoot}/tests/dsls"
 var testBasePath = "${testRootPath}/${projectName}"
 
 Workflow {
