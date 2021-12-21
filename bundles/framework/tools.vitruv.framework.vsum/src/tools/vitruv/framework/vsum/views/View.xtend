@@ -4,7 +4,7 @@ import java.util.Collection
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.vsum.ChangePropagationListener
+import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.views.selection.ViewSelector

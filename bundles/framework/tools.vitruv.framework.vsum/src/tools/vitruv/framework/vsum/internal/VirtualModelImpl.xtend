@@ -17,7 +17,7 @@ import java.util.LinkedList
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.internal.ChangePropagator
-import tools.vitruv.framework.vsum.ChangePropagationListener
+import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import tools.vitruv.framework.vsum.views.ViewTypeRepository
 
 class VirtualModelImpl implements InternalVirtualModel {

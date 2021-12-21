@@ -4,7 +4,7 @@ import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.vsum.ChangePropagationAbortCause
+import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.VirtualModel
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.util.EcoreUtil
