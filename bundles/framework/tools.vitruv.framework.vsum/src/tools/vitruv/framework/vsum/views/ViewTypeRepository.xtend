@@ -8,7 +8,7 @@ import java.util.Map
 /**
  * Stores and manages all ViewTypes.
  */
-class ViewTypeRepository {
+class ViewTypeRepository implements ViewTypeProvider {
 
     val Map<String, ViewType> registeredViewTypes
 
@@ -16,7 +16,7 @@ class ViewTypeRepository {
         registeredViewTypes = new HashMap
     }
 
-    def Collection<ViewType> getViewTypes() {
+    override Collection<ViewType> getViewTypes() {
         return new ArrayList(registeredViewTypes.values)
     }
 
