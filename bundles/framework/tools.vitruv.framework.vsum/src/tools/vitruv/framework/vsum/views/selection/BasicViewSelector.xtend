@@ -4,13 +4,14 @@ import java.util.Collection
 import org.eclipse.emf.ecore.EObject
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.vsum.views.ViewType
+import tools.vitruv.framework.vsum.views.impl.ViewCreatingViewType
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
-
-import static extension com.google.common.base.Preconditions.checkNotNull
-import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
 import java.util.Map
 import java.util.HashMap
+
+import static com.google.common.base.Preconditions.checkState
+import static com.google.common.base.Preconditions.checkNotNull
 
 /**
  * Basic view selector for a view that represents a set of model elements.
@@ -18,26 +19,26 @@ import java.util.HashMap
  * After creation, all elements will be unselected.
  */
 class BasicViewSelector implements ViewSelector {
-
-    val ViewType<BasicViewSelector> owner
+	
+	val ViewCreatingViewType<BasicViewSelector> viewType
     // TODO Discuss whether we want to guarantee some ordering in the elements. This was not document yet, but maybe we want to have it
     // TODO Remove protected modified, as they must not be used for instance variables --> Inheritance of AbstractTreeBasedViewSelector is incorrent
     protected val Map<EObject, Boolean> elementsSelection
-
+	
 	@Accessors(PUBLIC_GETTER)
 	val ChangeableViewSource viewSource
 	
-    protected new(ViewType<BasicViewSelector> owner, ChangeableViewSource viewSource) {
-        this.owner = owner
+    protected new(ViewCreatingViewType<BasicViewSelector> viewType, ChangeableViewSource viewSource) {
+        this.viewType = viewType
         this.viewSource = viewSource
-        elementsSelection = new HashMap()
+		elementsSelection = new HashMap()
     }
-
-    new(ViewType<BasicViewSelector> owner, ChangeableViewSource viewSource, Collection<EObject> elements) {
-        this(owner, viewSource)
+    
+    new(ViewCreatingViewType<BasicViewSelector> viewType, ChangeableViewSource viewSource, Collection<EObject> elements) {
+        this(viewType, viewSource)
         elements.forEach[this.elementsSelection.put(checkNotNull(it), false)]
     }
-
+    
     override getElements() {
         return elementsSelection.keySet
     }
@@ -59,16 +60,16 @@ class BasicViewSelector implements ViewSelector {
     override getSelectedElements() {
         return elementsSelection.filter[element, selected | selected == true].keySet
     }
-
+    
     override createView() {
-        return owner.createView(this)
+        return viewType.createView(this)
     }
 
-    /**
+	/**
      * Checks if at least one element is selected.
      */
     override isValid() {
         return elementsSelection.values.contains(true)
     }
-
+	
 }

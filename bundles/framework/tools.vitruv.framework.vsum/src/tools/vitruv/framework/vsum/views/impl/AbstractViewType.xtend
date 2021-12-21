@@ -4,7 +4,7 @@ import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 import org.eclipse.xtend.lib.annotations.Accessors
 
-abstract class AbstractViewType<S extends ViewSelector> implements UpdatingViewType<S> {
+abstract class AbstractViewType<S extends ViewSelector> implements ViewCreatingViewType<S> {
 	@Accessors(PUBLIC_GETTER)
     val String name
     

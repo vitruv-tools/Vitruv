@@ -4,36 +4,37 @@ import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.models.ChangePropagationListener
+import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 
 /**
  * A basic view that passes by default the entirety of its underlying model as a copy.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
-class BasicModelView implements ModifiableView {
+class BasicModelView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER)
     val ViewSelector selector
-	@Accessors(PUBLIC_GETTER)
+    @Accessors(PUBLIC_GETTER)
     val ChangeableViewSource viewSource
-    val UpdatingViewType<?> viewType
+    val ViewCreatingViewType<?> viewType
     val ResourceSet viewResourceSet
     ChangeRecorder changeRecorder
     boolean modelChanged
     boolean viewChanged
     boolean closed
 
-    protected new(ChangeableViewSource viewSource, UpdatingViewType<?> viewType, ViewSelector selector) {
-        this.viewType = viewType
+    protected new(ChangeableViewSource viewSource, ViewCreatingViewType<?> viewType, ViewSelector selector) {
         this.selector = selector
+        this.viewType = viewType
         this.viewSource = viewSource
         viewSource.addChangePropagationListener(this)
         viewResourceSet = new ResourceSetImpl().withGlobalFactories
