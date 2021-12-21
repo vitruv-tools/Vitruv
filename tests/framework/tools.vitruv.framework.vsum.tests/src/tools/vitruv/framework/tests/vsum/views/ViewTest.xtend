@@ -29,6 +29,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
 import tools.vitruv.framework.vsum.views.ViewTypeFactory
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 @ExtendWith(TestProjectManager)
 class ViewTest {
@@ -36,7 +37,7 @@ class ViewTest {
     static val String ROOT_ID = "RootId"
 
     var Path projectFolder
-    var VirtualModel virtualModel
+    var InternalVirtualModel virtualModel
     var ResourceSet resourceSet
     var View testView
 
@@ -149,9 +150,9 @@ class ViewTest {
         ])
     }
 
-    def private static View createTestView(VirtualModel virtualModel) {
+    def private static View createTestView(InternalVirtualModel virtualModel) {
         val viewType = ViewTypeFactory.createBasicViewType("", virtualModel).checkNotNull("Cannot create view type!")
-        val selector = viewType.createSelector.checkNotNull("Cannot create selector!")
+        val selector = viewType.createSelector(virtualModel).checkNotNull("Cannot create selector!")
         selector.elements.forEach[selector.setSelected(it, true)]
         return selector.createView.checkNotNull("Cannot create view from selector!")
     }

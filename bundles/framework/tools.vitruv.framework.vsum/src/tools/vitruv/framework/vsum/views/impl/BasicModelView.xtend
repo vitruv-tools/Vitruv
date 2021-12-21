@@ -5,7 +5,6 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
-import tools.vitruv.framework.vsum.VirtualModel
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EObject
@@ -14,28 +13,30 @@ import tools.vitruv.framework.vsum.views.selection.ViewSelector
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.vsum.views.ChangeableViewSource
 
 /**
  * A basic view that passes by default the entirety of its underlying model as a copy.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
 class BasicModelView implements ModifiableView {
-    val VirtualModel virtualModel
     @Accessors(PUBLIC_GETTER)
     val ViewSelector selector
-    val UpdatingViewType viewType
+	@Accessors(PUBLIC_GETTER)
+    val ChangeableViewSource viewSource
+    val UpdatingViewType<?> viewType
     val ResourceSet viewResourceSet
     ChangeRecorder changeRecorder
     boolean modelChanged
     boolean viewChanged
     boolean closed
 
-    protected new(UpdatingViewType viewType, ViewSelector selector, VirtualModel virtualModel) {
-        this.virtualModel = virtualModel
+    protected new(ChangeableViewSource viewSource, UpdatingViewType<?> viewType, ViewSelector selector) {
         this.viewType = viewType
         this.selector = selector
+        this.viewSource = viewSource
+        viewSource.addChangePropagationListener(this)
         viewResourceSet = new ResourceSetImpl().withGlobalFactories
-        virtualModel.addChangePropagationListener(this)
         update
     }
 
@@ -70,7 +71,7 @@ class BasicModelView implements ModifiableView {
     override commitChanges() { // TODO TS: Should the view save all its resources/delete empty ones here?
         checkNotClosed
         changeRecorder.endRecording
-        val propagatedChanges = virtualModel.propagateChange(changeRecorder.change)
+        val propagatedChanges = viewSource.propagateChange(changeRecorder.change)
         viewChanged = false
         update // view shall not be dirty, thus update on commit
         return propagatedChanges
@@ -134,5 +135,5 @@ class BasicModelView implements ModifiableView {
 	override modifyContents((ResourceSet)=>void modificationFunction) {
 		modificationFunction.apply(viewResourceSet)
 	}
-
+	
 }

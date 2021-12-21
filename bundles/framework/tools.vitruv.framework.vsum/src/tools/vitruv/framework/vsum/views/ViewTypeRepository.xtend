@@ -10,24 +10,24 @@ import java.util.Map
  */
 class ViewTypeRepository implements ViewTypeProvider {
 
-    val Map<String, ViewType> registeredViewTypes
+    val Map<String, ViewType<?>> registeredViewTypes
 
     new() {
         registeredViewTypes = new HashMap
     }
 
-    override Collection<ViewType> getViewTypes() {
+    override Collection<ViewType<?>> getViewTypes() {
         return new ArrayList(registeredViewTypes.values)
     }
 
-    def void register(ViewType viewType) {
+    def void register(ViewType<?> viewType) {
         if(registeredViewTypes.containsKey(viewType.name)) {
             throw new IllegalArgumentException("ViewType name already taken by another ViewType: " + viewType.name)
         }
         registeredViewTypes.put(viewType.name, viewType)
     }
 
-    def ViewType findViewType(String viewTypeName) {
+    def ViewType<?> findViewType(String viewTypeName) {
         return registeredViewTypes.get(viewTypeName)
     }
 

@@ -119,7 +119,7 @@ public class DefaultImplementations {
 		}
 
         @Override
-        public Collection<ViewType> getViewTypes() {
+        public Collection<ViewType<?>> getViewTypes() {
             return null;
         }
         

@@ -2,7 +2,10 @@ package tools.vitruv.framework.vsum.views.selection
 
 import java.util.Collection
 import org.eclipse.emf.ecore.EObject
+
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.vsum.views.ViewType
+import tools.vitruv.framework.vsum.views.ChangeableViewSource
 
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkState
@@ -16,18 +19,22 @@ import java.util.HashMap
  */
 class BasicViewSelector implements ViewSelector {
 
-    val ViewType owner
+    val ViewType<BasicViewSelector> owner
     // TODO Discuss whether we want to guarantee some ordering in the elements. This was not document yet, but maybe we want to have it
     // TODO Remove protected modified, as they must not be used for instance variables --> Inheritance of AbstractTreeBasedViewSelector is incorrent
     protected val Map<EObject, Boolean> elementsSelection
 
-    protected new(ViewType owner) {
+	@Accessors(PUBLIC_GETTER)
+	val ChangeableViewSource viewSource
+	
+    protected new(ViewType<BasicViewSelector> owner, ChangeableViewSource viewSource) {
         this.owner = owner
+        this.viewSource = viewSource
         elementsSelection = new HashMap()
     }
 
-    new(ViewType owner, Collection<EObject> elements) {
-        this(owner)
+    new(ViewType<BasicViewSelector> owner, ChangeableViewSource viewSource, Collection<EObject> elements) {
+        this(owner, viewSource)
         elements.forEach[this.elementsSelection.put(checkNotNull(it), false)]
     }
 

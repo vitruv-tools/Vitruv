@@ -9,7 +9,7 @@ class ViewTypeFactory {
 	/**
 	 * Creates a basic view type presenting root elements of resources
 	 */
-	static def ViewType createBasicViewType(String name, VirtualModel virtualModel) {
+	static def ViewType<?> createBasicViewType(String name, VirtualModel virtualModel) {
 		new BasicViewType(name, virtualModel)
 	}
 }

@@ -2,39 +2,39 @@ package tools.vitruv.framework.vsum.views.impl
 
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 import java.nio.file.Files
 import java.nio.file.Path
 import static extension com.google.common.base.Preconditions.checkNotNull
+import tools.vitruv.framework.vsum.views.ChangeableViewSource
 
 /**
  * A basic view type that allows creating views but has no meaningful selection mechanism.
  * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
  */
-class BasicViewType extends AbstractViewType {
+class BasicViewType extends AbstractViewType<BasicViewSelector> {
 
     new(String name, VirtualModel virtualModel) {
         super(name, virtualModel)
     }
 
-    override createSelector() { // TODO TS: Maybe return a  "null selector"
-        return new BasicViewSelector(this, virtualModel.resourceSet.resources.map[contents.head].filterNull.toList)
+    override createSelector(ChangeableViewSource viewSource) { // TODO TS: Maybe return a  "null selector"
+        return new BasicViewSelector(this, viewSource, viewSource.viewSourceModels.map[contents.head].filterNull.toList)
     }
 
-    override createView(ViewSelector selector) {
-        return new BasicModelView(this, selector, virtualModel) // selector does not matter here
+    override createView(BasicViewSelector selector) {
+        return new BasicModelView(selector.viewSource, this, selector)
     }
     
     override updateView(ModifiableView view) {
     	view.modifyContents[viewResourceSet |
     		viewResourceSet.resources.forEach[unload]
         	viewResourceSet.resources.clear
-			val virtualModelResources = virtualModel.resourceSet.resources
-		    for (var i  = 0; i < virtualModelResources.size; i++) {
-		    	val resource = virtualModelResources.get(i)
+			val viewSources = view.viewSource.viewSourceModels
+		    for (var i  = 0; i < viewSources.size; i++) {
+		    	val resource = viewSources.get(i)
 		    	if (view.selector.selectedElements.contains(resource.contents.head)) {
 		    		if (resource.URI.fileExtension == "uml") { 
 						resource.copyUmlModel(viewResourceSet)

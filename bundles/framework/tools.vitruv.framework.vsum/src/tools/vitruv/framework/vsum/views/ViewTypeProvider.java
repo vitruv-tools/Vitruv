@@ -11,5 +11,5 @@ public interface ViewTypeProvider {
 	 * 
 	 * @return a collection of {@link ViewType}s
 	 */
-	public Collection<ViewType> getViewTypes();
+	public Collection<ViewType<?>> getViewTypes();
 }

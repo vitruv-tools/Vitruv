@@ -1,11 +1,11 @@
 package tools.vitruv.framework.vsum.views.impl
 
 import tools.vitruv.framework.vsum.VirtualModel
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
-abstract class AbstractViewType implements UpdatingViewType {
+abstract class AbstractViewType<S extends ViewSelector> implements UpdatingViewType<S> {
 
 	@Accessors(PUBLIC_GETTER)
     val String name
@@ -15,10 +15,6 @@ abstract class AbstractViewType implements UpdatingViewType {
     new(String name, VirtualModel virtualModel) { // TODO TS: How should the viewtype access the models? inversion of control?
         this.name = name
         this.virtualModel = virtualModel
-    }
-
-    override createView(ViewSelector selector) {
-        return new BasicModelView(this, selector, virtualModel)
     }
      
 }
