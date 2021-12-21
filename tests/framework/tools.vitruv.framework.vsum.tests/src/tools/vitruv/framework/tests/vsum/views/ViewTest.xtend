@@ -105,9 +105,8 @@ class ViewTest {
         assertFalse(changes.empty)
         assertFalse(testView.modified)
         assertFalse(testView.hasVSUMChanged)
-        val modelResource = virtualModel.resourceSet.resources.claimOne.checkNotNull
-        val modelRoot = modelResource.contents.claimOne.checkNotNull as Root
-        assertEquals(NON_ROOT_ID, modelRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
+        val reopenedViewModel  = virtualModel.createTestView.rootObjects(Root).claimOne.checkNotNull
+        assertEquals(NON_ROOT_ID, reopenedViewModel.multiValuedContainmentEReference.claimOne.checkNotNull.id)
     }
 
     @Test

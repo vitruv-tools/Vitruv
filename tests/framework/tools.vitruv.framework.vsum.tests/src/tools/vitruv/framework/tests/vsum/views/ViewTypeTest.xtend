@@ -52,7 +52,6 @@ class ViewTypeTest {
                 ]
             ]
         ])
-        assertEquals(resourceSet.resources.size, virtualModel.resourceSet.resources.size)
 
         // Create view type, select first element, and create view:
         val viewType = checkNotNull(ViewTypeFactory.createBasicViewType("test view type", virtualModel), "Cannot create view type!")

@@ -171,10 +171,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.clear()
 	}
 
-	override getResourceSet() {
-		return modelsResourceSet
-	}
-	
 	override getModelResources() {
 		return modelsResourceSet.resources
 	}
