@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.internal.ChangePropagator
 import tools.vitruv.framework.vsum.views.ViewTypeRepository
 import tools.vitruv.framework.vsum.views.ViewType
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.models.ChangePropagationListener
 
 class VirtualModelImpl implements InternalVirtualModel {

@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum.views.impl;
 
 import tools.vitruv.framework.vsum.views.ViewType;
-import tools.vitruv.framework.vsum.views.selection.ViewSelector;
+import tools.vitruv.framework.vsum.views.ViewSelector;
 
 /**
  * A specific view type that is able to create and update views.

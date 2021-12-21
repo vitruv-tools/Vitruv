@@ -1,7 +1,5 @@
 package tools.vitruv.framework.vsum.views;
 
-import tools.vitruv.framework.vsum.views.selection.ViewSelector;
-
 /**
  * A provider for views, i.e. this object contains the source models to create a
  * view from and provides according selectors for given view types to

@@ -12,7 +12,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 

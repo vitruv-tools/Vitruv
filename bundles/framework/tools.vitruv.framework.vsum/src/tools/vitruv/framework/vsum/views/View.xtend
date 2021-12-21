@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.views.ViewSelector
 import com.google.common.annotations.Beta
 
 /**

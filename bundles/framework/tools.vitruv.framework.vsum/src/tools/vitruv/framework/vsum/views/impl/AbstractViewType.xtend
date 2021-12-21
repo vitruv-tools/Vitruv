@@ -1,6 +1,6 @@
 package tools.vitruv.framework.vsum.views.impl
 
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.views.ViewSelector
 
 import org.eclipse.xtend.lib.annotations.Accessors
 

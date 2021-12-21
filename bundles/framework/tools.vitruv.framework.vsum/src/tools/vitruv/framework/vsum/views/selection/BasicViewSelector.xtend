@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.vsum.views.impl.ViewCreatingViewType
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.views.ViewSelector
 import java.util.Map
 import java.util.HashMap
 

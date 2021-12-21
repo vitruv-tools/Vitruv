@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum.views.selection
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.views.ViewSelector
 
 /**
  * {@linkplain ViewSelector} for tree structures.

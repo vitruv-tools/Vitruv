@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.selection
+package tools.vitruv.framework.vsum.views
 
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.views.View
