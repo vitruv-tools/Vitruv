@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum.views.impl
 
-import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
@@ -16,8 +15,8 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource
  */
 class BasicViewType extends AbstractViewType<BasicViewSelector> {
 
-    new(String name, VirtualModel virtualModel) {
-        super(name, virtualModel)
+    new(String name) {
+        super(name)
     }
 
     override createSelector(ChangeableViewSource viewSource) { // TODO TS: Maybe return a  "null selector"
