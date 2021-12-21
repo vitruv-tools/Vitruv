@@ -212,4 +212,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return resourceRepository.resourceSet
 	}
 
+	override getViewSourceModels() {
+		resourceRepository.modelResources
+	}
+	
 }

@@ -174,5 +174,9 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	override getResourceSet() {
 		return modelsResourceSet
 	}
+	
+	override getModelResources() {
+		return modelsResourceSet.resources
+	}
 
 }

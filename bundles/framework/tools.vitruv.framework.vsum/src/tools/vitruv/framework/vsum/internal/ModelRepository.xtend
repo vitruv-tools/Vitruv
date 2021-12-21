@@ -6,6 +6,8 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.ecore.resource.ResourceSet
+import java.util.Collection
+import org.eclipse.emf.ecore.resource.Resource
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def VitruviusChange applyChange(VitruviusChange change)
@@ -32,4 +34,6 @@ package interface ModelRepository extends ResourceAccess, AutoCloseable {
      */
     @Deprecated
     def ResourceSet getResourceSet()
+    
+    def Collection<Resource> getModelResources()
 }
