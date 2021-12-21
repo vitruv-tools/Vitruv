@@ -24,8 +24,9 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.vsum.models.ChangePropagationListener;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.models.ChangePropagationListener;
+import tools.vitruv.framework.vsum.views.selection.ViewSelector;
 import tools.vitruv.framework.vsum.views.ViewType;
 
 public class DefaultImplementations {
@@ -121,6 +122,11 @@ public class DefaultImplementations {
         public Collection<ViewType<?>> getViewTypes() {
             return null;
         }
+
+		@Override
+		public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
+			return null;
+		}
         
 	}
 }

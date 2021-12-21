@@ -42,7 +42,7 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 					}
 				}
 		 	}
-		 ]
+		]
     }
     
     /**

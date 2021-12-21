@@ -17,8 +17,10 @@ import java.util.LinkedList
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.internal.ChangePropagator
-import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import tools.vitruv.framework.vsum.views.ViewTypeRepository
+import tools.vitruv.framework.vsum.views.ViewType
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
+import tools.vitruv.framework.vsum.models.ChangePropagationListener
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -212,4 +214,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		resourceRepository.modelResources
 	}
 	
+	override <S extends ViewSelector> createSelector(ViewType<S> viewType) {
+		viewType.createSelector(this)
+	}
+
 }

@@ -29,7 +29,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
 import tools.vitruv.framework.vsum.views.ViewTypeFactory
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 @ExtendWith(TestProjectManager)
 class ViewTest {
@@ -37,7 +36,7 @@ class ViewTest {
     static val String ROOT_ID = "RootId"
 
     var Path projectFolder
-    var InternalVirtualModel virtualModel
+    var VirtualModel virtualModel
     var ResourceSet resourceSet
     var View testView
 
@@ -105,8 +104,9 @@ class ViewTest {
         assertFalse(changes.empty)
         assertFalse(testView.modified)
         assertFalse(testView.hasVSUMChanged)
-        val reopenedViewModel  = virtualModel.createTestView.rootObjects(Root).claimOne.checkNotNull
-        assertEquals(NON_ROOT_ID, reopenedViewModel.multiValuedContainmentEReference.claimOne.checkNotNull.id)
+        
+        val reopenedViewRoot = virtualModel.createTestView.rootObjects(Root).claimOne.checkNotNull
+        assertEquals(NON_ROOT_ID, reopenedViewRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
     }
 
     @Test
@@ -149,9 +149,9 @@ class ViewTest {
         ])
     }
 
-    def private static View createTestView(InternalVirtualModel virtualModel) {
-        val viewType = ViewTypeFactory.createBasicViewType("").checkNotNull("Cannot create view type!")
-        val selector = viewType.createSelector(virtualModel).checkNotNull("Cannot create selector!")
+    def private static View createTestView(VirtualModel virtualModel) {
+        val viewType = ViewTypeFactory.createBasicViewType("").checkNotNull("cannot create view type")
+        val selector = virtualModel.createSelector(viewType).checkNotNull("cannot create selector")
         selector.elements.forEach[selector.setSelected(it, true)]
         return selector.createView.checkNotNull("Cannot create view from selector!")
     }

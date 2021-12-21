@@ -4,12 +4,12 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import pcm_mockup.Pcm_mockupFactory
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
-import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertIterableEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 class ViewSelectorTest {
 
