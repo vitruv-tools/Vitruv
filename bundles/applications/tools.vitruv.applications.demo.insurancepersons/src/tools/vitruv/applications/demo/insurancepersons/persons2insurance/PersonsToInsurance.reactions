@@ -1,3 +1,9 @@
+import org.eclipse.emf.common.util.EList
+import edu.kit.ipd.sdq.metamodels.insurance.InsuranceClient
+import edu.kit.ipd.sdq.metamodels.insurance.Gender
+import edu.kit.ipd.sdq.metamodels.persons.Male
+import edu.kit.ipd.sdq.metamodels.persons.Female
+
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance
 
@@ -13,8 +19,49 @@ reaction CreatedPersonRegister {
 routine createInsuranceDatabase(persons::PersonRegister personRegister) {
 	action {
 		val insuranceDatabase = create insurance::InsuranceDatabase and initialize {
-			persistProjectRelative(personRegister, insuranceDatabase, "model/model.insurance")
+			persistProjectRelative(personRegister, insuranceDatabase, "model/insurance.insurance")
 		}
 		add correspondence between insuranceDatabase and personRegister
 	}
 }
+
+reaction DeletedPersonRegister{
+	after element persons::PersonRegister deleted
+	call deleteInsuranceDatabase(affectedEObject)
+}
+
+routine deleteInsuranceDatabase(persons::PersonRegister personsRegister){
+	match{
+		val insuranceDatabase = retrieve persons::PersonRegister corresponding to personsRegister
+	}
+	
+	action{
+		delete insuranceDatabase
+	}
+}
+
+reaction CreatedPerson {
+	after element persons::Person created and inserted in persons::PersonRegister[persons]
+	call createInsuranceClient(newValue)
+}
+
+routine createInsuranceClient(persons::Person person) {
+	match{
+		val insuranceDatabase = retrieve insurance::InsuranceDatabase corresponding to person.eContainer
+	}
+	action{
+		val newClient = create insurance::InsuranceClient and initialize {
+			newClient.name = person.fullName
+			//newClient.socialSecurityNumber = 000
+			if (person instanceof Male) {
+				newClient.gender = Gender.MALE
+			} else {
+				newClient.gender = Gender.FEMALE
+			}
+		}
+		call insuranceDatabase.insuranceclient += newClient
+		add correspondence between person and newClient
+		
+	}
+}
+
