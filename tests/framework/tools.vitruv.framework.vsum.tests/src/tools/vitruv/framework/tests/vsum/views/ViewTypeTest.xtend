@@ -24,44 +24,44 @@ import tools.vitruv.framework.vsum.views.ViewTypeFactory
 
 @ExtendWith(TestProjectManager)
 class ViewTypeTest {
-    static val String ROOT_ID = "RootId1"
-    static val String ROOT_ID_2 = "RootId2"
-    var Path projectFolder
+	static val String ROOT_ID = "RootId1"
+	static val String ROOT_ID_2 = "RootId2"
+	var Path projectFolder
 
-    @BeforeEach
-    def void initializeProjectFolder(@TestProject Path projectFolder) {
-        this.projectFolder = projectFolder
-    }
+	@BeforeEach
+	def void initializeProjectFolder(@TestProject Path projectFolder) {
+		this.projectFolder = projectFolder
+	}
 
-    @Disabled // TODO TS: Due to changed update functionality this is currently no longer supported.
-    @Test
-    @DisplayName("Test basic view type and selector functionality")
-    def void testBasicViewType() {
-        // Create test model with two resources and a root element each:
-        val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-        val resourceSet = new ResourceSetImpl().withGlobalFactories
-        virtualModel.propagateChange(resourceSet.recordChanges [
-            resourceSet.createResource(projectFolder.createTestModelResourceUri("1")) => [
-                contents += aet.Root => [
-                    id = ROOT_ID
-                ]
-            ]
-            resourceSet.createResource(projectFolder.createTestModelResourceUri("2")) => [
-                contents += aet.Root => [
-                    id = ROOT_ID_2
-                ]
-            ]
-        ])
+	@Disabled // TODO TS: Due to changed update functionality this is currently no longer supported.
+	@Test
+	@DisplayName("Test basic view type and selector functionality")
+	def void testBasicViewType() {
+		// Create test model with two resources and a root element each:
+		val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
+		val resourceSet = new ResourceSetImpl().withGlobalFactories
+		virtualModel.propagateChange(resourceSet.recordChanges [
+			resourceSet.createResource(projectFolder.createTestModelResourceUri("1")) => [
+				contents += aet.Root => [
+					id = ROOT_ID
+				]
+			]
+			resourceSet.createResource(projectFolder.createTestModelResourceUri("2")) => [
+				contents += aet.Root => [
+					id = ROOT_ID_2
+				]
+			]
+		])
 
-        // Create view type, select first element, and create view:
-        val viewType = checkNotNull(ViewTypeFactory.createBasicViewType("test view type"), "Cannot create view type!")
-        val selector = checkNotNull(virtualModel.createSelector(viewType), "Cannot create selector!")
-        selector.setSelected(selector.elements.get(0), true)
-        val view = checkNotNull(selector.createView, "Cannot create view from selector!")
+		// Create view type, select first element, and create view:
+		val viewType = checkNotNull(ViewTypeFactory.createBasicViewType("test view type"), "Cannot create view type!")
+		val selector = checkNotNull(virtualModel.createSelector(viewType), "Cannot create selector!")
+		selector.setSelected(selector.selectableElements.get(0), true)
+		val view = checkNotNull(selector.createView, "Cannot create view from selector!")
 
-        // Check view content, only first element should be provided:
-        assertEquals(1, view.rootObjects.size)
-        val root = view.rootObjects.claimOne.checkNotNull as Root
-        assertEquals(ROOT_ID, root.id)
-    }
+		// Check view content, only first element should be provided:
+		assertEquals(1, view.rootObjects.size)
+		val root = view.rootObjects.claimOne.checkNotNull as Root
+		assertEquals(ROOT_ID, root.id)
+	}
 }
