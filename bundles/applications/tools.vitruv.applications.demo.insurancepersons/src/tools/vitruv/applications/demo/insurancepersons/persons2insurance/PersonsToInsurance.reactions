@@ -32,7 +32,7 @@ reaction DeletedPersonRegister{
 
 routine deleteInsuranceDatabase(persons::PersonRegister personsRegister){
 	match{
-		val insuranceDatabase = retrieve persons::PersonRegister corresponding to personsRegister
+		val insuranceDatabase = retrieve insurance::InsuranceDatabase corresponding to personsRegister
 	}
 	
 	action{
@@ -62,6 +62,37 @@ routine createInsuranceClient(persons::Person person) {
 		call insuranceDatabase.insuranceclient += newClient
 		add correspondence between person and newClient
 		
+	}
+}
+
+reaction ChangedFullName {
+	after attribute replaced at persons::Person[fullName]
+	call changeNames(affectedEObject)
+}
+
+routine changeNames(persons::Person person) {
+	match {
+		val client = retrieve insurance::InsuranceClient corresponding to person
+	}
+	action {
+		call {
+			client.name = person.fullName
+		}
+	}
+}
+
+reaction DeletedPerson {
+	after element persons::Person deleted
+	call deleteClient(affectedEObject)
+}
+
+routine deleteClient(persons::Person person) {
+	match {
+		val client = retrieve insurance::InsuranceClient corresponding to person
+	}
+	action {
+		remove correspondence between person and client
+		delete client
 	}
 }
 

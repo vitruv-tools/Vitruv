@@ -30,6 +30,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	static val MALE_NAME_2 = "Bernd Mustermann"
 	static val FEMALE_NAME = "Erika Mustermann"
 	static val FEMALE_NAME_2 = "Berta Mustermann"
+	static val FEMALE_NAME_3 = "Berta Musterfrau"
 	// Model Paths
 	final static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
 	final static Path INSURANCE_MODEL = DomainUtil.getModelFileName('model/insurance', new InsuranceDomainProvider)
@@ -77,6 +78,15 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertThat(insuranceDatabase, instanceOf(InsuranceDatabase))
 		val InsuranceDatabase castedInsuranceDatabase = insuranceDatabase as InsuranceDatabase
 		assertThat(castedInsuranceDatabase, equalsDeeply(expectedInsuranceDatabase))
+	}
+	
+	def void createPersonsAndPropagate() {
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
 	}
 	
 	def createPersonsForTesting() {
@@ -134,10 +144,17 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	}
 	
 	@Test
-	def void testDeletePersonRegister() {
+	def void testDeletePersonsRegister() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
-		// TODO
+		this.createPersonsAndPropagate();
+		logger.trace(surroundingMethodName + " - preparation done")
+		resourceAt(PERSONS_MODEL).propagate[contents.clear()]
+		logger.trace(surroundingMethodName + " - propagation done")
+		assertEquals(0, resourceAt(INSURANCE_MODEL).contents.size())
+		assertEquals(0, resourceAt(PERSONS_MODEL).contents.size())
+		assertThat(resourceAt(INSURANCE_MODEL), not(exists))
+		assertThat(resourceAt(PERSONS_MODEL), not(exists))
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
 
@@ -219,4 +236,201 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(surroundingMethodName + " - finished without errors")
 	}
+	
+	@Test
+	def void testChangedFullName() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		
+		createPersonsAndPropagate()
+		logger.trace(surroundingMethodName + " - preparation done")
+		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME_2)]
+			searchedPerson.fullName = FEMALE_NAME_3
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_3]
+		]
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME
+				// socialSecurityNumber = 000
+				gender = Gender.FEMALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME_2
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME_3
+				// socialSecurityNumber = 000
+				gender = Gender.FEMALE
+			]
+		]
+		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+	
+	@Test
+	def void testDeletedPerson_first_notOnely() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		
+		createPersonsAndPropagate()
+		logger.trace(surroundingMethodName + " - preparation done")
+		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedPerson = persons.findFirst[x|x.fullName.equals(MALE_NAME)]
+			persons.remove(searchedPerson)
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME
+				// socialSecurityNumber = 000
+				gender = Gender.FEMALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME_2
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME_2
+				// socialSecurityNumber = 000
+				gender = Gender.FEMALE
+			]
+		]
+		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+
+	@Test
+	def void testDeletedPerson_middle_notOnely() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		
+		createPersonsAndPropagate()
+		logger.trace(surroundingMethodName + " - preparation done")
+		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME)]
+			persons.remove(searchedPerson)
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME_2
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME_2
+				// socialSecurityNumber = 000
+				gender = Gender.FEMALE
+			]
+		]
+		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+	
+	@Test
+	def void testDeletedPerson_last_notOnely() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		
+		createPersonsAndPropagate()
+		logger.trace(surroundingMethodName + " - preparation done")
+		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME_2)]
+			persons.remove(searchedPerson)
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+		]
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME
+				// socialSecurityNumber = 000
+				gender = Gender.FEMALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME_2
+				// socialSecurityNumber = 000
+				gender = Gender.MALE
+			]
+		]
+		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
+	
+	@Test
+	def void testDeletedPerson_onely() {
+		val String surroundingMethodName = this.testInfo.getDisplayName()
+		logger.trace(surroundingMethodName + " - begin")
+		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+		]
+		logger.trace(surroundingMethodName + " - preparation done")
+		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedPerson = persons.findFirst[x|x.fullName.equals(MALE_NAME)]
+			persons.remove(searchedPerson)
+		]
+		logger.trace(surroundingMethodName + " - propagation done")
+		
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+		]
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
+		]
+		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(surroundingMethodName + " - finished without errors")
+	}
 }
+
+	
