@@ -32,7 +32,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
-	
+
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
@@ -48,7 +48,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			userInteractor
 		)
 	}
-	
+
 	def loadExistingModels() {
 		this.resourceRepository.loadExistingModels()
 	}
@@ -67,16 +67,16 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override synchronized propagateChange(VitruviusChange change) {
 		checkNotNull(change, "change to propagate")
-		checkArgument(change.containsConcreteChange, 
-			"This change contains no concrete changes:%s%s", System.lineSeparator, change)
+		checkArgument(change.containsConcreteChange, "This change contains no concrete changes:%s%s",
+			System.lineSeparator, change)
 		val unresolvedChange = change.unresolve()
-		
+
 		LOGGER.info("Start change propagation")
 		startChangePropagation(unresolvedChange)
-		
+
 		val result = changePropagator.propagateChange(unresolvedChange)
 		save()
-		
+
 		if (LOGGER.isTraceEnabled) {
 			LOGGER.trace('''
 				Propagated changes:
@@ -86,7 +86,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 				«ENDFOR»
 			''')
 		}
-		
+
 		finishChangePropagation(unresolvedChange)
 		informPropagatedChangeListeners(result)
 		LOGGER.info("Finished change propagation")
@@ -94,13 +94,13 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
-		if (LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
+		if(LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
-		changePropagationListeners.forEach [finishedChangePropagation]
-		if (LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
+		changePropagationListeners.forEach[finishedChangePropagation]
+		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
 	}
 
 	/**
@@ -117,9 +117,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 		checkArgument(oldLocation !== null || newState !== null, "either new state or old location must not be null")
 		val currentState = oldLocation.retrieveCurrentModelState()
 		if (currentState === null) {
-			checkState(newState !== null, "new state must not be null if no resource exists for old location " + oldLocation)
+			checkState(newState !== null,
+				"new state must not be null if no resource exists for old location " + oldLocation)
 		}
-		val vitruvDomain = domainRepository.getDomain(if (oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
+		val vitruvDomain = domainRepository.getDomain(
+			if(oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
 		val strategy = vitruvDomain.stateChangePropagationStrategy
 		val compositeChange = if (currentState === null) {
 				strategy.getChangeSequenceForCreated(newState)
@@ -213,7 +215,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getViewSourceModels() {
 		resourceRepository.modelResources
 	}
-	
+
 	override <S extends ViewSelector> createSelector(ViewType<S> viewType) {
 		viewType.createSelector(this)
 	}

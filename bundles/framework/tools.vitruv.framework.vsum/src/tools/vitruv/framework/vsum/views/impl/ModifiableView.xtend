@@ -9,7 +9,7 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource
  */
 // TODO This is not yet a proper implementation for updating the view from a view type
 interface ModifiableView extends View {
-	def void modifyContents((ResourceSet) => void modificationFunction);
-	
+	def void modifyContents((ResourceSet)=>void modificationFunction);
+
 	def ChangeableViewSource getViewSource()
 }

@@ -13,13 +13,13 @@ class ModelInstance {
 	static val LOGGER = Logger.getLogger(ModelInstance)
 	@Accessors(PUBLIC_GETTER)
 	Resource resource
-	
+
 	new(Resource resource) {
 		checkArgument(resource !== null, "cannot create a model instance for a null resource")
 		this.resource = resource
 		LOGGER.debug('''Create model instance for resource with URI: «URI»''')
 	}
-	
+
 	def URI getURI() {
 		return resource.URI
 	}

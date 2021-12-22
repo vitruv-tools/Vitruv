@@ -27,5 +27,5 @@ package interface ModelRepository extends ResourceAccess, AutoCloseable {
 
 	def Iterable<? extends TransactionalChange> endRecording()
 
-    def Collection<Resource> getModelResources()
+	def Collection<Resource> getModelResources()
 }
