@@ -37,7 +37,7 @@ public interface VirtualVaVeModel {
 	 * @param expression          The expression (currently a conjunction of variables (features) to which the recorded deltas should be mapped and which is provided manually by the user)
 	 * @throws IOException In case of problems when writing the updated VaVe model to the disk.
 	 */
-	public void internalizeChanges(VirtualProductModel virtualModel, Expression<FeatureOption> expression) throws IOException;
+	public FeatureModel internalizeChanges(VirtualProductModel virtualModel, Expression<FeatureOption> expression) throws IOException;
 
 	/**
 	 * Externalizes a view on the domain of the unified system based on a system revision.

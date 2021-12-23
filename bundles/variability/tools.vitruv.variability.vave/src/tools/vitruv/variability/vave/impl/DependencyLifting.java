@@ -15,6 +15,7 @@ import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
+import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
@@ -50,7 +51,7 @@ import vavemodel.util.VavemodelSwitch;
 
 public class DependencyLifting {
 
-	public FeatureModel liftingDependenciesBetweenFeatures(VirtualVaVeModel vave, SystemRevision sysrev) throws Exception {
+	public FeatureModel liftingDependenciesBetweenFeatures(VirtualVaVeModel vave, SystemRevision sysrev) {
 
 		// After every internalizeChanges, retrieve dependencies between deltas of vave model
 		// If dependencies have been detected, find mapped features of deltas
@@ -374,8 +375,8 @@ public class DependencyLifting {
 											Feature fmFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) object.getOption()).getName())).findAny().get();
 											object.setOption((T) fmFeature);
 										} else if (object.getOption() instanceof FeatureRevision) {
-											FeatureRevision fmFeatureRevision = fm.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) object.getOption()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) object.getOption()).getRevisionID())
-													.findAny().get();
+											FeatureRevision fmFeatureRevision = fm.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr)
+													.filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) object.getOption()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) object.getOption()).getRevisionID()).findAny().get();
 											object.setOption((T) fmFeatureRevision);
 										}
 										return (Variable<FeatureOption>) object;
@@ -396,6 +397,8 @@ public class DependencyLifting {
 					}
 				} catch (ContradictionException e) {
 					System.out.println("CONTRADICTION!");
+				} catch (TimeoutException e) {
+					System.out.println("TIMEOUT!");
 				}
 			}
 		}
@@ -427,6 +430,8 @@ public class DependencyLifting {
 					}
 				} catch (ContradictionException e) {
 					System.out.println("CONTRADICTION!");
+				} catch (TimeoutException e) {
+					System.out.println("TIMEOUT!");
 				}
 			}
 		}

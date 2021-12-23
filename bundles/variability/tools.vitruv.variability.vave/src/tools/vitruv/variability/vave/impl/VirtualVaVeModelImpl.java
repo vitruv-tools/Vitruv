@@ -221,7 +221,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return vsum;
 	}
 
-	public void internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws IOException {
+	public FeatureModel internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws IOException {
 		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
 
 		// NOTE: the following could be achieved with an OCL constraint
@@ -257,6 +257,9 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		this.system.getSystemrevision().add(newsysrev);
 		final SystemRevision cursysrev = tempcursysrev;
 
+		// make sure all options in the expression are enabled by the system revision
+		// TODO
+
 		// create new feature revisions for features that appear in expression
 		List<FeatureRevision> newFeatureRevisions = new ArrayList<>();
 		for (Option option : options) {
@@ -276,6 +279,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				feature.getFeaturerevision().add(featurerev); // set feature as container for feature revision
 				newFeatureRevisions.add(featurerev);
 				newsysrev.getEnablesoptions().add(featurerev); // enable feature revisions by new system revision
+				if (!newsysrev.getEnablesoptions().contains(feature))
+					newsysrev.getEnablesoptions().add(feature);
 			}
 		}
 
@@ -389,6 +394,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 
 		this.save();
+
+		return new DependencyLifting().liftingDependenciesBetweenFeatures(this, newsysrev);
 	}
 
 	public FeatureModel externalizeDomain(SystemRevision sysrev) {

@@ -147,7 +147,9 @@ public class VaveTest {
 	private Expression<FeatureOption> createExpression(vavemodel.System system) {
 		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
 		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		car.setName("Car");
 		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		engineType.setName("EngineType");
 		system.getFeature().add(car);
 		system.getFeature().add(engineType);
 		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
