@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Insurance-Persons Demo Application
+Bundle-SymbolicName: tools.vitruv.applications.demo.insurancepersons;singleton:=true
+Automatic-Module-Name: tools.vitruv.applications.demo.insurancepersons
+Bundle-Version: 2.1.0.qualifier
+Bundle-Vendor: vitruv.tools
+Export-Package: tools.vitruv.applications.demo.insurancepersons
+Require-Bundle: tools.vitruv.framework.applications,
+ tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
+ tools.vitruv.domains.demo
+Bundle-RequiredExecutionEnvironment: JavaSE-11

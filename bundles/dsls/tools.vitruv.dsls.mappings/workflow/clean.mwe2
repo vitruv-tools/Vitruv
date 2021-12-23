@@ -3,10 +3,10 @@ module clean
 import org.eclipse.emf.mwe.utils.DirectoryCleaner
 
 var projectName = "tools.vitruv.dsls.mappings"
-var rootPath = ".."
-var testRootPath = "${rootPath}/../../tests/dsls"
-var basePath = "${rootPath}/${projectName}"
-var testBasePath = "${testRootPath}/${projectName}"
+// This variable is adapted by the Maven build
+var workspaceRoot = "../../../"
+var basePath = "${workspaceRoot}/bundles/dsls/${projectName}"
+var testBasePath = "${workspaceRoot}/tests/dsls/${projectName}"
 
 Workflow {
 
