@@ -10,6 +10,7 @@ import static extension com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
 import tools.vitruv.framework.vsum.views.selection.impl.ViewSelectionImpl
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
 
 /**
  * A basic view type that allows creating views based on a basic element-wise selection mechanism.
@@ -37,7 +38,7 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 			for (var i = 0; i < viewSources.size; i++) {
 				val resource = viewSources.get(i)
 				if (view.selection.selectedElements.contains(resource.contents.head)) {
-					if (resource.URI.fileExtension == "uml") {
+					if (resource.URI.fileExtension == "uml" && !resource.URI.isPathmap) {
 						resource.copyUmlModel(viewResourceSet)
 					} else {
 						resource.copyModel(viewResourceSet)
