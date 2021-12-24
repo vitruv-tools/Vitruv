@@ -82,15 +82,14 @@ public interface View extends AutoCloseable {
 	boolean isClosed();
 
 	/**
-	 * Creates an element of the given type and persists it at the given
-	 * {@link URI}.
+	 * Persists the given object at the given {@link URI} and adds it as view root
 	 */
 	@Deprecated
 	@Beta
 	// TODO We have to think about whether this is a proper level of abstraction and
 	// whether passing URIs is necessary here, as root elements of a view must not
 	// necessarily be root elements of a resource in the underlying virtual model
-	EObject createRoot(EClass rootClass, URI persistAt);
+	void registerRoot(EObject object, URI persistAt);
 
 	/**
 	 * Returns the {@link ViewSelection} with which this view has been created.

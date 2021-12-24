@@ -104,13 +104,11 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 		// do nothing
 	}
 
-	override EObject createRoot(EClass rootClass, URI persistAt) {
-		val root = EcoreUtil.create(rootClass)
+	override void registerRoot(EObject object, URI persistAt) {
 		viewResourceSet.createResource(persistAt) => [
-			contents += root
+			contents += object
 		]
-		rootObjects += root
-		return root
+		rootObjects += object
 	}
 
 	def private void checkNotClosed() {
