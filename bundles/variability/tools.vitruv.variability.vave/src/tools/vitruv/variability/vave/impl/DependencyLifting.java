@@ -250,6 +250,8 @@ public class DependencyLifting {
 		System.out.println("NUMBER OF REQUIRES DEPENDENCIES: " + requires);
 		System.out.println("NUMBER OF EXCLUDES DEPENDENCIES: " + excludes);
 
+		boolean repairHappened = false;
+
 		// for every dependency, create sat solver instance, add respective clauses, and check if it is satisfiable
 		for (Entry<Mapping, Set<Mapping>> entry : requires.entrySet()) {
 			// check if feature model has no root and if current mapping has only a single feature and requires no other mapping but itself
@@ -265,6 +267,8 @@ public class DependencyLifting {
 				final Feature fmRequiringFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(finalRequiringFeature.getName())).findAny().get();
 				// add it as root feature
 				fm.setRootFeature(fmRequiringFeature);
+
+				repairHappened = true;
 			}
 			// for every mapping that is required, we check if its presence is guaranteed
 			for (Mapping requiredMapping : entry.getValue()) {
@@ -322,6 +326,7 @@ public class DependencyLifting {
 									if (tc.getType() == GroupType.ORNONE && tc.getFeature().size() == 1) {
 										tc.setType(GroupType.XOR);
 										addedTC = true;
+										repairHappened = true;
 									}
 								}
 							}
@@ -339,6 +344,7 @@ public class DependencyLifting {
 									fmRequiredFeature.getTreeconstraint().add(tc);
 									fm.getTreeConstraints().add(tc);
 									addedTC = true;
+									repairHappened = true;
 									System.out.println("ADDED TC: " + fmRequiringFeature + " as child of " + fmRequiredFeature);
 									System.out.println("ADDED TC: " + entry.getKey() + " as child of " + requiredMapping);
 								}
@@ -395,6 +401,9 @@ public class DependencyLifting {
 							disjunction.getTerm().add(rightTerm); // set expression of required mapping without system revision
 
 							ctc.setExpression(disjunction);
+
+							repairHappened = true;
+
 							System.out.println("ADD CTC: " + new ExpressionPrinter().doSwitch(ctc.getExpression()));
 						}
 					}
@@ -430,6 +439,8 @@ public class DependencyLifting {
 						// TODO
 						// if above is not the case, then simply add a ctc
 						// TODO
+
+						repairHappened = true;
 					}
 				} catch (ContradictionException e) {
 					System.out.println("CONTRADICTION!");
@@ -439,7 +450,10 @@ public class DependencyLifting {
 			}
 		}
 
-		return fm;
+		if (!repairHappened)
+			return null;
+		else
+			return fm;
 	}
 
 	private static Feature getParent(final FeatureModel fm, final Feature f) {

@@ -508,6 +508,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		// NOTE: fm stores (copy of) root node, ctcs, sysrev
 		if (fm.getSysrev() == null) { // if we create the very first system revision, we don't need to do a diff
+			System.out.println("FIRST!!!");
+
 			newsysrev.getEnablesoptions().addAll(fm.getFeatureOptions());
 			newsysrev.getEnablesconstraints().addAll(fm.getTreeConstraints());
 			newsysrev.getEnablesconstraints().addAll(fm.getCrossTreeConstraints());
@@ -635,15 +637,26 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 					// replace feature option instances in expression with instances from vave model (unified system)
 					new VavemodelSwitch<Void>() {
+						public <T extends Option> Void caseBinaryExpression(vavemodel.BinaryExpression<T> object) {
+							doSwitch(object.getTerm().get(0));
+							doSwitch(object.getTerm().get(1));
+							return null;
+						}
+
+						public <T extends Option> Void caseUnaryExpression(vavemodel.UnaryExpression<T> object) {
+							doSwitch(object.getTerm());
+							return null;
+						}
+
 						public <T extends Option> Void caseVariable(vavemodel.Variable<T> object) {
 							if (object.getOption() instanceof Feature) {
-								object.setOption((T) system.getFeature().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getOption().eContainer()).getName())).findAny().get());
+								object.setOption((T) system.getFeature().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getOption()).getName())).findAny().get());
 							} else if (object.getOption() instanceof FeatureRevision) {
 								Feature containedFeature = system.getFeature().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getOption().eContainer()).getName())).findAny().get();
 								object.setOption((T) containedFeature.getFeaturerevision().stream().filter(fr -> fr.getRevisionID() == ((FeatureRevision) object.getOption()).getRevisionID()).findAny().get());
 							}
 							return null;
-						};
+						}
 					}.doSwitch(copiedExpression);
 
 					newCTC.setExpression((Expression<FeatureOption>) copiedExpression);
@@ -661,7 +674,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		FeatureModel fm_cur = fm;
 
 		Collection<FeatureOption> enabledFOs = newsysrev.getEnablesoptions();
-		Collection<Feature> enabledFs = enabledFOs.stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).collect(Collectors.toList());
+		List<Feature> enabledFs = enabledFOs.stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).collect(Collectors.toList());
 
 		int currentInt = 0;
 		Map<Option, Integer> optionToIntMap = new HashMap<>();
@@ -720,8 +733,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 		Collection<int[]> newClauses = fm_cur.computeClauses(newfmOptionToIntMap);
 
-		for (Feature f1 : enabledFs) {
-			for (Feature f2 : enabledFs) {
+//		for (Feature f1 : enabledFs) {
+//			for (Feature f2 : enabledFs) {
+		for (int i = 0; i < enabledFs.size(); i++) {
+			Feature f1 = enabledFs.get(i);
+			for (int j = i; j < enabledFs.size(); j++) {
+				Feature f2 = enabledFs.get(j);
 				ISolver oldFMSolver = SolverFactory.newDefault();
 				ISolver newFMSolver = SolverFactory.newDefault();
 				boolean oldSat = false;

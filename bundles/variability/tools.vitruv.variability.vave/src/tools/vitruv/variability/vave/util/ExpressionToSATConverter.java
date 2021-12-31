@@ -5,10 +5,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 import vavemodel.Conjunction;
 import vavemodel.Disjunction;
 import vavemodel.Expression;
+import vavemodel.Feature;
+import vavemodel.FeatureRevision;
 import vavemodel.Not;
 import vavemodel.Option;
 import vavemodel.Term;
@@ -66,18 +70,38 @@ public class ExpressionToSATConverter {
 			Variable<? extends Option> variable = (Variable<? extends Option>) ((Not<? extends Option>) expr).getTerm();
 			Integer value = this.optionToIntMap.get(variable.getOption());
 			if (value == null) {
-				value = ++this.curVal;
-				this.optionToIntMap.put(variable.getOption(), value);
-				System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+				if (variable.getOption() instanceof FeatureRevision) {
+					// look for feature of feature revision
+					Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getOption().eContainer()).getName())).map(e -> e.getKey()).findAny();
+					if (featureOpt.isPresent()) {
+						value = this.optionToIntMap.get(featureOpt.get());
+						System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getOption());
+					}
+				}
+				if (value == null) {
+					value = ++this.curVal;
+					this.optionToIntMap.put(variable.getOption(), value);
+					System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+				}
 			}
 			literals.add(-value);
 		} else if (expr instanceof Variable) {
 			Variable<? extends Option> variable = (Variable<? extends Option>) expr;
 			Integer value = this.optionToIntMap.get(variable.getOption());
 			if (value == null) {
-				value = ++this.curVal;
-				this.optionToIntMap.put(variable.getOption(), value);
-				System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+				if (variable.getOption() instanceof FeatureRevision) {
+					// look for feature of feature revision
+					Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getOption().eContainer()).getName())).map(e -> e.getKey()).findAny();
+					if (featureOpt.isPresent()) {
+						value = this.optionToIntMap.get(featureOpt.get());
+						System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getOption());
+					}
+				}
+				if (value == null) {
+					value = ++this.curVal;
+					this.optionToIntMap.put(variable.getOption(), value);
+					System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+				}
 			}
 			literals.add(value);
 		}

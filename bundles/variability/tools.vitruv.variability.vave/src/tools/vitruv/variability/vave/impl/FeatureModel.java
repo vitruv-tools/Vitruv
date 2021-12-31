@@ -82,27 +82,34 @@ public class FeatureModel {
 				parentchild.add(-featureOptionToIntMap.get(tc.eContainer()));
 				for (Feature feature : tc.getFeature()) {
 					parentchild.add(featureOptionToIntMap.get(feature));
-					siblings.add(featureOptionToIntMap.get(feature));
+//					siblings.add(featureOptionToIntMap.get(feature));
 				}
 				fmClauses.add(parentchild.stream().mapToInt(val -> val).toArray());
-				fmClauses.add(siblings.stream().mapToInt(val -> val).toArray());
+//				fmClauses.add(siblings.stream().mapToInt(val -> val).toArray());
 			} else if (tc.getType() == GroupType.XOR) { // !D v !E // mandatory or alternative group
-				ArrayList<Integer> parentchild = new ArrayList<>();
-				ArrayList<Integer> siblings = new ArrayList<>();
-				parentchild.add(-featureOptionToIntMap.get(tc.eContainer()));
-				for (Feature feature : tc.getFeature()) {
-					parentchild.add(featureOptionToIntMap.get(feature));
-					siblings.add(-featureOptionToIntMap.get(feature));
+				for (int i = 0; i < tc.getFeature().size(); i++) {
+					for (int j = i + 1; j < tc.getFeature().size(); j++) {
+						ArrayList<Integer> literals = new ArrayList<>();
+						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(i)));
+						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(j)));
+						fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
+					}
 				}
-				fmClauses.add(parentchild.stream().mapToInt(val -> val).toArray());
-				fmClauses.add(siblings.stream().mapToInt(val -> val).toArray());
-
+				ArrayList<Integer> literals = new ArrayList<>();
+				literals.add(-featureOptionToIntMap.get(tc.eContainer()));
+				for (Feature feature : tc.getFeature()) {
+					literals.add(featureOptionToIntMap.get(feature));
+				}
+				fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
 			} else if (tc.getType() == GroupType.XORNONE) { // at most one, no parent-child relation required
-				ArrayList<Integer> siblings = new ArrayList<>();
-				for (Feature feature : tc.getFeature()) {
-					siblings.add(-featureOptionToIntMap.get(feature));
+				for (int i = 0; i < tc.getFeature().size(); i++) {
+					for (int j = i + 1; j < tc.getFeature().size(); j++) {
+						ArrayList<Integer> literals = new ArrayList<>();
+						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(i)));
+						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(j)));
+						fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
+					}
 				}
-				fmClauses.add(siblings.stream().mapToInt(val -> val).toArray());
 			}
 		}
 		for (CrossTreeConstraint ctc : this.getCrossTreeConstraints()) {
