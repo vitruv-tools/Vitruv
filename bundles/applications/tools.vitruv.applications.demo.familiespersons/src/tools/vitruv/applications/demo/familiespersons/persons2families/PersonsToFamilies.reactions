@@ -191,6 +191,11 @@ routine editLastnameRemovePerson(persons::Person person, String fullName) {
 	action {
 		call {
 			//Find out which position the corresponding member had
+			//Here the idea is to keep the position when the member has to leave the family due to a renaming.
+			//A father stays a father and a son stays a son (the same for the female versions), because this
+			//logic is covered in the families model. The persons model does not know the difference between parent
+			//and child and should not be responsible for a change in meaning which it itself does not even show.
+			//In contrast to the renaming itself since both models have names for ther persons/ members.
 			var boolean isChild = false
 			if (person instanceof Male) {
 				isChild = member.familyFather !== family
