@@ -4,8 +4,6 @@ import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
@@ -16,6 +14,7 @@ import tools.vitruv.framework.vsum.views.ViewSelection
 import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.views.ViewSelector
+import static com.google.common.base.Preconditions.checkState
 
 /**
  * A basic view that passes by default the entirety of its underlying model as a copy.
@@ -109,6 +108,11 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 			contents += object
 		]
 		rootObjects += object
+	}
+	
+	override void moveRoot(EObject object, URI newLocation) {
+		checkState(rootObjects.contains(object), "view must contain element %s to move", object)
+		viewResourceSet.resources.findFirst[contents.contains(object)].URI = newLocation
 	}
 
 	def private void checkNotClosed() {
