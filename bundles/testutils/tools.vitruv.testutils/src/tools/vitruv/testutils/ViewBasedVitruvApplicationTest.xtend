@@ -16,11 +16,14 @@ import org.junit.jupiter.api.AfterEach
 import static com.google.common.base.Preconditions.checkArgument
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
+import org.eclipse.xtend.lib.annotations.Accessors
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
 	InternalVirtualModel virtualModel
 	Path testProjectPath
+	@Accessors(PROTECTED_GETTER)
+	TestUserInteraction userInteraction
 	
 	/**
 	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
@@ -36,7 +39,7 @@ abstract class ViewBasedVitruvApplicationTest {
 	def final package void prepareVirtualModelAndView(TestInfo testInfo, @TestProject Path testProjectPath,
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
-		val userInteraction = new TestUserInteraction
+		userInteraction = new TestUserInteraction
 		val targetDomains = new VitruvDomainRepositoryImpl(
 			changePropagationSpecifications.flatMap [List.of(sourceDomain, targetDomain)].toSet
 		)
