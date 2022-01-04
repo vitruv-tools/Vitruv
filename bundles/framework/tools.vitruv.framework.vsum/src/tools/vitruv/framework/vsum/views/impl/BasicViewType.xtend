@@ -72,6 +72,7 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 		val viewResource = newResourceSet.getResource(tempURI, true)
 		viewResource.URI = originalURI
 		Files.delete(Path.of(org.eclipse.emf.common.util.URI.decode(tempURI.path)))
+		EcoreUtil.resolveAll(viewResource)
 	}
 
 	private def void copyModel(Resource originalResource, ResourceSet newResourceSet) {
