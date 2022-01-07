@@ -35,6 +35,7 @@ import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EObject
+import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
@@ -366,6 +367,30 @@ class ChangeRecorderTest {
 		))
 	}
 
+	@ParameterizedTest(name="while isRecording={0}")
+	@DisplayName("does not record loading an existing resource in a resource set")
+	@ValueSource(booleans=#[false, true])
+	def void doesntRecordLoadingExistingResourceOnResourceSet(boolean isRecordingLoadingResource, @TestProject Path testDir) {
+		val resourceUri = URI.createFileURI(testDir.resolve("test.aet").toString)
+		val resourceSetForFileCreation = new ResourceSetImpl().withGlobalFactories()
+		val resource = resourceSetForFileCreation.createResource(resourceUri) => [
+			contents += aet.Root => [
+				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+					nonRootObjectsContainment += aet.NonRoot
+				]
+			]
+		]
+		resource.save(null)
+
+		changeRecorder.addToRecording(resourceSet)
+		recordIf(isRecordingLoadingResource) [
+			resourceSet.getResource(resourceUri, true)
+		]
+		assertThat(changeRecorder.change, hasNoChanges)
+		val loadedResource = resourceSet.getResource(resourceUri, false)
+		assertThat(resource, containsModelOf(loadedResource))
+	}
+	
 	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes an object unset from a containment reference from the recording")
 	@ValueSource(booleans=#[false, true])
