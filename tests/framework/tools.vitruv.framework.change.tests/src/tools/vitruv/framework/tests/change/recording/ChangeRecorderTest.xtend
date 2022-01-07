@@ -368,19 +368,18 @@ class ChangeRecorderTest {
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
-	@DisplayName("does not record loading an existing resource in a resource set")
+	@DisplayName("does not record loading an existing resource in a resource set with demand load")
 	@ValueSource(booleans=#[false, true])
-	def void doesntRecordLoadingExistingResourceOnResourceSet(boolean isRecordingLoadingResource, @TestProject Path testDir) {
+	def void doesntRecordLoadingExistingResourceOnResourceSetWithDemandLoad(boolean isRecordingLoadingResource, @TestProject Path testDir) {
 		val resourceUri = URI.createFileURI(testDir.resolve("test.aet").toString)
-		val resourceSetForFileCreation = new ResourceSetImpl().withGlobalFactories()
-		val resource = resourceSetForFileCreation.createResource(resourceUri) => [
+		val originalResource = new ResourceSetImpl().withGlobalFactories().createResource(resourceUri) => [
 			contents += aet.Root => [
 				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
 					nonRootObjectsContainment += aet.NonRoot
 				]
 			]
+			save(emptyMap)
 		]
-		resource.save(null)
 
 		changeRecorder.addToRecording(resourceSet)
 		recordIf(isRecordingLoadingResource) [
@@ -388,23 +387,45 @@ class ChangeRecorderTest {
 		]
 		assertThat(changeRecorder.change, hasNoChanges)
 		val loadedResource = resourceSet.getResource(resourceUri, false)
-		assertThat(resource, containsModelOf(loadedResource))
+		assertThat(loadedResource, containsModelOf(originalResource))
+	}
+	
+	@ParameterizedTest(name="while isRecording={0}")
+	@DisplayName("does not record loading an existing resource in a resource set with explicit loading")
+	@ValueSource(booleans=#[false, true])
+	def void doesntRecordLoadingExistingResourceOnResourceSetWithExplicitLoading(boolean isRecordingLoadingResource, @TestProject Path testDir) {
+		val resourceUri = URI.createFileURI(testDir.resolve("test.aet").toString)
+		val originalResource = new ResourceSetImpl().withGlobalFactories().createResource(resourceUri) => [
+			contents += aet.Root => [
+				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+					nonRootObjectsContainment += aet.NonRoot
+				]
+			]
+			save(emptyMap)
+		]
+
+		changeRecorder.addToRecording(resourceSet)
+		val loadedResource = resourceSet.createResource(resourceUri) 
+		recordIf(isRecordingLoadingResource) [
+			loadedResource.load(emptyMap)
+		]
+		assertThat(changeRecorder.change, hasNoChanges)
+		assertThat(loadedResource, containsModelOf(originalResource))
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("does not record loading a pathmap resource in a resource set")
 	@ValueSource(booleans=#[false, true])
 	def void doesntRecordPathmapResourceOnResourceSet(boolean isRecordingLoadingResource, @TestProject Path testDir) {
-		val resourceSetForFileCreation = new ResourceSetImpl().withGlobalFactories()
-		val resource = resourceSetForFileCreation.createResource(
+		val originalResource = new ResourceSetImpl().withGlobalFactories().createResource(
 			URI.createFileURI(testDir.resolve("test.aet").toString)) => [
 			contents += aet.Root => [
 				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
 					nonRootObjectsContainment += aet.NonRoot
 				]
 			]
+			save(emptyMap)
 		]
-		resource.save(null)
 
 		// Register pathmap entry (it is important to have target URI end with a "/")
 		val pathmapResourcesUri = URI.createURI("pathmap://CHANGE_RECORDER_TEST_MODELS/")
@@ -418,7 +439,7 @@ class ChangeRecorderTest {
 		val pathmapResource = resourceSet.getResource(pathmapResourceURI, false)
 		assertThat("resource should be loaded via pathmap instead of resolving it", pathmapResource.URI,
 			is(pathmapResourceURI))
-		assertThat(resource, containsModelOf(pathmapResource))
+		assertThat(pathmapResource, containsModelOf(originalResource))
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
