@@ -64,13 +64,13 @@ class ChangeRecorderTest {
 		changes.apply
 		if(condition) changeRecorder.endRecording()
 	}
-	
+
 	@Test
 	@DisplayName("does not allow end recording twice")
 	def void endRecordingTwice() {
 		changeRecorder.beginRecording()
 		changeRecorder.endRecording()
-		assertThrows(IllegalStateException) [changeRecorder.endRecording()]
+		assertThrows(IllegalStateException)[changeRecorder.endRecording()]
 	}
 
 	@Test
@@ -390,7 +390,37 @@ class ChangeRecorderTest {
 		val loadedResource = resourceSet.getResource(resourceUri, false)
 		assertThat(resource, containsModelOf(loadedResource))
 	}
-	
+
+	@ParameterizedTest(name="while isRecording={0}")
+	@DisplayName("does not record loading a pathmap resource in a resource set")
+	@ValueSource(booleans=#[false, true])
+	def void doesntRecordPathmapResourceOnResourceSet(boolean isRecordingLoadingResource, @TestProject Path testDir) {
+		val resourceSetForFileCreation = new ResourceSetImpl().withGlobalFactories()
+		val resource = resourceSetForFileCreation.createResource(
+			URI.createFileURI(testDir.resolve("test.aet").toString)) => [
+			contents += aet.Root => [
+				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+					nonRootObjectsContainment += aet.NonRoot
+				]
+			]
+		]
+		resource.save(null)
+
+		// Register pathmap entry (it is important to have target URI end with a "/")
+		val pathmapResourcesUri = URI.createURI("pathmap://CHANGE_RECORDER_TEST_MODELS/")
+		resourceSet.URIConverter.URIMap.put(pathmapResourcesUri, URI.createFileURI(testDir.toString + "/"))
+		val pathmapResourceURI = pathmapResourcesUri.appendSegment("test.aet")
+		changeRecorder.addToRecording(resourceSet)
+		recordIf(isRecordingLoadingResource) [
+			resourceSet.getResource(pathmapResourceURI, true)
+		]
+		assertThat(changeRecorder.change, hasNoChanges)
+		val pathmapResource = resourceSet.getResource(pathmapResourceURI, false)
+		assertThat("resource should be loaded via pathmap instead of resolving it", pathmapResource.URI,
+			is(pathmapResourceURI))
+		assertThat(resource, containsModelOf(pathmapResource))
+	}
+
 	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes an object unset from a containment reference from the recording")
 	@ValueSource(booleans=#[false, true])
