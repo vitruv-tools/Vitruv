@@ -367,10 +367,15 @@ class ChangeRecorder implements AutoCloseable {
 		}
 
 		private def boolean isUnloadingResource(Notification notification) {
-			return if (notification.notifier instanceof Resource) {
-				!(notification.notifier as Resource).isLoaded
+			if (notification.notifier instanceof Resource) {
+				val resource = notification.notifier as Resource
+				val resourceSet = resource.resourceSet
+				// for an unload, resource must not be flagged loaded and there must still be a persistence at the URI
+				// (otherwise resource was deleted)
+				return !resource.isLoaded && resourceSet !== null &&
+					resourceSet.URIConverter.exists(resource.URI, emptyMap)
 			} else {
-				false
+				return false
 			}
 		}
 
