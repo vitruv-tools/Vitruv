@@ -443,6 +443,24 @@ class ChangeRecorderTest {
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
+	@DisplayName("does not record unloading a resource")
+	@ValueSource(booleans=#[false, true])
+	def void doesntRecordUnloading(boolean isRecordingUnloadingResource) {
+		changeRecorder.addToRecording(resourceSet)
+		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
+			contents += aet.Root => [
+				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+					nonRootObjectsContainment += aet.NonRoot
+				]
+			]
+		]
+		recordIf(isRecordingUnloadingResource) [
+			resource.unload()
+		]
+		assertThat(changeRecorder.change, hasNoChanges)
+	}
+	
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes an object unset from a containment reference from the recording")
 	@ValueSource(booleans=#[false, true])
 	def void removeAfterContainmentUnset(boolean isRecordingWhileRemovingObject) {
