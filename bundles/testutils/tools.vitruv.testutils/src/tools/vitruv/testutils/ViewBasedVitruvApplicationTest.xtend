@@ -36,7 +36,7 @@ abstract class ViewBasedVitruvApplicationTest {
 	def protected UriMode getUriMode() { FILE_URIS }
 
 	@BeforeEach
-	def final package void prepareVirtualModelAndView(TestInfo testInfo, @TestProject Path testProjectPath,
+	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject Path testProjectPath,
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		userInteraction = new TestUserInteraction
