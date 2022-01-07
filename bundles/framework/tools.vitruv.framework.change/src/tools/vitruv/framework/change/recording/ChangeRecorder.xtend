@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EReference
 import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__CONTENTS
+import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__IS_LOADED
 import static extension org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyForward
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyBackward
@@ -34,10 +35,11 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
 import tools.vitruv.framework.change.echange.EChange
 
 /**
- * Records changes to model elements as {@link CompositeTransactionalChanges}.
+ * Records changes to model elements as a {@link TransactionalChange}.
  * Recording can be started with {@link #beginRecording} and ended with {@link #endRecording}. The recorder assumes 
  * that all objects that have been removed from their containment reference without being added to a new containment
  * reference while changes were being recorded have been deleted, resulting in an appropriate delete change.
+ * The recorder considers resources being loaded as existing and does thus not produce changes for it.
  */
 class ChangeRecorder implements AutoCloseable {
 	// invariant: if the recording adapter is installed on a notifier, it is also installed on all children
@@ -55,12 +57,14 @@ class ChangeRecorder implements AutoCloseable {
 	val Set<EObject> existingObjects = new HashSet
 	val Set<Notifier> toDesinfect = new HashSet
 	val ResourceSet resourceSet
-	
+
 	new(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet
 		this.idResolver = IdResolver.create(resourceSet)
 		this.eChangeIdManager = new EChangeIdManager(idResolver)
-		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
+		this.converter = new NotificationToEChangeConverter([ affectedObject, addedObject |
+			isCreateChange(affectedObject, addedObject)
+		])
 	}
 
 	private def boolean isCreateChange(EObject affectedObject, EObject addedObject) {
@@ -71,8 +75,9 @@ class ChangeRecorder implements AutoCloseable {
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
 		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
-		create = create && (addedObject.eResource === null || affectedObject === null || addedObject.eResource == affectedObject.eResource)
-		if (create) existingObjects += addedObject
+		create = create && (addedObject.eResource === null || affectedObject === null ||
+			addedObject.eResource == affectedObject.eResource)
+		if(create) existingObjects += addedObject
 		return create;
 	}
 
@@ -91,7 +96,7 @@ class ChangeRecorder implements AutoCloseable {
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if (it instanceof EObject) existingObjects.add(it)
+				if(it instanceof EObject) existingObjects.add(it)
 				addAdapter()
 			]
 		}
@@ -145,15 +150,14 @@ class ChangeRecorder implements AutoCloseable {
 		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
 		idResolver.endTransaction()
 		return getChange()
-		
 	}
-	
+
 	def private List<EChange> assignIds(List<EChange> changes) {
 		changes.toList.reverseView.forEach[applyBackward]
 		changes.forEach[assignIds]
 		changes
 	}
-	
+
 	def private void assignIds(EChange change) {
 		eChangeIdManager.setOrGenerateIds(change)
 		change.applyForward(idResolver)
@@ -275,7 +279,32 @@ class ChangeRecorder implements AutoCloseable {
 	private static class NotificationRecorder implements Adapter {
 		extension val ChangeRecorder outer
 
+		val Set<Resource> currentlyLoadingResources = new HashSet
+
 		override notifyChanged(Notification notification) {
+			notification.handleAdaptersForResourceAndResourceSetChanges()
+			val newChanges = notification.extractRelevantChanges()
+			if (isRecording) {
+				resultChanges += newChanges
+			}
+		}
+
+		private def handleAdaptersForResourceAndResourceSetChanges(Notification notification) {
+			// EMF sets the "loaded" flag of resources to true before notification for adding the loaded contents are
+			// emitted and then emits the notification for setting the "loaded" flag afterwards.
+			// Thus, we prevent the notification recorder to be injected until the according notification for setting
+			// the "loaded" flag is sent
+			if (notification.notifier instanceof ResourceSet &&
+				notification.getFeatureID(ResourceSet) === RESOURCE_SET__RESOURCES) {
+				switch (notification.eventType) {
+					case ADD:
+						(notification.newValue as Resource).startLoadingResource()
+					case ADD_MANY:
+						(notification.newValue as Iterable<? extends Resource>).forEach [
+							startLoadingResource()
+						]
+				}
+			}
 			switch (feature: notification.feature) {
 				EReference case feature.isContainment,
 				case notification.notifier instanceof Resource &&
@@ -295,20 +324,53 @@ class ChangeRecorder implements AutoCloseable {
 					// need to react to RESOLVE notifications here.
 					}
 				}
+				case notification.notifier instanceof Resource &&
+					notification.getFeatureID(Resource) === RESOURCE__IS_LOADED:
+					(notification.notifier as Resource).finishLoadingResource()
 			}
+		}
 
-			val newChanges = converter.convert(new NotificationInfo(notification))
-			if (!newChanges.isEmpty) {
+		private def Iterable<? extends EChange> extractRelevantChanges(Notification notification) {
+			val changes = if (notification.isLoadingResource || notification.isUnloadingResource) {
+					// If resource is being unloaded, do not process the changes from unloading 
+					emptyList
+				} else {
+					converter.convert(new NotificationInfo(notification))
+				}
+			if (!changes.isEmpty) {
 				// Register any added object as existing, even if we are not recording
-				newChanges.forEach[
+				changes.forEach [
 					if (it instanceof EObjectAddedEChange<?>) {
 						existingObjects += newValue
-						if (it instanceof UpdateReferenceEChange<?>) existingObjects += affectedEObject 	
+						if(it instanceof UpdateReferenceEChange<?>) existingObjects += affectedEObject
 					}
 				]
-				if (isRecording) {
-					resultChanges += newChanges
-				}
+			}
+			return changes
+		}
+
+		private def void startLoadingResource(Resource resource) {
+			currentlyLoadingResources += resource
+		}
+
+		private def void finishLoadingResource(Resource resource) {
+			currentlyLoadingResources -= resource
+			resource.recursively [
+				if(it instanceof EObject) existingObjects.add(it)
+				addAdapter()
+			]
+		}
+
+		private def boolean isLoadingResource(Notification notification) {
+			val newEObject = if(notification.newValue instanceof EObject) notification.newValue as EObject else null
+			return newEObject?.eResource !== null && currentlyLoadingResources.contains(newEObject.eResource)
+		}
+
+		private def boolean isUnloadingResource(Notification notification) {
+			return if (notification.notifier instanceof Resource) {
+				!(notification.notifier as Resource).isLoaded
+			} else {
+				false
 			}
 		}
 
@@ -318,7 +380,7 @@ class ChangeRecorder implements AutoCloseable {
 
 		private def desinfect(Object oldValue) {
 			// Defer desinfect to ensure that elements moved from removed element containments to new containments are recognized properly
-			if (oldValue instanceof Notifier) toDesinfect += oldValue
+			if(oldValue instanceof Notifier) toDesinfect += oldValue
 		}
 
 		override getTarget() { null }
