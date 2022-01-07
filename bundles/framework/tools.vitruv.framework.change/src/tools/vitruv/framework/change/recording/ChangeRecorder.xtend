@@ -331,8 +331,8 @@ class ChangeRecorder implements AutoCloseable {
 		}
 
 		private def Iterable<? extends EChange> extractRelevantChanges(Notification notification) {
-			val changes = if (notification.isLoadingResource || notification.isUnloadingResource) {
-					// If resource is being unloaded, do not process the changes from unloading 
+			val changes = if (notification.affectsLoadingResource || notification.affectsUnloadingResource) {
+					// If resource is being loaded or unloaded, do not process the changes 
 					emptyList
 				} else {
 					converter.convert(new NotificationInfo(notification))
@@ -361,16 +361,16 @@ class ChangeRecorder implements AutoCloseable {
 			]
 		}
 
-		private def boolean isLoadingResource(Notification notification) {
+		private def boolean affectsLoadingResource(Notification notification) {
 			val newEObject = if(notification.newValue instanceof EObject) notification.newValue as EObject else null
 			return newEObject?.eResource !== null && currentlyLoadingResources.contains(newEObject.eResource)
 		}
 
-		private def boolean isUnloadingResource(Notification notification) {
+		private def boolean affectsUnloadingResource(Notification notification) {
 			if (notification.notifier instanceof Resource) {
 				val resource = notification.notifier as Resource
 				val resourceSet = resource.resourceSet
-				// for an unload, resource must not be flagged loaded and there must still be a persistence at the URI
+				// for an unload, resource must not be flagged as loaded and there must still be a persistence at the URI
 				// (otherwise resource was deleted)
 				return !resource.isLoaded && resourceSet !== null &&
 					resourceSet.URIConverter.exists(resource.URI, emptyMap)
