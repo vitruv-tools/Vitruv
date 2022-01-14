@@ -11,6 +11,8 @@ import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
 import tools.vitruv.framework.vsum.views.selection.impl.ViewSelectionImpl
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier
 
 /**
  * A basic view type that allows creating views based on a basic element-wise selection mechanism.
@@ -35,16 +37,13 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 			viewResourceSet.resources.forEach[unload]
 			viewResourceSet.resources.clear
 			val viewSources = view.viewSource.viewSourceModels
-			for (var i = 0; i < viewSources.size; i++) {
-				val resource = viewSources.get(i)
-				if (view.selection.selectedElements.contains(resource.contents.head)) {
-					if (resource.URI.fileExtension == "uml" && !resource.URI.isPathmap) {
-						resource.copyUmlModel(viewResourceSet)
-					} else {
-						resource.copyModel(viewResourceSet)
-					}
-				}
+			val selectedElements = view.selection.selectedElements
+			val resourcesWithSelectedElements = viewSources.filter[contents.exists[selectedElements.contains(it)]]
+			for (umlResource : resourcesWithSelectedElements.filter[isWritableUmlResource].toList) {
+				copyUmlModel(umlResource, viewResourceSet)
 			}
+			resourcesWithSelectedElements.filter[!isWritableUmlResource].toList.copyModels(viewResourceSet,
+				selectedElements)
 		]
 	}
 
@@ -63,7 +62,7 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 	 * because save/load properly handles the situation not covered by the copier. 
 	 */
 	// TODO HK Provide an appropriate temporary resource instead of the current magic file
-	private def void copyUmlModel(Resource originalResource, ResourceSet newResourceSet) {
+	private static def void copyUmlModel(Resource originalResource, ResourceSet newResourceSet) {
 		val originalURI = originalResource.URI
 		val tempURI = originalURI.trimFileExtension.appendSegment("save." + originalURI.fileExtension)
 		originalResource.URI = tempURI
@@ -75,11 +74,43 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 		EcoreUtil.resolveAll(viewResource)
 	}
 
-	private def void copyModel(Resource originalResource, ResourceSet newResourceSet) {
-		val viewResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.createResource(
-			originalResource.URI).checkNotNull('''Cannot create view resource: «originalResource.URI»''')
-		viewResource.contents.addAll(EcoreUtil.copyAll(originalResource.contents))
-		newResourceSet.resources += viewResource
+	/**
+	 * Copies the selected elements in the given resources to the given new resource set.
+	 * It is necessary to process all resources together, because there may be elements that are root 
+	 * elements of one resource but have a container in another resource (e.g. a Java CompilationUnit 
+	 * is root of a resource but can be contained in a package persisted in another resource).
+	 * We must NOT copy these elements but only copy the containing element and then resolve it to avoid 
+	 * element duplication.
+	 */
+	private static def void copyModels(Iterable<Resource> originalResources, ResourceSet newResourceSet,
+		Iterable<EObject> selectedElements) {
+		val copier = new Copier(true)
+		for (originalResource : originalResources) {
+			val elementsContainedInResource = originalResource.contents.filter [
+				!isContainedInOtherThanOwnResource(originalResources)
+			].toList
+			copier.copyAll(elementsContainedInResource)
+		}
+		copier.copyReferences()
+		for (originalResource : originalResources) {
+			val viewResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.createResource(
+				originalResource.URI).checkNotNull("Cannot create view resource: %s", originalResource.URI)
+			val selectedRootElements = originalResource.contents.filter[selectedElements.contains(it)]
+			val mappedRootElements = selectedRootElements.map [
+				checkNotNull(copier.get(it), "corresponding object for %s is null", it)
+			]
+			viewResource.contents.addAll(mappedRootElements)
+			newResourceSet.resources += viewResource
+		}
+	}
+
+	private static def boolean isWritableUmlResource(Resource resource) {
+		resource.URI.fileExtension == "uml" && !resource.URI.isPathmap
+	}
+
+	private static def boolean isContainedInOtherThanOwnResource(EObject eObject, Iterable<Resource> resources) {
+		val rootContainerResource = EcoreUtil.getRootContainer(eObject).eResource
+		return rootContainerResource !== eObject.eResource && resources.contains(rootContainerResource)
 	}
 
 }
