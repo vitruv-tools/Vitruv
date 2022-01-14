@@ -1,3 +1,5 @@
+import edu.kit.ipd.sdq.metamodels.insurance.Gender
+
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance
 
@@ -13,8 +15,125 @@ reaction CreatedInsuranceDatabase {
 routine createPersonRegister(insurance::InsuranceDatabase insuranceDatabase) {
 	action {
 		val personRegister = create persons::PersonRegister and initialize {
-			persistProjectRelative(insuranceDatabase, personRegister, "model/model.persons")
+			persistProjectRelative(insuranceDatabase, personRegister, "model/persons.persons")
 		}
 		add correspondence between personRegister and insuranceDatabase
+	}
+}
+
+reaction DeletedInsuranceDatabase{
+	after element insurance::InsuranceDatabase deleted
+	call deletePersonRegister(affectedEObject)
+}
+
+routine deletePersonRegister(insurance::InsuranceDatabase insuranceDatabase){
+	match{
+		val personRegister = retrieve persons::PersonRegister corresponding to insuranceDatabase
+	}
+	
+	action{
+		delete personRegister
+	}
+}
+	
+reaction CreatedClient {
+	after element insurance::InsuranceClient created and inserted in insurance::InsuranceDatabase[insuranceclient]
+	call createPerson(newValue)
+}
+
+routine createPerson(insurance::InsuranceClient client) {
+	match{
+		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
+	}
+	action{
+		call {
+			if (client.gender == Gender.MALE) {
+				createMalePerson(client)
+			} else {
+				createFemalePerson(client)
+			}
+		}
+	}
+}
+
+routine createMalePerson(insurance::InsuranceClient client) {
+	match{
+		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
+	}
+	action{
+		val newPerson = create persons::Male and initialize {
+			newPerson.fullName = client.name
+		}
+		//call System.out.println("create new male person " + newPerson)
+		call personRegister.persons += newPerson
+		add correspondence between client and newPerson
+	}
+}
+
+routine createFemalePerson(insurance::InsuranceClient client) {
+	match{
+		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
+	}
+	action{
+		val newPerson = create persons::Female and initialize {
+			newPerson.fullName = client.name
+		}
+		//call System.out.println("create new female person " + newPerson)
+		call personRegister.persons += newPerson
+		add correspondence between client and newPerson
+	}
+}
+
+reaction ChangedName {
+	after attribute replaced at insurance::InsuranceClient[name]
+	call changeFullName(affectedEObject)
+}
+
+routine changeFullName(insurance::InsuranceClient client) {
+	match{
+		val person = retrieve persons::Person corresponding to client
+	}
+	action{
+		call {
+			person.fullName = client.name
+		}
+	}
+}
+
+reaction ChangedGender {
+	after attribute replaced at insurance::InsuranceClient[gender]
+	call changeGender(affectedEObject)
+}
+
+routine changeGender(insurance::InsuranceClient client) {
+	match{
+		val person = retrieve persons::Person corresponding to client
+	}
+	action{
+		call {
+			if (client.gender == Gender.MALE) {
+				deletePerson(client)
+				createMalePerson(client)
+			} else {
+				deletePerson(client)
+				createFemalePerson(client)
+			}
+		}
+	}
+}
+
+reaction DeletedClient {
+	after element insurance::InsuranceClient deleted
+	call deletePerson(affectedEObject)
+}
+
+routine deletePerson(insurance::InsuranceClient client) {
+	match {
+		val person = retrieve persons::Person corresponding to client
+	}
+	action {
+		//call System.out.println("delete person " + person)
+		remove correspondence between client and person
+		delete person
 	}
 }
