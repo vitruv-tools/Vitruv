@@ -49,14 +49,15 @@ public interface View extends AutoCloseable {
 	/**
 	 * Updates the view from the underlying virtual model, thus invalidating its
 	 * previous state and now providing a updated view on the virtual model. This
-	 * can only be done for an unmodified view. TODO TS: Add issue - in the long
-	 * term we need to changes this!
+	 * can only be done for an unmodified view.
 	 * 
 	 * @throws UnsupportedOperationException if the update is called for a dirty
 	 *                                       view.
 	 * @throws IllegalStateException         if called on a closed view.
 	 * @see View#isClosed()
 	 */
+	// TODO TS Add issue: in the long term we need to allow updates for modified
+	// views
 	void update();
 
 	/**
@@ -72,8 +73,9 @@ public interface View extends AutoCloseable {
 	 * @throws IllegalStateException if called on a closed view.
 	 * @see View#isClosed()
 	 */
-	List<PropagatedChange> commitChanges(); // TODO TS: Some views may not always record changes, and thus require
-											// transactional record-and-commit.
+	// TODO TS: Some views may not always record changes, and thus require
+	// transactional record-and-commit.
+	List<PropagatedChange> commitChanges();
 
 	/**
 	 * Checks whether the view was closed. Closed view should not further be used.
@@ -82,22 +84,22 @@ public interface View extends AutoCloseable {
 
 	/**
 	 * Persists the given object at the given {@link URI} and adds it as view root.
+	 *
+	 * This method is in beta state, as it is still under evaluation whether it is
+	 * sufficient and appropriate for registering root objects in views.
 	 */
-	@Deprecated
 	@Beta
-	// TODO We have to think about whether this is a proper level of abstraction and
-	// whether passing URIs is necessary here, as root elements of a view must not
-	// necessarily be root elements of a resource in the underlying virtual model
 	void registerRoot(EObject object, URI persistAt);
-	
+
 	/**
-	 * Moves the given object to the given {@link URI}.
+	 * Moves the given object to the given {@link URI}. The given {@link EObject}
+	 * must already be a root object of the view, otherwise an
+	 * {@link IllegalStateException} is thrown.
+	 *
+	 * This method is in beta state, as it is still under evaluation whether it is
+	 * sufficient and appropriate for registering root objects in views.
 	 */
-	@Deprecated
 	@Beta
-	// TODO We have to think about whether this is a proper level of abstraction and
-	// whether passing URIs is necessary here, as root elements of a view must not
-	// necessarily be root elements of a resource in the underlying virtual model
 	void moveRoot(EObject object, URI newLocation);
 
 	/**
