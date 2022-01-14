@@ -24,4 +24,11 @@ public interface ViewSelector extends ModifiableViewSelection {
 	 * @return whether the current selection is valid
 	 */
 	boolean isValid();
+
+	/**
+	 * Returns an immutable copy of the selection resulting from this selector.
+	 * 
+	 * @return an immutable copy of the selection in this selector
+	 */
+	ViewSelection getSelection();
 }

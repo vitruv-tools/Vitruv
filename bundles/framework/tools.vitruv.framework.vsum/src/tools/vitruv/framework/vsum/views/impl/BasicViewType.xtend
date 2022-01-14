@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum.views.impl
 
-import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -9,27 +8,29 @@ import java.nio.file.Path
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
-import tools.vitruv.framework.vsum.views.selection.impl.ViewSelectionImpl
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier
+import tools.vitruv.framework.vsum.views.selection.BasicViewElementSelector
+import tools.vitruv.framework.vsum.views.ViewSelection
 
 /**
  * A basic view type that allows creating views based on a basic element-wise selection mechanism.
  */
-class BasicViewType extends AbstractViewType<BasicViewSelector> {
+class BasicViewType extends AbstractViewType<BasicViewElementSelector> {
 
 	new(String name) {
 		super(name)
 	}
 
 	override createSelector(ChangeableViewSource viewSource) {
-		return new BasicViewSelector(this, viewSource, viewSource.viewSourceModels.map[contents.head].filterNull.toList)
+		return new BasicViewElementSelector(this, viewSource,
+			viewSource.viewSourceModels.map[contents.head].filterNull.toList)
 	}
 
-	override createView(BasicViewSelector selector) {
+	override createView(BasicViewElementSelector selector) {
 		checkArgument(selector.viewType === this, "cannot create view with selector for different view type")
-		return new BasicModelView(selector.viewType, selector.viewSource, new ViewSelectionImpl(selector))
+		return new BasicModelView(selector.viewType, selector.viewSource, selector.selection)
 	}
 
 	override updateView(ModifiableView view) {
@@ -37,13 +38,12 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 			viewResourceSet.resources.forEach[unload]
 			viewResourceSet.resources.clear
 			val viewSources = view.viewSource.viewSourceModels
-			val selectedElements = view.selection.selectedElements
-			val resourcesWithSelectedElements = viewSources.filter[contents.exists[selectedElements.contains(it)]]
+			val selection = view.selection
+			val resourcesWithSelectedElements = viewSources.filter[contents.exists[selection.isViewObjectSelected(it)]]
 			for (umlResource : resourcesWithSelectedElements.filter[isWritableUmlResource].toList) {
 				copyUmlModel(umlResource, viewResourceSet)
 			}
-			resourcesWithSelectedElements.filter[!isWritableUmlResource].toList.copyModels(viewResourceSet,
-				selectedElements)
+			resourcesWithSelectedElements.filter[!isWritableUmlResource].toList.copyModels(viewResourceSet, selection)
 		]
 	}
 
@@ -83,7 +83,7 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 	 * element duplication.
 	 */
 	private static def void copyModels(Iterable<Resource> originalResources, ResourceSet newResourceSet,
-		Iterable<EObject> selectedElements) {
+		ViewSelection viewSelection) {
 		val copier = new Copier(true)
 		for (originalResource : originalResources) {
 			val elementsContainedInResource = originalResource.contents.filter [
@@ -95,7 +95,7 @@ class BasicViewType extends AbstractViewType<BasicViewSelector> {
 		for (originalResource : originalResources) {
 			val viewResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.createResource(
 				originalResource.URI).checkNotNull("Cannot create view resource: %s", originalResource.URI)
-			val selectedRootElements = originalResource.contents.filter[selectedElements.contains(it)]
+			val selectedRootElements = originalResource.contents.filter[viewSelection.isViewObjectSelected(it)]
 			val mappedRootElements = selectedRootElements.map [
 				checkNotNull(copier.get(it), "corresponding object for %s is null", it)
 			]

@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum.views.selection.impl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -15,36 +14,35 @@ import tools.vitruv.framework.vsum.views.ViewSelector;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ViewSelectionImpl<S extends ViewSelector> implements ModifiableViewSelection {
+public abstract class AbstractViewSelection<S extends ViewSelector> implements ModifiableViewSelection {
 	// TODO Discuss whether we want to guarantee some ordering in the elements. This
 	// was not document yet, but maybe we want to have it
 	final Map<EObject, Boolean> elementsSelection = new HashMap<>();
 
-	public ViewSelectionImpl(Collection<EObject> selectableElements) {
+	public AbstractViewSelection(Collection<EObject> selectableElements) {
 		selectableElements.forEach(object -> this.elementsSelection
 				.put(checkNotNull(object, "element to select must not be null"), false));
 	}
 
-	public ViewSelectionImpl(ModifiableViewSelection sourceViewSelection) {
+	public AbstractViewSelection(ModifiableViewSelection sourceViewSelection) {
 		this(ImmutableList.copyOf(sourceViewSelection.getSelectableElements()));
-		sourceViewSelection.getSelectedElements().forEach(element -> setSelected(element, true));
+		for (EObject selectableElement : sourceViewSelection.getSelectableElements()) {
+			setSelected(selectableElement, sourceViewSelection.isSelected(selectableElement));
+		}
 	}
 
 	private void checkIsSelectable(EObject eObject) {
-		checkState(elementsSelection.keySet().contains(eObject),
-				"given object %s must be contained in the selector elements", eObject);
+		checkState(isSelectable(eObject), "given object %s must be contained in the selector elements", eObject);
 	}
 
 	@Override
 	public boolean isSelected(EObject eObject) {
-		checkIsSelectable(eObject);
-		return elementsSelection.get(eObject);
+		return elementsSelection.getOrDefault(eObject, false);
 	}
 
 	@Override
-	public Iterable<EObject> getSelectedElements() {
-		return elementsSelection.entrySet().stream().filter(entry -> entry.getValue()).map(entry -> entry.getKey())
-				.collect(Collectors.toList());
+	public boolean isSelectable(EObject eObject) {
+		return elementsSelection.keySet().contains(eObject);
 	}
 
 	@Override

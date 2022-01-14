@@ -7,9 +7,9 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ViewSelection {
 	/**
-	 * Returns the selected elements to be represented in a view.
+	 * Returns whether the given element is selected to be represented in a view.
 	 * 
-	 * @return the {@link EObject}s to be represented in the view
+	 * @return whether the given {@link EObject} is to be represented in the view
 	 */
-	Iterable<EObject> getSelectedElements();
+	boolean isViewObjectSelected(EObject eObject);
 }

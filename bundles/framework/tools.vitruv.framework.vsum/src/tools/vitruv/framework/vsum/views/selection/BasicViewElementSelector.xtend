@@ -9,15 +9,15 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection
-import tools.vitruv.framework.vsum.views.selection.impl.ViewSelectionImpl
 import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.vsum.views.selection.impl.ElementViewSelection
 
 /**
  * Basic view selector for a view that represents a set of model elements.
  * 
  * After creation, all elements will be unselected.
  */
-class BasicViewSelector implements ViewSelector {
+class BasicViewElementSelector implements ViewSelector {
 	@Delegate
 	val ModifiableViewSelection viewSelection
 
@@ -25,13 +25,13 @@ class BasicViewSelector implements ViewSelector {
 	val ChangeableViewSource viewSource
 
 	@Accessors(PUBLIC_GETTER)
-	val ViewCreatingViewType<BasicViewSelector> viewType
+	val ViewCreatingViewType<BasicViewElementSelector> viewType
 
-	new(ViewCreatingViewType<BasicViewSelector> viewType, ChangeableViewSource viewSource,
+	new(ViewCreatingViewType<BasicViewElementSelector> viewType, ChangeableViewSource viewSource,
 		Collection<EObject> elements) {
 		this.viewType = viewType
 		this.viewSource = viewSource
-		this.viewSelection = new ViewSelectionImpl(elements)
+		this.viewSelection = new ElementViewSelection(elements)
 	}
 
 	override createView() {
@@ -47,4 +47,9 @@ class BasicViewSelector implements ViewSelector {
 		// because it must be possible to create empty views upon creation of a (virtual) model.
 		true
 	}
+
+	override getSelection() {
+		return new ElementViewSelection(viewSelection)
+	}
+
 }
