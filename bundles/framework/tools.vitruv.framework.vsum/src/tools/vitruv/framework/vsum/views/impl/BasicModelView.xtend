@@ -83,7 +83,9 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 	override close() throws Exception {
 		if (!closed) {
 			closed = true
-			changeRecorder.close
+			changeRecorder.close()
+			viewResourceSet.resources.forEach[unload()]
+			viewResourceSet.resources.clear()
 		}
 	}
 
