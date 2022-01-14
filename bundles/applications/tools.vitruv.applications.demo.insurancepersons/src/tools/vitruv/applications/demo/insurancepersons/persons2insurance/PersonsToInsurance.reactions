@@ -1,8 +1,5 @@
-import org.eclipse.emf.common.util.EList
-import edu.kit.ipd.sdq.metamodels.insurance.InsuranceClient
 import edu.kit.ipd.sdq.metamodels.insurance.Gender
 import edu.kit.ipd.sdq.metamodels.persons.Male
-import edu.kit.ipd.sdq.metamodels.persons.Female
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance

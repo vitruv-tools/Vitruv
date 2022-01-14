@@ -3,10 +3,13 @@ package tools.vitruv.applications.demo.insurancepersons.tests.persons2insurance
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import edu.kit.ipd.sdq.metamodels.insurance.InsuranceDatabase
+import edu.kit.ipd.sdq.metamodels.insurance.InsuranceFactory
+import edu.kit.ipd.sdq.metamodels.insurance.Gender
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 import org.apache.log4j.Logger
+import java.nio.file.Path
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.testutils.domains.DomainUtil
 import tools.vitruv.domains.demo.insurance.InsuranceDomainProvider
@@ -18,9 +21,7 @@ import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
-import edu.kit.ipd.sdq.metamodels.insurance.InsuranceFactory
-import edu.kit.ipd.sdq.metamodels.insurance.Gender
-import java.nio.file.Path
+
 
 class PersonsToInsuranceTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(PersonsToInsuranceTest)
@@ -285,7 +286,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	}
 	
 	@Test
-	def void testDeletedPerson_first_notOnely() {
+	def void testDeletedPerson_first_notOnly() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		
@@ -326,7 +327,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	}
 
 	@Test
-	def void testDeletedPerson_middle_notOnely() {
+	def void testDeletedPerson_middle_notOnly() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		
@@ -367,7 +368,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	}
 	
 	@Test
-	def void testDeletedPerson_last_notOnely() {
+	def void testDeletedPerson_last_notOnly() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		
@@ -408,7 +409,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	}
 	
 	@Test
-	def void testDeletedPerson_onely() {
+	def void testDeletedPerson_only() {
 		val String surroundingMethodName = this.testInfo.getDisplayName()
 		logger.trace(surroundingMethodName + " - begin")
 		
