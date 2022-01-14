@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Metamodel Generation Workflow
+Bundle-SymbolicName: tools.vitruv.workflow
+Bundle-Version: 2.1.0.qualifier
+Bundle-Vendor: vitruv.tools
+Automatic-Module-Name: tools.vitruv.workflow
+Bundle-RequiredExecutionEnvironment: JavaSE-11

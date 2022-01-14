@@ -2,9 +2,10 @@ module clean
 
 import org.eclipse.emf.mwe.utils.DirectoryCleaner
 
-var rootPath = ".."
+// This variable is adapted by the Maven build
+var workspaceRoot = "../../../"
 var pluginName = "tools.vitruv.dsls.common"
-var basePath = "${rootPath}/${pluginName}"
+var basePath = "${workspaceRoot}/${pluginName}"
 
 Workflow {
 
