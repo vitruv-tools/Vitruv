@@ -1,4 +1,6 @@
 import edu.kit.ipd.sdq.metamodels.insurance.Gender
+import edu.kit.ipd.sdq.metamodels.persons.Male
+import edu.kit.ipd.sdq.metamodels.persons.Female
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance
@@ -111,10 +113,10 @@ routine changeGender(insurance::InsuranceClient client) {
 	}
 	action{
 		call {
-			if (client.gender == Gender.MALE) {
+			if (client.gender == Gender.MALE && !(person instanceof Male)) {
 				deletePerson(client)
 				createMalePerson(client)
-			} else {
+			} else if (client.gender == Gender.FEMALE && !(person instanceof Female)) {
 				deletePerson(client)
 				createFemalePerson(client)
 			}
