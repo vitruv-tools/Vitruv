@@ -32,7 +32,6 @@ routine deletePersonRegister(insurance::InsuranceDatabase insuranceDatabase){
 	match{
 		val personRegister = retrieve persons::PersonRegister corresponding to insuranceDatabase
 	}
-	
 	action{
 		delete personRegister
 	}
@@ -66,8 +65,9 @@ routine createMalePerson(insurance::InsuranceClient client) {
 		val newPerson = create persons::Male and initialize {
 			newPerson.fullName = client.name
 		}
-		//call System.out.println("create new male person " + newPerson)
-		call personRegister.persons += newPerson
+		update personRegister {
+			personRegister.persons += newPerson
+		} 
 		add correspondence between client and newPerson
 	}
 }
@@ -80,8 +80,9 @@ routine createFemalePerson(insurance::InsuranceClient client) {
 		val newPerson = create persons::Female and initialize {
 			newPerson.fullName = client.name
 		}
-		//call System.out.println("create new female person " + newPerson)
-		call personRegister.persons += newPerson
+		update personRegister {
+			personRegister.persons += newPerson
+		}
 		add correspondence between client and newPerson
 	}
 }
@@ -96,7 +97,7 @@ routine changeFullName(insurance::InsuranceClient client) {
 		val person = retrieve persons::Person corresponding to client
 	}
 	action{
-		call {
+		update person {
 			person.fullName = client.name
 		}
 	}
@@ -134,7 +135,6 @@ routine deletePerson(insurance::InsuranceClient client) {
 		val person = retrieve persons::Person corresponding to client
 	}
 	action {
-		//call System.out.println("delete person " + person)
 		remove correspondence between client and person
 		delete person
 	}

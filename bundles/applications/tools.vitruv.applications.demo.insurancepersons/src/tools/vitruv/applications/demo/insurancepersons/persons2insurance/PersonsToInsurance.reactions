@@ -56,7 +56,9 @@ routine createInsuranceClient(persons::Person person) {
 				newClient.gender = Gender.FEMALE
 			}
 		}
-		call insuranceDatabase.insuranceclient += newClient
+		update insuranceDatabase {
+			insuranceDatabase.insuranceclient += newClient
+			}
 		add correspondence between person and newClient
 		
 	}
@@ -72,7 +74,7 @@ routine changeNames(persons::Person person) {
 		val client = retrieve insurance::InsuranceClient corresponding to person
 	}
 	action {
-		call {
+		update client {
 			client.name = person.fullName
 		}
 	}
