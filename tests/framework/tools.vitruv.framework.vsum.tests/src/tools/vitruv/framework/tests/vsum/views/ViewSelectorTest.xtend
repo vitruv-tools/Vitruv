@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertIterableEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
 import tools.vitruv.framework.vsum.views.ViewSelector
-import tools.vitruv.framework.vsum.views.selection.BasicViewElementSelector
+import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector
 
 class ViewSelectorTest {
 

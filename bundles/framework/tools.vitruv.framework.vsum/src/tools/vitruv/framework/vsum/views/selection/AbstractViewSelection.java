@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.selection.impl;
+package tools.vitruv.framework.vsum.views.selection;
 
 import java.util.Collection;
 import java.util.HashMap;

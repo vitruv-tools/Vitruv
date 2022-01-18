@@ -11,7 +11,7 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier
-import tools.vitruv.framework.vsum.views.selection.BasicViewElementSelector
+import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector
 import tools.vitruv.framework.vsum.views.ViewSelection
 
 /**

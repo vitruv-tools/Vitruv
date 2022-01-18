@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.selection;
+package tools.vitruv.framework.vsum.views.selectors;
 
 public enum SelectionState { // TODO TS: Placeholder for the complex selection state required by a tree selector
     MANUALLY_SELECTED(true), AUTOMATICALLY_SELECTED(true), DESELECTED(false);

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.selection
+package tools.vitruv.framework.vsum.views.selectors
 
 import java.util.Collection
 import org.eclipse.emf.ecore.EObject
@@ -10,7 +10,7 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.vsum.views.selection.impl.ElementViewSelection
+import tools.vitruv.framework.vsum.views.selection.ElementViewSelection
 
 /**
  * Basic view selector for a view that represents a set of model elements.

@@ -2,7 +2,7 @@ package tools.vitruv.framework.vsum.views
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.framework.vsum.views.impl.BasicViewType
-import tools.vitruv.framework.vsum.views.selection.BasicViewElementSelector
+import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector
 
 @Utility
 class ViewTypeFactory {

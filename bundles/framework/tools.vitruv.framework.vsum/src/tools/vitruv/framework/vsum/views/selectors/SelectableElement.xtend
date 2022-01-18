@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.selection
+package tools.vitruv.framework.vsum.views.selectors
 
 import org.eclipse.xtend.lib.annotations.Accessors
 
