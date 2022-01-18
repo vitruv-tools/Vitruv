@@ -30,7 +30,7 @@ class BasicViewType extends AbstractViewType<BasicViewElementSelector> {
 
 	override createView(BasicViewElementSelector selector) {
 		checkArgument(selector.viewType === this, "cannot create view with selector for different view type")
-		return new BasicModelView(selector.viewType, selector.viewSource, selector.selection)
+		return new RecordingView(selector.viewType, selector.viewSource, selector.selection)
 	}
 
 	override updateView(ModifiableView view) {

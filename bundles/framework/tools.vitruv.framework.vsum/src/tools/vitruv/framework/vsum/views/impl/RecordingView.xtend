@@ -15,12 +15,13 @@ import tools.vitruv.framework.vsum.models.ChangePropagationListener
 import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.views.ViewSelector
 import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.vsum.views.View
 
 /**
- * A basic view that passes by default the entirety of its underlying model as a copy.
- * IMPORTANT: This is a prototypical implementation for concept exploration and therefore subject to change.
+ * A {@link View} that records changes to its resources and allows to propagate them 
+ * back to the underlying models using the {@link #commitChanges} method.
  */
-class BasicModelView implements ModifiableView, ChangePropagationListener {
+class RecordingView implements ModifiableView, ChangePropagationListener {
 	@Accessors(PUBLIC_GETTER)
 	val ViewSelection selection
 	@Accessors(PUBLIC_GETTER)
@@ -40,11 +41,11 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 		this.viewSource = viewSource
 		viewSource.addChangePropagationListener(this)
 		viewResourceSet = new ResourceSetImpl().withGlobalFactories
-		update
+		update()
 	}
 
 	override rootObjects() {
-		checkNotClosed
+		checkNotClosed()
 		viewResourceSet.resources.map[contents].flatten.toList
 	}
 
@@ -57,26 +58,26 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 	}
 
 	override update() {
-		checkNotClosed
+		checkNotClosed()
 		if (isModified) {
 			throw new UnsupportedOperationException("Cannot update from model when view is modified.")
 		}
-		changeRecorder.endRecordingAndClose
+		changeRecorder.endRecordingAndClose()
 		modelChanged = false
 		viewType.updateView(this)
 		viewChanged = false
-		viewResourceSet.addChangeListeners
+		viewResourceSet.addChangeListeners()
 		changeRecorder = new ChangeRecorder(viewResourceSet)
 		changeRecorder.addToRecording(viewResourceSet)
-		changeRecorder.beginRecording
+		changeRecorder.beginRecording()
 	}
 
-	override commitChanges() { // TODO TS: Should the view save all its resources/delete empty ones here?
-		checkNotClosed
-		changeRecorder.endRecording
+	override commitChanges() {
+		checkNotClosed()
+		changeRecorder.endRecording()
 		val propagatedChanges = viewSource.propagateChange(changeRecorder.change)
 		viewChanged = false
-		update // view shall not be dirty, thus update on commit
+		update() // view shall not be dirty, thus update on commit
 		return propagatedChanges
 	}
 
@@ -111,7 +112,7 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 		]
 		rootObjects += object
 	}
-	
+
 	override void moveRoot(EObject object, URI newLocation) {
 		checkState(rootObjects.contains(object), "view must contain element %s to move", object)
 		viewResourceSet.resources.findFirst[contents.contains(object)].URI = newLocation
@@ -135,9 +136,9 @@ class BasicModelView implements ModifiableView, ChangePropagationListener {
 
 	private def void endRecordingAndClose(ChangeRecorder recorder) {
 		if (recorder !== null && recorder.isRecording) {
-			recorder.endRecording
+			recorder.endRecording()
 		}
-		recorder?.close
+		recorder?.close()
 	}
 
 	override modifyContents((ResourceSet)=>void modificationFunction) {
