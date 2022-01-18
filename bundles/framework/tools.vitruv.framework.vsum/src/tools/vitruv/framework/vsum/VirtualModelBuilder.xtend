@@ -143,7 +143,6 @@ class VirtualModelBuilder {
 		fileSystemLayout.prepare()
 		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, changeSpecificationRepository)
 		vsum.loadExistingModels()
-		VirtualModelManager.instance.putVirtualModel(vsum)
 		return vsum
 	}
 }
