@@ -118,15 +118,15 @@ public class DefaultImplementations {
 		public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
 		}
 
-        @Override
-        public Collection<ViewType<?>> getViewTypes() {
-            return null;
-        }
+		@Override
+		public Collection<ViewType<?>> getViewTypes() {
+			return null;
+		}
 
 		@Override
 		public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
 			return null;
 		}
-        
+
 	}
 }
