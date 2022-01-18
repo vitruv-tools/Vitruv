@@ -87,7 +87,9 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 			changeRecorder.close()
 			viewResourceSet.resources.forEach[unload()]
 			viewResourceSet.resources.clear()
+			viewResourceSet.removeChangeListeners()
 		}
+		viewSource.removeChangePropagationListener(this)
 	}
 
 	override isClosed() {
@@ -131,6 +133,12 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 					viewChanged = true
 				}
 			}
+		]
+	}
+	
+	private def void removeChangeListeners(ResourceSet resourceSet) {
+		resourceSet.allContents.forEach [
+			eAdapters.clear()
 		]
 	}
 
