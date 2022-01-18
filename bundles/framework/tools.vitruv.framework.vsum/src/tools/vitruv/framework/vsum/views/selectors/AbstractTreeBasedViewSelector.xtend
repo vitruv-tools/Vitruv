@@ -5,7 +5,7 @@ import tools.vitruv.framework.vsum.views.impl.ViewCreatingViewType
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
 import java.util.Collection
 
-abstract class AbstractTreeBasedViewSelector extends BasicViewElementSelector implements TreeBasedViewSelector {
+abstract package class AbstractTreeBasedViewSelector extends BasicViewElementSelector implements TreeBasedViewSelector {
 	val EObject root
 
 	new(EObject root, ViewCreatingViewType<BasicViewElementSelector> viewType, ChangeableViewSource viewSource) {
