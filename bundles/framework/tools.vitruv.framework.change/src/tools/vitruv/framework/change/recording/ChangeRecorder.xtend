@@ -130,6 +130,7 @@ class ChangeRecorder implements AutoCloseable {
 		resultChanges = null
 		val rootCopy = Set.copyOf(rootObjects)
 		rootObjects.clear()
+		existingObjects.clear()
 		rootCopy.forEach[recursively [removeAdapter()]]
 	}
 
