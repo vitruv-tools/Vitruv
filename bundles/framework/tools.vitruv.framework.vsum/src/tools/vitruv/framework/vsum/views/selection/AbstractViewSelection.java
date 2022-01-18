@@ -1,12 +1,11 @@
 package tools.vitruv.framework.vsum.views.selection;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-
-import com.google.common.collect.ImmutableList;
 
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection;
 import tools.vitruv.framework.vsum.views.ViewSelector;
@@ -45,7 +44,7 @@ public abstract class AbstractViewSelection<S extends ViewSelector> implements M
 
 	@Override
 	public Collection<EObject> getSelectableElements() {
-		return ImmutableList.copyOf(elementsSelection.keySet());
+		return Collections.unmodifiableSet(elementsSelection.keySet());
 	}
 
 	@Override

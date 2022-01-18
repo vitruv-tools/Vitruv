@@ -19,7 +19,7 @@ class ViewSelectorTest {
 		// Create view selector:
 		val repository1 = Pcm_mockupFactory::eINSTANCE.createRepository
 		val repository2 = Pcm_mockupFactory::eINSTANCE.createRepository
-		var ViewSelector selector = new BasicViewElementSelector(null, null, #[repository1, repository2])
+		var ViewSelector selector = new BasicViewElementSelector(null, null, #{repository1, repository2})
 
 		// Check initial state:
 		assertEquals(#{repository1, repository2}, selector.selectableElements)
