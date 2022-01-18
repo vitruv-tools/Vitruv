@@ -25,7 +25,7 @@ public abstract class AbstractViewSelection<S extends ViewSelector> implements M
 	}
 
 	public AbstractViewSelection(ModifiableViewSelection sourceViewSelection) {
-		this(ImmutableList.copyOf(sourceViewSelection.getSelectableElements()));
+		this(sourceViewSelection.getSelectableElements());
 		for (EObject selectableElement : sourceViewSelection.getSelectableElements()) {
 			setSelected(selectableElement, sourceViewSelection.isSelected(selectableElement));
 		}
@@ -46,8 +46,8 @@ public abstract class AbstractViewSelection<S extends ViewSelector> implements M
 	}
 
 	@Override
-	public Iterable<EObject> getSelectableElements() {
-		return elementsSelection.keySet();
+	public Collection<EObject> getSelectableElements() {
+		return ImmutableList.copyOf(elementsSelection.keySet());
 	}
 
 	@Override

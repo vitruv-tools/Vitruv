@@ -1,5 +1,7 @@
 package tools.vitruv.framework.vsum.views;
 
+import java.util.Collection;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -13,7 +15,7 @@ public interface ModifiableViewSelection extends ViewSelection {
 	 * 
 	 * @return the selectable {@link EObject}s
 	 */
-	Iterable<EObject> getSelectableElements();
+	Collection<EObject> getSelectableElements();
 
 	/**
 	 * Returns whether the given {@link EObject} is selected. Also returns
