@@ -12,8 +12,7 @@ import com.google.common.collect.FluentIterable;
 import tools.vitruv.framework.change.description.PropagatedChange;
 
 /**
- * A Vitruv view on the virtual model. Upon creation, each view must be
- * registered at the VSUM as change propagation listener.
+ * A Vitruv view on an underlying {@link ChangeableViewSource}.
  */
 public interface View extends AutoCloseable {
 

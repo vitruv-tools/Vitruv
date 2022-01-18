@@ -15,8 +15,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractViewSelection<S extends ViewSelector> implements ModifiableViewSelection {
-	// TODO Discuss whether we want to guarantee some ordering in the elements. This
-	// was not document yet, but maybe we want to have it
 	final Map<EObject, Boolean> elementsSelection = new HashMap<>();
 
 	public AbstractViewSelection(Collection<EObject> selectableElements) {
