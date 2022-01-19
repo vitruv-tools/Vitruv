@@ -47,6 +47,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			domainRepository,
 			userInteractor
 		)
+		VirtualModelRegistry.instance.registerVirtualModel(this)
 	}
 
 	def loadExistingModels() {
@@ -206,6 +207,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override void dispose() {
 		resourceRepository.close()
+		VirtualModelRegistry.instance.deregisterVirtualModel(this)
 	}
 
 	override getViewTypes() {
