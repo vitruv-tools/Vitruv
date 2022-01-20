@@ -53,7 +53,7 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 		return viewChanged
 	}
 
-	override hasVSUMChanged() {
+	override haveViewSourcesChanged() {
 		return modelChanged
 	}
 

@@ -41,9 +41,9 @@ public interface View extends AutoCloseable {
 	boolean isModified();
 
 	/**
-	 * Specifies whether the underlying virtual model has changed.
+	 * Specifies whether the underlying view sources have changed.
 	 */
-	boolean hasVSUMChanged();
+	boolean haveViewSourcesChanged();
 
 	/**
 	 * Updates the view from the underlying virtual model, thus invalidating its

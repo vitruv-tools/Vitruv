@@ -56,7 +56,7 @@ class ViewTest {
 		assertNotNull(testView.rootObjects)
 		assertEquals(testView.rootObjects.claimOne.checkNotNull, testView.rootObjects(Root).claimOne.checkNotNull)
 		assertEquals(ROOT_ID, testView.rootObjects(Root).claimOne.checkNotNull.id)
-		assertFalse(testView.hasVSUMChanged)
+		assertFalse(testView.haveViewSourcesChanged)
 		assertFalse(testView.isModified)
 	}
 
@@ -73,13 +73,13 @@ class ViewTest {
 		]))
 
 		// Assert VSUM changed but view not modified:
-		assertTrue(testView.hasVSUMChanged)
+		assertTrue(testView.haveViewSourcesChanged)
 		assertFalse(testView.isModified)
 		assertIterableEquals(#[], testView.rootObjects(Root).claimOne.checkNotNull.multiValuedContainmentEReference)
 
 		// Update view and assert view was updated correctly
 		testView.update
-		assertFalse(testView.hasVSUMChanged)
+		assertFalse(testView.haveViewSourcesChanged)
 		assertFalse(testView.isModified)
 		val viewRoot = testView.rootObjects(Root).claimOne.checkNotNull
 		assertEquals(NON_ROOT_ID, viewRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
@@ -97,13 +97,13 @@ class ViewTest {
 
 		// Assert view modified but VSUM not changed:
 		assertTrue(testView.modified)
-		assertFalse(testView.hasVSUMChanged)
+		assertFalse(testView.haveViewSourcesChanged)
 
 		// Commit changes and assert VSUM was updated correctly
 		val changes = testView.commitChanges.checkNotNull
 		assertFalse(changes.empty)
 		assertFalse(testView.modified)
-		assertFalse(testView.hasVSUMChanged)
+		assertFalse(testView.haveViewSourcesChanged)
 
 		val reopenedViewRoot = virtualModel.createTestView.rootObjects(Root).claimOne.checkNotNull
 		assertEquals(NON_ROOT_ID, reopenedViewRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
@@ -121,7 +121,7 @@ class ViewTest {
 
 		// Assert view modified but VSUM not changed:
 		assertTrue(testView.modified)
-		assertFalse(testView.hasVSUMChanged)
+		assertFalse(testView.haveViewSourcesChanged)
 
 		// Assert that update not possible
 		assertThrows(UnsupportedOperationException, [testView.update])
