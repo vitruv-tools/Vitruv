@@ -17,10 +17,14 @@ import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl
 
 import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.vsum.views.ViewType
+import java.util.Collection
+import tools.vitruv.framework.vsum.views.ViewTypeRepository
 
 class VirtualModelBuilder {
 	var VitruvDomainRepository domainRepository = null
-	val Set<VitruvDomain> domains = new HashSet
+	val Set<VitruvDomain> domains = new HashSet()
+	val Set<ViewType<?>> viewTypes = new HashSet()
 	val Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet()
 	var Path storageFolder
 	var InternalUserInteractor userInteractor
@@ -89,6 +93,16 @@ class VirtualModelBuilder {
 		return this
 	}
 	
+	def VirtualModelBuilder withViewType(ViewType<?> viewType) {
+		viewTypes += viewType
+		return this
+	}
+	
+	def VirtualModelBuilder withViewTypes(Collection<ViewType<?>> viewTypes) {
+		for (viewType : viewTypes) withViewType(viewType)
+		return this
+	}
+	
 	def VirtualModelBuilder withChangePropagationSpecifications(ChangePropagationSpecification... changePropagationSpecifications) {
 		for(spec : changePropagationSpecifications) withChangePropagationSpecification(spec)
 		return this
@@ -127,6 +141,8 @@ class VirtualModelBuilder {
 			checkState(!domains.isEmpty, "No domains were configured!")
 			domainRepository = new VitruvDomainRepositoryImpl(domains)
 		}
+		val viewTypeRepository = new ViewTypeRepository()
+		viewTypes.forEach[viewTypeRepository.register(it)]
 		val changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications)
 		for (changePropagationSpecification : changePropagationSpecifications) {
 			checkState(domainRepository.contains(changePropagationSpecification.sourceDomain),
@@ -142,7 +158,7 @@ class VirtualModelBuilder {
 
 		val fileSystemLayout = new VsumFileSystemLayout(storageFolder)
 		fileSystemLayout.prepare()
-		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, changeSpecificationRepository)
+		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, viewTypeRepository, changeSpecificationRepository)
 		vsum.loadExistingModels()
 		return vsum
 	}

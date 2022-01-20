@@ -21,12 +21,14 @@ import tools.vitruv.framework.vsum.views.ViewTypeRepository
 import tools.vitruv.framework.vsum.views.ViewType
 import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.models.ChangePropagationListener
+import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.framework.vsum.views.ViewTypeProvider
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ModelRepository resourceRepository
 	val VitruvDomainRepository domainRepository
-	val ViewTypeRepository viewTypeRepository
+	@Delegate val ViewTypeProvider viewTypeRepository
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
@@ -35,10 +37,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
+		ViewTypeRepository viewTypeRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
 		this.domainRepository = domainRepository
-		viewTypeRepository = new ViewTypeRepository
+		this.viewTypeRepository = viewTypeRepository
 		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
 		changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 		changePropagator = new ChangePropagator(
@@ -208,10 +211,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override void dispose() {
 		resourceRepository.close()
 		VirtualModelRegistry.instance.deregisterVirtualModel(this)
-	}
-
-	override getViewTypes() {
-		return viewTypeRepository.viewTypes
 	}
 
 	override getViewSourceModels() {
