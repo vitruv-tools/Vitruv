@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 import java.nio.file.Files
-import java.nio.file.Path
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.vsum.views.ChangeableViewSource
@@ -13,6 +12,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier
 import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector
 import tools.vitruv.framework.vsum.views.ViewSelection
+import org.eclipse.emf.common.util.URI
 
 /**
  * A basic view type that allows creating views based on a basic element-wise selection mechanism.
@@ -61,16 +61,16 @@ class BasicViewType extends AbstractViewType<BasicViewElementSelector> {
 	 * To circumvent the issue, we store the UML model to a temporary resource and reload it,
 	 * because save/load properly handles the situation not covered by the copier. 
 	 */
-	// TODO HK Provide an appropriate temporary resource instead of the current magic file
 	private static def void copyUmlModel(Resource originalResource, ResourceSet newResourceSet) {
 		val originalURI = originalResource.URI
-		val tempURI = originalURI.trimFileExtension.appendSegment("save." + originalURI.fileExtension)
+		val tempFilePath = Files.createTempFile(null, "." + originalURI.fileExtension)
+		val tempURI = URI.createFileURI(tempFilePath.toString)
 		originalResource.URI = tempURI
 		originalResource.save(null)
 		originalResource.URI = originalURI
 		val viewResource = newResourceSet.getResource(tempURI, true)
 		viewResource.URI = originalURI
-		Files.delete(Path.of(org.eclipse.emf.common.util.URI.decode(tempURI.path)))
+		Files.delete(tempFilePath)
 		EcoreUtil.resolveAll(viewResource)
 	}
 
