@@ -39,40 +39,40 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("propagate a simple change into a virtual model")
 	def void propagateIntoVirtualModel() {
-		val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
-		val monitoredResource = resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
 				id = 'root'
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange)
-		val vsumModel = virtualModel.getModelInstance(projectFolder.createTestModelResourceUri(""))
+		val vsumModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(vsumModel.resource, containsModelOf(monitoredResource))
 	}
 
 	@Test
 	@DisplayName("propagate a simple change into a virtual model and preserve consistency")
 	def void propagateIntoVirtualModelWithConsistency() {
-		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
-		val monitoredResource = resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
 				id = 'root'
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange)
-		val sorceModel = virtualModel.getModelInstance(projectFolder.createTestModelResourceUri(""))
+		val sorceModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val targetModel = virtualModel.getModelInstance(
-			RedundancyChangePropagationSpecification.getTargetResourceUri(projectFolder.createTestModelResourceUri("")))
+			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
 		assertThat(targetModel.resource, containsModelOf(monitoredResource))
 		assertEquals(1,
 			virtualModel.correspondenceModel.getCorrespondingEObjects(sorceModel.resource.contents.get(0)).size)
@@ -81,13 +81,13 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("persist element as resource root also contained in other persisted element")
 	def void singleChangeForRootElementInMultipleResource() {
-		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val containedRoot = aet.Root
-		resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
 				id = 'root'
 				recursiveRoot = containedRoot => [
@@ -95,7 +95,7 @@ class VirtualModelTest {
 				]
 			]
 		]
-		resourceSet.createResource(projectFolder.createTestModelResourceUri("Contained")) => [
+		resourceSet.createResource(createTestModelResourceUri("Contained")) => [
 			contents += containedRoot
 		]
 		val recordedChange = changeRecorder.endRecording
@@ -111,14 +111,14 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("add element to containment of element persisted in two resources")
 	def void singleChangeForElementContainedInRootElementInMultipleResource() {
-		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val containedRoot = aet.Root
 		val containedInContainedRoot = aet.Root
-		resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
 				id = 'root'
 				recursiveRoot = containedRoot => [
@@ -129,10 +129,10 @@ class VirtualModelTest {
 				]
 			]
 		]
-		resourceSet.createResource(projectFolder.createTestModelResourceUri("Contained")) => [
+		resourceSet.createResource(createTestModelResourceUri("Contained")) => [
 			contents += containedRoot
 		]
-		resourceSet.createResource(projectFolder.createTestModelResourceUri("ContainedInContained")) => [
+		resourceSet.createResource(createTestModelResourceUri("ContainedInContained")) => [
 			contents += containedInContainedRoot
 		]
 		val recordedChange = changeRecorder.endRecording
@@ -148,19 +148,19 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("load resource that should have been saved after propagating a change into a virtual model")
 	def void savedVirtualModel() {
-		val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
-		val monitoredResource = resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
 				id = 'root'
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange)
-		val reloadedResource = new ResourceSetImpl().withGlobalFactories.getResource(projectFolder.createTestModelResourceUri(""),
+		val reloadedResource = new ResourceSetImpl().withGlobalFactories.getResource(createTestModelResourceUri(""),
 			true)
 		assertThat(reloadedResource, containsModelOf(monitoredResource))
 	}
@@ -168,22 +168,22 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("reload a virtual model to which a simple change was propagated")
 	def void reloadVirtualModel() {
-		val virtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val root = aet.Root
-		val monitoredResource = resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += root => [
 				id = 'root'
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange)
-		val originalModel = virtualModel.getModelInstance(projectFolder.createTestModelResourceUri(""))
-		val reloadedVirtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-		val reloadedModel = reloadedVirtualModel.getModelInstance(projectFolder.createTestModelResourceUri(""))
+		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
+		val reloadedVirtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
+		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(reloadedModel.resource, containsModelOf(monitoredResource))
 		assertNotEquals(originalModel, reloadedModel)
 		// Propagate another change to reloaded virtual model to ensure that everything is loaded correctly
@@ -197,26 +197,26 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("reload a virtual model with consistency preservation to which a simple change was propagated")
 	def void reloadVirtualModelWithConsistency() {
-		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val root = aet.Root
-		val monitoredResource = resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += root => [
 				id = 'root'
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange)
-		val originalModel = virtualModel.getModelInstance(projectFolder.createTestModelResourceUri(""))
-		val reloadedVirtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-		val reloadedModel = reloadedVirtualModel.getModelInstance(projectFolder.createTestModelResourceUri(""))
+		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
+		val reloadedVirtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
+		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(reloadedModel.resource, containsModelOf(monitoredResource))
 		assertNotEquals(originalModel, reloadedModel)
 		val reloadedTargetModel = reloadedVirtualModel.getModelInstance(
-			RedundancyChangePropagationSpecification.getTargetResourceUri(projectFolder.createTestModelResourceUri("")))
+			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
 		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
 		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).size)
 	}
@@ -224,13 +224,13 @@ class VirtualModelTest {
 	@Test
 	@DisplayName("move element such that corresponding element is moved from one resource to another and back")
 	def void moveCorrespondingToOtherResourceAndBack() {
-		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val root = aet.Root
-		val testUri = projectFolder.createTestModelResourceUri("")
+		val testUri = createTestModelResourceUri("")
 		val monitoredResource = resourceSet.createResource(testUri) => [
 			contents += root => [
 				id = 'root'
@@ -238,7 +238,7 @@ class VirtualModelTest {
 		]
 		virtualModel.propagateChange(changeRecorder.endRecording)
 		changeRecorder.beginRecording
-		val testIntermediateUri = projectFolder.createTestModelResourceUri("intermediate")
+		val testIntermediateUri = createTestModelResourceUri("intermediate")
 		resourceSet.createResource(testIntermediateUri) => [
 			contents += root
 		]
@@ -253,6 +253,14 @@ class VirtualModelTest {
 		virtualModel.propagateChange(changeRecorder.endRecording)
 		assertNull(virtualModel.getModelInstance(testIntermediateUri))
 		assertNull(virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(testIntermediateUri)))
+	}
+	
+	private def createTestModelResourceUri(String suffix) {
+		projectFolder.createTestModelResourceUri(suffix)
+	}
+	
+	private def getPathToVirtualModelProjectFolder() {
+		projectFolder.resolve("vsum")
 	}
 
 }
