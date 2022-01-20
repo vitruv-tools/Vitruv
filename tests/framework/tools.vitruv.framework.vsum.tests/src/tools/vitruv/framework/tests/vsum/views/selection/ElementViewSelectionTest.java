@@ -236,4 +236,46 @@ public class ElementViewSelectionTest {
 		}
 
 	}
+
+	@Nested
+	@DisplayName("copy")
+	class Copy {
+		List<EObject> selectableElements;
+
+		@BeforeEach
+		public void setupSelectionWithFirstOfTwoElementsSelected() {
+			selectableElements = new ArrayList<>();
+			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+		}
+
+		@Test
+		@DisplayName("empty")
+		public void empty() {
+			ModifiableViewSelection originalSelection = new ElementViewSelection(emptySet());
+			ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
+			assertThat(copy.getSelectableElements(), is(emptySet()));
+		}
+
+		@Test
+		@DisplayName("with single element")
+		public void withSingleElement() {
+			Repository repository = Pcm_mockupFactory.eINSTANCE.createRepository();
+			ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(repository));
+			ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
+			assertThat(copy.getSelectableElements(), is(Set.of(repository)));
+		}
+
+		@Test
+		@DisplayName("with multiple elements")
+		public void withMultipleElements() {
+			Repository repository1 = Pcm_mockupFactory.eINSTANCE.createRepository();
+			Repository repository2 = Pcm_mockupFactory.eINSTANCE.createRepository();
+			ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(repository1, repository2));
+			ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
+			assertThat(copy.getSelectableElements(), is(Set.of(repository1, repository2)));
+		}
+
+	}
+
 }
