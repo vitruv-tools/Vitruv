@@ -8,12 +8,11 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection;
-import tools.vitruv.framework.vsum.views.ViewSelector;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class AbstractViewSelection<S extends ViewSelector> implements ModifiableViewSelection {
+public abstract class AbstractViewSelection implements ModifiableViewSelection {
 	final Map<EObject, Boolean> elementsSelection = new HashMap<>();
 
 	public AbstractViewSelection(Collection<EObject> selectableElements) {
