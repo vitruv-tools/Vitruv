@@ -15,6 +15,5 @@ Require-Bundle: org.apache.log4j,
 Export-Package: tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.internal;x-internal:=true,
  tools.vitruv.framework.vsum.models,
- tools.vitruv.framework.vsum.views,
- tools.vitruv.framework.vsum.views.selectors
+ tools.vitruv.framework.vsum.views
 Bundle-Vendor: vitruv.tools
