@@ -11,6 +11,7 @@ import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.views.selection.ElementViewSelection
+import static com.google.common.base.Preconditions.checkArgument
 
 /**
  * Basic view selector for a view that represents a set of model elements.
@@ -29,6 +30,9 @@ class BasicViewElementSelector implements ViewSelector {
 
 	new(ViewCreatingViewType<BasicViewElementSelector> viewType, ChangeableViewSource viewSource,
 		Collection<EObject> elements) {
+		checkArgument(elements !== null, "selectable elements must not be null")
+		checkArgument(viewType !== null, "view type must not be null")
+		checkArgument(viewSource !== null, "view source must not be null")
 		this.viewType = viewType
 		this.viewSource = viewSource
 		this.viewSelection = new ElementViewSelection(elements)
