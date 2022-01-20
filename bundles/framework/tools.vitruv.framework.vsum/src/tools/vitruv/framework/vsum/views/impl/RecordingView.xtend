@@ -121,9 +121,7 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 	}
 
 	def private void checkNotClosed() {
-		if (closed) {
-			throw new IllegalStateException("View is already closed!")
-		}
+		checkState(!closed, "view is already closed!")
 	}
 
 	private def void addChangeListeners(ResourceSet resourceSet) {
