@@ -53,9 +53,9 @@ class ViewTest {
 	@DisplayName("Test basic view creation")
 	def void testViewCreation() {
 		// Check initial state:
-		assertNotNull(testView.rootObjects)
-		assertEquals(testView.rootObjects.claimOne.checkNotNull, testView.rootObjects(Root).claimOne.checkNotNull)
-		assertEquals(ROOT_ID, testView.rootObjects(Root).claimOne.checkNotNull.id)
+		assertNotNull(testView.getRootObjects)
+		assertEquals(testView.getRootObjects.claimOne.checkNotNull, testView.getRootObjects(Root).claimOne.checkNotNull)
+		assertEquals(ROOT_ID, testView.getRootObjects(Root).claimOne.checkNotNull.id)
 		assertFalse(testView.haveViewSourcesChanged)
 		assertFalse(testView.isModified)
 	}
@@ -75,13 +75,13 @@ class ViewTest {
 		// Assert VSUM changed but view not modified:
 		assertTrue(testView.haveViewSourcesChanged)
 		assertFalse(testView.isModified)
-		assertIterableEquals(#[], testView.rootObjects(Root).claimOne.checkNotNull.multiValuedContainmentEReference)
+		assertIterableEquals(#[], testView.getRootObjects(Root).claimOne.checkNotNull.multiValuedContainmentEReference)
 
 		// Update view and assert view was updated correctly
 		testView.update
 		assertFalse(testView.haveViewSourcesChanged)
 		assertFalse(testView.isModified)
-		val viewRoot = testView.rootObjects(Root).claimOne.checkNotNull
+		val viewRoot = testView.getRootObjects(Root).claimOne.checkNotNull
 		assertEquals(NON_ROOT_ID, viewRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
 	}
 
@@ -90,7 +90,7 @@ class ViewTest {
 	def void testViewCommit() {
 		// Modify view:
 		assertFalse(testView.isModified)
-		val viewRoot = testView.rootObjects(Root).claimOne.checkNotNull
+		val viewRoot = testView.getRootObjects(Root).claimOne.checkNotNull
 		val NonRoot element = aet.NonRoot
 		element.id = NON_ROOT_ID
 		viewRoot.multiValuedContainmentEReference.add(element)
@@ -105,7 +105,7 @@ class ViewTest {
 		assertFalse(testView.modified)
 		assertFalse(testView.haveViewSourcesChanged)
 
-		val reopenedViewRoot = virtualModel.createTestView.rootObjects(Root).claimOne.checkNotNull
+		val reopenedViewRoot = virtualModel.createTestView.getRootObjects(Root).claimOne.checkNotNull
 		assertEquals(NON_ROOT_ID, reopenedViewRoot.multiValuedContainmentEReference.claimOne.checkNotNull.id)
 	}
 
@@ -114,7 +114,7 @@ class ViewTest {
 	def void testDirtyViewUpdate() {
 		// Modify view:
 		assertFalse(testView.isModified)
-		val viewRoot = testView.rootObjects(Root).claimOne.checkNotNull
+		val viewRoot = testView.getRootObjects(Root).claimOne.checkNotNull
 		val NonRoot element = aet.NonRoot
 		element.id = NON_ROOT_ID
 		viewRoot.multiValuedContainmentEReference.add(element)
@@ -136,7 +136,7 @@ class ViewTest {
 		assertThrows(IllegalStateException, [testView.update])
 		assertThrows(IllegalStateException, [testView.commitChanges])
 		assertThrows(IllegalStateException, [testView.rootObjects])
-		assertThrows(IllegalStateException, [testView.rootObjects(Root)])
+		assertThrows(IllegalStateException, [testView.getRootObjects(Root)])
 	}
 
 	def private createAndPropagateRoot(ResourceSet resourceSet, VirtualModel virtualModel) {

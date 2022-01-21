@@ -16,6 +16,7 @@ import tools.vitruv.framework.vsum.models.ChangePropagationAbortCause
 import tools.vitruv.framework.vsum.views.ViewSelector
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.views.View
+import static com.google.common.base.Preconditions.checkArgument
 
 /**
  * A {@link View} that records changes to its resources and allows to propagate them 
@@ -36,6 +37,9 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 
 	protected new(ViewCreatingViewType<? extends ViewSelector> viewType, ChangeableViewSource viewSource,
 		ViewSelection selection) {
+		checkArgument(viewType !== null, "view type must not be null")
+		checkArgument(selection !== null, "view source must not be null")
+		checkArgument(viewSource !== null, "view selection must not be null")
 		this.viewType = viewType
 		this.selection = selection
 		this.viewSource = viewSource
@@ -44,7 +48,7 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 		update()
 	}
 
-	override rootObjects() {
+	override getRootObjects() {
 		checkNotClosed()
 		viewResourceSet.resources.map[contents].flatten.toList
 	}

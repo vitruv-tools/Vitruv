@@ -22,7 +22,7 @@ public interface View extends AutoCloseable {
 	 * @throws IllegalStateException if called on a closed view.
 	 * @see View#isClosed()
 	 */
-	Collection<EObject> rootObjects();
+	Collection<EObject> getRootObjects();
 
 	/**
 	 * Provides all root model elements of this view that conform to a certain type.
@@ -31,8 +31,8 @@ public interface View extends AutoCloseable {
 	 * @throws IllegalStateException if called on a closed view.
 	 * @see View#isClosed()
 	 */
-	default <T> Collection<T> rootObjects(Class<T> clazz) {
-		return FluentIterable.from(rootObjects()).filter(clazz).toList();
+	default <T> Collection<T> getRootObjects(Class<T> clazz) {
+		return FluentIterable.from(getRootObjects()).filter(clazz).toList();
 	};
 
 	/**
