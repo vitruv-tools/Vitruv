@@ -37,10 +37,8 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
-import org.junit.jupiter.api.Disabled
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
-@Disabled
 class CorrespondenceTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest)
 	static final String VSUM_NAME = "VsumProject"

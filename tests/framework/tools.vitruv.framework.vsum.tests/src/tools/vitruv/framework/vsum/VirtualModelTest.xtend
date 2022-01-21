@@ -36,10 +36,8 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.clai
 import allElementTypes.Root
 import java.util.HashSet
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
-import org.junit.jupiter.api.Disabled
 
 @ExtendWith(TestProjectManager)
-@Disabled
 class VirtualModelTest {
 	static val String NON_ROOT_ID = "NonRootId"
 	static val String ROOT_ID = "RootId"
