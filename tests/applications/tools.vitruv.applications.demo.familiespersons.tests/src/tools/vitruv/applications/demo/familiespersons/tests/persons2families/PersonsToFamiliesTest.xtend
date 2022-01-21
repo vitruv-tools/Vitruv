@@ -31,6 +31,15 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(PersonsToFamiliesTest)
 	String nameOfTestMethod = null
 
+	enum PositionPreference {
+		Parent,
+		Child		
+	}
+	enum FamilyPreference {
+		New,
+		Existing
+	}
+	
 	// First Set of reused static strings for the first names of the persons
 	final static String FIRST_DAD_1 = "Anton"
 	final static String FIRST_MOM_1 = "Berta"
@@ -57,6 +66,22 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	override protected getChangePropagationSpecifications() {
 		return #[new FamiliesToPersonsChangePropagationSpecification(),
 			new PersonsToFamiliesChangePropagationSpecification()]
+	}
+	
+	def void decideParentOrChild(PositionPreference pref) {
+		val String parentChildTitle = "Parent or Child?"
+		userInteraction.onMultipleChoiceSingleSelection[title.equals(parentChildTitle)].respondWithChoiceAt(if (pref === PositionPreference.Parent) 0 else 1)		
+	}
+	def void decideNewOrExistingFamily(FamilyPreference pref) {
+		//If we want to insert in a new family, we choose 0 anyway
+		//If we choose an existing family, but do not specify in which,
+		//we probably want to choose the first one we find which is at index 1,
+		//since index 0 is to choose a new family  
+		decideNewOrExistingFamily(pref, if (pref === FamilyPreference.New) -1234 else 1)
+	}
+	def void decideNewOrExistingFamily(FamilyPreference pref, int familyIndex) {
+		val String newOrExistingFamilyTitle = "New or Existing Family?"
+		userInteraction.onMultipleChoiceSingleSelection[title.equals(newOrExistingFamilyTitle)].respondWithChoiceAt(if (pref === FamilyPreference.New) 0 else familyIndex)
 	}
 
 	/**Before each test a new {@link PersonRegister} is created as starting point.
@@ -101,23 +126,27 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	 * in which families in the {@link FamilyRegister} are needed.
 	 */
 	@Test
-	def void createFamiliesForTesting() {
-		// Father
-		userInteraction.addNextSingleSelection(0)
-		// Mother
-		userInteraction.addNextSingleSelection(0)
-		// Son in existing Family
-		userInteraction.addNextSingleSelection(1)
-		userInteraction.addNextSingleSelection(1)
-		// Daughter in existing Family
-		userInteraction.addNextSingleSelection(1)
-		userInteraction.addNextSingleSelection(1)
+	def void createFamiliesForTesting() {		
+		decideParentOrChild(PositionPreference.Parent)
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
+		]		
+		decideParentOrChild(PositionPreference.Parent)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_2]
+		]
+		decideParentOrChild(PositionPreference.Child)
+		decideNewOrExistingFamily(FamilyPreference.Existing, 1)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_2]
+		]
+		decideParentOrChild(PositionPreference.Child)
+		decideNewOrExistingFamily(FamilyPreference.Existing, 1)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
 		]
+		userInteraction.assertAllInteractionsOccurred()
+		
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
 				FamiliesFactory.eINSTANCE.createFamily => [
@@ -150,11 +179,12 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testCreateMale_Father_EmptyRegister() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		// Father
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_1]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
@@ -175,13 +205,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Father
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_1
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -218,15 +249,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Father
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -266,15 +298,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Father
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_2 + " " + LAST_NAME_2
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -349,12 +382,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
 			searchedDad.fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -389,12 +423,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
 			searchedDad.fullName = FIRST_DAD_1 + " " + LAST_NAME_2
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -426,11 +461,12 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testCreateMale_Son_EmptyRegister() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		// Son
-		userInteraction.addNextSingleSelection(1)
+		decideParentOrChild(PositionPreference.Child)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_1 + " " + LAST_NAME_1]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
@@ -451,13 +487,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Son
-		userInteraction.addNextSingleSelection(1)
+		decideParentOrChild(PositionPreference.Child)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_2 + " " + LAST_NAME_3
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -497,15 +534,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Son
-		userInteraction.addNextSingleSelection(1)
+		decideParentOrChild(PositionPreference.Child)
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_2 + " " + LAST_NAME_1
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -545,15 +583,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Son
-		userInteraction.addNextSingleSelection(1)
+		decideParentOrChild(PositionPreference.Child)
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_SON_2 + " " + LAST_NAME_2
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -628,12 +667,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
 			searchedSon.fullName = FIRST_SON_1 + " " + LAST_NAME_1
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -668,12 +708,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
 			searchedSon.fullName = FIRST_SON_1 + " " + LAST_NAME_1
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -708,11 +749,12 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testCreateMale_Mother_EmptyRegister() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		// Mother
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_1]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
@@ -733,13 +775,14 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Mother
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_2
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -779,15 +822,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Mother
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -827,15 +871,16 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// Mother
-		userInteraction.addNextSingleSelection(0)
+		decideParentOrChild(PositionPreference.Parent)
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_MOM_2 + " " + LAST_NAME_1
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -910,12 +955,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
 			searchedMom.fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -950,12 +996,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
 			searchedMom.fullName = FIRST_MOM_1 + " " + LAST_NAME_1
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -986,12 +1033,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	@Test
 	def void testCreateMale_Daughter_EmptyRegister() {
 		logger.trace(this.nameOfTestMethod + " - begin")
-		// Daughter
-		userInteraction.addNextSingleSelection(1)
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_1 + " " + LAST_NAME_1]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
@@ -1011,14 +1059,15 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testCreateFemale_Daughter_AutomaticNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
-		// Daughter
-		userInteraction.addNextSingleSelection(1)
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_3
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -1057,16 +1106,17 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testCreateFemale_Daughter_ChoosingNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
-		// Daughter
-		userInteraction.addNextSingleSelection(1)
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_1
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -1105,16 +1155,17 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testCreateFemale_Daughter_ChoosingExistingFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
-		// Daughter
-		userInteraction.addNextSingleSelection(1)
-		// First Existing Family
-		userInteraction.addNextSingleSelection(1)
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
+		// First existing Family
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FIRST_DAU_2 + " " + LAST_NAME_2
 			]
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -1189,12 +1240,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// New Family
-		userInteraction.addNextSingleSelection(0)
+		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
 			searchedDaughter.fullName = FIRST_DAU_1 + " " + LAST_NAME_2
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
@@ -1229,12 +1281,13 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		// First existing Family
-		userInteraction.addNextSingleSelection(1)
+		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
 			searchedDaughter.fullName = FIRST_DAU_1 + " " + LAST_NAME_2
 		]
+		userInteraction.assertAllInteractionsOccurred()
 		logger.trace(this.nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
