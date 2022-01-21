@@ -56,9 +56,10 @@ routine insertAsParentOrChild(persons::Person newPerson) {
 			parentOrChildMessage += " Is this member a parent of a family or a child?"
 			var Iterable<String> parentOrChildOptions = #["Parent", "Child"]
 			val int parentOrChildSelection = userInteractor
-				.singleSelectionDialogBuilder
+				.singleSelectionDialogBuilder				
 				.message(parentOrChildMessage)
 				.choices(parentOrChildOptions)
+				.title("Parent or Child?")
 				.windowModality(WindowModality.MODAL)
 				.startInteraction()
 			createOrReinsertMember(newPerson, parentOrChildSelection == parentOrChildOptions.toList.indexOf("Child"), null)
@@ -101,6 +102,7 @@ routine createOrReinsertMember(persons::Person newPerson, Boolean isChild, famil
 					.singleSelectionDialogBuilder
 					.message(whichFamilyMessage)
 					.choices(whichFamilyOptions)
+					.title("New or Existing Family?")					
 					.windowModality(WindowModality.MODAL)
 					.startInteraction()
 				if (whichFamilyIndex !== 0) {
