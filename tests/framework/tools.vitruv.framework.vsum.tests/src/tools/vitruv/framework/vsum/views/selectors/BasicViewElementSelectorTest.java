@@ -18,8 +18,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import pcm_mockup.Pcm_mockupFactory;
-import pcm_mockup.Repository;
+import allElementTypes.Root;
+
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.ViewSelector;
 import tools.vitruv.framework.vsum.views.impl.ModifiableView;
@@ -30,7 +31,7 @@ import tools.vitruv.testutils.TestLogging;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class BasicViewElementSelectorTest {
 	@Mock
 	ViewCreatingViewType<BasicViewElementSelector> mockViewType;
@@ -82,20 +83,20 @@ public class BasicViewElementSelectorTest {
 		@Test
 		@DisplayName("with single selectable element")
 		public void withSingleSelectableElement() {
-			Repository repository = Pcm_mockupFactory.eINSTANCE.createRepository();
-			ViewSelector selector = new BasicViewElementSelector(mockViewType, mockViewSource, Set.of(repository));
-			assertThat(selector.getSelectableElements(), is(Set.of(repository)));
+			Root root = aet.Root();
+			ViewSelector selector = new BasicViewElementSelector(mockViewType, mockViewSource, Set.of(root));
+			assertThat(selector.getSelectableElements(), is(Set.of(root)));
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
 		}
 
 		@Test
 		@DisplayName("with multiple selectable elements")
 		public void withMultipleSelectableElements() {
-			Repository repository1 = Pcm_mockupFactory.eINSTANCE.createRepository();
-			Repository repository2 = Pcm_mockupFactory.eINSTANCE.createRepository();
+			Root firstRoot = aet.Root();
+			Root secondRoot = aet.Root();
 			ViewSelector selector = new BasicViewElementSelector(mockViewType, mockViewSource,
-					Set.of(repository1, repository2));
-			assertThat(selector.getSelectableElements(), is(Set.of(repository1, repository2)));
+					Set.of(firstRoot, secondRoot));
+			assertThat(selector.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
 		}
 
@@ -110,8 +111,8 @@ public class BasicViewElementSelectorTest {
 		@BeforeEach
 		public void setupSelectionWithFirstOfTwoElementsSelected() {
 			selectableElements = new ArrayList<>();
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(aet.Root());
+			selectableElements.add(aet.Root());
 			selector = new BasicViewElementSelector(mockViewType, mockViewSource, selectableElements);
 			selector.setSelected(selectableElements.get(0), true);
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
@@ -135,7 +136,7 @@ public class BasicViewElementSelectorTest {
 		@DisplayName("matching no element")
 		public void matchingNoElement() {
 			assertThat("view element must be validated as unselected when it cannot be selected",
-					!selector.getSelection().isViewObjectSelected(Pcm_mockupFactory.eINSTANCE.createRepository()));
+					!selector.getSelection().isViewObjectSelected(aet.Root()));
 		}
 	}
 

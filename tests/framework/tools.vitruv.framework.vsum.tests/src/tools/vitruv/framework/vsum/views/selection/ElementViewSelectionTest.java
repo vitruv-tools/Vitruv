@@ -7,8 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import pcm_mockup.Pcm_mockupFactory;
-import pcm_mockup.Repository;
+import allElementTypes.Root;
+
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -24,7 +25,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static java.util.Collections.*;
 
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ElementViewSelectionTest {
 	@Nested
 	@DisplayName("inialize")
@@ -39,18 +40,18 @@ public class ElementViewSelectionTest {
 		@Test
 		@DisplayName("with single element")
 		public void withSingleElement() {
-			Repository repository = Pcm_mockupFactory.eINSTANCE.createRepository();
-			ModifiableViewSelection selection = new ElementViewSelection(Set.of(repository));
-			assertThat(selection.getSelectableElements(), is(Set.of(repository)));
+			Root root = aet.Root();
+			ModifiableViewSelection selection = new ElementViewSelection(Set.of(root));
+			assertThat(selection.getSelectableElements(), is(Set.of(root)));
 		}
 
 		@Test
 		@DisplayName("with multiple elements")
 		public void withMultipleElements() {
-			Repository repository1 = Pcm_mockupFactory.eINSTANCE.createRepository();
-			Repository repository2 = Pcm_mockupFactory.eINSTANCE.createRepository();
-			ModifiableViewSelection selection = new ElementViewSelection(Set.of(repository1, repository2));
-			assertThat(selection.getSelectableElements(), is(Set.of(repository1, repository2)));
+			Root firstRoot = aet.Root();
+			Root secondRoot = aet.Root();
+			ModifiableViewSelection selection = new ElementViewSelection(Set.of(firstRoot, secondRoot));
+			assertThat(selection.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
 		}
 	}
 
@@ -63,8 +64,8 @@ public class ElementViewSelectionTest {
 		@BeforeEach
 		public void setupSelectionWithTwoElements() {
 			selectableElements = new ArrayList<>();
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(aet.Root());
+			selectableElements.add(aet.Root());
 			selection = new ElementViewSelection(selectableElements);
 		}
 
@@ -78,8 +79,7 @@ public class ElementViewSelectionTest {
 		@Test
 		@DisplayName("element not in selection")
 		public void elementNotInSelection() {
-			assertThat("elements not added to selection must not be selectable",
-					!selection.isSelectable(Pcm_mockupFactory.eINSTANCE.createRepository()));
+			assertThat("elements not added to selection must not be selectable", !selection.isSelectable(aet.Root()));
 		}
 
 		@Test
@@ -99,8 +99,8 @@ public class ElementViewSelectionTest {
 		@BeforeEach
 		public void setupSelectionWithTwoElements() {
 			selectableElements = new ArrayList<>();
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(aet.Root());
+			selectableElements.add(aet.Root());
 			selection = new ElementViewSelection(selectableElements);
 		}
 
@@ -143,8 +143,7 @@ public class ElementViewSelectionTest {
 		@Test
 		@DisplayName("element that is not selectable")
 		public void unselectableElement() {
-			assertThrows(IllegalStateException.class,
-					() -> selection.setSelected(Pcm_mockupFactory.eINSTANCE.createRepository(), true));
+			assertThrows(IllegalStateException.class, () -> selection.setSelected(aet.Root(), true));
 		}
 
 	}
@@ -158,8 +157,8 @@ public class ElementViewSelectionTest {
 		@BeforeEach
 		public void setupSelectionWithTwoSelectedElements() {
 			selectableElements = new ArrayList<>();
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(aet.Root());
+			selectableElements.add(aet.Root());
 			selection = new ElementViewSelection(selectableElements);
 			selectableElements.forEach(element -> selection.setSelected(element, true));
 		}
@@ -196,8 +195,7 @@ public class ElementViewSelectionTest {
 		@Test
 		@DisplayName("element that is not selectable")
 		public void unselectableElement() {
-			assertThrows(IllegalStateException.class,
-					() -> selection.setSelected(Pcm_mockupFactory.eINSTANCE.createRepository(), false));
+			assertThrows(IllegalStateException.class, () -> selection.setSelected(aet.Root(), false));
 		}
 
 	}
@@ -211,8 +209,8 @@ public class ElementViewSelectionTest {
 		@BeforeEach
 		public void setupSelectionWithFirstOfTwoElementsSelected() {
 			selectableElements = new ArrayList<>();
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(aet.Root());
+			selectableElements.add(aet.Root());
 			selection = new ElementViewSelection(selectableElements);
 			selection.setSelected(selectableElements.get(0), true);
 		}
@@ -235,7 +233,7 @@ public class ElementViewSelectionTest {
 		@DisplayName("matching no element")
 		public void matchingNoElement() {
 			assertThat("view element must be validated as unselected when it cannot be selected",
-					!selection.isViewObjectSelected(Pcm_mockupFactory.eINSTANCE.createRepository()));
+					!selection.isViewObjectSelected(aet.Root()));
 		}
 
 	}
@@ -248,8 +246,8 @@ public class ElementViewSelectionTest {
 		@BeforeEach
 		public void setupSelectionWithFirstOfTwoElementsSelected() {
 			selectableElements = new ArrayList<>();
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
-			selectableElements.add(Pcm_mockupFactory.eINSTANCE.createRepository());
+			selectableElements.add(aet.Root());
+			selectableElements.add(aet.Root());
 		}
 
 		@Test
@@ -263,20 +261,20 @@ public class ElementViewSelectionTest {
 		@Test
 		@DisplayName("with single element")
 		public void withSingleElement() {
-			Repository repository = Pcm_mockupFactory.eINSTANCE.createRepository();
-			ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(repository));
+			Root root = aet.Root();
+			ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(root));
 			ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
-			assertThat(copy.getSelectableElements(), is(Set.of(repository)));
+			assertThat(copy.getSelectableElements(), is(Set.of(root)));
 		}
 
 		@Test
 		@DisplayName("with multiple elements")
 		public void withMultipleElements() {
-			Repository repository1 = Pcm_mockupFactory.eINSTANCE.createRepository();
-			Repository repository2 = Pcm_mockupFactory.eINSTANCE.createRepository();
-			ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(repository1, repository2));
+			Root firstRoot = aet.Root();
+			Root secondRoot = aet.Root();
+			ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(firstRoot, secondRoot));
 			ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
-			assertThat(copy.getSelectableElements(), is(Set.of(repository1, repository2)));
+			assertThat(copy.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
 		}
 
 	}
