@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum.views.impl;
+package tools.vitruv.framework.vsum.views.impl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -15,8 +15,6 @@ import allElementTypes.Root;
 import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.View;
 import tools.vitruv.framework.vsum.views.ViewType;
-import tools.vitruv.framework.vsum.views.impl.BasicViewType;
-import tools.vitruv.framework.vsum.views.impl.ModifiableView;
 import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector;
 import tools.vitruv.testutils.TestProjectManager;
 import static org.hamcrest.MatcherAssert.assertThat;
