@@ -24,8 +24,13 @@ class BasicViewType extends AbstractViewType<BasicViewElementSelector> {
 	}
 
 	override createSelector(ChangeableViewSource viewSource) {
-		return new BasicViewElementSelector(this, viewSource,
-			viewSource.viewSourceModels.map[contents.head].filterNull.toList)
+		return new BasicViewElementSelector(this, viewSource, viewSource.viewSourceModels.flatMap [
+			if (isWritableUmlResource) {
+				#[contents.head] // We can only copy writable UML resources as a whole, so no option to select specific root elements
+			} else {
+				contents
+			}
+		].filterNull.toList)
 	}
 
 	override createView(BasicViewElementSelector selector) {
