@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.collect.FluentIterable;
 
@@ -16,15 +15,11 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.View;
 import tools.vitruv.framework.vsum.views.ViewType;
 import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector;
-import tools.vitruv.testutils.TestProjectManager;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
@@ -37,7 +32,6 @@ import static java.util.Collections.emptySet;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.testutils.matchers.ModelMatchers.*;
 
-@ExtendWith(TestProjectManager.class)
 public class BasicViewTypeTest {
 	@Nested
 	@DisplayName("initialize")
@@ -122,11 +116,12 @@ public class BasicViewTypeTest {
 
 		@Test
 		@DisplayName("with empty source")
-		public void withNoElements() {
+		public void withNoElements() throws Exception {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
-			View view = basicViewType.createView(selector);
-			assertThat(new HashSet<>(view.getRootObjects()), is(emptySet()));
+			try (View view = basicViewType.createView(selector)) {
+				assertThat(view.getRootObjects(), not(hasItem(anything())));
+			}
 		}
 
 		@Test
@@ -139,7 +134,7 @@ public class BasicViewTypeTest {
 
 		@Test
 		@DisplayName("with no selected element")
-		public void withNoSelectedElement() {
+		public void withNoSelectedElement() throws Exception {
 			Resource resource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
 			rootElement.setId("testid");
@@ -147,13 +142,14 @@ public class BasicViewTypeTest {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
-			View view = basicViewType.createView(selector);
-			assertThat(new HashSet<>(view.getRootObjects()), is(emptySet()));
+			try (View view = basicViewType.createView(selector)) {
+				assertThat(view.getRootObjects(), not(hasItem(anything())));
+			}
 		}
 
 		@Test
 		@DisplayName("with single selected element")
-		public void withSingleSelectedElement() {
+		public void withSingleSelectedElement() throws Exception {
 			Resource resource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
 			rootElement.setId("testid");
@@ -162,14 +158,15 @@ public class BasicViewTypeTest {
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(rootElement, true);
-			View view = basicViewType.createView(selector);
-			assertThat(view.getRootObjects().size(), is(1));
-			assertThat(view.getRootObjects().iterator().next(), equalsDeeply(rootElement));
+			try (View view = basicViewType.createView(selector)) {
+				assertThat(view.getRootObjects().size(), is(1));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(rootElement)));
+			}
 		}
 
 		@Test
 		@DisplayName("with one of two elements selected")
-		public void withOneOfTwoElementsSelected() {
+		public void withOneOfTwoElementsSelected() throws Exception {
 			Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
 			Root firstRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
@@ -182,14 +179,15 @@ public class BasicViewTypeTest {
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
-			View view = basicViewType.createView(selector);
-			assertThat(view.getRootObjects().size(), is(1));
-			assertThat(view.getRootObjects().iterator().next(), equalsDeeply(firstRootElement));
+			try (View view = basicViewType.createView(selector)) {
+				assertThat(view.getRootObjects().size(), is(1));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRootElement)));
+			}
 		}
 
 		@Test
 		@DisplayName("with both of two elements selected")
-		public void withBothOfTwoElementsSelected() {
+		public void withBothOfTwoElementsSelected() throws Exception {
 			Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
 			Root firstRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
@@ -203,10 +201,11 @@ public class BasicViewTypeTest {
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
-			View view = basicViewType.createView(selector);
-			assertThat(view.getRootObjects().size(), is(2));
-			assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRootElement)));
-			assertThat(view.getRootObjects(), hasItem(equalsDeeply(secondRootElement)));
+			try (View view = basicViewType.createView(selector)) {
+				assertThat(view.getRootObjects().size(), is(2));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRootElement)));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(secondRootElement)));
+			}
 		}
 
 		/**
@@ -215,10 +214,12 @@ public class BasicViewTypeTest {
 		 * being root of a resource but also contained in its packages represented in a
 		 * further resource), the root element that is also contained in the other
 		 * resource is not duplicated but copied properly.
+		 * 
+		 * @throws Exception
 		 */
 		@Test
 		@DisplayName("for two resources with containment in between")
-		public void forTwoResourcesWithContainmentInBetween() {
+		public void forTwoResourcesWithContainmentInBetween() throws Exception {
 			Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
 			Root firstRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
@@ -233,18 +234,16 @@ public class BasicViewTypeTest {
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
-			View view = basicViewType.createView(selector);
-
-			Iterator<Root> iterator = view.getRootObjects(Root.class).iterator();
-			List<Root> roots = List.of(iterator.next(), iterator.next());
-			assertThat(view.getRootObjects().size(), is(2));
-			assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRootElement)));
-			assertThat(view.getRootObjects(), hasItem(equalsDeeply(secondRootElement)));
-			Root rootWithContainment = FluentIterable.from(roots).filter((root) -> root.getRecursiveRoot() != null)
-					.first().get();
-			Root rootWithoutContainment = FluentIterable.from(roots).filter((root) -> root.getRecursiveRoot() == null)
-					.first().get();
-			assertThat(rootWithContainment.getRecursiveRoot(), is(rootWithoutContainment));
+			try (View view = basicViewType.createView(selector)) {
+				assertThat(view.getRootObjects().size(), is(2));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRootElement)));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(secondRootElement)));
+				Root rootWithContainment = FluentIterable.from(view.getRootObjects(Root.class))
+						.filter((root) -> root.getRecursiveRoot() != null).first().get();
+				Root rootWithoutContainment = FluentIterable.from(view.getRootObjects(Root.class))
+						.filter((root) -> root.getRecursiveRoot() == null).first().get();
+				assertThat(rootWithContainment.getRecursiveRoot(), is(rootWithoutContainment));
+			}
 		}
 
 	}
@@ -274,62 +273,64 @@ public class BasicViewTypeTest {
 
 		@Test
 		@DisplayName("adding a non-root element")
-		public void addingANonRootElement() {
+		public void addingANonRootElement() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
-			ModifiableView view = basicViewType.createView(selector);
-			root.setSingleValuedContainmentEReference(AllElementTypesFactory.eINSTANCE.createNonRoot());
-			assertThat((view.getRootObjects(Root.class).iterator().next()).getSingleValuedContainmentEReference(),
-					equalTo(null));
-			basicViewType.updateView(view);
-			assertThat(view.getRootObjects().size(), is(1));
-			assertThat((view.getRootObjects(Root.class).iterator().next()).getSingleValuedContainmentEReference(),
-					is(anything()));
+			try (ModifiableView view = basicViewType.createView(selector)) {
+				root.setSingleValuedContainmentEReference(AllElementTypesFactory.eINSTANCE.createNonRoot());
+				assertThat((view.getRootObjects(Root.class).iterator().next()).getSingleValuedContainmentEReference(),
+						equalTo(null));
+				basicViewType.updateView(view);
+				assertThat(view.getRootObjects().size(), is(1));
+				assertThat((view.getRootObjects(Root.class).iterator().next()).getSingleValuedContainmentEReference(),
+						is(anything()));
+			}
 		}
 
 		@Test
 		@DisplayName("adding a root element")
-		public void addingARootElement() {
+		public void addingARootElement() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
-			ModifiableView view = basicViewType.createView(selector);
-			root.setId("secondId");
-			assertThat((view.getRootObjects(Root.class).iterator().next()).getSingleValuedContainmentEReference(),
-					equalTo(null));
-			Root root2 = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
-			basicViewType.updateView(view);
-			assertThat(view.getRootObjects().size(), is(1));
-			assertThat(view.getRootObjects(), not(hasItem(equalsDeeply(root2))));
+			try (ModifiableView view = basicViewType.createView(selector)) {
+				root.setId("secondId");
+				Root secondRoot = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
+				basicViewType.updateView(view);
+				assertThat(view.getRootObjects().size(), is(1));
+				assertThat(view.getRootObjects(), not(hasItem(equalsDeeply(secondRoot))));
+			}
 		}
 
 		@Test
 		@DisplayName("removing a selected root element")
-		public void removingSelectedRoot() {
+		public void removingSelectedRoot() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
-			ModifiableView view = basicViewType.createView(selector);
-			EcoreUtil.delete(root);
-			assertThat(view.getRootObjects().size(), is(1));
-			basicViewType.updateView(view);
-			assertThat(view.getRootObjects().size(), is(0));
+			try (ModifiableView view = basicViewType.createView(selector)) {
+				EcoreUtil.delete(root);
+				assertThat(view.getRootObjects().size(), is(1));
+				basicViewType.updateView(view);
+				assertThat(view.getRootObjects().size(), is(0));
+			}
 		}
 
 		@Test
 		@DisplayName("removing an unselected root element")
-		public void removingUnselectedRoot() {
+		public void removingUnselectedRoot() throws Exception {
 			Root firstRoot = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
 			Root secondRoot = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRoot, true);
-			ModifiableView view = basicViewType.createView(selector);
-			EcoreUtil.delete(secondRoot);
-			assertThat(view.getRootObjects().size(), is(1));
-			basicViewType.updateView(view);
-			assertThat(view.getRootObjects().size(), is(1));
-			assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRoot)));
+			try (ModifiableView view = basicViewType.createView(selector)) {
+				EcoreUtil.delete(secondRoot);
+				assertThat(view.getRootObjects().size(), is(1));
+				basicViewType.updateView(view);
+				assertThat(view.getRootObjects().size(), is(1));
+				assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRoot)));
+			}
 		}
 	}
 }
