@@ -10,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import allElementTypes.AllElementTypesFactory;
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 import allElementTypes.AllElementTypesPackage;
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
@@ -47,7 +47,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures;;
 
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class RecordingViewTest {
 	@Mock
 	ViewCreatingViewType<?> mockViewType;
@@ -103,9 +103,9 @@ public class RecordingViewTest {
 		@DisplayName("all of same type")
 		public void allOfSameType() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
-				Root root2 = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root2 = aet.Root();
 				view.registerRoot(root2, URI.createURI("test://test2.aet"));
 				assertThat(view.getRootObjects().size(), is(2));
 				assertThat(view.getRootObjects(Root.class).size(), is(2));
@@ -120,9 +120,9 @@ public class RecordingViewTest {
 		@DisplayName("all of one out of two types")
 		public void containingAllOfOneType() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
-				NonRoot otherRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+				NonRoot otherRoot = aet.NonRoot();
 				view.registerRoot(otherRoot, URI.createURI("test://test2.aet"));
 				assertThat(view.getRootObjects().size(), is(2));
 				assertThat(view.getRootObjects(Root.class).size(), is(1));
@@ -136,9 +136,9 @@ public class RecordingViewTest {
 		@DisplayName("containing none of a type")
 		public void containingNoneOfType() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
-				Root otherRoot = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root otherRoot = aet.Root();
 				view.registerRoot(otherRoot, URI.createURI("test://test2.aet"));
 				assertThat(view.getRootObjects().size(), is(2));
 				assertThat(view.getRootObjects(), hasItem(root));
@@ -186,7 +186,7 @@ public class RecordingViewTest {
 		@DisplayName("with null URI")
 		public void nullUri() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				assertThrows(IllegalArgumentException.class, () -> view.registerRoot(root, null));
 			}
 		}
@@ -195,7 +195,7 @@ public class RecordingViewTest {
 		@DisplayName("with proper arguments")
 		public void properArguments() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				String testResourceUriString = "test://test.aet";
 				view.registerRoot(root, URI.createURI(testResourceUriString));
 				assertThat(view.getRootObjects(), hasItem(root));
@@ -206,7 +206,7 @@ public class RecordingViewTest {
 		@DisplayName("committing changes")
 		public void commitChanges() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				root.setId("root");
 				String testResourceUriString = "test://test.aet";
 				view.registerRoot(root, URI.createURI(testResourceUriString));
@@ -243,7 +243,7 @@ public class RecordingViewTest {
 		@DisplayName("with null URI")
 		public void nullUri() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				assertThrows(IllegalArgumentException.class, () -> view.moveRoot(root, null));
 			}
@@ -253,7 +253,7 @@ public class RecordingViewTest {
 		@DisplayName("with element not beeing root")
 		public void notBeingRoot() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				assertThrows(IllegalStateException.class, () -> view.moveRoot(root, URI.createURI("test://test.aet")));
 			}
 		}
@@ -262,7 +262,7 @@ public class RecordingViewTest {
 		@DisplayName("with proper arguments")
 		public void properArguments() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				view.moveRoot(root, URI.createURI("test://test2.aet"));
 				assertThat(view.getRootObjects().size(), is(1));
@@ -274,7 +274,7 @@ public class RecordingViewTest {
 		@DisplayName("committing changes")
 		public void commitChanges() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
-				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				Root root = aet.Root();
 				String movedResourceUriString = "test://test2.aet";
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				view.commitChanges();
@@ -306,7 +306,7 @@ public class RecordingViewTest {
 		@BeforeEach
 		public void prepareViewWithRootElement() {
 			view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
-			root = AllElementTypesFactory.eINSTANCE.createRoot();
+			root = aet.Root();
 			view.registerRoot(root, URI.createURI("test://test.aet"));
 			view.commitChanges();
 			reset(mockChangeableViewSource);
@@ -320,9 +320,9 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("once")
 		public void once() {
-			NonRoot nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+			NonRoot nonRoot = aet.NonRoot();
 			nonRoot.setId("nonRoot");
-			root.setSingleValuedContainmentEReference(AllElementTypesFactory.eINSTANCE.createNonRoot());
+			root.setSingleValuedContainmentEReference(aet.NonRoot());
 			view.commitChanges();
 			ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 			verify(mockChangeableViewSource).propagateChange(argument.capture());
@@ -336,12 +336,12 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("twice")
 		public void twice() {
-			NonRoot firstNonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+			NonRoot firstNonRoot = aet.NonRoot();
 			firstNonRoot.setId("first");
 			root.setSingleValuedContainmentEReference(firstNonRoot);
 			view.commitChanges();
 			reset(mockChangeableViewSource);
-			NonRoot secondNonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+			NonRoot secondNonRoot = aet.NonRoot();
 			secondNonRoot.setId("second");
 			root.setSingleValuedContainmentEReference(secondNonRoot);
 			view.commitChanges();

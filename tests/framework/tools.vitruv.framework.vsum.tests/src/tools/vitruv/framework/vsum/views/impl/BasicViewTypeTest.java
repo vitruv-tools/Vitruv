@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.collect.FluentIterable;
 
-import allElementTypes.AllElementTypesFactory;
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 import allElementTypes.Root;
 import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.View;
@@ -36,7 +36,7 @@ import static java.util.Collections.emptySet;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.testutils.matchers.ModelMatchers.*;
 
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class BasicViewTypeTest {
 	@Nested
 	@DisplayName("initialize")
@@ -84,7 +84,7 @@ public class BasicViewTypeTest {
 		public void forSourceContainingElement() {
 			Resource resource = withGlobalFactories(new ResourceSetImpl())
 					.createResource(URI.createURI("test:///test.aet"));
-			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root rootElement = aet.Root();
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
@@ -97,8 +97,8 @@ public class BasicViewTypeTest {
 		public void forSourceContainingNonRootElements() {
 			Resource resource = withGlobalFactories(new ResourceSetImpl())
 					.createResource(URI.createURI("test:///test.aet"));
-			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
-			rootElement.setSingleValuedContainmentEReference(AllElementTypesFactory.eINSTANCE.createNonRoot());
+			Root rootElement = aet.Root();
+			rootElement.setSingleValuedContainmentEReference(aet.NonRoot());
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
@@ -141,7 +141,7 @@ public class BasicViewTypeTest {
 		@DisplayName("with no selected element")
 		public void withNoSelectedElement() throws Exception {
 			Resource resource = testResourceSet.createResource(URI.createURI("test://test.aet"));
-			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root rootElement = aet.Root();
 			rootElement.setId("testid");
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
@@ -156,7 +156,7 @@ public class BasicViewTypeTest {
 		@DisplayName("with single selected element")
 		public void withSingleSelectedElement() throws Exception {
 			Resource resource = testResourceSet.createResource(URI.createURI("test://test.aet"));
-			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root rootElement = aet.Root();
 			rootElement.setId("testid");
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
@@ -174,9 +174,9 @@ public class BasicViewTypeTest {
 		public void withOneOfTwoElementsSelected() throws Exception {
 			Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
-			Root firstRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root firstRootElement = aet.Root();
 			firstRootElement.setId("firstElementId");
-			Root secondRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root secondRootElement = aet.Root();
 			secondRootElement.setId("secondElementId");
 			firstResource.getContents().add(firstRootElement);
 			secondResource.getContents().add(secondRootElement);
@@ -195,9 +195,9 @@ public class BasicViewTypeTest {
 		public void withBothOfTwoElementsSelected() throws Exception {
 			Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
-			Root firstRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root firstRootElement = aet.Root();
 			firstRootElement.setId("firstElementId");
-			Root secondRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root secondRootElement = aet.Root();
 			secondRootElement.setId("secondElementId");
 			firstResource.getContents().add(firstRootElement);
 			secondResource.getContents().add(secondRootElement);
@@ -227,9 +227,9 @@ public class BasicViewTypeTest {
 		public void forTwoResourcesWithContainmentInBetween() throws Exception {
 			Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
 			Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
-			Root firstRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root firstRootElement = aet.Root();
 			firstRootElement.setId("firstElementId");
-			Root secondRootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root secondRootElement = aet.Root();
 			secondRootElement.setId("secondElementId");
 			firstRootElement.setRecursiveRoot(secondRootElement);
 			firstResource.getContents().add(firstRootElement);
@@ -270,7 +270,7 @@ public class BasicViewTypeTest {
 
 		private Root createResourceWithSingleRoot(URI uri) {
 			Resource resource = testResourceSet.createResource(uri);
-			Root rootElement = AllElementTypesFactory.eINSTANCE.createRoot();
+			Root rootElement = aet.Root();
 			rootElement.setId("testid");
 			resource.getContents().add(rootElement);
 			return rootElement;
@@ -283,7 +283,7 @@ public class BasicViewTypeTest {
 			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
-				root.setSingleValuedContainmentEReference(AllElementTypesFactory.eINSTANCE.createNonRoot());
+				root.setSingleValuedContainmentEReference(aet.NonRoot());
 				assertThat((view.getRootObjects(Root.class).iterator().next()).getSingleValuedContainmentEReference(),
 						equalTo(null));
 				basicViewType.updateView(view);
