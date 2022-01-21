@@ -26,9 +26,24 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.createTestModelResourceUri
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.CoreMatchers.*
+import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.vsum.VirtualModel
+import static extension tools.vitruv.framework.tests.vsum.VirtualModelTestUtil.recordChanges
+import tools.vitruv.framework.vsum.views.View
+import tools.vitruv.framework.vsum.views.ViewTypeFactory
+import static extension com.google.common.base.Preconditions.checkNotNull
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.claimOne
+import allElementTypes.Root
+import java.util.HashSet
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
+	static val String NON_ROOT_ID = "NonRootId"
+	static val String ROOT_ID = "RootId"
+
 	var Path projectFolder
 
 	@BeforeEach
@@ -218,7 +233,9 @@ class VirtualModelTest {
 		val reloadedTargetModel = reloadedVirtualModel.getModelInstance(
 			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
 		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
-		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).size)
+		assertEquals(1,
+			reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).
+				size)
 	}
 
 	@Test
@@ -245,22 +262,118 @@ class VirtualModelTest {
 		virtualModel.propagateChange(changeRecorder.endRecording)
 		// There must not be the old and the old corresponding model
 		assertNull(virtualModel.getModelInstance(testUri))
-		assertNull(virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(testUri)))
+		assertNull(
+			virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(testUri)))
 		changeRecorder.beginRecording
 		monitoredResource => [
 			contents += root
 		]
 		virtualModel.propagateChange(changeRecorder.endRecording)
 		assertNull(virtualModel.getModelInstance(testIntermediateUri))
-		assertNull(virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(testIntermediateUri)))
+		assertNull(
+			virtualModel.getModelInstance(
+				RedundancyChangePropagationSpecification.getTargetResourceUri(testIntermediateUri)))
 	}
-	
+
+	@Test
+	@DisplayName("create a view for a virtual model")
+	def void createView() {
+		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
+		val resourceSet = new ResourceSetImpl().withGlobalFactories
+		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
+		val testView = virtualModel.createTestView
+		// Check initial state:
+		assertThat(new HashSet(testView.rootObjects), not(is(emptySet())))
+		assertEquals(testView.rootObjects.claimOne, testView.getRootObjects(Root).claimOne)
+		assertThat(testView.getRootObjects(Root).claimOne.id, is(ROOT_ID))
+		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view must not have been modified", !testView.isModified)
+	}
+
+	@Test
+	@DisplayName("update view after a change in the virtual model")
+	def void updateView() {
+		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
+		val resourceSet = new ResourceSetImpl().withGlobalFactories
+		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
+		val testView = virtualModel.createTestView
+
+		// Modify model
+		virtualModel.propagateChange(resourceSet.recordChanges [
+			val resource = resourceSet.resources.claimOne
+			resource.firstRootEObject as Root => [
+				multiValuedContainmentEReference += aet.NonRoot => [
+					id = NON_ROOT_ID
+				]
+			]
+		])
+
+		// Assert VSUM changed but view not modified:
+		assertThat("view source must have been changed", testView.haveViewSourcesChanged)
+		assertThat("view must not have been modified", !testView.isModified)
+		assertThat(testView.getRootObjects(Root).claimOne.multiValuedContainmentEReference, is(emptyList()))
+
+		// Update view and assert view was updated correctly
+		testView.update()
+		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view must not have been modified", !testView.isModified)
+		val viewRoot = testView.getRootObjects(Root).claimOne
+		assertThat(viewRoot.multiValuedContainmentEReference.claimOne.id, is(NON_ROOT_ID))
+	}
+
+	@Test
+	@DisplayName("change view and commit changes")
+	def void commitView() {
+		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
+		val resourceSet = new ResourceSetImpl().withGlobalFactories
+		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
+		val testView = virtualModel.createTestView
+
+		// Modify view:
+		assertThat("view must not have been modified", !testView.isModified)
+		testView.getRootObjects(Root).claimOne => [
+			multiValuedContainmentEReference += aet.NonRoot => [
+				id = NON_ROOT_ID
+			]
+		]
+
+		// Assert view modified but VSUM not changed:
+		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view must have been modified", testView.isModified)
+
+		// Commit changes and assert VSUM was updated correctly
+		val changes = testView.commitChanges()
+		assertThat(new HashSet(changes), not(emptySet()))
+		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view must not have been modified", !testView.isModified)
+
+		val reopenedViewRoot = virtualModel.createTestView.getRootObjects(Root).claimOne
+		assertThat(reopenedViewRoot.multiValuedContainmentEReference.claimOne.id, is(NON_ROOT_ID))
+	}
+
 	private def createTestModelResourceUri(String suffix) {
 		projectFolder.createTestModelResourceUri(suffix)
 	}
-	
+
 	private def getPathToVirtualModelProjectFolder() {
 		projectFolder.resolve("vsum")
+	}
+
+	def private createAndPropagateRoot(VirtualModel virtualModel, ResourceSet resourceSet, String rootId) {
+		virtualModel.propagateChange(resourceSet.recordChanges [
+			resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
+				contents += aet.Root => [
+					id = rootId
+				]
+			]
+		])
+	}
+
+	def private static View createTestView(VirtualModel virtualModel) {
+		val viewType = ViewTypeFactory.createBasicViewType("").checkNotNull("cannot create view type")
+		val selector = virtualModel.createSelector(viewType).checkNotNull("cannot create selector")
+		selector.selectableElements.forEach[selector.setSelected(it, true)]
+		return selector.createView.checkNotNull("Cannot create view from selector!")
 	}
 
 }
