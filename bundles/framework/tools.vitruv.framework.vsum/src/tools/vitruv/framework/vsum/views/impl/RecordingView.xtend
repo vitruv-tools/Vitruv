@@ -17,6 +17,8 @@ import tools.vitruv.framework.vsum.views.ViewSelector
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.views.View
 import static com.google.common.base.Preconditions.checkArgument
+import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.ecore.resource.Resource
 
 /**
  * A {@link View} that records changes to its resources and allows to propagate them 
@@ -127,16 +129,19 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 		checkState(!closed, "view is already closed!")
 	}
 
-	private def void addChangeListeners(ResourceSet resourceSet) {
-		resourceSet.allContents.forEach [
-			eAdapters += new AdapterImpl() {
-				override notifyChanged(Notification message) {
-					viewChanged = true
-				}
+	private def void addChangeListeners(Notifier notifier) {
+		notifier.eAdapters += new AdapterImpl() {
+			override notifyChanged(Notification message) {
+				viewChanged = true
 			}
-		]
+		}
+		switch (notifier) {
+			ResourceSet: notifier.resources.forEach[addChangeListeners()]
+			Resource: notifier.contents.forEach[addChangeListeners()]
+			EObject: notifier.eContents.forEach[addChangeListeners]
+		}
 	}
-	
+
 	private def void removeChangeListeners(ResourceSet resourceSet) {
 		resourceSet.allContents.forEach [
 			eAdapters.clear()
