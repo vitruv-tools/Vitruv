@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum
+package tools.vitruv.framework.vsum
 
 import java.util.List
 import java.util.Set

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum.views.selectors;
+package tools.vitruv.framework.vsum.views.selectors;
 
 import static java.util.Collections.emptySet;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,7 +23,6 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.ViewSelector;
 import tools.vitruv.framework.vsum.views.impl.ModifiableView;
 import tools.vitruv.framework.vsum.views.impl.ViewCreatingViewType;
-import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

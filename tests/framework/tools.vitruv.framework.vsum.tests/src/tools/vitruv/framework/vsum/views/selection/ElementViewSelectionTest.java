@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum.views.selection;
+package tools.vitruv.framework.vsum.views.selection;
 
 import org.junit.jupiter.api.Nested;
 import org.eclipse.emf.ecore.EObject;
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection;
-import tools.vitruv.framework.vsum.views.selection.ElementViewSelection;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;

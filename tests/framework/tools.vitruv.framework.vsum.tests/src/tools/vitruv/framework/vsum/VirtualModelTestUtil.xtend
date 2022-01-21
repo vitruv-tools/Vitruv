@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum
+package tools.vitruv.framework.vsum
 
 import allElementTypes.Root
 import edu.kit.ipd.sdq.activextendannotations.Utility

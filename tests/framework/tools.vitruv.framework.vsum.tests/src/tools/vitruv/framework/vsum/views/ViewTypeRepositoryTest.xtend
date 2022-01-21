@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum.views
+package tools.vitruv.framework.vsum.views
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
