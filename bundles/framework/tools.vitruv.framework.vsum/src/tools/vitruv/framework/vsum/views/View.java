@@ -77,7 +77,8 @@ public interface View extends AutoCloseable {
 	List<PropagatedChange> commitChanges();
 
 	/**
-	 * Checks whether the view was closed. Closed view should not further be used.
+	 * Checks whether the view was closed. Closed views cannot be used further. All
+	 * methods may thrown an {@link IllegalStateException}.
 	 */
 	boolean isClosed();
 
