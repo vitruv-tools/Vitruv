@@ -322,7 +322,7 @@ public class RecordingViewTest {
 		public void once() {
 			NonRoot nonRoot = aet.NonRoot();
 			nonRoot.setId("nonRoot");
-			root.setSingleValuedContainmentEReference(aet.NonRoot());
+			root.setSingleValuedContainmentEReference(nonRoot);
 			view.commitChanges();
 			ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 			verify(mockChangeableViewSource).propagateChange(argument.capture());
