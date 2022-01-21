@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -23,9 +24,13 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.ViewSelector;
 import tools.vitruv.framework.vsum.views.impl.ModifiableView;
 import tools.vitruv.framework.vsum.views.impl.ViewCreatingViewType;
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.testutils.TestLogging;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class BasicViewElementSelectorTest {
 	@Mock
 	ViewCreatingViewType<BasicViewElementSelector> mockViewType;

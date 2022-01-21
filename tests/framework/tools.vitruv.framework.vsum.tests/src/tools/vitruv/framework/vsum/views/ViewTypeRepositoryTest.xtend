@@ -4,13 +4,14 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.vsum.views.ViewTypeRepository
-import tools.vitruv.testutils.TestProjectManager
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
 import tools.vitruv.framework.vsum.views.ViewTypeFactory
+import tools.vitruv.testutils.TestLogging
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 
-@ExtendWith(TestProjectManager)
+@ExtendWith(TestLogging, RegisterMetamodelsInStandalone)
 class ViewTypeRepositoryTest {
     static val NAME = "test view type"
 

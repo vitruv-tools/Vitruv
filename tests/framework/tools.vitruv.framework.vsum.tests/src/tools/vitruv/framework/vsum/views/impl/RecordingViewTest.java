@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -28,6 +29,8 @@ import tools.vitruv.framework.change.echange.root.RootFactory;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection;
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.testutils.TestLogging;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
@@ -44,6 +47,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures;;
 
+@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class RecordingViewTest {
 	@Mock
 	ViewCreatingViewType<?> mockViewType;
@@ -212,11 +216,12 @@ public class RecordingViewTest {
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(testResourceUriString);
-				assertThat(argument.getValue().getEChanges().size(), is(2)); // Create, Insert
+				assertThat(argument.getValue().getEChanges().size(), is(3)); // Create, Insert, ReplaceId
 				assertThat(argument.getValue().getEChanges().get(1),
 						equalsDeeply(expectedChange,
 								ignoringFeatures(EobjectPackage.eINSTANCE.getEObjectAddedEChange_NewValueID(),
 										RootPackage.eINSTANCE.getRootEChange_Resource())));
+				assertThat(argument.getValue().getEChanges().get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
 			}
 		}
 	}
@@ -317,9 +322,10 @@ public class RecordingViewTest {
 			view.commitChanges();
 			ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 			verify(mockChangeableViewSource).propagateChange(argument.capture());
-			assertThat(argument.getValue().getEChanges().size(), is(2)); // Create, Insert
+			assertThat(argument.getValue().getEChanges().size(), is(3)); // Create, Insert, ReplaceId
 			assertThat(argument.getValue().getEChanges().get(0), instanceOf(CreateEObject.class));
 			assertThat(argument.getValue().getEChanges().get(1), instanceOf(ReplaceSingleValuedEReference.class));
+			assertThat(argument.getValue().getEChanges().get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
 		}
 
 		@Test

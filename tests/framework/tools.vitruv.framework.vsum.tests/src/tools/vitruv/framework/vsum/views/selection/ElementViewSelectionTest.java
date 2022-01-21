@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
@@ -16,11 +17,14 @@ import java.util.List;
 import java.util.Set;
 
 import tools.vitruv.framework.vsum.views.ModifiableViewSelection;
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.testutils.TestLogging;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static java.util.Collections.*;
 
+@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class ElementViewSelectionTest {
 	@Nested
 	@DisplayName("inialize")

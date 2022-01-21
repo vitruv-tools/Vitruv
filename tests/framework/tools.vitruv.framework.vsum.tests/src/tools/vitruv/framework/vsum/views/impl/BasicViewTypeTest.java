@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.collect.FluentIterable;
 
@@ -15,6 +16,9 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.View;
 import tools.vitruv.framework.vsum.views.ViewType;
 import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector;
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.testutils.TestLogging;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.mock;
@@ -32,6 +36,7 @@ import static java.util.Collections.emptySet;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.testutils.matchers.ModelMatchers.*;
 
+@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class BasicViewTypeTest {
 	@Nested
 	@DisplayName("initialize")
