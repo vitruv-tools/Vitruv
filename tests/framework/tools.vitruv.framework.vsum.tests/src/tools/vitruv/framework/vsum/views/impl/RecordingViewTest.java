@@ -207,6 +207,7 @@ public class RecordingViewTest {
 		public void commitChanges() throws Exception {
 			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = AllElementTypesFactory.eINSTANCE.createRoot();
+				root.setId("root");
 				String testResourceUriString = "test://test.aet";
 				view.registerRoot(root, URI.createURI(testResourceUriString));
 				assertThat(view.getRootObjects(), hasItem(root));
@@ -283,11 +284,12 @@ public class RecordingViewTest {
 				view.commitChanges();
 				ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 				verify(mockChangeableViewSource).propagateChange(argument.capture());
+				List<EChange> capturedEChanges = argument.getValue().getEChanges();
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(movedResourceUriString);
-				assertThat(argument.getValue().getEChanges().size(), is(2)); // Remove, Insert
-				assertThat(argument.getValue().getEChanges().get(1),
+				assertThat(capturedEChanges.size(), is(2)); // Remove, Insert
+				assertThat(capturedEChanges.get(1),
 						equalsDeeply(expectedChange,
 								ignoringFeatures(EobjectPackage.eINSTANCE.getEObjectAddedEChange_NewValueID(),
 										RootPackage.eINSTANCE.getRootEChange_Resource())));
@@ -318,14 +320,17 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("once")
 		public void once() {
+			NonRoot nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+			nonRoot.setId("nonRoot");
 			root.setSingleValuedContainmentEReference(AllElementTypesFactory.eINSTANCE.createNonRoot());
 			view.commitChanges();
 			ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 			verify(mockChangeableViewSource).propagateChange(argument.capture());
-			assertThat(argument.getValue().getEChanges().size(), is(3)); // Create, Insert, ReplaceId
-			assertThat(argument.getValue().getEChanges().get(0), instanceOf(CreateEObject.class));
-			assertThat(argument.getValue().getEChanges().get(1), instanceOf(ReplaceSingleValuedEReference.class));
-			assertThat(argument.getValue().getEChanges().get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
+			List<EChange> capturedEChanges = argument.getValue().getEChanges();
+			assertThat(capturedEChanges.size(), is(3)); // Create, Insert, ReplaceId
+			assertThat(capturedEChanges.get(0), instanceOf(CreateEObject.class));
+			assertThat(capturedEChanges.get(1), instanceOf(ReplaceSingleValuedEReference.class));
+			assertThat(capturedEChanges.get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
 		}
 
 		@Test
