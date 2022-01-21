@@ -65,9 +65,7 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 
 	override update() {
 		checkNotClosed()
-		if (isModified) {
-			throw new UnsupportedOperationException("Cannot update from model when view is modified.")
-		}
+		checkState(!isModified, "cannot update from model when view is modified")
 		changeRecorder.endRecordingAndClose()
 		modelChanged = false
 		viewType.updateView(this)
@@ -115,13 +113,19 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 	}
 
 	override void registerRoot(EObject object, URI persistAt) {
+		checkNotClosed()
+		checkArgument(object !== null, "object to register as root must not be null")
+		checkArgument(persistAt !== null, "URI for root to register must not be null")
 		viewResourceSet.createResource(persistAt) => [
 			contents += object
 		]
 	}
 
 	override void moveRoot(EObject object, URI newLocation) {
+		checkNotClosed()
+		checkArgument(object !== null, "object to move must not be null")
 		checkState(rootObjects.contains(object), "view must contain element %s to move", object)
+		checkArgument(newLocation !== null, "URI for new location of root must not be null")
 		viewResourceSet.resources.findFirst[contents.contains(object)].URI = newLocation
 	}
 
