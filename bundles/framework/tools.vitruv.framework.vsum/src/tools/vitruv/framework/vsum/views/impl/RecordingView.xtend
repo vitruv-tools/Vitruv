@@ -112,7 +112,6 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 		viewResourceSet.createResource(persistAt) => [
 			contents += object
 		]
-		rootObjects += object
 	}
 
 	override void moveRoot(EObject object, URI newLocation) {
