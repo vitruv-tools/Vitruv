@@ -4,6 +4,8 @@ import java.util.ArrayList
 import java.util.Collection
 import java.util.HashMap
 import java.util.Map
+import static com.google.common.base.Preconditions.checkArgument
+import static com.google.common.base.Preconditions.checkState
 
 /**
  * Stores and manages all ViewTypes.
@@ -21,13 +23,13 @@ class ViewTypeRepository implements ViewTypeProvider {
 	}
 
 	def void register(ViewType<?> viewType) {
-		if (registeredViewTypes.containsKey(viewType.name)) {
-			throw new IllegalArgumentException("ViewType name already taken by another ViewType: " + viewType.name)
-		}
+		checkArgument(viewType !== null, "null cannot be added as a view type")
+		checkState(!registeredViewTypes.containsKey(viewType.name), "view type name '%s' already taken by another view type", viewType.name)
 		registeredViewTypes.put(viewType.name, viewType)
 	}
 
 	def ViewType<?> findViewType(String viewTypeName) {
+		checkArgument(!viewTypeName.nullOrEmpty, "view type name to search for must not be null or empty")
 		return registeredViewTypes.get(viewTypeName)
 	}
 
