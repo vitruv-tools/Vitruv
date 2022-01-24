@@ -104,7 +104,7 @@ class RecordingView implements ModifiableView, ChangePropagationListener {
 		// do nothing
 	}
 
-	override finishedChangePropagation() { // TODO TS: Should views be de-registered upon closing?
+	override finishedChangePropagation() {
 		modelChanged = true
 	}
 
