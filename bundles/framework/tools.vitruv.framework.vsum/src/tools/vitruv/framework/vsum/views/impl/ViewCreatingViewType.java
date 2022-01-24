@@ -21,7 +21,7 @@ public interface ViewCreatingViewType<S extends ViewSelector> extends ViewType<S
 	ModifiableView createView(S selector);
 
 	/**
-	 * Updates a view that is created from this viewtype to ensure it is consistent
+	 * Updates a view that is created from this view type to ensure it is consistent
 	 * with the virtual model.
 	 * 
 	 * @param view is the view to be updated.
