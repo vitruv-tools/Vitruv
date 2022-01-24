@@ -44,32 +44,32 @@ public class BasicViewTypeTest {
 		@Test
 		@DisplayName("with proper name")
 		public void withName() {
-			ViewType<?> viewType = new BasicViewType("name");
+			ViewType<?> viewType = new IdentityMappingViewType("name");
 			assertThat(viewType.getName(), is("name"));
 		}
 
 		@Test
 		@DisplayName("with empty name")
 		public void withEmptyName() {
-			ViewType<?> viewType = new BasicViewType("");
+			ViewType<?> viewType = new IdentityMappingViewType("");
 			assertThat(viewType.getName(), is(""));
 		}
 
 		@Test
 		@DisplayName("with null name")
 		public void withNullName() {
-			assertThrows(IllegalArgumentException.class, () -> new BasicViewType(null));
+			assertThrows(IllegalArgumentException.class, () -> new IdentityMappingViewType(null));
 		}
 	}
 
 	@Nested
 	@DisplayName("create selector")
 	class CreateSelector {
-		private BasicViewType basicViewType;
+		private IdentityMappingViewType basicViewType;
 
 		@BeforeEach
 		public void initializeViewType() {
-			this.basicViewType = new BasicViewType("name");
+			this.basicViewType = new IdentityMappingViewType("name");
 		}
 
 		@Test
@@ -110,12 +110,12 @@ public class BasicViewTypeTest {
 	@Nested
 	@DisplayName("create view")
 	public class CreateView {
-		private BasicViewType basicViewType;
+		private IdentityMappingViewType basicViewType;
 		private ResourceSet testResourceSet;
 
 		@BeforeEach
 		public void initializeViewTypeAndResourceSet() {
-			this.basicViewType = new BasicViewType("name");
+			this.basicViewType = new IdentityMappingViewType("name");
 			this.testResourceSet = withGlobalFactories(new ResourceSetImpl());
 		}
 
@@ -133,7 +133,7 @@ public class BasicViewTypeTest {
 		@DisplayName("with selector from other view type")
 		public void withSelectorFromOtherViewtype() {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
-			BasicViewElementSelector selector = new BasicViewType("other").createSelector(viewSource);
+			BasicViewElementSelector selector = new IdentityMappingViewType("other").createSelector(viewSource);
 			assertThrows(IllegalArgumentException.class, () -> basicViewType.createView(selector));
 		}
 
@@ -256,13 +256,13 @@ public class BasicViewTypeTest {
 	@Nested
 	@DisplayName("update view")
 	class UpdateView {
-		private BasicViewType basicViewType;
+		private IdentityMappingViewType basicViewType;
 		private ResourceSet testResourceSet;
 		private ChangeableViewSource viewSource;
 
 		@BeforeEach
 		public void initializeViewTypeAndResourceSetAndViewSource() {
-			this.basicViewType = new BasicViewType("name");
+			this.basicViewType = new IdentityMappingViewType("name");
 			this.testResourceSet = withGlobalFactories(new ResourceSetImpl());
 			this.viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(testResourceSet.getResources());

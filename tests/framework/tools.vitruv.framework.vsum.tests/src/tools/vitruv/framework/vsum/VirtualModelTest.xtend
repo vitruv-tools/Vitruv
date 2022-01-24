@@ -368,7 +368,7 @@ class VirtualModelTest {
 	}
 
 	def private static View createTestView(VirtualModel virtualModel) {
-		val viewType = ViewTypeFactory.createBasicViewType("").checkNotNull("cannot create view type")
+		val viewType = ViewTypeFactory.createIdentityMappingViewType("").checkNotNull("cannot create view type")
 		val selector = virtualModel.createSelector(viewType).checkNotNull("cannot create selector")
 		selector.selectableElements.forEach[selector.setSelected(it, true)]
 		return selector.createView.checkNotNull("Cannot create view from selector!")

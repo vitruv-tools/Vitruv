@@ -13,7 +13,7 @@ import static java.util.Collections.emptySet;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static tools.vitruv.framework.vsum.views.ViewTypeFactory.createBasicViewType;;
+import static tools.vitruv.framework.vsum.views.ViewTypeFactory.createIdentityMappingViewType;;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ViewTypeRepositoryTest {
@@ -24,7 +24,7 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("proper view type")
 		public void properViewType() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> viewType = createBasicViewType("type");
+			ViewType<?> viewType = createIdentityMappingViewType("type");
 			repository.register(viewType);
 			assertThat(repository.getViewTypes().size(), is(1));
 			assertThat(repository.getViewTypes(), hasItem(viewType));
@@ -41,7 +41,7 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("same view type twice")
 		public void sameViewTypeTwice() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> viewType = createBasicViewType("type");
+			ViewType<?> viewType = createIdentityMappingViewType("type");
 			repository.register(viewType);
 			assertThrows(IllegalStateException.class, () -> repository.register(viewType));
 		}
@@ -50,8 +50,8 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("another view type with same name")
 		public void viewTypeWithSameName() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> firstViewType = createBasicViewType("type");
-			ViewType<?> secondViewType = createBasicViewType("type");
+			ViewType<?> firstViewType = createIdentityMappingViewType("type");
+			ViewType<?> secondViewType = createIdentityMappingViewType("type");
 			repository.register(firstViewType);
 			assertThrows(IllegalStateException.class, () -> repository.register(secondViewType));
 		}
@@ -64,7 +64,7 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("provides only a copy of view type list")
 		public void providesOnlyCopy() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> viewType = createBasicViewType("type");
+			ViewType<?> viewType = createIdentityMappingViewType("type");
 			repository.getViewTypes().add(viewType);
 			assertThat(new HashSet<>(repository.getViewTypes()), is(emptySet()));
 		}
@@ -77,7 +77,7 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("registered view type by name")
 		public void registeredViewType() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> viewType = createBasicViewType("type");
+			ViewType<?> viewType = createIdentityMappingViewType("type");
 			repository.register(viewType);
 			assertThat(repository.findViewType("type"), is(viewType));
 		}
@@ -86,7 +86,7 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("non-registered view type by name")
 		public void nonRegisteredViewType() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> viewType = createBasicViewType("type");
+			ViewType<?> viewType = createIdentityMappingViewType("type");
 			repository.register(viewType);
 			assertThat(repository.findViewType("other"), equalTo(null));
 		}
@@ -95,7 +95,7 @@ public class ViewTypeRepositoryTest {
 		@DisplayName("null name")
 		public void nullName() {
 			ViewTypeRepository repository = new ViewTypeRepository();
-			ViewType<?> viewType = createBasicViewType("type");
+			ViewType<?> viewType = createIdentityMappingViewType("type");
 			repository.register(viewType);
 			assertThrows(IllegalArgumentException.class, () -> repository.findViewType(null));
 		}

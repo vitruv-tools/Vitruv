@@ -15,9 +15,11 @@ import tools.vitruv.framework.vsum.views.ViewSelection
 import org.eclipse.emf.common.util.URI
 
 /**
- * A basic view type that allows creating views based on a basic element-wise selection mechanism.
+ * A view type that allows creating views based on a basic element-wise selection mechanism
+ * and providing a one-to-one (identity) mapping of elements within the {@link ViewSource}
+ * to a created {@link View}.
  */
-class BasicViewType extends AbstractViewType<BasicViewElementSelector> {
+class IdentityMappingViewType extends AbstractViewType<BasicViewElementSelector> {
 
 	new(String name) {
 		super(name)
