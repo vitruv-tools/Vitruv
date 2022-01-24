@@ -10,23 +10,23 @@ import tools.vitruv.framework.vsum.views.ChangeableViewSource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier
-import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector
 import tools.vitruv.framework.vsum.views.ViewSelection
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.vsum.views.selectors.DirectViewElementSelector
 
 /**
  * A view type that allows creating views based on a basic element-wise selection mechanism
  * and providing a one-to-one (identity) mapping of elements within the {@link ViewSource}
  * to a created {@link View}.
  */
-class IdentityMappingViewType extends AbstractViewType<BasicViewElementSelector> {
+class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector> {
 
 	new(String name) {
 		super(name)
 	}
 
 	override createSelector(ChangeableViewSource viewSource) {
-		return new BasicViewElementSelector(this, viewSource, viewSource.viewSourceModels.flatMap [
+		return new DirectViewElementSelector(this, viewSource, viewSource.viewSourceModels.flatMap [
 			if (isWritableUmlResource) {
 				#[contents.head] // We can only copy writable UML resources as a whole, so no option to select specific root elements
 			} else {
@@ -35,7 +35,7 @@ class IdentityMappingViewType extends AbstractViewType<BasicViewElementSelector>
 		].filterNull.toList)
 	}
 
-	override createView(BasicViewElementSelector selector) {
+	override createView(DirectViewElementSelector selector) {
 		checkArgument(selector.viewType === this, "cannot create view with selector for different view type")
 		return new RecordingView(selector.viewType, selector.viewSource, selector.selection)
 	}

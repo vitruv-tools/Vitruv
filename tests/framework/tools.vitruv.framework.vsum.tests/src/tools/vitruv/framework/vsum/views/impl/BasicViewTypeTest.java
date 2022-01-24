@@ -15,7 +15,7 @@ import allElementTypes.Root;
 import tools.vitruv.framework.vsum.views.ChangeableViewSource;
 import tools.vitruv.framework.vsum.views.View;
 import tools.vitruv.framework.vsum.views.ViewType;
-import tools.vitruv.framework.vsum.views.selectors.BasicViewElementSelector;
+import tools.vitruv.framework.vsum.views.selectors.DirectViewElementSelector;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
 
@@ -75,7 +75,7 @@ public class BasicViewTypeTest {
 		@Test
 		@DisplayName("for empty source")
 		public void forEmptySource() {
-			BasicViewElementSelector selector = basicViewType.createSelector(mock(ChangeableViewSource.class));
+			DirectViewElementSelector selector = basicViewType.createSelector(mock(ChangeableViewSource.class));
 			assertThat(selector.getSelectableElements(), is(emptySet()));
 		}
 
@@ -88,7 +88,7 @@ public class BasicViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			assertThat(selector.getSelectableElements(), is(Set.of(rootElement)));
 		}
 
@@ -102,7 +102,7 @@ public class BasicViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			assertThat(selector.getSelectableElements(), is(Set.of(rootElement)));
 		}
 	}
@@ -123,7 +123,7 @@ public class BasicViewTypeTest {
 		@DisplayName("with empty source")
 		public void withNoElements() throws Exception {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
 			}
@@ -133,7 +133,7 @@ public class BasicViewTypeTest {
 		@DisplayName("with selector from other view type")
 		public void withSelectorFromOtherViewtype() {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
-			BasicViewElementSelector selector = new IdentityMappingViewType("other").createSelector(viewSource);
+			DirectViewElementSelector selector = new IdentityMappingViewType("other").createSelector(viewSource);
 			assertThrows(IllegalArgumentException.class, () -> basicViewType.createView(selector));
 		}
 
@@ -146,7 +146,7 @@ public class BasicViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
 			}
@@ -161,7 +161,7 @@ public class BasicViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(rootElement, true);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects().size(), is(1));
@@ -182,7 +182,7 @@ public class BasicViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects().size(), is(1));
@@ -203,7 +203,7 @@ public class BasicViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
@@ -236,7 +236,7 @@ public class BasicViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
@@ -280,7 +280,7 @@ public class BasicViewTypeTest {
 		@DisplayName("adding a non-root element")
 		public void addingANonRootElement() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				root.setSingleValuedContainmentEReference(aet.NonRoot());
@@ -297,7 +297,7 @@ public class BasicViewTypeTest {
 		@DisplayName("adding a root element")
 		public void addingARootElement() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				root.setId("secondId");
@@ -312,7 +312,7 @@ public class BasicViewTypeTest {
 		@DisplayName("removing a selected root element")
 		public void removingSelectedRoot() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				EcoreUtil.delete(root);
@@ -327,7 +327,7 @@ public class BasicViewTypeTest {
 		public void removingUnselectedRoot() throws Exception {
 			Root firstRoot = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
 			Root secondRoot = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
-			BasicViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRoot, true);
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				EcoreUtil.delete(secondRoot);
