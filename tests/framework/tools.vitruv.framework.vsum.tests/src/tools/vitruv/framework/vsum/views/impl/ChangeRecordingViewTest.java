@@ -48,7 +48,7 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures;;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
-public class RecordingViewTest {
+public class ChangeRecordingViewTest {
 	@Mock
 	ViewCreatingViewType<?> mockViewType;
 	@Mock
@@ -68,27 +68,27 @@ public class RecordingViewTest {
 		@DisplayName("with null view type")
 		public void withNullViewType() {
 			assertThrows(IllegalArgumentException.class,
-					() -> new RecordingView(null, mockChangeableViewSource, mockViewSelection));
+					() -> new ChangeRecordingView(null, mockChangeableViewSource, mockViewSelection));
 		}
 
 		@Test
 		@DisplayName("with null view source")
 		public void withNullViewSource() {
 			assertThrows(IllegalArgumentException.class,
-					() -> new RecordingView(mockViewType, null, mockViewSelection));
+					() -> new ChangeRecordingView(mockViewType, null, mockViewSelection));
 		}
 
 		@Test
 		@DisplayName("with null view selection")
 		public void withNullViewSelection() {
 			assertThrows(IllegalArgumentException.class,
-					() -> new RecordingView(mockViewType, mockChangeableViewSource, null));
+					() -> new ChangeRecordingView(mockViewType, mockChangeableViewSource, null));
 		}
 
 		@Test
 		@DisplayName("with proper arguments")
 		public void withEmptySource() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				verify(mockViewType).updateView(view);
 				assertThat(view.isClosed(), is(false));
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
@@ -102,7 +102,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("all of same type")
 		public void allOfSameType() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				Root root2 = aet.Root();
@@ -119,7 +119,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("all of one out of two types")
 		public void containingAllOfOneType() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				NonRoot otherRoot = aet.NonRoot();
@@ -135,7 +135,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("containing none of a type")
 		public void containingNoneOfType() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				Root otherRoot = aet.Root();
@@ -154,7 +154,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("without previous modification")
 		public void withoutPreviousModification() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				view.update();
 				verify(mockViewType, times(2)).updateView(view);
 			}
@@ -163,7 +163,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("with previous modification")
 		public void withPreviousModification() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				view.modifyContents((resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
 				assertThrows(IllegalStateException.class, () -> view.update());
 			}
@@ -176,7 +176,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("being null")
 		public void nullElement() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				assertThrows(IllegalArgumentException.class,
 						() -> view.registerRoot(null, URI.createURI("test://test.aet")));
 			}
@@ -185,7 +185,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("with null URI")
 		public void nullUri() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				assertThrows(IllegalArgumentException.class, () -> view.registerRoot(root, null));
 			}
@@ -194,7 +194,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("with proper arguments")
 		public void properArguments() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				String testResourceUriString = "test://test.aet";
 				view.registerRoot(root, URI.createURI(testResourceUriString));
@@ -205,7 +205,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("committing changes")
 		public void commitChanges() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				root.setId("root");
 				String testResourceUriString = "test://test.aet";
@@ -233,7 +233,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("being null")
 		public void nullElement() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				assertThrows(IllegalArgumentException.class,
 						() -> view.moveRoot(null, URI.createURI("test://test.aet")));
 			}
@@ -242,7 +242,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("with null URI")
 		public void nullUri() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				assertThrows(IllegalArgumentException.class, () -> view.moveRoot(root, null));
@@ -252,7 +252,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("with element not beeing root")
 		public void notBeingRoot() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				assertThrows(IllegalStateException.class, () -> view.moveRoot(root, URI.createURI("test://test.aet")));
 			}
@@ -261,7 +261,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("with proper arguments")
 		public void properArguments() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				view.registerRoot(root, URI.createURI("test://test.aet"));
 				view.moveRoot(root, URI.createURI("test://test2.aet"));
@@ -273,7 +273,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("committing changes")
 		public void commitChanges() throws Exception {
-			try (RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+			try (ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
 				Root root = aet.Root();
 				String movedResourceUriString = "test://test2.aet";
 				view.registerRoot(root, URI.createURI("test://test.aet"));
@@ -300,12 +300,12 @@ public class RecordingViewTest {
 	@Nested
 	@DisplayName("commit")
 	public class Commit {
-		RecordingView view;
+		ChangeRecordingView view;
 		Root root;
 
 		@BeforeEach
 		public void prepareViewWithRootElement() {
-			view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
+			view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
 			root = aet.Root();
 			view.registerRoot(root, URI.createURI("test://test.aet"));
 			view.commitChanges();
@@ -379,7 +379,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("and is closed afterwards")
 		public void isClosed() throws Exception {
-			RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
+			ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
 			view.close();
 			assertThat("view should be closed", view.isClosed());
 		}
@@ -387,7 +387,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("can be called multiple times")
 		public void callMultipleTimes() throws Exception {
-			RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
+			ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
 			view.close();
 			view.close();
 			assertThat("view should be closed", view.isClosed());
@@ -396,7 +396,7 @@ public class RecordingViewTest {
 		@Test
 		@DisplayName("and does not allow further operations")
 		public void noOperations() throws Exception {
-			RecordingView view = new RecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
+			ChangeRecordingView view = new ChangeRecordingView(mockViewType, mockChangeableViewSource, mockViewSelection);
 			view.close();
 			assertThrows(IllegalStateException.class, () -> view.getRootObjects());
 			assertThrows(IllegalStateException.class, () -> view.getRootObjects(Root.class));

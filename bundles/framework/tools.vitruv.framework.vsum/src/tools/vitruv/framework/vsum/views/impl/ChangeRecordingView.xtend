@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.resource.Resource
  * A {@link View} that records changes to its resources and allows to propagate them 
  * back to the underlying models using the {@link #commitChanges} method.
  */
-class RecordingView implements ModifiableView, ChangePropagationListener {
+class ChangeRecordingView implements ModifiableView, ChangePropagationListener {
 	@Accessors(PUBLIC_GETTER)
 	val ViewSelection selection
 	@Accessors(PUBLIC_GETTER)
