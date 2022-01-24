@@ -37,7 +37,7 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.Resour
 import static tools.vitruv.testutils.matchers.ModelMatchers.*;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
-public class BasicViewTypeTest {
+public class IdentityMappingViewTypeTest {
 	@Nested
 	@DisplayName("initialize")
 	class Initialize {
