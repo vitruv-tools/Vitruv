@@ -30,7 +30,7 @@ public interface ModifiableViewSelection extends ViewSelection {
 	/**
 	 * Returns whether the given {@link EObject} can be selected. May only be called
 	 * for objects that are selectable (i.e., contained in
-	 * {@link #getSelectableElements()} and throws and exception otherwise.
+	 * {@link #getSelectableElements()} and throws an exception otherwise.
 	 * 
 	 * @param eObject the {@link EObject} to check the selection state for
 	 * @return whether the given {@link EObject} is selected
@@ -40,7 +40,7 @@ public interface ModifiableViewSelection extends ViewSelection {
 	/**
 	 * Sets the selection state of the given {@link EObject}. May only be called for
 	 * objects that are selectable (i.e., contained in
-	 * {@link #getSelectableElements()} and throws and exception otherwise.
+	 * {@link #getSelectableElements()} and throws an exception otherwise.
 	 * 
 	 * @param eObject  the {@link EObject} to set the selection state for
 	 * @param selected whether the given {@link EObject} should be selected or not

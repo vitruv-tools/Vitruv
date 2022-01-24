@@ -3,7 +3,7 @@ package tools.vitruv.framework.vsum.views;
 /**
  * A selector for selecting the elements to be represented in a view. It
  * encapsulates a modifiable {@link ViewSelection}, which it is able to validate
- * and which is then passed to a created a view. It is capable of acting as a
+ * and which is then passed to a created view. It is capable of acting as a
  * builder for a view by providing an appropriate creation method.
  */
 public interface ViewSelector extends ModifiableViewSelection {
