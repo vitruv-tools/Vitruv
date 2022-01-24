@@ -46,9 +46,9 @@ public interface View extends AutoCloseable {
 	boolean haveViewSourcesChanged();
 
 	/**
-	 * Updates the view from the underlying virtual model, thus invalidating its
-	 * previous state and now providing a updated view on the virtual model. This
-	 * can only be done for an unmodified view.
+	 * Updates the view from the underlying {@link ViewSource}, thus invalidating
+	 * its previous state and now providing an updated view on the
+	 * {@link ViewSource}. This can only be done for an unmodified view.
 	 * 
 	 * @throws UnsupportedOperationException if the update is called for a dirty
 	 *                                       view.
@@ -61,12 +61,13 @@ public interface View extends AutoCloseable {
 
 	/**
 	 * Commits the changes made to the view and its containing elements to the
-	 * virtual model. This explicitly includes all changes that have been made
-	 * before calling this method. Whether changes will effectively be recorded
-	 * depends on this view. It is permissible for a view not to record any changes
-	 * if it deems them irrelevant. Note that committing changes will automatically
-	 * be followed by an {@link #update} from the virtual model to keep both the
-	 * view and the virtual model synchronized.
+	 * underlying {@link ChangeableViewSource}. This explicitly includes all changes
+	 * that have been made before calling this method. Whether changes will
+	 * effectively be recorded depends on this view. It is permissible for a view
+	 * not to record any changes if it deems them irrelevant. Note that committing
+	 * changes will automatically be followed by calling the view's {@link #update}
+	 * method to retrieve changes from the {@link ViewSource} to keep view and
+	 * {@link ViewSource} synchronized.
 	 * 
 	 * @return the changes resulting from propagating the recorded changes.
 	 * @throws IllegalStateException if called on a closed view.
