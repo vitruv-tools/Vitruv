@@ -51,7 +51,7 @@ public interface View extends AutoCloseable {
 	 * {@code ViewSource}. It reuses the {@link ViewSelection} with whom the view
 	 * has been created. This can only be done for an unmodified view.
 	 * 
-	 * @throws UnsupportedOperationException if called on a dirty view
+	 * @throws UnsupportedOperationException if called on a modified view
 	 * @throws IllegalStateException         if called on a closed view
 	 * @see #isClosed()
 	 * @see #isModified()
@@ -67,7 +67,7 @@ public interface View extends AutoCloseable {
 	 * effectively be recorded depends on this view. It is permissible for a view
 	 * not to record any changes if it deems them irrelevant.
 	 * 
-	 * To ensure that the view is not dirty (i.e., {@link #isModified()}) afterwards
+	 * To ensure that the view is not modified ({@link #isModified()}) afterwards
 	 * because further changes may be performed to the underlying sources during
 	 * commit, consider using {@link #commitChangesAndUpdate()} instead to perform
 	 * an update of the view afterwards.
