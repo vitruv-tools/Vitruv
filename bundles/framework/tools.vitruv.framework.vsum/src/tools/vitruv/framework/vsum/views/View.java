@@ -48,12 +48,13 @@ public interface View extends AutoCloseable {
 	/**
 	 * Updates the view from the underlying {@link ViewSource}, thus invalidating
 	 * its previous state and now providing an updated view on the
-	 * {@link ViewSource}. This can only be done for an unmodified view.
+	 * {@code ViewSource}. It reuses the {@link ViewSelection} with whom the view
+	 * has been created. This can only be done for an unmodified view.
 	 * 
-	 * @throws UnsupportedOperationException if the update is called for a dirty
-	 *                                       view.
-	 * @throws IllegalStateException         if called on a closed view.
-	 * @see View#isClosed()
+	 * @throws UnsupportedOperationException if called on a dirty view
+	 * @throws IllegalStateException         if called on a closed view
+	 * @see #isClosed()
+	 * @see #isModified()
 	 */
 	// TODO TS Add issue: in the long term we need to allow updates for modified
 	// views
@@ -64,18 +65,38 @@ public interface View extends AutoCloseable {
 	 * underlying {@link ChangeableViewSource}. This explicitly includes all changes
 	 * that have been made before calling this method. Whether changes will
 	 * effectively be recorded depends on this view. It is permissible for a view
-	 * not to record any changes if it deems them irrelevant. Note that committing
-	 * changes will automatically be followed by calling the view's {@link #update}
-	 * method to retrieve changes from the {@link ViewSource} to keep view and
-	 * {@link ViewSource} synchronized.
+	 * not to record any changes if it deems them irrelevant.
 	 * 
-	 * @return the changes resulting from propagating the recorded changes.
-	 * @throws IllegalStateException if called on a closed view.
-	 * @see View#isClosed()
+	 * To ensure that the view is not dirty (i.e., {@link #isModified()}) afterwards
+	 * because further changes may be performed to the underlying sources during
+	 * commit, consider using {@link #commitChangesAndUpdate()} instead to perform
+	 * an update of the view afterwards.
+	 * 
+	 * @return the changes resulting from propagating the recorded changes
+	 * @throws IllegalStateException if called on a closed view
+	 * @see #isClosed()
+	 * @see #commitChangesAndUpdate()
 	 */
-	// TODO TS: Some views may not always record changes, and thus require
-	// transactional record-and-commit.
 	List<PropagatedChange> commitChanges();
+
+	/**
+	 * Convenience method for subsequent execution of {@link #commitChanges()} and
+	 * {@link #update()}. Commits the changes made to the view and its containing
+	 * elements to the underlying {@link ChangeableViewSource} and updates the view
+	 * elements from the {@link ChangeableViewSource} afterwards to reflect
+	 * potential further changes made during commit.
+	 * 
+	 * @return the changes resulting from propagating the recorded changes
+	 * @throws IllegalStateException if called on a closed view
+	 * @see #commitChanges()
+	 * @see #update()
+	 * @see #isClosed()
+	 */
+	default List<PropagatedChange> commitChangesAndUpdate() {
+		List<PropagatedChange> changes = commitChanges();
+		update();
+		return changes;
+	}
 
 	/**
 	 * Checks whether the view was closed. Closed views cannot be used further. All
