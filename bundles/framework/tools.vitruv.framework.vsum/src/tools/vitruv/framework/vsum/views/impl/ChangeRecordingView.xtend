@@ -59,7 +59,7 @@ class ChangeRecordingView implements ModifiableView, ChangePropagationListener {
 		return viewChanged
 	}
 
-	override haveViewSourcesChanged() {
+	override isOutdated() {
 		return modelChanged
 	}
 

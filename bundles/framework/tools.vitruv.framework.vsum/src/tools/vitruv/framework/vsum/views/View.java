@@ -36,14 +36,15 @@ public interface View extends AutoCloseable {
 	};
 
 	/**
-	 * Specifies whether the view was modified.
+	 * Returns whether the view was modified.
 	 */
 	boolean isModified();
 
 	/**
-	 * Specifies whether the underlying view sources have changed.
+	 * Returns whether the view is outdated, i.e., whether the underlying view
+	 * sources have changed.
 	 */
-	boolean haveViewSourcesChanged();
+	boolean isOutdated();
 
 	/**
 	 * Updates the view from the underlying {@link ViewSource}, thus invalidating

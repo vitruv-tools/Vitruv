@@ -284,7 +284,7 @@ class VirtualModelTest {
 		assertThat(new HashSet(testView.rootObjects), not(is(emptySet())))
 		assertEquals(testView.rootObjects.claimOne, testView.getRootObjects(Root).claimOne)
 		assertThat(testView.getRootObjects(Root).claimOne.id, is(ROOT_ID))
-		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view source must not have been changed", !testView.outdated)
 		assertThat("view must not have been modified", !testView.isModified)
 	}
 
@@ -307,13 +307,13 @@ class VirtualModelTest {
 		])
 
 		// Assert VSUM changed but view not modified:
-		assertThat("view source must have been changed", testView.haveViewSourcesChanged)
+		assertThat("view source must have been changed", testView.outdated)
 		assertThat("view must not have been modified", !testView.isModified)
 		assertThat(testView.getRootObjects(Root).claimOne.multiValuedContainmentEReference, is(emptyList()))
 
 		// Update view and assert view was updated correctly
 		testView.update()
-		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view source must not have been changed", !testView.outdated)
 		assertThat("view must not have been modified", !testView.isModified)
 		val viewRoot = testView.getRootObjects(Root).claimOne
 		assertThat(viewRoot.multiValuedContainmentEReference.claimOne.id, is(NON_ROOT_ID))
@@ -336,17 +336,17 @@ class VirtualModelTest {
 		]
 
 		// Assert view modified but VSUM not changed:
-		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view source must not have been changed", !testView.outdated)
 		assertThat("view must have been modified", testView.isModified)
 
 		// Commit changes and assert VSUM was updated correctly
 		val changes = testView.commitChanges()
 		assertThat(new HashSet(changes), not(emptySet()))
-		assertThat("view source must have been changed", testView.haveViewSourcesChanged)
+		assertThat("view source must have been changed", testView.outdated)
 		assertThat("view must not have been modified", !testView.isModified)
 
 		testView.update();
-		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view source must not have been changed", !testView.outdated)
 		assertThat("view must not have been modified", !testView.isModified)
 		
 		val reopenedViewRoot = virtualModel.createTestView.getRootObjects(Root).claimOne
