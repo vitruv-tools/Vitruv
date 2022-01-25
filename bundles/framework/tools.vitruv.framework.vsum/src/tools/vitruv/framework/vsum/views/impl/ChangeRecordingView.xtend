@@ -81,7 +81,7 @@ class ChangeRecordingView implements ModifiableView, ChangePropagationListener {
 		changeRecorder.endRecording()
 		val propagatedChanges = viewSource.propagateChange(changeRecorder.change)
 		viewChanged = false
-		update() // view shall not be dirty, thus update on commit
+		changeRecorder.beginRecording()
 		return propagatedChanges
 	}
 

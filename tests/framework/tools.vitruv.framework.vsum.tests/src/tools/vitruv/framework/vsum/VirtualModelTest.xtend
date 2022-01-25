@@ -342,9 +342,13 @@ class VirtualModelTest {
 		// Commit changes and assert VSUM was updated correctly
 		val changes = testView.commitChanges()
 		assertThat(new HashSet(changes), not(emptySet()))
-		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view source must have been changed", testView.haveViewSourcesChanged)
 		assertThat("view must not have been modified", !testView.isModified)
 
+		testView.update();
+		assertThat("view source must not have been changed", !testView.haveViewSourcesChanged)
+		assertThat("view must not have been modified", !testView.isModified)
+		
 		val reopenedViewRoot = virtualModel.createTestView.getRootObjects(Root).claimOne
 		assertThat(reopenedViewRoot.multiValuedContainmentEReference.claimOne.id, is(NON_ROOT_ID))
 	}
