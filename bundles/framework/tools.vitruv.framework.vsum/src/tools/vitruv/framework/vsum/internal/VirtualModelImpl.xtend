@@ -36,8 +36,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val extension ChangeDomainExtractor changeDomainExtractor
 
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
-		VitruvDomainRepository domainRepository,
-		ViewTypeRepository viewTypeRepository,
+		VitruvDomainRepository domainRepository, ViewTypeRepository viewTypeRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
 		this.domainRepository = domainRepository
@@ -218,6 +217,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override <S extends ViewSelector> createSelector(ViewType<S> viewType) {
+		/* Note that ViewType.createSelector() accepts a ChangeableViewSource, which 
+		 * VirtualModelImpl implements but not its publicly used interface VitualModel. 
+		 * Thus calling viewType.createSelector(virtualModel) with virtualModel having
+		 * the static type VirtualModel is not possible, i.e., this method hides
+		 * implementation details and is not a convenience method.
+		 */
 		viewType.createSelector(this)
 	}
 
