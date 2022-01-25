@@ -56,8 +56,6 @@ public interface View extends AutoCloseable {
 	 * @see #isClosed()
 	 * @see #isModified()
 	 */
-	// TODO TS Add issue: in the long term we need to allow updates for modified
-	// views
 	void update();
 
 	/**
