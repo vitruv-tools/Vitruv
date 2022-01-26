@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>tools.vitruv</groupId>
+    <artifactId>framework-tests</artifactId>
+    <version>2.1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>tools.vitruv.framework.vsum.tests</artifactId>
+  <packaging>eclipse-test-plugin</packaging>
+  <name>[test-bundle] Vitruv Framwork Virtual Single Underlying Model Tests</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+  </dependencies>
+</project>

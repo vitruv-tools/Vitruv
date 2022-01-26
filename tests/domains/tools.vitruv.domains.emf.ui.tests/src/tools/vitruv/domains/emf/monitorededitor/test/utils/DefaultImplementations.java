@@ -13,6 +13,7 @@ package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,8 +24,10 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.vsum.ChangePropagationListener;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.models.ChangePropagationListener;
+import tools.vitruv.framework.vsum.views.ViewSelector;
+import tools.vitruv.framework.vsum.views.ViewType;
 
 public class DefaultImplementations {
 	public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -113,6 +116,16 @@ public class DefaultImplementations {
 
 		@Override
 		public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+		}
+
+		@Override
+		public Collection<ViewType<?>> getViewTypes() {
+			return null;
+		}
+
+		@Override
+		public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
+			return null;
 		}
 
 	}

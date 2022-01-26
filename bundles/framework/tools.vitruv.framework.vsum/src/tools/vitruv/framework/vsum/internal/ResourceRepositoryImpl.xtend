@@ -80,8 +80,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private def getCreateOrLoadModel(URI modelURI) {
-		getModel(modelURI) 
-			?: createOrLoadModel(modelURI)
+		getModel(modelURI) ?: createOrLoadModel(modelURI)
 	}
 
 	def private createOrLoadModel(URI modelURI) {
@@ -145,16 +144,13 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		logger.debug("End recording virtual model")
 		isRecording = false
 		domainToRecorder.values.forEach[endRecording()]
-		return domainToRecorder.values
-			.map [recorder | recorder.change]
-			.filter[containsConcreteChange]
-			.toList()
+		return domainToRecorder.values.map[recorder|recorder.change].filter[containsConcreteChange].toList()
 	}
 
 	override VitruviusChange applyChange(VitruviusChange change) {
 		change.resolveAndApply(modelsResourceSet)
 	}
-	
+
 	override URI getMetadataModelURI(String... metadataKey) {
 		fileSystemLayout.getConsistencyMetadataModelURI(metadataKey)
 	}
@@ -169,6 +165,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
 		correspondencesResourceSet.resources.clear()
+	}
+
+	override getModelResources() {
+		return modelsResourceSet.resources
 	}
 
 }

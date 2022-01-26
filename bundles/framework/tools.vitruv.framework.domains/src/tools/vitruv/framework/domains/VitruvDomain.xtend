@@ -26,7 +26,7 @@ interface VitruvDomain {
 	def boolean isUserVisible()
 
 	/**
-	 * Whether any changes made to meta models of this domain should be
+	 * Whether any changes made to models of this domain should be
 	 * propagated to other domains through registered change propagation
 	 * specifications.
 	 */
