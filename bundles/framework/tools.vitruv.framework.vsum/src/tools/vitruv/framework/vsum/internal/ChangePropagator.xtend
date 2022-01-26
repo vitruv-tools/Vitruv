@@ -45,7 +45,7 @@ package class ChangePropagator {
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
 		val resolvedChange = resourceRepository.applyChange(change)
 		resolvedChange.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
-		
+
 		val changedDomain = resolvedChange.changedDomain
 		if (logger.isTraceEnabled) {
 			logger.trace('''
@@ -65,34 +65,35 @@ package class ChangePropagator {
 		val Set<Resource> changedResources = new HashSet
 		val List<EObject> createdObjects = new ArrayList
 		val List<UserInteractionBase> userInteractions = new ArrayList
-		
+
 		def private propagateChanges() {
-			val result = sourceChange.transactionalChangeSequence.flatMapFixed [propagateSingleChange(it)]
+			val result = sourceChange.transactionalChangeSequence.flatMapFixed[propagateSingleChange(it)]
 			handleObjectsWithoutResource()
-			changedResources.forEach [modified = true]
+			changedResources.forEach[modified = true]
 			return result
 		}
-		
+
 		def private List<PropagatedChange> propagateSingleChange(TransactionalChange change) {
-			checkState(!change.affectedEObjects.isNullOrEmpty, 
-				"There are no objects affected by this change:%s%s", System.lineSeparator, change)
+			checkState(!change.affectedEObjects.isNullOrEmpty, "There are no objects affected by this change:%s%s",
+				System.lineSeparator, change)
 
 			val userInteractorChange = installUserInteractorForChange(change)
-			changePropagationProvider.forEach [registerObserver(this)]
+			changePropagationProvider.forEach[registerObserver(this)]
 			userInteractor.registerUserInputListener(this)
 
 			val propagationResultChanges = try {
-				changePropagationProvider.getChangePropagationSpecifications(sourceDomain).mapFixed [
-					targetDomain -> propagateChangeForChangePropagationSpecification(change, it)
-				]
-			} finally {
-				userInteractor.deregisterUserInputListener(this)
-				changePropagationProvider.forEach [deregisterObserver(this)]
-				userInteractorChange.close()
-			}
-			
+					changePropagationProvider.getChangePropagationSpecifications(sourceDomain).mapFixed [
+						targetDomain -> propagateChangeForChangePropagationSpecification(change, it)
+					]
+				} finally {
+					userInteractor.deregisterUserInputListener(this)
+					changePropagationProvider.forEach[deregisterObserver(this)]
+					userInteractorChange.close()
+				}
+
 			if (logger.isDebugEnabled) {
-				logger.debug('''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR result: propagationResultChanges SEPARATOR ", "»«result.key»«ENDFOR»}''')
+				logger.
+					debug('''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR result : propagationResultChanges SEPARATOR ", "»«result.key»«ENDFOR»}''')
 			}
 			if (logger.isTraceEnabled) {
 				logger.trace('''
@@ -105,90 +106,93 @@ package class ChangePropagator {
 
 			change.userInteractions = userInteractions
 			val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.flatMapFixed [value]))
+				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.flatMapFixed[value]))
 			val resultingChanges = new ArrayList()
 			resultingChanges += propagatedChange
-	
-			val nextPropagations = propagationResultChanges
-				.filter [key.shouldTransitivelyPropagateChanges && value.exists[containsConcreteChange]]
-				.mapFixed [
-					new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key, this)
-				]
+
+			val nextPropagations = propagationResultChanges.filter [
+				key.shouldTransitivelyPropagateChanges && value.exists[containsConcreteChange]
+			].mapFixed [
+				new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key, this)
+			]
 
 			for (nextPropagation : nextPropagations) {
 				resultingChanges += nextPropagation.propagateChanges()
 			}
-	
+
 			return resultingChanges
 		}
-		
+
 		def private propagateChangeForChangePropagationSpecification(
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
 			resourceRepository.startRecording()
 			for (eChange : change.EChanges) {
-				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel, resourceRepository)
+				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel,
+					resourceRepository)
 			}
 			val changes = resourceRepository.endRecording()
-	
+
 			// Store modification information
-			changedResources += changes.flatMap [affectedEObjects].map [eResource].filterNull
-			
+			changedResources += changes.flatMap[affectedEObjects].map[eResource].filterNull
+
 			return changes
 		}
-		
+
 		def private AutoCloseable installUserInteractorForChange(VitruviusChange change) {
 			// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
 			val pastUserInputsFromChange = change.userInteractions
-	
+
 			if (!pastUserInputsFromChange.nullOrEmpty) {
-				userInteractor.replaceUserInteractionResultProvider[ currentProvider |
-					UserInteractionFactory.instance.
-						createPredefinedInteractionResultProvider(currentProvider, pastUserInputsFromChange)
+				userInteractor.replaceUserInteractionResultProvider [ currentProvider |
+					UserInteractionFactory.instance.createPredefinedInteractionResultProvider(currentProvider,
+						pastUserInputsFromChange)
 				]
-			} else []
+			} else
+				[]
 		}
-		
-		
+
 		def private void handleObjectsWithoutResource() {
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
-				checkState(!resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
-					"The object %s is part of a correspondence to %s but not in any resource", createdObjectWithoutResource,
+				checkState(
+					!resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
+					"The object %s is part of a correspondence to %s but not in any resource",
+					createdObjectWithoutResource,
 					resourceRepository.correspondenceModel.getCorrespondingEObjects(#[createdObjectWithoutResource]))
-				logger.warn("Object was created but has no correspondence and is thus lost: " 
-					+ createdObjectWithoutResource)
+				logger.warn("Object was created but has no correspondence and is thus lost: " +
+					createdObjectWithoutResource)
 			}
 		}
-		
+
 		override objectCreated(EObject createdObject) {
 			createdObjects += createdObject
 		}
-		
+
 		override onUserInteractionReceived(UserInteractionBase interaction) {
 			userInteractions += interaction
 		}
-		
+
 		override toString() '''propagate «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR»: «sourceChange»'''
-		
+
 		def private Iterable<String> getPropagationPath() {
-			if (previous === null) List.of("<input change> in " + sourceDomain.toString)
-			else previous.propagationPath + List.of(sourceDomain.toString)
+			if(previous === null) List.of("<input change> in " + sourceDomain.toString) else previous.propagationPath +
+				List.of(sourceDomain.toString)
 		}
 	}
-	
+
 	def private Iterable<TransactionalChange> getTransactionalChangeSequence(VitruviusChange change) {
 		switch (change) {
 			case !change.containsConcreteChange: emptyList()
 			TransactionalChange: List.of(change)
-			CompositeChange<?>: change.changes.flatMap [transactionalChangeSequence]
+			CompositeChange<?>: change.changes.flatMap[transactionalChangeSequence]
 			default: throw new IllegalStateException("Unexpected change type: " + change.class.simpleName)
 		}
 	}
 
 	def private VitruvDomain getChangedDomain(VitruviusChange change) {
-		val changeDomain = change.changedURIs.fold(null as VitruvDomain) [changeDomain, changedUri |
+		val changeDomain = change.changedURIs.fold(null as VitruvDomain) [ changeDomain, changedUri |
 			val resourceDomain = domainRepository.getDomain(changedUri.fileExtension)
 			if (changeDomain === null) {
 				resourceDomain
@@ -201,7 +205,8 @@ package class ChangePropagator {
 				''')
 			}
 		]
-		checkState(changeDomain !== null, "Cannot determine the domain of this change:%s%s", System.lineSeparator, change)
+		checkState(changeDomain !== null, "Cannot determine the domain of this change:%s%s", System.lineSeparator,
+			change)
 		changeDomain
 	}
 }

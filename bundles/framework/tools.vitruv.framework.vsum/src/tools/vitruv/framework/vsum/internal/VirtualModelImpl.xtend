@@ -17,26 +17,33 @@ import java.util.LinkedList
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.internal.ChangePropagator
-import tools.vitruv.framework.vsum.ChangePropagationListener
+import tools.vitruv.framework.vsum.views.ViewTypeRepository
+import tools.vitruv.framework.vsum.views.ViewType
+import tools.vitruv.framework.vsum.views.ViewSelector
+import tools.vitruv.framework.vsum.models.ChangePropagationListener
+import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.framework.vsum.views.ViewTypeProvider
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ModelRepository resourceRepository
 	val VitruvDomainRepository domainRepository
+	@Delegate val ViewTypeProvider viewTypeRepository
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
-	
+
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
-		VitruvDomainRepository domainRepository,
+		VitruvDomainRepository domainRepository, ViewTypeRepository viewTypeRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
 		this.domainRepository = domainRepository
-		this.resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
-		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
-		this.changePropagator = new ChangePropagator(
+		this.viewTypeRepository = viewTypeRepository
+		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
+		changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
+		changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
@@ -44,7 +51,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		)
 		VirtualModelRegistry.instance.registerVirtualModel(this)
 	}
-	
+
 	def loadExistingModels() {
 		this.resourceRepository.loadExistingModels()
 	}
@@ -63,16 +70,16 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override synchronized propagateChange(VitruviusChange change) {
 		checkNotNull(change, "change to propagate")
-		checkArgument(change.containsConcreteChange, 
-			"This change contains no concrete changes:%s%s", System.lineSeparator, change)
+		checkArgument(change.containsConcreteChange, "This change contains no concrete changes:%s%s",
+			System.lineSeparator, change)
 		val unresolvedChange = change.unresolve()
-		
+
 		LOGGER.info("Start change propagation")
 		startChangePropagation(unresolvedChange)
-		
+
 		val result = changePropagator.propagateChange(unresolvedChange)
 		save()
-		
+
 		if (LOGGER.isTraceEnabled) {
 			LOGGER.trace('''
 				Propagated changes:
@@ -82,7 +89,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 				«ENDFOR»
 			''')
 		}
-		
+
 		finishChangePropagation(unresolvedChange)
 		informPropagatedChangeListeners(result)
 		LOGGER.info("Finished change propagation")
@@ -90,32 +97,34 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
-		if (LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
+		if(LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
-		changePropagationListeners.forEach [finishedChangePropagation]
-		if (LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
+		changePropagationListeners.forEach[finishedChangePropagation]
+		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource)
+	 * @see VirtualModel#propagateChangedState(Resource)
 	 */
 	override synchronized propagateChangedState(Resource newState) {
 		return propagateChangedState(newState, newState?.URI)
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource, URI)
+	 * @see VirtualModel#propagateChangedState(Resource, URI)
 	 */
 	override synchronized propagateChangedState(Resource newState, URI oldLocation) {
 		checkArgument(oldLocation !== null || newState !== null, "either new state or old location must not be null")
 		val currentState = oldLocation.retrieveCurrentModelState()
 		if (currentState === null) {
-			checkState(newState !== null, "new state must not be null if no resource exists for old location " + oldLocation)
+			checkState(newState !== null,
+				"new state must not be null if no resource exists for old location " + oldLocation)
 		}
-		val vitruvDomain = domainRepository.getDomain(if (oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
+		val vitruvDomain = domainRepository.getDomain(
+			if(oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
 		val strategy = vitruvDomain.stateChangePropagationStrategy
 		val compositeChange = if (currentState === null) {
 				strategy.getChangeSequenceForCreated(newState)
@@ -130,7 +139,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 		return propagateChange(compositeChange)
 	}
-	
+
 	private def retrieveCurrentModelState(URI location) {
 		if (location !== null) {
 			resourceRepository.getModel(location)?.resource
@@ -201,6 +210,20 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override void dispose() {
 		resourceRepository.close()
 		VirtualModelRegistry.instance.deregisterVirtualModel(this)
+	}
+
+	override getViewSourceModels() {
+		resourceRepository.modelResources
+	}
+
+	override <S extends ViewSelector> createSelector(ViewType<S> viewType) {
+		/* Note that ViewType.createSelector() accepts a ChangeableViewSource, which 
+		 * VirtualModelImpl implements but not its publicly used interface VitualModel. 
+		 * Thus calling viewType.createSelector(virtualModel) with virtualModel having
+		 * the static type VirtualModel is not possible, i.e., this method hides
+		 * implementation details and is not a convenience method.
+		 */
+		viewType.createSelector(this)
 	}
 
 }

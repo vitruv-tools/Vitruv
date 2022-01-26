@@ -5,6 +5,8 @@ import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.description.VitruviusChange
+import java.util.Collection
+import org.eclipse.emf.ecore.resource.Resource
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def VitruviusChange applyChange(VitruviusChange change)
@@ -24,4 +26,6 @@ package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def void startRecording()
 
 	def Iterable<? extends TransactionalChange> endRecording()
+
+	def Collection<Resource> getModelResources()
 }
