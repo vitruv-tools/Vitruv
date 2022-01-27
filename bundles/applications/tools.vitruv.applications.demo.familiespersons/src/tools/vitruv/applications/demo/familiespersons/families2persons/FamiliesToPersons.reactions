@@ -1,9 +1,7 @@
-import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
-import java.util.Collection
-import java.util.ArrayList
-import edu.kit.ipd.sdq.metamodels.families.Member
-import java.util.List
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getFamily
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getMembers
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getRegister
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -44,40 +42,12 @@ routine deletePersonRegister(families::FamilyRegister familyRegister) {
 //========== FAMILY ==========
 reaction DeletedFamily {
 	after element families::Family deleted
-	call deletePersonsOfFamily(affectedEObject)
-}
-//Delete every family member.
-routine deletePersonsOfFamily(families::Family family) {
-	action {
-		call {
-			family.members.forEach[deletePerson()]
-		}
-	}
+	call getMembers(affectedEObject).forEach[deletePerson()]
 }
 //Lastname of {@link Family} changed.
 reaction ChangedLastName {
 	after attribute replaced at families::Family[lastName]
-	call changeFullNameFromLast(affectedEObject)
-}
-//Lastname changed so every {@link Person} corresponding to family is effected.
-routine changeFullNameFromLast(families::Family family) {
-	match {
-		val persons = retrieve many persons::Person corresponding to family
-	}
-	action {
-		call {
-			val Collection<Member> membersToRename = new ArrayList<Member>
-			if (family.father !== null) {
-				membersToRename.^add(family.father)
-			}
-			if (family.mother !== null) {
-				membersToRename.^add(family.mother)
-			}
-			membersToRename.addAll(family.sons)
-			membersToRename.addAll(family.daughters)
-			membersToRename.forEach[updatePersonName(it)]
-		}
-	}
+	call getMembers(affectedEObject).forEach[updatePersonName(it)]	
 }
 
 //========== FATHER ==========
@@ -110,7 +80,7 @@ routine moveOldFatherToNewFamily(families::Member oldFather, families::Family ol
 			newFamily.father = oldFather
 		}
 		call {
-			val FamilyRegister familyRegister = oldFamily.eContainer as FamilyRegister
+			val FamilyRegister familyRegister = getRegister(oldFamily)
 			familyRegister.families += newFamily 
 		}
 		remove correspondence between oldFamily and oldFatherPerson
@@ -150,7 +120,7 @@ routine moveOldMotherToNewFamily(families::Member oldMother, families::Family ol
 			newFamily.mother = oldMother
 		}
 		call {
-			val FamilyRegister familyRegister = oldFamily.eContainer as FamilyRegister
+			val FamilyRegister familyRegister = getRegister(oldFamily)
 			familyRegister.families += newFamily 
 		}
 		remove correspondence between oldFamily and oldMotherPerson
@@ -224,7 +194,7 @@ routine updatePersonName(families::Member member) {
 	}
 	action {
 		update person {
-			val family = member.familyFather ?: member.familyMother ?: member.familyDaughter ?: member.familySon
+			val family = getFamily(member)
 			person.fullName = member.firstName + " " + family.lastName 
 		}		
 	}
