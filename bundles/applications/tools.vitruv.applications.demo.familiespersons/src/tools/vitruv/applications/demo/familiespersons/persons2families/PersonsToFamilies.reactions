@@ -1,10 +1,12 @@
 import edu.kit.ipd.sdq.metamodels.families.Family
 import edu.kit.ipd.sdq.metamodels.persons.Male
-import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import java.util.ArrayList
 import java.util.Collection
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.stringifyFamily
+import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askForParentOrChild
+import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.getMatchingFamilies
+import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askForFamilySelection
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -24,7 +26,7 @@ routine createFamilyRegister(persons::PersonRegister personRegister) {
 		val familyRegister = create families::FamilyRegister and initialize {
 			persistProjectRelative(personRegister, familyRegister, "model/families.families")
 		}
-		add correspondence between familyRegister and personRegister
+		add correspondence between familyRegister and personRegister tagged with "PersonRegister-FamilyRegister"
 	}
 }
 
@@ -52,82 +54,73 @@ reaction CreatedPerson {
 routine insertAsParentOrChild(persons::Person newPerson) {
 	action {
 		call {
-			var String parentOrChildMessage = "You are about to insert a new member into the family register."
-			parentOrChildMessage += " Is this member a parent of a family or a child?"
-			var Iterable<String> parentOrChildOptions = #["Parent", "Child"]
-			val int parentOrChildSelection = userInteractor
-				.singleSelectionDialogBuilder				
-				.message(parentOrChildMessage)
-				.choices(parentOrChildOptions)
-				.title("Parent or Child?")
-				.windowModality(WindowModality.MODAL)
-				.startInteraction()
-			createOrReinsertMember(newPerson, parentOrChildSelection == parentOrChildOptions.toList.indexOf("Child"), null)
+			val boolean decidedChild = askForParentOrChild(userInteractor)
+			if (decidedChild) {
+				createChild(newPerson)
+			} else {
+				createParent(newPerson)
+			}
+			val x = correspondenceModel.getCorrespondences(#[newPerson], "Person-Member")
+			val y = correspondenceModel.getCorrespondences(#[newPerson], "Person-Family")			
+			if (x.size !== 1 || y.size !== 1) {
+				return
+			}
 		}
 	}
 }
 
-routine createOrReinsertMember(persons::Person newPerson, Boolean isChild, families::Member member) {
+routine createChild(persons::Person newPerson) {
 	match {
 		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
 	}
 	action {
 		call {
-			val String newPersonLastname = newPerson.fullName.split(" ").last
-			var boolean askUserForFamily = false
-			var Iterable<Family> matchingFamilies = familiesRegister.families.filter[it.lastName.equals(newPersonLastname)]
-
-			if (isChild) {
-				askUserForFamily = !matchingFamilies.empty
-			} else {
-				if (newPerson instanceof Male) {
-					matchingFamilies = matchingFamilies.filter[it.father === null]					
-				} else {
-					matchingFamilies = matchingFamilies.filter[it.mother === null]
-				}
-				askUserForFamily = matchingFamilies.size > 0
-			}
-
-			var Family chosenFamily = null
-			if (askUserForFamily) {
-				var int whichFamilyIndex = 0
-				// Let user select the family
-				var String whichFamilyMessage = "Please choose whether you want to create a new family or insert " 
-					+ newPerson.fullName + " into one of the existing families."
-				//Give only matching families as option.
-				val Collection<String> whichFamilyOptions = new ArrayList<String>()
-				whichFamilyOptions.^add("insert in a new family")
-				matchingFamilies.forEach[whichFamilyOptions.^add(stringifyFamily(it))]				
-				whichFamilyIndex = userInteractor
-					.singleSelectionDialogBuilder
-					.message(whichFamilyMessage)
-					.choices(whichFamilyOptions)
-					.title("New or Existing Family?")					
-					.windowModality(WindowModality.MODAL)
-					.startInteraction()
-				if (whichFamilyIndex !== 0) {
-					chosenFamily = matchingFamilies.get(whichFamilyIndex-1)
-				}
-			}
-
+			var Iterable<Family> matchingFamilies = getMatchingFamilies(newPerson, familiesRegister, true)
+			var Family chosenFamily = if (matchingFamilies.empty) null else askForFamilySelection(userInteractor, newPerson, matchingFamilies)
 			if (chosenFamily === null) {
-				if (member !== null) {
-					moveExistingMemberToNewFamily(newPerson, isChild, member)
-				} else {
-					insertInNewFamily(newPerson, isChild)					
-				}
+				createChildInNewFamily(newPerson)
 			} else {
-				if (member !== null) {
-					moveExistingMemberToExistingFamily(newPerson, chosenFamily, isChild, member)
-				} else {
-					insertInExistingFamily(newPerson, chosenFamily, isChild)					
-				}
+				createChildInExistingFamily(newPerson, chosenFamily)
 			}
 		}
 	}
 }
 
-routine moveExistingMemberToNewFamily(persons::Person newPerson, Boolean isChild, families::Member member) {
+routine createParent(persons::Person newPerson) {
+	match {
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action {
+		call {
+			var Iterable<Family> matchingFamilies = getMatchingFamilies(newPerson, familiesRegister, false)
+			var Family chosenFamily = if (matchingFamilies.empty) null else askForFamilySelection(userInteractor, newPerson, matchingFamilies)
+			if (chosenFamily === null) {
+				createParentInNewFamily(newPerson)
+			} else {
+				createParentInExistingFamily(newPerson, chosenFamily)
+			}
+		}
+	}
+}
+
+routine moveExistingMemberToDifferentFamily(persons::Person newPerson, Boolean isChild, families::Member member) {
+	match {
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action {
+		call {
+			var Iterable<Family> matchingFamilies = getMatchingFamilies(newPerson, familiesRegister, isChild)
+			var Family chosenFamily = if (matchingFamilies.empty) null else askForFamilySelection(userInteractor, newPerson, matchingFamilies)
+			if (chosenFamily === null) {
+				moveMemberToNewFamily(newPerson, member, isChild)
+			} else {
+				moveMemberToExistingFamily(newPerson, member, isChild, chosenFamily)
+			}
+		}
+	}
+}
+
+routine createChildInNewFamily(persons::Person newPerson) {
 	match {
 		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
 	}
@@ -135,36 +128,76 @@ routine moveExistingMemberToNewFamily(persons::Person newPerson, Boolean isChild
 		val newFamily = create families::Family and initialize {
 			newFamily.lastName = newPerson.fullName.split(" ").last
 		}
-		call familiesRegister.families += newFamily
-		call moveExistingMemberToExistingFamily(newPerson, newFamily, isChild, member)
+		update familiesRegister {
+			familiesRegister.families += newFamily
+		}
+		call createChildInExistingFamily(newPerson, newFamily)
 	}
 }
 
-routine insertInNewFamily(persons::Person newPerson, Boolean isChild) {
-	match {
-		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
-	}
+routine createChildInExistingFamily(persons::Person newPerson, families::Family family) {
 	action {
-		val newFamily = create families::Family and initialize {
-			newFamily.lastName = newPerson.fullName.split(" ").last
-		}
-		call familiesRegister.families += newFamily
-		call insertInExistingFamily(newPerson, newFamily, isChild)
-	}
-}
-
-routine insertInExistingFamily(persons::Person newPerson, families::Family family, Boolean isChild) {
-	action {
-		val newMember = create families::Member and initialize {
-			
-		}
+		val newMember = create families::Member and initialize { }
 		call setMemberFirstName(newMember, newPerson.fullName)
-		add correspondence between newPerson and newMember
-		call moveExistingMemberToExistingFamily(newPerson, family, isChild, newMember)
+		call {
+			if (newPerson instanceof Male) {
+				family.sons += newMember
+			} else {
+				family.daughters += newMember
+			}
+		}
+		add correspondence between newPerson and family tagged with "Person-Family"
+		add correspondence between newPerson and newMember tagged with "Person-Member"
 	}
 }
 
-routine moveExistingMemberToExistingFamily(persons::Person newPerson, families::Family family, Boolean isChild, families::Member member) {
+routine createParentInNewFamily(persons::Person newPerson) {
+	match {
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action {
+		val newFamily = create families::Family and initialize {
+			newFamily.lastName = newPerson.fullName.split(" ").last
+		}
+		update familiesRegister {
+			familiesRegister.families += newFamily
+		}
+		call createParentInExistingFamily(newPerson, newFamily)
+	}
+}
+
+routine createParentInExistingFamily(persons::Person newPerson, families::Family family) {
+	action {
+		val newMember = create families::Member and initialize { }
+		call setMemberFirstName(newMember, newPerson.fullName)
+		call {
+			if (newPerson instanceof Male) {
+				family.father = newMember
+			} else {
+				family.mother = newMember
+			}
+		}
+		add correspondence between newPerson and family tagged with "Person-Family"
+		add correspondence between newPerson and newMember tagged with "Person-Member"
+	}
+}
+
+routine moveMemberToNewFamily(persons::Person newPerson, families::Member member, Boolean isChild) {
+	match {
+		val familiesRegister = retrieve families::FamilyRegister corresponding to newPerson.eContainer
+	}
+	action {
+		val newFamily = create families::Family and initialize {
+			newFamily.lastName = newPerson.fullName.split(" ").last
+		}
+		update familiesRegister {
+			familiesRegister.families += newFamily
+		}
+		call moveMemberToExistingFamily(newPerson, member, isChild, newFamily)
+	}
+}
+
+routine moveMemberToExistingFamily(persons::Person newPerson, families::Member member, Boolean isChild, families::Family family) {
 	action {
 		call {
 			if (newPerson instanceof Male) {
@@ -181,7 +214,8 @@ routine moveExistingMemberToExistingFamily(persons::Person newPerson, families::
 				}
 			}
 		}
-		add correspondence between newPerson and family
+		add correspondence between newPerson and family tagged with "Person-Family"
+		//correspondence between newPerson and member does already exist
 	}
 }
 
@@ -195,14 +229,26 @@ reaction ChangedFullName {
 routine changeNames(persons::Person person) {
 	match {
 		val family = retrieve families::Family corresponding to person
-		val member = retrieve families::Member corresponding to person
+		val member = retrieve families::Member corresponding to person		
 	}
 	action {
+		call {
+			if (person.fullName.equals("")) {
+				throw new IllegalArgumentException("New name is not allowed to be empty.")
+			}
+		}
 		call setMemberFirstName(member, person.fullName)
 		call {
 			val String newLastname = person.fullName.split(" ").last
 			if (!newLastname.equals(family.lastName)) {
 				applyNewLastnameToMember(person, newLastname)
+			}
+		}
+		call {			
+			val x = correspondenceModel.getCorrespondences(#[person], "Person-Member")
+			val y = correspondenceModel.getCorrespondences(#[person], "Person-Family")			
+			if (x.size !== 1 || y.size !== 1) {
+				return
 			}
 		}
 	}
@@ -228,13 +274,13 @@ routine applyNewLastnameToMember(persons::Person person, String newLastname) {
 				oldFamily.lastName = newLastname
 			} else {
 				//move renamed member to a different family
-				moveRenamedMemberToADifferentFamily(person, newLastname)
+				moveRenamedMemberFromOldFamilyToOtherFamily(person, newLastname)
 			}
 		}
 	}
 }
 
-routine moveRenamedMemberToADifferentFamily(persons::Person person, String newLastname) {
+routine moveRenamedMemberFromOldFamilyToOtherFamily(persons::Person person, String newLastname) {
 	match {
 		val family = retrieve families::Family corresponding to person
 		val member = retrieve families::Member corresponding to person
@@ -249,13 +295,13 @@ routine moveRenamedMemberToADifferentFamily(persons::Person person, String newLa
 			//In contrast to the renaming itself since both models have names for ther persons/ members.
 			var boolean isChild = false
 			if (person instanceof Male) {
-				isChild = member.familyFather !== family
+				isChild = member.familySon === family
 			} else {
-				isChild = member.familyMother !== family
+				isChild = member.familyDaughter === family
 			}
-			createOrReinsertMember(person, isChild, member)
+			moveExistingMemberToDifferentFamily(person, isChild, member)
 		}
-		remove correspondence between person and family
+		remove correspondence between person and family tagged with "Person-Family"
 	}
 }
 
@@ -285,8 +331,8 @@ routine deleteMember(persons::Person person) {
 		val family = retrieve families::Family corresponding to person
 	}
 	action {
-		remove correspondence between person and member
-		remove correspondence between person and family
+		remove correspondence between person and family tagged with "Person-Family"
+		remove correspondence between person and member tagged with "Person-Member"
 		delete member
 		call deleteFamilyIfEmpty(family)
 	}
