@@ -22,7 +22,10 @@ import tools.vitruv.testutils.domains.DomainUtil
 import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.junit.jupiter.api.Assertions.assertTrue
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
+import tools.vitruv.testutils.TestUserInteraction.MultipleChoiceInteractionDescription
 
 /**Test to validate the transfer of changes from the PersonModel to the FamilyModel.
  * @author Dirk Neumann 
@@ -68,8 +71,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			new PersonsToFamiliesChangePropagationSpecification()]
 	}
 	
+	
+	var boolean preferParent = false	
 	def void decideParentOrChild(PositionPreference pref) {
 		val String parentChildTitle = "Parent or Child?"
+		this.preferParent = pref === PositionPreference.Parent
 		userInteraction.onMultipleChoiceSingleSelection[title.equals(parentChildTitle)].respondWithChoiceAt(if (pref === PositionPreference.Parent) 0 else 1)		
 	}
 	def void decideNewOrExistingFamily(FamilyPreference pref) {
@@ -77,11 +83,33 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		//If we choose an existing family, but do not specify in which,
 		//we probably want to choose the first one we find which is at index 1,
 		//since index 0 is to choose a new family  
-		decideNewOrExistingFamily(pref, if (pref === FamilyPreference.New) -1234 else 1)
+		decideNewOrExistingFamily(pref, if (pref === FamilyPreference.New) 0 else 1)
 	}
-	def void decideNewOrExistingFamily(FamilyPreference pref, int familyIndex) {
-		val String newOrExistingFamilyTitle = "New or Existing Family?"
-		userInteraction.onMultipleChoiceSingleSelection[title.equals(newOrExistingFamilyTitle)].respondWithChoiceAt(if (pref === FamilyPreference.New) 0 else familyIndex)
+	
+	val String newOrExistingFamilyTitle = "New or Existing Family?"
+	def void decideNewOrExistingFamily(FamilyPreference pref, int familyIndex) {		
+		userInteraction.onMultipleChoiceSingleSelection[assertFamilyOptions(it)].respondWithChoiceAt(if (pref === FamilyPreference.New) 0 else familyIndex)
+	}	
+	def boolean assertFamilyOptions(MultipleChoiceInteractionDescription mcid){
+		
+		//First option is always a new family
+		assertEquals(mcid.choices.get(0), "insert in a new family")
+		val tail = mcid.choices.drop(1)
+		//There must be a second option otherwise there would not be an interaction
+		assertTrue(tail.size > 0)
+		val familyName = tail.get(0).split(":").get(0) 
+		//All other options have to offer families with the same name
+		tail.forEach[p|p.split(":").get(0).equals(familyName)]
+		
+		if (preferParent) {
+			//If we want to insert a parent, each offered family has to not have this kind of parent
+			//Therefore all families either must not have a father or must not have a mother
+			val noFathers = tail.forall[!it.matches(".*F:.*;.*")]
+			val noMothers = tail.forall[!it.matches(".*M:.*;.*")]
+			assertTrue(noFathers || noMothers)
+		}
+				
+		return mcid.title.equals(newOrExistingFamilyTitle)
 	}
 
 	/**Before each test a new {@link PersonRegister} is created as starting point.
@@ -1314,7 +1342,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - finished without errors")
 	}
 
-	// ========== EDITING ==========
 	/**Test the renaming of the firstname of a single person which should
 	 * only effect this person and the corresponding {@link Member}.
 	 */
@@ -1361,7 +1388,32 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(this.nameOfTestMethod + " - finished without errors")
 	}
-
+	
+	def void foo() throws IllegalArgumentException {
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+			searchedDad.fullName = ""
+		]
+	}
+	
+	/**Test that error is thrown when trying to rename a {@link Person} with an empty name.
+	 */
+	@Test
+	def void testExceptionOnEmptyName() {
+		logger.trace(this.nameOfTestMethod + " - begin")
+		createFamiliesForTesting()
+		logger.trace(this.nameOfTestMethod + " - preparation done")
+		val thrownException = assertThrows(IllegalArgumentException, [
+			PersonRegister.from(PERSONS_MODEL).propagate [
+				val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+				searchedDad.fullName = ""
+			]
+		])
+		logger.trace(this.nameOfTestMethod + " - propagation done")
+		assertEquals(thrownException.message, "New name is not allowed to be empty.")
+		logger.trace(this.nameOfTestMethod + " - finished without errors")
+	}
+	
 	// ========== EDITING ==========
 	/**Test different special names which do not match the scheme firstname + " " + lastname.
 	 * In the cases of more than two parts in the name separated by spaces, the last part is
@@ -1495,5 +1547,5 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		assertThat(resourceAt(FAMILIES_MODEL), not(exists))
 		assertThat(resourceAt(PERSONS_MODEL), not(exists))
 		logger.trace(this.nameOfTestMethod + " - finished without errors")
-	}
+	}	
 }
