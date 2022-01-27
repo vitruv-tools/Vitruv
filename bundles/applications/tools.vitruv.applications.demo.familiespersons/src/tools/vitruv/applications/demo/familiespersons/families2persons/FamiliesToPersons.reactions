@@ -1,4 +1,9 @@
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
+import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
+import java.util.Collection
+import java.util.ArrayList
+import edu.kit.ipd.sdq.metamodels.families.Member
+import java.util.List
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -60,23 +65,34 @@ routine changeFullNameFromLast(families::Family family) {
 		val persons = retrieve many persons::Person corresponding to family
 	}
 	action {
-		update persons {
-			persons.forEach[it.fullName = it.fullName.split(" ").get(0) + " " + family.lastName] 
+		call {
+			val Collection<Member> membersToRename = new ArrayList<Member>
+			if (family.father !== null) {
+				membersToRename.^add(family.father)
+			}
+			if (family.mother !== null) {
+				membersToRename.^add(family.mother)
+			}
+			membersToRename.addAll(family.sons)
+			membersToRename.addAll(family.daughters)
+			membersToRename.forEach[updatePersonName(it)]
 		}
 	}
 }
-
 
 //========== FATHER ==========
 reaction EditedFather {
 	after element families::Member replaced at families::Family[father]
 		with oldValue !== null && newValue !== null && !oldValue.equals(newValue)
-	call replaceFather(newValue, oldValue)
+	call {
+		moveOldFatherToNewFamily(oldValue, affectedEObject)
+		createMale(newValue, affectedEObject)
+	}
 }
 reaction CreatedFather {
 	after element families::Member replaced at families::Family[father]
 		with oldValue === null && newValue !== null
-	call createMale(newValue, newValue.familyFather)
+	call createMale(newValue, affectedEObject)
 }
 reaction DeletedFather {
 	after element families::Member replaced at families::Family[father]
@@ -84,25 +100,21 @@ reaction DeletedFather {
 	call deletePerson(oldValue)
 }
 
-routine replaceFather(families::Member newFather, families::Member oldFather) {
+routine moveOldFatherToNewFamily(families::Member oldFather, families::Family oldFamily) {
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newFather.familyFather.eContainer		
-		val familyRegister = retrieve families::FamilyRegister corresponding to personsRegister
 		val oldFatherPerson = retrieve persons::Person corresponding to oldFather
 	}
 	action {
-		//Create new family with identical lastname
 		val newFamily = create families::Family and initialize {
-			newFamily.lastName = newFather.familyFather.lastName
+			newFamily.lastName = oldFamily.lastName
+			newFamily.father = oldFather
 		}
-		call {			
-			familyRegister.families += newFamily
-			newFamily.father = oldFather	
-			//Create and insert new person corresponding to newFather
-			createMale(newFather, newFather.familyFather)
+		call {
+			val FamilyRegister familyRegister = oldFamily.eContainer as FamilyRegister
+			familyRegister.families += newFamily 
 		}
-		remove correspondence between newFather.familyFather and oldFatherPerson
-		add correspondence between newFamily and oldFatherPerson
+		remove correspondence between oldFamily and oldFatherPerson
+		add correspondence between newFamily and oldFatherPerson		
 	}
 }
 
@@ -111,12 +123,15 @@ routine replaceFather(families::Member newFather, families::Member oldFather) {
 reaction EditedMother {
 	after element families::Member replaced at families::Family[mother]
 		with oldValue !== null && newValue !== null && !oldValue.equals(newValue) 
-	call replaceMother(newValue, oldValue)
+	call {
+		moveOldMotherToNewFamily(oldValue, affectedEObject)
+		createFemale(newValue, affectedEObject)
+	}
 }
 reaction CreatedMother {
 	after element families::Member replaced at families::Family[mother]
 		with oldValue === null && newValue !== null
-	call createFemale(newValue, newValue.familyMother)
+	call createFemale(newValue, affectedEObject)
 }
 
 reaction DeletedMother {
@@ -125,32 +140,28 @@ reaction DeletedMother {
 	call deletePerson(oldValue)
 }
 
-routine replaceMother(families::Member newMother, families::Member oldMother) {
+routine moveOldMotherToNewFamily(families::Member oldMother, families::Family oldFamily) {
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to newMother.familyMother.eContainer		
-		val familyRegister = retrieve families::FamilyRegister corresponding to personsRegister
 		val oldMotherPerson = retrieve persons::Person corresponding to oldMother
 	}
 	action {
-		//Create new family with identical lastname
 		val newFamily = create families::Family and initialize {
-			newFamily.lastName = newMother.familyMother.lastName
+			newFamily.lastName = oldFamily.lastName
+			newFamily.mother = oldMother
 		}
-		call {			
-			familyRegister.families += newFamily
-			newFamily.mother = oldMother	
-			//Create and insert new person corresponding to newMother
-			createFemale(newMother, newMother.familyMother)			
+		call {
+			val FamilyRegister familyRegister = oldFamily.eContainer as FamilyRegister
+			familyRegister.families += newFamily 
 		}
-		remove correspondence between newMother.familyMother and oldMotherPerson
-		add correspondence between newFamily and oldMotherPerson
+		remove correspondence between oldFamily and oldMotherPerson
+		add correspondence between newFamily and oldMotherPerson		
 	}
 }
 
 //========== SON ==========
 reaction CreatedSon {
 	after element families::Member created and inserted in families::Family[sons]
-	call createMale(newValue, newValue.familySon)
+	call createMale(newValue, affectedEObject)
 }
 reaction DeletedSon {
 	after element families::Member deleted and removed from families::Family[sons] 
@@ -161,7 +172,7 @@ reaction DeletedSon {
 //========== DAUGHTER ==========
 reaction CreatedDaughter {
 	after element families::Member created and inserted in families::Family[daughters]
-	call createFemale(newValue, newValue.familyDaughter)
+	call createFemale(newValue, affectedEObject)
 }
 reaction DeletedDaughter {
 	after element families::Member deleted and removed from families::Family[daughters] 
@@ -204,10 +215,10 @@ routine createFemale(families::Member newMember, families::Family family) {
 //Firstname of {@link Member} changed.
 reaction ChangedFirstName {
 	after attribute replaced at families::Member[firstName]
-	call changeFullNameFromFirst(affectedEObject) 
+	call updatePersonName(affectedEObject) 
 }
 //Firstname changed so only the corresponding {@link Person} is effected.
-routine changeFullNameFromFirst(families::Member member) {
+routine updatePersonName(families::Member member) {
 	match {
 		val person = retrieve persons::Person corresponding to member
 	}
@@ -215,9 +226,10 @@ routine changeFullNameFromFirst(families::Member member) {
 		update person {
 			val family = member.familyFather ?: member.familyMother ?: member.familyDaughter ?: member.familySon
 			person.fullName = member.firstName + " " + family.lastName 
-		}
+		}		
 	}
 }
+
 routine deletePerson(families::Member member) {
 	match {		
 		val person = retrieve persons::Person corresponding to member
