@@ -48,10 +48,10 @@ routine createPerson(insurance::InsuranceClient client) {
 	}
 	action{
 		call {
-			if (client.gender == Gender.MALE) {
-				createMalePerson(client)
-			} else {
-				createFemalePerson(client)
+			switch client.gender {
+				case Gender.MALE : createMalePerson(client)
+				case Gender.FEMALE : createFemalePerson(client)
+				default : throw new IllegalArgumentException("Unknown gender for persons")
 			}
 		}
 	}
@@ -114,12 +114,18 @@ routine changeGender(insurance::InsuranceClient client) {
 	}
 	action{
 		call {
-			if (client.gender == Gender.MALE && !(person instanceof Male)) {
-				deletePerson(client)
-				createMalePerson(client)
-			} else if (client.gender == Gender.FEMALE && !(person instanceof Female)) {
-				deletePerson(client)
-				createFemalePerson(client)
+			switch client.gender {
+				case Gender.MALE :
+					if (!(person instanceof Male)) {
+						deletePerson(client)
+						createMalePerson(client)
+					}
+				case Gender.FEMALE :
+					if (!(person instanceof Female)) {
+						deletePerson(client)
+						createFemalePerson(client)
+					}
+				default : throw new IllegalArgumentException("Gender of client is unknown.")
 			}
 		}
 	}

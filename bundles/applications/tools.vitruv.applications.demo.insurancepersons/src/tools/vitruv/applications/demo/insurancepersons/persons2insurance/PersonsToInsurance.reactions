@@ -1,5 +1,6 @@
 import edu.kit.ipd.sdq.metamodels.insurance.Gender
 import edu.kit.ipd.sdq.metamodels.persons.Male
+import edu.kit.ipd.sdq.metamodels.persons.Female
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance
@@ -49,11 +50,10 @@ routine createInsuranceClient(persons::Person person) {
 	action{
 		val newClient = create insurance::InsuranceClient and initialize {
 			newClient.name = person.fullName
-			//newClient.socialSecurityNumber = 000
-			if (person instanceof Male) {
-				newClient.gender = Gender.MALE
-			} else {
-				newClient.gender = Gender.FEMALE
+			switch person {
+				case Male : newClient.gender = Gender.MALE
+				case Female : newClient.gender = Gender.FEMALE
+				default : throw new IllegalArgumentException("Unknown gender for client")
 			}
 		}
 		update insuranceDatabase {
