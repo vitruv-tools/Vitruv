@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,18 @@ import static java.util.Collections.emptyList;
 public class TestUserInteractionTest {
 	private static String DIALOG_TITLE = "test";
 
+	private TestUserInteraction testInteraction;
+
+	@BeforeEach
+	public void setupInteraction() {
+		testInteraction = new TestUserInteraction();
+	}
+
+	@AfterEach
+	public void assertAllInteractionOccurred() {
+		testInteraction.assertAllInteractionsOccurred();
+	}
+
 	@Nested
 	@DisplayName("text input")
 	class TextInput {
@@ -25,7 +39,6 @@ public class TestUserInteractionTest {
 		@DisplayName("required and provided a single time")
 		public void provideAndRequireSingleTime() {
 			String responseText = "response";
-			TestUserInteraction testInteraction = new TestUserInteraction();
 			testInteraction.onTextInput((description) -> description.getTitle().equals(DIALOG_TITLE))
 					.respondWith(responseText);
 			UserInteractor userInteractor = generateInteractor(testInteraction);
@@ -37,7 +50,6 @@ public class TestUserInteractionTest {
 		@DisplayName("required and provided multiple times")
 		public void provideAndRequireMultipleTimes() {
 			String responseText = "response";
-			TestUserInteraction testInteraction = new TestUserInteraction();
 			testInteraction.onTextInput((description) -> description.getTitle().equals(DIALOG_TITLE)).always()
 					.respondWith(responseText);
 			UserInteractor userInteractor = generateInteractor(testInteraction);
@@ -50,7 +62,6 @@ public class TestUserInteractionTest {
 		@DisplayName("required multiple but provided a single time")
 		public void provideSingleButRequireMultipleTimes() {
 			String responseText = "response";
-			TestUserInteraction testInteraction = new TestUserInteraction();
 			testInteraction.onTextInput((description) -> description.getTitle().equals(DIALOG_TITLE))
 					.respondWith(responseText);
 			UserInteractor userInteractor = generateInteractor(testInteraction);
@@ -66,7 +77,6 @@ public class TestUserInteractionTest {
 		@Test
 		@DisplayName("required and provided a single time")
 		public void provideAndRequireSingleTime() {
-			TestUserInteraction testInteraction = new TestUserInteraction();
 			testInteraction.onConfirmation((description) -> description.getTitle().equals(DIALOG_TITLE))
 					.respondWith(true);
 			UserInteractor userInteractor = generateInteractor(testInteraction);
@@ -77,7 +87,6 @@ public class TestUserInteractionTest {
 		@Test
 		@DisplayName("required and provided multiple times")
 		public void provideAndRequireMultipleTimes() {
-			TestUserInteraction testInteraction = new TestUserInteraction();
 			testInteraction.onConfirmation((description) -> description.getTitle().equals(DIALOG_TITLE)).always()
 					.respondWith(true);
 			UserInteractor userInteractor = generateInteractor(testInteraction);
@@ -89,7 +98,6 @@ public class TestUserInteractionTest {
 		@Test
 		@DisplayName("required multiple but provided a single time")
 		public void provideSingleButRequireMultipleTimes() {
-			TestUserInteraction testInteraction = new TestUserInteraction();
 			testInteraction.onConfirmation((description) -> description.getTitle().equals(DIALOG_TITLE))
 					.respondWith(true);
 			UserInteractor userInteractor = generateInteractor(testInteraction);
@@ -110,7 +118,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireSingleTime() {
 				String response = "selectedItem";
 				List<String> choices = List.of("dummy", response);
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceSingleSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWith(response);
@@ -124,7 +131,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireMultipleTimes() {
 				String response = "selectedItem";
 				List<String> choices = List.of("dummy", response);
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceSingleSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.always().respondWith(response);
@@ -140,7 +146,6 @@ public class TestUserInteractionTest {
 			public void provideSingleButRequireMultipleTimes() {
 				String response = "selectedItem";
 				List<String> choices = List.of("dummy", response);
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceSingleSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWith(response);
@@ -160,7 +165,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireSingleTime() {
 				int selectedIndex = 1;
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceSingleSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWithChoiceAt(selectedIndex);
@@ -174,7 +178,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireMultipleTimes() {
 				int selectedIndex = 1;
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceSingleSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.always().respondWithChoiceAt(selectedIndex);
@@ -190,7 +193,6 @@ public class TestUserInteractionTest {
 			public void provideSingleButRequireMultipleTimes() {
 				int selectedIndex = 1;
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceSingleSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWithChoiceAt(selectedIndex);
@@ -213,7 +215,6 @@ public class TestUserInteractionTest {
 			@DisplayName("required and provided a single time")
 			public void provideAndRequireSingleTime() {
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWith(emptySet());
@@ -226,7 +227,6 @@ public class TestUserInteractionTest {
 			@DisplayName("required and provided multiple times")
 			public void provideAndRequireMultipleTimes() {
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.always().respondWith(new String[] {});
@@ -241,7 +241,6 @@ public class TestUserInteractionTest {
 			@DisplayName("required multiple but provided a single time")
 			public void provideSingleButRequireMultipleTimes() {
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWith(new String[] {});
@@ -261,7 +260,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireSingleTime() {
 				int response = 0;
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWithChoicesAt(new int[] { response });
@@ -275,7 +273,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireMultipleTimes() {
 				int response = 0;
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.always().respondWithChoicesAt(new int[] { response });
@@ -291,7 +288,6 @@ public class TestUserInteractionTest {
 			public void provideSingleButRequireMultipleTimes() {
 				int response = 0;
 				List<String> choices = List.of("firstDummy", "secondDummy");
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWithChoicesAt(new int[] { response });
@@ -311,7 +307,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireSingleTime() {
 				String response = "selectedItem";
 				List<String> choices = List.of("firstDummy", response);
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWith(new String[] { response });
@@ -325,7 +320,6 @@ public class TestUserInteractionTest {
 			public void provideAndRequireMultipleTimes() {
 				String response = "selectedItem";
 				List<String> choices = List.of("dummy", response);
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.always().respondWith(new String[] { response });
@@ -341,7 +335,6 @@ public class TestUserInteractionTest {
 			public void provideSingleButRequireMultipleTimes() {
 				String response = "selectedItem";
 				List<String> choices = List.of("dummy", response);
-				TestUserInteraction testInteraction = new TestUserInteraction();
 				testInteraction
 						.onMultipleChoiceMultiSelection((description) -> description.getTitle().equals(DIALOG_TITLE))
 						.respondWith(new String[] { response });
