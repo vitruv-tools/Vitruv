@@ -121,17 +121,28 @@ class TestUserInteraction {
 		onMultipleChoiceMultiSelection [true]
 	}
 
+	/**
+	 * Validates that all interactions, to which responses have been defined, have occurred. Otherwise, 
+	 * an {@link AssertionError} is thrown. Responses that have been defined for all occurrences of the 
+	 * same interaction by calling an {@code always} method of the builder will not be considered. 
+	 */
 	def assertAllInteractionsOccurred() {
-		val interactionsLeft = confirmations.size + notificationReactions.size + textInputs.size +
-			multipleChoices.size + multipleChoiceMultipleSelections.size
+		val nonRepeatedConfirmations = confirmations.filter[!repeatedly]
+		val nonRepeatedNotifications = notificationReactions.filter[!repeatedly]
+		val nonRepeatedTextInputs = textInputs.filter[!repeatedly]
+		val nonRepeatedMultipleChoices = multipleChoices.filter[!repeatedly]
+		val nonRepeatedMultipleChoiceMultipleSelections = multipleChoiceMultipleSelections.filter[!repeatedly]
+		val interactionsLeft = nonRepeatedConfirmations.size + nonRepeatedNotifications.size +
+			nonRepeatedTextInputs.size + nonRepeatedMultipleChoices.size +
+			nonRepeatedMultipleChoiceMultipleSelections.size
 		if (interactionsLeft > 0) {
 			val resultMessage = new StringBuilder()
 			resultMessage.joinSemantic(List.<Pair<String, Collection<?>>>of(
-				"confirmation" -> confirmations,
-				"notification" -> notificationReactions,
-				"text input" -> textInputs,
-				"single selection" -> multipleChoices,
-				"multi selection" -> multipleChoiceMultipleSelections
+				"confirmation" -> nonRepeatedConfirmations.toList,
+				"notification" -> nonRepeatedNotifications.toList,
+				"text input" -> nonRepeatedTextInputs.toList,
+				"single selection" -> nonRepeatedMultipleChoices.toList,
+				"multi selection" -> nonRepeatedMultipleChoiceMultipleSelections.toList
 			).filter[!value.isEmpty].toList, 'and') [
 				resultMessage.append(value.size).append(' ').append(plural(value, key))
 			].append(' ').append(if(interactionsLeft === 1) 'was' else 'were').append(' expected but did not occur!')
