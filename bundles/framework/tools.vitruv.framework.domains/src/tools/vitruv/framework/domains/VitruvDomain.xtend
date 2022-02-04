@@ -31,11 +31,4 @@ interface VitruvDomain {
 	 * specifications.
 	 */
 	def boolean shouldTransitivelyPropagateChanges()
-
-	/**
-	 * Returns the state change propagation strategy responsible for the
-	 * propagation of state diff based changes. 
-	 */
-	def StateBasedChangeResolutionStrategy getStateChangePropagationStrategy()
-
 }

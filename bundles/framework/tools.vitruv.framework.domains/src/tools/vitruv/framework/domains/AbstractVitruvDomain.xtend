@@ -20,7 +20,6 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 	Set<EPackage> furtherRootPackages
 	Map<Object, Object> defaultLoadOptions
 	Map<Object, Object> defaultSaveOptions
-	DefaultStateBasedChangeResolutionStrategy stateChangePropagationStrategy
 
 	/**
 	 * Returns the namespace URI of the given {@link EPackage} and all subpackages.
@@ -49,11 +48,6 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		this.nsURIs = (metamodelRootPackage.nsURIsRecursive + furtherRootPackages.map[nsURIsRecursive].flatten).toSet
 		this.defaultLoadOptions = new HashMap(defaultLoadOptions)
 		this.defaultSaveOptions = new HashMap(defaultSaveOptions)
-		stateChangePropagationStrategy = new DefaultStateBasedChangeResolutionStrategy()
-	}
-
-	override StateBasedChangeResolutionStrategy getStateChangePropagationStrategy() {
-		return stateChangePropagationStrategy
 	}
 
 	override getName() {
