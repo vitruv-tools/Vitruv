@@ -73,47 +73,6 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		val InsuranceDatabase castedInsuranceDatabase = insuranceDatabase as InsuranceDatabase
 		assertThat(castedInsuranceDatabase, equalsDeeply(expectedInsuranceDatabase))
 	}
-	
-	def void createPersonsAndPropagate() {
-		PersonRegister.from(PERSONS_MODEL).propagate [
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
-		]
-	}
-	
-	def createPersonsForTesting() {
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
-		]
-		return expectedPersonRegister
-	}
-	
-	def createClientsForTesting() {
-		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = MALE_NAME
-				gender = Gender.MALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = FEMALE_NAME
-				gender = Gender.FEMALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = MALE_NAME_2
-				gender = Gender.MALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = FEMALE_NAME_2
-				gender = Gender.FEMALE
-			]
-		]
-		return expectedInsuranceDatabase
-	}
 
 	@Test
 	def testCreatePersonsModel() {
@@ -126,10 +85,15 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testDeletePersonsRegister() {
-		this.createPersonsAndPropagate();
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
 		resourceAt(PERSONS_MODEL).propagate[contents.clear()]
 		assertEquals(0, resourceAt(INSURANCE_MODEL).contents.size())
 		assertEquals(0, resourceAt(PERSONS_MODEL).contents.size())
@@ -183,23 +147,49 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
 		]
-		
-		val InsuranceDatabase expectedInsuranceDatabase = createClientsForTesting()
-		val PersonRegister expectedPersonRegister = createPersonsForTesting()
-		
+
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME
+				gender = Gender.FEMALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = MALE_NAME_2
+				gender = Gender.MALE
+			]
+			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
+				name = FEMALE_NAME_2
+				gender = Gender.FEMALE
+			]
+		]
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testChangedFullName() {
-		createPersonsAndPropagate()
-		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME_2)]
 			searchedPerson.fullName = FEMALE_NAME_3
 		]
-		
+
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
@@ -227,16 +217,21 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testDeletedPerson_first_notOnly() {
-		createPersonsAndPropagate()
-		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedPerson = persons.findFirst[x|x.fullName.equals(MALE_NAME)]
 			persons.remove(searchedPerson)
 		]
-		
+
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
@@ -262,13 +257,18 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 
 	@Test
 	def void testDeletedPerson_middle_notOnly() {
-		createPersonsAndPropagate()
-		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME)]
 			persons.remove(searchedPerson)
 		]
-		
+
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
@@ -291,16 +291,21 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testDeletedPerson_last_notOnly() {
-		createPersonsAndPropagate()
-		
+		PersonRegister.from(PERSONS_MODEL).propagate [
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
+			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
+			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
+		]
+
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME_2)]
 			persons.remove(searchedPerson)
 		]
-		
+
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
@@ -323,25 +328,21 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testDeletedPerson_only() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 		]
-		
+
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedPerson = persons.findFirst[x|x.fullName.equals(MALE_NAME)]
 			persons.remove(searchedPerson)
 		]
-		
-		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-		]
-		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
-		]
+
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => []
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => []
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
 }
-
-	
