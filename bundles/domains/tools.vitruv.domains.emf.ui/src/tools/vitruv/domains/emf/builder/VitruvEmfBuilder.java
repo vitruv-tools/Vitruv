@@ -19,6 +19,9 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
+import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
@@ -216,19 +219,24 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
 
     enum FileChangeKind {
 		Create,
-		Delete		
+		Delete
 	}
     
     private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
         final String fileExtension = iResource.getFileExtension();
         if (getMonitoredFileExtensions().contains(fileExtension)) {
             final URI uri = createPlatformResourceURI(iResource);
+            StateBasedChangeResolutionStrategy strategy = new DefaultStateBasedChangeResolutionStrategy();
             switch (fileChangeKind) {
             	case Create:
-            		this.getVirtualModel().propagateChangedState(new ResourceSetImpl().getResource(uri, true));
+            		VitruviusChange change = strategy.getChangeSequenceForCreated(new ResourceSetImpl().getResource(uri, true));
+            		this.getVirtualModel().propagateChange(change);
             		break;
             	case Delete:
-            		this.getVirtualModel().propagateChangedState(null, uri);
+            		//TODO: handle deleted files
+            		//to handle deleted files, the old state of the deleted resource needs to be made available
+//            		VitruviusChange change = strategy.getChangeSequenceForDeleted(iResource);
+//            		this.getVirtualModel().propagateChange(change);
             		break;
             }
         }
