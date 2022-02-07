@@ -51,14 +51,14 @@ routine createInsuranceClient(persons::Person person) {
 		val newClient = create insurance::InsuranceClient and initialize {
 			newClient.name = person.fullName
 			switch person {
-				case Male : newClient.gender = Gender.MALE
-				case Female : newClient.gender = Gender.FEMALE
-				default : throw new IllegalArgumentException("Unknown gender for client")
+				Male : newClient.gender = Gender.MALE
+				Female : newClient.gender = Gender.FEMALE
+				default : throw new IllegalArgumentException("Gender of client is unknown.")
 			}
 		}
 		update insuranceDatabase {
 			insuranceDatabase.insuranceclient += newClient
-			}
+		}
 		add correspondence between person and newClient
 		
 	}
