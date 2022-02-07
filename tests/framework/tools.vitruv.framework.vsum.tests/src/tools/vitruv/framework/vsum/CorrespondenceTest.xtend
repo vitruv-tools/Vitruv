@@ -135,8 +135,7 @@ class CorrespondenceTest {
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg))
-		removePkgFromFile(pkg, vsum)
-		saveUPackageInNewFile(pkg, vsum)
+		saveUPackageInNewFile(vsum)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
@@ -175,21 +174,17 @@ class CorrespondenceTest {
         ]
 	}
 
-	def private void saveUPackageInNewFile(UPackage pkg, InternalVirtualModel vsum) {
+	def private void saveUPackageInNewFile(InternalVirtualModel vsum) {
 		val newURI = getNewUMLInstanceURI()
 		changeUmlView(vsum) [
+		    val pkg = rootObjects.filter(UPackage).head
+		    EcoreUtil.delete(pkg)
 		    registerRoot(pkg, newURI)
 		]
 	}
 
 	def private URI getNewUMLInstanceURI() {
 		return URI.createFileURI('''«currentProjectModelFolder»/MyNewUML.uml_mockup''')
-	}
-
-	def private void removePkgFromFile(UPackage pkg, InternalVirtualModel vsum) {
-	    changeUmlView(vsum) [
-            EcoreUtil.remove(pkg)
-        ]
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
