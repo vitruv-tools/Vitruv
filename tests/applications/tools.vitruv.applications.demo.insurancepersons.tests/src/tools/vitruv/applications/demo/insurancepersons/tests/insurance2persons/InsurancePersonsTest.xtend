@@ -77,9 +77,14 @@ class InsurancePersonsTest extends VitruvApplicationTest {
 	def void testCreateInsuranceDatabase() {
 		assertThat(resourceAt(INSURANCE_MODEL), exists)
 		assertThat(resourceAt(PERSONS_MODEL), exists)
-		//TODO
+
+		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => []
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => []
+
+		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
+		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testDeleteInsuranceDatabase() {
 		InsuranceDatabase.from(INSURANCE_MODEL).propagate [
