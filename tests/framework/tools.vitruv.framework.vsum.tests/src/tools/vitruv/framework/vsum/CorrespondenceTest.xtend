@@ -1,42 +1,41 @@
 package tools.vitruv.framework.vsum
 
+import java.nio.file.Path
 import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.PInterface
+import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.framework.views.View
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone
+import tools.vitruv.testutils.TestLogging
+import tools.vitruv.testutils.TestProject
+import tools.vitruv.testutils.TestProjectManager
+import tools.vitruv.testutils.TestViewFactory
+import tools.vitruv.testutils.domains.PcmMockupDomainProvider
+import tools.vitruv.testutils.domains.UmlMockupDomainProvider
 import uml_mockup.UInterface
 import uml_mockup.UPackage
+import uml_mockup.Uml_mockupFactory
 
+import static org.hamcrest.CoreMatchers.instanceOf
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
-import org.junit.jupiter.api.Test
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.junit.jupiter.api.BeforeEach
-import tools.vitruv.testutils.domains.PcmMockupDomainProvider
-import tools.vitruv.testutils.TestProject
-import java.nio.file.Path
-import tools.vitruv.testutils.domains.UmlMockupDomainProvider
-import uml_mockup.Uml_mockupFactory
-import tools.vitruv.framework.vsum.VirtualModelBuilder
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
-import pcm_mockup.Pcm_mockupFactory
-import tools.vitruv.testutils.TestLogging
-import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.testutils.TestProjectManager
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import static org.hamcrest.CoreMatchers.instanceOf
-import static org.hamcrest.MatcherAssert.assertThat
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 class CorrespondenceTest {
@@ -66,7 +65,7 @@ class CorrespondenceTest {
 		return currentProjectModelFolder.resolve("NewPCMInstance.pcm_mockup").toFile().createFileURI()
 	}
 
-	private def URI getAlterantiveUMLInstanceURI() {
+	private def URI getAlternativeUMLInstanceURI() {
 		return currentProjectModelFolder.resolve("NewUMLInstance.uml_mockup").toFile().createFileURI()
 	}
 
@@ -91,19 +90,19 @@ class CorrespondenceTest {
 	}
 
 	private def void createMockupModels(URI pcmModelUri, URI umlModelUri, InternalVirtualModel vsum) {
-		val pcmResource = new ResourceSetImpl().createResource(pcmModelUri)
-		val repo = Pcm_mockupFactory.eINSTANCE.createRepository()
-		repo.interfaces += Pcm_mockupFactory.eINSTANCE.createPInterface()
-		repo.components += Pcm_mockupFactory.eINSTANCE.createComponent()
-		pcmResource.contents += repo
-		vsum.propagateChangedState(pcmResource)
-		
-		val umlResource = new ResourceSetImpl().createResource(umlModelUri)
-		val pckg = Uml_mockupFactory.eINSTANCE.createUPackage()
-		pckg.interfaces += Uml_mockupFactory.eINSTANCE.createUInterface()
-		pckg.classes += Uml_mockupFactory.eINSTANCE.createUClass()
-		umlResource.contents += pckg
-		vsum.propagateChangedState(umlResource)
+	    changePcmView(vsum) [
+	        val repo = Pcm_mockupFactory.eINSTANCE.createRepository()
+	        registerRoot(repo, pcmModelUri)
+	        repo.interfaces += Pcm_mockupFactory.eINSTANCE.createPInterface()
+            repo.components += Pcm_mockupFactory.eINSTANCE.createComponent()
+	    ]
+
+	    changeUmlView(vsum) [
+	        val pckg = Uml_mockupFactory.eINSTANCE.createUPackage()
+	        registerRoot(pckg, umlModelUri)
+	        pckg.interfaces += Uml_mockupFactory.eINSTANCE.createUInterface()
+            pckg.classes += Uml_mockupFactory.eINSTANCE.createUClass()
+	    ]
 	}
 
 
@@ -136,8 +135,8 @@ class CorrespondenceTest {
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg))
-		removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
-		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
+		removePkgFromFile(pkg, vsum)
+		saveUPackageInNewFile(pkg, vsum)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
@@ -149,7 +148,7 @@ class CorrespondenceTest {
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg)) // execute the test
-		moveUMLPackageTo(pkg, vsum, correspondenceModel)
+		moveUMLPackage(vsum)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
@@ -168,24 +167,29 @@ class CorrespondenceTest {
 
 	}
 
-	def private void moveUMLPackageTo(UPackage pkg, InternalVirtualModel vsum,
-		CorrespondenceModel correspondenceModel) {
-		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
+	def private void moveUMLPackage(InternalVirtualModel vsum) {
+		val newURI = getNewUMLInstanceURI()
+        changeUmlView(vsum) [
+            val pkg = rootObjects.filter(UPackage).head
+            moveRoot(pkg, newURI)
+        ]
 	}
 
-	def private void saveUPackageInNewFileAndUpdateCorrespondence(InternalVirtualModel vsum, UPackage pkg,
-		CorrespondenceModel correspondenceModel) {
-		val resource = new ResourceSetImpl().createResource(getNewUMLInstanceURI())
-		resource.contents += pkg
-		vsum.propagateChangedState(resource)
+	def private void saveUPackageInNewFile(UPackage pkg, InternalVirtualModel vsum) {
+		val newURI = getNewUMLInstanceURI()
+		changeUmlView(vsum) [
+		    registerRoot(pkg, newURI)
+		]
 	}
 
 	def private URI getNewUMLInstanceURI() {
 		return URI.createFileURI('''«currentProjectModelFolder»/MyNewUML.uml_mockup''')
 	}
 
-	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg, CorrespondenceModel correspondenceModel) {
-		EcoreUtil.remove(pkg)
+	def private void removePkgFromFile(UPackage pkg, InternalVirtualModel vsum) {
+	    changeUmlView(vsum) [
+            EcoreUtil.remove(pkg)
+        ]
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
@@ -196,9 +200,9 @@ class CorrespondenceTest {
 		assertNotNull(corresp, "Correspondence instance is null")
 		// create a new vsum from disk and load correspondence instance from disk
 		val InternalVirtualModel vsum2 = createAlternativeVirtualModelAndModelInstances(alternativePcmInstanceURI,
-			alterantiveUMLInstanceURI)
+			alternativeUMLInstanceURI)
 		val Repository repo2 = testLoadObject(vsum2, alternativePcmInstanceURI, Repository)
-		val UPackage pkg2 = testLoadObject(vsum2, alterantiveUMLInstanceURI, UPackage)
+		val UPackage pkg2 = testLoadObject(vsum2, alternativeUMLInstanceURI, UPackage)
 		val CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
 		corresp2.createAndAddCorrespondence(List.of(repo2), List.of(pkg2))
 		assertTrue(corresp2.hasCorrespondences()) // obtain
@@ -306,5 +310,15 @@ class CorrespondenceTest {
 		val Set<EObject> correspForPkg = corresp.getCorrespondingEObjects(pkg)
 		assertTrue(correspForPkg.isEmpty())
 	}
+	
+	private def void changePcmView(InternalVirtualModel vsum, (View)=>void modelModification) {
+	    val factory = new TestViewFactory(vsum)
+        factory.changeView(factory.createViewOfElements("PCM", #{Repository}), modelModification)
+    }
+    
+    private def void changeUmlView(InternalVirtualModel vsum, (View)=>void modelModification) {
+        val factory = new TestViewFactory(vsum)
+        factory.changeView(factory.createViewOfElements("UML", #{UPackage}), modelModification)
+    }
 
 }
