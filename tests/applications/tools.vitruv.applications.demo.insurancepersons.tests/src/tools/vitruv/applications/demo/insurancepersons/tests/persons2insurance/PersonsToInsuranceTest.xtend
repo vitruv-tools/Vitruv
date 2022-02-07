@@ -20,7 +20,6 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
-
 class PersonsToInsuranceTest extends VitruvApplicationTest {
 	static val MALE_NAME = "Max Mustermann"
 	static val MALE_NAME_2 = "Bernd Mustermann"
@@ -50,7 +49,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertThat(resourceAt(INSURANCE_MODEL).contents.head, instanceOf(InsuranceDatabase));
 		assertEquals(0, resourceAt(INSURANCE_MODEL).contents.head.eAllContents().size);
 	}
-	
+
 	/**Check if the actual {@link PersonRegister} looks like the expected one.
 	 */
 	def void assertCorrectPersonRegister(PersonRegister expectedPersonRegister) {
@@ -62,7 +61,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		val PersonRegister castedPersonRegister = personRegister as PersonRegister
 		assertThat(castedPersonRegister, equalsDeeply(expectedPersonRegister))
 	}
-	
+
 	/**Check if the actual {@link InsuranceDatabase} looks like the expected one.
 	 */
 	def void assertCorrectInsuranceDatabase(InsuranceDatabase expectedInsuranceDatabase) {
@@ -138,7 +137,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 		]
-		
+
 		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
 			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
 				name = MALE_NAME
@@ -151,13 +150,13 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testCreatedPerson_female_emptyDatabase() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
 		]
-		
+
 		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
 			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
 				name = FEMALE_NAME
@@ -170,7 +169,7 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		assertCorrectInsuranceDatabase(expectedInsuranceDatabase)
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
-	
+
 	@Test
 	def void testCreatedPerson_multiple() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
