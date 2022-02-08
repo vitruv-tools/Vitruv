@@ -23,6 +23,9 @@ import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
+import tools.vitruv.framework.vsum.internal.ModelInstance;
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
 
@@ -229,14 +232,13 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
             StateBasedChangeResolutionStrategy strategy = new DefaultStateBasedChangeResolutionStrategy();
             switch (fileChangeKind) {
             	case Create:
-            		VitruviusChange change = strategy.getChangeSequenceForCreated(new ResourceSetImpl().getResource(uri, true));
-            		this.getVirtualModel().propagateChange(change);
+            		VitruviusChange createdChange = strategy.getChangeSequenceForCreated(new ResourceSetImpl().getResource(uri, true));
+            		this.getVirtualModel().propagateChange(createdChange);
             		break;
             	case Delete:
-            		//TODO: handle deleted files
-            		//to handle deleted files, the old state of the deleted resource needs to be made available
-//            		VitruviusChange change = strategy.getChangeSequenceForDeleted(iResource);
-//            		this.getVirtualModel().propagateChange(change);
+            		ModelInstance oldModelInstance = ((InternalVirtualModel)this.getVirtualModel()).getModelInstance(uri);
+            		VitruviusChange deletedChange = strategy.getChangeSequenceForDeleted(oldModelInstance.getResource());
+            		this.getVirtualModel().propagateChange(deletedChange);
             		break;
             }
         }
