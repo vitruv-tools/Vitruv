@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.impl;
+package tools.vitruv.framework.views.impl;
 
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -34,9 +34,9 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.change.echange.root.RootFactory;
 import tools.vitruv.framework.change.echange.root.RootPackage;
-import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy;
-import tools.vitruv.framework.vsum.views.ChangeableViewSource;
-import tools.vitruv.framework.vsum.views.ModifiableViewSelection;
+import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.ChangeableViewSource;
+import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;;
 

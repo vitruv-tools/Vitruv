@@ -20,8 +20,8 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitr
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy;
-import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
 import tools.vitruv.framework.vsum.internal.ModelInstance;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;

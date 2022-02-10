@@ -1,4 +1,4 @@
-package tools.vitruv.framework.domains
+package tools.vitruv.framework.views.changederivation
 
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.BasicMonitor

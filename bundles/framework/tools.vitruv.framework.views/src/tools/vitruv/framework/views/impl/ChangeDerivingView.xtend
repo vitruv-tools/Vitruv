@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.views.impl
+package tools.vitruv.framework.views.impl
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -6,11 +6,11 @@ import java.util.HashSet
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
-import tools.vitruv.framework.vsum.views.ChangeableViewSource
-import tools.vitruv.framework.vsum.views.View
-import tools.vitruv.framework.vsum.views.ViewSelection
-import tools.vitruv.framework.vsum.views.ViewSelector
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.framework.views.ChangeableViewSource
+import tools.vitruv.framework.views.View
+import tools.vitruv.framework.views.ViewSelection
+import tools.vitruv.framework.views.ViewSelector
 
 import static com.google.common.base.Preconditions.checkArgument
 

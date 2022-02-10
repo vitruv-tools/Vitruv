@@ -10,7 +10,6 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
  tools.vitruv.framework.change,
  tools.vitruv.framework.util;visibility:=reexport,
- org.eclipse.emf.compare,
  org.eclipse.core.runtime,
  edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy

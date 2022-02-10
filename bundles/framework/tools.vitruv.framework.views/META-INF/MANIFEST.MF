@@ -8,7 +8,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.domains,
  tools.vitruv.framework.change,
+ org.eclipse.emf.compare,
  org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.activextendannotations
-Export-Package: tools.vitruv.framework.views
+Export-Package: tools.vitruv.framework.views,
+ tools.vitruv.framework.views.changederivation
 Bundle-Vendor: vitruv.tools
