@@ -1,12 +1,11 @@
 import edu.kit.ipd.sdq.metamodels.families.Family
 import edu.kit.ipd.sdq.metamodels.persons.Male
-import java.util.ArrayList
-import java.util.Collection
-import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
-import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.stringifyFamily
-import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askForParentOrChild
+
+import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
 import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.getMatchingFamilies
-import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askForFamilySelection
+import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.getFamiliesWithoutParent
+import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askUserWhichFamilyToInsertTheMemberIn
+import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.doesUserPreferChildOverParent
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -26,7 +25,7 @@ routine createFamilyRegister(persons::PersonRegister personRegister) {
 		val familyRegister = create families::FamilyRegister and initialize {
 			persistProjectRelative(personRegister, familyRegister, "model/families.families")
 		}
-		add correspondence between familyRegister and personRegister tagged with "PersonRegister-FamilyRegister"
+		add correspondence between familyRegister and personRegister
 	}
 }
 
@@ -54,16 +53,11 @@ reaction CreatedPerson {
 routine insertAsParentOrChild(persons::Person newPerson) {
 	action {
 		call {
-			val boolean decidedChild = askForParentOrChild(userInteractor)
+			val boolean decidedChild = doesUserPreferChildOverParent(userInteractor, newPerson)
 			if (decidedChild) {
 				createChild(newPerson)
 			} else {
 				createParent(newPerson)
-			}
-			val x = correspondenceModel.getCorrespondences(#[newPerson], "Person-Member")
-			val y = correspondenceModel.getCorrespondences(#[newPerson], "Person-Family")			
-			if (x.size !== 1 || y.size !== 1) {
-				return
 			}
 		}
 	}
@@ -75,8 +69,8 @@ routine createChild(persons::Person newPerson) {
 	}
 	action {
 		call {
-			var Iterable<Family> matchingFamilies = getMatchingFamilies(newPerson, familiesRegister, true)
-			var Family chosenFamily = if (matchingFamilies.empty) null else askForFamilySelection(userInteractor, newPerson, matchingFamilies)
+			var Iterable<Family> matchingFamilies = getMatchingFamilies(familiesRegister, newPerson)			
+			var Family chosenFamily = if (matchingFamilies.empty) null else askUserWhichFamilyToInsertTheMemberIn(userInteractor, newPerson, matchingFamilies)
 			if (chosenFamily === null) {
 				createChildInNewFamily(newPerson)
 			} else {
@@ -92,8 +86,8 @@ routine createParent(persons::Person newPerson) {
 	}
 	action {
 		call {
-			var Iterable<Family> matchingFamilies = getMatchingFamilies(newPerson, familiesRegister, false)
-			var Family chosenFamily = if (matchingFamilies.empty) null else askForFamilySelection(userInteractor, newPerson, matchingFamilies)
+			var Iterable<Family> matchingFamilies = getFamiliesWithoutParent(getMatchingFamilies(familiesRegister, newPerson), newPerson)
+			var Family chosenFamily = if (matchingFamilies.empty) null else askUserWhichFamilyToInsertTheMemberIn(userInteractor, newPerson, matchingFamilies)
 			if (chosenFamily === null) {
 				createParentInNewFamily(newPerson)
 			} else {
@@ -109,8 +103,11 @@ routine moveExistingMemberToDifferentFamily(persons::Person newPerson, Boolean i
 	}
 	action {
 		call {
-			var Iterable<Family> matchingFamilies = getMatchingFamilies(newPerson, familiesRegister, isChild)
-			var Family chosenFamily = if (matchingFamilies.empty) null else askForFamilySelection(userInteractor, newPerson, matchingFamilies)
+			var Iterable<Family> matchingFamilies = getMatchingFamilies(familiesRegister, newPerson)
+			if (!isChild) {
+				matchingFamilies = getFamiliesWithoutParent(matchingFamilies, newPerson)
+			}
+			var Family chosenFamily = if (matchingFamilies.empty) null else askUserWhichFamilyToInsertTheMemberIn(userInteractor, newPerson, matchingFamilies)
 			if (chosenFamily === null) {
 				moveMemberToNewFamily(newPerson, member, isChild)
 			} else {
@@ -146,8 +143,8 @@ routine createChildInExistingFamily(persons::Person newPerson, families::Family 
 				family.daughters += newMember
 			}
 		}
-		add correspondence between newPerson and family tagged with "Person-Family"
-		add correspondence between newPerson and newMember tagged with "Person-Member"
+		add correspondence between newPerson and family
+		add correspondence between newPerson and newMember
 	}
 }
 
@@ -177,8 +174,8 @@ routine createParentInExistingFamily(persons::Person newPerson, families::Family
 				family.mother = newMember
 			}
 		}
-		add correspondence between newPerson and family tagged with "Person-Family"
-		add correspondence between newPerson and newMember tagged with "Person-Member"
+		add correspondence between newPerson and family
+		add correspondence between newPerson and newMember
 	}
 }
 
@@ -214,7 +211,7 @@ routine moveMemberToExistingFamily(persons::Person newPerson, families::Member m
 				}
 			}
 		}
-		add correspondence between newPerson and family tagged with "Person-Family"
+		add correspondence between newPerson and family
 		//correspondence between newPerson and member does already exist
 	}
 }
@@ -241,35 +238,20 @@ routine changeNames(persons::Person person) {
 		call {
 			val String newLastname = person.fullName.split(" ").last
 			if (!newLastname.equals(family.lastName)) {
-				applyNewLastnameToMember(person, newLastname)
-			}
-		}
-		call {			
-			val x = correspondenceModel.getCorrespondences(#[person], "Person-Member")
-			val y = correspondenceModel.getCorrespondences(#[person], "Person-Family")			
-			if (x.size !== 1 || y.size !== 1) {
-				return
+				renameFamilyOrMoveMemberToAMatchingFamily(person, newLastname)
 			}
 		}
 	}
 }
 
-routine applyNewLastnameToMember(persons::Person person, String newLastname) {
+routine renameFamilyOrMoveMemberToAMatchingFamily(persons::Person person, String newLastname) {
 	match {
 		val oldFamily = retrieve families::Family corresponding to person
 		val member = retrieve families::Member corresponding to person
 	}
 	action {
-		call {
-			var int numberOfMembers = oldFamily.sons.size + oldFamily.daughters.size
-			if (oldFamily.father !== null) {
-				numberOfMembers += 1
-			}
-			if (oldFamily.mother !== null) {
-				numberOfMembers += 1
-			}
-			
-			if (numberOfMembers == 1) {
+		call {			
+			if (oldFamily.members.size == 1) {
 				//just rename oldFamily
 				oldFamily.lastName = newLastname
 			} else {
@@ -301,13 +283,13 @@ routine moveRenamedMemberFromOldFamilyToOtherFamily(persons::Person person, Stri
 			}
 			moveExistingMemberToDifferentFamily(person, isChild, member)
 		}
-		remove correspondence between person and family tagged with "Person-Family"
+		remove correspondence between person and family
 	}
 }
 
 routine setMemberFirstName(families::Member member, String fullName) {
 	action {
-		call {
+		update member {
 			val Iterable<String> nameParts = fullName.split(" ")
 			var String firstName = null
 			if (nameParts.size() == 1) {
@@ -331,8 +313,8 @@ routine deleteMember(persons::Person person) {
 		val family = retrieve families::Family corresponding to person
 	}
 	action {
-		remove correspondence between person and family tagged with "Person-Family"
-		remove correspondence between person and member tagged with "Person-Member"
+		remove correspondence between person and family
+		remove correspondence between person and member
 		delete member
 		call deleteFamilyIfEmpty(family)
 	}
