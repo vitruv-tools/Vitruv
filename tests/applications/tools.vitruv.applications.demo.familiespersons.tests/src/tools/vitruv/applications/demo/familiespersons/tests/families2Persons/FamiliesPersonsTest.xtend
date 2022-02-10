@@ -31,20 +31,23 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.*
  */
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val logger = Logger.getLogger(FamiliesPersonsTest)
+	String nameOfTestMethod = null
 
-	// First Set of reused static strings
-	final static String LAST_NAME_1 = "Meier"
+	// First Set of reused static strings for the first names of the persons
 	final static String FIRST_DAD_1 = "Anton"
 	final static String FIRST_MOM_1 = "Berta"
 	final static String FIRST_SON_1 = "Chris"
 	final static String FIRST_DAU_1 = "Daria"
 
-	// Second Set of reused static strings
-	final static String LAST_NAME_2 = "Schulze"
+	// Second Set of reused static strings for the first names of the persons
 	final static String FIRST_DAD_2 = "Adam"
 	final static String FIRST_MOM_2 = "Birgit"
 	final static String FIRST_SON_2 = "Charles"
 	final static String FIRST_DAU_2 = "Daniela"
+
+	// Set of reused static strings for the last names of the persons
+	final static String LAST_NAME_1 = "Meier"
+	final static String LAST_NAME_2 = "Schulze"
 
 	// Model Paths
 	final static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
@@ -75,14 +78,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		return #[new FamiliesToPersonsChangePropagationSpecification(), new PersonsToFamiliesChangePropagationSpecification()]
 	}
 
-	TestInfo testInfo = null
-
 	/**Before each test a new {@link FamilyRegister} is created as starting point.
 	 * This is checked by several assertions to ensure correct preconditions for the tests. 
 	 */
 	@BeforeEach
 	def void insertRegister(TestInfo testInfo) {
-		this.testInfo = testInfo
+		this.nameOfTestMethod = testInfo.getDisplayName()
 		resourceAt(FAMILIES_MODEL).propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size)
@@ -101,15 +102,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testInsertNewFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		val family = createFamily(LAST_NAME_1)
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate[families += family]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()		
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 	
 	/**Check if the actual {@link FamilyRegister looks like the expected one.
@@ -140,82 +140,78 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testInsertFamilyWithFather() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		val family = createFamily(LAST_NAME_1)
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
 			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = FIRST_DAD_1 + " " + LAST_NAME_1 
 			]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Insert a new {@link Family} and insert a mother into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithMother() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		val family = createFamily(LAST_NAME_1)
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
 			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += MOM11
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Insert a new {@link Family} and insert a son into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithSon() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		val family = createFamily(LAST_NAME_1)
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
 			family.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += SON11
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Insert a new {@link Family} and insert a daughter into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithDaughter() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		val family = createFamily(LAST_NAME_1)
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families += family
 			family.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += DAU11
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**This is used to build the starting point for many other tests like deleting and renaming operations.
@@ -241,32 +237,30 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testDeleteFatherFromFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.father.firstName.equals(FIRST_DAD_1)
 			]
 			selectedFamily.father = null
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[MOM11, SON11, DAU11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Deletes a son from a {@link Family} and the corresponding {@link Male} from the {@link PersonRegister}.
 	 */
 	@Test
 	def void testDeleteSonFromFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.sons.exists[it.firstName.equals(FIRST_SON_1)]
@@ -274,44 +268,42 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			val sonToDelete = selectedFamily.sons.findFirst[it.firstName.equals(FIRST_SON_1)]
 			selectedFamily.sons.remove(sonToDelete)
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, MOM11, DAU11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Deletes a mother from a {@link Family} and the corresponding {@link Female} from the {@link PersonRegister}.
 	 */
 	@Test
 	def void testDeleteMotherFromFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.mother.firstName.equals(FIRST_MOM_1)
 			]
 			selectedFamily.mother = null
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, SON11, DAU11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Deletes a daughter from a {@link Family} and the corresponding {@link Female} from the {@link PersonRegister}.
 	 */
 	@Test
 	def void testDeleteDaughterFromFamily() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.daughters.exists[it.firstName.equals(FIRST_DAU_1)]
@@ -319,12 +311,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			val daughterToDelete = selectedFamily.daughters.findFirst[it.firstName.equals(FIRST_DAU_1)]
 			selectedFamily.daughters.remove(daughterToDelete)
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, MOM11, SON11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Changes the lastname of a {@link Family} and should edit the fullnames of
@@ -332,20 +324,19 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testChangeLastName() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
 			selectedFamily.lastName = LAST_NAME_2
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD12, MOM12, SON12, DAU12]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Changes the firstname of a father of a {@link Family} and should edit the 
@@ -353,22 +344,21 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testChangeFirstNameFather() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.father.firstName.equals(FIRST_DAD_1)
 			]
 			selectedFamily.father.firstName = FIRST_DAD_2
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD21, MOM11, SON11, DAU11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Changes the firstname of a son of a {@link Family} and should edit the 
@@ -376,10 +366,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testChangeFirstNameSon() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.sons.exists[y|y.firstName.equals(FIRST_SON_1)]
@@ -387,12 +376,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			val sonToChange = selectedFamily.sons.findFirst[it.firstName.equals(FIRST_SON_1)]
 			sonToChange.firstName = FIRST_SON_2
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, MOM11, SON21, DAU11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Changes the firstname of a mother of a {@link Family} and should edit the 
@@ -400,22 +389,21 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testChangeFirstNameMother() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.mother.firstName.equals(FIRST_MOM_1)
 			]
 			selectedFamily.mother.firstName = FIRST_MOM_2
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, MOM21, SON11, DAU11]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Changes the firstname of a daughter of a {@link Family} and should edit the 
@@ -423,10 +411,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testChangeFirstNameDaughter() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
 				it.lastName.equals(LAST_NAME_1) && it.daughters.exists[it.firstName.equals(FIRST_DAU_1)]
@@ -434,12 +421,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			val daughterToChange = selectedFamily.daughters.findFirst[it.firstName.equals(FIRST_DAU_1)]
 			daughterToChange.firstName = FIRST_DAU_2
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, MOM11, SON11, DAU21]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Tries to insert a new father into a {@link Family} which already has a father.
@@ -447,15 +434,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testInsertDadIfDadAlreadyExists() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
 			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
@@ -474,7 +460,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Tries to insert a new mother into a {@link Family} which already has a mother.
@@ -482,15 +468,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testInsertMomIfMomAlreadyExists() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
 			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += FamiliesFactory.eINSTANCE.createFamily => [
 				lastName = LAST_NAME_1
@@ -509,9 +494,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
-	
+		
 	/**Deletes all {@link Family}s with matching lastname from the {@link FamilyRegister}.
 	 * All {@link Member}s which were contained in these families will be deleted together
 	 * with there corresponding {@link Person}s in the {@link PersonRegister} as well.
@@ -520,19 +505,18 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testDeleteAllFamiliesWithMatchingName() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families.removeIf([it.lastName.equals(LAST_NAME_1)])
 		]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister()
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister()
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
 	/**Deletes the {@link FamilyRegister} with all its contents which leads to
@@ -540,16 +524,15 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	 */
 	@Test
 	def void testDeleteFamilyRegister() {
-		val String surroundingMethodName = this.testInfo.getDisplayName()
-		logger.trace(surroundingMethodName + " - begin")
+		logger.trace(nameOfTestMethod + " - begin")
 		this.createFamilyBeforeTesting()
-		logger.trace(surroundingMethodName + " - preparation done")
+		logger.trace(nameOfTestMethod + " - preparation done")
 		resourceAt(FAMILIES_MODEL).propagate[contents.clear()]
-		logger.trace(surroundingMethodName + " - propagation done")
+		logger.trace(nameOfTestMethod + " - propagation done")
 		assertEquals(0, resourceAt(FAMILIES_MODEL).contents.size())
 		assertEquals(0, resourceAt(PERSONS_MODEL).contents.size())
 		assertThat(resourceAt(FAMILIES_MODEL), not(exists))
 		assertThat(resourceAt(PERSONS_MODEL), not(exists))
-		logger.trace(surroundingMethodName + " - finished without errors")
+		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 }
