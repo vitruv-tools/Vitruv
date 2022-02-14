@@ -1,28 +1,29 @@
 package tools.vitruv.framework.vsum.internal
 
+import java.nio.file.Path
+import java.util.LinkedList
 import java.util.List
-import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
-import java.nio.file.Path
-import static com.google.common.base.Preconditions.checkNotNull
-import java.util.LinkedList
-import static com.google.common.base.Preconditions.checkArgument
-import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.vsum.internal.ChangePropagator
-import tools.vitruv.framework.vsum.views.ViewTypeRepository
-import tools.vitruv.framework.vsum.views.ViewType
-import tools.vitruv.framework.vsum.views.ViewSelector
-import tools.vitruv.framework.vsum.models.ChangePropagationListener
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.vsum.views.ViewTypeProvider
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.models.ChangePropagationListener
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
+import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import tools.vitruv.framework.views.ViewSelector
+import tools.vitruv.framework.views.ViewType
+import tools.vitruv.framework.views.ViewTypeProvider
+import tools.vitruv.framework.views.ViewTypeRepository
+import tools.vitruv.framework.vsum.VirtualModel
+import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
+
+import static com.google.common.base.Preconditions.checkArgument
+import static com.google.common.base.Preconditions.checkNotNull
+import static com.google.common.base.Preconditions.checkState
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)

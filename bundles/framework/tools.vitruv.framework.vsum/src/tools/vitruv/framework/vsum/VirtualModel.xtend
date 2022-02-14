@@ -1,9 +1,9 @@
 package tools.vitruv.framework.vsum
 
 import java.nio.file.Path
-import tools.vitruv.framework.vsum.views.ViewTypeProvider
-import tools.vitruv.framework.vsum.models.ChangeableModelRepository
-import tools.vitruv.framework.vsum.views.ViewProvider
+import tools.vitruv.framework.change.models.ChangeableModelRepository
+import tools.vitruv.framework.views.ViewProvider
+import tools.vitruv.framework.views.ViewTypeProvider
 
 interface VirtualModel extends ChangeableModelRepository, ViewProvider, ViewTypeProvider {
 	def Path getFolder()

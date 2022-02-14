@@ -1,6 +1,9 @@
 package tools.vitruv.framework.vsum
 
+import allElementTypes.Root
 import java.nio.file.Path
+import java.util.HashSet
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -11,10 +14,13 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.views.View
+import tools.vitruv.framework.views.ViewTypeFactory
 import tools.vitruv.framework.vsum.VirtualModelTestUtil.RedundancyChangePropagationSpecification
 import tools.vitruv.testutils.TestProject
 import tools.vitruv.testutils.TestProjectManager
 
+import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNotEquals
@@ -22,20 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
-import static extension tools.vitruv.framework.vsum.VirtualModelTestUtil.*
-import static org.hamcrest.MatcherAssert.assertThat
-import static org.hamcrest.CoreMatchers.*
-import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.vsum.VirtualModel
-import tools.vitruv.framework.vsum.views.View
-import tools.vitruv.framework.vsum.views.ViewTypeFactory
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.claimOne
-import allElementTypes.Root
-import java.util.HashSet
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
+import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import static extension tools.vitruv.framework.vsum.VirtualModelTestUtil.*
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
