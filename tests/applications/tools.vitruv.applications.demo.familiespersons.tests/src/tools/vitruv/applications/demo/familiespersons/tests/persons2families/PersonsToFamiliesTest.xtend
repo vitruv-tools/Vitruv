@@ -72,29 +72,35 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	}
 	
 	
-	var boolean preferParent = false	
-	def void decideParentOrChild(PositionPreference pref) {
+	var boolean preferParent = false
+	
+	def void decideParentOrChild(PositionPreference preference) {
 		val String parentChildTitle = "Parent or Child?"
-		this.preferParent = pref === PositionPreference.Parent
-		userInteraction.onMultipleChoiceSingleSelection[title.equals(parentChildTitle)].respondWithChoiceAt(if (pref === PositionPreference.Parent) 0 else 1)		
+		this.preferParent = preference === PositionPreference.Parent
+		userInteraction.onMultipleChoiceSingleSelection[title.equals(parentChildTitle)].respondWithChoiceAt(if (preference === PositionPreference.Parent) 0 else 1)		
 	}
-	def void decideNewOrExistingFamily(FamilyPreference pref) {
+	
+	def void decideNewOrExistingFamily(FamilyPreference preference) {
 		//If we want to insert in a new family, we choose 0 anyway
 		//If we choose an existing family, but do not specify in which,
 		//we probably want to choose the first one we find which is at index 1,
 		//since index 0 is to choose a new family  
-		decideNewOrExistingFamily(pref, if (pref === FamilyPreference.New) 0 else 1)
+		decideNewOrExistingFamily(preference, if (preference === FamilyPreference.New) 0 else 1)
 	}
 	
+	
 	val String newOrExistingFamilyTitle = "New or Existing Family?"
-	def void decideNewOrExistingFamily(FamilyPreference pref, int familyIndex) {		
-		userInteraction.onMultipleChoiceSingleSelection[assertFamilyOptions(it)].respondWithChoiceAt(if (pref === FamilyPreference.New) 0 else familyIndex)
-	}	
-	def boolean assertFamilyOptions(MultipleChoiceInteractionDescription mcid){
+	
+	def void decideNewOrExistingFamily(FamilyPreference preference, int familyIndex) {		
+		userInteraction
+			.onMultipleChoiceSingleSelection[assertFamilyOptions(it)]
+			.respondWithChoiceAt(if (preference === FamilyPreference.New) 0 else familyIndex)
+	}
 		
+	def boolean assertFamilyOptions(MultipleChoiceInteractionDescription interactionDescription){		
 		//First option is always a new family
-		assertEquals(mcid.choices.get(0), "insert in a new family")
-		val tail = mcid.choices.drop(1)
+		assertEquals(interactionDescription.choices.get(0), "insert in a new family")
+		val tail = interactionDescription.choices.drop(1)
 		//There must be a second option otherwise there would not be an interaction
 		assertTrue(tail.size > 0)
 		val familyName = tail.get(0).split(":").get(0) 
@@ -108,9 +114,10 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 			val noMothers = tail.forall[!it.matches(".*M:.*;.*")]
 			assertTrue(noFathers || noMothers)
 		}
-				
-		return mcid.title.equals(newOrExistingFamilyTitle)
+						
+		return interactionDescription.title.equals(newOrExistingFamilyTitle)
 	}
+
 
 	/**Before each test a new {@link PersonRegister} is created as starting point.
 	 * This is checked by several assertions to ensure correct preconditions for the tests. 
@@ -371,6 +378,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Father_AutomaticNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Father
+		decideParentOrChild(PositionPreference.Parent)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
@@ -409,6 +418,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Father_ChoosingNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Father
+		decideParentOrChild(PositionPreference.Parent)
 		// New Family
 		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -450,6 +461,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Father_ChoosingExistingFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Father
+		decideParentOrChild(PositionPreference.Parent)
 		// First existing Family
 		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -656,6 +669,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Son_AutomaticNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Son
+		decideParentOrChild(PositionPreference.Child)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
@@ -694,6 +709,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Son_ChoosingNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Son
+		decideParentOrChild(PositionPreference.Child)
 		// New Family
 		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -735,6 +752,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Son_ChoosingExistingFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Son
+		decideParentOrChild(PositionPreference.Child)
 		// First existing Family
 		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -944,6 +963,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Mother_AutomaticNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Mother
+		decideParentOrChild(PositionPreference.Parent)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
@@ -982,6 +1003,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Mother_ChoosingNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Mother
+		decideParentOrChild(PositionPreference.Parent)
 		// New Family
 		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -1023,6 +1046,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Mother_ChoosingExistingFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Mother
+		decideParentOrChild(PositionPreference.Parent)
 		// First existing Family
 		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -1229,6 +1254,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Daughter_AutomaticNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
@@ -1267,6 +1294,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Daughter_ChoosingNewFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
 		// New Family
 		decideNewOrExistingFamily(FamilyPreference.New)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -1308,6 +1337,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testRename_Daughter_ChoosingExistingFamily() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
 		// First existing Family
 		decideNewOrExistingFamily(FamilyPreference.Existing)
 		logger.trace(this.nameOfTestMethod + " - preparation done")
@@ -1342,6 +1373,44 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - finished without errors")
 	}
 
+	// ========== EXCEPTIONS ==========	
+	/**Test that error is thrown when trying to rename a {@link Person} with an empty name.
+	 */
+	@Test
+	def void testExceptionOnEmptyName() {
+		logger.trace(this.nameOfTestMethod + " - begin")
+		createFamiliesForTesting()
+		logger.trace(this.nameOfTestMethod + " - preparation done")
+		val thrownException = assertThrows(IllegalArgumentException, [
+			PersonRegister.from(PERSONS_MODEL).propagate [
+				val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+				searchedDad.fullName = ""
+			]
+		])
+		logger.trace(this.nameOfTestMethod + " - propagation done")
+		assertEquals(thrownException.message, "New name is not allowed to be empty.")
+		logger.trace(this.nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test that error is thrown when trying to rename a {@link Person} with an empty name.
+	 */
+	@Test
+	def void testExceptionOnNullName() {
+		logger.trace(this.nameOfTestMethod + " - begin")
+		createFamiliesForTesting()
+		logger.trace(this.nameOfTestMethod + " - preparation done")
+		val thrownException = assertThrows(IllegalArgumentException, [
+			PersonRegister.from(PERSONS_MODEL).propagate [
+				val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
+				searchedDad.fullName = null
+			]
+		])
+		logger.trace(this.nameOfTestMethod + " - propagation done")
+		assertEquals(thrownException.message, "New name is not allowed to be null.")
+		logger.trace(this.nameOfTestMethod + " - finished without errors")
+	}
+	
+	// ========== EDITING ==========
 	/**Test the renaming of the firstname of a single person which should
 	 * only effect this person and the corresponding {@link Member}.
 	 */
@@ -1350,20 +1419,34 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
 		logger.trace(this.nameOfTestMethod + " - preparation done")
+		
+		
+		// Father
+		decideParentOrChild(PositionPreference.Parent)
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
 			searchedDad.fullName = FIRST_DAD_2 + " " + LAST_NAME_1
-
+		]
+		// Mother
+		decideParentOrChild(PositionPreference.Parent)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
 			searchedMom.fullName = FIRST_MOM_2 + " " + LAST_NAME_2
-
+		]
+		// Son
+		decideParentOrChild(PositionPreference.Child)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
 			searchedSon.fullName = FIRST_SON_2 + " " + LAST_NAME_2
-
+		]
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
 			searchedDaughter.fullName = FIRST_DAU_2 + " " + LAST_NAME_1
-		]
+		]		
 		logger.trace(this.nameOfTestMethod + " - propagation done")
+		userInteraction.assertAllInteractionsOccurred()
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
 				FamiliesFactory.eINSTANCE.createFamily => [
@@ -1389,32 +1472,6 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		logger.trace(this.nameOfTestMethod + " - finished without errors")
 	}
 	
-	def void foo() throws IllegalArgumentException {
-		PersonRegister.from(PERSONS_MODEL).propagate [
-			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
-			searchedDad.fullName = ""
-		]
-	}
-	
-	/**Test that error is thrown when trying to rename a {@link Person} with an empty name.
-	 */
-	@Test
-	def void testExceptionOnEmptyName() {
-		logger.trace(this.nameOfTestMethod + " - begin")
-		createFamiliesForTesting()
-		logger.trace(this.nameOfTestMethod + " - preparation done")
-		val thrownException = assertThrows(IllegalArgumentException, [
-			PersonRegister.from(PERSONS_MODEL).propagate [
-				val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
-				searchedDad.fullName = ""
-			]
-		])
-		logger.trace(this.nameOfTestMethod + " - propagation done")
-		assertEquals(thrownException.message, "New name is not allowed to be empty.")
-		logger.trace(this.nameOfTestMethod + " - finished without errors")
-	}
-	
-	// ========== EDITING ==========
 	/**Test different special names which do not match the scheme firstname + " " + lastname.
 	 * In the cases of more than two parts in the name separated by spaces, the last part is
 	 * the lastname and everything else is the firstname.
@@ -1424,21 +1481,33 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	def void testSpecialNames() {
 		logger.trace(this.nameOfTestMethod + " - begin")
 		createFamiliesForTesting()
-		logger.trace(this.nameOfTestMethod + " - preparation done")
+		logger.trace(this.nameOfTestMethod + " - preparation done")		
+		// Father
+		decideParentOrChild(PositionPreference.Parent)
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDad = persons.findFirst[x|x.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
 			searchedDad.fullName = "The Earl of Dorincourt"
-
+		]
+		// Mother
+		decideParentOrChild(PositionPreference.Parent)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedMom = persons.findFirst[x|x.fullName.equals(FIRST_MOM_1 + " " + LAST_NAME_2)]
 			searchedMom.fullName = "Cindy aus Marzahn"
-
+		]
+		// Son
+		decideParentOrChild(PositionPreference.Child)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedSon = persons.findFirst[x|x.fullName.equals(FIRST_SON_1 + " " + LAST_NAME_2)]
 			searchedSon.fullName = "Saruman"
-
+		]
+		// Daugther
+		decideParentOrChild(PositionPreference.Child)
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			val searchedDaughter = persons.findFirst[x|x.fullName.equals(FIRST_DAU_1 + " " + LAST_NAME_1)]
 			searchedDaughter.fullName = "Daenerys_Targaryen"
 		]
 		logger.trace(this.nameOfTestMethod + " - propagation done")
+		userInteraction.assertAllInteractionsOccurred()
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
 				FamiliesFactory.eINSTANCE.createFamily => [
@@ -1450,11 +1519,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = "Cindy aus"]
 				],
 				FamiliesFactory.eINSTANCE.createFamily => [
-					lastName = "Saruman"
+					lastName = ""
 					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = "Saruman"]
 				],
 				FamiliesFactory.eINSTANCE.createFamily => [
-					lastName = "Daenerys_Targaryen"
+					lastName = ""
 					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = "Daenerys_Targaryen"]
 				]
 			]

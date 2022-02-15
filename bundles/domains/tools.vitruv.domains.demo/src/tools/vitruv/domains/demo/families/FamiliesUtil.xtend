@@ -32,8 +32,8 @@ final class FamiliesUtil {
 		return member.family.register
 	}
 	
-	/** Returns the eContainer of a Family casted as FamilyRegister if it actually is one.
-	 *  Returns null if the Family is contained in any other type of eContainer. 
+	/** @return the eContainer of a family casted as FamilyRegister, if it actually is one.
+	 *  @return null, else.
 	 */
 	def static FamilyRegister getRegister(Family family) {
 		return if (family.eContainer instanceof FamilyRegister)	family.eContainer as FamilyRegister else null
