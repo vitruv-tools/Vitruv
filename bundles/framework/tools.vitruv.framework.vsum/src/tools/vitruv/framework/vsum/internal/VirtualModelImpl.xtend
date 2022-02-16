@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.models.ChangePropagationListener
+import tools.vitruv.framework.change.propagation.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.userinteraction.InternalUserInteractor

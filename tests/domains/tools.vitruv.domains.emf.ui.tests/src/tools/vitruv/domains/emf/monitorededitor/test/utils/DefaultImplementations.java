@@ -24,7 +24,7 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.models.ChangePropagationListener;
+import tools.vitruv.framework.change.propagation.ChangePropagationListener;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.VirtualModel;

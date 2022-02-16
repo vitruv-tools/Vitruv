@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.models;
+package tools.vitruv.framework.change.propagation;
 
 /**
  * Marker interface for all classes, which could become a cause for a

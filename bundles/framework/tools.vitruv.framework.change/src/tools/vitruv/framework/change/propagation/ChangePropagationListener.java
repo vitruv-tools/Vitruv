@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.models;
+package tools.vitruv.framework.change.propagation;
 
 /**
  * Listener for the change propagation status.

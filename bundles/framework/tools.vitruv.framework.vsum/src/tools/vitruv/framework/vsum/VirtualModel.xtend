@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum
 
 import java.nio.file.Path
-import tools.vitruv.framework.change.models.ChangeableModelRepository
+import tools.vitruv.framework.change.propagation.ChangeableModelRepository
 import tools.vitruv.framework.views.ViewProvider
 import tools.vitruv.framework.views.ViewTypeProvider
 
