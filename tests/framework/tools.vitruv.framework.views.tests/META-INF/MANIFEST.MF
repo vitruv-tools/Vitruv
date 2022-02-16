@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Framwork Virtual Single Underlying Model Tests
-Bundle-SymbolicName: tools.vitruv.framework.vsum.tests;singleton:=true
-Automatic-Module-Name: tools.vitruv.framework.vsum.tests
+Bundle-Name: Vitruv Framwork Views Tests
+Bundle-SymbolicName: tools.vitruv.framework.views.tests;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.views.tests
 Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Fragment-Host: tools.vitruv.framework.vsum
+Fragment-Host: tools.vitruv.framework.views
 Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
  tools.vitruv.testutils.domains,
@@ -15,5 +15,6 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.uml2.uml,
  org.junit.jupiter.api,
  org.hamcrest.core
+Bundle-ClassPath: ., lib/byte-buddy-1.12.4.jar, lib/mockito-core-4.2.0.jar, lib/objenesis-3.2.jar
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools

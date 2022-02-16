@@ -2,6 +2,7 @@ package tools.vitruv.framework.vsum
 
 import java.io.File
 import java.nio.file.Path
+import java.util.Collection
 import java.util.HashSet
 import java.util.Set
 import tools.vitruv.framework.domains.VitruvDomain
@@ -12,14 +13,13 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecificationReposito
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.framework.views.ViewType
+import tools.vitruv.framework.views.ViewTypeRepository
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl
 
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.vsum.views.ViewType
-import java.util.Collection
-import tools.vitruv.framework.vsum.views.ViewTypeRepository
 
 class VirtualModelBuilder {
 	var VitruvDomainRepository domainRepository = null
