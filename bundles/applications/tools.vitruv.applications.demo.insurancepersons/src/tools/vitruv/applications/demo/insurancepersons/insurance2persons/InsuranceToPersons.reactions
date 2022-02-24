@@ -2,6 +2,8 @@ import edu.kit.ipd.sdq.metamodels.insurance.Gender
 import edu.kit.ipd.sdq.metamodels.persons.Male
 import edu.kit.ipd.sdq.metamodels.persons.Female
 
+import static extension tools.vitruv.applications.demo.insurancepersons.InsurancePersonsHelper.getInsuranceDatabase
+
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance
 
@@ -44,7 +46,7 @@ reaction CreatedClient {
 
 routine createPerson(insurance::InsuranceClient client) {
 	match{
-		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
+		val personRegister = retrieve persons::PersonRegister corresponding to client.getInsuranceDatabase
 	}
 	action{
 		call {
