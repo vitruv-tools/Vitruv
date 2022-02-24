@@ -24,6 +24,7 @@
 		<module>tools.vitruv.framework.propagation</module>
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>
+		<module>tools.vitruv.framework.views</module>
 		<module>tools.vitruv.framework.vsum</module>
 		<module>tools.vitruv.framework.vsum.ui</module>
 	</modules>
