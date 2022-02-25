@@ -61,7 +61,7 @@ routine createPerson(insurance::InsuranceClient client) {
 
 routine createMalePerson(insurance::InsuranceClient client) {
 	match {
-		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
+		val personRegister = retrieve persons::PersonRegister corresponding to client.insuranceDatabase
 	}
 	action {
 		val newPerson = create persons::Male and initialize {
@@ -76,7 +76,7 @@ routine createMalePerson(insurance::InsuranceClient client) {
 
 routine createFemalePerson(insurance::InsuranceClient client) {
 	match {
-		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
+		val personRegister = retrieve persons::PersonRegister corresponding to client.insuranceDatabase
 	}
 	action {
 		val newPerson = create persons::Female and initialize {
