@@ -9,5 +9,5 @@ Export-Package: tools.vitruv.applications.demo.insurancepersons
 Require-Bundle: tools.vitruv.framework.applications,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
  tools.vitruv.domains.demo,
- edu.kit.ipd.sdq.activextendannotations;bundle-version="1.6.0"
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-RequiredExecutionEnvironment: JavaSE-11
