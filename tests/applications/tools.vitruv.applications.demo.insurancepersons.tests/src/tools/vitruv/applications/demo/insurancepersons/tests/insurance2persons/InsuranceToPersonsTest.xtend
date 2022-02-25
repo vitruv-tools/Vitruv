@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
-class InsurancePersonsTest extends VitruvApplicationTest {
+class InsuranceToPersonsTest extends VitruvApplicationTest {
 	static val MALE_NAME = "Max Mustermann"
 	static val MALE_NAME_2 = "Bernd Mustermann"
 	static val FEMALE_NAME = "Erika Mustermann"
