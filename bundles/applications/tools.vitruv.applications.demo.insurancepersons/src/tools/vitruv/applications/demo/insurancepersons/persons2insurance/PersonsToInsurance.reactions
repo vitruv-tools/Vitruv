@@ -30,12 +30,12 @@ reaction DeletedPersonRegister{
 	call deleteInsuranceDatabase(affectedEObject)
 }
 
-routine deleteInsuranceDatabase(persons::PersonRegister personsRegister){
-	match{
+routine deleteInsuranceDatabase(persons::PersonRegister personsRegister) {
+	match {
 		val insuranceDatabase = retrieve insurance::InsuranceDatabase corresponding to personsRegister
 	}
 	
-	action{
+	action {
 		delete insuranceDatabase
 	}
 }
@@ -46,10 +46,10 @@ reaction CreatedPerson {
 }
 
 routine createInsuranceClient(persons::Person person) {
-	match{
+	match {
 		val insuranceDatabase = retrieve insurance::InsuranceDatabase corresponding to person.getPersonRegister
 	}
-	action{
+	action {
 		val newClient = create insurance::InsuranceClient and initialize {
 			newClient.name = person.fullName
 			switch person {

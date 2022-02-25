@@ -25,16 +25,16 @@ routine createPersonRegister(insurance::InsuranceDatabase insuranceDatabase) {
 	}
 }
 
-reaction DeletedInsuranceDatabase{
+reaction DeletedInsuranceDatabase {
 	after element insurance::InsuranceDatabase deleted
 	call deletePersonRegister(affectedEObject)
 }
 
-routine deletePersonRegister(insurance::InsuranceDatabase insuranceDatabase){
-	match{
+routine deletePersonRegister(insurance::InsuranceDatabase insuranceDatabase) {
+	match {
 		val personRegister = retrieve persons::PersonRegister corresponding to insuranceDatabase
 	}
-	action{
+	action {
 		delete personRegister
 	}
 }
@@ -45,10 +45,10 @@ reaction CreatedClient {
 }
 
 routine createPerson(insurance::InsuranceClient client) {
-	match{
+	match {
 		val personRegister = retrieve persons::PersonRegister corresponding to client.getInsuranceDatabase
 	}
-	action{
+	action {
 		call {
 			switch client.gender {
 				case Gender.MALE : createMalePerson(client)
@@ -60,10 +60,10 @@ routine createPerson(insurance::InsuranceClient client) {
 }
 
 routine createMalePerson(insurance::InsuranceClient client) {
-	match{
+	match {
 		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
 	}
-	action{
+	action {
 		val newPerson = create persons::Male and initialize {
 			newPerson.fullName = client.name
 		}
@@ -75,10 +75,10 @@ routine createMalePerson(insurance::InsuranceClient client) {
 }
 
 routine createFemalePerson(insurance::InsuranceClient client) {
-	match{
+	match {
 		val personRegister = retrieve persons::PersonRegister corresponding to client.eContainer
 	}
-	action{
+	action {
 		val newPerson = create persons::Female and initialize {
 			newPerson.fullName = client.name
 		}
@@ -95,10 +95,10 @@ reaction ChangedName {
 }
 
 routine changeFullName(insurance::InsuranceClient client) {
-	match{
+	match {
 		val person = retrieve persons::Person corresponding to client
 	}
-	action{
+	action {
 		update person {
 			person.fullName = client.name
 		}
@@ -111,10 +111,10 @@ reaction ChangedGender {
 }
 
 routine changeGender(insurance::InsuranceClient client) {
-	match{
+	match {
 		val person = retrieve persons::Person corresponding to client
 	}
-	action{
+	action {
 		call {
 			switch client.gender {
 				case Gender.MALE :
