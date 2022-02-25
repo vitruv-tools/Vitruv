@@ -45,9 +45,6 @@ reaction CreatedClient {
 }
 
 routine createPerson(insurance::InsuranceClient client) {
-	match {
-		val personRegister = retrieve persons::PersonRegister corresponding to client.getInsuranceDatabase
-	}
 	action {
 		call {
 			switch client.gender {
