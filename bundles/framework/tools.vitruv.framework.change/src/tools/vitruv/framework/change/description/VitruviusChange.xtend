@@ -57,6 +57,12 @@ interface VitruviusChange {
 	 * change or if this change was not resolved yet.
 	 */
 	def Set<URI> getChangedURIs()
+	
+	/**
+	 * Returns the namespace URIs of the metamodel packages of the metamodel elements whose instances have been
+	 * modified in this change. These elements are the {@link EObject}s returned by {@link getAffectedEObjects}.
+	 */
+	def Set<String> getAffectedEObjectsMetamodelRootNsUris()
 
 	/**
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.
