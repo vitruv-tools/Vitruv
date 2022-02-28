@@ -106,14 +106,18 @@ package class ChangePropagator {
 
 			change.userInteractions = userInteractions
 			val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.flatMapFixed[value]))
+				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.flatMapFixed[value].
+					mapFixed[it.change]))
 			val resultingChanges = new ArrayList()
 			resultingChanges += propagatedChange
 
 			val nextPropagations = propagationResultChanges.filter [
-				key.shouldTransitivelyPropagateChanges && value.exists[containsConcreteChange]
+				value.exists[shouldBeFurtherPropagated] && value.exists[it.change.containsConcreteChange]
 			].mapFixed [
-				new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key, this)
+				val changesToPropagate = value.filter[shouldBeFurtherPropagated].map[it.change]
+				val domain = key
+				new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(changesToPropagate),
+					domain, this)
 			]
 
 			for (nextPropagation : nextPropagations) {
@@ -132,12 +136,12 @@ package class ChangePropagator {
 				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel,
 					resourceRepository)
 			}
-			val changes = resourceRepository.endRecording()
+			val changesInPropagation = resourceRepository.endRecording()
 
 			// Store modification information
-			changedResources += changes.flatMap[affectedEObjects].map[eResource].filterNull
+			changedResources += changesInPropagation.flatMap[it.change.affectedEObjects].map[eResource].filterNull
 
-			return changes
+			return changesInPropagation
 		}
 
 		def private AutoCloseable installUserInteractorForChange(VitruviusChange change) {

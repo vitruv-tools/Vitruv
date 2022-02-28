@@ -6,7 +6,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
@@ -24,6 +23,8 @@ import org.eclipse.emf.common.util.URI
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import tools.vitruv.framework.change.description.VitruviusChange
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+import tools.vitruv.framework.propagation.ChangeInPropagation
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -140,11 +141,13 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		logger.debug("Start recording virtual model")
 	}
 
-	override Iterable<? extends TransactionalChange> endRecording() {
+	override Iterable<ChangeInPropagation> endRecording() {
 		logger.debug("End recording virtual model")
 		isRecording = false
 		domainToRecorder.values.forEach[endRecording()]
-		return domainToRecorder.values.map[recorder|recorder.change].filter[containsConcreteChange].toList()
+		return domainToRecorder.entrySet.filter[value.change.containsConcreteChange].mapFixed [
+			new ChangeInPropagation(value.change, key.shouldTransitivelyPropagateChanges)
+		]
 	}
 
 	override VitruviusChange applyChange(VitruviusChange change) {
