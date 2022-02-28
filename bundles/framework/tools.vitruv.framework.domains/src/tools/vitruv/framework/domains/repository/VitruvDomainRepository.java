@@ -9,5 +9,7 @@ public interface VitruvDomainRepository extends Iterable<VitruvDomain> {
 
 	VitruvDomain getDomain(EObject object);
 
-	VitruvDomain getDomain(String fileExtension);
+	VitruvDomain getDomainForFileExtension(String fileExtension);
+	
+	VitruvDomain getDomainForNsUri(String nsUri);
 }

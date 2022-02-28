@@ -181,8 +181,10 @@ package class ChangePropagator {
 		override toString() '''propagate «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR»: «sourceChange»'''
 
 		def private Iterable<String> getPropagationPath() {
-			if(previous === null) List.of("<input change> in " + sourceDomain.toString) else previous.propagationPath +
-				List.of(sourceDomain.toString)
+			if (previous === null)
+				List.of("<input change> in " + sourceDomain.toString)
+			else
+				previous.propagationPath + List.of(sourceDomain.toString)
 		}
 	}
 
@@ -197,7 +199,7 @@ package class ChangePropagator {
 
 	def private VitruvDomain getChangedDomain(VitruviusChange change) {
 		val changeDomain = change.changedURIs.fold(null as VitruvDomain) [ changeDomain, changedUri |
-			val resourceDomain = domainRepository.getDomain(changedUri.fileExtension)
+			val resourceDomain = domainRepository.getDomainForFileExtension(changedUri.fileExtension)
 			if (changeDomain === null) {
 				resourceDomain
 			} else if (resourceDomain === null || resourceDomain == changeDomain) {

@@ -132,7 +132,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def private VitruvDomain getDomainForURI(URI uri) {
-		domainRepository.getDomain(uri.fileExtension)
+		domainRepository.getDomainForFileExtension(uri.fileExtension)
 	}
 
 	override void startRecording() {
