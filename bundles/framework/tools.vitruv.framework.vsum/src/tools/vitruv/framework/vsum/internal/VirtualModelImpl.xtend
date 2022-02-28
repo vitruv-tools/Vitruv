@@ -42,7 +42,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
-			domainRepository,
 			userInteractor
 		)
 		VirtualModelRegistry.instance.registerVirtualModel(this)
