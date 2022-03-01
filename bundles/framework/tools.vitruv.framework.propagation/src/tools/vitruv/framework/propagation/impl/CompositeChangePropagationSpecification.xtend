@@ -6,14 +6,14 @@ import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import org.apache.log4j.Logger
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.ChangePropagationObserver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.propagation.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.EChange
+import java.util.Set
 
-abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
+class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
 
 	@Accessors(PROTECTED_GETTER)
@@ -21,8 +21,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	@Accessors(PROTECTED_GETTER)
 	val List<ChangePropagationSpecification> changeMainprocessors;
 
-	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain, targetDomain);
+	new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRoosNsUris) {
+		super(sourceMetamodelRootNsUris, targetMetamodelRoosNsUris);
 		changePreprocessors = new ArrayList<ChangePropagationSpecification>();
 		changeMainprocessors = new ArrayList<ChangePropagationSpecification>();
 	}
@@ -50,18 +50,17 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	}
 
 	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
-		if (!this.sourceDomain.equals(potentialChangeProcessor.sourceDomain) ||
-			!this.targetDomain.equals(potentialChangeProcessor.targetDomain)) {
+		if (!this.sourceMetamodelRootNsUris.equals(potentialChangeProcessor.sourceMetamodelRootNsUris) ||
+			!this.targetMetamodelRootNsUris.equals(potentialChangeProcessor.targetMetamodelRootNsUris)) {
 			throw new IllegalArgumentException("ChangeProcessor metamodels are not compatible");
 		}
 	}
 
-	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
-		ResourceAccess resourceAccess) {
+	override propagateChange(EChange change, CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
 		propagateChangeViaPreprocessors(change, correspondenceModel, resourceAccess);
 		propagateChangeViaMainprocessors(change, correspondenceModel, resourceAccess);
 	}
-	
+
 	protected def propagateChangeViaPreprocessors(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (changeProcessor : changePreprocessors) {
@@ -69,7 +68,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 			changeProcessor.propagateChange(change, correspondenceModel, resourceAccess);
 		}
 	}
-	
+
 	protected def propagateChangeViaMainprocessors(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (changeProcessor : changeMainprocessors) {
@@ -97,8 +96,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	private def getAllProcessors() {
 		val processors = new ArrayList<ChangePropagationSpecification>();
 		// processor arrays can be null when calling setUserInteractor from the super constructor
-		if (changePreprocessors !== null) processors += changePreprocessors;
-		if (changeMainprocessors !== null) processors += changeMainprocessors;
+		if(changePreprocessors !== null) processors += changePreprocessors;
+		if(changeMainprocessors !== null) processors += changeMainprocessors;
 		return processors;
 	}
 

@@ -1,7 +1,6 @@
 package tools.vitruv.testutils
 
 import java.nio.file.Path
-import java.util.List
 import org.eclipse.xtend.lib.annotations.Delegate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -15,6 +14,7 @@ import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 import static tools.vitruv.testutils.UriMode.*
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class VitruvApplicationTest implements TestView {
@@ -38,18 +38,24 @@ abstract class VitruvApplicationTest implements TestView {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val userInteraction = new TestUserInteraction
 		val targetDomains = new VitruvDomainRepositoryImpl(
-			changePropagationSpecifications.flatMap [List.of(sourceDomain, targetDomain)].toSet
+			changePropagationSpecifications.flatMap [
+				val source = sourceMetamodelRootNsUris
+				val target = targetMetamodelRootNsUris
+				VitruvDomainProviderRegistry.allDomainProviders.map[domain].filter [
+					source.contains(metamodelRootPackage.nsURI) || target.contains(metamodelRootPackage.nsURI)
+				]
+			].toSet
 		)
-		virtualModel = new VirtualModelBuilder()
-			.withStorageFolder(vsumPath)
-			.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction))
-			.withDomainRepository(targetDomains)
-			.withChangePropagationSpecifications(changePropagationSpecifications)
-			.buildAndInitialize()
+		virtualModel = new VirtualModelBuilder() //
+		.withStorageFolder(vsumPath) //
+		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
+		.withDomainRepository(targetDomains) //
+		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
 		testView = generateTestView(testProjectPath, userInteraction, targetDomains)
 	}
 
-	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction, VitruvDomainRepository targetDomains) {
+	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction,
+		VitruvDomainRepository targetDomains) {
 		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel, targetDomains)
 	}
 
@@ -60,7 +66,7 @@ abstract class VitruvApplicationTest implements TestView {
 	}
 
 	def package InternalVirtualModel getInternalVirtualModel() { virtualModel }
-	
+
 	def protected VirtualModel getVirtualModel() { virtualModel }
-	
+
 }

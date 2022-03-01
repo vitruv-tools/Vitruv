@@ -8,9 +8,8 @@ import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecifi
  * To add further change processors extend the implementing class and override the setup method.
  */
 abstract class AbstractReactionsChangePropagationSpecification extends CompositeChangePropagationSpecification {
-
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain, targetDomain);
+		super(sourceDomain.nsUris, targetDomain.nsUris);
 		this.setup();
 	}
 

@@ -156,7 +156,7 @@ class TestCommonalitiesGenerator {
 				&& modifiers.isPublic && getDeclaredConstructor.modifiers.isPublic
 		]
 			.map [getDeclaredConstructor.newInstance as ChangePropagationSpecification]
-			.groupBy [sourceDomain -> targetDomain]
+			.groupBy [sourceMetamodelRootNsUris -> targetMetamodelRootNsUris]
 			.entrySet
 			.mapFixed [
 				new CombinedChangePropagationSpecification(key.key, key.value, value)

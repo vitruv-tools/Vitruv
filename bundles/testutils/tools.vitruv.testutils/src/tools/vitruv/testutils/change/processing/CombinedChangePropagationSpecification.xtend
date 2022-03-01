@@ -1,12 +1,13 @@
 package tools.vitruv.testutils.change.processing
 
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecification
+import java.util.Set
 
 class CombinedChangePropagationSpecification extends CompositeChangePropagationSpecification {
-	new(VitruvDomain sourceDomain, VitruvDomain targetDomain, Iterable<ChangePropagationSpecification> processors) {
-		super(sourceDomain, targetDomain)
+	new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRoosNsUris,
+		Iterable<? extends ChangePropagationSpecification> processors) {
+		super(sourceMetamodelRootNsUris, targetMetamodelRoosNsUris);
 		processors.forEach[addChangeMainprocessor(it)]
 	}
 }

@@ -17,7 +17,7 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 	List<IReactionRealization> reactions;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain, targetDomain);
+		super(sourceDomain.nsUris, targetDomain.nsUris);
 		this.reactions = newArrayList;
 		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();
@@ -37,7 +37,7 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 
 	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		LOGGER.trace("Call relevant reactions from " + sourceDomain.name + " to " + targetDomain.name);
+		LOGGER.trace("Call relevant reactions from " + sourceMetamodelRootNsUris + " to " + targetMetamodelRootNsUris);
 		for (reaction : reactions) {
 			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
 			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);
