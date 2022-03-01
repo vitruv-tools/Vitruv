@@ -2,6 +2,9 @@ import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getFamily
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getRegister
+import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getPersonName
+import edu.kit.ipd.sdq.metamodels.persons.Female
+import edu.kit.ipd.sdq.metamodels.persons.Male
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -51,25 +54,38 @@ reaction ChangedLastName {
 }
 
 //========== FATHER ==========
+//In case the previous father is replaced, the previous father has to be moved to a different family.
+//Then, if the new father is newly created, the corresponding member has to be created
+//But if the new father existed as a member somewhere else in the families model before, no new person
+//is required but old correspondences have to be deleted and set up correctly
 reaction EditedFather {
 	after element families::Member replaced at families::Family[father]
 		with oldValue !== null && newValue !== null && !oldValue.equals(newValue)
 	call {
 		moveOldFatherToNewFamily(oldValue, affectedEObject)
-		createMale(newValue, affectedEObject)
+		ifNewMember_createMale(newValue, affectedEObject)
+		ifExistingMember_updateCorrespondencesMale(newValue, affectedEObject)
 	}
 }
+//In case the place of the father was empty before no previous father has to be handled.
+//The rest is just as it is in the case of the replacement of the father.
 reaction CreatedFather {
 	after element families::Member replaced at families::Family[father]
 		with oldValue === null && newValue !== null
-	call createMale(newValue, affectedEObject)
+	call {
+		ifNewMember_createMale(newValue, affectedEObject)
+		ifExistingMember_updateCorrespondencesMale(newValue, affectedEObject)
+	}
 }
+//If the father is deleted, which means that he is not contained in any structure after the propagation
+//the corresponding person in the persons model has to be deleted as well.
 reaction DeletedFather {
 	after element families::Member replaced at families::Family[father]
-		with oldValue !== null && newValue === null
+		with oldValue !== null && newValue === null && oldValue.eContainer === null
 	call deletePerson(oldValue)
 }
 
+//Moves oldFather from oldFamily to a new family such that a new father can be inserted into oldFamily.
 routine moveOldFatherToNewFamily(families::Member oldFather, families::Family oldFamily) {
 	match {
 		val oldFatherPerson = retrieve persons::Person corresponding to oldFather
@@ -90,26 +106,38 @@ routine moveOldFatherToNewFamily(families::Member oldFather, families::Family ol
 
 
 //========== MOTHER ==========
+//In case the previous mother is replaced, the previous mother has to be moved to a different family.
+//Then, if the new mother is newly created, the corresponding member has to be created
+//But if the new mother existed as a member somewhere else in the families model before, no new person
+//is required but old correspondences have to be deleted and set up correctly
 reaction EditedMother {
 	after element families::Member replaced at families::Family[mother]
 		with oldValue !== null && newValue !== null && !oldValue.equals(newValue) 
 	call {
 		moveOldMotherToNewFamily(oldValue, affectedEObject)
-		createFemale(newValue, affectedEObject)
+		ifNewMember_createFemale(newValue, affectedEObject)
+		ifExistingMember_updateCorrespondencesFemale(newValue, affectedEObject)
 	}
 }
+//In case the place of the mother was empty before no previous mother has to be handled.
+//The rest is just as it is in the case of the replacement of the mother.
 reaction CreatedMother {
 	after element families::Member replaced at families::Family[mother]
 		with oldValue === null && newValue !== null
-	call createFemale(newValue, affectedEObject)
+	call {
+		ifNewMember_createFemale(newValue, affectedEObject)
+		ifExistingMember_updateCorrespondencesFemale(newValue, affectedEObject)
+	}
 }
-
+//If the mother is deleted, which means that she is not contained in any structure after the propagation
+//the corresponding person in the persons model has to be deleted as well.
 reaction DeletedMother {
 	after element families::Member replaced at families::Family[mother]
-		with oldValue !== null && newValue === null
+		with oldValue !== null && newValue === null && oldValue.eContainer === null
 	call deletePerson(oldValue)
 }
 
+//Moves oldMother from oldFamily to a new family such that a new mother can be inserted into oldFamily.
 routine moveOldMotherToNewFamily(families::Member oldMother, families::Family oldFamily) {
 	match {
 		val oldMotherPerson = retrieve persons::Person corresponding to oldMother
@@ -129,35 +157,63 @@ routine moveOldMotherToNewFamily(families::Member oldMother, families::Family ol
 }
 
 //========== SON ==========
-reaction CreatedSon {
+//New member for the position of the son was newly created and inserted, so a corresponding person has to be created.
+reaction CreatedAndInsertedSon {
 	after element families::Member created and inserted in families::Family[sons]
 	call createMale(newValue, affectedEObject)
 }
-reaction DeletedSon {
-	after element families::Member deleted and removed from families::Family[sons] 
+//New member for the position of the son already existed before, so old correspondences have to be updated.
+reaction InsertedSon {
+	after element families::Member inserted in families::Family[sons]		
+	call updateCorrespondencesAfterMemberBecameSon(newValue, affectedEObject)
+}
+//Note that there is no need to handle the case in which the son is removed but not deleted, since this cases are
+//automatically handeled as soon as the daughter is inserted somewhere else.
+reaction DeletedAndRemovedSon {
+	after element families::Member deleted and removed from families::Family[sons]
+		with oldValue.eContainer === null
 	call deletePerson(oldValue)
 }
-
-
 //========== DAUGHTER ==========
-reaction CreatedDaughter {
+//New member for the position of the daughter was newly created and inserted, so a corresponding person has to be created.
+reaction CreatedAndInsertedDaughter {
 	after element families::Member created and inserted in families::Family[daughters]
 	call createFemale(newValue, affectedEObject)
 }
-reaction DeletedDaughter {
-	after element families::Member deleted and removed from families::Family[daughters] 
+//New member for the position of the daughter already existed before, so old correspondences have to be updated.
+reaction InsertedDaughter {
+	after element families::Member inserted in families::Family[daughters]
+	call updateCorrespondencesAfterMemberBecameDaughter(newValue, affectedEObject)
+}
+//Note that there is no need to handle the case in which the daughter is removed but not deleted, since this cases are
+//automatically handeled as soon as the daughter is inserted somewhere else. 
+reaction DeletedAndRemovedDaughter {
+	after element families::Member deleted and removed from families::Family[daughters]
+		with oldValue.eContainer === null
 	call deletePerson(oldValue)
 }
 
-
-routine createMale(families::Member newMember, families::Family family) {
+//Checks whether the newFather was actually just created (has no corresponding person) or not.
+//Only continues if newFather is a newly created member.
+routine ifNewMember_createMale(families::Member newFather, families::Family family) {
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to family.register 
+		val optionalCorrespondingPerson = retrieve optional persons::Person corresponding to newFather
+		check optionalCorrespondingPerson.empty
+	}
+	action {
+		call createMale(newFather, family)
+	}
+}
+
+//Creates corresponding male person for fathers and sons and sets up correspondences
+routine createMale(families::Member newMember, families::Family family) {
+	match {		
+		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
 	}
 	action {
 		val person = create persons::Male and initialize {
-	 		person.fullName = newMember.firstName + " " + family.lastName
-		}		
+	 		person.fullName = newMember.getPersonName
+		}
 		update personsRegister {
 			personsRegister.persons += person
 		}
@@ -165,19 +221,144 @@ routine createMale(families::Member newMember, families::Family family) {
 		add correspondence between family and person
 	}
 }
-routine createFemale(families::Member newMember, families::Family family) {
+
+//Checks whether the newMother was actually just created (has no corresponding person) or not.
+//Only continues if newMother is a newly created member.
+routine ifNewMember_createFemale(families::Member newMother, families::Family family) {
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to family.register 
+		val optionalCorrespondingPerson = retrieve optional persons::Person corresponding to newMother
+		check optionalCorrespondingPerson.empty
 	}
 	action {
+		call createFemale(newMother, family)
+	}
+}
+
+//Creates corresponding female person for mothers and daughters and sets up correspondences
+routine createFemale(families::Member newMember, families::Family family) {
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
+	}
+	action { 
 		val person = create persons::Female and initialize {
-	 		person.fullName = newMember.firstName + " " + family.lastName
-		}		
+	 		person.fullName = newMember.getPersonName
+		}
 		update personsRegister {
 			personsRegister.persons += person
 		}
 		add correspondence between newMember and person
 		add correspondence between family and person
+	}
+}
+
+//First check if the newFather existed before (otherwise break) and if so:
+//  newFather is the member that existed before but now becomes the new father
+//  newFamily is the family in which the newFather is from now on the father
+routine ifExistingMember_updateCorrespondencesMale(families::Member newFather, families::Family newFamily) {
+	match {
+		val optionalCorrespondingPerson = retrieve optional persons::Person corresponding to newFather
+		check !optionalCorrespondingPerson.empty	
+		val oldFamily = retrieve families::Family corresponding to optionalCorrespondingPerson.get
+	}
+	action {
+		call {
+			if (optionalCorrespondingPerson.get instanceof Female) {
+				throw new UnsupportedOperationException(
+					"The position of a male family member can only be assigned to members with no or a male corresponding person."
+				)
+			}
+		}
+		call existingMemberBecomesNewParent_updateCorrespondences(newFather, optionalCorrespondingPerson.get, newFamily, oldFamily)
+	}
+}
+
+//First check if the newMother existed before (otherwise break) and if so:
+//  newMother is the member that existed before but now becomes the new mother
+//  newFamily is the family in which the newMother is from now on the mother
+routine ifExistingMember_updateCorrespondencesFemale(families::Member newMother, families::Family newFamily) {
+	match {
+		val optionalCorrespondingPerson = retrieve optional persons::Person corresponding to newMother
+		check !optionalCorrespondingPerson.empty	
+		val oldFamily = retrieve families::Family corresponding to optionalCorrespondingPerson.get
+	}
+	action {
+		call {
+			if (optionalCorrespondingPerson.get instanceof Male) {
+				throw new UnsupportedOperationException(
+					"The position of a female family member can only be assigned to members with no or a female corresponding person."
+				)
+			}
+		}
+		call existingMemberBecomesNewParent_updateCorrespondences(newMother, optionalCorrespondingPerson.get, newFamily, oldFamily)
+	}
+}
+
+//newMember is the member that existed before but now becomes the new parent
+//correspondingPerson - The correspondence to the family has to change 
+//newFamily is the family in which the newMember will be parent from now on
+//oldFamily is the family in which the newMember was until now
+routine existingMemberBecomesNewParent_updateCorrespondences(families::Member newMember, persons::Person correspondingPerson, families::Family newFamily, families::Family oldFamily) {
+	action { 
+		update correspondingPerson {
+			correspondingPerson.fullName = newMember.personName
+		}
+		remove correspondence between correspondingPerson and oldFamily
+		add correspondence between correspondingPerson and newFamily
+		call {
+			if (oldFamily.members.size == 0){
+				oldFamily.register.families.^remove(oldFamily)
+			}
+		}
+	}
+}
+
+//First check if insertedChild is actually male which it has to be in order to become a son. 
+routine updateCorrespondencesAfterMemberBecameSon (families::Member insertedChild, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+	}	
+	action {
+		call {
+			if (correspondingPerson instanceof Female) {
+				throw new UnsupportedOperationException(
+					"The position of a male family member can only be assigned to members with no or a male corresponding person."
+				)
+			}
+		}
+		call updatePersonFamilyCorrespondence(insertedChild, correspondingPerson, newFamily)
+	}
+}
+
+//First check if insertedChild is actually female which it has to be in order to become a daughter.
+routine updateCorrespondencesAfterMemberBecameDaughter (families::Member insertedChild, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+	}	
+	action {
+		call {
+			if (correspondingPerson instanceof Male) {
+				throw new UnsupportedOperationException(					
+					"The position of a female family member can only be assigned to members with no or a female corresponding person."
+				)
+			}
+		}
+		call updatePersonFamilyCorrespondence(insertedChild, correspondingPerson, newFamily)
+	}
+}
+
+//insertedChild is the member that just became a son or daughter. Before, it could have been a parent as well as a child.
+//correspondingPerson gets a new name (since most likely the lastname changed) and correspondences are updated.
+//newFamily is the family in which the insertedChild is now contained.
+routine updatePersonFamilyCorrespondence (families::Member insertedChild, persons::Person correspondingPerson, families::Family newFamily) {
+	match {
+		val oldFamily = retrieve families::Family corresponding to correspondingPerson
+	}	
+	action {		
+		update correspondingPerson {
+			correspondingPerson.fullName = insertedChild.personName
+		}
+		remove correspondence between correspondingPerson and oldFamily
+		add correspondence between correspondingPerson and newFamily
 	}
 }
 
@@ -188,18 +369,27 @@ reaction ChangedFirstName {
 	call updatePersonName(affectedEObject) 
 }
 
+//Check if the new name is allowed and then update the name of the corresponding person.
 routine updatePersonName(families::Member member) {
 	match {
 		val person = retrieve persons::Person corresponding to member
 	}
 	action {
+		call {
+			if (member.firstName === null) {
+				throw new IllegalArgumentException("New firstname is not allowed to be null.")
+			} else if (member.firstName.empty) {
+				throw new IllegalArgumentException("New firstname is not allowed to be empty.")
+			}
+		}
 		update person {
-			val family = member.family
-			person.fullName = member.firstName + " " + family.lastName 
+			person.fullName = member.getPersonName
 		}		
 	}
 }
 
+//Delete the corresponding person after member was deleted and
+//also remove any correspondences including either the member or the person.
 routine deletePerson(families::Member member) {
 	match {		
 		val person = retrieve persons::Person corresponding to member

@@ -24,6 +24,7 @@ import tools.vitruv.testutils.domains.DomainUtil
 import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
 /**Test to validate the transfer of changes from the FamilyModel to the PersonModel.
@@ -48,6 +49,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	// Set of reused static strings for the last names of the persons
 	final static String LAST_NAME_1 = "Meier"
 	final static String LAST_NAME_2 = "Schulze"
+	final static String LAST_NAME_3 = "Müller"
+	
 
 	// Model Paths
 	final static Path PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
@@ -71,6 +74,11 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	final static Female MOM21 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_2 + " " + LAST_NAME_1]
 	final static Male SON21 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_1]
 	final static Female DAU21 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_2 + " " + LAST_NAME_1]
+	
+	final static Male DAD22 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_2 + " " + LAST_NAME_2]
+	final static Female MOM22 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_2 + " " + LAST_NAME_2]
+	final static Male SON22 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_SON_2 + " " + LAST_NAME_2]
+	final static Female DAU22 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_DAU_2 + " " + LAST_NAME_2]	
 
 	/**Set the correct set of reactions and routines for this test suite
 	 */
@@ -84,7 +92,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@BeforeEach
 	def void insertRegister(TestInfo testInfo) {
 		this.nameOfTestMethod = testInfo.getDisplayName()
-		resourceAt(FAMILIES_MODEL).propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
+		val x = resourceAt(FAMILIES_MODEL) 
+		x.propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 		assertEquals(1, resourceAt(PERSONS_MODEL).contents.size)
 		assertEquals(1, resourceAt(PERSONS_MODEL).allContents.size)
@@ -98,7 +107,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		FamiliesFactory.eINSTANCE.createFamily => [lastName = familieName]
 	}
 
-	/**Insert a new {@link Family}. This should not have any effect on the Persons-Model.
+	/**Inserts a new {@link Family}. This should not have any effect on the Persons-Model.
 	 */
 	@Test
 	def void testInsertNewFamily() {
@@ -112,7 +121,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 	
-	/**Check if the actual {@link FamilyRegister looks like the expected one.
+	/**Checks if the actual {@link FamilyRegister looks like the expected one.
 	 */
 	def void assertCorrectFamilyRegister(FamilyRegister expectedFamilyRegister){
 		val familyModel = resourceAt(FAMILIES_MODEL)
@@ -124,7 +133,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertThat(castedFamilyRegister, equalsDeeply(expectedFamilyRegister))
 	}
 	
-	/**Check if the actual {@link PersonRegister looks like the expected one.
+	/**Checks if the actual {@link PersonRegister looks like the expected one.
 	 */
 	def void assertCorrectPersonRegister(PersonRegister expectedPersonRegister){
 		val personModel = resourceAt(PERSONS_MODEL)
@@ -136,7 +145,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertThat(castedPersonRegister, equalsDeeply(expectedPersonRegister))
 	}
 	
-	/**Insert a new {@link Family} and insert a father into it afterwards.
+	/**Inserts a new {@link Family} and insert a father into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithFather() {
@@ -157,7 +166,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
-	/**Insert a new {@link Family} and insert a mother into it afterwards.
+	/**Inserts a new {@link Family} and insert a mother into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithMother() {
@@ -176,7 +185,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
-	/**Insert a new {@link Family} and insert a son into it afterwards.
+	/**Inserts a new {@link Family} and insert a son into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithSon() {
@@ -195,7 +204,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
-	/**Insert a new {@link Family} and insert a daughter into it afterwards.
+	/**Inserts a new {@link Family} and insert a daughter into it afterwards.
 	 */
 	@Test
 	def void testInsertFamilyWithDaughter() {
@@ -214,21 +223,43 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
-	/**This is used to build the starting point for many other tests like deleting and renaming operations.
+	/**Used to build the starting point for many other tests like deleting and renaming operations.
 	 * Creates a {@link Family} including a father, a mother, a son and a daughter and maps this
 	 * changes to the {@link PersonRegister} which then includes two {@link Male} and two {@link Female}.
 	 */
-	def void createFamilyBeforeTesting() {
-		val family = createFamily(LAST_NAME_1)
-		FamilyRegister.from(FAMILIES_MODEL).propagate [
-			families += family
-			family.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-			family.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			family.sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
-			family.daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+	def void createOneFamilyBeforeTesting() {
+		FamilyRegister.from(FAMILIES_MODEL).propagate [			
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1] 
+			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += #[DAD11, MOM11, SON11, DAU11]
+		]
+		assertCorrectPersonRegister(expectedPersonRegister)
+	}
+	
+	/**Used to build an extended starting point for many other tests like replacing and moving members.
+	 * Creates a {@link Family} including a father, a mother, a son and a daughter and maps this
+	 * changes to the {@link PersonRegister} which then includes two {@link Male} and two {@link Female}.
+	 */
+	def void createTwoFamiliesBeforeTesting() {
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [			
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2] 
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU11, DAD22, MOM22, SON22, DAU22]
 		]
 		assertCorrectPersonRegister(expectedPersonRegister)
 	}
@@ -238,7 +269,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testDeleteFatherFromFamily() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -259,7 +290,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testDeleteSonFromFamily() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -281,7 +312,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testDeleteMotherFromFamily() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -302,7 +333,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testDeleteDaughterFromFamily() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -325,7 +356,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testChangeLastName() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
@@ -345,7 +376,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testChangeFirstNameFather() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -367,7 +398,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testChangeFirstNameSon() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -390,7 +421,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testChangeFirstNameMother() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -412,7 +443,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testChangeFirstNameDaughter() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val selectedFamily = families.findFirst [
@@ -429,13 +460,14 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 
-	/**Tries to insert a new father into a {@link Family} which already has a father.
-	 * The old father is replaced and moved to a new family with the same lastname.
+
+	/**Replace the father with a new member which causes the original father to be moved
+	 * to a new family with the same lastname in which he is the only member.
 	 */
 	@Test
-	def void testInsertDadIfDadAlreadyExists() {
+	def void testReplaceFatherWithNewMember() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
@@ -462,14 +494,145 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		assertCorrectPersonRegister(expectedPersonRegister)
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
-
-	/**Tries to insert a new mother into a {@link Family} which already has a mother.
-	 * The old mother is replaced and moved to a new family with the same lastname.
+	
+	/**Replace the father with a father from a different family which causes the original father
+	 * to be moved to a new family with the same lastname in which he is the only member.
+	 * The replacing father will be removed from his original family in return.
 	 */
 	@Test
-	def void testInsertMomIfMomAlreadyExists() {
+	def void testReplaceFatherWithExistingFather() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createTwoFamiliesBeforeTesting()
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			family1.father = family2.father
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD21, MOM11, SON11, DAU11, MOM22, SON22, DAU22, DAD11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Replace the father with a father from a different family which causes the original father
+	 * to be moved to a new family with the same lastname in which he is the only member.
+	 * The replacing father will be removed from his original family in return.
+	 * 
+	 * In this version, the replacing father was the last member of his family before
+	 * the replacing happens. Therefore, his old family will be deleted afterwards.
+	 */
+	@Test
+	def void testReplaceFatherWithExistingPreviouslyLonlyFather() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+			]			
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [			
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			family1.father = family2.father
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD21, MOM11, SON11, DAU11, DAD11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+
+	/**Replace the father with a son from a different family which causes the original father
+	 * to be moved to a new family with the same lastname in which he is the only member.
+	 * The replacing son will be removed from his original family in return.
+	 */
+	@Test
+	def void testReplaceFatherWithExistingSon() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			family1.father = family2.sons.findFirst[son|son.firstName.equals(FIRST_SON_2)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]				
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[SON21, MOM11, SON11, DAU11, DAD22, MOM22, DAU22, DAD11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	
+	/**Replace the mother with a new member which causes the original mother to be moved
+	 * to a new family with the same lastname in which she is the only member.
+	 */
+	@Test
+	def void testReplaceMotherWithNewMember() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = families.findFirst[it.lastName.equals(LAST_NAME_1)]
@@ -490,10 +653,609 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, MOM11, MOM21, SON11, DAU11]
+			persons += #[DAD11, MOM21, SON11, DAU11, MOM11]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Replace the mother with a mother from a different family which causes the original mother
+	 * to be moved to a new family with the same lastname in which she is the only member.
+	 * The replacing mother will be removed from its original family in return.
+	 */
+	@Test
+	def void testReplaceMotherWithExistingMother() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			family1.mother = family2.mother
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM21, SON11, DAU11, DAD22, SON22, DAU22, MOM11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+
+	/**Replace the mother with a daughter from a different family which causes the original mother
+	 * to be moved to a new family with the same lastname in which she is the only member.
+	 * The replacing daughter will be removed from her original family in return.
+	 */
+	@Test
+	def void testReplaceMotherWithExistingDaughter() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			family1.mother = family2.daughters.findFirst[daughter|daughter.firstName.equals(FIRST_DAU_2)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]				
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, DAU21, SON11, DAU11, DAD22, MOM22, SON22, MOM11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Replace the mother with a daughter from a different family which causes the original mother
+	 * to be moved to a new family with the same lastname in which she is the only member.
+	 * The replacing daughter will be removed from her original family in return.
+	 * 
+	 * In this version, the replacing daughter was the last member of her family before
+	 * the replacing happens. Therefore, her old family will be deleted afterwards.
+	 */
+	@Test
+	def void testReplaceMotherWithExistingPreviouslyLonlyDaughter() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+			]
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			family1.mother = family2.daughters.findFirst[daughter|daughter.firstName.equals(FIRST_DAU_2)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, DAU21, SON11, DAU11, MOM11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A father switches his family and stays a father.
+	 */
+	@Test
+	def void testSwitchFamilySamePositionFather() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.father = oldFamily.father
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD12, MOM11, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A mother switches her family and stays a mother.
+	 */
+	@Test
+	def void testSwitchFamilySamePositionMother() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.mother = oldFamily.mother
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM12, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A son switches his family and stays a son.
+	 */
+	@Test
+	def void testSwitchFamilySamePositionSon() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.sons += oldFamily.sons.findFirst[son|son.firstName.equals(FIRST_SON_1)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON12, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A daughter switches her family and stays a daughter.
+	 */
+	@Test
+	def void testSwitchFamilySamePositionDaughter() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.daughters += oldFamily.daughters.findFirst[daughter|daughter.firstName.equals(FIRST_DAU_1)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU12]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A son switches his family and becomes a father.
+	 */
+	@Test
+	def void testSwitchFamilyDifferentPositionSonToFather() { 
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.father = oldFamily.sons.findFirst[son|son.firstName.equals(FIRST_SON_1)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON12, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A daughter switches her family and becomes a mother.
+	 */
+	@Test
+	def void testSwitchFamilyDifferentPositionDaughterToMother() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.mother = oldFamily.daughters.findFirst[daughter|daughter.firstName.equals(FIRST_DAU_1)]
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM11, SON11, DAU12]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A father switches his family and becomes a son.
+	 */
+	@Test
+	def void testSwitchFamilyDifferentPositionFatherToSon() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.sons += oldFamily.father
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				lastName = LAST_NAME_2
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD12, MOM11, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**A mother switches her family and becomes a daughter.
+	 */
+	@Test
+	def void testSwitchFamilyDifferentPositionMotherToDaughter() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			families += this.createFamily(LAST_NAME_2)
+		]
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val oldFamily = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val newFamily = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			newFamily.daughters += oldFamily.mother
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]				
+				lastName = LAST_NAME_2
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, MOM12, SON11, DAU11]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test to move around members of the families repeatedly to check if correspondences are maintained correctly.
+	 */
+	@Test
+	def void testRepeatedlyMovingFathersBetweenFamilies() {		
+		//Defining some additional values for this test
+		val String first_mom_3 = "Beate"
+		val Female mom13 = PersonsFactory.eINSTANCE.createFemale => [fullName = FIRST_MOM_1 + " " + LAST_NAME_3]
+		val Male dad13 = PersonsFactory.eINSTANCE.createMale => [fullName = FIRST_DAD_1 + " " + LAST_NAME_3]
+		val Female mom33 = PersonsFactory.eINSTANCE.createFemale => [fullName = first_mom_3 + " " + LAST_NAME_3]
+			
+		logger.trace(nameOfTestMethod + " - begin")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = createFamily(LAST_NAME_1)
+			val family2 = createFamily(LAST_NAME_2)
+			val family3 = createFamily(LAST_NAME_3)
+			families += #[family1, family2, family3]
+			family1.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			family2.father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+			
+			family1.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+			family2.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+			family3.mother = FamiliesFactory.eINSTANCE.createMember => [firstName = first_mom_3]
+		]
+		val PersonRegister expectedPersonRegisterAfterPreparation = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[DAD11, DAD22, MOM11, MOM22, mom33]
+		]
+		assertCorrectPersonRegister(expectedPersonRegisterAfterPreparation)		
+		logger.trace(nameOfTestMethod + " - preparation done")
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
+			val family1 = families.findFirst[it.lastName.equals(LAST_NAME_1)]
+			val family2 = families.findFirst[it.lastName.equals(LAST_NAME_2)]
+			val family3 = families.findFirst[it.lastName.equals(LAST_NAME_3)]
+
+			family3.father = family2.father
+			family2.father = family1.father
+			family1.father = family3.father
+			family3.father = family2.father
+			family2.father = family1.father 
+		]
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_1
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_2
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_2]
+			]
+			families += FamiliesFactory.eINSTANCE.createFamily => [
+				lastName = LAST_NAME_3
+				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = first_mom_3]
+				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
+			]
+		]
+		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
+			persons += #[dad13, DAD22, MOM11, MOM22, mom33]
+		]
+		assertCorrectFamilyRegister(expectedFamilyRegister)
+		assertCorrectPersonRegister(expectedPersonRegister)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test if exception is thrown when a former mother is assigned to be a father.
+	 */
+	@Test
+	def void testExceptionSexChanges_AssignMotherToFather() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()				
+		logger.trace(nameOfTestMethod + " - preparation done")
+		val thrownExceptionAssignMotherToFather = assertThrows(UnsupportedOperationException, [
+			FamilyRegister.from(FAMILIES_MODEL).propagate [
+				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
+				val family2 = families.findFirst[family|family.lastName.equals(LAST_NAME_2)]
+				family1.father = family2.mother
+			]
+		])
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val String expectedMessage = "The position of a male family member can only be assigned to members with no or a male corresponding person."
+		assertEquals(thrownExceptionAssignMotherToFather.message, expectedMessage)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test if exception is thrown when a former daughter is assigned to be a son.
+	 */
+	@Test
+	def void testExceptionSexChanges_AssignDaughterToSon() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()				
+		logger.trace(nameOfTestMethod + " - preparation done")
+		val thrownExceptionAssignDaughterToSon = assertThrows(UnsupportedOperationException, [
+			FamilyRegister.from(FAMILIES_MODEL).propagate [
+				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
+				val family2 = families.findFirst[family|family.lastName.equals(LAST_NAME_2)]
+				family1.sons += family2.daughters.findFirst[daughter|daughter.firstName.equals(FIRST_DAU_2)]
+			]
+		])
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val String expectedMessage = "The position of a male family member can only be assigned to members with no or a male corresponding person."
+		assertEquals(thrownExceptionAssignDaughterToSon.message, expectedMessage)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test if exception is thrown when a former father is assigned to be a mother.
+	 */
+	@Test
+	def void testExceptionSexChanges_AssignFatherToMother() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()				
+		logger.trace(nameOfTestMethod + " - preparation done")
+		val thrownExceptionAssignFatherToMother = assertThrows(UnsupportedOperationException, [
+			FamilyRegister.from(FAMILIES_MODEL).propagate [
+				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
+				val family2 = families.findFirst[family|family.lastName.equals(LAST_NAME_2)]
+				family1.mother = family2.father
+			]
+		])
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val String expectedMessage = "The position of a female family member can only be assigned to members with no or a female corresponding person."
+		assertEquals(thrownExceptionAssignFatherToMother.message, expectedMessage)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test if exception is thrown when a former son is assigned to be a daughter.
+	 */
+	@Test
+	def void testExceptionSexChanges_AssignSonToDaughter() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createTwoFamiliesBeforeTesting()				
+		logger.trace(nameOfTestMethod + " - preparation done")
+		val thrownExceptionAssignSonToDaughter = assertThrows(UnsupportedOperationException, [
+			FamilyRegister.from(FAMILIES_MODEL).propagate [
+				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
+				val family2 = families.findFirst[family|family.lastName.equals(LAST_NAME_2)]
+				family1.daughters += family2.sons.findFirst[son|son.firstName.equals(FIRST_SON_2)]
+			]
+		])
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val String expectedMessage = "The position of a female family member can only be assigned to members with no or a female corresponding person."
+		assertEquals(thrownExceptionAssignSonToDaughter.message, expectedMessage)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test if exception is thrown when a member is named with <code>null</code>.
+	 */
+	@Test
+	def void testExceptionRenaming_SetNullAsFirstName() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()				
+		logger.trace(nameOfTestMethod + " - preparation done")
+		val thrownExceptionSetNullAsFirstName = assertThrows(IllegalArgumentException, [
+			FamilyRegister.from(FAMILIES_MODEL).propagate [
+				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
+				family1.father.firstName = null
+			]
+		])
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val String expectedMessage = "New firstname is not allowed to be null."
+		assertEquals(thrownExceptionSetNullAsFirstName.message, expectedMessage)
+		logger.trace(nameOfTestMethod + " - finished without errors")
+	}
+	
+	/**Test if exception is thrown when a member is named with <code>""</code>.
+	 */
+	@Test
+	def void testExceptionRenaming_SetEmptyStringAsFirstName() {
+		logger.trace(nameOfTestMethod + " - begin")
+		this.createOneFamilyBeforeTesting()				
+		logger.trace(nameOfTestMethod + " - preparation done")
+		val thrownExceptionSetEmptyStringAsFirstName = assertThrows(IllegalArgumentException, [
+			FamilyRegister.from(FAMILIES_MODEL).propagate [
+				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
+				family1.daughters.findFirst[firstName.equals(FIRST_DAU_1)].firstName = ""
+			]
+		])
+		logger.trace(nameOfTestMethod + " - propagation done")
+		val String expectedMessage = "New firstname is not allowed to be empty."
+		assertEquals(thrownExceptionSetEmptyStringAsFirstName.message, expectedMessage)
 		logger.trace(nameOfTestMethod + " - finished without errors")
 	}
 		
@@ -506,7 +1268,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testDeleteAllFamiliesWithMatchingName() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families.removeIf([it.lastName.equals(LAST_NAME_1)])
@@ -525,7 +1287,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testDeleteFamilyRegister() {
 		logger.trace(nameOfTestMethod + " - begin")
-		this.createFamilyBeforeTesting()
+		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
 		resourceAt(FAMILIES_MODEL).propagate[contents.clear()]
 		logger.trace(nameOfTestMethod + " - propagation done")

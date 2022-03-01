@@ -1511,20 +1511,20 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		val FamilyRegister expectedFamilyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister => [
 			families += #[
 				FamiliesFactory.eINSTANCE.createFamily => [
-					lastName = "Dorincourt"
-					father = FamiliesFactory.eINSTANCE.createMember => [firstName = "The Earl of"]
-				],
-				FamiliesFactory.eINSTANCE.createFamily => [
-					lastName = "Marzahn"
-					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = "Cindy aus"]
+					lastName = ""
+					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = "Daenerys_Targaryen"]
 				],
 				FamiliesFactory.eINSTANCE.createFamily => [
 					lastName = ""
 					sons += FamiliesFactory.eINSTANCE.createMember => [firstName = "Saruman"]
 				],
 				FamiliesFactory.eINSTANCE.createFamily => [
-					lastName = ""
-					daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = "Daenerys_Targaryen"]
+					lastName = "Dorincourt"
+					father = FamiliesFactory.eINSTANCE.createMember => [firstName = "The Earl of"]
+				],
+				FamiliesFactory.eINSTANCE.createFamily => [
+					lastName = "Marzahn"
+					mother = FamiliesFactory.eINSTANCE.createMember => [firstName = "Cindy aus"]
 				]
 			]
 		]

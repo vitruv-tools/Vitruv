@@ -14,13 +14,21 @@ import tools.vitruv.framework.userinteraction.UserInteractor
 class PersonsToFamiliesHelper {
 	private new() {}
 	
-	/** @return the eContainer of a person casted as PersonRegister, if it actually is one.
-	 *  @return null, else.
+	/** Returns the eContainer of a Person casted as Personregister, if it is contained in a Personregister.
+	 * 
+	 *  @return <code>person.eContainer</code> as PersonRegister, if it actually is one;
+	 *  		<code>null</code>, else.
 	 */
 	def static PersonRegister getRegister(Person person) {
 		return if (person.eContainer instanceof PersonRegister)	person.eContainer as PersonRegister else null
 	}
 	
+	/** Creates a string representation of a family which is used to label the different options during user interactions.
+	 *  Representation contains names and positions of all members. Person model informations such as birthdates are not used. 
+	 * 
+	 * 	@param family Family to represent as string. 
+	 *  @return String representation.
+	 */	
 	def static String stringifyFamily(Family family) {
 		val StringBuilder builder = new StringBuilder().append(family.lastName).append(": ")
 		if (family.father !== null) { builder.append("F: ").append(family.father.firstName).append(";") }
@@ -29,7 +37,14 @@ class PersonsToFamiliesHelper {
 		if (family.daughters !== null && family.daughters.size > 0) { builder.append(family.daughters.join("D: (", ", ", ")", [it.firstName])) }
 		return builder.toString()
 	}
-	
+
+	/** Extension, which returns the part of the person's fullname which represents the firstname. This is currently by convention
+	 *  everything except the last part which is separated by a space from the rest of the name. If the name does not contain a whitespace,
+	 *  the whole name is considered to be the firstname, which symbolizes, that the person has no lastname.
+	 * 
+	 * 	@param person Person to retrieve the firstname from. 
+	 *  @return As firstname interpreted part of the fullname.
+	 */	
 	def static String getFirstname(Person person) {		 
 		val Iterable<String> nameParts = person.fullName.split(" ")
 		var String firstName = null
@@ -41,6 +56,13 @@ class PersonsToFamiliesHelper {
 		return firstName
 	}
 	
+	/** Extension, which returns the part of the person's fullname which represents the lastname. This is currently by convention
+	 *  the last part which is separated by a space from the rest of the name. If the name does not contain a whitespace,
+	 *  the empty string is returned, which symbolizes, that the person has only a firstname and no lastname.
+	 * 
+	 * 	@param person Person to retrieve the lastname from. 
+	 *  @return As lastname interpreted part of the fullname or <code>""</code>
+	 */
 	def static String getLastname(Person person) {
 		if (!person.fullName.contains(" ")) {
 			return ""
@@ -50,8 +72,8 @@ class PersonsToFamiliesHelper {
 	}
 	
 	/** Sets up an user interaction to ask the user if he would like to create a parent or a child in the families model
-	 *  @return true <==> new member is meant to be a child
-	 *  @return false <==> new member is meant to be a parent
+	 *  @return  <code>true</code> <==> new member is meant to be a child;
+	 * 			 <code>false</code> <==> new member is meant to be a parent
 	 */
 	def static boolean doesUserPreferChildOverParent(UserInteractor userInteractor, Person newPerson) {
 		
@@ -75,8 +97,8 @@ class PersonsToFamiliesHelper {
 	}
 	
 	/** Sets up an user interaction to ask the user if he would like to create a parent or a child in the families model
-	 *  @return true <==> new member is meant to be a child
-	 *  @return false <==> new member is meant to be a parent
+	 *  @return <code>true</code> <==> new member is meant to be a child
+	 *  		<code>false</code> <==> new member is meant to be a parent
 	 */
 	def static boolean doesUserPreferChildOverParentDuringRenaming(UserInteractor userInteractor, String oldFullname, String newFullname, boolean wasChildBefore) {
 		
@@ -121,7 +143,7 @@ class PersonsToFamiliesHelper {
 	/** Sets up an user interaction to ask the user if he wants to insert the corresponding member to the {@code newPerson}
 	 *  either into a new family or into one of the {@code selectableFamilies} and if so, in which. 
 	 *  @return chosen family, if existing family was selected
-	 *  @return null, if users wants to create and insert into a new family 
+	 * 			<code>null</code>, if users wants to create and insert into a new family 
 	 */
 	def static Family askUserWhichFamilyToInsertTheMemberIn(UserInteractor userInteractor, Person newPerson, Iterable<Family> selectableFamilies) {
 		// Let user select the family
