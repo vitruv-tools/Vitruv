@@ -20,6 +20,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactionsImports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/routines"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsSegment/additionalInitializedMetamodelPackageQualifiedClassNames"/>
     </genClasses>
     <genClasses ecoreClass="TopLevelElements.ecore#//ReactionsImport">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsImport/routinesOnly"/>
@@ -34,7 +35,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Reaction/callRoutine"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Reaction/reactionsSegment"/>
     </genClasses>
-    <genClasses ecoreClass="TopLevelElements.ecore#//ReactionRoutineCall"/>
     <genClasses ecoreClass="TopLevelElements.ecore#//Trigger">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Trigger/precondition"/>
     </genClasses>
@@ -66,14 +66,12 @@
     <genClasses ecoreClass="TopLevelElements.ecore#//CodeBlock">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//CodeBlock/code"/>
     </genClasses>
-    <genClasses ecoreClass="TopLevelElements.ecore#//RoutineCallBlock"/>
-    <genClasses ecoreClass="TopLevelElements.ecore#//NamedMetaclassReference">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//NamedMetaclassReference/name"/>
-    </genClasses>
     <genClasses ecoreClass="TopLevelElements.ecore#//PreconditionCodeBlock"/>
     <genClasses ecoreClass="TopLevelElements.ecore#//NamedJavaElementReference">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//NamedJavaElementReference/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//NamedJavaElementReference/type"/>
     </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//RoutineCallBlock"/>
+    <genClasses ecoreClass="TopLevelElements.ecore#//ReactionRoutineCall"/>
   </genPackages>
 </genmodel:GenModel>

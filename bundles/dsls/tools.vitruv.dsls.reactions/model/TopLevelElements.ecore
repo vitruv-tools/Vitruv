@@ -23,6 +23,8 @@
         eType="#//Reaction" containment="true" eOpposite="#//Reaction/reactionsSegment"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="routines" upperBound="-1"
         eType="#//Routine" containment="true" eOpposite="#//Routine/reactionsSegment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="additionalInitializedMetamodelPackageQualifiedClassNames"
+        upperBound="-1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ReactionsImport">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="routinesOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

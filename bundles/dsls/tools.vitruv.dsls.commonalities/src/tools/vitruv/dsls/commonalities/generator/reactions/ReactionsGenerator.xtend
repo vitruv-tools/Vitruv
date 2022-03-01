@@ -18,6 +18,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
 
 /**
@@ -39,7 +40,7 @@ class ReactionsGenerator implements SubGenerator {
 	@Inject MatchParticipationReactionsBuilder.Factory matchParticipationReactionsBuilder
 	@Inject MatchParticipationReferencesReactionsBuilder.Factory matchParticipationReferencesReactionsBuilder
 	@Inject ParticipationAttributeChangeReactionsBuilder.Factory participationAttributeChangeReactionsBuilder
-	
+
 	override beforeGenerate() {
 		// Prepare the Reactions language:
 		if (isNewResourceSet) {
@@ -124,17 +125,19 @@ class ReactionsGenerator implements SubGenerator {
 	}
 
 	private def generateCommonalityFromParticipationSegment(Participation participation) {
-		val segment = create.reactionsSegment('''«commonality.name»From«participation.name»''')
-			.inReactionToChangesIn(participation.domain.vitruvDomain)
-			.executeActionsIn(commonalityFile.concept.name)
+		val segment = create.reactionsSegment('''«commonality.name»From«participation.name»''') //
+		.inReactionToChangesIn(participation.domain.vitruvDomain) //
+		.executeActionsIn(commonalityFile.concept.name) //
+		.withInitializedMetamodel(commonality.concept.intermediateMetamodelPackageClassName.qualifiedName)
 		participation.generateParticipationChangeReactions(segment)
 		return segment
 	}
 
 	private def generateCommonalityToParticipationSegment(Participation participation) {
-		val segment = create.reactionsSegment('''«commonality.name»To«participation.name»''')
-			.inReactionToChangesIn(commonalityFile.concept.vitruvDomain)
-			.executeActionsIn(participation.domain.vitruvDomain)
+		val segment = create.reactionsSegment('''«commonality.name»To«participation.name»''') //
+		.inReactionToChangesIn(commonalityFile.concept.vitruvDomain) //
+		.executeActionsIn(participation.domain.vitruvDomain) //
+		.withInitializedMetamodel(commonality.concept.intermediateMetamodelPackageClassName.qualifiedName)
 		participation.generateCommonalityChangeReactions(segment)
 		return segment
 	}
@@ -160,8 +163,8 @@ class ReactionsGenerator implements SubGenerator {
 	private def void generateReactionsForCommonalityAttributeChange(Participation targetParticipation,
 		FluentReactionsSegmentBuilder segment) {
 		commonality.attributes.forEach [ attribute |
-			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation)
-				.generateReactions(segment)
+			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation).
+				generateReactions(segment)
 		]
 	}
 
