@@ -23,23 +23,23 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.vsum.internal.ModelRepository
+import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
 
 package class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
-	val ModelRepository resourceRepository
+	val ChangeRecordingModelRepository modelRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val InternalUserInteractor userInteractor
 
-	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
+	new(ChangeRecordingModelRepository modelRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		InternalUserInteractor userInteractor) {
-		this.resourceRepository = resourceRepository
+		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
 		this.userInteractor = userInteractor
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		val resolvedChange = resourceRepository.applyChange(change)
+		val resolvedChange = modelRepository.applyChange(change)
 		resolvedChange.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
 
 		if (logger.isTraceEnabled) {
@@ -125,12 +125,12 @@ package class ChangePropagator {
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
-			resourceRepository.startRecording()
+			modelRepository.startRecording()
 			for (eChange : change.EChanges) {
-				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel,
-					resourceRepository)
+				propagationSpecification.propagateChange(eChange, modelRepository.correspondenceModel,
+					modelRepository)
 			}
-			val changesInPropagation = resourceRepository.endRecording()
+			val changesInPropagation = modelRepository.endRecording()
 
 			// Store modification information
 			changedResources += changesInPropagation.flatMap[it.change.affectedEObjects].map[eResource].filterNull
@@ -155,10 +155,10 @@ package class ChangePropagator {
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
 				checkState(
-					!resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
+					!modelRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
 					"The object %s is part of a correspondence to %s but not in any resource",
 					createdObjectWithoutResource,
-					resourceRepository.correspondenceModel.getCorrespondingEObjects(#[createdObjectWithoutResource]))
+					modelRepository.correspondenceModel.getCorrespondingEObjects(#[createdObjectWithoutResource]))
 				logger.warn("Object was created but has no correspondence and is thus lost: " +
 					createdObjectWithoutResource)
 			}
