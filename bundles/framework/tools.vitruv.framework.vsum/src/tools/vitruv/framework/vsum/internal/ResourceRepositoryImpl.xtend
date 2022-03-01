@@ -15,7 +15,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
@@ -25,6 +24,9 @@ import java.nio.file.NoSuchFileException
 import tools.vitruv.framework.change.description.VitruviusChange
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 import tools.vitruv.framework.propagation.ChangeInPropagation
+import java.util.Set
+import static com.google.common.base.Preconditions.checkState
+import java.util.HashSet
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -34,9 +36,41 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
-	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
+	val extension FileExtensionRecorderMapping fileExtensionsRecorderMapping = new FileExtensionRecorderMapping
+	
 	var isRecording = false
 	var isLoading = false
+		
+	private static class FileExtensionRecorderMapping {
+		val Map<Set<String>, ChangeRecorder> fileExtensionsToRecorder = new HashMap()
+		val Map<String, Set<String>> fileExtensionToExtensionsSet = new HashMap()
+		val Map<ChangeRecorder, Boolean> shouldTransitivelyPropagate = new HashMap()
+		
+		def Set<ChangeRecorder> getRecorders() {
+			fileExtensionsToRecorder.values.toSet
+		}
+		
+		def boolean hasRecorder(String fileExtension) {
+			fileExtensionsToRecorder.containsKey(fileExtensionToExtensionsSet.get(fileExtension))
+		}
+		
+		def ChangeRecorder getRecorder(String fileExtension) {
+			fileExtensionsToRecorder.get(fileExtensionToExtensionsSet.get(fileExtension))
+		}
+		
+		def boolean shouldPropagateTransitively(ChangeRecorder recorder) {
+			shouldTransitivelyPropagate.get(recorder)
+		}
+		
+		def void registerRecorder(Set<String> fileExtensions, boolean shouldTransitivelyPropagate, ResourceSet recorderResourceSet) {
+			fileExtensionToExtensionsSet.keySet.forEach[checkState(!fileExtensions.contains(it), "there already is a recorder for metamodel %s", it)]
+			val fileExtensionsSet = new HashSet(fileExtensions)
+			fileExtensions.forEach[fileExtensionToExtensionsSet.put(it, fileExtensionsSet)]
+			val recorder = new ChangeRecorder(recorderResourceSet)
+			fileExtensionsToRecorder.put(fileExtensionsSet, recorder)
+			this.shouldTransitivelyPropagate.put(recorder, shouldTransitivelyPropagate)
+		}
+	}
 
 	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
@@ -85,8 +119,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def private createOrLoadModel(URI modelURI) {
-		checkState(getDomainForURI(modelURI) !== null,
-			"Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
 		val resource = if ((modelURI.isFile || modelURI.isPlatform)) {
 				modelsResourceSet.getOrCreateResource(modelURI)
 			} else {
@@ -101,9 +133,18 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	def private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
-			val recorder = domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
-				new ChangeRecorder(modelsResourceSet)
-			]
+			if (!hasRecorder(modelInstance.URI.fileExtension)) {
+				var shouldTransitivelyPropagate = true
+				val domain = getDomainForURI(modelInstance.URI)
+				val fileExtensions = if (domain !== null) {
+					shouldTransitivelyPropagate = domain.shouldTransitivelyPropagateChanges  
+					domain.fileExtensions
+				} else {
+					#{modelInstance.URI.fileExtension}
+				}
+				registerRecorder(fileExtensions, shouldTransitivelyPropagate, modelsResourceSet)
+			}
+			val recorder = getRecorder(modelInstance.URI.fileExtension)
 			recorder.addToRecording(modelInstance.resource)
 			if (this.isRecording && !recorder.isRecording) {
 				recorder.beginRecording()
@@ -130,21 +171,21 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondenceModel.save()
 		writeModelsFile()
 	}
-
+	
 	def private VitruvDomain getDomainForURI(URI uri) {
 		domainRepository.getDomainForFileExtension(uri.fileExtension)
 	}
 
 	override Iterable<ChangeInPropagation> recordChanges(Runnable changeApplicator) {
-		domainToRecorder.values.forEach[beginRecording()]
+		recorders.forEach[beginRecording()]
 		isRecording = true
 		logger.debug("Start recording virtual model")
 		changeApplicator.run()
 		logger.debug("End recording virtual model")
 		isRecording = false
-		domainToRecorder.values.forEach[endRecording()]
-		return domainToRecorder.entrySet.filter[value.change.containsConcreteChange].mapFixed [
-			new ChangeInPropagation(value.change, key.shouldTransitivelyPropagateChanges)
+		recorders.forEach[endRecording()]
+		return fileExtensionsRecorderMapping.recorders.filter[change.containsConcreteChange].mapFixed [
+			new ChangeInPropagation(change, fileExtensionsRecorderMapping.shouldPropagateTransitively(it))
 		]
 	}
 
@@ -161,7 +202,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override close() {
-		domainToRecorder.values.forEach[close()]
+		fileExtensionsToRecorder.values.forEach[close()]
 		modelsResourceSet.resources.forEach[unload]
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
