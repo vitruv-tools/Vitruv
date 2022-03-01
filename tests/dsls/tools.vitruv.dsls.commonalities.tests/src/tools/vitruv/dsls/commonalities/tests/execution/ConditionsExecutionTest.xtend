@@ -15,7 +15,7 @@ import java.nio.file.Path
 class ConditionsExecutionTest extends IdentifiedExecutionTest {
 	@BeforeAll
 	override generate(@TestProject Path testProject) {
-		changePropagationSpecifications = generator.generate(testProject,
+		generator.generate(testProject,
 			'IdentifiedWithConditions.commonality' -> '''
 				concept test
 				

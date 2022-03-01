@@ -8,7 +8,6 @@ import javax.inject.Inject
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import tools.vitruv.testutils.VitruvApplicationTest
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.BeforeAll
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -37,12 +36,9 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 	@Accessors(PROTECTED_GETTER)
 	@Inject TestCommonalitiesGenerator generator
 	
-	@Accessors(#[PROTECTED_GETTER, PROTECTED_SETTER])
-	var Iterable<? extends ChangePropagationSpecification> changePropagationSpecifications
-	
 	@BeforeAll
 	def void generate(@TestProject(variant = "commonalities") Path testProject) {
-		changePropagationSpecifications = generator.generate(testProject,
+		generator.generate(testProject,
 			'Identified.commonality' -> '''
 				concept test
 				
@@ -99,6 +95,10 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 				}			
 			'''
 		)
+	}
+	
+	override protected getChangePropagationSpecifications() {
+		generator.createChangePropagationSpecifications()
 	}
 	
 	@Test

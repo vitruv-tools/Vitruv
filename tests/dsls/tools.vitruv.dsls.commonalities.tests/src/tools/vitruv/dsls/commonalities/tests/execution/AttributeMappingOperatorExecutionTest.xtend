@@ -11,8 +11,6 @@ import org.eclipse.xtext.testing.InjectWith
 import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
 import org.junit.jupiter.api.TestInstance
 import javax.inject.Inject
-import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import org.junit.jupiter.api.BeforeAll
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
@@ -30,12 +28,9 @@ import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
 class AttributeMappingOperatorExecutionTest extends VitruvApplicationTest {
 	@Inject TestCommonalitiesGenerator generator
 	
-	@Accessors(PROTECTED_GETTER)
-	var Iterable<? extends ChangePropagationSpecification> changePropagationSpecifications
-	
 	@BeforeAll
 	def void generate(@TestProject(variant = "commonalities") Path testProject) {
-		changePropagationSpecifications = generator.generate(testProject,
+		generator.generate(testProject,
 			'WithAttributeMappingOperators.commonality' -> '''
 				import tools.vitruv.dsls.commonalities.tests.operators.multiply
 				import tools.vitruv.dsls.commonalities.tests.operators.digits
@@ -68,6 +63,10 @@ class AttributeMappingOperatorExecutionTest extends VitruvApplicationTest {
 				}
 			'''
 		)
+	}
+	
+	override protected getChangePropagationSpecifications() {
+		generator.createChangePropagationSpecifications()
 	}
 
 	@Test
