@@ -135,13 +135,11 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		domainRepository.getDomainForFileExtension(uri.fileExtension)
 	}
 
-	override void startRecording() {
+	override Iterable<ChangeInPropagation> recordChanges(Runnable changeApplicator) {
 		domainToRecorder.values.forEach[beginRecording()]
 		isRecording = true
 		logger.debug("Start recording virtual model")
-	}
-
-	override Iterable<ChangeInPropagation> endRecording() {
+		changeApplicator.run()
 		logger.debug("End recording virtual model")
 		isRecording = false
 		domainToRecorder.values.forEach[endRecording()]

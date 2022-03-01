@@ -11,6 +11,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.propagation.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
+import tools.vitruv.framework.propagation.impl.ChangePropagator
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.views.ViewSelector
 import tools.vitruv.framework.views.ViewType

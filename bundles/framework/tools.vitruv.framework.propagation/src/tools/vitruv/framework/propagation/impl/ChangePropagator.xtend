@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.internal
+package tools.vitruv.framework.propagation.impl
 
 import java.util.ArrayList
 import java.util.List
@@ -25,14 +25,14 @@ import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
 
-package class ChangePropagator {
+class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
 	val ChangeRecordingModelRepository modelRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val InternalUserInteractor userInteractor
 
-	new(ChangeRecordingModelRepository modelRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		InternalUserInteractor userInteractor) {
+	new(ChangeRecordingModelRepository modelRepository,
+		ChangePropagationSpecificationProvider changePropagationProvider, InternalUserInteractor userInteractor) {
 		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
 		this.userInteractor = userInteractor
@@ -125,12 +125,12 @@ package class ChangePropagator {
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
-			modelRepository.startRecording()
-			for (eChange : change.EChanges) {
-				propagationSpecification.propagateChange(eChange, modelRepository.correspondenceModel,
-					modelRepository)
-			}
-			val changesInPropagation = modelRepository.endRecording()
+			val changesInPropagation = modelRepository.recordChanges [
+				for (eChange : change.EChanges) {
+					propagationSpecification.propagateChange(eChange, modelRepository.correspondenceModel,
+						modelRepository)
+				}
+			]
 
 			// Store modification information
 			changedResources += changesInPropagation.flatMap[it.change.affectedEObjects].map[eResource].filterNull
