@@ -13,5 +13,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.util,
  edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.framework.change.description,
+ tools.vitruv.framework.change.propagation,
  tools.vitruv.framework.change.recording
 Bundle-Vendor: vitruv.tools
