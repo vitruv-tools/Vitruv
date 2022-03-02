@@ -90,9 +90,6 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 	def void testDeletePersonsRegister() {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
 		]
 		resourceAt(PERSONS_MODEL).propagate[contents.clear()]
 		assertEquals(0, resourceAt(INSURANCE_MODEL).contents.size())
@@ -181,32 +178,20 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
 		]
 
 		PersonRegister.from(PERSONS_MODEL).propagate [
-			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME_2)]
+			val searchedPerson = persons.findFirst[x|x.fullName.equals(FEMALE_NAME)]
 			searchedPerson.fullName = FEMALE_NAME_3
 		]
 
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_3]
 		]
 		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
 			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
 				name = MALE_NAME
-				gender = Gender.MALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = FEMALE_NAME
-				gender = Gender.FEMALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = MALE_NAME_2
 				gender = Gender.MALE
 			]
 			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
@@ -223,8 +208,6 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME]
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
 		]
 
 		PersonRegister.from(PERSONS_MODEL).propagate [
@@ -234,20 +217,10 @@ class PersonsToInsuranceTest extends VitruvApplicationTest {
 
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
 			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME]
-			persons += PersonsFactory.eINSTANCE.createMale => [fullName = MALE_NAME_2]
-			persons += PersonsFactory.eINSTANCE.createFemale => [fullName = FEMALE_NAME_2]
 		]
 		val InsuranceDatabase expectedInsuranceDatabase = InsuranceFactory.eINSTANCE.createInsuranceDatabase => [
 			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
 				name = FEMALE_NAME
-				gender = Gender.FEMALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = MALE_NAME_2
-				gender = Gender.MALE
-			]
-			insuranceclient += InsuranceFactory.eINSTANCE.createInsuranceClient => [
-				name = FEMALE_NAME_2
 				gender = Gender.FEMALE
 			]
 		]
