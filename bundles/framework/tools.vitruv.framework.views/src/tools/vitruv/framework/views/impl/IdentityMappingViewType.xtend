@@ -41,7 +41,7 @@ class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector
 
 	override createView(DirectViewElementSelector selector) {
 		checkArgument(selector.viewType === this, "cannot create view with selector for different view type")
-		return new ChangeRecordingView(selector.viewType, selector.viewSource, selector.selection)
+		return new BasicView(selector.viewType, selector.viewSource, selector.selection)
 	}
 
 	override updateView(ModifiableView view) {

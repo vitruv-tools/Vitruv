@@ -308,12 +308,12 @@ class CorrespondenceTest {
 	
 	private def void changePcmView(InternalVirtualModel vsum, (View)=>void modelModification) {
 	    val factory = new TestViewFactory(vsum)
-        factory.changeView(factory.createViewOfElements("PCM", #{Repository}), modelModification)
+        factory.changeViewRecordingChanges(factory.createViewOfElements("PCM", #{Repository}), modelModification)
     }
     
     private def void changeUmlView(InternalVirtualModel vsum, (View)=>void modelModification) {
         val factory = new TestViewFactory(vsum)
-        factory.changeView(factory.createViewOfElements("UML", #{UPackage}), modelModification)
+        factory.changeViewRecordingChanges(factory.createViewOfElements("UML", #{UPackage}), modelModification)
     }
 
 }

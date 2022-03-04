@@ -1,50 +1,47 @@
 package tools.vitruv.framework.views.impl
 
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.views.ChangeableViewSource
+import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
-import tools.vitruv.framework.views.ViewSelection
-import tools.vitruv.framework.views.ViewSelector
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
 
 import static com.google.common.base.Preconditions.checkArgument
-
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import static com.google.common.base.Preconditions.checkState
 
 /**
  * A {@link View} that records changes to its resources and allows to propagate them 
  * back to the underlying models using the {@link #commitChanges} method.
  */
-class ChangeRecordingView extends AbstractModifiableView {
+class ChangeRecordingView implements ModifiableView, CommittableView {
+    @Delegate
+    BasicView view
     ChangeRecorder changeRecorder
 
-    protected new(ViewCreatingViewType<? extends ViewSelector> viewType, ChangeableViewSource viewSource,
-        ViewSelection selection) {
-        checkArgument(viewType !== null, "view type must not be null")
-        checkArgument(selection !== null, "view source must not be null")
-        checkArgument(viewSource !== null, "view selection must not be null")
-        this.viewType = viewType
-        this.selection = selection
-        this.viewSource = viewSource
-        viewSource.addChangePropagationListener(this)
-        viewResourceSet = new ResourceSetImpl().withGlobalFactories
-        update()
+    protected new(BasicView view) {
+        checkArgument(view !== null, "view must not be null")
+        checkState(!view.isModified, "view must not be modified")
+        this.view = view
+        setupChangeRecorder
     }
 
     override update() {
         changeRecorder.endRecordingAndClose()
-        super.update()
-        changeRecorder = new ChangeRecorder(viewResourceSet)
-        changeRecorder.addToRecording(viewResourceSet)
+        view.update()
+        setupChangeRecorder
+    }
+
+    private def setupChangeRecorder() {
+        changeRecorder = new ChangeRecorder(view.viewResourceSet)
+        changeRecorder.addToRecording(view.viewResourceSet)
         changeRecorder.beginRecording()
     }
 
     override commitChanges() {
-        checkNotClosed()
+        view.checkNotClosed()
         changeRecorder.endRecording()
         val propagatedChanges = viewSource.propagateChange(changeRecorder.change)
-        viewChanged = false
+        view.viewChanged = false
         changeRecorder.beginRecording()
         return propagatedChanges
     }
@@ -53,17 +50,25 @@ class ChangeRecordingView extends AbstractModifiableView {
         if (!isClosed) {
             changeRecorder.close()
         }
-        super.close()
+        view.close()
     }
 
     private def void endRecordingAndClose(ChangeRecorder recorder) {
-        if (recorder !== null && recorder.isRecording) {
+        if (recorder.isRecording) {
             recorder.endRecording()
         }
-        recorder?.close()
+        recorder.close()
     }
 
-    override modifyContents((ResourceSet)=>void modificationFunction) {
-        modificationFunction.apply(viewResourceSet)
+    override withChangeRecordingTrait() {
+        val newView = view.withChangeRecordingTrait
+        changeRecorder.close
+        return newView
+    }
+
+    override withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+        val newView = view.withChangeDerivingTrait(changeResolutionStrategy)
+        changeRecorder.close
+        return newView
     }
 }

@@ -1,7 +1,6 @@
 package tools.vitruv.framework.views;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -9,7 +8,8 @@ import org.eclipse.emf.ecore.EObject;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.FluentIterable;
 
-import tools.vitruv.framework.change.description.PropagatedChange;
+import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 /**
  * A Vitruv view on an underlying {@link ChangeableViewSource}.
@@ -60,44 +60,6 @@ public interface View extends AutoCloseable {
 	void update();
 
 	/**
-	 * Commits the changes made to the view and its containing elements to the
-	 * underlying {@link ChangeableViewSource}. This explicitly includes all changes
-	 * that have been made before calling this method. Whether changes will
-	 * effectively be recorded depends on this view. It is permissible for a view
-	 * not to record any changes if it deems them irrelevant.
-	 * 
-	 * To ensure that the view is not modified ({@link #isModified()}) afterwards
-	 * because further changes may be performed to the underlying sources during
-	 * commit, consider using {@link #commitChangesAndUpdate()} instead to perform
-	 * an update of the view afterwards.
-	 * 
-	 * @return the changes resulting from propagating the recorded changes
-	 * @throws IllegalStateException if called on a closed view
-	 * @see #isClosed()
-	 * @see #commitChangesAndUpdate()
-	 */
-	List<PropagatedChange> commitChanges();
-
-	/**
-	 * Convenience method for subsequent execution of {@link #commitChanges()} and
-	 * {@link #update()}. Commits the changes made to the view and its containing
-	 * elements to the underlying {@link ChangeableViewSource} and updates the view
-	 * elements from the {@link ChangeableViewSource} afterwards to reflect
-	 * potential further changes made during commit.
-	 * 
-	 * @return the changes resulting from propagating the recorded changes
-	 * @throws IllegalStateException if called on a closed view
-	 * @see #commitChanges()
-	 * @see #update()
-	 * @see #isClosed()
-	 */
-	default List<PropagatedChange> commitChangesAndUpdate() {
-		List<PropagatedChange> changes = commitChanges();
-		update();
-		return changes;
-	}
-
-	/**
 	 * Checks whether the view was closed. Closed views cannot be used further. All
 	 * methods may thrown an {@link IllegalStateException}.
 	 */
@@ -132,4 +94,48 @@ public interface View extends AutoCloseable {
 	 * Returns the {@link ViewType} this view conforms to.
 	 */
 	ViewType<? extends ViewSelector> getViewType();
+	
+	/**
+	 * Returns a {@link CommittableView} based on the view's configuration.
+	 * Changes to commit are identified by recording any changes made to the view.
+	 * 
+	 * @throws UnsupportedOperationException if called on a modified view
+	 * @throws IllegalStateException         if called on a closed view
+	 * @see #isClosed()
+	 * @see #isModified()
+	 */
+	CommittableView withChangeRecordingTrait();
+	
+	/**
+	 * Returns a {@link CommittableView} based on the view's configuration.
+	 * Changes to commit are identified by comparing the current view state with its state from the last update.
+	 * @param changeResolutionStrategy The change resolution strategy to use for view state comparison.
+	 *
+	 * @throws UnsupportedOperationException if called on a modified view
+	 * @throws UnsupportedOperationException if called on an outdated view
+	 * @throws IllegalStateException         if called on a closed view
+	 * @see #isClosed()
+	 * @see #isModified()
+	 * @see #isOutdated()
+	 * 
+	 * TODO: Requirement for not #isOutdated() results from how the reference view state is constructed. Conceptually, this should not be necessary.
+	 */
+	CommittableView withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy);
+	
+	
+	/**
+	 * Returns a {@link CommittableView} based on the view's configuration.
+	 * Changes to commit are identified by comparing the current view state with its state from the last update.
+	 * To compare states the {@link DefaultStateBasedChangeResolutionStrategy} is applied.
+	 *
+	 * @throws UnsupportedOperationException if called on a modified view
+	 * @throws UnsupportedOperationException if called on an outdated view
+	 * @throws IllegalStateException         if called on a closed view
+	 * @see #isClosed()
+	 * @see #isModified()
+	 * @see #isOutdated()
+	 */
+	default CommittableView withChangeDerivingTrait() {
+		return withChangeDerivingTrait(new DefaultStateBasedChangeResolutionStrategy());
+	}
 }

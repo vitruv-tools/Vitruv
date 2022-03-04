@@ -323,7 +323,7 @@ class VirtualModelTest {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
-		val testView = virtualModel.createTestView
+		val testView = virtualModel.createTestView.withChangeRecordingTrait
 
 		// Modify view:
 		assertThat("view must not have been modified", !testView.isModified)

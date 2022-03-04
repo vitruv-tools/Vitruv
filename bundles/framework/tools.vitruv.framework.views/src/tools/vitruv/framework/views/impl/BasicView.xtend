@@ -7,17 +7,21 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.propagation.ChangePropagationAbortCause
 import tools.vitruv.framework.change.propagation.ChangePropagationListener
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.ViewSelection
 import tools.vitruv.framework.views.ViewSelector
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 
-abstract class AbstractModifiableView implements ModifiableView, ChangePropagationListener {
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+
+package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
     var ViewSelection selection
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
@@ -30,6 +34,19 @@ abstract class AbstractModifiableView implements ModifiableView, ChangePropagati
     @Accessors(PROTECTED_SETTER)
     boolean viewChanged
     boolean closed
+
+    protected new(ViewCreatingViewType<? extends ViewSelector> viewType, ChangeableViewSource viewSource,
+        ViewSelection selection) {
+        checkArgument(viewType !== null, "view type must not be null")
+        checkArgument(viewSource !== null, "view selection must not be null")
+        checkArgument(selection !== null, "view source must not be null")
+        this.viewType = viewType
+        this.viewSource = viewSource
+        this.selection = selection
+        viewSource.addChangePropagationListener(this)
+        viewResourceSet = new ResourceSetImpl().withGlobalFactories
+        update
+    }
 
     override getRootObjects() {
         checkNotClosed()
@@ -121,5 +138,15 @@ abstract class AbstractModifiableView implements ModifiableView, ChangePropagati
 
     override modifyContents((ResourceSet)=>void modificationFunction) {
         modificationFunction.apply(viewResourceSet)
+    }
+
+    override withChangeRecordingTrait() {
+        checkNotClosed()
+        return new ChangeRecordingView(this)
+    }
+
+    override withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+        checkNotClosed()
+        return new ChangeDerivingView(this, changeResolutionStrategy)
     }
 }
