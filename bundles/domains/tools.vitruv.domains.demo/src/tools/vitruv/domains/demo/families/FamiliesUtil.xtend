@@ -8,8 +8,11 @@ import java.util.ArrayList
 import java.util.Collection
 
 @Utility
-final class FamiliesUtil {
-	private new () {}
+class FamiliesUtil {
+	
+	def static boolean isChild(Member member) {
+		return (member.familySon ?: member.familyDaughter) !== null
+	}
 		
 	def static Family getFamily(Member member) {
 		return member.familyFather ?: member.familyMother ?: member.familySon ?: member.familyDaughter
@@ -32,10 +35,17 @@ final class FamiliesUtil {
 		return member.family.register
 	}
 	
-	/** @return the eContainer of a family casted as FamilyRegister, if it actually is one.
-	 *  @return null, else.
+	/** Returns the eContainer of a Family casted as FamilyRegister, if it is contained in a FamilyRegister.
+	 *  @param family The family to obtain the FamilyRegister from.
+	 *  @return <code>family.eContainer</code> as FamilyRegister, if it actually is one;
+	 *  @throws UnsupportedOperationException, if <code>family.eContainer</code> is not a FamilyRegister 
+	 *  to indicate that the case of eContainers of other types is case is not implemented/ supported yet.  
 	 */
 	def static FamilyRegister getRegister(Family family) {
-		return if (family.eContainer instanceof FamilyRegister)	family.eContainer as FamilyRegister else null
+		if (family.eContainer instanceof FamilyRegister) {
+			return family.eContainer as FamilyRegister
+		} else {
+			throw new UnsupportedOperationException("The reaction is only implemented for the case of a FamilyRegister being the eContainer of a Family.") 
+		}
 	}
 }
