@@ -126,8 +126,8 @@ class ReactionsGenerator implements SubGenerator {
 
 	private def generateCommonalityFromParticipationSegment(Participation participation) {
 		val segment = create.reactionsSegment('''«commonality.name»From«participation.name»''') //
-		.inReactionToChangesIn(participation.domain.vitruvDomain) //
-		.executeActionsIn(commonalityFile.concept.name) //
+		.inReactionToChangesIn(participation.domain.vitruvDomain.metamodelRootPackage) //
+		.executeActionsIn(commonalityFile.concept.vitruvDomain.metamodelRootPackage) //
 		.withInitializedMetamodel(commonality.concept.intermediateMetamodelPackageClassName.qualifiedName)
 		participation.generateParticipationChangeReactions(segment)
 		return segment
@@ -135,8 +135,8 @@ class ReactionsGenerator implements SubGenerator {
 
 	private def generateCommonalityToParticipationSegment(Participation participation) {
 		val segment = create.reactionsSegment('''«commonality.name»To«participation.name»''') //
-		.inReactionToChangesIn(commonalityFile.concept.vitruvDomain) //
-		.executeActionsIn(participation.domain.vitruvDomain) //
+		.inReactionToChangesIn(commonalityFile.concept.vitruvDomain.metamodelRootPackage) //
+		.executeActionsIn(participation.domain.vitruvDomain.metamodelRootPackage) //
 		.withInitializedMetamodel(commonality.concept.intermediateMetamodelPackageClassName.qualifiedName)
 		participation.generateCommonalityChangeReactions(segment)
 		return segment
