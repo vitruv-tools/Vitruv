@@ -3,18 +3,17 @@ package tools.vitruv.dsls.mappings.generator
 import java.util.List
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.common.elements.DomainReference
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import java.util.Set
 
 class MappingParameterExtractor {
 
-	var DomainReference targetDomain
+	var Set<EPackage> targetMetamodelPackages
 	var Mapping mapping
 	var boolean leftSide
 
-	new(DomainReference targetDomain) {
-		this.targetDomain = targetDomain
+	new(Set<EPackage> targetMetamodelPackages) {
+		this.targetMetamodelPackages = targetMetamodelPackages
 	}
 
 	/**
@@ -47,8 +46,7 @@ class MappingParameterExtractor {
 
 	private def isParameterFromTargetDomain(MappingParameter parameter) {
 		val parameterPackage = parameter.value.metamodel.package
-		val targetDomainRootPackage = VitruvDomainProviderRegistry.getDomainProvider(targetDomain.domain)?.domain.metamodelRootPackage
-		return parameterPackage.isPackageOrSubpackage(targetDomainRootPackage)
+		return targetMetamodelPackages.exists[parameterPackage.isPackageOrSubpackage(it)]
 	}
 	
 	private static def boolean isPackageOrSubpackage(EPackage consideredPackage, EPackage packageToSearchIn) {

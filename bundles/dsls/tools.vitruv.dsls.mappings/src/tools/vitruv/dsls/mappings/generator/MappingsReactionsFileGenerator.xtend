@@ -33,14 +33,14 @@ class MappingsReactionsFileGenerator {
 
 	private def createAndInitializeFile() {
 		val reactionsFile = create.reactionsFile(directedSegmentName)
-		val segmentBuilder = create.reactionsSegment(directedSegmentName).inReactionToChangesIn(fromDomain.domain).
-			executeActionsIn(toDomain.domain)
+		val segmentBuilder = create.reactionsSegment(directedSegmentName).inReactionToChangesIn(fromMetamodels.map[package].toSet).
+			executeActionsIn(toMetamodels.map[package].toSet)
 		reactionsFile += segmentBuilder
 		context = new MappingGeneratorContext(reactionsFile, segmentBuilder, segment, mappingsFile, create, left2right)
 	}
 
 	private def generateReactionsAndRoutines() {
-		val extractor = new MappingParameterExtractor(fromDomain)
+		val extractor = new MappingParameterExtractor(fromMetamodels.map[package].toSet)
 		segment.mappings.forEach [
 			extractor.extract(it)
 			val from = extractor.fromParameters
@@ -56,12 +56,12 @@ class MappingsReactionsFileGenerator {
 		]
 	}
 
-	private def getFromDomain() {
-		if(left2right) segment.leftDomain else segment.rightDomain
+	private def getFromMetamodels() {
+		if(left2right) segment.leftMetamodels else segment.rightMetamodels
 	}
 
-	private def getToDomain() {
-		if(left2right) segment.rightDomain else segment.leftDomain
+	private def getToMetamodels() {
+		if(left2right) segment.rightMetamodels else segment.leftMetamodels
 	}
 
 	private def String getDirectedSegmentName() '''«segment.name»«directionSuffix»'''
