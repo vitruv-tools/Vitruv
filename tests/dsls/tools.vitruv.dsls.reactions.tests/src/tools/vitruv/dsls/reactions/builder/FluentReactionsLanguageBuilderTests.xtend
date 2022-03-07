@@ -7,13 +7,15 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Disabled
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.hamcrest.CoreMatchers.containsString
+import allElementTypes.AllElementTypesPackage
+import allElementTypes2.AllElementTypes2Package
 
 class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	@Test
 	def void createRoot() {
 		val builder = create.reactionsFile('createRootTest') +=
-			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-				executeActionsIn(AllElementTypes) += create.reaction('CreateRootTest').afterElement(Root).created.call [
+			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) += create.reaction('CreateRootTest').afterElement(Root).created.call [
 				action [
 					vall('newRoot').create(Root)
 					addCorrespondenceBetween('newRoot').and.affectedEObject
@@ -24,8 +26,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -46,8 +48,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	@Test
 	def void removeRoot() {
 		val builder = create.reactionsFile('deleteRootTest') +=
-			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-				executeActionsIn(AllElementTypes) += create.reaction('DeleteRootTest').afterElement(Root).deleted.call [
+			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) += create.reaction('DeleteRootTest').afterElement(Root).deleted.call [
 				match [
 					vall('toDelete').retrieve(Root).correspondingTo.affectedEObject
 				].action [
@@ -59,8 +61,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction DeleteRootTest {
 				after element allElementTypes::Root deleted
@@ -84,8 +86,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	def void importSegments() {
 		val builder = create.reactionsFile('importTest')
 
-		val baseSegment = create.reactionsSegment('baseSegment').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes)
+		val baseSegment = create.reactionsSegment('baseSegment').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE)
 		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
 			action [
 				vall('newRoot').create(Root)
@@ -93,8 +95,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			]
 		]
 
-		val baseSegment2 = create.reactionsSegment('baseSegment2').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes)
+		val baseSegment2 = create.reactionsSegment('baseSegment2').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE)
 		baseSegment2 += create.reaction('DeleteRootTest').afterElement(Root).deleted.call [
 			match [
 				vall('toDelete').retrieve(Root).correspondingTo.affectedEObject
@@ -103,8 +105,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			]
 		]
 
-		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes).importSegment(baseSegment).usingSimpleRoutineNames.
+		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE).importSegment(baseSegment).usingSimpleRoutineNames.
 			importSegment(baseSegment2).routinesOnly.usingQualifiedRoutineNames
 
 		builder += baseSegment
@@ -115,8 +117,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: baseSegment
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -133,8 +135,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: baseSegment2
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction DeleteRootTest {
 				after element allElementTypes::Root deleted
@@ -153,8 +155,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: extendedSegment
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			import baseSegment
 			import routines baseSegment2 using qualified names
@@ -167,8 +169,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	def void overrideReaction() {
 		val builder = create.reactionsFile('overrideReactionTest')
 
-		val baseSegment = create.reactionsSegment('baseSegment').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes)
+		val baseSegment = create.reactionsSegment('baseSegment').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE)
 		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
 			action [
 				vall('newRoot').create(Root)
@@ -176,8 +178,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			]
 		]
 
-		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes).importSegment(baseSegment).usingQualifiedRoutineNames
+		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE).importSegment(baseSegment).usingQualifiedRoutineNames
 		extendedSegment +=
 			create.reaction('CreateRootTest').overrideSegment(baseSegment).afterElement(Root).created.call [
 				action [
@@ -193,8 +195,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: baseSegment
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -211,8 +213,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: extendedSegment
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			import baseSegment using qualified names
 			
@@ -236,8 +238,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	def void overrideRoutines() {
 		val builder = create.reactionsFile('overrideRoutinesTest')
 
-		val baseSegment = create.reactionsSegment('baseSegment').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes)
+		val baseSegment = create.reactionsSegment('baseSegment').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE)
 		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
 			action [
 				vall('newRoot').create(Root)
@@ -245,8 +247,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			]
 		]
 
-		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes).importSegment(baseSegment).usingQualifiedRoutineNames
+		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE).importSegment(baseSegment).usingQualifiedRoutineNames
 		extendedSegment += create.routine('createRootTestRepair') // TODO this is not working yet
 		.overrideAlongImportPath(baseSegment).input [
 			model(Root, 'affectedEObject')
@@ -255,8 +257,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			addCorrespondenceBetween('newRoot2').and.affectedEObject
 		]
 
-		val extendedSegment2 = create.reactionsSegment('extendedSegment2').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes).importSegment(extendedSegment).usingQualifiedRoutineNames
+		val extendedSegment2 = create.reactionsSegment('extendedSegment2').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE).importSegment(extendedSegment).usingQualifiedRoutineNames
 		extendedSegment2 += create.routine('createRootTestRepair') // TODO this is not working yet
 		.overrideAlongImportPath(extendedSegment, baseSegment).input [
 			model(Root, 'affectedEObject')
@@ -273,8 +275,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: baseSegment
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -291,8 +293,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: extendedSegment
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			import baseSegment using qualified names
 			
@@ -306,8 +308,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: extendedSegment2
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			import extendedSegment using qualified names
 			
@@ -335,8 +337,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	def void noEmptyReactionsSegment() {
 		val exception = assertThrows(IllegalStateException) [
 			val builder = create.reactionsFile('Test') +=
-				create.reactionsSegment('empty').inReactionToChangesIn(AllElementTypes).
-					executeActionsIn(AllElementTypes)
+				create.reactionsSegment('empty').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+					executeActionsIn(AllElementTypesPackage.eINSTANCE)
 			matcher.build(builder)
 		]
 		assertThat(exception.message, containsString("Neither routines, nor reactions, nor imports"))
@@ -345,8 +347,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	@Test
 	def void routineArgument() {
 		val builder = create.reactionsFile('createRootTest') +=
-			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-				executeActionsIn(AllElementTypes) += create.routine('withArguments').input [
+			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) += create.routine('withArguments').input [
 				model(Root, 'rootParameter')
 				model(NonRoot, 'nonRootParameter')
 			].action [
@@ -357,8 +359,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			routine withArguments(allElementTypes::Root rootParameter, allElementTypes::NonRoot nonRootParameter) {
 				action {
@@ -380,8 +382,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		]
 
 		val reactionsFile = create.reactionsFile('createRootTest')
-		val reactionsSegment = create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes) += #[
+		val reactionsSegment = create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE) += #[
 			create.reaction('CreateRootTest').afterElement(Root).created.call(commonRoutine),
 			create.reaction('CreateNonRootTest').afterElement(NonRoot).created.call(commonRoutine)
 		]
@@ -393,8 +395,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -427,8 +429,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		]
 
 		val reactionsFile = create.reactionsFile('createRootTest')
-		val reactionsSegment = create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes)
+		val reactionsSegment = create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE)
 
 		reactionsSegment += commonRoutine
 
@@ -443,8 +445,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -485,8 +487,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		]
 
 		val reactionsFile = create.reactionsFile('routineWithMatchTest') +=
-			create.reactionsSegment('routineWithMatchTest').inReactionToChangesIn(AllElementTypes).
-				executeActionsIn(AllElementTypes) += routineWithMatch
+			create.reactionsSegment('routineWithMatchTest').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) += routineWithMatch
 
 		val expectedReaction = '''
 			import «objectExtensionsFqn»
@@ -494,8 +496,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: routineWithMatchTest
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			routine withMatch() {
 				match {
@@ -531,8 +533,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 
 		val reaction = create.reaction('CreateRoot').afterElement(Root).created.call(routineWithMatch)
 
-		val segment = create.reactionsSegment('routineWithMatchTest').inReactionToChangesIn(AllElementTypes).
-			executeActionsIn(AllElementTypes) += reaction
+		val segment = create.reactionsSegment('routineWithMatchTest').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE) += reaction
 		segment += routineWithMatch
 
 		val reactionsFile = create.reactionsFile('routineWithMatchTest') += segment
@@ -543,8 +545,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: routineWithMatchTest
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRoot {
 				after element allElementTypes::Root created
@@ -579,13 +581,13 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		val reactionsFile = create.reactionsFile('createRootTest')
 
 		reactionsFile +=
-			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-				executeActionsIn(AllElementTypes) +=
+			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) +=
 				create.reaction('CreateRootTest').afterElement(Root).created.call(commonRoutine)
 
 		reactionsFile +=
-			create.reactionsSegment('simpleChangesRoot2Tests').inReactionToChangesIn(AllElementTypes2).
-				executeActionsIn(AllElementTypes) +=
+			create.reactionsSegment('simpleChangesRoot2Tests').inReactionToChangesIn(AllElementTypes2Package.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) +=
 				create.reaction('CreateRoot2Test').afterElement(Root2).created.call(commonRoutine)
 
 		val expectedReaction = '''
@@ -595,8 +597,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -612,8 +614,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: simpleChangesRoot2Tests
-			in reaction to changes in AllElementTypes2
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes2
+			execute actions in allElementTypes
 			
 			reaction CreateRoot2Test {
 				after element allElementTypes2::Root2 created
@@ -637,12 +639,12 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		val reactionsFile = create.reactionsFile('createRootTest')
 
 		reactionsFile +=
-			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
-				executeActionsIn(AllElementTypes) +=
+			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) +=
 				create.reaction('CreateRootTest').afterElement(Root).created.call(commonRoutine)
 
-		val secondSegment = create.reactionsSegment('simpleChangesRoot2Tests').inReactionToChangesIn(AllElementTypes2).
-			executeActionsIn(AllElementTypes) +=
+		val secondSegment = create.reactionsSegment('simpleChangesRoot2Tests').inReactionToChangesIn(AllElementTypes2Package.eINSTANCE).
+			executeActionsIn(AllElementTypesPackage.eINSTANCE) +=
 			create.reaction('CreateRoot2Test').afterElement(Root2).created.call(commonRoutine)
 
 		secondSegment += commonRoutine
@@ -656,8 +658,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: simpleChangesRootTests
-			in reaction to changes in AllElementTypes
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes
+			execute actions in allElementTypes
 			
 			reaction CreateRootTest {
 				after element allElementTypes::Root created
@@ -666,8 +668,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			
 			reactions: simpleChangesRoot2Tests
-			in reaction to changes in AllElementTypes2
-			execute actions in AllElementTypes
+			in reaction to changes in allElementTypes2
+			execute actions in allElementTypes
 			
 			reaction CreateRoot2Test {
 				after element allElementTypes2::Root2 created

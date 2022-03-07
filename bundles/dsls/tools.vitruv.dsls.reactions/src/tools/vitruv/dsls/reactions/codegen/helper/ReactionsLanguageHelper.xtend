@@ -4,9 +4,6 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
 import tools.vitruv.dsls.common.elements.MetaclassReference
-import tools.vitruv.dsls.common.elements.DomainReference
-import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
-import edu.kit.ipd.sdq.commons.util.java.Pair
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
@@ -51,30 +48,6 @@ class ReactionsLanguageHelper {
 			VitruvDomainProviderRegistry.getDomainProvider(domain.name);
 		} else {
 			null;
-		}
-	}
-
-	static def VitruvDomain getDomainForReference(DomainReference domainReference) {
-		return getDomainProviderForReference(domainReference).domain;
-	}
-
-	static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
-		val referencedDomainProvider = if (VitruvDomainProviderRegistry.hasDomainProvider(domainReference.domain)) {
-			VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
-		}
-		if (referencedDomainProvider === null) {
-			throw new IllegalStateException("Given domain reference references no existing domain: " + domainReference.domain);
-		}
-		return referencedDomainProvider;
-	}
-
-	static def Pair<VitruvDomain, VitruvDomain> getSourceTargetPair(ReactionsSegment reactionsSegment) {
-		val sourceDomain = reactionsSegment.fromDomain.domainForReference;
-		val targetDomain = reactionsSegment.toDomain.domainForReference;
-		if (sourceDomain !== null && targetDomain !== null) {
-			return new Pair<VitruvDomain, VitruvDomain>(sourceDomain, targetDomain);
-		} else {
-			return null;
 		}
 	}
 

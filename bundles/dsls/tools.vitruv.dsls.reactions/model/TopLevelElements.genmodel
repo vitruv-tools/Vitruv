@@ -15,8 +15,8 @@
     </genClasses>
     <genClasses ecoreClass="TopLevelElements.ecore#//ReactionsSegment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsSegment/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/fromDomain"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/toDomain"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/fromMetamodels"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/toMetamodels"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactionsImports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/routines"/>

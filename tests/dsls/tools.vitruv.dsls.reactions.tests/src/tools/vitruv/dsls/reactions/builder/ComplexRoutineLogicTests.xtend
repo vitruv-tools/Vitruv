@@ -92,8 +92,8 @@
 //		val reactionResult = '''
 //			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 //			
-//			reactions: simpleChangesRootTests in reaction to changes in AllElementTypes
-//			execute actions in AllElementTypes
+//			reactions: simpleChangesRootTests in reaction to changes in minimal
+//			execute actions in minimal
 //			
 //			reaction CreateRootTest {
 //				after element allElementTypes::Root created

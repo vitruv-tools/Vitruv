@@ -8,8 +8,8 @@ import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal 
 
 reactions: simpleChangesTests
-in reaction to changes in AllElementTypes
-execute actions in AllElementTypes
+in reaction to changes in minimal
+execute actions in minimal
 
 /*
  * Creates the model for comparing the further test model with.

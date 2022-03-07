@@ -15,8 +15,8 @@ class ReactionsElementsCompletionChecker {
  	def static boolean isReferenceable(ReactionsSegment reactionsSegment) {
 		return reactionsSegment !== null
 			&& !reactionsSegment.name.nullOrEmpty
-			&& reactionsSegment.fromDomain.isReferenceable
-			&& reactionsSegment.toDomain.isReferenceable
+			&& !reactionsSegment.fromMetamodels.isEmpty
+			&& !reactionsSegment.toMetamodels.isEmpty
 	}
 	
 	def static boolean isReferenceable(DomainReference domainReference) {

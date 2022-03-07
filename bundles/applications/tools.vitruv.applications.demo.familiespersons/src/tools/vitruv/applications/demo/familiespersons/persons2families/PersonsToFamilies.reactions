@@ -9,8 +9,8 @@ import "edu.kit.ipd.sdq.metamodels.families" as families
 
 
 reactions: personsToFamilies
-in reaction to changes in Persons
-execute actions in Families
+in reaction to changes in persons
+execute actions in families
 
 reaction CreatedPersonRegister{
 	after element persons::PersonRegister created and inserted as root

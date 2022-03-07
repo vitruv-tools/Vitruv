@@ -4,10 +4,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsImport
 import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
-import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
-import tools.vitruv.dsls.common.elements.ElementsFactory
+import java.util.Set
+import org.eclipse.emf.ecore.EPackage
 
 @Accessors(PACKAGE_GETTER)
 class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
@@ -37,12 +37,14 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 			this.builder = builder
 		}
 
-		def inReactionToChangesIn(VitruvDomain domain) {
-			inReactionToChangesIn(domain.name)
+		def inReactionToChangesIn(EPackage sourceMetamodelRootPackage) {
+			inReactionToChangesIn(#{sourceMetamodelRootPackage})
 		}
 
-		def inReactionToChangesIn(String domainName) {
-			segment.fromDomain = domainName.domainReference
+		def inReactionToChangesIn(Set<EPackage> sourceMetamodelRootPackages) {
+			beforeAttached [
+				segment.fromMetamodels += sourceMetamodelRootPackages.map[metamodelImport]
+			]
 			new ReactionsSegmentTargetBuilder(builder)
 		}
 	}
@@ -54,21 +56,17 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 			this.builder = builder
 		}
 
-		def executeActionsIn(VitruvDomain domain) {
-			executeActionsIn(domain.name)
+		def executeActionsIn(EPackage targetMetamodelRootPackage) {
+			executeActionsIn(#{targetMetamodelRootPackage})
 		}
 
-		def executeActionsIn(String domainName) {
-			segment.toDomain = domainName.domainReference
+		def executeActionsIn(Set<EPackage> targetMetamodelRootPackages) {
+			beforeAttached [
+				segment.toMetamodels += targetMetamodelRootPackages.map[metamodelImport]
+			]
 			readyToBeAttached = true
 			builder
 		}
-	}
-
-	def private static domainReference(String domainName) {
-		ElementsFactory.eINSTANCE.createDomainReference => [
-			domain = domainName
-		]
 	}
 
 	def importSegment(FluentReactionsSegmentBuilder reactionsSegmentBuilder) {

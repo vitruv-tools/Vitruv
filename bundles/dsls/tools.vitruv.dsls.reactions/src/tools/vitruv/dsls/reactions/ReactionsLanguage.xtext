@@ -17,8 +17,8 @@ MetamodelImport returns common::MetamodelImport:
 
 ReactionsSegment returns toplevelelements::ReactionsSegment:
 	'reactions:' name=ValidID
-	'in' 'reaction' 'to' 'changes' 'in' fromDomain=DomainReference 
-	'execute' 'actions' 'in' toDomain=DomainReference
+	'in' 'reaction' 'to' 'changes' 'in' fromMetamodels+=[common::MetamodelImport] ('and' fromMetamodels+=[common::MetamodelImport])*
+	'execute' 'actions' 'in' toMetamodels+=[common::MetamodelImport] ('and' toMetamodels+=[common::MetamodelImport])*
 	(reactionsImports+=ReactionsImport)*
 	(reactions+=Reaction |
 		routines+=Routine)*;

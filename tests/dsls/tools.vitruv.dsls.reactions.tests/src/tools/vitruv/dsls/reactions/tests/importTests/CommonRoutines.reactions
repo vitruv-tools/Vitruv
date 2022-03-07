@@ -5,8 +5,8 @@ import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecution
 import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal
 
 reactions: importTestsCommonRoutines
-in reaction to changes in AllElementTypes
-execute actions in AllElementTypes
+in reaction to changes in minimal
+execute actions in minimal
 
 routine commonRoutinesRoutine1() {
 	action {

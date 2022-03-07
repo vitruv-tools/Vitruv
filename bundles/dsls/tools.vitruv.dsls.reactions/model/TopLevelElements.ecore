@@ -13,10 +13,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ReactionsSegment">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="fromDomain" eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//DomainReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="toDomain" eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//DomainReference"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fromMetamodels" upperBound="-1"
+        eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//MetamodelImport"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toMetamodels" upperBound="-1"
+        eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//MetamodelImport"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsImports" upperBound="-1"
         eType="#//ReactionsImport" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reactions" upperBound="-1"

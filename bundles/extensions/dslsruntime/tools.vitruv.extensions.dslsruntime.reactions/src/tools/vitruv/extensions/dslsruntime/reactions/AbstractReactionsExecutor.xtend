@@ -5,10 +5,10 @@ import tools.vitruv.extensions.dslsruntime.reactions.IReactionRealization
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.ResourceAccess
 import java.util.List
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
+import java.util.Set
 
 abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecification {
 	static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
@@ -16,8 +16,8 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 	val RoutinesFacadesProvider routinesFacadesProvider;
 	List<IReactionRealization> reactions;
 
-	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain.nsUris, targetDomain.nsUris);
+	new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRootNsUris) {
+		super(sourceMetamodelRootNsUris, targetMetamodelRootNsUris);
 		this.reactions = newArrayList;
 		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();
@@ -35,8 +35,7 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 		return true
 	}
 
-	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
-		ResourceAccess resourceAccess) {
+	override propagateChange(EChange change, CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
 		LOGGER.trace("Call relevant reactions from " + sourceMetamodelRootNsUris + " to " + targetMetamodelRootNsUris);
 		for (reaction : reactions) {
 			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
