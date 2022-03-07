@@ -67,8 +67,8 @@ class TestCommonalitiesGenerator {
 	}
 	
 	def Set<? extends ChangePropagationSpecification> createChangePropagationSpecifications() {
-        checkState(!generatedClasses.empty, '''Code must have been generated before creating applications''')
-    	return generatedClasses.findAndCombineChangePropagationSpecifications.toSet
+		checkState(!generatedClasses.empty, '''Code must have been generated before creating applications''')
+		return generatedClasses.findAndCombineChangePropagationSpecifications.toSet
 	}
 
 	def private writeTo(Iterable<Pair<String, CharSequence>> code, Path testProject) {
