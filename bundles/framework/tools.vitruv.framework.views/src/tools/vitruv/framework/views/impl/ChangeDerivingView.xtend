@@ -4,11 +4,14 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
@@ -24,7 +27,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
     BasicView view
 
     val StateBasedChangeResolutionStrategy changeResolutionStrategy
-    var BasicView originalState
+    var ResourceSet originalStateViewResourceSet
     var HashMap<Resource, Resource> originalStateResourceMapping
 
     protected new(BasicView view, StateBasedChangeResolutionStrategy changeResolutionStrategy) {
@@ -38,15 +41,16 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
     }
 
     override update() {
-        originalState.close
+        closeOriginalState
         view.update
         setupReferenceState
     }
 
     private def setupReferenceState() {
-        originalState = new BasicView(view.viewType, viewSource, selection)
+        originalStateViewResourceSet = new ResourceSetImpl
+        ResourceCopier.copyResources(view.viewResourceSet.resources, originalStateViewResourceSet)
         originalStateResourceMapping = new HashMap
-        view.viewResourceSet.resources.forEach[resource | originalStateResourceMapping.put(resource, originalState.viewResourceSet.resources.findFirst[URI === resource.URI])]
+        view.viewResourceSet.resources.forEach[resource | originalStateResourceMapping.put(resource, originalStateViewResourceSet.resources.findFirst[URI === resource.URI])]
     }
 
     override commitChanges() {
@@ -66,7 +70,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
 
     override close() throws Exception {
         if (!isClosed) {
-            originalState.close
+            closeOriginalState
         }
         view.close
     }
@@ -83,15 +87,20 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         }
     }
 
+    private def closeOriginalState() {
+        originalStateViewResourceSet.resources.forEach[unload]
+        originalStateViewResourceSet.resources.clear
+    }
+
     override withChangeRecordingTrait() {
         val newView = view.withChangeRecordingTrait
-        originalState.close
+        closeOriginalState
         return newView
     }
 
     override withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         val newView = view.withChangeDerivingTrait(changeResolutionStrategy)
-        originalState.close
+        closeOriginalState
         return newView
     }
 }
