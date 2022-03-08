@@ -8,12 +8,11 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.domains;visibility:=reexport,
  tools.vitruv.framework.change;visibility:=reexport,
+ tools.vitruv.framework.views;visibility:=reexport,
  tools.vitruv.framework.propagation,
  org.eclipse.xtend.lib,
  org.eclipse.emf.ecore.xmi,
  edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.framework.vsum,
- tools.vitruv.framework.vsum.internal;x-internal:=true,
- tools.vitruv.framework.vsum.models,
- tools.vitruv.framework.vsum.views
+ tools.vitruv.framework.vsum.internal;x-internal:=true
 Bundle-Vendor: vitruv.tools

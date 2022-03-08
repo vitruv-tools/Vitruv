@@ -17,6 +17,7 @@
 		<module>tools.vitruv.framework.change.echange.tests</module>
 		<module>tools.vitruv.framework.change.tests</module>
 		<module>tools.vitruv.framework.domains.tests</module>
+		<module>tools.vitruv.framework.views.tests</module>
 		<module>tools.vitruv.framework.vsum.tests</module>
 	</modules>
 
