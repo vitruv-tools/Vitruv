@@ -254,7 +254,7 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
 	}
 
 	private View getViewForURI(URI resourceURI) {
-		ViewSelector selector = getVirtualModel().createSelector(ViewTypeFactory.createIdentityMappingViewType(resourceURI.toFileString()));
+		ViewSelector selector = getVirtualModel().createSelector(ViewTypeFactory.createIdentityMappingViewType(resourceURI.toString()));
 		for (EObject element : selector.getSelectableElements()) {
 			if (element.eResource() != null && element.eResource().getURI().equals(resourceURI)) {
 				selector.setSelected(element, true);
