@@ -109,7 +109,7 @@ public interface View extends AutoCloseable {
 	/**
 	 * Returns a {@link CommittableView} based on the view's configuration.
 	 * Changes to commit are identified by comparing the current view state with its state from the last update.
-	 * @param changeResolutionStrategy The change resolution strategy to use for view state comparison.
+	 * @param changeResolutionStrategy The change resolution strategy to use for view state comparison. Must not be <code>null</code>.
 	 *
 	 * @throws UnsupportedOperationException if called on a modified view
 	 * @throws UnsupportedOperationException if called on an outdated view
