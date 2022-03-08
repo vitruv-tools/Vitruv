@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/tools.vitruv.framework.feature_2.1.0.qualifier.jar" id="tools.vitruv.framework.feature" version="2.1.0.qualifier">
+   C<feature url="features/tools.vitruv.framework.change.feature_2.1.0.qualifier.jar" id="tools.vitruv.framework.change.feature" version="2.1.0.qualifier">
+      <category name="Vitruv Change"/>
+   </feature>
+   <feature id="tools.vitruv.framework.change.feature.source" version="2.1.0.qualifier">
+      <category name="Vitruv Change"/>
+   </feature>
+   <feature url="features/tools.vitruv.extensions.dslsruntime.feature_2.1.0.qualifier.jar" id="tools.vitruv.extensions.dslsruntime.feature" version="2.1.0.qualifier">
+      <category name="Vitruv Change"/>
+   </feature>
+   <feature id="tools.vitruv.extensions.dslsruntime.feature.source" version="2.1.0.qualifier">
+      <category name="Vitruv Change"/>
+   </feature>
+   <feature url="features/tools.vitruv.framework.vsum.feature_2.1.0.qualifier.jar" id="tools.vitruv.framework.vsum.feature" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.framework.feature.source" version="2.1.0.qualifier">
+   <feature id="tools.vitruv.framework.vsum.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
    <feature url="features/tools.vitruv.testutils.feature_2.1.0.qualifier.jar" id="tools.vitruv.testutils.feature" version="2.1.0.qualifier">
@@ -18,12 +30,6 @@
    <feature id="tools.vitruv.extensions.integration.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.extensions.dslsruntime.feature_2.1.0.qualifier.jar" id="tools.vitruv.extensions.dslsruntime.feature" version="2.1.0.qualifier">
-      <category name="Vitruv Framework"/>
-   </feature>
-   <feature id="tools.vitruv.extensions.dslsruntime.feature.source" version="2.1.0.qualifier">
-      <category name="Vitruv Framework"/>
-   </feature>
    <feature type="features/tools.vitruv.extensions.changevisualization.feature_2.1.0.qualifier.jar" url="features/tools.vitruv.extensions.changevisualization.feature_2.1.0.qualifier.jar" id="tools.vitruv.extensions.changevisualization.feature" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
@@ -31,10 +37,10 @@
       <category name="Vitruv Framework"/>
    </feature>
    <feature url="features/tools.vitruv.dsls.feature_2.1.0.qualifier.jar" id="tools.vitruv.dsls.feature" version="2.1.0.qualifier">
-      <category name="Vitruv Application Development"/>
+      <category name="Vitruv Change"/>
    </feature>
    <feature id="tools.vitruv.dsls.feature.source" version="2.1.0.qualifier">
-      <category name="Vitruv Application Development"/>
+      <category name="Vitruv Change"/>
    </feature>
    <feature url="features/tools.vitruv.applications.demo.familiespersons.feature_2.1.0.qualifier.jar" id="tools.vitruv.applications.demo.familiespersons.feature" version="2.1.0.qualifier">
       <category name="Vitruv Demos"/>
@@ -48,14 +54,14 @@
    <feature id="tools.vitruv.domains.demo.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Demos"/>
    </feature>
-   <category-def name="Vitruv Framework" label="Vitruv Framework">
+   <category-def name="Vitruv Change" label="Vitruv Change Specification and Propagation">
       <description>
-         The Vitruv framework, including the essential core and optional extensions
+         The Vitruv core for change specification and propagation
       </description>
    </category-def>
-   <category-def name="Vitruv Application Development" label="Vitruv Application Development">
+   <category-def name="Vitruv Framework" label="Vitruv V-SUM Framework">
       <description>
-         DSLs for developing consistency-preserving Vitruv applications
+         The Vitruv framework, including the essential V-SUM and optional extensions
       </description>
    </category-def>
    <category-def name="Vitruv Demos" label="Vitruv Demos">

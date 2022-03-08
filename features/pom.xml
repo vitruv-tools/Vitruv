@@ -13,7 +13,8 @@
 	<name>Feature Modules</name>
 
 	<modules>
-		<module>tools.vitruv.framework.feature</module>
+		<module>tools.vitruv.framework.change.feature</module>
+		<module>tools.vitruv.framework.vsum.feature</module>
 		<module>tools.vitruv.testutils.feature</module>
 		<module>tools.vitruv.extensions.changevisualization.feature</module>
 		<module>tools.vitruv.extensions.dslsruntime.feature</module>
