@@ -1,4 +1,4 @@
-package tools.vitruv.framework.domains
+package tools.vitruv.framework.views.changederivation
 
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.VitruviusChange

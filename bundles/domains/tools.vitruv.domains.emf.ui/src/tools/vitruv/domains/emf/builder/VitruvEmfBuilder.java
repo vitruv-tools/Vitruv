@@ -1,5 +1,9 @@
 package tools.vitruv.domains.emf.builder;
 
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -12,7 +16,10 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
@@ -20,8 +27,10 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitr
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
+import tools.vitruv.framework.views.CommittableView;
+import tools.vitruv.framework.views.View;
+import tools.vitruv.framework.views.ViewSelector;
+import tools.vitruv.framework.views.ViewTypeFactory;
 
 public class VitruvEmfBuilder extends VitruvProjectBuilder {
 	public static final String BUILDER_ID = "tools.vitruv.domains.emf.builder.VitruvEmfBuilder.id";
@@ -216,23 +225,43 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
 
     enum FileChangeKind {
 		Create,
-		Delete		
+		Delete
 	}
-    
-    private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
-        final String fileExtension = iResource.getFileExtension();
-        if (getMonitoredFileExtensions().contains(fileExtension)) {
-            final URI uri = createPlatformResourceURI(iResource);
-            switch (fileChangeKind) {
-            	case Create:
-            		this.getVirtualModel().propagateChangedState(new ResourceSetImpl().getResource(uri, true));
-            		break;
-            	case Delete:
-            		this.getVirtualModel().propagateChangedState(null, uri);
-            		break;
-            }
-        }
-    }
+
+	private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
+		final String fileExtension = iResource.getFileExtension();
+		if (getMonitoredFileExtensions().contains(fileExtension)) {
+			final URI uri = createPlatformResourceURI(iResource);
+			try (CommittableView view = getViewForURI(uri).withChangeDerivingTrait()) {
+				switch (fileChangeKind) {
+				case Create:
+					Resource resource = new ResourceSetImpl().getResource(uri, true);
+					for (EObject rootElement : new ArrayList<>(resource.getContents())) {
+						view.registerRoot(rootElement, uri);
+					}
+					break;
+				case Delete:
+					for (EObject rootElement : new ArrayList<>(view.getRootObjects())) {
+						EcoreUtil.delete(rootElement);
+					}
+					break;
+				}
+				view.commitChanges();
+			} catch (Exception e) {
+				LOGGER.error("Failed to close view for URI " + uri.toFileString(), e);
+			}
+		}
+	}
+
+	private View getViewForURI(URI resourceURI) {
+		ViewSelector selector = getVirtualModel().createSelector(ViewTypeFactory.createIdentityMappingViewType(resourceURI.toString()));
+		for (EObject element : selector.getSelectableElements()) {
+			if (element.eResource() != null && element.eResource().getURI().equals(resourceURI)) {
+				selector.setSelected(element, true);
+			}
+		}
+		return selector.createView();
+	}
 
     private void triggerSynchronisation(final IResource iResource) {
         LOGGER.trace("Triggering synchronization for " + iResource);

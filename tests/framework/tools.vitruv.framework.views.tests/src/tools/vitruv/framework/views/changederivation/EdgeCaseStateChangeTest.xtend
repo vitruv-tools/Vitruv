@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.domains
+package tools.vitruv.framework.views.changederivation
 
 import org.eclipse.emf.ecore.resource.Resource
 import org.junit.jupiter.api.Test

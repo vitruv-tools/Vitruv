@@ -101,16 +101,6 @@ public class DefaultImplementations {
 		}
 
 		@Override
-		public List<PropagatedChange> propagateChangedState(Resource newState) {
-			return null;
-		}
-
-		@Override
-		public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
-			return null;
-		}
-
-		@Override
 		public void addChangePropagationListener(ChangePropagationListener propagationListener) {
 		}
 

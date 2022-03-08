@@ -5,7 +5,6 @@ import java.util.LinkedList
 import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -17,18 +16,15 @@ import tools.vitruv.framework.views.ViewSelector
 import tools.vitruv.framework.views.ViewType
 import tools.vitruv.framework.views.ViewTypeProvider
 import tools.vitruv.framework.views.ViewTypeRepository
-import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkNotNull
-import static com.google.common.base.Preconditions.checkState
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ModelRepository resourceRepository
-	val VitruvDomainRepository domainRepository
 	@Delegate val ViewTypeProvider viewTypeRepository
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
@@ -40,7 +36,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		VitruvDomainRepository domainRepository, ViewTypeRepository viewTypeRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
-		this.domainRepository = domainRepository
 		this.viewTypeRepository = viewTypeRepository
 		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
 		changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
@@ -105,46 +100,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private def void finishChangePropagation(VitruviusChange change) {
 		changePropagationListeners.forEach[finishedChangePropagation]
 		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
-	}
-
-	/**
-	 * @see VirtualModel#propagateChangedState(Resource)
-	 */
-	override synchronized propagateChangedState(Resource newState) {
-		return propagateChangedState(newState, newState?.URI)
-	}
-
-	/**
-	 * @see VirtualModel#propagateChangedState(Resource, URI)
-	 */
-	override synchronized propagateChangedState(Resource newState, URI oldLocation) {
-		checkArgument(oldLocation !== null || newState !== null, "either new state or old location must not be null")
-		val currentState = oldLocation.retrieveCurrentModelState()
-		if (currentState === null) {
-			checkState(newState !== null,
-				"new state must not be null if no resource exists for old location " + oldLocation)
-		}
-		val vitruvDomain = domainRepository.getDomain(
-			if(oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
-		val strategy = vitruvDomain.stateChangePropagationStrategy
-		val compositeChange = if (currentState === null) {
-				strategy.getChangeSequenceForCreated(newState)
-			} else if (newState === null) {
-				strategy.getChangeSequenceForDeleted(currentState)
-			} else {
-				strategy.getChangeSequenceBetween(newState, currentState)
-			}
-		if (!compositeChange.containsConcreteChange) {
-			LOGGER.warn("State-based change for " + oldLocation + " was empty")
-			return emptyList
-		}
-		return propagateChange(compositeChange)
-	}
-
-	private def retrieveCurrentModelState(URI location) {
-		if (location !== null) {
-			resourceRepository.getModel(location)?.resource
-		}
 	}
 
 	override Path getFolder() {

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.domains
+package tools.vitruv.framework.views.changederivation
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Disabled
