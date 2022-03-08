@@ -3,6 +3,7 @@ package tools.vitruv.domains.emf.builder;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -235,12 +236,12 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
 				switch (fileChangeKind) {
 				case Create:
 					Resource resource = new ResourceSetImpl().getResource(uri, true);
-					for (EObject rootElement : resource.getContents()) {
+					for (EObject rootElement : new ArrayList<>(resource.getContents())) {
 						view.registerRoot(rootElement, uri);
 					}
 					break;
 				case Delete:
-					for (EObject rootElement : view.getRootObjects()) {
+					for (EObject rootElement : new ArrayList<>(view.getRootObjects())) {
 						EcoreUtil.delete(rootElement);
 					}
 					break;
