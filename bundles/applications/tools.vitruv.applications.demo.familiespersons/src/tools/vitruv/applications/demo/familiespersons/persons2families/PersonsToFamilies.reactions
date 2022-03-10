@@ -86,16 +86,12 @@ routine createChild(persons::Person insertedPerson) {
 	action {
 		call {
 			val Iterable<Family> matchingFamilies = familiesRegister.families.filter(sameLastname(insertedPerson))
-			if (matchingFamilies.empty) {
-				createChildInNewFamily(insertedPerson)
-			} else {
-			    val Family chosenFamily = askUserWhichFamilyToInsertTheMemberIn(userInteractor, insertedPerson, matchingFamilies)
-			    if (chosenFamily === null) {
-			        createChildInNewFamily(insertedPerson)
-			    } else {
-			        createChildInExistingFamily(insertedPerson, chosenFamily)
-			    }
-			}
+			val Family familyToInsertInto = if (matchingFamilies.empty) null else askUserWhichFamilyToInsertTheMemberIn(userInteractor, insertedPerson, matchingFamilies)
+		    if (familyToInsertInto === null) {
+		        createChildInNewFamily(insertedPerson)
+		    } else {
+		        createChildInExistingFamily(insertedPerson, familyToInsertInto)
+		    }
 		}
 	}
 }
