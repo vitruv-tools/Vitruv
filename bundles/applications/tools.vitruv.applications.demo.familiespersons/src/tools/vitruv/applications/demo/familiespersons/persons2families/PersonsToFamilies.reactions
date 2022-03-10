@@ -5,8 +5,7 @@ import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembe
 import static extension tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.getFirstname
 import static extension tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.getLastname
 import static extension tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.getRegister
-import static extension tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.checkValidFullnameDuringCreation
-import static extension tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.checkValidFullnameDuringRenaming
+import static extension tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.checkValidFullname
 import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askUserWhichFamilyToInsertTheMemberIn
 import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askUserWhetherPersonIsParentOrChild
 import static tools.vitruv.applications.demo.familiespersons.persons2families.PersonsToFamiliesHelper.askUserWhetherPersonIsParentOrChildDuringRenaming
@@ -66,7 +65,7 @@ reaction CreatedPerson {
 
 routine insertAsParentOrChild(persons::Person insertedPerson) {
 	match {
-		check insertedPerson.checkValidFullnameDuringCreation
+		check insertedPerson.checkValidFullname
 	}
 	action {
 		call {
@@ -191,7 +190,7 @@ routine changeNames(persons::Person renamedPerson, String oldFullname) {
 	match {
 		val oldFamily = retrieve families::Family corresponding to renamedPerson
 		val correspondingMember = retrieve families::Member corresponding to renamedPerson
-		check renamedPerson.checkValidFullnameDuringRenaming
+		check renamedPerson.checkValidFullname
 	}
 	action {
 		// Update firstname

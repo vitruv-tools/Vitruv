@@ -33,9 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
 enum PositionPreference {
-		Parent,
-		Child
-	}
+	Parent,
+	Child
+}
 
 enum FamilyPreference {
 	New,
@@ -1415,7 +1415,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		val unescapedNewName = if (escapedNewName !== null) unescapeString(escapedNewName) else null
 		this.createFamiliesForTesting()
 		logger.trace(this.nameOfTestMethod + " - preparation done")
-		val thrownException = assertThrows(IllegalArgumentException, [
+		val thrownException = assertThrows(IllegalStateException, [
 			PersonRegister.from(PERSONS_MODEL).propagate [
 				val searchedDad = persons.findFirst[person|person.fullName.equals(FIRST_DAD_1 + " " + LAST_NAME_1)]
 				searchedDad.fullName = unescapedNewName

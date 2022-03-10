@@ -1336,7 +1336,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		val unescapedNewName = if (escapedNewName !== null) unescapeString(escapedNewName) else null
 		this.createOneFamilyBeforeTesting()
 		logger.trace(nameOfTestMethod + " - preparation done")
-		val thrownExceptionSetNullAsFirstName = assertThrows(IllegalArgumentException, [
+		val thrownExceptionSetNullAsFirstName = assertThrows(IllegalStateException, [
 			FamilyRegister.from(FAMILIES_MODEL).propagate [
 				val family1 = families.findFirst[family|family.lastName.equals(LAST_NAME_1)]
 				switch role {

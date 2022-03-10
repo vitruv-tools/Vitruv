@@ -166,34 +166,18 @@ class PersonsToFamiliesHelper {
 	}
 
 
-	/**Checks if a persons fullname is <code>null</code>, empty or contains escape sequences, during creation.
+	/**Checks if a persons fullname is <code>null</code>, empty or contains escape sequences.
 	 * @param person The person of which the fullname has to be valid.
 	 * @return <code>true</code>, if the persons fullname is valid.
 	 * @throws <code>IllegalStateException</code>, if the persons fullname in invalid.
 	 */
-	def static boolean checkValidFullnameDuringCreation(Person person) {
+	def static boolean checkValidFullname(Person person) {
 		if (person.fullName === null) {
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_NULL)
 		} else if (person.fullName.trim.empty) {
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_WHITESPACE)
 		} else if (person.fullName.contains("\n") || person.fullName.contains("\t") || person.fullName.contains("\r")) {
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_ESCAPES)
-		}
-		return true
-	}
-
-	/**Checks if a persons fullname is <code>null</code>, empty or contains escape sequences, during renaming.
-	 * @param person The person of which the fullname has to be valid.
-	 * @return <code>true</code>, if the persons fullname is valid.
-	 * @throws <code>IllegalStateException</code>, if the persons fullname in invalid.
-	 */
-	def static boolean checkValidFullnameDuringRenaming(Person person) {
-		if (person.fullName === null) {
-			throw new IllegalArgumentException(EXCEPTION_MESSAGE_FIRSTNAME_NULL)
-		} else if (person.fullName.trim.empty) {
-			throw new IllegalArgumentException(EXCEPTION_MESSAGE_FIRSTNAME_WHITESPACE)
-		} else if (person.fullName.contains("\n") || person.fullName.contains("\t") || person.fullName.contains("\r")) {
-			throw new IllegalArgumentException(EXCEPTION_MESSAGE_FIRSTNAME_ESCAPES)
 		}
 		return true
 	}

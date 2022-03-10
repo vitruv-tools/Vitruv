@@ -31,7 +31,7 @@ class FamiliesToPersonsHelper {
 		return personNameBuilder.toString()
 	}
 
-	/**Checks if a members firstname is <code>null</code>, empty or contains escape sequences, during creation.
+	/**Checks if a members firstname is <code>null</code>, empty or contains escape sequences.
 	 * These first names are not valid for members, since single names for persons are always interpreted
 	 * as firstnames and if needed, lastnames are set to <code>""</code>. Since empty fullnames for persons
 	 * are not allowed but empty lastnames for families are, a member's firstname can not be allowed to be
@@ -40,33 +40,13 @@ class FamiliesToPersonsHelper {
 	 * @return <code>true</code> if firstname is valid
 	 * @throws <code>IllegalArgumentException</code> if firstname is not valid
 	 */
-	def static boolean checkValidFirstnameDuringCreation(Member member) {
+	def static boolean checkValidFirstname(Member member) {
 		if (member.firstName === null) {
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_NULL)
 		} else if (member.firstName.trim.empty) {
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_WHITESPACE)
 		} else if (member.firstName.contains("\n") || member.firstName.contains("\t") || member.firstName.contains("\r")){
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_ESCAPES)
-		}
-		return true
-	}
-
-	/**Checks if a members firstname is <code>null</code>, empty or contains escape sequences, during renaming.
-	 * These first names are not valid for members, since single names for persons are always interpreted
-	 * as firstnames and if needed, lastnames are set to <code>""</code>. Since empty fullnames for persons
-	 * are not allowed but empty lastnames for families are, a member's firstname can not be allowed to be
-	 * empty to avoid conversions between the models which lead to invalid models.
-	 * @param member The member whose firstname is checked
-	 * @return <code>true</code> if firstname is valid
-	 * @throws <code>IllegalArgumentException</code> if firstname is not valid
-	 */
-	def static boolean checkValidFirstnameDuringRenaming(Member member) {
-		if (member.firstName === null) {
-			throw new IllegalArgumentException(EXCEPTION_MESSAGE_FIRSTNAME_NULL)
-		} else if (member.firstName.trim.empty) {
-			throw new IllegalArgumentException(EXCEPTION_MESSAGE_FIRSTNAME_WHITESPACE)
-		} else if (member.firstName.contains("\n") || member.firstName.contains("\t") || member.firstName.contains("\r")){
-			throw new IllegalArgumentException(EXCEPTION_MESSAGE_FIRSTNAME_ESCAPES)
 		}
 		return true
 	}
