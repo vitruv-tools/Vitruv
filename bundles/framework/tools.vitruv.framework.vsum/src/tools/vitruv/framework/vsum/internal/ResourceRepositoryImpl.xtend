@@ -6,7 +6,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
@@ -40,30 +39,39 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	
 	var isRecording = false
 	var isLoading = false
-		
+	
+	/**
+	 * Manages change recorders for file extensions. Ensures that only one change recorder per file extension exists.
+	 * A recorder is assigned to a set of file extensions (for the case that multiple file extensions belong to
+	 * the same domain of models and should be recorder together) and recorders can be retrieved for a given
+	 * file extension.
+	 */
 	private static class FileExtensionRecorderMapping {
 		val Map<Set<String>, ChangeRecorder> fileExtensionsToRecorder = new HashMap()
 		val Map<String, Set<String>> fileExtensionToExtensionsSet = new HashMap()
 		val Map<ChangeRecorder, Boolean> shouldTransitivelyPropagate = new HashMap()
-		
+
 		def Set<ChangeRecorder> getRecorders() {
 			fileExtensionsToRecorder.values.toSet
 		}
-		
+
 		def boolean hasRecorder(String fileExtension) {
 			fileExtensionsToRecorder.containsKey(fileExtensionToExtensionsSet.get(fileExtension))
 		}
-		
+
 		def ChangeRecorder getRecorder(String fileExtension) {
 			fileExtensionsToRecorder.get(fileExtensionToExtensionsSet.get(fileExtension))
 		}
-		
+
 		def boolean shouldPropagateTransitively(ChangeRecorder recorder) {
 			shouldTransitivelyPropagate.get(recorder)
 		}
-		
-		def void registerRecorder(Set<String> fileExtensions, boolean shouldTransitivelyPropagate, ResourceSet recorderResourceSet) {
-			fileExtensionToExtensionsSet.keySet.forEach[checkState(!fileExtensions.contains(it), "there already is a recorder for metamodel %s", it)]
+
+		def void registerRecorder(Set<String> fileExtensions, boolean shouldTransitivelyPropagate,
+			ResourceSet recorderResourceSet) {
+			fileExtensionToExtensionsSet.keySet.forEach [
+				checkState(!fileExtensions.contains(it), "there already is a recorder for metamodel %s", it)
+			]
 			val fileExtensionsSet = new HashSet(fileExtensions)
 			fileExtensions.forEach[fileExtensionToExtensionsSet.put(it, fileExtensionsSet)]
 			val recorder = new ChangeRecorder(recorderResourceSet)
@@ -135,7 +143,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 			if (!hasRecorder(modelInstance.URI.fileExtension)) {
 				var shouldTransitivelyPropagate = true
-				val domain = getDomainForURI(modelInstance.URI)
+				val domain = domainRepository.getDomainForFileExtension(modelInstance.URI.fileExtension)
 				val fileExtensions = if (domain !== null) {
 					shouldTransitivelyPropagate = domain.shouldTransitivelyPropagateChanges  
 					domain.fileExtensions
@@ -172,10 +180,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		writeModelsFile()
 	}
 	
-	def private VitruvDomain getDomainForURI(URI uri) {
-		domainRepository.getDomainForFileExtension(uri.fileExtension)
-	}
-
 	override Iterable<ChangeInPropagation> recordChanges(Runnable changeApplicator) {
 		recorders.forEach[beginRecording()]
 		isRecording = true

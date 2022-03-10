@@ -6,7 +6,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel;
 public interface ChangeRecordingModelRepository extends ResourceAccess, AutoCloseable {
 	/**
 	 * Returns the correspondence model managed by this repository and used for
-	 * transformations between the models managed in this repository
+	 * transformations between the models managed in this repository.
 	 * 
 	 * @return the {@link CorrespondenceModel} managed by this repository
 	 */
