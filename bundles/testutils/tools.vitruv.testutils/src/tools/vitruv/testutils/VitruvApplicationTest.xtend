@@ -37,21 +37,17 @@ abstract class VitruvApplicationTest implements TestView {
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val userInteraction = new TestUserInteraction
-		val targetDomains = new VitruvDomainRepositoryImpl(
-			changePropagationSpecifications.flatMap [
-				val source = sourceMetamodelRootNsUris
-				val target = targetMetamodelRootNsUris
-				VitruvDomainProviderRegistry.allDomainProviders.map[domain].filter [
-					source.contains(metamodelRootPackage.nsURI) || target.contains(metamodelRootPackage.nsURI)
-				]
+		val domains = new VitruvDomainRepositoryImpl(
+			changePropagationSpecifications.flatMap[sourceMetamodelRootNsUris + targetMetamodelRootNsUris].flatMap [
+				VitruvDomainProviderRegistry.findDomainsForMetamodelRootNsUri(it)
 			].toSet
 		)
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
-		.withDomainRepository(targetDomains) //
+		.withDomainRepository(domains) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
-		testView = generateTestView(testProjectPath, userInteraction, targetDomains)
+		testView = generateTestView(testProjectPath, userInteraction, domains)
 	}
 
 	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction,
