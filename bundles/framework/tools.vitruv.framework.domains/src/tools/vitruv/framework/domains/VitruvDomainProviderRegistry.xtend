@@ -110,9 +110,7 @@ final class VitruvDomainProviderRegistry {
 
 
 	def static Set<VitruvDomain> findDomainsForMetamodelRootNsUri(String nsUri) {
-		return allDomainProviders.map[domain].filter [
-			metamodelRootPackage.nsURI == nsUri || furtherRootPackages.contains(nsUri)
-		].toSet
+		return allDomainProviders.map[domain].filter [it.nsUris.contains(nsUri)].toSet
 	}
 	
 	/**
