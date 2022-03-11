@@ -23,7 +23,7 @@ interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def void setUserInteractor(UserInteractor userInteractor)
 
 	/**
-	 * Returns the namespace UIs of the root packages of the metamodel of elements whose changes 
+	 * Returns the namespace URIs of the root packages of the metamodel of elements whose changes 
 	 * are handled by this <code>ChangePropagationSpecification</code>.
 	 * 
 	 * @return a set with the namespace URIs of the source metamodel root packages
@@ -31,7 +31,7 @@ interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def Set<String> getSourceMetamodelRootNsUris()
 
 	/**
-	 * Returns the namespace UIs of the root packages of the metamodel of elements whose are changed
+	 * Returns the namespace URIs of the root packages of the metamodel of elements whose are changed
 	 * by this <code>ChangePropagationSpecification</code> when executing {@link #propagateChange}.
 	 * 
 	 * @return a set with the namespace URIs of the target metamodel root packages
