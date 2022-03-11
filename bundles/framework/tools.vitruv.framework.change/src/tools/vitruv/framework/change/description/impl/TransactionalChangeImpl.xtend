@@ -36,7 +36,6 @@ import java.util.Collections
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.id.IdResolver
 import java.util.HashSet
-import org.eclipse.emf.ecore.EPackage
 import static com.google.common.base.Preconditions.checkState
 
 class TransactionalChangeImpl implements TransactionalChange {
@@ -68,18 +67,18 @@ class TransactionalChangeImpl implements TransactionalChange {
 	}
 	
 	override Set<String> getAffectedEObjectsMetamodelRootNsUris() {
-		val changedPackages = affectedEObjects.fold(new HashSet<EPackage>) [ affectedPackages, changedObject |
+		val namespaceUrisOfChangedPackages = affectedEObjects.fold(new HashSet<String>) [ namespaceUrisOfAffectedPackages, changedObject |
 			var currentPackage = changedObject.eClass.EPackage
 			while (currentPackage.ESuperPackage !== null)
 				currentPackage = currentPackage.ESuperPackage
 			if (currentPackage !== null) {
-				affectedPackages += currentPackage
+				namespaceUrisOfAffectedPackages += currentPackage.nsURI
 			}
-			affectedPackages
+			namespaceUrisOfAffectedPackages
 		]
-		checkState(!changedPackages.empty, "Cannot identify the packages of this change:%s%s", System.lineSeparator,
-			this)
-		return changedPackages.map[nsURI].toSet
+		checkState(!namespaceUrisOfChangedPackages.empty, "Cannot identify the packages of this change:%s%s",
+			System.lineSeparator, this)
+		return namespaceUrisOfChangedPackages
 	}
 
 	override resolveAndApply(ResourceSet resourceSet) {
