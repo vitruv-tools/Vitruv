@@ -27,6 +27,7 @@
 		<module>tools.vitruv.framework.views</module>
 		<module>tools.vitruv.framework.vsum</module>
 		<module>tools.vitruv.framework.vsum.accesscontrolsystem</module>
+		<module>tools.vitruv.framework.filtered.accesscontrolsystem</module>
 		<module>tools.vitruv.framework.vsum.ui</module>
 	</modules>
 
