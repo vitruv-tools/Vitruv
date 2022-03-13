@@ -29,4 +29,10 @@
       <domainProvider
             class="tools.vitruv.testutils.domains.UmlMockupDomainProvider"></domainProvider>
    </extension>
+   <extension
+         name="RegistryOffice Test Domain Provider"
+         point="tools.vitruv.framework.domains.provider">
+      <domainProvider
+            class="tools.vitruv.testutils.domains.RegistryOfficeDomainProvider"></domainProvider>
+   </extension>
 </plugin>
