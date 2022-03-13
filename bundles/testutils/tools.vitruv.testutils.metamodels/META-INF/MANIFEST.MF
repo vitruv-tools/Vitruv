@@ -30,7 +30,10 @@ Export-Package: allElementTypes,
  tools.vitruv.testutils.metamodels,
  uml_mockup,
  uml_mockup.impl,
- uml_mockup.util
+ uml_mockup.util,
+ registryoffice,
+ registryoffice.impl,
+ registryoffice.util
 Require-Bundle: org.eclipse.xtend.lib,
  tools.vitruv.testutils,
  org.junit.jupiter.params,

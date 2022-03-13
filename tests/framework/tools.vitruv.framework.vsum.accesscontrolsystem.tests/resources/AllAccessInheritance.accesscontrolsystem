@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<accesscontrolsystem:RuleDatabase xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:accesscontrolsystem="http://tools.vitruv/accesscontrolsystem">
+  <acessrightprovider>
+    <operationAccessRights accessRight="ALLOW"/>
+    <operationAccessRights accessRight="ALLOW" operation="WRITE"/>
+  </acessrightprovider>
+  <accessrules role="//@roleprovider/@role.0" name="Albert[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
+    <element href="Example.registryoffice#/"/>
+  </accessrules>
+  <accessrules role="//@roleprovider/@role.1" name="Berta[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
+    <element href="Example.registryoffice#/"/>
+  </accessrules>
+  <accessrules role="//@roleprovider/@role.2" name="Caesar[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
+    <element href="Example.registryoffice#/"/>
+  </accessrules>
+  <accessrules role="//@roleprovider/@role.3" name="Darius[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
+    <element href="Example.registryoffice#/"/>
+  </accessrules>
+  <accessrules role="//@roleprovider/@role.4" name="Parent[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
+    <element href="Example.registryoffice#/"/>
+  </accessrules>
+  <roleprovider>
+    <role name="Albert"/>
+    <role name="Berta"/>
+    <role name="Caesar"/>
+    <role name="Darius"/>
+    <role name="Parent"/>
+    <role name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]"/>
+  </roleprovider>
+</accesscontrolsystem:RuleDatabase>

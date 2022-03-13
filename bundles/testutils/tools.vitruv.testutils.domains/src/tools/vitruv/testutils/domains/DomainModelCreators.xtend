@@ -5,6 +5,7 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators
 import tools.vitruv.testutils.metamodels.AllElementTypes2Creators
 import tools.vitruv.testutils.metamodels.PcmMockupCreators
 import tools.vitruv.testutils.metamodels.UmlMockupCreators
+import tools.vitruv.testutils.metamodels.RegistryOfficeCreators
 
 @Utility
 class DomainModelCreators {
@@ -23,20 +24,24 @@ class DomainModelCreators {
 	static def uml_mockup(String modelName) {
 		DomainUtil.getModelFileName(modelName, new UmlMockupDomainProvider)
 	}
-	
+
 	static def getDomain(AllElementTypesCreators creators) {
 		new AllElementTypesDomainProvider().domain
 	}
-	
+
 	static def getDomain(AllElementTypes2Creators creators) {
 		new AllElementTypes2DomainProvider().domain
 	}
-	
+
 	static def getDomain(PcmMockupCreators creators) {
 		new PcmMockupDomainProvider().domain
 	}
-	
+
 	static def getDomain(UmlMockupCreators creators) {
 		new UmlMockupDomainProvider().domain
+	}
+
+	static def getDomain(RegistryOfficeCreators creators) {
+		return new RegistryOfficeDomainProvider().getDomain();
 	}
 }

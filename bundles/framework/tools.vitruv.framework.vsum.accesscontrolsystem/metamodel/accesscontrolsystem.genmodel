@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/AccessControlSystem/src-gen" creationIcons="false"
+    editDirectory="/AccessControlSystem.edit/src-gen" editorDirectory="/AccessControlSystem.editor/src-gen"
+    modelPluginID="AccessControlSystem" modelName="Accesscontrolsystem" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="11.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>accesscontrolsystem.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="Accesscontrolsystem" disposableProviderFactory="true" loadInitialization="true"
+      ecorePackage="accesscontrolsystem.ecore#/">
+    <genClasses ecoreClass="accesscontrolsystem.ecore#//AccessRule">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//AccessRule/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/element"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/containment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/operationAccessRights"/>
+    </genClasses>
+    <genClasses ecoreClass="accesscontrolsystem.ecore#//RuleDatabase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//RuleDatabase/acessrightprovider"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//RuleDatabase/accessrules"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//RuleDatabase/roleprovider"/>
+    </genClasses>
+    <nestedGenPackages prefix="role" basePackage="accesscontrolsystem" disposableProviderFactory="true"
+        loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#//role">
+      <genClasses ecoreClass="accesscontrolsystem.ecore#//role/Role">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//role/Role/name"/>
+      </genClasses>
+      <genClasses ecoreClass="accesscontrolsystem.ecore#//role/Subsumption">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//role/Subsumption/subsumes"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//role/Subsumption/subsumer"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//role/Subsumption/name"/>
+      </genClasses>
+      <genClasses ecoreClass="accesscontrolsystem.ecore#//role/RoleProvider">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//role/RoleProvider/subsumption"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//role/RoleProvider/role"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="accessright" basePackage="accesscontrolsystem" disposableProviderFactory="true"
+        loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#//accessright">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="accesscontrolsystem.ecore#//accessright/AccessRight">
+        <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/AccessRight/DENY"/>
+        <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/AccessRight/OBFUSCATE"/>
+        <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/AccessRight/ALLOW"/>
+      </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="accesscontrolsystem.ecore#//accessright/Operation">
+        <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/Operation/READ"/>
+        <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/Operation/WRITE"/>
+      </genEnums>
+      <genClasses ecoreClass="accesscontrolsystem.ecore#//accessright/AcessRightProvider">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//accessright/AcessRightProvider/operationaccessruleimplication"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//accessright/AcessRightProvider/operationAccessRights"/>
+      </genClasses>
+      <genClasses ecoreClass="accesscontrolsystem.ecore#//accessright/OperationAccessRuleImplication">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//accessright/OperationAccessRuleImplication/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//accessright/OperationAccessRuleImplication/condition"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//accessright/OperationAccessRuleImplication/inferred"/>
+      </genClasses>
+      <genClasses ecoreClass="accesscontrolsystem.ecore#//accessright/OperationAccessRight">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//accessright/OperationAccessRight/accessRight"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//accessright/OperationAccessRight/operation"/>
+      </genClasses>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

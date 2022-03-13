@@ -24,6 +24,8 @@ xtend-gen/
 target/
 .polyglot.build.properties
 .mvn/wrapper/maven-wrapper.jar
+.polyglot.META-INF
+.polyglot.feature.xml
 
 # Custom
 EvaluationData

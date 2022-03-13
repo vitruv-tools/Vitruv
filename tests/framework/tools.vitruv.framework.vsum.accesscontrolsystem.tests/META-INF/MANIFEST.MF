@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Framwork Access Control System Tests
+Bundle-SymbolicName: tools.vitruv.framework.vsum.accesscontrolsystem.tests;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.vsum.accesscontrolsystem.tests
+Bundle-Version: 2.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Fragment-Host: tools.vitruv.framework.vsum.accesscontrolsystem;bundle-version="2.1.0.qualifier"
+Require-Bundle: org.apache.log4j,
+ tools.vitruv.testutils,
+ tools.vitruv.testutils.metamodels,
+ tools.vitruv.testutils.domains,
+ org.eclipse.core.expressions,
+ org.apache.commons.lang,
+ org.eclipse.xtend.lib,
+ org.eclipse.uml2.uml,
+ org.junit.jupiter.api,
+ org.hamcrest.core
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: vitruv.tools

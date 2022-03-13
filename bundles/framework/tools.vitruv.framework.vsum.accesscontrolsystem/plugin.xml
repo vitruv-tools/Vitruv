@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated accesscontrolsystem -->
+      <package
+            uri="http://tools.vitruv/accesscontrolsystem"
+            class="accesscontrolsystem.AccesscontrolsystemPackage"
+            genModel="metamodel/accesscontrolsystem.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated accesscontrolsystem -->
+      <package
+            uri="http://tools.vitruv/accesscontrolsystem/role"
+            class="accesscontrolsystem.role.rolePackage"
+            genModel="metamodel/accesscontrolsystem.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated accesscontrolsystem -->
+      <package
+            uri="http://tools.vitruv/accesscontrolsystem/accessright"
+            class="accesscontrolsystem.accessright.accessrightPackage"
+            genModel="metamodel/accesscontrolsystem.genmodel"/>
+   </extension>
+
+</plugin>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="registryoffice" nsURI="http://tools.vitruv.testutils.metamodels.registryoffice"
+    nsPrefix="registryoffice">
+  <eClassifiers xsi:type="ecore:EClass" name="Parent" eSuperTypes="#//Person">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="child" upperBound="-1"
+        eType="#//Child" eOpposite="#//Child/parent"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Child" eSuperTypes="#//Person">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" upperBound="2"
+        eType="#//Parent" eOpposite="#//Parent/child"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RegistryOffice">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="if (eIsProxy()) {return super.toString();}return getClass().getSimpleName();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" upperBound="-1"
+        eType="#//Parent" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="child" upperBound="-1"
+        eType="#//Child" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Person">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="if (eIsProxy()) {return super.toString();}return name;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

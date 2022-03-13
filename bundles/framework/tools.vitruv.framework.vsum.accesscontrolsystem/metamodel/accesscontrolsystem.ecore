@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="accesscontrolsystem" nsURI="http://tools.vitruv/accesscontrolsystem"
+    nsPrefix="accesscontrolsystem">
+  <eClassifiers xsi:type="ecore:EClass" name="AccessRule">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="role" lowerBound="1" eType="#//role/Role"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="containment" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operationAccessRights"
+        lowerBound="1" upperBound="-1" eType="#//accessright/OperationAccessRight"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RuleDatabase">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="acessrightprovider" eType="#//accessright/AcessRightProvider"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="accessrules" upperBound="-1"
+        eType="#//AccessRule" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roleprovider" eType="#//role/RoleProvider"
+        containment="true"/>
+  </eClassifiers>
+  <eSubpackages name="role" nsURI="http://tools.vitruv/accesscontrolsystem/role" nsPrefix="accesscontrolsystem.role">
+    <eClassifiers xsi:type="ecore:EClass" name="Role">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Subsumption">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subsumes" lowerBound="1"
+          eType="#//role/Role"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subsumer" lowerBound="1"
+          eType="#//role/Role"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="RoleProvider">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subsumption" upperBound="-1"
+          eType="#//role/Subsumption" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="role" lowerBound="1"
+          upperBound="-1" eType="#//role/Role" containment="true"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="accessright" nsURI="http://tools.vitruv/accesscontrolsystem/accessright"
+      nsPrefix="accesscontrolsystem.accessright">
+    <eClassifiers xsi:type="ecore:EClass" name="AcessRightProvider">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operationaccessruleimplication"
+          upperBound="-1" eType="#//accessright/OperationAccessRuleImplication" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operationAccessRights"
+          upperBound="-1" eType="#//accessright/OperationAccessRight" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="OperationAccessRuleImplication">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="condition" lowerBound="1"
+          eType="#//accessright/OperationAccessRight"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inferred" lowerBound="1"
+          eType="#//accessright/OperationAccessRight"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="AccessRight">
+      <eLiterals name="DENY"/>
+      <eLiterals name="OBFUSCATE" value="1" literal="OBFUSCATE"/>
+      <eLiterals name="ALLOW" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="Operation">
+      <eLiterals name="READ"/>
+      <eLiterals name="WRITE" value="1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="OperationAccessRight">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="accessRight" lowerBound="1"
+          eType="#//accessright/AccessRight" defaultValueLiteral="DENY"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="operation" lowerBound="1"
+          eType="#//accessright/Operation"/>
+    </eClassifiers>
+  </eSubpackages>
+</ecore:EPackage>

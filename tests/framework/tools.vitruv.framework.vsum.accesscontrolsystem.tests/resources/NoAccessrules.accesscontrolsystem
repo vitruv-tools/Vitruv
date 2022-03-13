@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ASCII"?>
+<accesscontrolsystem:RuleDatabase xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:accesscontrolsystem="http://tools.vitruv/accesscontrolsystem">
+  <acessrightprovider>
+    <operationAccessRights accessRight="ALLOW"/>
+    <operationAccessRights accessRight="ALLOW" operation="WRITE"/>
+  </acessrightprovider>
+  <roleprovider>
+    <subsumption subsumes="//@roleprovider/@role.5" subsumer="//@roleprovider/@role.0"/>
+    <subsumption subsumes="//@roleprovider/@role.5" subsumer="//@roleprovider/@role.1"/>
+    <subsumption subsumes="//@roleprovider/@role.5" subsumer="//@roleprovider/@role.2"/>
+    <subsumption subsumes="//@roleprovider/@role.5" subsumer="//@roleprovider/@role.3"/>
+    <subsumption subsumes="//@roleprovider/@role.5" subsumer="//@roleprovider/@role.4"/>
+    <role name="Albert"/>
+    <role name="Berta"/>
+    <role name="Caesar"/>
+    <role name="Darius"/>
+    <role name="Parent"/>
+    <role name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]"/>
+  </roleprovider>
+</accesscontrolsystem:RuleDatabase>

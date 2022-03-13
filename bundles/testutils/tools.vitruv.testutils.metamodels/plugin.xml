@@ -125,5 +125,23 @@
             uri="http://tools.vitruv.testutils.metamodels.allElementTypes2">
       </factory>
    </extension>
+   
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated registryoffice -->
+      <package
+            uri="http://tools.vitruv.testutils.metamodels.registryoffice"
+            class="registryoffice.RegistryofficePackage"
+            genModel="metamodels/registryoffice.genmodel"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.testutils.metamodels.RandomIdRegistryOfficeFactory"
+            uri="http://tools.vitruv.testutils.metamodels.registryoffice">
+      </factory>
+   </extension>
+
+
 
 </plugin>
