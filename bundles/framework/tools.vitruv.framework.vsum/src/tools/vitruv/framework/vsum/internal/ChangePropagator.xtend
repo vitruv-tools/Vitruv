@@ -26,6 +26,8 @@ import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.vsum.internal.ModelRepository
+import tools.vitruv.framework.change.echange.id.IdResolver
+import java.util.Optional
 
 package class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
@@ -43,7 +45,11 @@ package class ChangePropagator {
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		val resolvedChange = resourceRepository.applyChange(change)
+		return propagateChange(change, Optional.empty)
+	}
+	
+	def List<PropagatedChange> propagateChange(VitruviusChange change, Optional<IdResolver> resolver) {
+		val resolvedChange = resourceRepository.applyChange(change, resolver)
 		resolvedChange.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
 
 		val changedDomain = resolvedChange.changedDomain

@@ -35,6 +35,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.Collections
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.id.IdResolver
+import java.util.Optional
 
 class TransactionalChangeImpl implements TransactionalChange {
 	var List<? extends EChange> eChanges
@@ -65,10 +66,14 @@ class TransactionalChangeImpl implements TransactionalChange {
 	}
 
 	override resolveAndApply(ResourceSet resourceSet) {
-		val idResolver = IdResolver.create(resourceSet)
+		return resolveAndApply(resourceSet, Optional.of(IdResolver.create(resourceSet)))
+	}
+	
+	override resolveAndApply(ResourceSet resourceSet, Optional<IdResolver> idResolver) {
+		if (idResolver.empty) return resolveAndApply(resourceSet)
 		val resolvedChanges = eChanges.mapFixed[
-			val resolvedChange = resolveBefore(idResolver)
-			resolvedChange.applyForward(idResolver)
+			val resolvedChange = resolveBefore(idResolver.get)
+			resolvedChange.applyForward(idResolver.get)
 			resolvedChange
 		]
 		return new TransactionalChangeImpl(resolvedChanges)

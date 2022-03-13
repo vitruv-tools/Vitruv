@@ -24,6 +24,8 @@ import org.eclipse.emf.common.util.URI
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.echange.id.IdResolver
+import java.util.Optional
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -149,6 +151,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 
 	override VitruviusChange applyChange(VitruviusChange change) {
 		change.resolveAndApply(modelsResourceSet)
+	}
+	
+	override applyChange(VitruviusChange change, Optional<IdResolver> resolver) {
+		change.resolveAndApply(modelsResourceSet, resolver)
 	}
 
 	override URI getMetadataModelURI(String... metadataKey) {

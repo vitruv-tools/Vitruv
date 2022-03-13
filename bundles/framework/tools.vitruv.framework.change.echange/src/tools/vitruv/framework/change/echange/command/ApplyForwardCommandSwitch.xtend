@@ -23,6 +23,7 @@ import tools.vitruv.framework.change.echange.feature.UnsetFeature
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import static extension tools.vitruv.framework.change.echange.command.ChangeCommandUtil.getEditingDomain
 import static extension tools.vitruv.framework.change.echange.command.ChangeCommandUtil.alreadyContainsObject
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Switch to create commands for all EChange classes.
@@ -151,6 +152,13 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(DeleteEObject<EObject> change) {
+		for (EObject crossReference : change.affectedEObject.eCrossReferences) {
+			if(crossReference.eResource !== null) {
+				crossReference.eResource.contents.add(change.affectedEObject)
+				EcoreUtil.delete(change.affectedEObject)
+			}
+		}
+		EcoreUtil.delete(change.affectedEObject)
 		return #[]
 	}
 

@@ -21,6 +21,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkNotNull
+import tools.vitruv.framework.change.echange.id.IdResolver
+import java.util.Optional
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -65,6 +67,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized propagateChange(VitruviusChange change) {
+		return propagateChange(change, Optional.empty)
+	}
+	
+	override propagateChange(VitruviusChange change, Optional<IdResolver> idResolver) {
 		checkNotNull(change, "change to propagate")
 		checkArgument(change.containsConcreteChange, "This change contains no concrete changes:%s%s",
 			System.lineSeparator, change)
@@ -73,7 +79,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		LOGGER.info("Start change propagation")
 		startChangePropagation(unresolvedChange)
 
-		val result = changePropagator.propagateChange(unresolvedChange)
+		val result = changePropagator.propagateChange(unresolvedChange, idResolver)
 		save()
 
 		if (LOGGER.isTraceEnabled) {

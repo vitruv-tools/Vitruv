@@ -7,9 +7,13 @@ import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.Collection
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.echange.id.IdResolver
+import java.util.Optional
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def VitruviusChange applyChange(VitruviusChange change)
+	
+	def VitruviusChange applyChange(VitruviusChange change, Optional<IdResolver> resolver)
 
 	def CorrespondenceModel getCorrespondenceModel()
 

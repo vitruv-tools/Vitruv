@@ -106,7 +106,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 		// if a filtering operation is involved, add the correspondence relation with the idCrossResolver so
 		// they can be resolved by the propagation algorithm
 		val changes = filteredResource.resources.isEmpty ? internalModel.propagateChange(change) : internalModel.
-				propagateChange(change, idCrossResolver)
+				propagateChange(change, Optional.of(idCrossResolver))
 		updateAccessControlSystemModelConsequentialChanges(changes, idCrossResolver);
 		return changes
 	}
