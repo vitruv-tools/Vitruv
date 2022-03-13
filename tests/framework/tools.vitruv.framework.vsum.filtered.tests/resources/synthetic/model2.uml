@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_rWNeoBS7EeequOOdof-U9A" name="RootElement">
+  <packagedElement xmi:type="uml:Class" xmi:id="_WG7A8BS8EeequOOdof-U9A" name="Class1" isAbstract="true">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_csaGABmEEeep-rPkdJ17sQ" name="Attribute1" type="_Tc_kkBmOEeep-rPkdJ17sQ" isReadOnly="true">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_h1KvkBmEEeep-rPkdJ17sQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_h1Xj4BmEEeep-rPkdJ17sQ" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_E3tWMBmOEeep-rPkdJ17sQ" name="abstrMeth1" visibility="protected" isAbstract="true">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_Mhl4sBmOEeep-rPkdJ17sQ" name="class3param" type="_x3ueIBmNEeep-rPkdJ17sQ"/>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Gl9AsBmOEeep-rPkdJ17sQ" name="abstrMeth2" visibility="protected" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_XjS4UBS8EeequOOdof-U9A" name="Class2">
+    <generalization xmi:type="uml:Generalization" xmi:id="_XmLngBmOEeep-rPkdJ17sQ" general="_WG7A8BS8EeequOOdof-U9A"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_o3EV8BmNEeep-rPkdJ17sQ" name="Attribute1" isStatic="true" type="_JmAt0BmNEeep-rPkdJ17sQ" isReadOnly="true"/>
+    <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_vpROoB7UEeeo1rP9ght68Q" name="ir" client="_XjS4UBS8EeequOOdof-U9A" supplier="_fQjusBmNEeep-rPkdJ17sQ" contract="_fQjusBmNEeep-rPkdJ17sQ"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_zdXmQBmNEeep-rPkdJ17sQ" name="OperationWithReturn" visibility="package">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="__nnVkBmNEeep-rPkdJ17sQ" name="param1" type="_x3ueIBmNEeep-rPkdJ17sQ" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_7cLacBmOEeep-rPkdJ17sQ" name="Operation1" visibility="private">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_BpQnwBmPEeep-rPkdJ17sQ" name="inParam" type="_S3JskBmOEeep-rPkdJ17sQ"/>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_Dkb7ABmPEeep-rPkdJ17sQ" type="_sc7z8BmOEeep-rPkdJ17sQ" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_JmAt0BmNEeep-rPkdJ17sQ" name="boolean"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_Mcz70BmNEeep-rPkdJ17sQ" name="Interface1">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Pi8J0BmOEeep-rPkdJ17sQ" name="Operation1">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_b1-BsBmOEeep-rPkdJ17sQ" name="class4Param" type="_S3JskBmOEeep-rPkdJ17sQ"/>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_fTClgBmOEeep-rPkdJ17sQ" name="class5param" type="_Tc_kkBmOEeep-rPkdJ17sQ"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_fQjusBmNEeep-rPkdJ17sQ" name="Interface2">
+    <generalization xmi:type="uml:Generalization" xmi:id="_mgGekBmNEeep-rPkdJ17sQ" general="_Mcz70BmNEeep-rPkdJ17sQ"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Qt8kYBmOEeep-rPkdJ17sQ" name="Operation1"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_RB-6sBmOEeep-rPkdJ17sQ" name="Operation2"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_x3ueIBmNEeep-rPkdJ17sQ" name="Class3"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S3JskBmOEeep-rPkdJ17sQ" name="Class4">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_yHe78BmOEeep-rPkdJ17sQ" name="finalAttr" type="_Tc_kkBmOEeep-rPkdJ17sQ" isReadOnly="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Tc_kkBmOEeep-rPkdJ17sQ" name="Class5">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_nKWgABmOEeep-rPkdJ17sQ" name="staticAttr1" isStatic="true" type="_sc7z8BmOEeep-rPkdJ17sQ"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_ndISEBmOEeep-rPkdJ17sQ" name="staticAttr2" isStatic="true" type="_JmAt0BmNEeep-rPkdJ17sQ"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_iAK6IBmOEeep-rPkdJ17sQ" name="Operation1" isStatic="true">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_lH7VQBmOEeep-rPkdJ17sQ" name="class3param" type="_x3ueIBmNEeep-rPkdJ17sQ"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_sc7z8BmOEeep-rPkdJ17sQ" name="double"/>
+</uml:Model>

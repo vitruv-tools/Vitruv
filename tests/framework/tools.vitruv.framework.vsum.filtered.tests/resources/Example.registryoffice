@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<example:RegistryOffice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:example="http://tools.vitruv.testutils.metamodels.registryoffice">
+  <parent name="Albert" child="//@child.0 //@child.1"/>
+  <parent name="Berta" child="//@child.0 //@child.2"/>
+  <parent name="Caesar" child="//@child.3"/>
+  <parent name="Darius"/>
+  <child name="Einstein" parent="//@parent.0 //@parent.1"/>
+  <child name="Findus" parent="//@parent.0"/>
+  <child name="Grimhild" parent="//@parent.1"/>
+  <child name="Hartmut" parent="//@parent.2"/>
+</example:RegistryOffice>

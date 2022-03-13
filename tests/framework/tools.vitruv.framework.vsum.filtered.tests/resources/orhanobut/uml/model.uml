@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_NdlMQKMFEey37N5JM3TfZA" name="rootModelName">
+  <packagedElement xmi:type="uml:Interface" xmi:id="_NdlMQaMFEey37N5JM3TfZA" name="LogAdapter">
+    <ownedOperation xmi:id="_NdpdsaMFEey37N5JM3TfZA" name="d">
+      <ownedParameter xmi:id="_NdrS4KMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdrS4aMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdrS4qMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdqEwKMFEey37N5JM3TfZA" name="e">
+      <ownedParameter xmi:id="_Ndr58KMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ndr58aMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Ndr58qMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdqEwaMFEey37N5JM3TfZA" name="w">
+      <ownedParameter xmi:id="_NdshAKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdshAaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdshAqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdqEwqMFEey37N5JM3TfZA" name="i">
+      <ownedParameter xmi:id="_NdtIEKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdtIEaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdtIEqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Ndqr0KMFEey37N5JM3TfZA" name="v">
+      <ownedParameter xmi:id="_NdtvIKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdtvIaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NduWMKMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Ndqr0aMFEey37N5JM3TfZA" name="wtf">
+      <ownedParameter xmi:id="_NduWMaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NduWMqMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Ndu9QKMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdlzUKMFEey37N5JM3TfZA" name="AndroidLogAdapter">
+    <interfaceRealization xmi:id="_Ndu9QaMFEey37N5JM3TfZA" name="LogAdapterLogAdapter" client="_NdlzUKMFEey37N5JM3TfZA" supplier="_NdlMQaMFEey37N5JM3TfZA" contract="_NdlMQaMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_NdvkUKMFEey37N5JM3TfZA" name="d">
+      <ownedParameter xmi:id="_NdwycKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdwycaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdwycqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdvkUaMFEey37N5JM3TfZA" name="e">
+      <ownedParameter xmi:id="_NdxZgKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdxZgaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdxZgqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdvkUqMFEey37N5JM3TfZA" name="w">
+      <ownedParameter xmi:id="_NdyAkKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdynoKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdynoaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdwLYKMFEey37N5JM3TfZA" name="i">
+      <ownedParameter xmi:id="_NdzOsKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NdzOsaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NdzOsqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdwLYaMFEey37N5JM3TfZA" name="v">
+      <ownedParameter xmi:id="_NdzOs6MFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ndz1wKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Ndz1waMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NdwLYqMFEey37N5JM3TfZA" name="wtf">
+      <ownedParameter xmi:id="_Ndz1wqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nd0c0KMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Nd1D4KMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_NdlzUaMFEey37N5JM3TfZA" name="LogLevel">
+    <ownedLiteral xmi:id="_Nd1D4aMFEey37N5JM3TfZA" name="FULL"/>
+    <ownedLiteral xmi:id="_Nd1q8KMFEey37N5JM3TfZA" name="NONE"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdlzUqMFEey37N5JM3TfZA" name="Settings" isFinalSpecialization="true">
+    <ownedAttribute xmi:id="_Nd1q8aMFEey37N5JM3TfZA" name="methodCount" visibility="private" type="_NdnogKMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_Nd2SAKMFEey37N5JM3TfZA" name="showThreadInfo" visibility="private" type="_NdoPkKMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_Nd2SAaMFEey37N5JM3TfZA" name="methodOffset" visibility="private" type="_NdnogKMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_Nd2SAqMFEey37N5JM3TfZA" name="logAdapter" visibility="private" type="_NdlMQaMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_Nd25EKMFEey37N5JM3TfZA" name="logLevel" visibility="private" type="_NdlzUaMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_Nd25EaMFEey37N5JM3TfZA" name="hideThreadInfo">
+      <ownedParameter xmi:id="_Nd6jcKMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd25EqMFEey37N5JM3TfZA" name="methodCount">
+      <ownedParameter xmi:id="_Nd6jcaMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nd6jcqMFEey37N5JM3TfZA" name="methodCount" type="_NdnogKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd25E6MFEey37N5JM3TfZA" name="logLevel">
+      <ownedParameter xmi:id="_Nd7KgKMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nd7KgaMFEey37N5JM3TfZA" name="logLevel" type="_NdlzUaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd3gIKMFEey37N5JM3TfZA" name="methodOffset">
+      <ownedParameter xmi:id="_Nd7KgqMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nd7xkKMFEey37N5JM3TfZA" name="offset" type="_NdnogKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd3gIaMFEey37N5JM3TfZA" name="logAdapter">
+      <ownedParameter xmi:id="_Nd7xkaMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nd7xkqMFEey37N5JM3TfZA" name="logAdapter" type="_NdlMQaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd4HMKMFEey37N5JM3TfZA" name="getMethodCount">
+      <ownedParameter xmi:id="_Nd8YoKMFEey37N5JM3TfZA" type="_NdnogKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd4HMaMFEey37N5JM3TfZA" name="isShowThreadInfo">
+      <ownedParameter xmi:id="_Nd8YoaMFEey37N5JM3TfZA" type="_NdoPkKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd4uQKMFEey37N5JM3TfZA" name="getLogLevel">
+      <ownedParameter xmi:id="_Nd8_sKMFEey37N5JM3TfZA" type="_NdlzUaMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd4uQaMFEey37N5JM3TfZA" name="getMethodOffset">
+      <ownedParameter xmi:id="_Nd8_saMFEey37N5JM3TfZA" type="_NdnogKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd5VUKMFEey37N5JM3TfZA" name="getLogAdapter">
+      <ownedParameter xmi:id="_Nd8_sqMFEey37N5JM3TfZA" type="_NdlMQaMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd5VUaMFEey37N5JM3TfZA" name="reset">
+      <ownedParameter xmi:id="_Nd9mwKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_NdmaYKMFEey37N5JM3TfZA" name="Printer">
+    <ownedOperation xmi:id="_Nd9mwaMFEey37N5JM3TfZA" name="t">
+      <ownedParameter xmi:id="_NeAqEaMFEey37N5JM3TfZA" type="_NdmaYKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeBRIKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeBRIaMFEey37N5JM3TfZA" name="methodCount" type="_NdnogKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-N0KMFEey37N5JM3TfZA" name="init">
+      <ownedParameter xmi:id="_NeB4MKMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeB4MaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-N0aMFEey37N5JM3TfZA" name="getSettings">
+      <ownedParameter xmi:id="_NeB4MqMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-N0qMFEey37N5JM3TfZA" name="d">
+      <ownedParameter xmi:id="_NeB4M6MFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeCfQKMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-N06MFEey37N5JM3TfZA" name="e">
+      <ownedParameter xmi:id="_NeCfQaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeCfQqMFEey37N5JM3TfZA" name="throwable" type="_NdoPkaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeCfQ6MFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-04KMFEey37N5JM3TfZA" name="w">
+      <ownedParameter xmi:id="_NeDGUKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeDGUaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-04aMFEey37N5JM3TfZA" name="i">
+      <ownedParameter xmi:id="_NeDtYKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeDtYaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd-04qMFEey37N5JM3TfZA" name="v">
+      <ownedParameter xmi:id="_NeDtYqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeDtY6MFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd_b8KMFEey37N5JM3TfZA" name="wtf">
+      <ownedParameter xmi:id="_NeEUcKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeEUcaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nd_b8aMFEey37N5JM3TfZA" name="json">
+      <ownedParameter xmi:id="_NeE7gKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeE7gaMFEey37N5JM3TfZA" name="json" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeADAKMFEey37N5JM3TfZA" name="xml">
+      <ownedParameter xmi:id="_NeE7gqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeE7g6MFEey37N5JM3TfZA" name="xml" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeADAaMFEey37N5JM3TfZA" name="log">
+      <ownedParameter xmi:id="_NeFikKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeFikaMFEey37N5JM3TfZA" name="priority" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeFikqMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeFik6MFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeGJoKMFEey37N5JM3TfZA" name="throwable" type="_NdoPkaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeAqEKMFEey37N5JM3TfZA" name="resetSettings">
+      <ownedParameter xmi:id="_NeGJoaMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdmaYaMFEey37N5JM3TfZA" name="Logger" isFinalSpecialization="true">
+    <ownedAttribute xmi:id="_NeGwsKMFEey37N5JM3TfZA" name="DEBUG" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeGwsaMFEey37N5JM3TfZA" name="ERROR" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeHXwKMFEey37N5JM3TfZA" name="ASSERT" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeHXwaMFEey37N5JM3TfZA" name="INFO" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeHXwqMFEey37N5JM3TfZA" name="VERBOSE" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeHXw6MFEey37N5JM3TfZA" name="WARN" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeH-0KMFEey37N5JM3TfZA" name="DEFAULT_TAG" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeH-0aMFEey37N5JM3TfZA" name="printer" visibility="private" isStatic="true" type="_NdmaYKMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_NeH-0qMFEey37N5JM3TfZA" name="Logger" visibility="private"/>
+    <ownedOperation xmi:id="_NeH-06MFEey37N5JM3TfZA" name="init" isStatic="true">
+      <ownedParameter xmi:id="_NeNeYKMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeNeYaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeIl4KMFEey37N5JM3TfZA" name="resetSettings" isStatic="true">
+      <ownedParameter xmi:id="_NeOFcKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeIl4aMFEey37N5JM3TfZA" name="t" isStatic="true">
+      <ownedParameter xmi:id="_NeOFcaMFEey37N5JM3TfZA" type="_NdmaYKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeOFcqMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeOsgKMFEey37N5JM3TfZA" name="methodCount" type="_NdnogKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeIl4qMFEey37N5JM3TfZA" name="log" isStatic="true">
+      <ownedParameter xmi:id="_NeOsgaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeOsgqMFEey37N5JM3TfZA" name="priority" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NePTkKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NePTkaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NePTkqMFEey37N5JM3TfZA" name="throwable" type="_NdoPkaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeJM8KMFEey37N5JM3TfZA" name="d" isStatic="true">
+      <ownedParameter xmi:id="_NeP6oKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeP6oaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeJM8aMFEey37N5JM3TfZA" name="e" isStatic="true">
+      <ownedParameter xmi:id="_NeQhsKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeQhsaMFEey37N5JM3TfZA" name="throwable" type="_NdoPkaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeQhsqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeJ0AKMFEey37N5JM3TfZA" name="i" isStatic="true">
+      <ownedParameter xmi:id="_NeRIwKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeRIwaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeKbEKMFEey37N5JM3TfZA" name="v" isStatic="true">
+      <ownedParameter xmi:id="_NeRv0KMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeRv0aMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeKbEaMFEey37N5JM3TfZA" name="w" isStatic="true">
+      <ownedParameter xmi:id="_NeRv0qMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeSW4KMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeLCIKMFEey37N5JM3TfZA" name="wtf" isStatic="true">
+      <ownedParameter xmi:id="_NeSW4aMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeSW4qMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeLCIaMFEey37N5JM3TfZA" name="json" isStatic="true">
+      <ownedParameter xmi:id="_NeS98KMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeS98aMFEey37N5JM3TfZA" name="json" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeLpMKMFEey37N5JM3TfZA" name="xml" isStatic="true">
+      <ownedParameter xmi:id="_NeTlAKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeTlAaMFEey37N5JM3TfZA" name="xml" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdmaYqMFEey37N5JM3TfZA" name="LoggerPrinter" isFinalSpecialization="true">
+    <ownedAttribute xmi:id="_NeTlAqMFEey37N5JM3TfZA" name="DEFAULT_TAG" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeTlA6MFEey37N5JM3TfZA" name="DEBUG" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUMEKMFEey37N5JM3TfZA" name="ERROR" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUMEaMFEey37N5JM3TfZA" name="ASSERT" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUMEqMFEey37N5JM3TfZA" name="INFO" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUME6MFEey37N5JM3TfZA" name="VERBOSE" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUzIKMFEey37N5JM3TfZA" name="WARN" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUzIaMFEey37N5JM3TfZA" name="CHUNK_SIZE" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeUzIqMFEey37N5JM3TfZA" name="JSON_INDENT" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeVaMKMFEey37N5JM3TfZA" name="MIN_STACK_OFFSET" visibility="private" isStatic="true" type="_NdnogKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeVaMaMFEey37N5JM3TfZA" name="TOP_LEFT_CORNER" visibility="private" isStatic="true" type="_Ndo2oKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeVaMqMFEey37N5JM3TfZA" name="BOTTOM_LEFT_CORNER" visibility="private" isStatic="true" type="_Ndo2oKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeVaM6MFEey37N5JM3TfZA" name="MIDDLE_CORNER" visibility="private" isStatic="true" type="_Ndo2oKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeWBQKMFEey37N5JM3TfZA" name="HORIZONTAL_DOUBLE_LINE" visibility="private" isStatic="true" type="_Ndo2oKMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeWBQaMFEey37N5JM3TfZA" name="DOUBLE_DIVIDER" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeWBQqMFEey37N5JM3TfZA" name="SINGLE_DIVIDER" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeWoUKMFEey37N5JM3TfZA" name="TOP_BORDER" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeWoUaMFEey37N5JM3TfZA" name="BOTTOM_BORDER" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeWoUqMFEey37N5JM3TfZA" name="MIDDLE_BORDER" visibility="private" isStatic="true" type="_NdnBcaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NeXPYKMFEey37N5JM3TfZA" name="tag" visibility="private" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_NeXPYaMFEey37N5JM3TfZA" name="settings" visibility="private" type="_NdlzUqMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <interfaceRealization xmi:id="_NeX2cKMFEey37N5JM3TfZA" name="PrinterPrinter" client="_NdmaYqMFEey37N5JM3TfZA" supplier="_NdmaYKMFEey37N5JM3TfZA" contract="_NdmaYKMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_NeX2caMFEey37N5JM3TfZA" name="LoggerPrinter"/>
+    <ownedOperation xmi:id="_NeYdgKMFEey37N5JM3TfZA" name="init">
+      <ownedParameter xmi:id="_NekqwKMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NekqwaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeYdgaMFEey37N5JM3TfZA" name="getSettings">
+      <ownedParameter xmi:id="_NelR0KMFEey37N5JM3TfZA" type="_NdlzUqMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeZEkKMFEey37N5JM3TfZA" name="t">
+      <ownedParameter xmi:id="_NelR0aMFEey37N5JM3TfZA" type="_NdmaYKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NelR0qMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Nel44KMFEey37N5JM3TfZA" name="methodCount" type="_NdnogKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeZEkaMFEey37N5JM3TfZA" name="d">
+      <ownedParameter xmi:id="_Nel44aMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nel44qMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeZroKMFEey37N5JM3TfZA" name="e">
+      <ownedParameter xmi:id="_Nemf8KMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nemf8aMFEey37N5JM3TfZA" name="throwable" type="_NdoPkaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Nemf8qMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeaSsKMFEey37N5JM3TfZA" name="w">
+      <ownedParameter xmi:id="_NenHAKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NenHAaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeaSsaMFEey37N5JM3TfZA" name="i">
+      <ownedParameter xmi:id="_NenHAqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NenuEKMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeaSsqMFEey37N5JM3TfZA" name="v">
+      <ownedParameter xmi:id="_NenuEaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NenuEqMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nea5wKMFEey37N5JM3TfZA" name="wtf">
+      <ownedParameter xmi:id="_NeoVIKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeoVIaMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nea5waMFEey37N5JM3TfZA" name="json">
+      <ownedParameter xmi:id="_NeoVIqMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Neo8MKMFEey37N5JM3TfZA" name="json" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Nebg0KMFEey37N5JM3TfZA" name="xml">
+      <ownedParameter xmi:id="_Neo8MaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NepjQKMFEey37N5JM3TfZA" name="xml" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NecH4KMFEey37N5JM3TfZA" name="log">
+      <ownedParameter xmi:id="_NepjQaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NepjQqMFEey37N5JM3TfZA" name="priority" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NepjQ6MFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeqKUKMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NeqKUaMFEey37N5JM3TfZA" name="throwable" type="_NdoPkaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NecH4aMFEey37N5JM3TfZA" name="resetSettings">
+      <ownedParameter xmi:id="_NeqxYKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Necu8KMFEey37N5JM3TfZA" name="logTopBorder" visibility="private">
+      <ownedParameter xmi:id="_NeqxYaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeqxYqMFEey37N5JM3TfZA" name="logType" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NerYcKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Necu8aMFEey37N5JM3TfZA" name="logHeaderContent" visibility="private">
+      <ownedParameter xmi:id="_Ner_gKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ner_gaMFEey37N5JM3TfZA" name="logType" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NesmkKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NesmkaMFEey37N5JM3TfZA" name="methodCount" type="_NdnogKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NedWAKMFEey37N5JM3TfZA" name="logBottomBorder" visibility="private">
+      <ownedParameter xmi:id="_NetNoKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Net0sKMFEey37N5JM3TfZA" name="logType" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Net0saMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NedWAaMFEey37N5JM3TfZA" name="logDivider" visibility="private">
+      <ownedParameter xmi:id="_NeubwKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NevC0KMFEey37N5JM3TfZA" name="logType" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NevC0aMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Ned9EKMFEey37N5JM3TfZA" name="logContent" visibility="private">
+      <ownedParameter xmi:id="_Nevp4KMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NewQ8KMFEey37N5JM3TfZA" name="logType" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_New4AKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NexfEKMFEey37N5JM3TfZA" name="chunk" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeekIKMFEey37N5JM3TfZA" name="logChunk" visibility="private">
+      <ownedParameter xmi:id="_NeytMKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_NeytMaMFEey37N5JM3TfZA" name="logType" type="_NdnogKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NezUQKMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_NezUQaMFEey37N5JM3TfZA" name="chunk" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NeekIaMFEey37N5JM3TfZA" name="getSimpleClassName" visibility="private">
+      <ownedParameter xmi:id="_Nez7UKMFEey37N5JM3TfZA" type="_NdnBcaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Nez7UaMFEey37N5JM3TfZA" name="name" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NefLMKMFEey37N5JM3TfZA" name="formatTag" visibility="private">
+      <ownedParameter xmi:id="_Ne0iYKMFEey37N5JM3TfZA" type="_NdnBcaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ne0iYaMFEey37N5JM3TfZA" name="tag" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NefyQKMFEey37N5JM3TfZA" name="getTag" visibility="private">
+      <ownedParameter xmi:id="_Ne1JcKMFEey37N5JM3TfZA" type="_NdnBcaMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NegZUKMFEey37N5JM3TfZA" name="createMessage" visibility="private">
+      <ownedParameter xmi:id="_Ne1JcaMFEey37N5JM3TfZA" type="_NdnBcaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ne1wgKMFEey37N5JM3TfZA" name="message" type="_NdnBcaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NegZUaMFEey37N5JM3TfZA" name="getMethodCount" visibility="private">
+      <ownedParameter xmi:id="_Ne2XkKMFEey37N5JM3TfZA" type="_NdnogKMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NehncKMFEey37N5JM3TfZA" name="getStackOffset" visibility="private">
+      <ownedParameter xmi:id="_Ne2-oKMFEey37N5JM3TfZA" type="_NdnogKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ne2-oaMFEey37N5JM3TfZA" name="trace" type="_Ndo2oaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdnBcKMFEey37N5JM3TfZA" name="Helper" isFinalSpecialization="true">
+    <ownedOperation xmi:id="_Ne3lsKMFEey37N5JM3TfZA" name="Helper" visibility="private"/>
+    <ownedOperation xmi:id="_Ne4MwKMFEey37N5JM3TfZA" name="isEmpty" isStatic="true">
+      <ownedParameter xmi:id="_Ne4z0KMFEey37N5JM3TfZA" type="_NdoPkKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ne4z0aMFEey37N5JM3TfZA" name="str" type="_NdpdsKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Ne4MwaMFEey37N5JM3TfZA" name="equals" isStatic="true">
+      <ownedParameter xmi:id="_Ne5a4KMFEey37N5JM3TfZA" type="_NdoPkKMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ne5a4aMFEey37N5JM3TfZA" name="a" type="_NdpdsKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Ne5a4qMFEey37N5JM3TfZA" name="b" type="_NdpdsKMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Ne4MwqMFEey37N5JM3TfZA" name="getStackTraceString" isStatic="true">
+      <ownedParameter xmi:id="_Ne6B8KMFEey37N5JM3TfZA" type="_NdnBcaMFEey37N5JM3TfZA" direction="return"/>
+      <ownedParameter xmi:id="_Ne6B8aMFEey37N5JM3TfZA" name="tr" type="_NdoPkaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_NdnBcaMFEey37N5JM3TfZA" name="String"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_NdnogKMFEey37N5JM3TfZA" name="int"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_NdoPkKMFEey37N5JM3TfZA" name="boolean"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdoPkaMFEey37N5JM3TfZA" name="Throwable"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_Ndo2oKMFEey37N5JM3TfZA" name="char"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Ndo2oaMFEey37N5JM3TfZA" name="StackTraceElement"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NdpdsKMFEey37N5JM3TfZA" name="CharSequence"/>
+</uml:Model>

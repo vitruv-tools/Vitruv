@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Np1fkKMFEey37N5JM3TfZA" name="RootElement">
+  <packagedElement xmi:type="uml:Class" xmi:id="_Np1fkaMFEey37N5JM3TfZA" name="Class1" isAbstract="true">
+    <ownedAttribute xmi:id="_Np5J8KMFEey37N5JM3TfZA" name="Attribute1" type="_Np3UwaMFEey37N5JM3TfZA" isReadOnly="true">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Np5xAKMFEey37N5JM3TfZA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Np5xAaMFEey37N5JM3TfZA" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_Np5J8aMFEey37N5JM3TfZA" name="abstrMeth1" visibility="protected" isAbstract="true">
+      <ownedParameter xmi:id="_Np6YEKMFEey37N5JM3TfZA" name="class3param" type="_Np2tsqMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Np5J8qMFEey37N5JM3TfZA" name="abstrMeth2" visibility="protected" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Np2GoKMFEey37N5JM3TfZA" name="Class2">
+    <generalization xmi:id="_Np6_IKMFEey37N5JM3TfZA" general="_Np1fkaMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_Np6_IaMFEey37N5JM3TfZA" name="Attribute1" isStatic="true" type="_Np2GoaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <interfaceRealization xmi:id="_Np7mMKMFEey37N5JM3TfZA" name="ir" client="_Np2GoKMFEey37N5JM3TfZA" supplier="_Np2tsaMFEey37N5JM3TfZA" contract="_Np2tsaMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_Np7mMaMFEey37N5JM3TfZA" name="OperationWithReturn" visibility="package">
+      <ownedParameter xmi:id="_Np80UKMFEey37N5JM3TfZA" name="param1" type="_Np2tsqMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Np8NQKMFEey37N5JM3TfZA" name="Operation1" visibility="private">
+      <ownedParameter xmi:id="_Np9bYKMFEey37N5JM3TfZA" name="inParam" type="_Np3UwKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Np9bYaMFEey37N5JM3TfZA" type="_Np3UwqMFEey37N5JM3TfZA" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_Np2GoaMFEey37N5JM3TfZA" name="boolean"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_Np2tsKMFEey37N5JM3TfZA" name="Interface1">
+    <ownedOperation xmi:id="_Np-CcKMFEey37N5JM3TfZA" name="Operation1">
+      <ownedParameter xmi:id="_Np-CcaMFEey37N5JM3TfZA" name="class4Param" type="_Np3UwKMFEey37N5JM3TfZA"/>
+      <ownedParameter xmi:id="_Np-pgKMFEey37N5JM3TfZA" name="class5param" type="_Np3UwaMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_Np2tsaMFEey37N5JM3TfZA" name="Interface2">
+    <generalization xmi:id="_Np-pgaMFEey37N5JM3TfZA" general="_Np2tsKMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_Np_QkKMFEey37N5JM3TfZA" name="Operation1"/>
+    <ownedOperation xmi:id="_Np_QkaMFEey37N5JM3TfZA" name="Operation2"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Np2tsqMFEey37N5JM3TfZA" name="Class3">
+    <ownedOperation xmi:id="_Np_3oKMFEey37N5JM3TfZA" name="UpperCaseOperation"/>
+    <ownedOperation xmi:id="_Np_3oaMFEey37N5JM3TfZA" name="lowerCaseOperation"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Np3UwKMFEey37N5JM3TfZA" name="Class4">
+    <ownedAttribute xmi:id="_Np_3oqMFEey37N5JM3TfZA" name="finalAttr" type="_Np3UwaMFEey37N5JM3TfZA" isReadOnly="true"/>
+    <ownedAttribute xmi:id="_NqAesKMFEey37N5JM3TfZA" name="class3" type="_Np2tsqMFEey37N5JM3TfZA" association="_Np370KMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_NqAesaMFEey37N5JM3TfZA" name="class2" type="_Np2GoKMFEey37N5JM3TfZA" association="_Np370aMFEey37N5JM3TfZA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Np3UwaMFEey37N5JM3TfZA" name="Class5">
+    <ownedAttribute xmi:id="_NqBFwKMFEey37N5JM3TfZA" name="staticAttr1" isStatic="true" type="_Np3UwqMFEey37N5JM3TfZA"/>
+    <ownedAttribute xmi:id="_NqBFwaMFEey37N5JM3TfZA" name="staticAttr2" isStatic="true" type="_Np2GoaMFEey37N5JM3TfZA"/>
+    <ownedOperation xmi:id="_NqBFwqMFEey37N5JM3TfZA" name="Operation1" isStatic="true">
+      <ownedParameter xmi:id="_NqBs0KMFEey37N5JM3TfZA" name="class3param" type="_Np2tsqMFEey37N5JM3TfZA"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_Np3UwqMFEey37N5JM3TfZA" name="double"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Np370KMFEey37N5JM3TfZA" memberEnd="_NqCT4aMFEey37N5JM3TfZA _NqAesKMFEey37N5JM3TfZA">
+    <eAnnotations xmi:id="_NqCT4KMFEey37N5JM3TfZA" source="org.eclipse.papyrus">
+      <details xmi:id="_NqCT4qMFEey37N5JM3TfZA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_NqCT4aMFEey37N5JM3TfZA" name="class4" type="_Np3UwKMFEey37N5JM3TfZA" association="_Np370KMFEey37N5JM3TfZA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Np370aMFEey37N5JM3TfZA" memberEnd="_NqC68aMFEey37N5JM3TfZA _NqAesaMFEey37N5JM3TfZA">
+    <eAnnotations xmi:id="_NqC68KMFEey37N5JM3TfZA" source="org.eclipse.papyrus">
+      <details xmi:id="_NqC68qMFEey37N5JM3TfZA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_NqC68aMFEey37N5JM3TfZA" name="class4" type="_Np3UwKMFEey37N5JM3TfZA" association="_Np370aMFEey37N5JM3TfZA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NqDiAKMFEey37N5JM3TfZA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NqDiAaMFEey37N5JM3TfZA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_Np4i4KMFEey37N5JM3TfZA" name="Package1">
+    <packagedElement xmi:type="uml:Class" xmi:id="_NqDiAqMFEey37N5JM3TfZA" name="ClassinPackage">
+      <ownedAttribute xmi:id="_NqEJEKMFEey37N5JM3TfZA" name="attribute" type="_Np1fkaMFEey37N5JM3TfZA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NqEJEaMFEey37N5JM3TfZA"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

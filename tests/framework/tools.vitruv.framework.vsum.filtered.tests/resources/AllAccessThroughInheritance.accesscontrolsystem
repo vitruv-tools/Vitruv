@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<accesscontrolsystem:RuleDatabase xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:accesscontrolsystem="http://tools.vitruv/accesscontrolsystem">
+  <acessrightprovider>
+    <operationAccessRights accessRight="ALLOW"/>
+    <operationAccessRights accessRight="ALLOW" operation="WRITE"/>
+  </acessrightprovider>
+  <accessrules role="#//@roleprovider/@role.0" name="AlbertAll" element="Example_temp.registryoffice#/"
+      operationAccessRights="#//@acessrightprovider/@operationAccessRights.0 #//@acessrightprovider/@operationAccessRights.1"/>
+  <roleprovider>
+    <role name="Albert"/>
+  </roleprovider>
+</accesscontrolsystem:RuleDatabase>

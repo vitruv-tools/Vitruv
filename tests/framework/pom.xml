@@ -18,6 +18,7 @@
 		<module>tools.vitruv.framework.change.tests</module>
 		<module>tools.vitruv.framework.views.tests</module>
 		<module>tools.vitruv.framework.vsum.accesscontrolsystem.tests</module>
+		<module>tools.vitruv.framework.vsum.filtered.tests</module>
 		<module>tools.vitruv.framework.vsum.tests</module>
 	</modules>
 
