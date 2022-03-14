@@ -99,4 +99,10 @@ Workflow {
 		generateCustomClasses = false
 	}
 
+	component = EcoreGenerator {
+		srcPath = "${testutilsMetamodelsPluginPath}/src"
+		genModel = "${testutilsMetamodelsPluginPath}/metamodels/registryoffice.genmodel"
+		generateCustomClasses = false
+	}
+
 }

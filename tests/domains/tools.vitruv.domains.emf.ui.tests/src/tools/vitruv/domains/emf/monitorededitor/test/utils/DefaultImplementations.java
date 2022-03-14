@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -24,6 +25,7 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.change.echange.id.IdResolver;
 import tools.vitruv.framework.change.propagation.ChangePropagationListener;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
@@ -116,6 +118,11 @@ public class DefaultImplementations {
 		@Override
 		public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
 			return null;
+		}
+
+		@Override
+		public List<PropagatedChange> propagateChange(VitruviusChange change, Optional<IdResolver> idResolver) {
+			return propagateChange(change);
 		}
 
 	}
