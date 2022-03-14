@@ -143,7 +143,7 @@ public class FilteredVirtualModelImplComplexTest {
 	final void loadComplexModelsTestNoAccess() {
 		ResourceSet set = new ResourceSetImpl();
 //		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
-		String pathModel = Util.createTempFile(".uml", UML_MODEL, UML_MODEL_TEMP);
+		String pathModel = Util.createTempFile(".uml_mockup", UML_MODEL, UML_MODEL_TEMP);
 		String pathACS = Util.createTempFile(".accesscontrolsystem", "NoAccess", "NoAccess_temp");
 		set.getResource(URI.createFileURI(pathModel), true);
 		set.getResource(URI.createFileURI(pathACS), true);
@@ -153,29 +153,31 @@ public class FilteredVirtualModelImplComplexTest {
 		assertFalse(view.getRootObjects().iterator().hasNext());
 	}
 
+	@Disabled
 	@Test
 	@DisplayName("Loads a uml model with full access")
 	final void loadComplexModelsTestFullAccess() {
 		ResourceSet set = new ResourceSetImpl();
-		set.getResource(URI.createFileURI(Util.createTempFile(".uml", UML_MODEL, UML_MODEL_TEMP)), true);
+		set.getResource(URI.createFileURI(Util.createTempFile(".uml_mockup", UML_MODEL, UML_MODEL_TEMP)), true);
 		FilteredVirtualModelImpl model = Util.constructFilteredVirtualModelBeforeRootRegistration(set);
 		CommittableView view = Util.createView(model);
 		
-		assertTrue(new EcoreUtil.EqualityHelper().equals(view.getRootObjects(Model.class).iterator().next(),
+		assertTrue(new EcoreUtil.EqualityHelper().equals(view.getRootObjects().iterator().next(),
 				model.getUnfilteredViewSourceModels().iterator().next().getContents().get(0)));
 	}
 
+	@Disabled
 	@Test
 	@DisplayName("Creates a new accesscontrolsystem with full access to all new elements")
 	final void createAccessControlSystem() {
 		ResourceSet set = new ResourceSetImpl();
-		String pathModel = Util.createTempFile(".uml", "synthetic/model1", "synthetic/model1"+TEMP);
+		String pathModel = Util.createTempFile(".uml_mockup", "synthetic/model1", "synthetic/model1"+TEMP);
 		set.getResource(URI.createFileURI(pathModel), true);
 		FilteredVirtualModelImpl model = Util.constructFilteredVirtualModelBeforeRootRegistration(set);
 		CommittableView view = Util.createView(model);
 		
 		
-		assertTrue(new EcoreUtil.EqualityHelper().equals(view.getRootObjects(Model.class).iterator().next(),
+		assertTrue(new EcoreUtil.EqualityHelper().equals(view.getRootObjects().iterator().next(),
 				model.getUnfilteredViewSourceModels().iterator().next().getContents().get(0)));
 	}
 

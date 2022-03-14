@@ -52,6 +52,7 @@ public class FilteredVirtualModelImplTest {
 		assertEquals(0, office.getChild().size());
 	}
 
+	@Disabled
 	@Test
 	@DisplayName("ExplicitAccessOneParent - Changes an attribute while gaining access on only the changed element")
 	final void changeAttribute() {
@@ -182,6 +183,7 @@ public class FilteredVirtualModelImplTest {
 		assertEquals("Findus", office.getChild().get(0).getName());
 	}
 
+	@Disabled
 	@Test
 	@DisplayName("ExplicitAccessSecondParentSecondChild - ")
 	final void removeChildPartAccess2() {

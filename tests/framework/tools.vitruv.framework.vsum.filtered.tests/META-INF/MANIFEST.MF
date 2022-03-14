@@ -9,8 +9,6 @@ Fragment-Host: tools.vitruv.framework.vsum.filtered
 Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
  tools.vitruv.testutils.metamodels,
- tools.vitruv.domains.java;visibility:=reexport,
- tools.vitruv.domains.uml;visibility:=reexport,
  org.eclipse.core.expressions,
  org.eclipse.xtend.lib,
  org.eclipse.uml2.uml,

@@ -22,8 +22,6 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import accesscontrol.operationaccessright.OperationAccessRightUtil;
 import accesscontrolsystem.RuleDatabase;
 import registryoffice.RegistryOffice;
-import tools.vitruv.domains.java.JavaDomainProvider;
-import tools.vitruv.domains.uml.UmlDomainProvider;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
@@ -45,6 +43,7 @@ import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.testutils.domains.DomainModelCreators;
 import tools.vitruv.testutils.metamodels.RegistryOfficeCreators;
+import tools.vitruv.testutils.metamodels.UmlMockupCreators;
 
 public final class Util {
 
@@ -56,40 +55,10 @@ public final class Util {
 
 		VitruvDomain exampleDomain = DomainModelCreators.getDomain(new RegistryOfficeCreators());
 		VitruvDomain accesscontrolsystemDomain = new AccessControlSystemDomain();
-		VitruvDomain umlDomain = new UmlDomainProvider().getDomain();
-		VitruvDomain javaDomain = new JavaDomainProvider().getDomain();
-		VirtualModelImpl virtualModel = (VirtualModelImpl) new VirtualModelBuilder()
-				.withStorageFolder(Path.of(new File("").getAbsolutePath())).withDomain(exampleDomain)
-				.withDomain(javaDomain)
-				.withChangePropagationSpecification(new AbstractChangePropagationSpecification(javaDomain, javaDomain) {
-
-					@Override
-					public void propagateChange(EChange arg0, CorrespondenceModel arg1, ResourceAccess arg2) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public boolean doesHandleChange(EChange arg0, CorrespondenceModel arg1) {
-						// TODO Auto-generated method stub
-						return false;
-					}
-				}).withDomain(umlDomain)
-				.withChangePropagationSpecification(new AbstractChangePropagationSpecification(umlDomain, umlDomain) {
-
-					@Override
-					public void propagateChange(EChange change, CorrespondenceModel correspondenceModel,
-							ResourceAccess resourceAccess) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public boolean doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
-						// TODO Auto-generated method stub
-						return false;
-					}
-				}).withDomain(accesscontrolsystemDomain).withChangePropagationSpecification(
+		VitruvDomain umlMockupDomain = DomainModelCreators.getDomain(new UmlMockupCreators());
+		return (VirtualModelImpl) new VirtualModelBuilder()
+				.withStorageFolder(Path.of(new File("").getAbsolutePath())).withDomain(exampleDomain).withDomain(umlMockupDomain)
+				.withDomain(accesscontrolsystemDomain).withChangePropagationSpecification(
 						new AbstractChangePropagationSpecification(exampleDomain, exampleDomain) {
 
 							@Override
@@ -110,7 +79,6 @@ public final class Util {
 				.withUserInteractor(UserInteractionFactory.instance.createUserInteractor(
 						UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
 				.buildAndInitialize();
-		return virtualModel;
 
 	}
 
