@@ -52,6 +52,12 @@ Workflow {
 	}
 
 	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.framework.vsum.accesscontrolsystem/src-gen"
+		genModel = "platform:/resource/tools.vitruv.framework.vsum.accesscontrolsystem/metamodel/accesscontrolsystem.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
 		srcPath = "${testutilsMetamodelsPluginPath}/metamodels/src"
 		genModel = "${testutilsMetamodelsPluginPath}/metamodels/allElementTypes.genmodel"
 		generateCustomClasses = false
