@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -39,7 +40,7 @@ import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImpl;
 import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplTest;
-import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplTestComplex;
+import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplComplexTest;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.testutils.domains.DomainModelCreators;
@@ -59,36 +60,36 @@ public final class Util {
 		VitruvDomain javaDomain = new JavaDomainProvider().getDomain();
 		VirtualModelImpl virtualModel = (VirtualModelImpl) new VirtualModelBuilder()
 				.withStorageFolder(Path.of(new File("").getAbsolutePath())).withDomain(exampleDomain)
-				.withDomain(javaDomain).withChangePropagationSpecification(new AbstractChangePropagationSpecification(javaDomain, javaDomain) {
-					
+				.withDomain(javaDomain)
+				.withChangePropagationSpecification(new AbstractChangePropagationSpecification(javaDomain, javaDomain) {
+
 					@Override
 					public void propagateChange(EChange arg0, CorrespondenceModel arg1, ResourceAccess arg2) {
 						// TODO Auto-generated method stub
-						
+
 					}
-					
+
 					@Override
 					public boolean doesHandleChange(EChange arg0, CorrespondenceModel arg1) {
 						// TODO Auto-generated method stub
 						return false;
 					}
-				})
-				.withDomain(umlDomain).withChangePropagationSpecification(new AbstractChangePropagationSpecification(umlDomain, umlDomain) {
-					
+				}).withDomain(umlDomain)
+				.withChangePropagationSpecification(new AbstractChangePropagationSpecification(umlDomain, umlDomain) {
+
 					@Override
 					public void propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 							ResourceAccess resourceAccess) {
 						// TODO Auto-generated method stub
-						
+
 					}
-					
+
 					@Override
 					public boolean doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 						// TODO Auto-generated method stub
 						return false;
 					}
-				})
-				.withDomain(accesscontrolsystemDomain).withChangePropagationSpecification(
+				}).withDomain(accesscontrolsystemDomain).withChangePropagationSpecification(
 						new AbstractChangePropagationSpecification(exampleDomain, exampleDomain) {
 
 							@Override
@@ -105,7 +106,7 @@ public final class Util {
 							}
 
 						})
-				
+
 				.withUserInteractor(UserInteractionFactory.instance.createUserInteractor(
 						UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
 				.buildAndInitialize();
@@ -115,13 +116,14 @@ public final class Util {
 
 	public static RuleDatabase getRuleDatabase(ResourceSet resourceSet) {
 		Optional<Resource> ruleDatabase = resourceSet.getResources().stream()
-		.filter(t -> !t.getContents().isEmpty() && (t.getContents().get(0) instanceof RuleDatabase)).findFirst();
+				.filter(t -> !t.getContents().isEmpty() && (t.getContents().get(0) instanceof RuleDatabase))
+				.findFirst();
 		if (ruleDatabase.isPresent()) {
 			return (RuleDatabase) ruleDatabase.get().getContents().get(0);
 		}
 		return null;
 	}
-	
+
 	public static ViewType viewType = ViewTypeFactory.createIdentityMappingViewType("myviewtype");
 
 	public static final CommittableView createView(VirtualModel virtualModel) {
@@ -129,17 +131,31 @@ public final class Util {
 		selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
 		return selector.createView().withChangeDerivingTrait(new DefaultStateBasedChangeResolutionStrategy());
 	}
-	
+
 	public static final RegistryOffice getRegistryOffice(View view) {
 		return view.getRootObjects(RegistryOffice.class).iterator().next();
 	}
-	
+
 	public static String randomName() {
 		return new Random().ints('a', 'z' + 1).limit(5)
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
+
+	public static FilteredVirtualModelImpl constructFilteredVirtualModelBeforeRootRegistration(ResourceSet set) {
+		InternalVirtualModel vmi = Util.createBasicVirtualModel();
+		RuleDatabase ruleDatabase = set.getResources().size() == 2
+				? (RuleDatabase) set.getResources().get(1).getContents().get(0)
+				: null;
+		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi, ruleDatabase, List.of(0),
+				new OperationAccessRightUtil());
+		CommittableView view = Util.createView(impl);
+		Resource model = set.getResources().get(0);
+		view.registerRoot(model.getContents().get(0), model.getURI());
+		view.commitChangesAndUpdate();
+		return impl;
+	}
 	
-	public static FilteredVirtualModelImpl constructBasicVirtualModel(ResourceSet set) {
+	public static FilteredVirtualModelImpl constructFilteredVirtualModelAfterRootRegistration(ResourceSet set) {
 		InternalVirtualModel vmi = Util.createBasicVirtualModel();
 		CommittableView view = Util.createView(vmi);
 		Resource model = set.getResources().get(0);
@@ -149,29 +165,30 @@ public final class Util {
 				new OperationAccessRightUtil());
 		return impl;
 	}
-	
+
 	public static void createTempModelFile() {
-		createTempFile(FilteredVirtualModelImplTestComplex.MODEL_SUFFIX, FilteredVirtualModelImplTest.ORIGINAL_FILE_NAME, FilteredVirtualModelImplTest.TEMP_FILE_NAME);
+		createTempFile(FilteredVirtualModelImplComplexTest.MODEL_SUFFIX,
+				FilteredVirtualModelImplTest.ORIGINAL_FILE_NAME, FilteredVirtualModelImplTest.TEMP_FILE_NAME);
 	}
-	
+
 	public static void createTempACSFile() {
-		createTempFile(FilteredVirtualModelImplTestComplex.ACS_SUFFIX, FilteredVirtualModelImplTestComplex.ORIGINAL_ACS_NAME, FilteredVirtualModelImplTestComplex.TEMP_ACS_NAME);
+		createTempFile(FilteredVirtualModelImplComplexTest.ACS_SUFFIX,
+				FilteredVirtualModelImplComplexTest.ORIGINAL_ACS_NAME,
+				FilteredVirtualModelImplComplexTest.TEMP_ACS_NAME);
 	}
-	
+
 	public static ResourceSet load(String exampleFileName, String accessControlsystemFileName) {
 		ResourceSet set = new ResourceSetImpl();
 		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
 		String pathModel = new File("").getAbsolutePath() + "/resources/" + exampleFileName + ".registryoffice";
 		set.getResource(URI.createFileURI(pathModel), true);
 		createTempFile(".accesscontrolsystem", accessControlsystemFileName, accessControlsystemFileName + "_temp");
-		set.getResource(URI.createFileURI(
-				new File("").getAbsolutePath() + "/resources/" + accessControlsystemFileName + "_temp.accesscontrolsystem"),
-				true);
+		set.getResource(URI.createFileURI(new File("").getAbsolutePath() + "/resources/" + accessControlsystemFileName
+				+ "_temp.accesscontrolsystem"), true);
 		return set;
 	}
-	
 
-	private static void createTempFile(String suffix, String originalName, String tempName) {
+	public static String createTempFile(String suffix, String originalName, String tempName) {
 		String original = new File("").getAbsolutePath() + "/resources/" + originalName + suffix;
 		String copy = new File("").getAbsolutePath() + "/resources/" + tempName + suffix;
 		try {
@@ -179,20 +196,23 @@ public final class Util {
 		} catch (IOException e) {
 			assert (false);
 		}
+		return copy;
 	}
-	
+
 	public static void removeTemporaryFiles() {
-		Arrays.stream(
-				new File(new File("").getAbsolutePath() + "/resources/").listFiles((dir, name) -> name.contains("temp")))
-				.forEach(t -> {
-					t.delete();
-				});
+		try (Stream<Path> paths = Files.walk(Paths.get((new File("").getAbsolutePath() + "/resources/")))) {
+			paths.filter(Files::isRegularFile)
+					.filter(path -> path.getFileName().toString().contains(FilteredVirtualModelImplComplexTest.TEMP))
+					.forEach(path -> path.toFile().delete());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		String modelsFile = new File("").getAbsolutePath() + "/vsum/models.models";
 		Paths.get(modelsFile).toFile().delete();
 		String correspondencesFile = new File("").getAbsolutePath() + "/vsum/correspondences.correspondence";
 		Paths.get(correspondencesFile).toFile().delete();
 	}
-	
+
 	/**
 	 * 
 	 * @param model the model where changes are performed on
@@ -207,5 +227,5 @@ public final class Util {
 		office = Util.getRegistryOffice(view);
 		return office;
 	}
-	
+
 }

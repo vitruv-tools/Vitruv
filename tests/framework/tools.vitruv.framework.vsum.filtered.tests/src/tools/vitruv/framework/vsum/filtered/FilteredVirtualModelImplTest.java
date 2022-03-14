@@ -43,7 +43,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessOneParent - Tests if the filtering with explicit access to one parent and forbidden access to all other elements works as expected")
 	final void testFilteringExplicitAccessOneParent() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParent"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParent"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -55,7 +55,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessOneParent - Changes an attribute while gaining access on only the changed element")
 	final void changeAttribute() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParent"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParent"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -80,7 +80,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("AllAccessThroughInheritance - Tests if the filtering with access to all elements throught access to the containment works")
 	final void testFilteringAllAccessThroughInheritance() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "AllAccessThroughInheritance"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "AllAccessThroughInheritance"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -95,7 +95,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("AllAccessThroughInheritance- Adds a new child and checks if it is inserted at the end of the list while gaining full access through inheritance")
 	final void addChildAllAccess() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "AllAccessThroughInheritance"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "AllAccessThroughInheritance"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		final int childCount = office.getChild().size();
@@ -113,7 +113,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessOneParentOneChild- Tests if the filtering with access to one child and one parent works")
 	final void testFilteringExplicitAccessOneParentOneChild() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParentOneChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParentOneChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -126,7 +126,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessOneParentOneChild - Adds a new child and checks if it is inserted at the end of the list while part explicit access")
 	final void addChildPartAccess() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParentOneChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParentOneChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		final int childCount = office.getChild().size();
@@ -144,7 +144,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParentFirstChild - Tests if the filtering with access to one child and one parent (second one in unfiltered) works")
 	final void testFilteringExplicitAccessSecondParentFirstChild() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentFirstChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentFirstChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -158,7 +158,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParentFirstChild - ")
 	final void removeChildPartAccess() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentFirstChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentFirstChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
@@ -172,7 +172,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParentSecondChild - Tests if the filtering with access to one child (second one in unfiltered) and one parent (second one in unfiltered) works")
 	final void testFilteringExplicitAccessSecondParentSecondChild() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentSecondChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentSecondChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -185,7 +185,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParentSecondChild - ")
 	final void removeChildPartAccess2() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentSecondChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentSecondChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -199,7 +199,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParent123Childs - Tests if the filtering with access to three childs and one parent (second one in unfiltered) works")
 	final void testFilteringExplicitAccessSecondParent123Childs() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParent123Childs"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParent123Childs"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -215,7 +215,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParent123Childs - ")
 	final void removeChildPartAccessMultipleChilds() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParent123Childs"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParent123Childs"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
@@ -232,7 +232,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessOneParentOneChild - Removes the reference to an existing parent")
 	final void removeChildReference() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParentOneChild"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessOneParentOneChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
@@ -248,7 +248,7 @@ public class FilteredVirtualModelImplTest {
 	@Test
 	@DisplayName("ExplicitAccessSecondParent123Childs - add a reference to a child for a parent")
 	final void addChildReference() {
-		VirtualModel model = Util.constructBasicVirtualModel(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParent123Childs"));
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParent123Childs"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
