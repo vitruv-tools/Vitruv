@@ -57,8 +57,8 @@ reaction CreatedFather {
 	after element families::Member replaced at families::Family[father]
 		with newValue !== null
 	call {
-		createMaleFromNewMember(newValue, affectedEObject)
 		updateNameAndCorrespondencesAfterMemberBecameFather(newValue, affectedEObject)
+		createMaleFromNewMember(newValue, affectedEObject)
 	}
 }
 
@@ -66,8 +66,8 @@ reaction CreatedMother {
 	after element families::Member replaced at families::Family[mother]
 		with newValue !== null
 	call {
-		createFemaleFromNewMember(newValue, affectedEObject)
 		updateNameAndCorrespondencesAfterMemberBecameMother(newValue, affectedEObject)
+		createFemaleFromNewMember(newValue, affectedEObject)
 	}
 }
 
