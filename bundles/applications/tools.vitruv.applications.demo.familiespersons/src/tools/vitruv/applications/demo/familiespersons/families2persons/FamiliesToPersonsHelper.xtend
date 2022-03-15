@@ -37,10 +37,9 @@ class FamiliesToPersonsHelper {
 	 * are not allowed but empty lastnames for families are, a member's firstname can not be allowed to be
 	 * empty to avoid conversions between the models which lead to invalid models.
 	 * @param member The member whose firstname is checked
-	 * @return <code>true</code> if firstname is valid
 	 * @throws <code>IllegalArgumentException</code> if firstname is not valid
 	 */
-	def static boolean checkValidFirstname(Member member) {
+	def static void assertValidFirstname(Member member) {
 		if (member.firstName === null) {
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_NULL)
 		} else if (member.firstName.trim.empty) {
@@ -48,7 +47,6 @@ class FamiliesToPersonsHelper {
 		} else if (member.firstName.contains("\n") || member.firstName.contains("\t") || member.firstName.contains("\r")){
 			throw new IllegalStateException(EXCEPTION_MESSAGE_FIRSTNAME_ESCAPES)
 		}
-		return true
 	}
 
 	/**Checks if a person is a Male and throws an exception if not to indicate an unsupported operation

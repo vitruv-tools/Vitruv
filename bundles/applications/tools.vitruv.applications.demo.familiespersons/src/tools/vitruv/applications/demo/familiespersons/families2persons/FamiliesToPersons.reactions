@@ -1,7 +1,7 @@
 import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertFemale
 import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertMale
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertValidFirstname
 
-import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.checkValidFirstname
 import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getPersonName
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getRegister
@@ -107,9 +107,9 @@ routine createMaleFromNewMember(families::Member newFather, families::Family fam
 routine createMale(families::Member newMember, families::Family family) {
 	match {
 		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
-		check newMember.checkValidFirstname
 	}
 	action {
+		call assertValidFirstname(newMember)
 		val person = create persons::Male and initialize {
 	 		person.fullName = newMember.getPersonName
 		}
@@ -136,9 +136,9 @@ routine createFemaleFromNewMember(families::Member newMother, families::Family f
 routine createFemale(families::Member newMember, families::Family family) {
 	match {
 		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
-		check newMember.checkValidFirstname
 	}
 	action {
+		call assertValidFirstname(newMember)
 		val person = create persons::Female and initialize {
 	 		person.fullName = newMember.getPersonName
 		}
@@ -247,9 +247,9 @@ reaction ChangedFirstName {
 routine updatePersonName(families::Member member) {
 	match {
 		val person = retrieve persons::Person corresponding to member
-		check member.checkValidFirstname
 	}
 	action {
+		call assertValidFirstname(member)
 		update person {
 			person.fullName = member.getPersonName
 		}
