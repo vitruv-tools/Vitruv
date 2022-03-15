@@ -1,13 +1,10 @@
-import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
-import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getFamily
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertFemale
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertMale
+
+import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.checkValidFirstname
+import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getPersonName
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getRegister
-import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getPersonName
-import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.checkValidFirstname
-import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertMale
-import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertFemale
-import edu.kit.ipd.sdq.metamodels.persons.Female
-import edu.kit.ipd.sdq.metamodels.persons.Male
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -56,95 +53,24 @@ reaction ChangedLastName {
 	call affectedEObject.members.forEach[updatePersonName(it)]
 }
 
-//========== FATHER ==========
-//In case the previous father is replaced, the previous father has to be moved to a different family.
-//Then, if the new father is newly created, the corresponding member has to be created
-//But if the new father existed as a member somewhere else in the families model before, no new person
-//is required but old correspondences have to be deleted and set up correctly
-reaction EditedFather {
-	after element families::Member replaced at families::Family[father]
-		with oldValue !== null && newValue !== null && !oldValue.equals(newValue)
-	call {
-		moveOldFatherToNewFamily(oldValue, affectedEObject)
-		createMaleFromNewMember(newValue, affectedEObject)
-		updateNameAndCorrespondencesAfterMemberBecameFather(newValue, affectedEObject)
-	}
-}
-//In case the place of the father was empty before no previous father has to be handled.
-//The rest is just as it is in the case of the replacement of the father.
 reaction CreatedFather {
 	after element families::Member replaced at families::Family[father]
-		with oldValue === null && newValue !== null
+		with newValue !== null
 	call {
 		createMaleFromNewMember(newValue, affectedEObject)
 		updateNameAndCorrespondencesAfterMemberBecameFather(newValue, affectedEObject)
 	}
 }
 
-//Moves oldFather from oldFamily to a new family such that a new father can be inserted into oldFamily.
-routine moveOldFatherToNewFamily(families::Member oldFather, families::Family oldFamily) {
-	match {
-		val oldFatherPerson = retrieve persons::Person corresponding to oldFather
-	}
-	action {
-		val newFamily = create families::Family and initialize {
-			newFamily.lastName = oldFamily.lastName
-			newFamily.father = oldFather
-		}
-		call {
-			val FamilyRegister familyRegister = oldFamily.register
-			familyRegister.families += newFamily
-		}
-		remove correspondence between oldFamily and oldFatherPerson
-		add correspondence between newFamily and oldFatherPerson
-	}
-}
-
-//========== MOTHER ==========
-//In case the previous mother is replaced, the previous mother has to be moved to a different family.
-//Then, if the new mother is newly created, the corresponding member has to be created
-//But if the new mother existed as a member somewhere else in the families model before, no new person
-//is required but old correspondences have to be deleted and set up correctly
-reaction EditedMother {
-	after element families::Member replaced at families::Family[mother]
-		with oldValue !== null && newValue !== null && !oldValue.equals(newValue)
-	call {
-		moveOldMotherToNewFamily(oldValue, affectedEObject)
-		createFemaleFromNewMember(newValue, affectedEObject)
-		updateNameAndCorrespondencesAfterMemberBecameMother(newValue, affectedEObject)
-	}
-}
-//In case the place of the mother was empty before no previous mother has to be handled.
-//The rest is just as it is in the case of the replacement of the mother.
 reaction CreatedMother {
 	after element families::Member replaced at families::Family[mother]
-		with oldValue === null && newValue !== null
+		with newValue !== null
 	call {
 		createFemaleFromNewMember(newValue, affectedEObject)
 		updateNameAndCorrespondencesAfterMemberBecameMother(newValue, affectedEObject)
 	}
 }
 
-//Moves oldMother from oldFamily to a new family such that a new mother can be inserted into oldFamily.
-routine moveOldMotherToNewFamily(families::Member oldMother, families::Family oldFamily) {
-	match {
-		val oldMotherPerson = retrieve persons::Person corresponding to oldMother
-	}
-	action {
-		val newFamily = create families::Family and initialize {
-			newFamily.lastName = oldFamily.lastName
-			newFamily.mother = oldMother
-		}
-		call {
-			val FamilyRegister familyRegister = oldFamily.register
-			familyRegister.families += newFamily
-		}
-		remove correspondence between oldFamily and oldMotherPerson
-		add correspondence between newFamily and oldMotherPerson
-	}
-}
-
-//========== SON ==========
 //New member for the position of the son was newly created and inserted, so a corresponding person has to be created.
 reaction CreatedAndInsertedSon {
 	after element families::Member created and inserted in families::Family[sons]
@@ -155,7 +81,6 @@ reaction InsertedSon {
 	after element families::Member inserted in families::Family[sons]
 	call existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(newValue, affectedEObject)
 }
-//========== DAUGHTER ==========
 //New member for the position of the daughter was newly created and inserted, so a corresponding person has to be created.
 reaction CreatedAndInsertedDaughter {
 	after element families::Member created and inserted in families::Family[daughters]

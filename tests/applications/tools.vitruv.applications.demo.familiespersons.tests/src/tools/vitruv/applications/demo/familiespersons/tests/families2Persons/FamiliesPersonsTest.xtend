@@ -494,13 +494,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, DAD21, MOM11, SON11, DAU11]
+			persons += #[DAD21, MOM11, SON11, DAU11]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -536,13 +532,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD21, MOM11, SON11, DAU11, MOM22, SON22, DAU22, DAD11]
+			persons += #[DAD21, MOM11, SON11, DAU11, MOM22, SON22, DAU22]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -581,13 +573,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD21, MOM11, SON11, DAU11, DAD11]
+			persons += #[DAD21, MOM11, SON11, DAU11]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -623,13 +611,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				father = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAD_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[SON21, MOM11, SON11, DAU11, DAD22, MOM22, DAU22, DAD11]
+			persons += #[SON21, MOM11, SON11, DAU11, DAD22, MOM22, DAU22]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -657,13 +641,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, MOM21, SON11, DAU11, MOM11]
+			persons += #[DAD11, MOM21, SON11, DAU11]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -699,13 +679,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_2]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, MOM21, SON11, DAU11, DAD22, SON22, DAU22, MOM11]
+			persons += #[DAD11, MOM21, SON11, DAU11, DAD22, SON22, DAU22]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -741,13 +717,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_2]
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_2]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, DAU21, SON11, DAU11, DAD22, MOM22, SON22, MOM11]
+			persons += #[DAD11, DAU21, SON11, DAU11, DAD22, MOM22, SON22]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
@@ -786,13 +758,9 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				sons += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_SON_1]
 				daughters += FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_DAU_1]
 			]
-			families += FamiliesFactory.eINSTANCE.createFamily => [
-				lastName = LAST_NAME_1
-				mother = FamiliesFactory.eINSTANCE.createMember => [firstName = FIRST_MOM_1]
-			]
 		]
 		val PersonRegister expectedPersonRegister = PersonsFactory.eINSTANCE.createPersonRegister => [
-			persons += #[DAD11, DAU21, SON11, DAU11, MOM11]
+			persons += #[DAD11, DAU21, SON11, DAU11]
 		]
 		assertCorrectFamilyRegister(expectedFamilyRegister)
 		assertCorrectPersonRegister(expectedPersonRegister)
