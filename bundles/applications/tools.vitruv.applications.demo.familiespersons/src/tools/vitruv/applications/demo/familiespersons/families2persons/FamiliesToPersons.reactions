@@ -4,8 +4,8 @@ import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembe
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getRegister
 import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getPersonName
 import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.checkValidFirstname
-import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.checkMale
-import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.checkFemale
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertMale
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertFemale
 import edu.kit.ipd.sdq.metamodels.persons.Female
 import edu.kit.ipd.sdq.metamodels.persons.Male
 
@@ -231,9 +231,9 @@ routine createFemale(families::Member newMember, families::Family family) {
 routine updateNameAndCorrespondencesAfterMemberBecameFather(families::Member newFather, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to newFather
-		with checkMale(correspondingPerson)
 	}
 	action {
+		call assertMale(correspondingPerson)
 		call updateNameAndCorrespondencesOfCorrespondingPerson(newFather, newFamily)
 	}
 }
@@ -244,9 +244,9 @@ routine updateNameAndCorrespondencesAfterMemberBecameFather(families::Member new
 routine updateNameAndCorrespondencesAfterMemberBecameMother(families::Member newMother, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to newMother
-		with checkFemale(correspondingPerson)
 	}
 	action {
+		call assertFemale(correspondingPerson)
 		call updateNameAndCorrespondencesOfCorrespondingPerson(newMother, newFamily)
 	}
 }
@@ -274,9 +274,9 @@ routine updateNameAndCorrespondencesOfCorrespondingPerson(families::Member newMe
 routine existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(families::Member insertedChild, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
-		with checkMale(correspondingPerson)
 	}
 	action {
+		call assertMale(correspondingPerson)
 		call updatePersonFamilyCorrespondence(insertedChild, newFamily)
 	}
 }
@@ -285,9 +285,9 @@ routine existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(
 routine existingMemberBecameDaughter_updateNameAndCorrespondencesOfCorrespondingFemale(families::Member insertedChild, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
-		with checkFemale(correspondingPerson)
 	}
 	action {
+		call assertFemale(correspondingPerson)
 		call updatePersonFamilyCorrespondence(insertedChild, newFamily)
 	}
 }

@@ -56,13 +56,10 @@ class FamiliesToPersonsHelper {
 	 * which requires no or a male corresponding person. For example is the user tries to assign a former
 	 * mother to be a father from now on, this is considered an unsupported operation.
 	 * @param person The person which is supposed to be a <code>Male</code>.
-	 * @return <code>true</code>, if the person is a <code>Male</code>.
 	 * @throws <code>UnsupportedOperationException</code>, if the person is not a <code>Male</code>.
 	 */
-	def static boolean checkMale(Person person) {
-		if (person instanceof Male) {
-			return true
-		} else {
+	def static void assertMale(Person person) {
+		if (!(person instanceof Male)) {
 			throw new UnsupportedOperationException(
 				"The position of a male family member can only be assigned to members with no or a male corresponding person."
 			)
@@ -74,13 +71,10 @@ class FamiliesToPersonsHelper {
 	 * which requires no or a female corresponding person. For example is the user tries to assign a former
 	 * father to be a mother from now on, this is considered an unsupported operation.
 	 * @param person The person which is supposed to be a <code>Female</code>.
-	 * @return <code>true</code>, if the person is a <code>Female</code>.
 	 * @throws <code>UnsupportedOperationException</code>, if the person is not a <code>Female</code>.
 	 */
-	def static boolean checkFemale(Person person) {
-		if (person instanceof Female) {
-			return true
-		} else {
+	def static void assertFemale(Person person) {
+		if (!(person instanceof Female)) {
 			throw new UnsupportedOperationException(
 				"The position of a female family member can only be assigned to members with no or a female corresponding person."
 			)
