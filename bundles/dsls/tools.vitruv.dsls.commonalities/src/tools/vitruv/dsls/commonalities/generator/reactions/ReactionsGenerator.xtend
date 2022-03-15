@@ -19,6 +19,7 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
+import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
 
 /**
  * Generates reactions in the Reactions language and the corresponding Java
@@ -39,7 +40,7 @@ class ReactionsGenerator implements SubGenerator {
 	@Inject MatchParticipationReactionsBuilder.Factory matchParticipationReactionsBuilder
 	@Inject MatchParticipationReferencesReactionsBuilder.Factory matchParticipationReferencesReactionsBuilder
 	@Inject ParticipationAttributeChangeReactionsBuilder.Factory participationAttributeChangeReactionsBuilder
-	
+
 	override beforeGenerate() {
 		// Prepare the Reactions language:
 		if (isNewResourceSet) {
@@ -81,13 +82,9 @@ class ReactionsGenerator implements SubGenerator {
 		val reactionsFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
 			val fromSegment = generateCommonalityFromParticipationSegment(participation)
-			if (fromSegment.willGenerateCode) {
-				reactionsFile += fromSegment
-			}
+			reactionsFile += fromSegment
 			val toSegment = generateCommonalityToParticipationSegment(participation)
-			if (toSegment.willGenerateCode) {
-				reactionsFile += toSegment
-			}
+			reactionsFile += toSegment
 		}
 		return reactionsFile
 	}
@@ -124,17 +121,19 @@ class ReactionsGenerator implements SubGenerator {
 	}
 
 	private def generateCommonalityFromParticipationSegment(Participation participation) {
-		val segment = create.reactionsSegment('''«commonality.name»From«participation.name»''')
-			.inReactionToChangesIn(participation.domain.vitruvDomain)
-			.executeActionsIn(commonalityFile.concept.name)
+		val segment = create.reactionsSegment(
+			getReactionsSegmentFromParticipationToCommonalityName(commonality, participation)) //
+		.inReactionToChangesIn(participation.domain.vitruvDomain) //
+		.executeActionsIn(commonalityFile.concept.vitruvDomain)
 		participation.generateParticipationChangeReactions(segment)
 		return segment
 	}
 
 	private def generateCommonalityToParticipationSegment(Participation participation) {
-		val segment = create.reactionsSegment('''«commonality.name»To«participation.name»''')
-			.inReactionToChangesIn(commonalityFile.concept.vitruvDomain)
-			.executeActionsIn(participation.domain.vitruvDomain)
+		val segment = create.reactionsSegment(
+			getReactionsSegmentFromCommonalityToParticipationName(commonality, participation)) //
+		.inReactionToChangesIn(commonalityFile.concept.vitruvDomain) //
+		.executeActionsIn(participation.domain.vitruvDomain)
 		participation.generateCommonalityChangeReactions(segment)
 		return segment
 	}
