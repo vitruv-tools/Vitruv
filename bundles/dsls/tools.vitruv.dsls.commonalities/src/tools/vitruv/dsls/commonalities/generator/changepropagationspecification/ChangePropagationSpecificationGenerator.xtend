@@ -28,6 +28,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.framework.domains.VitruvDomainProvider
+import org.eclipse.emf.common.util.URI
 
 class ChangePropagationSpecificationGenerator implements SubGenerator {
 	@Inject extension GenerationContext generationContext
@@ -168,9 +169,23 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 	}
 
 	private def getChangePropagationSpecificationUri(String changePropagationSpecificationName) {
-		fsa.getURI(".").appendSegment(
+		// When calling this in beforeGenerate, the generated files folder does not exist yet,
+		// which leads to the URI not having a trailing slash in comparison to the URI generated
+		// when calling this in the generate method. In consequence, calling this method with the
+		// same argument leads to different URIs, which do not resolve to the same resource in the
+		// same resource set. To ensure consistent URIs, we add the trailing slash if missing.
+		fsa.getURI(".").ensureHasTrailingSlash().appendSegment(
 			changePropagationSpecificationPackageName + "." + changePropagationSpecificationName + ".java"
 		)
+	}
+	
+	private def ensureHasTrailingSlash(URI uri) {
+		val uriString = uri.toString
+		if (!uriString.endsWith("/")) {
+			URI.createURI(uriString + "/")
+		} else {
+			uri
+		}
 	}
 
 }
