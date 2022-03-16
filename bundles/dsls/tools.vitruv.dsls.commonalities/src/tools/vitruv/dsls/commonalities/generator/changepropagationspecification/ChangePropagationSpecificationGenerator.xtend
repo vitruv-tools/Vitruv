@@ -28,6 +28,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.framework.domains.VitruvDomainProvider
+import static com.google.common.base.Preconditions.checkState
 import org.eclipse.emf.common.util.URI
 
 class ChangePropagationSpecificationGenerator implements SubGenerator {
@@ -113,6 +114,7 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 
 	private def generateType(JvmDeclaredType type) {
 		val typeResource = resourceSet.getResource(type.simpleName.changePropagationSpecificationUri, false)
+		checkState(typeResource !== null, "there is no resource for type %s", type.simpleName)
 		typeResource.contents += type
 		delegate.doGenerate(typeResource, fsa)
 	}
