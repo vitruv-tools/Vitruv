@@ -172,6 +172,8 @@ class ChangeRecorder implements AutoCloseable {
 			switch (eChange) {
 				EObjectSubtractedEChange<?> case eChange.isContainmentRemoval:
 					removedElements += eChange.oldValue
+			}
+			switch (eChange) {
 				EObjectAddedEChange<?> case eChange.isContainmentInsertion:
 					removedElements -= eChange.newValue
 			}

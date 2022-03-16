@@ -37,6 +37,8 @@ import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EObject
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
