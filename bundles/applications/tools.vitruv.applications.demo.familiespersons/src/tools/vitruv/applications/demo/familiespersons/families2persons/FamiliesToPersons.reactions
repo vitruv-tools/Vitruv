@@ -106,10 +106,10 @@ routine createMaleFromNewMember(families::Member newFather, families::Family fam
 //Creates corresponding male person for fathers and sons and sets up correspondences
 routine createMale(families::Member newMember, families::Family family) {
 	match {
+		check { assertValidFirstname(newMember) true }
 		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
 	}
 	action {
-		call assertValidFirstname(newMember)
 		val person = create persons::Male and initialize {
 	 		person.fullName = newMember.getPersonName
 		}
@@ -135,10 +135,10 @@ routine createFemaleFromNewMember(families::Member newMother, families::Family f
 //Creates corresponding female person for mothers and daughters and sets up correspondences
 routine createFemale(families::Member newMember, families::Family family) {
 	match {
+		check { assertValidFirstname(newMember) true }
 		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
 	}
 	action {
-		call assertValidFirstname(newMember)
 		val person = create persons::Female and initialize {
 	 		person.fullName = newMember.getPersonName
 		}
@@ -156,9 +156,9 @@ routine createFemale(families::Member newMember, families::Family family) {
 routine updateNameAndCorrespondencesAfterMemberBecameFather(families::Member newFather, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to newFather
+		with { assertMale(correspondingPerson) true }
 	}
 	action {
-		call assertMale(correspondingPerson)
 		call updateNameAndCorrespondencesOfCorrespondingPerson(newFather, newFamily)
 	}
 }
@@ -169,9 +169,9 @@ routine updateNameAndCorrespondencesAfterMemberBecameFather(families::Member new
 routine updateNameAndCorrespondencesAfterMemberBecameMother(families::Member newMother, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to newMother
+		with { assertFemale(correspondingPerson) true }
 	}
 	action {
-		call assertFemale(correspondingPerson)
 		call updateNameAndCorrespondencesOfCorrespondingPerson(newMother, newFamily)
 	}
 }
@@ -199,9 +199,9 @@ routine updateNameAndCorrespondencesOfCorrespondingPerson(families::Member newMe
 routine existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(families::Member insertedChild, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+		with { assertMale(correspondingPerson) true }
 	}
 	action {
-		call assertMale(correspondingPerson)
 		call updatePersonFamilyCorrespondence(insertedChild, newFamily)
 	}
 }
@@ -210,9 +210,9 @@ routine existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(
 routine existingMemberBecameDaughter_updateNameAndCorrespondencesOfCorrespondingFemale(families::Member insertedChild, families::Family newFamily) {
 	match {
 		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+		with { assertFemale(correspondingPerson) true }
 	}
 	action {
-		call assertFemale(correspondingPerson)
 		call updatePersonFamilyCorrespondence(insertedChild, newFamily)
 	}
 }
@@ -246,10 +246,10 @@ reaction ChangedFirstName {
 //Check if the new name is allowed and then update the name of the corresponding person.
 routine updatePersonName(families::Member member) {
 	match {
+		check { assertValidFirstname(member) true }
 		val person = retrieve persons::Person corresponding to member
 	}
 	action {
-		call assertValidFirstname(member)
 		update person {
 			person.fullName = member.getPersonName
 		}

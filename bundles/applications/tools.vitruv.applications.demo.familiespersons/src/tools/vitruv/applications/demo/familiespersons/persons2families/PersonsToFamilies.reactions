@@ -65,8 +65,10 @@ reaction CreatedPerson {
 }
 
 routine insertAsParentOrChild(persons::Person insertedPerson) {
+	match {
+		check { assertValidFullname(insertedPerson) true}
+	}
 	action {
-		call assertValidFullname(insertedPerson)
 		call {
 			val FamilyRole role = askUserWhetherPersonIsParentOrChild(userInteractor, insertedPerson)
 			switch role {
@@ -187,11 +189,11 @@ reaction ChangedFullName {
  */
 routine changeNames(persons::Person renamedPerson, String oldFullname) {
 	match {
+		check { assertValidFullname(renamedPerson) true}
 		val oldFamily = retrieve families::Family corresponding to renamedPerson
 		val correspondingMember = retrieve families::Member corresponding to renamedPerson
 	}
 	action {
-		call assertValidFullname(renamedPerson)
 		// Update firstname
 		update correspondingMember {
 			correspondingMember.firstName = renamedPerson.firstname
