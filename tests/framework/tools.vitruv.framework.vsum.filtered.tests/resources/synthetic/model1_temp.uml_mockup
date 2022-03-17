@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" name="RootElement">
+  <packagedElement xsi:type="uml:Class" name="Class1" isAbstract="true">
+    <ownedAttribute name="Attribute1" type="//Class5" isReadOnly="true">
+      <lowerValue xsi:type="uml:LiteralInteger"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+    </ownedAttribute>
+    <ownedOperation name="abstrMeth1" visibility="protected" isAbstract="true">
+      <ownedParameter name="class3param" type="//Class3"/>
+    </ownedOperation>
+    <ownedOperation name="abstrMeth2" visibility="protected" isAbstract="true"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" name="Class2">
+    <generalization general="//Class1"/>
+    <ownedAttribute name="Attribute1" isStatic="true" type="//boolean" isReadOnly="true"/>
+    <interfaceRealization name="ir" client="//Class2" supplier="//Interface2" contract="//Interface2"/>
+    <ownedOperation name="OperationWithReturn" visibility="package">
+      <ownedParameter name="param1" type="//Class3" direction="return"/>
+    </ownedOperation>
+    <ownedOperation name="Operation1" visibility="private">
+      <ownedParameter name="inParam" type="//Class4"/>
+      <ownedParameter type="//double" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xsi:type="uml:PrimitiveType" name="boolean"/>
+  <packagedElement xsi:type="uml:Interface" name="Interface1">
+    <ownedOperation name="Operation1">
+      <ownedParameter name="class4Param" type="//Class4"/>
+      <ownedParameter name="class5param" type="//Class5"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Interface" name="Interface2">
+    <generalization general="//Interface1"/>
+    <ownedOperation name="Operation1"/>
+    <ownedOperation name="Operation2"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" name="Class3">
+    <ownedOperation name="UpperCaseOperation"/>
+    <ownedOperation name="lowerCaseOperation"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" name="Class4">
+    <ownedAttribute name="finalAttr" type="//Class5" isReadOnly="true"/>
+    <ownedAttribute name="class3" type="//Class3" association="//@packagedElement.9"/>
+    <ownedAttribute name="class2" type="//Class2" association="//@packagedElement.10"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" name="Class5">
+    <ownedAttribute name="staticAttr1" isStatic="true" type="//double"/>
+    <ownedAttribute name="staticAttr2" isStatic="true" type="//boolean"/>
+    <ownedOperation name="Operation1" isStatic="true">
+      <ownedParameter name="class3param" type="//Class3"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xsi:type="uml:PrimitiveType" name="double"/>
+  <packagedElement xsi:type="uml:Association" memberEnd="//@packagedElement.9/class4 //Class4/class3">
+    <eAnnotations source="org.eclipse.papyrus">
+      <details key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd name="class4" type="//Class4" association="//@packagedElement.9"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" memberEnd="//@packagedElement.10/class4 //Class4/class2">
+    <eAnnotations source="org.eclipse.papyrus">
+      <details key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd name="class4" type="//Class4" association="//@packagedElement.10">
+      <lowerValue xsi:type="uml:LiteralInteger"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Package" name="Package1">
+    <packagedElement xsi:type="uml:Class" name="ClassinPackage">
+      <ownedAttribute name="attribute" type="//Class1">
+        <lowerValue xsi:type="uml:LiteralInteger"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

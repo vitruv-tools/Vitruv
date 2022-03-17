@@ -1,12 +1,14 @@
 package tools.vitruv.framework.vsum.filtered;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -22,6 +24,11 @@ import tools.vitruv.framework.vsum.filtered.util.Util;
 
 public class FilteredVirtualModelImplTest {
 
+	private static final String GRIMHILD = "Grimhild";
+	private static final String FINDUS = "Findus";
+	private static final String ALBERT = "Albert";
+	private static final String EINSTEIN = "Einstein";
+	private static final String BERTA = "Berta";
 	public static final String ORIGINAL_FILE_NAME = "Example";
 	public static final String TEMP_FILE_NAME = "Example_temp";
 
@@ -48,7 +55,7 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 
 		assertEquals(1, office.getParent().size());
-		assertEquals("Albert", office.getParent().get(0).getName());
+		assertEquals(ALBERT, office.getParent().get(0).getName());
 		assertEquals(0, office.getChild().size());
 	}
 
@@ -87,7 +94,7 @@ public class FilteredVirtualModelImplTest {
 
 		// Tests if some parts of the data are available
 		assertEquals(4, office.getParent().size());
-		assertEquals("Albert", office.getParent().get(0).getName());
+		assertEquals(ALBERT, office.getParent().get(0).getName());
 		assertEquals(List.of(office.getChild().get(0), office.getChild().get(1)), office.getParent().get(0).getChild());
 		assertEquals(List.of(office.getParent().get(1)), office.getChild().get(2).getParent());
 		assertEquals(4, office.getChild().size());
@@ -119,9 +126,9 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 
 		assertEquals(1, office.getParent().size());
-		assertEquals("Albert", office.getParent().get(0).getName());
+		assertEquals(ALBERT, office.getParent().get(0).getName());
 		assertEquals(1, office.getChild().size());
-		assertEquals("Einstein", office.getChild().get(0).getName());
+		assertEquals(EINSTEIN, office.getChild().get(0).getName());
 	}
 
 	@Test
@@ -150,12 +157,11 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 
 		assertEquals(1, office.getParent().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		assertEquals(BERTA, office.getParent().get(0).getName());
 		assertEquals(1, office.getChild().size());
-		assertEquals("Einstein", office.getChild().get(0).getName());
+		assertEquals(EINSTEIN, office.getChild().get(0).getName());
 	}
 
-	@Disabled
 	@Test
 	@DisplayName("ExplicitAccessSecondParentFirstChild - ")
 	final void removeChildPartAccess() {
@@ -163,11 +169,9 @@ public class FilteredVirtualModelImplTest {
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
-		office.getChild().remove(0);
-		office = Util.updateOffice(model, view);
-
-		assertEquals(0, office.getChild().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		EcoreUtil.delete(office.getChild().get(0));
+//		office.getChild().remove(0);
+		assertThrows(IllegalStateException.class ,() -> {Util.updateOffice(model, view);});
 	}
 	
 	@Test
@@ -178,24 +182,36 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 
 		assertEquals(1, office.getParent().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		assertEquals(BERTA, office.getParent().get(0).getName());
 		assertEquals(1, office.getChild().size());
-		assertEquals("Findus", office.getChild().get(0).getName());
+		assertEquals(FINDUS, office.getChild().get(0).getName());
 	}
-
-	@Disabled
+	
 	@Test
-	@DisplayName("ExplicitAccessSecondParentSecondChild - ")
-	final void removeChildPartAccess2() {
-		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessSecondParentSecondChild"));
+	@DisplayName("ExplicitAccessFirstParentSecondChild - Tests if the filtering with access to one child (second one in unfiltered) and one parent (second one in unfiltered) works")
+	final void testFilteringExplicitAccessFirstParentSecondChild() {
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessFirstParentSecondChild"));
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
-		office.getChild().remove(0);
+		assertEquals(1, office.getParent().size());
+		assertEquals(ALBERT, office.getParent().get(0).getName());
+		assertEquals(1, office.getChild().size());
+		assertEquals(FINDUS, office.getChild().get(0).getName());
+	}
+
+	@Test
+	@DisplayName("ExplicitAccessFirstParentSecondChild - ")
+	final void removeChildPartAccess2() {
+		VirtualModel model = Util.constructFilteredVirtualModelAfterRootRegistration(Util.load(TEMP_FILE_NAME, "ExplicitAccessFirstParentSecondChild"));
+		CommittableView view = Util.createView(model);
+		RegistryOffice office = Util.getRegistryOffice(view);
+		
+		EcoreUtil.delete(office.getChild().get(0));
 		office = Util.updateOffice(model, view);
 
 		assertEquals(0, office.getChild().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		assertEquals(ALBERT, office.getParent().get(0).getName());
 	}
 	
 	@Test
@@ -206,14 +222,13 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 
 		assertEquals(3, office.getChild().size());
-		assertEquals("Einstein", office.getChild().get(0).getName());
-		assertEquals("Findus", office.getChild().get(1).getName());
-		assertEquals("Grimhild", office.getChild().get(2).getName());
+		assertEquals(EINSTEIN, office.getChild().get(0).getName());
+		assertEquals(FINDUS, office.getChild().get(1).getName());
+		assertEquals(GRIMHILD, office.getChild().get(2).getName());
 		assertEquals(1, office.getParent().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		assertEquals(BERTA, office.getParent().get(0).getName());
 	}
 
-	@Disabled
 	@Test
 	@DisplayName("ExplicitAccessSecondParent123Childs - ")
 	final void removeChildPartAccessMultipleChilds() {
@@ -221,14 +236,14 @@ public class FilteredVirtualModelImplTest {
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
-		office.getChild().remove(2);
+		EcoreUtil.delete(office.getChild().get(2));
 		office = Util.updateOffice(model, view);
 
 		assertEquals(2, office.getChild().size());
-		assertEquals("Einstein", office.getChild().get(0).getName());
-		assertEquals("Findus", office.getChild().get(1).getName());
+		assertEquals(EINSTEIN, office.getChild().get(0).getName());
+		assertEquals(FINDUS, office.getChild().get(1).getName());
 		assertEquals(1, office.getParent().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		assertEquals(BERTA, office.getParent().get(0).getName());
 	}
 
 	@Test
@@ -255,19 +270,19 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
 		assertEquals(3, office.getChild().size());
-		assertEquals("Einstein", office.getChild().get(0).getName());
-		assertEquals("Findus", office.getChild().get(1).getName());
-		assertEquals("Grimhild", office.getChild().get(2).getName());
+		assertEquals(EINSTEIN, office.getChild().get(0).getName());
+		assertEquals(FINDUS, office.getChild().get(1).getName());
+		assertEquals(GRIMHILD, office.getChild().get(2).getName());
 		assertEquals(1, office.getParent().size());
-		assertEquals("Berta", office.getParent().get(0).getName());
+		assertEquals(BERTA, office.getParent().get(0).getName());
 		office.getParent().get(0).getChild().add(office.getChild().get(1));
 		office = Util.updateOffice(model, view);
 
 		assertEquals(3, office.getChild().size());
-		assertEquals("Einstein", office.getChild().get(0).getName());
-		assertEquals("Findus", office.getChild().get(1).getName());
-		assertEquals("Berta", office.getParent().get(0).getName());
-		assertEquals("Findus", office.getParent().get(0).getChild().get(2).getName());
+		assertEquals(EINSTEIN, office.getChild().get(0).getName());
+		assertEquals(FINDUS, office.getChild().get(1).getName());
+		assertEquals(BERTA, office.getParent().get(0).getName());
+		assertEquals(FINDUS, office.getParent().get(0).getChild().get(2).getName());
 	}
 
 }

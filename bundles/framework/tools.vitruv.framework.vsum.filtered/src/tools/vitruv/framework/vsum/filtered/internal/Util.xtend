@@ -8,6 +8,9 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 
 /**
  * Switch to create commands for all EChange classes.
@@ -48,6 +51,11 @@ class Util {
 		} else if (entry instanceof RemoveEReference) {
 			entry.oldValueID
 		}
+	}
+	
+	def static String getAffectedEObjectID(EChange change) {
+		if(change instanceof FeatureEChange) return change.affectedEObjectID
+		if(change instanceof EObjectExistenceEChange) return change.affectedEObjectID
 	}
 
 }

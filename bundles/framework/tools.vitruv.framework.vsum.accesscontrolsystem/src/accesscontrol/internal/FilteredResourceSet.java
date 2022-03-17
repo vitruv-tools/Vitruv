@@ -220,7 +220,7 @@ public class FilteredResourceSet implements ResourceSetFilter {
 	}
 
 	private static boolean isWritableUmlResource(Resource resource) {
-		return resource.getURI().fileExtension().equals("uml");
+		return resource.getURI().fileExtension().equals("uml") || resource.getURI().fileExtension().equals("uml_mockup");
 	}
 
 	private static Resource copyUmlModel(Resource originalResource, ResourceSet newResourceSet) throws IOException {

@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 import accesscontrol.operationaccessright.OperationAccessRightUtil;
@@ -56,9 +57,9 @@ public final class Util {
 		VitruvDomain exampleDomain = DomainModelCreators.getDomain(new RegistryOfficeCreators());
 		VitruvDomain accesscontrolsystemDomain = new AccessControlSystemDomain();
 		VitruvDomain umlMockupDomain = DomainModelCreators.getDomain(new UmlMockupCreators());
-		return (VirtualModelImpl) new VirtualModelBuilder()
-				.withStorageFolder(Path.of(new File("").getAbsolutePath())).withDomain(exampleDomain).withDomain(umlMockupDomain)
-				.withDomain(accesscontrolsystemDomain).withChangePropagationSpecification(
+		return (VirtualModelImpl) new VirtualModelBuilder().withStorageFolder(Path.of(new File("").getAbsolutePath()))
+				.withDomain(exampleDomain).withDomain(umlMockupDomain).withDomain(accesscontrolsystemDomain)
+				.withChangePropagationSpecification(
 						new AbstractChangePropagationSpecification(exampleDomain, exampleDomain) {
 
 							@Override
@@ -90,11 +91,10 @@ public final class Util {
 			return (RuleDatabase) ruleDatabase.get().getContents().get(0);
 		}
 		return null;
-	}
-
-	public static ViewType viewType = ViewTypeFactory.createIdentityMappingViewType("myviewtype");
+	} 
 
 	public static final CommittableView createView(VirtualModel virtualModel) {
+		ViewType viewType = ViewTypeFactory.createIdentityMappingViewType("myviewtype");
 		ViewSelector selector = virtualModel.createSelector(viewType);
 		selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
 		return selector.createView().withChangeDerivingTrait(new DefaultStateBasedChangeResolutionStrategy());
@@ -114,6 +114,7 @@ public final class Util {
 		RuleDatabase ruleDatabase = set.getResources().size() == 2
 				? (RuleDatabase) set.getResources().get(1).getContents().get(0)
 				: null;
+		EcoreUtil.resolveAll(set);
 		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi, ruleDatabase, List.of(0),
 				new OperationAccessRightUtil());
 		CommittableView view = Util.createView(impl);
@@ -122,14 +123,15 @@ public final class Util {
 		view.commitChangesAndUpdate();
 		return impl;
 	}
-	
+
 	public static FilteredVirtualModelImpl constructFilteredVirtualModelAfterRootRegistration(ResourceSet set) {
 		InternalVirtualModel vmi = Util.createBasicVirtualModel();
 		CommittableView view = Util.createView(vmi);
 		Resource model = set.getResources().get(0);
 		view.registerRoot(model.getContents().get(0), model.getURI());
 		view.commitChangesAndUpdate();
-		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi, (RuleDatabase) set.getResources().get(1).getContents().get(0), List.of(0),
+		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi,
+				(RuleDatabase) set.getResources().get(1).getContents().get(0), List.of(0),
 				new OperationAccessRightUtil());
 		return impl;
 	}
@@ -148,11 +150,12 @@ public final class Util {
 	public static ResourceSet load(String exampleFileName, String accessControlsystemFileName) {
 		ResourceSet set = new ResourceSetImpl();
 		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
-		String pathModel = new File("").getAbsolutePath() + "/resources/" + exampleFileName + ".registryoffice";
-		set.getResource(URI.createFileURI(pathModel), true);
-		createTempFile(".accesscontrolsystem", accessControlsystemFileName, accessControlsystemFileName + "_temp");
-		set.getResource(URI.createFileURI(new File("").getAbsolutePath() + "/resources/" + accessControlsystemFileName
-				+ "_temp.accesscontrolsystem"), true);
+		set.getResource(
+				URI.createFileURI(new File("").getAbsolutePath() + "/resources/" + exampleFileName + ".registryoffice"),
+				true);
+		set.getResource(URI.createFileURI(
+				new File("").getAbsolutePath() + "/resources/" + accessControlsystemFileName + ".accesscontrolsystem"),
+				true);
 		return set;
 	}
 
@@ -188,12 +191,9 @@ public final class Util {
 	 * @return an extracted RegistryOffice
 	 */
 	public static RegistryOffice updateOffice(VirtualModel model, CommittableView view) {
-		RegistryOffice office;
-		view.commitChangesAndUpdate();
-
-		view = Util.createView(model);
-		office = Util.getRegistryOffice(view);
-		return office;
+		view.commitChanges();
+//		view = Util.createView(model);
+		return Util.getRegistryOffice(view);
 	}
 
 }

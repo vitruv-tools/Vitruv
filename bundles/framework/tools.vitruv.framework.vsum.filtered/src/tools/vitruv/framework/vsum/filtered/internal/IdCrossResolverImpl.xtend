@@ -1,18 +1,18 @@
-package tools.vitruv.framework.vsum.filtered
+package tools.vitruv.framework.vsum.filtered.internal
 
 import accesscontrol.OneSidedCorrespondence
-import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.change.echange.id.IdResolver
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import tools.vitruv.framework.change.echange.id.IdResolver
+import tools.vitruv.framework.vsum.filtered.IdCrossResolver
 
 @FinalFieldsConstructor
-class IdCrossResolverImpl implements IdResolver {
+class IdCrossResolverImpl implements IdCrossResolver {
 
-	final IdResolver filtered
-	final IdResolver unfiltered
-	final OneSidedCorrespondence correspondentResources
+	val IdResolver filtered
+	val IdResolver unfiltered
+	val OneSidedCorrespondence correspondentResources
 
 	override getEObject(String id) {
 		if (filtered.hasEObject(id)) {
@@ -23,7 +23,7 @@ class IdCrossResolverImpl implements IdResolver {
 		return unfiltered.getEObject(id)
 	}
 	
-	def boolean isNew(String id) {
+	override isNew(String id) {
 		return !filtered.hasEObject(id)
 	}
 	
