@@ -51,8 +51,6 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 						reactionsSegment.toDomain.domainForReference.metamodelRootPackage.class].filter [
 						it !== EPackageImpl
 					].map[name]
-				metamodelPackageClassQualifiedNames +=
-					reactionsSegment.additionalInitializedMetamodelPackageQualifiedClassNames
 				body = '''
 					«FOR metamodelPackageClassQualifiedName : metamodelPackageClassQualifiedNames»org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.putIfAbsent(«
 						metamodelPackageClassQualifiedName».eNS_URI, «metamodelPackageClassQualifiedName».eINSTANCE);

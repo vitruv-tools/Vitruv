@@ -35,12 +35,12 @@ import static extension java.lang.reflect.Modifier.*
 import java.util.List
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.core.runtime.Platform
-import tools.vitruv.testutils.change.processing.CombinedChangePropagationSpecification
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.hasNoErrors
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import java.util.ArrayList
 import java.util.Set
+import tools.vitruv.dsls.commonalities.generator.changepropagationspecification.ChangePropagationSpecificationConstants
 
 /**
  * Xtext’s {@link CompilationTestHelper} is bug-ridden and does not work with the Ecore generator.
@@ -152,14 +152,11 @@ class TestCommonalitiesGenerator {
 	
 	def private findAndCombineChangePropagationSpecifications(Iterable<? extends Class<?>> sourceClasses) {
 		sourceClasses.filter [
-			allInterfaces.contains(ChangePropagationSpecification) 
-				&& modifiers.isPublic && getDeclaredConstructor.modifiers.isPublic
-		]
-			.map [getDeclaredConstructor.newInstance as ChangePropagationSpecification]
-			.groupBy [sourceMetamodelRootNsUris -> targetMetamodelRootNsUris]
-			.entrySet
-			.mapFixed [
-				new CombinedChangePropagationSpecification(key.key, key.value, value)
+			allInterfaces.contains(ChangePropagationSpecification) && modifiers.isPublic &&
+				getDeclaredConstructor.modifiers.isPublic
+		].filter[it.packageName == ChangePropagationSpecificationConstants.changePropagationSpecificationPackageName].
+			map [
+				getDeclaredConstructor.newInstance as ChangePropagationSpecification
 			]
 	}
 	
