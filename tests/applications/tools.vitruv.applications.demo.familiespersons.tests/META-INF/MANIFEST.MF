@@ -8,5 +8,6 @@ Fragment-Host: tools.vitruv.applications.demo.familiespersons
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.testutils,
  org.junit.jupiter.api,
- org.hamcrest.core
+ org.hamcrest.core,
+ org.junit.jupiter.params
 Bundle-Vendor: vitruv.tools
