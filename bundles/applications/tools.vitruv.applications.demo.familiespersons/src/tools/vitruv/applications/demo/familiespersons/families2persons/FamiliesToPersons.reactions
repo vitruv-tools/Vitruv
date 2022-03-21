@@ -258,7 +258,6 @@ routine updatePersonName(families::Member member) {
 
 reaction DeletedMember {
 	after element families::Member deleted
-		with affectedEObject.eContainer === null
 	call deletePerson(affectedEObject)
 }
 
