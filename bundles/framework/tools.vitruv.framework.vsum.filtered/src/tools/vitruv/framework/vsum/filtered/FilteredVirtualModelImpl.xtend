@@ -1,6 +1,7 @@
 package tools.vitruv.framework.vsum.filtered
 
 import accesscontrol.OperationAccessRightEvaluator
+import accesscontrol.OperationAccessRightUtil
 import accesscontrol.internal.FilteredResourceSet
 import accesscontrolsystem.RuleDatabase
 import java.util.Collection
@@ -59,7 +60,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 	/**
 	 * Indicates whether or not the resources have been changed and thus the {@link #filteredResource} is not valid anymore and has to be recomputed.
 	 */
-	var boolean changed;
+	var boolean changed
 
 	/**
 	 * @param ruleDatabase the {@link RuleDatabase} containing filter rules, may be null (in that case a new empty one is used, located in the vsum folder)
@@ -90,11 +91,11 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 		// they can be resolved by the propagation algorithm
 		val changes = filteredResource.resources.isEmpty ? internalModel.propagateChange(change) : internalModel.
 				propagateChange(change, Optional.of(idCrossResolver))
-		updateAccessControlSystemModelConsequentialChanges(changes, idCrossResolver);
+		updateAccessControlSystem(changes, idCrossResolver);
 		return changes
 	}
 
-	private def boolean updateAccessControlSystemModelConsequentialChanges(List<PropagatedChange> changes,
+	private def boolean updateAccessControlSystem(List<PropagatedChange> changes,
 		IdResolver resolver) {
 		modifyAccessControlSystem(changes.map[it.originalChange].flatMap[it.EChanges], resolver)
 		modifyAccessControlSystem(changes.map[it.consequentialChanges].flatMap[it.EChanges], resolver)
@@ -109,7 +110,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 
 	override getViewSourceModels() {
 		if (changed) {
-			filteredResource = filteredResourceSet.filter(getUnfilteredResourceSetOrEmptyNew)
+			filteredResource = filteredResourceSet.filter(getUnfilteredResourceSetOrEmptyNew, OperationAccessRightUtil.neededRightsViewing)
 			changed = false
 		}
 		return filteredResource.resources
@@ -128,7 +129,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 	}
 
 	def boolean canModify(Collection<EObject> eObjects) {
-		this.filteredResourceSet.canModify(eObjects)
+		this.filteredResourceSet.canModify(eObjects, OperationAccessRightUtil.neededRightsModifying)
 	}
 
 	private def boolean modifyAccessControlSystem(Iterable<EChange> changes, IdResolver resolver) {
@@ -138,7 +139,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 		for (change : changes) {
 			if (change instanceof InsertRootEObject) {
 				success = success &&
-					filteredResourceSet.addAccessRule(resolver.getEObject(resolver.getAndUpdateId(change.newValue)))
+					filteredResourceSet.addAccessRule(resolver.getEObject(resolver.getAndUpdateId(change.newValue)), null,  List.of(OperationAccessRightUtil.allowRead, OperationAccessRightUtil.allowWrite))
 			// access restrictions on non EObject types are not supported at the moment!
 			} else if (change instanceof DeleteEObject) {
 				success = success &&
@@ -160,7 +161,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 	private def void checkIfModifiedObjectsCanBeModified(Correspondences correspondences, IdCrossResolver resolver) {
 		for (FeatureEChange<EObject, EReference> echange : correspondences.modifiedObjects) {
 			if (resolver.hasEObject(echange.affectedEObjectID)) {
-				if (!filteredResourceSet.canModify(Set.of(resolver.getEObject(echange.affectedEObjectID)))) {
+				if (!filteredResourceSet.canModify(Set.of(resolver.getEObject(echange.affectedEObjectID)), OperationAccessRightUtil.neededRightsModifying)) {
 					throw new IllegalStateException(
 						"Tried to modify element " + resolver.getEObject(echange.affectedEObjectID) + " with id " +
 							echange.affectedEObjectID + " without access and with change " + echange + " in resource " +

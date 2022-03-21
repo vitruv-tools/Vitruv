@@ -23,9 +23,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil.EqualityHelper;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.junit.jupiter.api.Test;
 
+import accesscontrol.OperationAccessRightEvaluator;
+import accesscontrol.OperationAccessRightUtil;
 import accesscontrol.ResourceSetFilter;
 import accesscontrol.internal.FilteredResourceSet;
-import accesscontrol.operationaccessright.OperationAccessRightUtil;
+import accesscontrol.internal.OperationAccessRightEvaluatorImpl;
 import accesscontrolsystem.RuleDatabase;
 import registryoffice.RegistryOffice;
 
@@ -46,7 +48,7 @@ class FilteredResourceSetTest {
 		Collection<FilterOperationResult> filterOperationResult = load("AllAccess", "Example", "Example");
 		assertTrue(FilterOperationResult.filteredUnfilteredEqual(filterOperationResult));
 	}
-	
+
 	@Test
 	final void fullAccessInheritance() {
 		Collection<FilterOperationResult> filterOperationResult = load("AllAccessInheritance", "Example");
@@ -60,11 +62,13 @@ class FilteredResourceSetTest {
 	}
 
 	/**
-	 * If the accesscontrolsystem is loaded twice, emf ignores the second operation and so does the accesscontrolsystem.
+	 * If the accesscontrolsystem is loaded twice, emf ignores the second operation
+	 * and so does the accesscontrolsystem.
 	 */
 	@Test
 	final void accessControlSystem1loadedTwice() {
-		Collection<FilterOperationResult> filterOperationResult = load("AllAccess", "AllAccess.accesscontrolsystem", "Example");
+		Collection<FilterOperationResult> filterOperationResult = load("AllAccess", "AllAccess.accesscontrolsystem",
+				"Example");
 		assertTrue(FilterOperationResult.filteredUnfilteredEqual(filterOperationResult));
 	}
 
@@ -89,20 +93,24 @@ class FilteredResourceSetTest {
 		List<FilterOperationResult> filterOperationResult = load("PartAccess", "Example");
 		assertEquals(1, filterOperationResult.get(0).filtered.size());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().size());
-		assertEquals("Albert", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
+		assertEquals("Albert",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
 		assertEquals(0, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().size());
 	}
-	
+
 	@Test
 	final void referenceAccess() {
 		// access rules for the root and one parent exist
 		List<FilterOperationResult> filterOperationResult = load("PartAccess2", "Example");
 		assertEquals(1, filterOperationResult.get(0).filtered.size());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().size());
-		assertEquals("Albert", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
+		assertEquals("Albert",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().size());
-		assertEquals("Einstein", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
-		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getParent().size());
+		assertEquals("Einstein",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
+		assertEquals(1,
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getParent().size());
 	}
 
 	@Test
@@ -111,11 +119,13 @@ class FilteredResourceSetTest {
 		List<FilterOperationResult> filterOperationResult = load("PartAccess2", "Example");
 		assertEquals(1, filterOperationResult.get(0).filtered.size());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().size());
-		assertEquals("Albert", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
+		assertEquals("Albert",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().size());
-		assertEquals("Einstein", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
+		assertEquals("Einstein",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
 	}
-	
+
 	@Test
 	final void partAccessModifying() {
 		// access rules for one parent and one child exist
@@ -123,30 +133,39 @@ class FilteredResourceSetTest {
 		List<FilterOperationResult> filterOperationResult = load("PartAccessModifying", "Example");
 		assertEquals(1, filterOperationResult.get(0).filtered.size());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().size());
-		assertEquals("Albert", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
+		assertEquals("Albert",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
 		assertEquals(2, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().size());
-		assertEquals("Findus", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
-		assertEquals("Grimhild", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1).getName());
-		assertTrue(set.canModify( Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0))));
-		assertTrue(set.canModify( Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0))));
-		assertFalse(set.canModify( Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1))));
+		assertEquals("Findus",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
+		assertEquals("Grimhild",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1).getName());
+		assertTrue(set.canModify(
+				Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0)),
+				List.of(OperationAccessRightUtil.allowWrite())));
+		assertTrue(
+				set.canModify(Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0)),
+						List.of(OperationAccessRightUtil.allowWrite())));
+		assertFalse(
+				set.canModify(Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1)),
+						List.of(OperationAccessRightUtil.allowWrite())));
 	}
-	
+
 	@Test
 	final void models2access2part() {
 		List<FilterOperationResult> filterOperationResult = load("PartAccess2Modells", "Example", "Example2");
 		assertEquals(1, filterOperationResult.get(0).filtered.size());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().size());
-		assertEquals("Albert", ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
+		assertEquals("Albert",
+				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0).getName());
 		assertEquals(0, ((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().size());
 		assertEquals(1, filterOperationResult.get(1).filtered.size());
 		assertEquals(1, ((RegistryOffice) filterOperationResult.get(1).filtered.get(0)).getParent().size());
-		assertEquals("Berta", ((RegistryOffice) filterOperationResult.get(1).filtered.get(0)).getParent().get(0).getName());
+		assertEquals("Berta",
+				((RegistryOffice) filterOperationResult.get(1).filtered.get(0)).getParent().get(0).getName());
 		assertEquals(0, ((RegistryOffice) filterOperationResult.get(1).filtered.get(0)).getChild().size());
 	}
-	
-	
-	
+
 	@Test
 	final void models2access1() {
 		List<FilterOperationResult> fifilterOperationResultltered = load("AllAccess", "Example", "Example2");
@@ -160,19 +179,21 @@ class FilteredResourceSetTest {
 		assertTrue(filterOperationResult.get(0).unfilteredEqualsFiltered());
 		assertTrue(filterOperationResult.get(1).unfilteredEqualsFiltered());
 	}
-	
+
 	@Test
 	final void models2part2() {
 		List<FilterOperationResult> filterOperationResult = load("AllAccess2", "Example", "Example2");
 		assertTrue(filterOperationResult.get(0).unfilteredEqualsFiltered());
 		assertTrue(filterOperationResult.get(1).unfilteredEqualsFiltered());
 	}
-	
+
 	private static ResourceSetFilter set;
+	private static OperationAccessRightEvaluator evaluator = new OperationAccessRightEvaluatorImpl();
 
 	private List<FilterOperationResult> load(String accessControlsystemFileName, String... exampleFileNames) {
 
-		String path = new File("").getAbsolutePath() + "/resources/" + accessControlsystemFileName + ".accesscontrolsystem";
+		String path = new File("").getAbsolutePath() + "/resources/" + accessControlsystemFileName
+				+ ".accesscontrolsystem";
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
@@ -184,17 +205,20 @@ class FilteredResourceSetTest {
 					: new File("").getAbsolutePath() + "/resources/" + exampleFileName + ".registryoffice";
 			resourceSet.getResource(URI.createFileURI(pathModel), true);
 		}
-		RuleDatabase ruleDatabase = (RuleDatabase) resourceSet.getResource(URI.createFileURI(path), true).getContents().get(0);
-		ResourceSetFilter filteredResourceSet = new FilteredResourceSet(ruleDatabase, List.of(0), new OperationAccessRightUtil());
+		RuleDatabase ruleDatabase = (RuleDatabase) resourceSet.getResource(URI.createFileURI(path), true).getContents()
+				.get(0);
+
+		ResourceSetFilter filteredResourceSet = new FilteredResourceSet(ruleDatabase, List.of(0), evaluator);
 		List<FilterOperationResult> result = buildCorrespondences(filteredResourceSet, resourceSet);
 		set = filteredResourceSet;
 		return result;
 	}
 
-	private List<FilterOperationResult> buildCorrespondences(ResourceSetFilter resourceSetFilter, ResourceSet toFilter) {
+	private List<FilterOperationResult> buildCorrespondences(ResourceSetFilter resourceSetFilter,
+			ResourceSet toFilter) {
 		List<FilterOperationResult> result = new ArrayList<>();
-		for (Resource filtered : resourceSetFilter.filter(toFilter).getResources()) {
-			var unfiltered = resourceSetFilter.getCorrespondingResource(filtered);
+		for (Resource filtered : resourceSetFilter.filter(toFilter, List.of(OperationAccessRightUtil.allowRead())).getResources()) {
+			var unfiltered = resourceSetFilter.getSourceResource(filtered);
 			result.add(new FilterOperationResult(unfiltered.getContents(), filtered.getContents()));
 		}
 		return result;
@@ -216,7 +240,7 @@ class FilteredResourceSetTest {
 		public boolean filteredEmpty() {
 			return filtered.isEmpty();
 		}
-		
+
 		public static boolean filteredAreEmpty(Collection<FilterOperationResult> filterOperationResults) {
 			return filterOperationResults.stream().map(result -> result.filteredEmpty()).reduce((t, u) -> t && u).get();
 		}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package accesscontrol.operationaccessright;
+package accesscontrol.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 import accesscontrol.OperationAccessRightEvaluator;
+import accesscontrol.OperationAccessRightUtil;
 import accesscontrolsystem.accessright.AccessRight;
 import accesscontrolsystem.accessright.AcessRightProvider;
 import accesscontrolsystem.accessright.Operation;
@@ -24,48 +25,7 @@ import accesscontrolsystem.accessright.accessrightFactory;
  * @author Thomas Weber (thomas.weber@student.kit.edu)
  *
  */
-public class OperationAccessRightUtil implements OperationAccessRightEvaluator {
-
-	private static OperationAccessRight allowRead;
-	private static OperationAccessRight allowWrite;
-	private static OperationAccessRight denyRead;
-	private static OperationAccessRight denyWrite;
-
-	public static final BinaryOperator<Boolean> LOGICAL_OR = (b1, b2) -> b1 || b2;
-	public static final BinaryOperator<Boolean> LOGICAL_AND = (b1, b2) -> b1 && b2;
-
-	@Override
-	public Collection<OperationAccessRight> neededRightsViewing() {
-		return List.of(allowRead());
-	}
-
-	@Override
-	public Collection<OperationAccessRight> neededRightsModifying() {
-		return List.of(allowWrite());
-	}
-
-	@Override
-	public Collection<OperationAccessRight> findExistingRights(Collection<OperationAccessRight> rights,
-			AcessRightProvider existingRightsProvider) {
-		Collection<OperationAccessRight> found = new ArrayList<>();
-		for (OperationAccessRight right : rights) {
-			Optional<OperationAccessRight> existingRight = existingRightsProvider.getOperationAccessRights().stream()
-					.filter(it -> it.getOperation().equals(right.getOperation()))
-					.filter(it -> it.getAccessRight().equals(right.getAccessRight())).findFirst();
-			if (existingRight.isPresent()) {
-				found.add(existingRight.get());
-			} else {
-				// add a new OperationAccessRight to the provider and to the list
-				OperationAccessRight created = accessrightFactory.eINSTANCE.createOperationAccessRight();
-				created.setAccessRight(right.getAccessRight());
-				created.setOperation(right.getOperation());
-				existingRightsProvider.getOperationAccessRights().add(created);
-				found.add(created);
-			}
-		}
-		return found;
-	}
-
+public class OperationAccessRightEvaluatorImpl implements OperationAccessRightEvaluator {
 	/**
 	 * Checks {@link #hasAccess(Collection, OperationAccessRight)} for every
 	 * {@link OperationAccessRight} in {@code needed} and reduces the result with
@@ -190,66 +150,6 @@ public class OperationAccessRightUtil implements OperationAccessRightEvaluator {
 			}
 			return DENIED;
 		}
-	}
-
-	/**
-	 * 
-	 * @return {@link OperationAccessRight} with {@link AccessRight#ALLOW} and
-	 *         {@link Operation#READ}
-	 */
-	@Override
-	public OperationAccessRight allowRead() {
-		return createOperationAccessRight(allowRead, AccessRight.ALLOW, Operation.READ);
-	}
-
-	/**
-	 * 
-	 * @return {@link OperationAccessRight} with {@link AccessRight#ALLOW} and
-	 *         {@link Operation#WRITE}
-	 */
-	@Override
-	public OperationAccessRight allowWrite() {
-		return createOperationAccessRight(allowWrite, AccessRight.ALLOW, Operation.WRITE);
-	}
-
-	/**
-	 * 
-	 * @return {@link OperationAccessRight} with {@link AccessRight#DENY} and
-	 *         {@link Operation#READ}
-	 */
-	@Override
-	public OperationAccessRight denyRead() {
-		return createOperationAccessRight(denyRead, AccessRight.DENY, Operation.READ);
-	}
-
-	/**
-	 * 
-	 * @return {@link OperationAccessRight} with {@link AccessRight#DENY} and
-	 *         {@link Operation#WRITE}
-	 */
-	@Override
-	public OperationAccessRight denyWrite() {
-		return createOperationAccessRight(denyWrite, AccessRight.DENY, Operation.WRITE);
-	}
-
-	/**
-	 * Only creates a new OperationAccessRight if the reference is null!
-	 * 
-	 * @param reference   the reference the OperationAccessRight is saved in if it
-	 *                    is null
-	 * @param accessRight
-	 * @param operation
-	 * @return the newly created OperationAccessRight if the reference is
-	 *         {@code null}, otherwise the reference
-	 */
-	private OperationAccessRight createOperationAccessRight(OperationAccessRight reference,
-			AccessRight accessRight, Operation operation) {
-		if (reference != null)
-			return reference;
-		reference = accessrightFactory.eINSTANCE.createOperationAccessRight();
-		reference.setAccessRight(accessRight);
-		reference.setOperation(operation);
-		return reference;
 	}
 
 }

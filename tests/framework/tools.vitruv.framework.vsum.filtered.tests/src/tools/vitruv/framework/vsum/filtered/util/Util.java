@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -20,7 +19,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
-import accesscontrol.operationaccessright.OperationAccessRightUtil;
+import accesscontrol.internal.OperationAccessRightEvaluatorImpl;
 import accesscontrolsystem.RuleDatabase;
 import registryoffice.RegistryOffice;
 import tools.vitruv.framework.change.echange.EChange;
@@ -38,8 +37,8 @@ import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeReso
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImpl;
-import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplTest;
 import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplComplexTest;
+import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplTest;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.testutils.domains.DomainModelCreators;
@@ -116,7 +115,7 @@ public final class Util {
 				: null;
 		EcoreUtil.resolveAll(set);
 		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi, ruleDatabase, List.of(0),
-				new OperationAccessRightUtil());
+				new OperationAccessRightEvaluatorImpl());
 		CommittableView view = Util.createView(impl);
 		Resource model = set.getResources().get(0);
 		view.registerRoot(model.getContents().get(0), model.getURI());
@@ -132,7 +131,7 @@ public final class Util {
 		view.commitChangesAndUpdate();
 		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi,
 				(RuleDatabase) set.getResources().get(1).getContents().get(0), List.of(0),
-				new OperationAccessRightUtil());
+				new OperationAccessRightEvaluatorImpl());
 		return impl;
 	}
 

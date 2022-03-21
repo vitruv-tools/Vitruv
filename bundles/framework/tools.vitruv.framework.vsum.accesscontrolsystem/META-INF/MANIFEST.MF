@@ -10,7 +10,6 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: accesscontrol,
  accesscontrol.internal,
- accesscontrol.operationaccessright,
  accesscontrolsystem,
  accesscontrolsystem.accessright,
  accesscontrolsystem.accessright.impl,

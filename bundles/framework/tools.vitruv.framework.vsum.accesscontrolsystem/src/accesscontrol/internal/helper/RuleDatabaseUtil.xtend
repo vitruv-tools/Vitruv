@@ -1,6 +1,6 @@
 package accesscontrol.internal.helper
 
-import accesscontrol.OperationAccessRightEvaluator
+import accesscontrol.OperationAccessRightUtil
 import accesscontrolsystem.AccessRule
 import accesscontrolsystem.AccesscontrolsystemFactory
 import accesscontrolsystem.RuleDatabase
@@ -22,16 +22,16 @@ final class RuleDatabaseUtil {
 	
 	private new(){}
 
-	def static RuleDatabase createRuleDatabase(URI uri, ResourceSet set, OperationAccessRightEvaluator evaluator) {
+	def static RuleDatabase createRuleDatabase(URI uri, ResourceSet set) {
 		val ruleDatabase = AccesscontrolsystemFactory.eINSTANCE.createRuleDatabase()
 		val ruleDatabaseResource = set.createResource(uri)
 		ruleDatabaseResource.getContents().add(ruleDatabase)
 		ruleDatabase.setRoleprovider(roleFactory.eINSTANCE.createRoleProvider())
 		ruleDatabase.setAcessrightprovider(accessrightFactory.eINSTANCE.createAcessRightProvider())
-		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(evaluator.allowRead())
-		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(evaluator.allowWrite())
-		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(evaluator.denyRead())
-		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(evaluator.denyWrite())
+		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(OperationAccessRightUtil.allowRead())
+		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(OperationAccessRightUtil.allowWrite())
+		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(OperationAccessRightUtil.denyRead())
+		ruleDatabase.getAcessrightprovider().getOperationAccessRights().add(OperationAccessRightUtil.denyWrite())
 		val admin = roleFactory.eINSTANCE.createRole()
 		admin.setName(DEFAULT_ROLE_NAME)
 		ruleDatabase.getRoleprovider().getRole().add(admin)

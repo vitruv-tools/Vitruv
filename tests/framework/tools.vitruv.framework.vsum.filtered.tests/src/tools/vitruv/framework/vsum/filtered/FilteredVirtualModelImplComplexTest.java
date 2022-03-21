@@ -60,7 +60,7 @@ public class FilteredVirtualModelImplComplexTest {
 
 	@AfterAll
 	static final void clear() {
-//		Util.removeTemporaryFiles();
+		Util.removeTemporaryFiles();
 	}
 
 	@Test

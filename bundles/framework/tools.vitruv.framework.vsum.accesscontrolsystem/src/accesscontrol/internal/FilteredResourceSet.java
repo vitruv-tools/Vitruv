@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import accesscontrol.OperationAccessRightEvaluator;
+import accesscontrol.OperationAccessRightUtil;
 import accesscontrol.ResourceSetFilter;
 import accesscontrol.internal.helper.RuleDatabaseUtil;
 import accesscontrol.internal.helper.AccessControlImpl;
@@ -62,39 +63,21 @@ public class FilteredResourceSet implements ResourceSetFilter {
 		this.directlyAvailableRoleIndices = Optional.ofNullable(directlyAvailableRoleIndices)
 				.orElse(Collections.emptySet());
 	}
-	
-	@Override
-	public boolean addAccessRule(EObject modified) {
-		return addAccessRule(modified, null, computeRoles(), List.of(evaluator.allowRead(), evaluator.allowWrite()));
-
-	}
 
 	@Override
-	public boolean addAccessRule(EObject modified, EObject containment, Collection<Role> roles) {
-		return addAccessRule(modified, containment, roles, List.of(evaluator.allowRead()));
-
-	}
-
-	@Override
-	public boolean addAccessRule(EObject modified, EObject containment) {
-		return addAccessRule(modified, containment, computeRoles());
-
-	}
-
-	@Override
-	public boolean addAccessRule(EObject modified, EObject containment, Collection<Role> roles,
+	public boolean addAccessRule(EObject modified, EObject containment,
 			Collection<OperationAccessRight> grantedRights) {
 		if (getRuleDatabase().getAccessrules().stream().anyMatch(it -> it.getElement().equals(modified))) {
 			return false;
 		}
-		for (Role role : roles) {
+		for (Role role : computeRoles()) {
 			AccessRule newRule = AccesscontrolsystemFactory.eINSTANCE.createAccessRule();
 			newRule.setContainment(containment);
 			newRule.setElement(modified);
 			newRule.setName(role.getName() + "," + modified.eClass().getName() + "," + modified.hashCode());
 			newRule.setRole(role);
 			newRule.getOperationAccessRights()
-					.addAll(evaluator.findExistingRights(grantedRights, ruleDatabase.getAcessrightprovider()));
+					.addAll(OperationAccessRightUtil.findExistingRights(grantedRights, ruleDatabase.getAcessrightprovider()));
 			ruleDatabase.getAccessrules().add(newRule);
 		}
 		return true;
@@ -102,29 +85,28 @@ public class FilteredResourceSet implements ResourceSetFilter {
 
 	@Override
 	public boolean removeAccessRules(EObject modified) {
-//		System.out.println("perhaps removed rule for " + modified);
 		return getRuleDatabase().getAccessrules().removeAll(ruleDatabase.getAccessrules().stream()
 						.filter(it -> it.getElement().equals(modified)).collect(Collectors.toSet()));
 
 	}
 
 	@Override
-	public Resource getCorrespondingResource(Resource resource) {
+	public Resource getSourceResource(Resource resource) {
 		return correspondentResources.get(resource);
 	}
 
 	@Override
-	public EObject getCorrespondentObject(EObject object) {
+	public EObject getSourceEObject(EObject object) {
 		return correspondentObjects.get(object);
 	}
 
 	@Override
-	public boolean canModify(final Collection<EObject> toModify) {
+	public boolean canModify(final Collection<EObject> toModify, Collection<OperationAccessRight> needed) {
 		if (toModify == null || toModify.isEmpty())
 			return true;
 
 		var eObjectsWithMissingAccessRights = AccessControlImpl.computeElementsWithMissingAccessRights(unfiltered,
-				computeRoles(), evaluator.neededRightsModifying(), ruleDatabase, evaluator);
+				computeRoles(), needed, ruleDatabase, evaluator);
 		var unfilteredToModify = mapToCorrespondingEObjects(toModify);
 		Map<EObject, Boolean> exists = checkIfObjectsCanBeModified(unfilteredToModify);
 		return evaluateExistsMap(exists, eObjectsWithMissingAccessRights, unfilteredToModify);
@@ -144,11 +126,6 @@ public class FilteredResourceSet implements ResourceSetFilter {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public ResourceSet filter(ResourceSet resourceSet) {
-		return filter(resourceSet, evaluator.neededRightsViewing());
 	}
 
 	@Override
@@ -195,10 +172,10 @@ public class FilteredResourceSet implements ResourceSetFilter {
 
 	private List<EObject> mapToCorrespondingEObjects(final Collection<EObject> toModify) {
 		return toModify.stream().map((EObject it) -> {
-			if (getCorrespondentObject(it) == null) {
+			if (getSourceEObject(it) == null) {
 				return it;
 			}
-			return getCorrespondentObject(it);
+			return getSourceEObject(it);
 		}).collect(Collectors.toList());
 	}
 
@@ -255,7 +232,6 @@ public class FilteredResourceSet implements ResourceSetFilter {
 			}
 		}
 		EcoreUtil.deleteAll(remove, true);
-		EcoreUtil.resolveAll(filtered);
 	}
 
 	private void initializeEmptyInternalDataStructures() {
@@ -282,7 +258,7 @@ public class FilteredResourceSet implements ResourceSetFilter {
 	private RuleDatabase createNewAccessControlSystem(String name) {
 		return RuleDatabaseUtil.createRuleDatabase(
 				URI.createFileURI(new File("").getAbsolutePath() + "/vsum/" + name + ".accesscontrolsystem"),
-				this.unfiltered, this.evaluator);
+				this.unfiltered);
 	}
 
 	private void extractData(ResourceSet unfiltered) {

@@ -1,10 +1,10 @@
 package tools.vitruv.framework.vsum.filtered
 
 import tools.vitruv.framework.change.echange.id.IdResolver
-import accesscontrol.OneSidedCorrespondence
 import org.eclipse.emf.ecore.resource.ResourceSet
 import java.util.Objects
 import tools.vitruv.framework.vsum.filtered.internal.IdCrossResolverImpl
+import accesscontrol.ViewSourceCorrespondence
 
 interface IdCrossResolver extends IdResolver {
 	def boolean isNew(String id)
@@ -21,7 +21,7 @@ interface IdCrossResolver extends IdResolver {
 	 * @throws IllegalArgumentException if any given {@link ResourceSet}s is {@code null} or {@link OneSidedCorrespondence} is {@code null}
 	 */
 	static def IdCrossResolver create(ResourceSet sourceResourceSet, ResourceSet viewResourceSet,
-		OneSidedCorrespondence viewSourceCorrespondence) {
+		ViewSourceCorrespondence viewSourceCorrespondence) {
 		Objects.requireNonNull(viewSourceCorrespondence);
 		return new IdCrossResolverImpl(IdResolver.create(viewResourceSet), IdResolver.create(sourceResourceSet),
 			viewSourceCorrespondence)

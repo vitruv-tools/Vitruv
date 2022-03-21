@@ -15,44 +15,13 @@ import accesscontrolsystem.role.Role;
  * @author Thomas Weber (thomas.weber@student.kit.edu)
  *
  */
-public interface ResourceSetFilter extends OneSidedCorrespondence{
-
-	/**
-	 * Uses {@link OperationAccessRightEvaluator#allowRead()} to determine the needed {@link OperationAccessRight}s.
-	 * @param resourceSet containing resources to be filtered
-	 * @return a {@link ResourceSet} which contains filtered copies of the Resources
-	 */
-	ResourceSet filter(ResourceSet resourceSet);
+public interface ResourceSetFilter extends ViewSourceCorrespondence{
 	
 	/**
 	 * @param resourceSet containing resources to be filtered
 	 * @return a {@link ResourceSet} which contains filtered copies of the Resources
 	 */
 	ResourceSet filter(ResourceSet resourceSet, Collection<OperationAccessRight> needed);
-	
-	/**
-	 * Defaults the containment to null, the roles to the currently available rules and grantedRights to read and write.
-	 * @param modified the object that has been modified
-	 * @return
-	 */
-	boolean addAccessRule(EObject modified);
-	
-	/**
-	 * Defaults the roles to the currently available rules and grantedRights to read.
-	 * @param modified
-	 * @param containment
-	 * @return
-	 */
-	boolean addAccessRule(EObject modified, EObject containment);
-	
-	/**
-	 * Defaults grantedRights to allow read.
-	 * @param modified
-	 * @param containment
-	 * @param roles
-	 * @return
-	 */
-	boolean addAccessRule(EObject modified, EObject containment, Collection<Role> roles);
 	
 	/**
 	 * Adds a new access rule for the modified object if no rules for the modified EObject already exist.
@@ -62,7 +31,7 @@ public interface ResourceSetFilter extends OneSidedCorrespondence{
 	 * @param grantedRights
 	 * @return
 	 */
-	boolean addAccessRule(EObject modified, EObject containment, Collection<Role> roles, Collection<OperationAccessRight> grantedRights);
+	boolean addAccessRule(EObject modified, EObject containment, Collection<OperationAccessRight> grantedRights);
 	
 	/**
 	 * Removes any AccessRules which have the given eobject as element. AccessRules which use the given eobject as containment are not removed and instead the rule has no containment.
@@ -72,10 +41,10 @@ public interface ResourceSetFilter extends OneSidedCorrespondence{
 	boolean removeAccessRules(EObject removed);
 
 	/**
-	 * Uses {@link OperationAccessRightEvaluator#allowWrite()} to determine the needed {@link OperationAccessRight}s.
+	 * Checks if for all given EObjects the needed OperationAccessRights are present.
 	 * @param toModify
 	 * @return
 	 */
-	boolean canModify(final Collection<EObject> toModify);
+	boolean canModify(final Collection<EObject> toModify, Collection<OperationAccessRight> needed);
 
 }
