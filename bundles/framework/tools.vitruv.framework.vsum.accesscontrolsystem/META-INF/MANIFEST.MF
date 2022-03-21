@@ -9,7 +9,6 @@ Bundle-Vendor: vitruv.tools
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: accesscontrol,
- accesscontrol.internal,
  accesscontrolsystem,
  accesscontrolsystem.accessright,
  accesscontrolsystem.accessright.impl,

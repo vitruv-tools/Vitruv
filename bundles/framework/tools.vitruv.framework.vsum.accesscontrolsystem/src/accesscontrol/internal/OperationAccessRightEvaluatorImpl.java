@@ -3,20 +3,12 @@
  */
 package accesscontrol.internal;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.BinaryOperator;
 
 import accesscontrol.OperationAccessRightEvaluator;
-import accesscontrol.OperationAccessRightUtil;
 import accesscontrolsystem.accessright.AccessRight;
-import accesscontrolsystem.accessright.AcessRightProvider;
-import accesscontrolsystem.accessright.Operation;
 import accesscontrolsystem.accessright.OperationAccessRight;
-import accesscontrolsystem.accessright.accessrightFactory;
 
 /**
  * Utility class containing methods to work with {@link OperationAccessRight}

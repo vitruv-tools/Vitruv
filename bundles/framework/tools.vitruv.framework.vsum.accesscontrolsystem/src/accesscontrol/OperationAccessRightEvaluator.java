@@ -2,6 +2,7 @@ package accesscontrol;
 
 import java.util.Collection;
 
+import accesscontrol.internal.OperationAccessRightEvaluatorImpl;
 import accesscontrolsystem.accessright.AccessRight;
 import accesscontrolsystem.accessright.AcessRightProvider;
 import accesscontrolsystem.accessright.Operation;
@@ -29,6 +30,8 @@ public interface OperationAccessRightEvaluator {
 	 */
 	boolean hasAccess(Collection<OperationAccessRight> given, Collection<OperationAccessRight> needed);
 
-	
+	static OperationAccessRightEvaluator create() {
+		return new OperationAccessRightEvaluatorImpl();
+	}
 
 }

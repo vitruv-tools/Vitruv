@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
-import accesscontrol.internal.OperationAccessRightEvaluatorImpl;
+import accesscontrol.OperationAccessRightEvaluator;
 import accesscontrolsystem.RuleDatabase;
 import registryoffice.RegistryOffice;
 import tools.vitruv.framework.change.echange.EChange;
@@ -115,7 +115,7 @@ public final class Util {
 				: null;
 		EcoreUtil.resolveAll(set);
 		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi, ruleDatabase, List.of(0),
-				new OperationAccessRightEvaluatorImpl());
+				OperationAccessRightEvaluator.create());
 		CommittableView view = Util.createView(impl);
 		Resource model = set.getResources().get(0);
 		view.registerRoot(model.getContents().get(0), model.getURI());
@@ -129,10 +129,9 @@ public final class Util {
 		Resource model = set.getResources().get(0);
 		view.registerRoot(model.getContents().get(0), model.getURI());
 		view.commitChangesAndUpdate();
-		FilteredVirtualModelImpl impl = new FilteredVirtualModelImpl(vmi,
+		return new FilteredVirtualModelImpl(vmi,
 				(RuleDatabase) set.getResources().get(1).getContents().get(0), List.of(0),
-				new OperationAccessRightEvaluatorImpl());
-		return impl;
+				OperationAccessRightEvaluator.create());
 	}
 
 	public static void createTempModelFile() {

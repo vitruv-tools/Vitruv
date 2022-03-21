@@ -116,8 +116,8 @@ public class FilteredVirtualModelImplComplexTest {
 		office = Util.updateOffice(model, view);
 
 		assertEquals(0, office.getChild().size());
-		RuleDatabase db = model.getFilteredResourceSet().getRuleDatabase();
-		assertFalse(db.getAccessrules().stream().anyMatch(it -> it.getElement().equals(deleted)));
+//		RuleDatabase db = model.getFilteredResourceSet().getRuleDatabase();
+//		assertFalse(db.getAccessrules().stream().anyMatch(it -> it.getElement().equals(deleted)));
 	}
 
 	@Disabled

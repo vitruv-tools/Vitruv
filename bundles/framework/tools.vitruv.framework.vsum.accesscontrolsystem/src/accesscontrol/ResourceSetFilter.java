@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
+import accesscontrol.internal.FilteredResourceSet;
+import accesscontrolsystem.RuleDatabase;
 import accesscontrolsystem.accessright.OperationAccessRight;
 import accesscontrolsystem.role.Role;
 
@@ -46,5 +48,10 @@ public interface ResourceSetFilter extends ViewSourceCorrespondence{
 	 * @return
 	 */
 	boolean canModify(final Collection<EObject> toModify, Collection<OperationAccessRight> needed);
+	
+	static ResourceSetFilter create(RuleDatabase ruleDatabase, Collection<Integer> directlyAvailableRoleIndices,
+			OperationAccessRightEvaluator evaluator) {
+		return new FilteredResourceSet(ruleDatabase, directlyAvailableRoleIndices, evaluator);
+	}
 
 }

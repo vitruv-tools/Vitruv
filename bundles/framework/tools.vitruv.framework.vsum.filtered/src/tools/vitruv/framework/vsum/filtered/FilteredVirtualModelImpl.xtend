@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum.filtered
 
 import accesscontrol.OperationAccessRightEvaluator
 import accesscontrol.OperationAccessRightUtil
-import accesscontrol.internal.FilteredResourceSet
 import accesscontrolsystem.RuleDatabase
 import java.util.Collection
 import java.util.List
@@ -29,6 +28,7 @@ import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.filtered.correspondence.Correspondences
 import tools.vitruv.framework.vsum.filtered.correspondence.ModificationExtractor
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
+import accesscontrol.ResourceSetFilter
 
 /**
  * Class decorating an {@link InternalVirtualModel} with a filter mechanism. 
@@ -50,7 +50,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 	/**
 	 * The Utility to filter the resources.
 	 */
-	val FilteredResourceSet filteredResourceSet
+	val ResourceSetFilter filteredResourceSet
 
 	/**
 	 * The filtered resources encapsulated in a ResourceSet, may be empty.
@@ -73,7 +73,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 		Objects.requireNonNull(internalModel)
 		this.internalModel = internalModel
 		changed = true
-		filteredResourceSet = new FilteredResourceSet(ruleDatabase, roleInformation, evaluator)
+		filteredResourceSet = ResourceSetFilter.create(ruleDatabase, roleInformation, evaluator)
 		filteredResource = new ResourceSetImpl()
 	}
 
@@ -124,7 +124,7 @@ class FilteredVirtualModelImpl implements InternalVirtualModel {
 		return this.internalModel.viewSourceModels
 	}
 
-	package def FilteredResourceSet getFilteredResourceSet() {
+	package def ResourceSetFilter getFilteredResourceSet() {
 		return this.filteredResourceSet
 	}
 
