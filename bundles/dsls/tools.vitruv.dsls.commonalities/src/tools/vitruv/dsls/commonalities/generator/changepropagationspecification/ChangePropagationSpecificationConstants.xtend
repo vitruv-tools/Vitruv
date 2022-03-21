@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.commonalities.generator.changepropagationspecification
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.framework.domains.VitruvDomain
+import org.eclipse.emf.ecore.EPackage
 
 @Utility
 class ChangePropagationSpecificationConstants {
@@ -9,8 +9,8 @@ class ChangePropagationSpecificationConstants {
 	static val CHANGE_PROPAGATION_PROVIDER_NAME = "CommonalitiesChangePropagationSpecificationProvider"
 
 	@Pure
-	static def getChangePropagationSpecificationName(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		sourceDomain.name.toFirstUpper + "To" + targetDomain.name.toFirstUpper + "ChangePropagationSpecification"
+	static def getChangePropagationSpecificationName(EPackage sourceMetamodel, EPackage targetMetamodel) {
+		sourceMetamodel.name.toFirstUpper + "To" + targetMetamodel.name.toFirstUpper + "ChangePropagationSpecification"
 	}
 
 	@Pure
