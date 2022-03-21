@@ -169,13 +169,15 @@ class ChangeRecorder implements AutoCloseable {
 
 		val Set<EObject> removedElements = new HashSet
 		for (eChange : changes) {
-			switch (eChange) {
-				EObjectSubtractedEChange<?> case eChange.isContainmentRemoval:
+			if (eChange instanceof EObjectSubtractedEChange<?>) {
+				if (eChange.isContainmentRemoval) {
 					removedElements += eChange.oldValue
+				}
 			}
-			switch (eChange) {
-				EObjectAddedEChange<?> case eChange.isContainmentInsertion:
+			if (eChange instanceof EObjectAddedEChange<?>) {
+				if (eChange.isContainmentInsertion) {
 					removedElements -= eChange.newValue
+				}
 			}
 		}
 
