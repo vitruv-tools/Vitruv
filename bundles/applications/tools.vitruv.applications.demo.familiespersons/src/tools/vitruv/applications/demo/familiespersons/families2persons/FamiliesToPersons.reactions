@@ -1,4 +1,10 @@
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertFemale
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertMale
+import static tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.assertValidFirstname
+
+import static extension tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsHelper.getPersonName
 import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
+import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getRegister
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -7,179 +13,273 @@ reactions: familiesToPersons
 in reaction to changes in Families
 execute actions in Persons
 
+//========== FAMILY-REGISTER ==========
+//Creation of a {@link PersonRegister} after a {@link FamilyRegister} was created.
 reaction CreatedFamilyRegister {
 	after element families::FamilyRegister created and inserted as root
 	call createPersonRegister(newValue)
 }
-
-routine createPersonRegister(families::FamilyRegister familyRegister){
-	action{
-		val personRegister = create persons::PersonRegister and initialize{
+routine createPersonRegister(families::FamilyRegister familyRegister) {
+	action {
+		val personRegister = create persons::PersonRegister and initialize {
 			persistProjectRelative(familyRegister, personRegister, "model/persons.persons")
 		}
-		add correspondence between personRegister and familyRegister 
+		add correspondence between personRegister and familyRegister
 	}
 }
-
-reaction DeletedFamilyRegister{
+//Deletion of a {@link PersonRegister} after a {@link FamilyRegister} was deleted.
+reaction DeletedFamilyRegister {
 	after element families::FamilyRegister deleted
 	call deletePersonRegister(affectedEObject)
 }
-
-routine deletePersonRegister(families::FamilyRegister familyRegister){
-	match{
+routine deletePersonRegister(families::FamilyRegister familyRegister) {
+	match {
 		val personRegister = retrieve persons::PersonRegister corresponding to familyRegister
 	}
-	
-	action{
+	action {
 		delete personRegister
 	}
 }
 
 
+//========== FAMILY ==========
+reaction DeletedFamily {
+	after element families::Family deleted
+	call affectedEObject.members.forEach[deletePerson()]
+}
+//Lastname of {@link Family} changed.
+reaction ChangedLastName {
+	after attribute replaced at families::Family[lastName]
+	call affectedEObject.members.forEach[updatePersonName(it)]
+}
+
 reaction CreatedFather {
 	after element families::Member replaced at families::Family[father]
-	call createFather(newValue)
-}
-
-
-routine createFather(families::Member member){
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
-	}
-	action{
-		val person = create persons::Male and initialize {
-			person.fullName = member.firstName +" "+member.familyFather.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between member and person
-		add correspondence between member.familyFather and person
+		with newValue !== null
+	call {
+		updateNameAndCorrespondencesAfterMemberBecameFather(newValue, affectedEObject)
+		createMaleFromNewMember(newValue, affectedEObject)
 	}
 }
 
-reaction CreatedSon {
-	after element families::Member created  and inserted in families::Family[sons]
-	call createSon(newValue)
-}
-
-routine createSon(families::Member member){
-	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
-	}
-	action{
-		val person = create persons::Male and initialize {
-			person.fullName = member.firstName +" "+member.familySon.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between member and person
-		add correspondence between member.familySon and person
-	}
-}
 reaction CreatedMother {
-	after element families::Member created  and inserted in families::Family[mother]
-	call createMother(newValue)
+	after element families::Member replaced at families::Family[mother]
+		with newValue !== null
+	call {
+		updateNameAndCorrespondencesAfterMemberBecameMother(newValue, affectedEObject)
+		createFemaleFromNewMember(newValue, affectedEObject)
+	}
 }
 
+//New member for the position of the son was newly created and inserted, so a corresponding person has to be created.
+reaction CreatedAndInsertedSon {
+	after element families::Member created and inserted in families::Family[sons]
+	call createMale(newValue, affectedEObject)
+}
+//New member for the position of the son already existed before, so old correspondences have to be updated.
+reaction InsertedSon {
+	after element families::Member inserted in families::Family[sons]
+	call existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(newValue, affectedEObject)
+}
+//New member for the position of the daughter was newly created and inserted, so a corresponding person has to be created.
+reaction CreatedAndInsertedDaughter {
+	after element families::Member created and inserted in families::Family[daughters]
+	call createFemale(newValue, affectedEObject)
+}
+//New member for the position of the daughter already existed before, so old correspondences have to be updated.
+reaction InsertedDaughter {
+	after element families::Member inserted in families::Family[daughters]
+	call existingMemberBecameDaughter_updateNameAndCorrespondencesOfCorrespondingFemale(newValue, affectedEObject)
+}
 
-routine createMother(families::Member member){
+//Checks whether the newFather was actually just created (has no corresponding person) or not.
+//Only continues if newFather is a newly created member.
+routine createMaleFromNewMember(families::Member newFather, families::Family family) {
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+		require absence of persons::Person corresponding to newFather
 	}
-	action{
-		val person = create persons::Female and initialize {
-			person.fullName = member.firstName +" "+member.familyMother.lastName
-		}
-		update personsRegister {
-			personsRegister.persons += person;
-		}
-		add correspondence between member and person
-		add correspondence between member.familyMother and person
+	action {
+		call createMale(newFather, family)
 	}
 }
 
-reaction CreatedDaughter {
-	after element families::Member created  and inserted in families::Family[daughters]
-	call createDaughter(newValue)
-}
-routine createDaughter(families::Member member){
+//Creates corresponding male person for fathers and sons and sets up correspondences
+routine createMale(families::Member newMember, families::Family family) {
 	match {
-		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+		check { assertValidFirstname(newMember) true }
+		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
 	}
-	action{
+	action {
 		val person = create persons::Male and initialize {
-			person.fullName = member.firstName +" "+member.familyDaughter.lastName
+	 		person.fullName = newMember.getPersonName
 		}
 		update personsRegister {
-			personsRegister.persons += person;
+			personsRegister.persons += person
 		}
-		add correspondence between member and person
-		add correspondence between member.familyDaughter and person
+		add correspondence between newMember and person
+		add correspondence between family and person
+	}
+}
+
+//Checks whether the newMother was actually just created (has no corresponding person) or not.
+//Only continues if newMother is a newly created member.
+routine createFemaleFromNewMember(families::Member newMother, families::Family family) {
+	match {
+		require absence of persons::Person corresponding to newMother
+	}
+	action {
+		call createFemale(newMother, family)
+	}
+}
+
+//Creates corresponding female person for mothers and daughters and sets up correspondences
+routine createFemale(families::Member newMember, families::Family family) {
+	match {
+		check { assertValidFirstname(newMember) true }
+		val personsRegister = retrieve persons::PersonRegister corresponding to family.register
+	}
+	action {
+		val person = create persons::Female and initialize {
+	 		person.fullName = newMember.getPersonName
+		}
+		update personsRegister {
+			personsRegister.persons += person
+		}
+		add correspondence between newMember and person
+		add correspondence between family and person
+	}
+}
+
+//First check if the newFather existed before (otherwise break) and if so:
+// newFather is the member that existed before but now becomes the new father
+// newFamily is the family in which the newFather is from now on the father
+routine updateNameAndCorrespondencesAfterMemberBecameFather(families::Member newFather, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to newFather
+		with { assertMale(correspondingPerson) true }
+	}
+	action {
+		call updateNameAndCorrespondencesOfCorrespondingPerson(newFather, newFamily)
+	}
+}
+
+//First check if the newMother existed before (otherwise break) and if so:
+// newMother is the member that existed before but now becomes the new mother
+// newFamily is the family in which the newMother is from now on the mother
+routine updateNameAndCorrespondencesAfterMemberBecameMother(families::Member newMother, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to newMother
+		with { assertFemale(correspondingPerson) true }
+	}
+	action {
+		call updateNameAndCorrespondencesOfCorrespondingPerson(newMother, newFamily)
+	}
+}
+
+//newMember is the member that existed before but now becomes the new parent
+//correspondingPerson - The correspondence to the family has to change
+//newFamily is the family in which the newMember will be parent from now on
+//oldFamily is the family in which the newMember was until now
+routine updateNameAndCorrespondencesOfCorrespondingPerson(families::Member newMember, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to newMember
+		val oldFamily = retrieve families::Family corresponding to correspondingPerson
+	}
+	action {
+		update correspondingPerson {
+			correspondingPerson.fullName = newMember.personName
+		}
+		remove correspondence between correspondingPerson and oldFamily
+		add correspondence between correspondingPerson and newFamily
+		call deleteFamilyIfEmpty(oldFamily)
+	}
+}
+
+//First check if insertedChild is actually male which it has to be in order to become a son.
+routine existingMemberBecameSon_updateNameAndCorrespondencesOfCorrespondingMale(families::Member insertedChild, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+		with { assertMale(correspondingPerson) true }
+	}
+	action {
+		call updatePersonFamilyCorrespondence(insertedChild, newFamily)
+	}
+}
+
+//First check if insertedChild is actually female which it has to be in order to become a daughter.
+routine existingMemberBecameDaughter_updateNameAndCorrespondencesOfCorrespondingFemale(families::Member insertedChild, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+		with { assertFemale(correspondingPerson) true }
+	}
+	action {
+		call updatePersonFamilyCorrespondence(insertedChild, newFamily)
+	}
+}
+
+//insertedChild is the member that just became a son or daughter. Before, it could have been a parent as well as a child.
+//correspondingPerson gets a new name (since most likely the lastname changed) and correspondences are updated.
+//newFamily is the family in which the insertedChild is now contained.
+//oldFamily is the family in which the insertedChild was a member before.
+routine updatePersonFamilyCorrespondence (families::Member insertedChild, families::Family newFamily) {
+	match {
+		val correspondingPerson = retrieve persons::Person corresponding to insertedChild
+		val oldFamily = retrieve families::Family corresponding to correspondingPerson
+	}
+	action {
+		update correspondingPerson {
+			correspondingPerson.fullName = insertedChild.personName
+		}
+		remove correspondence between correspondingPerson and oldFamily
+		add correspondence between correspondingPerson and newFamily
+		call deleteFamilyIfEmpty(oldFamily)
+	}
+}
+
+//========== MEMBER IN GENERAL ==========
+//Firstname of {@link Member} changed.
+reaction ChangedFirstName {
+	after attribute replaced at families::Member[firstName]
+	call updatePersonName(affectedEObject)
+}
+
+//Check if the new name is allowed and then update the name of the corresponding person.
+routine updatePersonName(families::Member member) {
+	match {
+		check { assertValidFirstname(member) true }
+		val person = retrieve persons::Person corresponding to member
+	}
+	action {
+		update person {
+			person.fullName = member.getPersonName
+		}
 	}
 }
 
 reaction DeletedMember {
-	after element families::Member deleted 
+	after element families::Member deleted
 	call deletePerson(affectedEObject)
 }
 
+//Delete the corresponding person after member was deleted and
+//also remove any correspondences including either the member or the person.
 routine deletePerson(families::Member member) {
-	match{
+	match {
 		val person = retrieve persons::Person corresponding to member
 		val family = retrieve families::Family corresponding to person
 	}
 	action {
+		remove correspondence between member and person
 		remove correspondence between family and person
 		delete person
 	}
 }
 
-reaction DeletedFamily {
-	after element families::Family deleted
-	call deletePersonsOfFamily(affectedEObject)
-}
-
-routine deletePersonsOfFamily(families::Family family){
-	action {
-		call {
-			family.members.forEach[deletePerson()]
-		}
-	}
-}
-
-reaction ChangedFirstName {
-	after attribute replaced at families::Member[firstName]
-	call changeFullNameFromFirst(affectedEObject) 
-}
-
-routine changeFullNameFromFirst(families::Member member){
+routine deleteFamilyIfEmpty(families::Family family) {
 	match {
-		val person = retrieve persons::Person corresponding to member
+		check family.members.size == 0
 	}
 	action {
-		update person {
-			val family = member.familyFather ?: member.familyMother ?: member.familyDaughter ?: member.familySon
-			person.fullName = member.firstName + " " + family.lastName 
-			}
-	}
-}
-
-reaction ChangedLastName {
-	after attribute replaced at families::Family[lastName]
-	call changeFullNameFromLast(affectedEObject)
-}
-
-routine changeFullNameFromLast(families::Family family){
-	match {
-		//Sollten mehrere sein
-		val person = retrieve persons::Person corresponding to family
-	}
-	action {
-		update person {
-			person.fullName = person.fullName.split(" ").get(0) + " " + family.lastName 
-			}
+		call family.register.families.^remove(family)
 	}
 }

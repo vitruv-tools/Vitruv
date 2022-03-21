@@ -1,15 +1,16 @@
 package tools.vitruv.testutils.matchers
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import java.util.Set
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.hamcrest.Matcher
+
 import static com.google.common.base.Preconditions.checkArgument
-import java.util.Set
-import org.eclipse.emf.ecore.EClass
 
 @Utility
 class ModelMatchers {
@@ -35,6 +36,33 @@ class ModelMatchers {
 
 	def static Matcher<? super Resource> contains(Matcher<? super EObject> rootMatcher) {
 		new ResourceContainmentMatcher(rootMatcher)
+	}
+
+	/**Checks if for all items from {@paramref searchedItems} a similar one is included in the given list.
+	 * Formally: assertThat(L1, containsAllOf(L2)) == \forall(x in L2): \exists(y in L1): equals(x,y) 
+	 * @param searchedItems items, of which all should be contained.
+	 * @param options ... 
+	 */
+	def static Matcher<? super Iterable<? extends EObject>> containsAllOf(Iterable<? extends EObject> searchedItems,
+		ModelDeepEqualityOption... options) {
+		new EListMultipleContainmentMatcher(searchedItems, true, options)
+	}
+	/**Checks if for all items from {@paramref searchedItems} no similar one is included in the given list.
+	 * Formally: assertThat(L1, containsNoneOf(L2)) == \forall(x in L2): \not \exists(y in L1): equals(x,y) 
+	 * @param searchedItems items, of which none should be contained.
+	 * @param options ... 
+	 */
+	def static Matcher<? super Iterable<? extends EObject>> containsNoneOf(Iterable<? extends EObject> searchedItems,
+		ModelDeepEqualityOption... options) {
+		new EListMultipleContainmentMatcher(searchedItems, false, options)
+	}	
+	/**Checks if for the item {@paramref searchedItem} a similar one is included in the given list.
+	 * Formally: assertThat(L1, listContains(e)) == \exists(y in L1): equals(e,y) 
+	 * @param searchedItem item, which should be contained.
+	 * @param options ... 
+	 */
+	def static Matcher<? extends Iterable<? extends EObject>> listContains(EObject searchedItem, ModelDeepEqualityOption... options) {
+		new EListSingleContainmentMatcher(searchedItem, true, options)
 	}
 
 	def static Matcher<? super URI> isResource() {
