@@ -9,7 +9,7 @@ import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecifi
  */
 abstract class AbstractReactionsChangePropagationSpecification extends CompositeChangePropagationSpecification {
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain.nsUris, targetDomain.nsUris);
+		super(#{sourceDomain.metamodelRootPackage.nsURI}, #{targetDomain.metamodelRootPackage.nsURI});
 		this.setup();
 	}
 

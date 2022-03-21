@@ -17,7 +17,7 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 	List<IReactionRealization> reactions;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain.nsUris, targetDomain.nsUris);
+		super(#{sourceDomain.metamodelRootPackage.nsURI}, #{targetDomain.metamodelRootPackage.nsURI});
 		this.reactions = newArrayList;
 		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();
