@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.domains
+package tools.vitruv.framework.views.changederivation
 
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.URI
@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import uml_mockup.UPackage
-import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
-import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.testutils.TestLogging
 import org.junit.jupiter.api.BeforeEach

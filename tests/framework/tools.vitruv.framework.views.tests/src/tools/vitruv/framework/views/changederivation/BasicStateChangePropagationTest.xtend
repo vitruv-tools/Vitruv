@@ -1,23 +1,24 @@
-package tools.vitruv.framework.tests.domains
+package tools.vitruv.framework.views.changederivation
 
-import tools.vitruv.framework.tests.domains.StateChangePropagationTest
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.util.Capture
+
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.DisplayName
-import tools.vitruv.framework.change.echange.eobject.DeleteEObject
-import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.util.Capture
-import static extension tools.vitruv.framework.util.Capture.operator_doubleGreaterThan
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
+
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.util.Capture.operator_doubleGreaterThan
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	private def getTestUri() {

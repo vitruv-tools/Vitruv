@@ -37,6 +37,8 @@ import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EObject
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
@@ -711,6 +713,36 @@ class ChangeRecorderTest {
 
 		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
+	
+	@Test
+	@DisplayName("does not create deletion for element from containment replacing other element")
+	def void doesNotCreateDeletionWhenReplacingExistingElement() {
+		val nonRootToReplace = aet.NonRoot
+		val nonRootToMove = aet.NonRoot
+		val root = aet.Root => [
+			singleValuedContainmentEReference = nonRootToReplace
+			multiValuedContainmentEReference += nonRootToMove
+		]
+		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
+			changeRecorder.addToRecording(it)
+			record [
+				contents += root
+			]
+		]
+		changeRecorder.addToRecording(root)
+		resource.contents.clear()
+
+		record[
+			root.singleValuedContainmentEReference = nonRootToMove
+		]
+
+		assertThat(changeRecorder.change, hasEChanges(
+			RemoveEReference,
+			ReplaceSingleValuedEReference,
+			DeleteEObject
+		))
+	}
+	
 
 	@Test
 	@DisplayName("resets the recorded changes after ending the recording")

@@ -13,6 +13,7 @@ import tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateM
 import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGenerator
 import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScope
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import tools.vitruv.dsls.commonalities.generator.changepropagationspecification.ChangePropagationSpecificationGenerator
 
 class CommonalitiesLanguageGenerator implements IGenerator2 {
 
@@ -22,6 +23,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	@Inject Provider<IntermediateMetamodelCodeGenerator> intermediateMetamodelCodeGenerator
 	@Inject Provider<ReactionsGenerator> reactionsGenerator
 	@Inject Provider<ConceptDomainGenerator> conceptDomainGenerator
+	@Inject Provider<ChangePropagationSpecificationGenerator> changePropagationSpecificationGenerator
 
 	val generationScopes = new HashMap<Resource, GenerationScope>()
 
@@ -30,7 +32,8 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 			intermediateMetamodelGenerator.get,
 			intermediateMetamodelCodeGenerator.get,
 			conceptDomainGenerator.get,
-			reactionsGenerator.get
+			reactionsGenerator.get,
+			changePropagationSpecificationGenerator.get
 		]
 	}
 
