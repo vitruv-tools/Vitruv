@@ -6,24 +6,23 @@ import java.util.ArrayList
 import java.util.HashMap
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	Map<String, List<ChangePropagationSpecification>> sourceMetamodelNsUriToPropagationSpecifications
+	Map<Metamodel, List<ChangePropagationSpecification>> sourceMetamodelToPropagationSpecifications
 
 	new(Iterable<ChangePropagationSpecification> specifications) {
-		sourceMetamodelNsUriToPropagationSpecifications = new HashMap
+		sourceMetamodelToPropagationSpecifications = new HashMap
 		specifications.forEach [ specification |
-			specification.sourceMetamodelRootNsUris.forEach [ nsUri |
-				sourceMetamodelNsUriToPropagationSpecifications.computeIfAbsent(nsUri, [new ArrayList]).add(
-					specification)
-			]
+			sourceMetamodelToPropagationSpecifications.computeIfAbsent(specification.sourceMetamodel, [
+				new ArrayList
+			]).add(specification)
 		]
 	}
 
-	override List<ChangePropagationSpecification> getChangePropagationSpecifications(String sourceMetamodelRootNsUri) {
-		val result = sourceMetamodelNsUriToPropagationSpecifications.get(sourceMetamodelRootNsUri)
+	override List<ChangePropagationSpecification> getChangePropagationSpecifications(Metamodel sourceMetamodel) {
+		val result = sourceMetamodelToPropagationSpecifications.get(sourceMetamodel)
 		return if(result !== null) new ArrayList(result) else emptyList
 	}
 
 	override iterator() {
-		return sourceMetamodelNsUriToPropagationSpecifications.values.flatten.toList.iterator()
+		return sourceMetamodelToPropagationSpecifications.values.flatten.toList.iterator()
 	}
 }

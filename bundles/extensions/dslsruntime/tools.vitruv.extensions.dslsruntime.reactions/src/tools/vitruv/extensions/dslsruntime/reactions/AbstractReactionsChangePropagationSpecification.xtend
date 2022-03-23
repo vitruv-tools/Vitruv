@@ -2,6 +2,7 @@ package tools.vitruv.extensions.dslsruntime.reactions
 
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecification
+import tools.vitruv.framework.propagation.Metamodel
 
 /**
  * A {@link CompositeChangePropagationSpecification} that contains the reactions change processor.
@@ -9,7 +10,7 @@ import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecifi
  */
 abstract class AbstractReactionsChangePropagationSpecification extends CompositeChangePropagationSpecification {
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(#{sourceDomain.metamodelRootPackage.nsURI}, #{targetDomain.metamodelRootPackage.nsURI});
+		super(Metamodel.of(sourceDomain.metamodelRootPackage), Metamodel.of(targetDomain.metamodelRootPackage));
 		this.setup();
 	}
 

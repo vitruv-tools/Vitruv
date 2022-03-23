@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
-import java.util.Set
 import allElementTypes.AllElementTypesPackage
+import tools.vitruv.framework.propagation.Metamodel
 
 /**
  * Utility methods for the VSUM and view test cases.
@@ -60,7 +60,7 @@ class VirtualModelTestUtil {
         val aetDomain = new AllElementTypesDomainProvider().domain
         return new VirtualModelBuilder().withStorageFolder(folder).withDomain(aetDomain).
             withChangePropagationSpecification(new RedundancyChangePropagationSpecification(
-            	#{AllElementTypesPackage.eNS_URI}, #{AllElementTypesPackage.eNS_URI}
+            	Metamodel.with(AllElementTypesPackage.eNS_URI), Metamodel.with(AllElementTypesPackage.eNS_URI)
             )).
             withUserInteractor(UserInteractionFactory.instance.createUserInteractor(
                 UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))).buildAndInitialize()
@@ -78,8 +78,8 @@ class VirtualModelTestUtil {
             URI.createFileURI(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
         }
 
-        new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRootNsUris) {
-            super(sourceMetamodelRootNsUris, targetMetamodelRootNsUris)
+        new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
+            super(sourceMetamodel, targetMetamodel)
         }
 
         override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {

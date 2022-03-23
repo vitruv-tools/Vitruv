@@ -9,6 +9,7 @@ import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.ResourceAccess
 import java.util.List
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
+import tools.vitruv.framework.propagation.Metamodel
 
 abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecification {
 	static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
@@ -17,7 +18,7 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 	List<IReactionRealization> reactions;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(#{sourceDomain.metamodelRootPackage.nsURI}, #{targetDomain.metamodelRootPackage.nsURI});
+		super(Metamodel.of(sourceDomain.metamodelRootPackage), Metamodel.of(targetDomain.metamodelRootPackage));
 		this.reactions = newArrayList;
 		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();
@@ -37,7 +38,7 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 
 	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		LOGGER.trace("Call relevant reactions from " + sourceMetamodelRootNsUris + " to " + targetMetamodelRootNsUris);
+		LOGGER.trace("Call relevant reactions from " + sourceMetamodel + " to " + targetMetamodel);
 		for (reaction : reactions) {
 			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
 			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);

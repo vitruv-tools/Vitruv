@@ -4,7 +4,6 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.change.echange.EChange
-import java.util.Set
 
 /**
  * A specification of change propagation, which is able to process changes
@@ -23,20 +22,20 @@ interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def void setUserInteractor(UserInteractor userInteractor)
 
 	/**
-	 * Returns the namespace URIs of the root packages of the metamodel of elements whose changes 
-	 * are handled by this <code>ChangePropagationSpecification</code>.
+	 * Returns the metamodel containing the namespace URIs of the root packages of the metamodel of elements
+	 * whose changes are handled by this <code>ChangePropagationSpecification</code>.
 	 * 
-	 * @return a set with the namespace URIs of the source metamodel root packages
+	 * @return a metamodel representing the source namespace URIs 
 	 */
-	def Set<String> getSourceMetamodelRootNsUris()
+	def Metamodel getSourceMetamodel()
 
 	/**
-	 * Returns the namespace URIs of the root packages of the metamodel of elements whose are changed
-	 * by this <code>ChangePropagationSpecification</code> when executing {@link #propagateChange}.
+	 * Returns the metamodel containing the namespace URIs of the root packages of the metamodel of elements
+	 * whose are changed by this <code>ChangePropagationSpecification</code> when executing {@link #propagateChange}.
 	 * 
-	 * @return a set with the namespace URIs of the target metamodel root packages
+	 * @return a metamodel representing the target namespace URIs
 	 */
-	def Set<String> getTargetMetamodelRootNsUris()
+	def Metamodel getTargetMetamodel()
 
 	/**
 	 * Returns whether this <code>ChangePropagationSpecification</code> handles the given change, i.e.,
