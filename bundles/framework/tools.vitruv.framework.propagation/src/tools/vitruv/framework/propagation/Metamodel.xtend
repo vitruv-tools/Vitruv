@@ -9,7 +9,7 @@ import static extension com.google.common.base.Preconditions.checkNotNull
 /**
  * A metamodel represented by its namespace URIs.
  */
-class Metamodel {
+final class Metamodel {
 	@Accessors(PUBLIC_GETTER)
 	val Set<String> nsURIs
 
