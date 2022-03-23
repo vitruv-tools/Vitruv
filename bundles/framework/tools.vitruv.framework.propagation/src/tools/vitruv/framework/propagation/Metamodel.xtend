@@ -19,7 +19,10 @@ class Metamodel {
 	}
 
 	override equals(Object obj) {
-		nsURIs == obj
+		if (obj instanceof Metamodel) {
+			return nsURIs == obj.nsURIs
+		}
+		false
 	}
 
 	override hashCode() {
