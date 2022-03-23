@@ -101,11 +101,6 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		}
 	}
 
-	def withInitializedMetamodel(String metamodelPackageClassQualfiedName) {
-		segment.additionalInitializedMetamodelPackageQualifiedClassNames += metamodelPackageClassQualfiedName
-		this
-	}
-
 	def operator_add(FluentReactionBuilder[] reactionBuilders) {
 		reactionBuilders.forEach[this += it]
 		this

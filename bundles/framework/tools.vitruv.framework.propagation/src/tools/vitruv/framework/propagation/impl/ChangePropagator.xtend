@@ -24,6 +24,7 @@ import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
+import tools.vitruv.framework.propagation.Metamodel
 
 class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
@@ -77,7 +78,7 @@ class ChangePropagator {
 
 			val propagationResultChanges = try {
 					sourceChange.affectedEObjectsMetamodelRootNsUris.flatMap [
-						changePropagationProvider.getChangePropagationSpecifications(it)
+						changePropagationProvider.getChangePropagationSpecifications(Metamodel.with(it))
 					].toSet.flatMapFixed [
 						propagateChangeForChangePropagationSpecification(change, it)
 					]

@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.propagation.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.EChange
-import java.util.Set
+import tools.vitruv.framework.propagation.Metamodel
 
 class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
@@ -21,8 +21,8 @@ class CompositeChangePropagationSpecification extends AbstractChangePropagationS
 	@Accessors(PROTECTED_GETTER)
 	val List<ChangePropagationSpecification> changeMainprocessors;
 
-	new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRoosNsUris) {
-		super(sourceMetamodelRootNsUris, targetMetamodelRoosNsUris);
+	new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
+		super(sourceMetamodel, targetMetamodel);
 		changePreprocessors = new ArrayList<ChangePropagationSpecification>();
 		changeMainprocessors = new ArrayList<ChangePropagationSpecification>();
 	}
@@ -50,8 +50,8 @@ class CompositeChangePropagationSpecification extends AbstractChangePropagationS
 	}
 
 	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
-		if (!this.sourceMetamodelRootNsUris.equals(potentialChangeProcessor.sourceMetamodelRootNsUris) ||
-			!this.targetMetamodelRootNsUris.equals(potentialChangeProcessor.targetMetamodelRootNsUris)) {
+		if (!this.sourceMetamodel.equals(potentialChangeProcessor.sourceMetamodel) ||
+			!this.targetMetamodel.equals(potentialChangeProcessor.targetMetamodel)) {
 			throw new IllegalArgumentException("ChangeProcessor metamodels are not compatible");
 		}
 	}

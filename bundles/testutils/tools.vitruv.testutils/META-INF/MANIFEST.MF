@@ -22,7 +22,6 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  ch.qos.logback.core
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
- tools.vitruv.testutils.change.processing,
  tools.vitruv.testutils.domains,
  tools.vitruv.testutils.matchers,
  tools.vitruv.testutils.printing,

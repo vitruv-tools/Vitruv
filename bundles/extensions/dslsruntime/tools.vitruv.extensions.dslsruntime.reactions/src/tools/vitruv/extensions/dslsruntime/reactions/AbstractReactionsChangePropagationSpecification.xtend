@@ -1,16 +1,15 @@
 package tools.vitruv.extensions.dslsruntime.reactions
 
 import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecification
-import java.util.Set
+import tools.vitruv.framework.propagation.Metamodel
 
 /**
  * A {@link CompositeChangePropagationSpecification} that contains the reactions change processor.
  * To add further change processors extend the implementing class and override the setup method.
  */
 abstract class AbstractReactionsChangePropagationSpecification extends CompositeChangePropagationSpecification {
-
-	new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRootNsUris) {
-		super(sourceMetamodelRootNsUris, targetMetamodelRootNsUris);
+	new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
+		super(sourceMetamodel, targetMetamodel);
 		this.setup();
 	}
 

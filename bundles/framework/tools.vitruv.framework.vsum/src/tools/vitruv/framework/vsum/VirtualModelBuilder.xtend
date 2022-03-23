@@ -119,13 +119,13 @@ class VirtualModelBuilder {
 		for (existingPropagationSpecification : changePropagationSpecifications) {
 			if (existingPropagationSpecification == changePropagationSpecification) return this
 			
-			if (existingPropagationSpecification.sourceMetamodelRootNsUris.equals(changePropagationSpecification.sourceMetamodelRootNsUris)
-				&& existingPropagationSpecification.targetMetamodelRootNsUris.equals(changePropagationSpecification.targetMetamodelRootNsUris)
+			if (existingPropagationSpecification.sourceMetamodel.equals(changePropagationSpecification.sourceMetamodel)
+				&& existingPropagationSpecification.targetMetamodel.equals(changePropagationSpecification.targetMetamodel)
 			) {
 				throw new IllegalArgumentException(
 					'''This virtual model configuration already contains the change propagation specification «
-						existingPropagationSpecification» between «existingPropagationSpecification.sourceMetamodelRootNsUris» and «
-						existingPropagationSpecification.targetMetamodelRootNsUris»!'''
+						existingPropagationSpecification» between «existingPropagationSpecification.sourceMetamodel» and «
+						existingPropagationSpecification.targetMetamodel»!'''
 				)
 			}
 		}

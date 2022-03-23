@@ -93,4 +93,12 @@ class ReactionsGeneratorConventions {
 	static def String getReactionNameSuffix(CommonalityAttribute commonalityAttribute) {
 		return '''_forCommonalityAttribute_«commonalityAttribute.name»'''
 	}
+	
+	static def String getReactionsSegmentFromCommonalityToParticipationName(Commonality commonality, Participation participation) {
+		return '''«commonality.name»To«participation.name»'''
+	}
+	
+	static def String getReactionsSegmentFromParticipationToCommonalityName(Commonality commonality, Participation participation) {
+		return '''«commonality.name»From«participation.name»'''
+	}
 }

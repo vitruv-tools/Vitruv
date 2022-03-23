@@ -12,6 +12,7 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 import java.util.Set
+import tools.vitruv.framework.propagation.Metamodel
 
 class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;
@@ -38,8 +39,8 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 			superTypes += typeRef(ChangePropagationSpecification);
 			members += reactionsSegment.toConstructor() [
 				body = '''
-				super(«Set».of(«FOR namespaceUri : reactionsSegment.fromMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»), 
-					«Set».of(«FOR namespaceUri : reactionsSegment.toMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»));'''
+				super(«Metamodel».with(«Set».of(«FOR namespaceUri : reactionsSegment.fromMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)), 
+					«Metamodel».with(«Set».of(«FOR namespaceUri : reactionsSegment.toMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)));'''
 			]
 
 			// register executor as change processor:
@@ -50,8 +51,6 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 					(reactionsSegment.fromMetamodels + reactionsSegment.toMetamodels).map[package.class].filter [
 						it !== EPackageImpl
 					].map[name]
-				metamodelPackageClassQualifiedNames +=
-					reactionsSegment.additionalInitializedMetamodelPackageQualifiedClassNames
 				body = '''
 					«FOR metamodelPackageClassQualifiedName : metamodelPackageClassQualifiedNames»org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.putIfAbsent(«
 						metamodelPackageClassQualifiedName».eNS_URI, «metamodelPackageClassQualifiedName».eINSTANCE);

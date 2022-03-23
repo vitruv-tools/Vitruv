@@ -5,18 +5,17 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.propagation.ChangePropagationObserver
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import java.util.Set
-import java.util.HashSet
+import tools.vitruv.framework.propagation.Metamodel
 
 abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
 	val List<ChangePropagationObserver> propagationObserver;
 	var UserInteractor userInteractor;
-	var Set<String> sourceMetamodelRootNsUris;
-	var Set<String> targetMetamodelRootNsUris;
+	var Metamodel sourceMetamodel;
+	var Metamodel targetMetamodel;
 
-	new(Set<String> sourceMetamodelRootNsUris, Set<String> targetMetamodelRootNsUris) {
-		this.sourceMetamodelRootNsUris = new HashSet(sourceMetamodelRootNsUris)
-		this.targetMetamodelRootNsUris = new HashSet(targetMetamodelRootNsUris)
+	new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
+		this.sourceMetamodel = sourceMetamodel
+		this.targetMetamodel = targetMetamodel
 		this.propagationObserver = newArrayList();
 	}
 
@@ -24,12 +23,12 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 		return userInteractor;
 	}
 
-	override getSourceMetamodelRootNsUris() {
-		return new HashSet(sourceMetamodelRootNsUris);
+	override getSourceMetamodel() {
+		return sourceMetamodel;
 	}
 
-	override getTargetMetamodelRootNsUris() {
-		return new HashSet(targetMetamodelRootNsUris);
+	override getTargetMetamodel() {
+		return targetMetamodel;
 	}
 
 	override setUserInteractor(UserInteractor userInteractor) {
