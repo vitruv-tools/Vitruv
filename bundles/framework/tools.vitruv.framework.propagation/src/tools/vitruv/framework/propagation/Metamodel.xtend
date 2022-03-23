@@ -11,11 +11,11 @@ import static extension com.google.common.base.Preconditions.checkNotNull
  */
 class Metamodel {
 	@Accessors(PUBLIC_GETTER)
-	val Set<String> nsURIs = new HashSet
+	val Set<String> nsURIs
 
 	private new(Set<String> nsURIs) {
 		nsURIs.forEach[checkNotNull]
-		this.nsURIs += nsURIs
+		this.nsURIs = new HashSet(nsURIs)
 	}
 
 	override equals(Object obj) {
