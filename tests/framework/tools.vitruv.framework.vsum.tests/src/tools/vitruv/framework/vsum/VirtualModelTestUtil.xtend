@@ -22,7 +22,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import allElementTypes.AllElementTypesPackage
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.Metamodel
 
 /**
  * Utility methods for the VSUM and view test cases.

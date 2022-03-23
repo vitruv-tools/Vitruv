@@ -24,7 +24,7 @@ import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.Metamodel
 
 class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)

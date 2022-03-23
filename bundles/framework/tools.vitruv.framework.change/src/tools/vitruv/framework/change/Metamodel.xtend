@@ -1,4 +1,4 @@
-package tools.vitruv.framework.propagation
+package tools.vitruv.framework.change
 
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtend.lib.annotations.Accessors

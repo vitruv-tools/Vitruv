@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.propagation.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.Metamodel
 
 class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	static val logger = Logger.getLogger(CompositeChangePropagationSpecification);

@@ -4,6 +4,7 @@ import java.util.Map
 import java.util.List
 import java.util.ArrayList
 import java.util.HashMap
+import tools.vitruv.framework.change.Metamodel
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
 	Map<Metamodel, List<ChangePropagationSpecification>> sourceMetamodelToPropagationSpecifications

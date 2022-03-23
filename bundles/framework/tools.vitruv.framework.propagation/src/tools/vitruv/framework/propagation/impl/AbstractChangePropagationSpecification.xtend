@@ -5,7 +5,7 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.propagation.ChangePropagationObserver
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.Metamodel
 
 abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
 	val List<ChangePropagationObserver> propagationObserver;

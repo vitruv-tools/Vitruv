@@ -9,7 +9,7 @@ import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.ResourceAccess
 import java.util.List
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.Metamodel
 
 abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecification {
 	static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);

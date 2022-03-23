@@ -2,7 +2,7 @@ package tools.vitruv.extensions.dslsruntime.reactions
 
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecification
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.Metamodel
 
 /**
  * A {@link CompositeChangePropagationSpecification} that contains the reactions change processor.
