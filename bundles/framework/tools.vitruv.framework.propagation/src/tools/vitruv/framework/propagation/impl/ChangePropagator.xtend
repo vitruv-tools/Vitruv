@@ -24,7 +24,6 @@ import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
-import tools.vitruv.framework.change.Metamodel
 
 class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
@@ -77,8 +76,8 @@ class ChangePropagator {
 			userInteractor.registerUserInputListener(this)
 
 			val propagationResultChanges = try {
-					sourceChange.affectedEObjectsMetamodelRootNsUris.flatMap [
-						changePropagationProvider.getChangePropagationSpecifications(Metamodel.with(it))
+					sourceChange.affectedEObjectsMetamodels.flatMap [
+						changePropagationProvider.getChangePropagationSpecifications(it)
 					].toSet.flatMapFixed [
 						propagateChangeForChangePropagationSpecification(change, it)
 					]
@@ -91,14 +90,14 @@ class ChangePropagator {
 			if (logger.isDebugEnabled) {
 				logger.debug(
 					'''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR changeInPropagation : propagationResultChanges SEPARATOR ", "»«
-						changeInPropagation.change.affectedEObjectsMetamodelRootNsUris»«ENDFOR»}'''
+						changeInPropagation.change.affectedEObjectsMetamodels»«ENDFOR»}'''
 				)
 			}
 			if (logger.isTraceEnabled) {
 				logger.trace('''
 					Result changes:
 						«FOR result : propagationResultChanges»
-							«result.change.affectedEObjectsMetamodelRootNsUris»: «result.change»
+							«result.change.affectedEObjectsMetamodels»: «result.change»
 						«ENDFOR»
 				''')
 			}
@@ -177,9 +176,9 @@ class ChangePropagator {
 
 		def private Iterable<String> getPropagationPath() {
 			if (previous === null)
-				List.of("<input change> in " + sourceChange.affectedEObjectsMetamodelRootNsUris.toString)
+				List.of("<input change> in " + sourceChange.affectedEObjectsMetamodels.toString)
 			else
-				previous.propagationPath + List.of(sourceChange.affectedEObjectsMetamodelRootNsUris.toString)
+				previous.propagationPath + List.of(sourceChange.affectedEObjectsMetamodels.toString)
 		}
 	}
 

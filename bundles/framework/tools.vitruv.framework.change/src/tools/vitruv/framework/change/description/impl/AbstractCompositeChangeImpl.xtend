@@ -7,6 +7,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.LinkedHashSet
 import java.util.Set
 import java.util.HashSet
+import tools.vitruv.framework.change.Metamodel
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	List<C> changes
@@ -27,8 +28,8 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		changes.flatMapFixedTo(new LinkedHashSet) [changedURIs]
 	}
 	
-	override Set<String> getAffectedEObjectsMetamodelRootNsUris() {
-		changes.flatMapFixedTo(new HashSet) [affectedEObjectsMetamodelRootNsUris]
+	override Set<Metamodel> getAffectedEObjectsMetamodels() {
+		changes.flatMapFixedTo(new HashSet) [affectedEObjectsMetamodels]
 	}
 
 	override getEChanges() {
