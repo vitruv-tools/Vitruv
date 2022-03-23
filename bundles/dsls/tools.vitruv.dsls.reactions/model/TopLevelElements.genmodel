@@ -20,7 +20,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactionsImports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/routines"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsSegment/additionalInitializedMetamodelPackageQualifiedClassNames"/>
     </genClasses>
     <genClasses ecoreClass="TopLevelElements.ecore#//ReactionsImport">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsImport/routinesOnly"/>
