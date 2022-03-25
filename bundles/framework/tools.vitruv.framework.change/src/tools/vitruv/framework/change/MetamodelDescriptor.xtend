@@ -11,14 +11,14 @@ import static com.google.common.base.Preconditions.checkArgument
  */
 final class MetamodelDescriptor {
 	@Accessors(PUBLIC_GETTER)
-	val Set<String> nsURIs
+	val Set<String> nsUris
 
-	private new(Set<String> nsURIs) {
-		nsURIs.forEach [
+	private new(Set<String> nsUris) {
+		nsUris.forEach [
 			checkArgument(it !== null,
-				"metamodel descriptor to be instantiated for namespace URIs %s must not contain a null URI", nsURIs)
+				"metamodel descriptor to be instantiated for namespace URIs %s must not contain a null URI", nsUris)
 		]
-		this.nsURIs = new HashSet(nsURIs)
+		this.nsUris = new HashSet(nsUris)
 	}
 
 	/**
@@ -33,22 +33,22 @@ final class MetamodelDescriptor {
 	def contains(MetamodelDescriptor descriptorForPotentiallyContainedMetamodel) {
 		checkArgument(descriptorForPotentiallyContainedMetamodel !== null,
 			"metamodel descriptor to check for containment in %s must not be null", this)
-		nsURIs.containsAll(descriptorForPotentiallyContainedMetamodel.nsURIs)
+		nsUris.containsAll(descriptorForPotentiallyContainedMetamodel.nsUris)
 	}
 
 	override equals(Object obj) {
 		if (obj instanceof MetamodelDescriptor) {
-			return nsURIs == obj.nsURIs
+			return nsUris == obj.nsUris
 		}
 		false
 	}
 
 	override hashCode() {
-		nsURIs.hashCode()
+		nsUris.hashCode()
 	}
 
 	override toString() {
-		nsURIs.toString()
+		nsUris.toString()
 	}
 
 	static def of(EPackage rootPackage) {
@@ -59,12 +59,12 @@ final class MetamodelDescriptor {
 		with(rootPackages.map[it.nsURI].toSet)
 	}
 
-	static def with(String nsURI) {
-		with(#{nsURI})
+	static def with(String nsUri) {
+		with(#{nsUri})
 	}
 
-	static def with(Set<String> nsURIs) {
-		new MetamodelDescriptor(nsURIs)
+	static def with(Set<String> nsUris) {
+		new MetamodelDescriptor(nsUris)
 	}
 
 }

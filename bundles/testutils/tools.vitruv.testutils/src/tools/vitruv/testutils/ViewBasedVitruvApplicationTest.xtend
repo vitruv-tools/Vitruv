@@ -41,7 +41,7 @@ abstract class ViewBasedVitruvApplicationTest {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		userInteraction = new TestUserInteraction
 		val domains = new VitruvDomainRepositoryImpl(
-			changePropagationSpecifications.flatMap[sourceMetamodelDescriptor.nsURIs + targetMetamodelDescriptor.nsURIs].flatMap [
+			changePropagationSpecifications.flatMap[sourceMetamodelDescriptor.nsUris + targetMetamodelDescriptor.nsUris].flatMap [
 				VitruvDomainProviderRegistry.findDomainsForMetamodelRootNsUri(it)
 			].toSet
 		)
