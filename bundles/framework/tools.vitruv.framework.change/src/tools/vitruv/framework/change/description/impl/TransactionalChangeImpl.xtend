@@ -68,7 +68,7 @@ class TransactionalChangeImpl implements TransactionalChange {
 		eChanges.map[changedURI].filterNull.toSet
 	}
 	
-	override Set<MetamodelDescriptor> getAffectedEObjectsMetamodelDescriptors() {
+	override MetamodelDescriptor getAffectedEObjectsMetamodelDescriptor() {
 		val changedPackages = affectedEObjects.fold(new HashSet<EPackage>) [ affectedPackages, changedObject |
 			var currentPackage = changedObject.eClass.EPackage
 			while (currentPackage.ESuperPackage !== null)
@@ -80,7 +80,7 @@ class TransactionalChangeImpl implements TransactionalChange {
 		]
 		checkState(!changedPackages.empty, "Cannot identify the packages of this change:%s%s",
 			System.lineSeparator, this)
-		return Set.of(MetamodelDescriptor.of(changedPackages))
+		return MetamodelDescriptor.of(changedPackages)
 	}
 
 	override resolveAndApply(ResourceSet resourceSet) {
