@@ -22,7 +22,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import allElementTypes.AllElementTypesPackage
-import tools.vitruv.framework.change.Metamodel
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 /**
  * Utility methods for the VSUM and view test cases.
@@ -60,7 +60,7 @@ class VirtualModelTestUtil {
         val aetDomain = new AllElementTypesDomainProvider().domain
         return new VirtualModelBuilder().withStorageFolder(folder).withDomain(aetDomain).
             withChangePropagationSpecification(new RedundancyChangePropagationSpecification(
-            	Metamodel.with(AllElementTypesPackage.eNS_URI), Metamodel.with(AllElementTypesPackage.eNS_URI)
+            	MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI), MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI)
             )).
             withUserInteractor(UserInteractionFactory.instance.createUserInteractor(
                 UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))).buildAndInitialize()
@@ -78,8 +78,8 @@ class VirtualModelTestUtil {
             URI.createFileURI(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
         }
 
-        new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
-            super(sourceMetamodel, targetMetamodel)
+        new(MetamodelDescriptor sourceMetamodelDescriptor, MetamodelDescriptor targetMetamodelDescriptor) {
+            super(sourceMetamodelDescriptor, targetMetamodelDescriptor)
         }
 
         override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {

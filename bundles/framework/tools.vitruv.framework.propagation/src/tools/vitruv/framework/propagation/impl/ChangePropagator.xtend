@@ -76,7 +76,7 @@ class ChangePropagator {
 			userInteractor.registerUserInputListener(this)
 
 			val propagationResultChanges = try {
-					sourceChange.affectedEObjectsMetamodels.flatMap [
+					sourceChange.affectedEObjectsMetamodelDescriptors.flatMap [
 						changePropagationProvider.getChangePropagationSpecifications(it)
 					].toSet.flatMapFixed [
 						propagateChangeForChangePropagationSpecification(change, it)
@@ -90,14 +90,14 @@ class ChangePropagator {
 			if (logger.isDebugEnabled) {
 				logger.debug(
 					'''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR changeInPropagation : propagationResultChanges SEPARATOR ", "»«
-						changeInPropagation.change.affectedEObjectsMetamodels»«ENDFOR»}'''
+						changeInPropagation.change.affectedEObjectsMetamodelDescriptors»«ENDFOR»}'''
 				)
 			}
 			if (logger.isTraceEnabled) {
 				logger.trace('''
 					Result changes:
 						«FOR result : propagationResultChanges»
-							«result.change.affectedEObjectsMetamodels»: «result.change»
+							«result.change.affectedEObjectsMetamodelDescriptors»: «result.change»
 						«ENDFOR»
 				''')
 			}
@@ -176,9 +176,9 @@ class ChangePropagator {
 
 		def private Iterable<String> getPropagationPath() {
 			if (previous === null)
-				List.of("<input change> in " + sourceChange.affectedEObjectsMetamodels.toString)
+				List.of("<input change> in " + sourceChange.affectedEObjectsMetamodelDescriptors.toString)
 			else
-				previous.propagationPath + List.of(sourceChange.affectedEObjectsMetamodels.toString)
+				previous.propagationPath + List.of(sourceChange.affectedEObjectsMetamodelDescriptors.toString)
 		}
 	}
 

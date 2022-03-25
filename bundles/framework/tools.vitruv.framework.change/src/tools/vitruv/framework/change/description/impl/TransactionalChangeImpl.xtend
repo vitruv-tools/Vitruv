@@ -37,8 +37,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.id.IdResolver
 import java.util.HashSet
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.change.Metamodel
 import org.eclipse.emf.ecore.EPackage
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class TransactionalChangeImpl implements TransactionalChange {
 	var List<? extends EChange> eChanges
@@ -68,7 +68,7 @@ class TransactionalChangeImpl implements TransactionalChange {
 		eChanges.map[changedURI].filterNull.toSet
 	}
 	
-	override Set<Metamodel> getAffectedEObjectsMetamodels() {
+	override Set<MetamodelDescriptor> getAffectedEObjectsMetamodelDescriptors() {
 		val changedPackages = affectedEObjects.fold(new HashSet<EPackage>) [ affectedPackages, changedObject |
 			var currentPackage = changedObject.eClass.EPackage
 			while (currentPackage.ESuperPackage !== null)
@@ -80,7 +80,7 @@ class TransactionalChangeImpl implements TransactionalChange {
 		]
 		checkState(!changedPackages.empty, "Cannot identify the packages of this change:%s%s",
 			System.lineSeparator, this)
-		return Set.of(Metamodel.of(changedPackages))
+		return Set.of(MetamodelDescriptor.of(changedPackages))
 	}
 
 	override resolveAndApply(ResourceSet resourceSet) {

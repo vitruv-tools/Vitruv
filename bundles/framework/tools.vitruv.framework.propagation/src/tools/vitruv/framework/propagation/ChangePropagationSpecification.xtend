@@ -4,7 +4,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.Metamodel
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 /**
  * A specification of change propagation, which is able to process changes
@@ -23,20 +23,21 @@ interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def void setUserInteractor(UserInteractor userInteractor)
 
 	/**
-	 * Returns the metamodel containing the namespace URIs of the root packages of the metamodel of elements
-	 * whose changes are handled by this <code>ChangePropagationSpecification</code>.
+	 * Returns the descriptor for the metamodel containing the namespace URIs of the root packages 
+	 * of the metamodel of elements whose changes are handled by this <code>ChangePropagationSpecification</code>.
 	 * 
-	 * @return a metamodel representing the source namespace URIs 
+	 * @return a metamodel descriptor representing the source namespace URIs 
 	 */
-	def Metamodel getSourceMetamodel()
+	def MetamodelDescriptor getSourceMetamodelDescriptor()
 
 	/**
-	 * Returns the metamodel containing the namespace URIs of the root packages of the metamodel of elements
-	 * whose are changed by this <code>ChangePropagationSpecification</code> when executing {@link #propagateChange}.
+	 * Returns the descriptor for the metamodel containing the namespace URIs of the root packages 
+	 * of the metamodel of elements whose are changed by this <code>ChangePropagationSpecification</code> 
+	 * when executing {@link #propagateChange}.
 	 * 
-	 * @return a metamodel representing the target namespace URIs
+	 * @return a metamodel descriptor representing the target namespace URIs
 	 */
-	def Metamodel getTargetMetamodel()
+	def MetamodelDescriptor getTargetMetamodelDescriptor()
 
 	/**
 	 * Returns whether this <code>ChangePropagationSpecification</code> handles the given change, i.e.,
@@ -57,7 +58,7 @@ interface ChangePropagationSpecification extends ChangePropagationObservable {
 	 * target model.
 	 * 
 	 * @param change 			  	the atomic change which shall be propagated. Should be in an instance of a
-	 * 								source metamodel of this specification (see {@link #getSourceMetamodelRootNsUris}).
+	 * 								source metamodel of this specification (see {@link #getSourceMetamodelDescriptor}).
 	 * 								Must not be <code>null</code>.
 	 * @param correspondenceModel 	the correspondence model to retrieve information about the target
 	 * 								model from. Must not be <code>null</code>.
