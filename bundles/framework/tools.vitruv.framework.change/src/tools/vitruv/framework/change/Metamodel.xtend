@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.Set
 import java.util.HashSet
-import static extension com.google.common.base.Preconditions.checkNotNull
+import static com.google.common.base.Preconditions.checkArgument
 
 /**
  * A metamodel represented by its namespace URIs.
@@ -14,8 +14,24 @@ final class Metamodel {
 	val Set<String> nsURIs
 
 	private new(Set<String> nsURIs) {
-		nsURIs.forEach[checkNotNull]
+		nsURIs.forEach [
+			checkArgument(it !== null, "metamodel to be instantiated for namespace URIs %s must not contain a null URI",
+				nsURIs)
+		]
 		this.nsURIs = new HashSet(nsURIs)
+	}
+
+	/**
+	 * Returns whether the given metamodel is contained in this metamodel,
+	 * i.e., whether its namespace URIs are a subset of the ones of this metamodel.
+	 * 
+	 * @param metamodel the metamodel to check for containment in this metamodel,
+	 *                  must not be <code>null</code>
+	 * @return whether the given metamodel is contained in this one
+	 */
+	def contains(Metamodel metamodel) {
+		checkArgument(metamodel !== null, "metamodel to check for containment in %s must not be null", this)
+		nsURIs.containsAll(metamodel.nsURIs)
 	}
 
 	override equals(Object obj) {

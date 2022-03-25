@@ -19,8 +19,9 @@ class ChangePropagationSpecificationRepository implements ChangePropagationSpeci
 	}
 
 	override List<ChangePropagationSpecification> getChangePropagationSpecifications(Metamodel sourceMetamodel) {
-		val result = sourceMetamodelToPropagationSpecifications.get(sourceMetamodel)
-		return if(result !== null) new ArrayList(result) else emptyList
+		sourceMetamodelToPropagationSpecifications.keySet.filter[sourceMetamodel.contains(it)].flatMap [
+			sourceMetamodelToPropagationSpecifications.get(it)
+		].toList
 	}
 
 	override iterator() {
