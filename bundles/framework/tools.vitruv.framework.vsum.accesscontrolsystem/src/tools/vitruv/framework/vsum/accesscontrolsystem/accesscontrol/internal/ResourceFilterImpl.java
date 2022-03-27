@@ -1,8 +1,5 @@
-package accesscontrol.internal;
+package tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.internal;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,7 +11,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -22,22 +18,17 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
-import accesscontrol.OperationAccessRightEvaluator;
-import accesscontrol.OperationAccessRightUtil;
-import accesscontrol.ResourceSetFilter;
-import accesscontrol.internal.helper.RuleDatabaseUtil;
-import accesscontrol.internal.helper.AccessControlImpl;
-import accesscontrolsystem.AccessRule;
-import accesscontrolsystem.AccesscontrolsystemFactory;
-import accesscontrolsystem.RuleDatabase;
-import accesscontrolsystem.accessright.OperationAccessRight;
-import accesscontrolsystem.role.Role;
-import accesscontrolsystem.role.RoleProvider;
+import tools.vitruv.framework.vsum.accesscontrolsystem.RuleDatabase;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightEvaluator;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.ResourceFilter;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.OperationAccessRight;
+import tools.vitruv.framework.vsum.accesscontrolsystem.role.Role;
+import tools.vitruv.framework.vsum.accesscontrolsystem.role.RoleProvider;
 
-public class FilteredResourceSet implements ResourceSetFilter {
+public class ResourceFilterImpl implements ResourceFilter {
 
-	private ResourceSet unfiltered;
-	private RuleDatabase ruleDatabase;
+	private Collection<Resource> unfiltered;
+	private AccesscontrolsystemDatabase database;
 	private ResourceSet filtered;
 	private final OperationAccessRightEvaluator evaluator;
 	private Collection<Integer> directlyAvailableRoleIndices;
@@ -48,46 +39,24 @@ public class FilteredResourceSet implements ResourceSetFilter {
 
 	/**
 	 * 
-	 * @param ruleDatabase the {@link RuleDatabase} which contains access control information
-	 * @param directlyAvailableRoleIndices information to identify the available roles (Right now indices in the {@link RuleDatabase#getRoleprovider()} {@link RoleProvider#getRole()} List)
-	 * @param evaluator an evaluator to evaluate {@link OperationAccessRight}s
+	 * @param ruleDatabase                 the {@link RuleDatabase} which contains
+	 *                                     access control information
+	 * @param directlyAvailableRoleIndices information to identify the available
+	 *                                     roles (Right now indices in the
+	 *                                     {@link RuleDatabase#getRoleprovider()}
+	 *                                     {@link RoleProvider#getRole()} List)
+	 * @param evaluator                    an evaluator to evaluate
+	 *                                     {@link OperationAccessRight}s
 	 */
-	public FilteredResourceSet(RuleDatabase ruleDatabase, Collection<Integer> directlyAvailableRoleIndices,
+	public ResourceFilterImpl(RuleDatabase ruleDatabase, Collection<Integer> directlyAvailableRoleIndices,
 			OperationAccessRightEvaluator evaluator) {
 		Objects.requireNonNull(evaluator);
 		this.evaluator = evaluator;
 		initializeEmptyInternalDataStructures();
-		this.unfiltered = new ResourceSetImpl();
-		this.ruleDatabase = ruleDatabase == null ? createNewAccessControlSystem(String.valueOf(this.hashCode()))
-				: ruleDatabase;
+		this.unfiltered = new ArrayList<>();
+		this.database = AccesscontrolsystemDatabase.create(ruleDatabase);
 		this.directlyAvailableRoleIndices = Optional.ofNullable(directlyAvailableRoleIndices)
 				.orElse(Collections.emptySet());
-	}
-
-	@Override
-	public boolean addAccessRule(EObject modified, EObject containment,
-			Collection<OperationAccessRight> grantedRights) {
-		if (getRuleDatabase().getAccessrules().stream().anyMatch(it -> it.getElement().equals(modified))) {
-			return false;
-		}
-		for (Role role : computeRoles()) {
-			AccessRule newRule = AccesscontrolsystemFactory.eINSTANCE.createAccessRule();
-			newRule.setContainment(containment);
-			newRule.setElement(modified);
-			newRule.setName(role.getName() + "," + modified.eClass().getName() + "," + modified.hashCode());
-			newRule.setRole(role);
-			newRule.getOperationAccessRights()
-					.addAll(OperationAccessRightUtil.findExistingRights(grantedRights, ruleDatabase.getAcessrightprovider()));
-			ruleDatabase.getAccessrules().add(newRule);
-		}
-		return true;
-	}
-
-	@Override
-	public boolean removeAccessRules(EObject modified) {
-		return getRuleDatabase().getAccessrules().removeAll(ruleDatabase.getAccessrules().stream()
-						.filter(it -> it.getElement().equals(modified)).collect(Collectors.toSet()));
-
 	}
 
 	@Override
@@ -101,15 +70,39 @@ public class FilteredResourceSet implements ResourceSetFilter {
 	}
 
 	@Override
-	public boolean canModify(final Collection<EObject> toModify, Collection<OperationAccessRight> needed) {
+	public boolean hasAccessRights(final Collection<EObject> toModify, Collection<OperationAccessRight> needed) {
 		if (toModify == null || toModify.isEmpty())
 			return true;
 
-		var eObjectsWithMissingAccessRights = AccessControlImpl.computeElementsWithMissingAccessRights(unfiltered,
-				computeRoles(), needed, ruleDatabase, evaluator);
+		var eObjectsWithMissingAccessRights = database.computeElementsWithMissingAccessRights(unfiltered,
+				computeRoles(), needed, evaluator);
 		var unfilteredToModify = mapToCorrespondingEObjects(toModify);
 		Map<EObject, Boolean> exists = checkIfObjectsCanBeModified(unfilteredToModify);
 		return evaluateExistsMap(exists, eObjectsWithMissingAccessRights, unfilteredToModify);
+	}
+
+	@Override
+	public List<Resource> getFilteredResources() {
+		return filtered.getResources();
+	}
+
+	@Override
+	public boolean addAccessRule(EObject modified, EObject containment,
+			Collection<OperationAccessRight> grantedRights) {
+		return database.addAccessRule(modified, containment, grantedRights, computeRoles());
+	}
+
+	@Override
+	public boolean removeAccessRules(EObject removed) {
+		return database.removeAccessRules(removed);
+	}
+
+	public ResourceSet filter(Collection<Resource> resourceSet, Collection<OperationAccessRight> needed) {
+		extractData(resourceSet);
+		constructCorrespondingResourcesAndEObjects();
+		removeObjectsWithMissingAccessRights(
+				database.computeElementsWithMissingAccessRights(unfiltered, computeRoles(), needed, evaluator));
+		return filtered;
 	}
 
 	private boolean evaluateExistsMap(Map<EObject, Boolean> exists,
@@ -128,22 +121,14 @@ public class FilteredResourceSet implements ResourceSetFilter {
 		return true;
 	}
 
-	@Override
-	public ResourceSet filter(ResourceSet resourceSet, Collection<OperationAccessRight> needed) {
-		extractData(resourceSet);
-		constructCorrespondingResourcesAndEObjects();
-		removeObjectsWithMissingAccessRights(AccessControlImpl.computeElementsWithMissingAccessRights(unfiltered,
-				computeRoles(), needed, ruleDatabase, evaluator));
-		return filtered;
-	}
-
 	private void constructCorrespondingResourcesAndEObjects() {
-		for (int i = 0; i < unfiltered.getResources().size(); i++) {
-			Resource resource = unfiltered.getResources().get(i);
+		for (int index = 0; index < unfiltered.size(); index++) {
+			final Resource resource = getElement(unfiltered, index);
 			if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof RuleDatabase)
 				continue;
-			if (isWritableUmlResource(resource)) {
-				createCorrespondentUMLResource(resource);
+			if (UMLHelper.isWritableUmlResource(resource)) {
+				UMLHelper.createCorrespondentUMLResource(resource, filtered, correspondentObjects,
+						correspondentResources);
 			} else {
 				Resource correspondantResource = createAndAddCorrespondentResource(resource);
 				for (EObject object : resource.getContents()) {
@@ -152,11 +137,18 @@ public class FilteredResourceSet implements ResourceSetFilter {
 			}
 		}
 	}
-	
+
+	private <T> T getElement(Collection<T> collection, int index) {
+		var iter = collection.iterator();
+		for (int i = 0; i < index; i++)
+			iter.next();
+		return iter.next();
+	}
+
 	private Map<EObject, Boolean> checkIfObjectsCanBeModified(List<EObject> unfilteredToModify) {
 		Map<EObject, Boolean> exists = new HashMap<>();
 		unfilteredToModify.stream().forEach(t -> exists.put(t, false));
-		for (Resource resource : unfiltered.getResources()) {
+		for (Resource resource : unfiltered) {
 			if (resource.getContents().isEmpty() || resource.getContents().get(0) instanceof RuleDatabase)
 				continue;
 			Iterator<EObject> it = resource.getAllContents();
@@ -178,43 +170,6 @@ public class FilteredResourceSet implements ResourceSetFilter {
 			return getSourceEObject(it);
 		}).collect(Collectors.toList());
 	}
-
-	/*------------------------------------ Copy from the uml special case in vitruv ------------------------------------------- */
-	private void createCorrespondentUMLResource(Resource resource) {
-		try {
-			Resource copy = copyUmlModel(resource, filtered);
-			correspondentResources.put(copy, resource);
-			// copy and resource are 1:1 copies so we use the TreeIterator to add
-			// correspondences between them
-			Iterator<EObject> copyIterator = copy.getAllContents();
-			Iterator<EObject> originalIterator = resource.getAllContents();
-			while (copyIterator.hasNext()) {
-				correspondentObjects.put(copyIterator.next(), originalIterator.next());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static boolean isWritableUmlResource(Resource resource) {
-		return resource.getURI().fileExtension().equals("uml") || resource.getURI().fileExtension().equals("uml_mockup");
-	}
-
-	private static Resource copyUmlModel(Resource originalResource, ResourceSet newResourceSet) throws IOException {
-		var originalURI = originalResource.getURI();
-		var tempFilePath = Files.createTempFile(null, "." + originalURI.fileExtension());
-		var tempURI = URI.createFileURI(tempFilePath.toString());
-		originalResource.setURI(tempURI);
-		originalResource.save(null);
-		originalResource.setURI(originalURI);
-		var viewResource = newResourceSet.getResource(tempURI, true);
-		viewResource.setURI(originalURI);
-		Files.delete(tempFilePath);
-		EcoreUtil.resolveAll(viewResource);
-		return viewResource;
-	}
-	
-	/*------------------------------------ Copy from the uml special case in vitruv end ------------------------------------------- */
 
 	private void removeObjectsWithMissingAccessRights(
 			Map<Resource, Collection<EObject>> eObjectsWithMissingAccessRights) {
@@ -241,34 +196,28 @@ public class FilteredResourceSet implements ResourceSetFilter {
 	}
 
 	private void extractRuleDatabaseFromUnfiltered() {
-		unfiltered.getResources().stream()
-				.filter(t -> !t.getContents().isEmpty() && (t.getContents().get(0) instanceof RuleDatabase)).findFirst()
-				.ifPresent(t -> ruleDatabase = (RuleDatabase) t.getContents().get(0));
+		unfiltered.stream().filter(t -> !t.getContents().isEmpty() && (t.getContents().get(0) instanceof RuleDatabase))
+				.findFirst()
+				.ifPresent(t -> database = AccesscontrolsystemDatabase.create((RuleDatabase) t.getContents().get(0)));
 	}
 
-	private boolean containsRuleDatabase(ResourceSet set) {
+	private boolean containsRuleDatabase(Collection<Resource> set) {
 		return ruleDatabaseCount(set) == 1;
 	}
 
-	private int ruleDatabaseCount(ResourceSet set) {
-		return (int) set.getResources().stream()
+	private int ruleDatabaseCount(Collection<Resource> unfiltered) {
+		return (int) unfiltered.stream()
 				.filter(t -> !t.getContents().isEmpty() && t.getContents().get(0) instanceof RuleDatabase).count();
 	}
 
-	private RuleDatabase createNewAccessControlSystem(String name) {
-		return RuleDatabaseUtil.createRuleDatabase(
-				URI.createFileURI(new File("").getAbsolutePath() + "/vsum/" + name + ".accesscontrolsystem"),
-				this.unfiltered);
-	}
-
-	private void extractData(ResourceSet unfiltered) {
+	private void extractData(Collection<Resource> unfiltered) {
 		// different accesscontrolsystems are not permitted
 		if (ruleDatabaseCount(unfiltered) > 1) {
 			throw new IllegalArgumentException();
 		}
 		if (!containsRuleDatabase(unfiltered)) {
 			// no ruleDatabase part of the model, so add a default one and add it here
-			unfiltered.getResources().add(ruleDatabase.eResource());
+			unfiltered.add(database.eResource());
 			this.unfiltered = unfiltered;
 		} else {
 			// the given set contains a ruleDatabase so we should use that
@@ -276,11 +225,10 @@ public class FilteredResourceSet implements ResourceSetFilter {
 			extractRuleDatabaseFromUnfiltered();
 		}
 		initializeEmptyInternalDataStructures();
-		EcoreUtil.resolveAll(unfiltered);
 	}
 
 	private Collection<Role> computeRoles() {
-		var roles = ruleDatabase.getRoleprovider().getRole();
+		var roles = database.getRoleprovider().getRole();
 		var availableRoles = new ArrayList<Role>();
 		for (int index = 0; index < roles.size(); index++) {
 			if (directlyAvailableRoleIndices.contains(index)) {
@@ -290,19 +238,10 @@ public class FilteredResourceSet implements ResourceSetFilter {
 		return availableRoles;
 	}
 
-	/**
-	 * Gives direct access to the underlying {@link RuleDatabase}. For testing
-	 * purpose only! Removes rules without elements!
-	 * 
-	 * @deprecated
-	 * 
-	 * @return
-	 */
-	@Deprecated(since = "0.1", forRemoval = true)
 	public RuleDatabase getRuleDatabase() {
-		ruleDatabase.getAccessrules().removeAll(ruleDatabase.getAccessrules().stream()
+		database.getAccessrules().removeAll(database.getAccessrules().stream()
 				.filter(it -> it.getElement() == null).collect(Collectors.toSet()));
-		return ruleDatabase;
+		return database.getRuleDatabase();
 	}
 
 	private void createAndAddCorrespondentEObjects(Resource correspondantResource, EObject object) {

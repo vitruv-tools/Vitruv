@@ -1,23 +1,23 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Framework Access Control System Metamodel And Utility
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.vsum.accesscontrolsystem;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.vsum.accesscontrolsystem
 Bundle-Version: 2.1.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: vitruv.tools
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: accesscontrol,
- accesscontrolsystem,
- accesscontrolsystem.accessright,
- accesscontrolsystem.accessright.impl,
- accesscontrolsystem.accessright.util,
- accesscontrolsystem.impl,
- accesscontrolsystem.role,
- accesscontrolsystem.role.impl,
- accesscontrolsystem.role.util,
- accesscontrolsystem.util
+Export-Package: tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol,
+ tools.vitruv.framework.vsum.accesscontrolsystem,
+ tools.vitruv.framework.vsum.accesscontrolsystem.accessright,
+ tools.vitruv.framework.vsum.accesscontrolsystem.accessright.impl,
+ tools.vitruv.framework.vsum.accesscontrolsystem.accessright.util,
+ tools.vitruv.framework.vsum.accesscontrolsystem.impl,
+ tools.vitruv.framework.vsum.accesscontrolsystem.role,
+ tools.vitruv.framework.vsum.accesscontrolsystem.role.impl,
+ tools.vitruv.framework.vsum.accesscontrolsystem.role.util,
+ tools.vitruv.framework.vsum.accesscontrolsystem.util
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.core.runtime,

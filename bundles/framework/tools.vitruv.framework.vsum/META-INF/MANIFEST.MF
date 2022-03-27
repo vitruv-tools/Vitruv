@@ -14,5 +14,5 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore.xmi,
  edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.framework.vsum,
- tools.vitruv.framework.vsum.internal;x-internal:=true
+ tools.vitruv.framework.vsum.internal;x-friends:="tools.vitruv.framework.vsum.filtered, tools.vitruv.framework.vsum.filtered.tests"
 Bundle-Vendor: vitruv.tools

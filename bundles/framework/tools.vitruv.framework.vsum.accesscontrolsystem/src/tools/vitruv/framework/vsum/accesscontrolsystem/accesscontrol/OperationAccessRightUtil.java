@@ -1,22 +1,22 @@
-package accesscontrol;
+package tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import accesscontrolsystem.accessright.AccessRight;
-import accesscontrolsystem.accessright.AcessRightProvider;
-import accesscontrolsystem.accessright.Operation;
-import accesscontrolsystem.accessright.OperationAccessRight;
-import accesscontrolsystem.accessright.accessrightFactory;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.AccessRight;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.AccessrightFactory;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.AcessRightProvider;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.Operation;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.OperationAccessRight;
 
 /**
  * Implementing {@link #neededRightsViewing()} allows to specify the rights
  * needed to an element for it to be part of a generated view and
  * {@link #neededRightsModifying()} allows to specify the rights needed to
  * modify an element.
- * {@link #findExistingRights(Collection, AcessRightProvider)} allows to get
+ * {@link #findOrAddRights(Collection, AcessRightProvider)} allows to get
  * OperationAccessRights that have the same operations and accessrights as the
  * given ones but are contained in the given AccessRightProvider (by either
  * finding them or adding them to the provider).
@@ -25,11 +25,6 @@ import accesscontrolsystem.accessright.accessrightFactory;
  *
  */
 public interface OperationAccessRightUtil {
-
-	static OperationAccessRight allowRead = OperationAccessRightUtil.allowRead();
-	static OperationAccessRight allowWrite = OperationAccessRightUtil.allowWrite();
-	static OperationAccessRight denyRead = OperationAccessRightUtil.denyRead();
-	static OperationAccessRight denyWrite = OperationAccessRightUtil.denyWrite();
 
 	/**
 	 * 
@@ -57,7 +52,7 @@ public interface OperationAccessRightUtil {
 	 *         {@link Operation#READ}
 	 */
 	static OperationAccessRight allowRead() {
-		return createOperationAccessRight(allowRead, AccessRight.ALLOW, Operation.READ);
+		return createOperationAccessRight(AccessRight.ALLOW, Operation.READ);
 	}
 
 	/**
@@ -66,7 +61,7 @@ public interface OperationAccessRightUtil {
 	 *         {@link Operation#WRITE}
 	 */
 	static OperationAccessRight allowWrite() {
-		return createOperationAccessRight(allowWrite, AccessRight.ALLOW, Operation.WRITE);
+		return createOperationAccessRight(AccessRight.ALLOW, Operation.WRITE);
 	}
 
 	/**
@@ -75,7 +70,7 @@ public interface OperationAccessRightUtil {
 	 *         {@link Operation#READ}
 	 */
 	static OperationAccessRight denyRead() {
-		return createOperationAccessRight(denyRead, AccessRight.DENY, Operation.READ);
+		return createOperationAccessRight(AccessRight.DENY, Operation.READ);
 	}
 
 	/**
@@ -84,7 +79,7 @@ public interface OperationAccessRightUtil {
 	 *         {@link Operation#WRITE}
 	 */
 	static OperationAccessRight denyWrite() {
-		return createOperationAccessRight(denyWrite, AccessRight.DENY, Operation.WRITE);
+		return createOperationAccessRight(AccessRight.DENY, Operation.WRITE);
 	}
 
 	/**
@@ -99,7 +94,7 @@ public interface OperationAccessRightUtil {
 	 * @return the found or created rights, either way they are contained in the
 	 *         AccessRightProvider
 	 */
-	static Collection<OperationAccessRight> findExistingRights(Collection<OperationAccessRight> rights,
+	static Collection<OperationAccessRight> findOrAddRights(Collection<OperationAccessRight> rights,
 			AcessRightProvider existingRightsProvider) {
 		Collection<OperationAccessRight> found = new ArrayList<>();
 		for (OperationAccessRight right : rights) {
@@ -110,7 +105,7 @@ public interface OperationAccessRightUtil {
 				found.add(existingRight.get());
 			} else {
 				// add a new OperationAccessRight to the provider and to the list
-				OperationAccessRight created = accessrightFactory.eINSTANCE.createOperationAccessRight();
+				OperationAccessRight created = AccessrightFactory.eINSTANCE.createOperationAccessRight();
 				created.setAccessRight(right.getAccessRight());
 				created.setOperation(right.getOperation());
 				existingRightsProvider.getOperationAccessRights().add(created);
@@ -120,21 +115,9 @@ public interface OperationAccessRightUtil {
 		return found;
 	}
 
-	/**
-	 * Only creates a new OperationAccessRight if the reference is null!
-	 * 
-	 * @param reference   the reference the OperationAccessRight is saved in if it
-	 *                    is null
-	 * @param accessRight
-	 * @param operation
-	 * @return the newly created OperationAccessRight if the reference is
-	 *         {@code null}, otherwise the reference
-	 */
-	private static OperationAccessRight createOperationAccessRight(OperationAccessRight reference,
+	private static OperationAccessRight createOperationAccessRight(
 			AccessRight accessRight, Operation operation) {
-		if (reference != null)
-			return reference;
-		reference = accessrightFactory.eINSTANCE.createOperationAccessRight();
+		OperationAccessRight reference = AccessrightFactory.eINSTANCE.createOperationAccessRight();
 		reference.setAccessRight(accessRight);
 		reference.setOperation(operation);
 		return reference;

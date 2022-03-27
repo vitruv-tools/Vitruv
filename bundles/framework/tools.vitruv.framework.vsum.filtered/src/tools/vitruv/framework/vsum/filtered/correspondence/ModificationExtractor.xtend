@@ -2,13 +2,14 @@ package tools.vitruv.framework.vsum.filtered.correspondence
 
 import java.util.ArrayList
 import java.util.List
-import java.util.Map
+import java.util.stream.Collectors
+import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
@@ -17,39 +18,59 @@ import tools.vitruv.framework.vsum.filtered.IdCrossResolver
 import tools.vitruv.framework.vsum.filtered.changemodification.EChangeModification
 import tools.vitruv.framework.vsum.filtered.changemodification.IDBasedEChangeModification
 import tools.vitruv.framework.vsum.filtered.changemodification.IndexBasedEChangeModification
+import org.eclipse.uml2.uml.PrimitiveType
 
 import static extension tools.vitruv.framework.vsum.filtered.internal.Util.getChangedObject
 import static extension tools.vitruv.framework.vsum.filtered.internal.Util.getChangedObjectID
 import static extension tools.vitruv.framework.vsum.filtered.internal.Util.setChangedObjectID
-import tools.vitruv.framework.change.echange.eobject.DeleteEObject
-import java.util.stream.Collectors
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import java.util.Set
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightUtil
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.ResourceFilter
+import tools.vitruv.framework.change.description.VitruviusChange
+import org.eclipse.xtend.lib.annotations.Accessors
 
+@Accessors(NONE)
 @FinalFieldsConstructor
 class ModificationExtractor {
 
-	val Correspondences correspondences
+	val VitruviusChange change
 	val IdCrossResolver idCrossResolver
+	var CorrespondenceExtractor correspondences
+
+	@Accessors(PUBLIC_GETTER)
 	val List<EChangeModification> modifications = new ArrayList()
 
-	def List<EChangeModification> extract() {
+	def List<EChangeModification> extract(IdCrossResolver resolver, ResourceFilter filter) {
+		correspondences = new CorrespondenceExtractor(change, idCrossResolver)
+		checkIfModifiedObjectsCanBeModified(resolver, filter)
 		handleCreatedObjects
-		modifications.filter[it instanceof IndexBasedEChangeModification].forEach[it.reverse]
+		modifications.filter[it.containsChange].forEach[it.apply]
 		handleDeletedObjects
+		modifications.filter[it.containsChange].forEach[it.reverse]
 		return modifications
 	}
 
-	def private void handleCreatedObjects() {
+	private def void checkIfModifiedObjectsCanBeModified(IdCrossResolver resolver, ResourceFilter filter) {
+		for (FeatureEChange<EObject, EReference> echange : correspondences.modifiedObjects) {
+			if (resolver.hasEObject(echange.affectedEObjectID)) {
+				if (!filter.hasAccessRights(Set.of(resolver.getEObject(echange.affectedEObjectID)),
+					OperationAccessRightUtil.neededRightsModifying)) {
+					throw new IllegalStateException(
+						"Tried to modify element " + resolver.getEObject(echange.affectedEObjectID) + " with id " +
+							echange.affectedEObjectID + " without access and with change " + echange + " in resource " +
+							echange.affectedEObject.eResource)
+				}
+			}
+		}
+	}
+
+	private def void handleCreatedObjects() {
 		correspondences.createdObjects.stream.forEach [ visitedEObject |
 			visitedEObject.updateChangesIndexBased.forEach[computeAndInsertCorrectIndex(visitedEObject, it)]
 		]
 		for (var i = 0; i < correspondences.createdObjects.size; i++) {
 			val eObjectCreationAndModifications = correspondences.createdObjects.get(i)
-			// _____________________________________ index based changes need a changed index
-//			for (UpdateSingleListEntryEChange<EObject, EReference> change : eObjectCreationAndModifications.
-//				updateChangesIndexBased) {
-//				// all changes coming in here are local to one change (they have been added and possibly removed in one change)
-//				computeAndInsertCorrectIndex(eObjectCreationAndModifications, change)
-//			}
 			// all index variables have been correctly set so we can use them to derive the ids
 			for (UpdateSingleListEntryEChange<EObject, EReference> change : eObjectCreationAndModifications.
 				updateChangesIndexBased) {
@@ -58,8 +79,8 @@ class ModificationExtractor {
 					val indexLength = builder.reverse.indexOf(".")
 					builder.delete(0, indexLength).reverse.append(change.index)
 					modifications.add(
-						new IDBasedEChangeModification(change, change.changedObjectID, builder.toString, [ s |
-							change.changedObjectID = s
+						new IDBasedEChangeModification(change, change.changedObjectID, builder.toString, [ c, s |
+							(c as UpdateSingleListEntryEChange<EObject, EReference>).changedObjectID = s
 						]))
 				} else if (change instanceof InsertEReference) {
 					// insert references refer to the cache so no changes to ids are needed
@@ -70,7 +91,7 @@ class ModificationExtractor {
 			if (!eObjectCreationAndModifications.updateChangesIndexBased.empty) {
 				// the indices of subsequent changes are only invalid if they were changed by an operation before
 				val change = eObjectCreationAndModifications.updateChangesIndexBased.get(0)
-				if (!idCrossResolver.isNew(change.affectedEObjectID)) {
+				if (!idCrossResolver.notPresentInSource(change.affectedEObjectID)) {
 					for (ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object> referenceBasedChange : eObjectCreationAndModifications.
 						updateChangesReferenceBased) {
 						if (referenceBasedChange.affectedEObjectID.contains("@")) {
@@ -83,8 +104,8 @@ class ModificationExtractor {
 								if (!referenceBasedChange.affectedEObjectID.equals(builder.toString)) {
 									modifications.add(
 										new IDBasedEChangeModification(referenceBasedChange,
-											referenceBasedChange.affectedEObjectID, builder.toString, [ s |
-												referenceBasedChange.affectedEObjectID = s
+											referenceBasedChange.affectedEObjectID, builder.toString, [ c,s |
+												(c as ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>).affectedEObjectID = s
 											]))
 								}
 							}
@@ -104,13 +125,6 @@ class ModificationExtractor {
 	private def void handleDeletedObjects() {
 		for (EObjectExistenceChangesAndModifications<DeleteEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>> del : correspondences.
 			deletedObjects) {
-			// object gets deleted
-			if (del.existenceChange.size == 1) {
-				if (!del.updateChangesIndexBased.empty) {
-					// extract the model element from source and get the differences in crossreferences
-					checkAccessToCrossReferences(del)
-				}
-			}
 			for (UpdateSingleListEntryEChange<EObject, EReference> indexBasedChange : del.updateChangesIndexBased) {
 				// all elements here are existing so we can just change the index to the one in the initial list
 				if (idCrossResolver.hasEObject(indexBasedChange.affectedEObjectID) &&
@@ -123,8 +137,17 @@ class ModificationExtractor {
 					// index based changes have to be applied as the correct indices for later id based changes are extracted from the changed indices
 					indexBasedEChangeModification.apply
 					modifications.add(indexBasedEChangeModification)
+					if (del.existenceChange.size == 1) {
+						if (!del.updateChangesIndexBased.empty) {
+							// extract the model element from source and get the differences in crossreferences
+							checkAccessToCrossReferences(del,
+								idCrossResolver.getEObject(indexBasedChange.changedObjectID))
+						}
+					}
+
 				}
 			}
+		// object gets deleted
 		}
 	}
 
@@ -187,36 +210,34 @@ class ModificationExtractor {
 	}
 
 	protected def void checkAccessToCrossReferences(
-		EObjectExistenceChangesAndModifications<DeleteEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>> change) {
+		EObjectExistenceChangesAndModifications<DeleteEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>> change,
+		EObject original) {
 
 		if (change.updateChangesIndexBased.empty) {
 			return
 		}
 		val diffcrossref = new ArrayList<EObject>()
-		val resolver = idCrossResolver
-		val removeReferenceChange = change.updateChangesIndexBased.stream.filter[it instanceof RemoveEReference].
-			findFirst
-		if (removeReferenceChange.empty) {
-			return
-		}
-		if (!resolver.hasEObject(removeReferenceChange.get.changedObjectID)) {
-			return
-		}
-		val removedEObject = resolver.getEObject(removeReferenceChange.get.changedObjectID)
-		val crossReferencesOriginalEObject = removedEObject.eCrossReferences
+		val crossReferencesOriginalEObject = original.eCrossReferences
 		diffcrossref.addAll(crossReferencesOriginalEObject)
 		diffcrossref.removeAll(change.updateChangesIndexBased.stream.filter[it instanceof RemoveEReference].map [
-			resolver.getEObject(it.affectedEObjectID)
+			idCrossResolver.getEObject(it.affectedEObjectID)
 		].collect(Collectors.toList))
-		diffcrossref.removeAll(change.updateChangesReferenceBased.stream.filter[it.oldValue.equals(removedEObject)].map [
-			resolver.getEObject(it.affectedEObjectID)
+		// does not work because oldValue is part of the VitruvView whereas removedEObject is part of UnfilteredSource and as no IDs are collected and 
+		// the VitruvView does not contain methods to get the element from the FilteredSource corresponding to the oldValue we cannot get the correct value here
+		// diffcrossref.removeAll(change.updateChangesReferenceBased.stream.filter[it.oldValue.equals(removedEObject)].map [
+		// resolver.getEObject(it.affectedEObjectID)
+		// ].collect(Collectors.toList))
+		// so overapproximate with all removed elements
+		diffcrossref.removeAll(change.updateChangesReferenceBased.stream.map [
+			idCrossResolver.getEObject(it.affectedEObjectID)
 		].collect(Collectors.toList))
-	// remove all references that have been explicitly deleted by the UpdateSingleListEntry
-	// TODO deletions have to be considered as the unfiltered version may has references on them which are not available in the filtered
-	// version so EcoreUtil.delete wont delete those cross references, but because they have cache ids they cannot be collected by id
-	// and instead have to be collected with object equals and processed differently
-//		if (!diffcrossref.empty)
-//			throw new IllegalStateException("Element " + change.existenceChange.get(0).affectedEObject +
-//				" shall be deleted but contains references on elements you have no access to!")
+		for (EObject referenced : diffcrossref) {
+			// Enum Literals are not contained in the model and cannot have accessright definitions
+			if (!(referenced instanceof EEnumLiteral) && !(referenced instanceof PrimitiveType)) {
+				throw new IllegalStateException(
+					"Element " + change.existenceChange.get(0).affectedEObject +
+						" shall be deleted but contains references on elements you have no access to!" + diffcrossref)
+			}
+		}
 	}
 }

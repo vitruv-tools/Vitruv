@@ -10,7 +10,7 @@
       <!-- @generated accesscontrolsystem -->
       <package
             uri="http://tools.vitruv/accesscontrolsystem"
-            class="accesscontrolsystem.AccesscontrolsystemPackage"
+            class="tools.vitruv.framework.vsum.accesscontrolsystem.AccesscontrolsystemPackage"
             genModel="metamodel/accesscontrolsystem.genmodel"/>
    </extension>
 
@@ -18,7 +18,7 @@
       <!-- @generated accesscontrolsystem -->
       <package
             uri="http://tools.vitruv/accesscontrolsystem/role"
-            class="accesscontrolsystem.role.rolePackage"
+            class="tools.vitruv.framework.vsum.accesscontrolsystem.role.RolePackage"
             genModel="metamodel/accesscontrolsystem.genmodel"/>
    </extension>
 
@@ -26,7 +26,7 @@
       <!-- @generated accesscontrolsystem -->
       <package
             uri="http://tools.vitruv/accesscontrolsystem/accessright"
-            class="accesscontrolsystem.accessright.accessrightPackage"
+            class="tools.vitruv.framework.vsum.accesscontrolsystem.accessright.AccessrightPackage"
             genModel="metamodel/accesscontrolsystem.genmodel"/>
    </extension>
 

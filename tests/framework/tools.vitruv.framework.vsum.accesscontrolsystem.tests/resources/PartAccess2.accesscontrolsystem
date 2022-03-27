@@ -8,38 +8,38 @@
   </acessrightprovider>
   <accessrules role="//@roleprovider/@role.0" name="AlbertAlbert" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@parent.0"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
     <accessrules role="//@roleprovider/@role.0" name="AlbertEinstein" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@child.0"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="AlbertRegistryOffice" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="Albert1" operationAccessRights="//@acessrightprovider/@operationAccessRights.2 //@acessrightprovider/@operationAccessRights.3">
     <element href="Example.registryoffice#//@child.1"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="Albert1" operationAccessRights="//@acessrightprovider/@operationAccessRights.2 //@acessrightprovider/@operationAccessRights.3">
     <element href="Example.registryoffice#//@child.2"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="Albert1" operationAccessRights="//@acessrightprovider/@operationAccessRights.2 //@acessrightprovider/@operationAccessRights.3">
     <element href="Example.registryoffice#//@child.3"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="Albert1" operationAccessRights="//@acessrightprovider/@operationAccessRights.2 //@acessrightprovider/@operationAccessRights.3">
     <element href="Example.registryoffice#//@parent.1"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="Albert1" operationAccessRights="//@acessrightprovider/@operationAccessRights.2 //@acessrightprovider/@operationAccessRights.3">
     <element href="Example.registryoffice#//@parent.2"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.0" name="Albert1" operationAccessRights="//@acessrightprovider/@operationAccessRights.2 //@acessrightprovider/@operationAccessRights.3">
     <element href="Example.registryoffice#//@parent.3"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <roleprovider>
     <role name="Albert"/>

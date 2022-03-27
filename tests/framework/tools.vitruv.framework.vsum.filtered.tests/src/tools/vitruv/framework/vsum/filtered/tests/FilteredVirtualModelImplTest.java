@@ -1,17 +1,15 @@
-package tools.vitruv.framework.vsum.filtered;
+package tools.vitruv.framework.vsum.filtered.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +57,6 @@ public class FilteredVirtualModelImplTest {
 		assertEquals(0, office.getChild().size());
 	}
 
-	@Disabled
 	@Test
 	@DisplayName("ExplicitAccessOneParent - Changes an attribute while gaining access on only the changed element")
 	final void changeAttribute() {
@@ -67,15 +64,6 @@ public class FilteredVirtualModelImplTest {
 		CommittableView view = Util.createView(model);
 		RegistryOffice office = Util.getRegistryOffice(view);
 
-		// TODO discuss why the generated changes are
-		// tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl@42122f28
-		// (idAttributeValue: null, affectedEObjectID: cache:/0),
-		// tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl@253ab1d3
-		// (affectedEObjectID: containment) (index: 4) (newValueID: cache:/0, wasUnset:
-		// false),
-		// tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl@6f538dd7
-		// (affectedEObjectID: containment/@child.4) (isUnset: false) (newValue: crkdg,
-		// wasUnset: false, oldValue: null)
 		String newName = Util.randomName();
 		office.getParent().get(0).setName(newName);
 		office = Util.updateOffice(model, view);
@@ -170,8 +158,7 @@ public class FilteredVirtualModelImplTest {
 		RegistryOffice office = Util.getRegistryOffice(view);
 		
 		EcoreUtil.delete(office.getChild().get(0));
-//		office.getChild().remove(0);
-		assertThrows(IllegalStateException.class ,() -> {Util.updateOffice(model, view);});
+		assertThrows(IllegalStateException.class ,() -> Util.updateOffice(model, view));
 	}
 	
 	@Test

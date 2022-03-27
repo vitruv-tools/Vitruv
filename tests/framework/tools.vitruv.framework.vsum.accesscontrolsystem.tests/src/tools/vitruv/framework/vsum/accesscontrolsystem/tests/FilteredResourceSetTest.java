@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tools.vitruv.framework.vsum.accesscontrolsystem.test;
+package tools.vitruv.framework.vsum.accesscontrolsystem.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,13 +23,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil.EqualityHelper;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.junit.jupiter.api.Test;
 
-import accesscontrol.OperationAccessRightEvaluator;
-import accesscontrol.OperationAccessRightUtil;
-import accesscontrol.ResourceSetFilter;
-import accesscontrol.internal.FilteredResourceSet;
-import accesscontrol.internal.OperationAccessRightEvaluatorImpl;
-import accesscontrolsystem.RuleDatabase;
 import registryoffice.RegistryOffice;
+import tools.vitruv.framework.vsum.accesscontrolsystem.RuleDatabase;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightEvaluator;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightUtil;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.ResourceFilter;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.internal.ResourceFilterImpl;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.internal.OperationAccessRightEvaluatorImpl;
 
 /**
  * @author Thomas Weber (thomas.weber@student.kit.edu)
@@ -140,14 +140,14 @@ class FilteredResourceSetTest {
 				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0).getName());
 		assertEquals("Grimhild",
 				((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1).getName());
-		assertTrue(set.canModify(
+		assertTrue(set.hasAccessRights(
 				Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getParent().get(0)),
 				List.of(OperationAccessRightUtil.allowWrite())));
 		assertTrue(
-				set.canModify(Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0)),
+				set.hasAccessRights(Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(0)),
 						List.of(OperationAccessRightUtil.allowWrite())));
 		assertFalse(
-				set.canModify(Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1)),
+				set.hasAccessRights(Set.of(((RegistryOffice) filterOperationResult.get(0).filtered.get(0)).getChild().get(1)),
 						List.of(OperationAccessRightUtil.allowWrite())));
 	}
 
@@ -187,7 +187,7 @@ class FilteredResourceSetTest {
 		assertTrue(filterOperationResult.get(1).unfilteredEqualsFiltered());
 	}
 
-	private static ResourceSetFilter set;
+	private static ResourceFilter set;
 	private static OperationAccessRightEvaluator evaluator = new OperationAccessRightEvaluatorImpl();
 
 	private List<FilterOperationResult> load(String accessControlsystemFileName, String... exampleFileNames) {
@@ -208,16 +208,16 @@ class FilteredResourceSetTest {
 		RuleDatabase ruleDatabase = (RuleDatabase) resourceSet.getResource(URI.createFileURI(path), true).getContents()
 				.get(0);
 
-		ResourceSetFilter filteredResourceSet = new FilteredResourceSet(ruleDatabase, List.of(0), evaluator);
+		ResourceFilterImpl filteredResourceSet = new ResourceFilterImpl(ruleDatabase, List.of(0), evaluator);
 		List<FilterOperationResult> result = buildCorrespondences(filteredResourceSet, resourceSet);
 		set = filteredResourceSet;
 		return result;
 	}
 
-	private List<FilterOperationResult> buildCorrespondences(ResourceSetFilter resourceSetFilter,
+	private List<FilterOperationResult> buildCorrespondences(ResourceFilterImpl resourceSetFilter,
 			ResourceSet toFilter) {
 		List<FilterOperationResult> result = new ArrayList<>();
-		for (Resource filtered : resourceSetFilter.filter(toFilter, List.of(OperationAccessRightUtil.allowRead())).getResources()) {
+		for (Resource filtered : resourceSetFilter.filter(toFilter.getResources(), List.of(OperationAccessRightUtil.allowRead())).getResources()) {
 			var unfiltered = resourceSetFilter.getSourceResource(filtered);
 			result.add(new FilterOperationResult(unfiltered.getContents(), filtered.getContents()));
 		}

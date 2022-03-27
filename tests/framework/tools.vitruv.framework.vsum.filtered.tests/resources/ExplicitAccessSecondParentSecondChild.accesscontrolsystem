@@ -8,23 +8,23 @@
     <operationAccessRights/>
   </acessrightprovider>
   <accessrules role="#//@roleprovider/@role.0" name="AlbertAlbert" element="Example_temp.registryoffice#//@parent.1"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.0 #//@acessrightprovider/@operationAccessRights.1"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.0 #//@acessrightprovider/@operationAccessRights.1"/>
   <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@child.0"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
   <accessrules role="#//@roleprovider/@role.0" name="AlbertRegistryOffice" element="Example_temp.registryoffice#/"
       operationAccessRights="#//@acessrightprovider/@operationAccessRights.0 #//@acessrightprovider/@operationAccessRights.1"/>
   <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@child.1"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.0 #//@acessrightprovider/@operationAccessRights.1"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.0 #//@acessrightprovider/@operationAccessRights.1"/>
   <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@child.2"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
       <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@child.3"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
   <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@parent.0"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
   <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@parent.2"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
   <accessrules role="#//@roleprovider/@role.0" name="Albert1" element="Example_temp.registryoffice#//@parent.3"
-      containment="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
+      elementContainingOrReferencing="Example_temp.registryoffice#/" operationAccessRights="#//@acessrightprovider/@operationAccessRights.2 #//@acessrightprovider/@operationAccessRights.3"/>
   <roleprovider>
     <role name="Albert"/>
     <role name="Berta"/>

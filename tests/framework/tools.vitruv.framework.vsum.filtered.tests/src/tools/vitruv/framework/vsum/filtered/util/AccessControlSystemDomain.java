@@ -2,8 +2,8 @@ package tools.vitruv.framework.vsum.filtered.util;
 
 import java.util.Set;
 
-import accesscontrolsystem.AccesscontrolsystemPackage;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.vsum.accesscontrolsystem.AccesscontrolsystemPackage;
 
 public class AccessControlSystemDomain extends AbstractVitruvDomain {
 

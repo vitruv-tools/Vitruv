@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.accesscontrolsystem.test;
+package tools.vitruv.framework.vsum.accesscontrolsystem.tests;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import accesscontrol.OperationAccessRightEvaluator;
-import accesscontrol.OperationAccessRightUtil;
-import accesscontrol.internal.OperationAccessRightEvaluatorImpl;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightEvaluator;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightUtil;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.internal.OperationAccessRightEvaluatorImpl;
 
 class OperationAccessRightUtilTest {
 

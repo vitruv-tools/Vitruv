@@ -19,12 +19,14 @@ import tools.vitruv.framework.vsum.filtered.IdCrossResolver
 import static tools.vitruv.framework.vsum.filtered.internal.Util.*
 
 import static extension tools.vitruv.framework.vsum.filtered.internal.Util.getChangedObject
+import org.eclipse.xtend.lib.annotations.Accessors
 
-class Correspondences {
-	public val modifiedObjects = new HashSet<FeatureEChange<EObject, EReference>>()
-	public val deletedObjects = new EObjectExistenceChangesAndModificationsList<DeleteEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>>()
-	public val createdObjects = new EObjectExistenceChangesAndModificationsList<CreateEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>>()
-	public val featureToListChange = new HashMap<EStructuralFeature, List<UpdateSingleListEntryEChange<EObject, EStructuralFeature>>>()
+@Accessors(PACKAGE_GETTER)
+package class CorrespondenceExtractor {
+	val modifiedObjects = new HashSet<FeatureEChange<EObject, EReference>>()
+	val deletedObjects = new EObjectExistenceChangesAndModificationsList<DeleteEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>>()
+	val createdObjects = new EObjectExistenceChangesAndModificationsList<CreateEObject<EObject>, UpdateSingleListEntryEChange<EObject, EReference>, ReplaceSingleValuedFeatureEChange<EObject, EStructuralFeature, Object>>()
+	val featureToListChange = new HashMap<EStructuralFeature, List<UpdateSingleListEntryEChange<EObject, EStructuralFeature>>>()
 
 	new(VitruviusChange change, IdCrossResolver crossResolver) {
 		extractCorrespondeces(change, crossResolver)
@@ -39,7 +41,7 @@ class Correspondences {
 			}
 			// newly created objects can either be created, deleted or inserted or removed from either a single- or multi-valued reference
 			if (echange instanceof FeatureEChange) {
-				if (crossResolver.isNew(getAffectedEObjectID(echange))) {
+				if (crossResolver.notPresentInSource(getAffectedEObjectID(echange))) {
 					if (echange instanceof UpdateSingleListEntryEChange) {
 						if (createdObjects.isPresent(echange.changedObject as EObject)) {
 							createdObjects.add(echange)
@@ -80,7 +82,7 @@ class Correspondences {
 		}
 	}
 
-	protected def void addExistenceChange(EObjectExistenceEChange echange) {
+	private def void addExistenceChange(EObjectExistenceEChange<EObject> echange) {
 		if (echange instanceof CreateEObject) {
 			createdObjects.add(echange)
 		} else if (echange instanceof DeleteEObject) {

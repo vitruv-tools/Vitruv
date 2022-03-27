@@ -29,11 +29,11 @@ class IDBasedEChangeModification<T extends IDChange> implements EChangeModificat
 	}
 	
 	override apply() {
-		applicationFunction.changeID(newValue)
+		applicationFunction.changeID(echange, newValue)
 	}
 	
 	override reverse() {
-		applicationFunction.changeID(oldValue)
+		applicationFunction.changeID(echange, oldValue)
 	}
 	
 }

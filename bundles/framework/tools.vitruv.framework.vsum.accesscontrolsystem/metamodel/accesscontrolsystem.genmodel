@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
-    modelDirectory="/AccessControlSystem/src-gen" creationIcons="false"
-    editDirectory="/AccessControlSystem.edit/src-gen" editorDirectory="/AccessControlSystem.editor/src-gen"
-    modelPluginID="AccessControlSystem" modelName="Accesscontrolsystem" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="11.0"
+    modelDirectory="/tools.vitruv.framework.vsum.accesscontrolsystem/src-gen"
+    creationIcons="false" editDirectory="/AccessControlSystem.edit/src-gen" editorDirectory="/AccessControlSystem.editor/src-gen"
+    modelPluginID="tools.vitruv.framework.vsum.accesscontrolsystem" modelName="Accesscontrolsystem"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    importerID="org.eclipse.emf.importer.ecore" containmentProxies="true" complianceLevel="11.0"
     copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>accesscontrolsystem.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
-  <genPackages prefix="Accesscontrolsystem" disposableProviderFactory="true" loadInitialization="true"
-      ecorePackage="accesscontrolsystem.ecore#/">
+  <genPackages prefix="Accesscontrolsystem" basePackage="tools.vitruv.framework.vsum"
+      disposableProviderFactory="true" loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#/">
     <genClasses ecoreClass="accesscontrolsystem.ecore#//AccessRule">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/role"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//AccessRule/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/element"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/containment"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/elementContainingOrReferencing"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//AccessRule/operationAccessRights"/>
     </genClasses>
     <genClasses ecoreClass="accesscontrolsystem.ecore#//RuleDatabase">
@@ -22,8 +23,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//RuleDatabase/accessrules"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//RuleDatabase/roleprovider"/>
     </genClasses>
-    <nestedGenPackages prefix="role" basePackage="accesscontrolsystem" disposableProviderFactory="true"
-        loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#//role">
+    <nestedGenPackages prefix="Role" basePackage="tools.vitruv.framework.vsum.accesscontrolsystem"
+        disposableProviderFactory="true" loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#//role">
       <genClasses ecoreClass="accesscontrolsystem.ecore#//role/Role">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute accesscontrolsystem.ecore#//role/Role/name"/>
       </genClasses>
@@ -39,8 +40,8 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference accesscontrolsystem.ecore#//role/RoleProvider/role"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="accessright" basePackage="accesscontrolsystem" disposableProviderFactory="true"
-        loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#//accessright">
+    <nestedGenPackages prefix="Accessright" basePackage="tools.vitruv.framework.vsum.accesscontrolsystem"
+        disposableProviderFactory="true" loadInitialization="true" ecorePackage="accesscontrolsystem.ecore#//accessright">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="accesscontrolsystem.ecore#//accessright/AccessRight">
         <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/AccessRight/DENY"/>
         <genEnumLiterals ecoreEnumLiteral="accesscontrolsystem.ecore#//accessright/AccessRight/OBFUSCATE"/>

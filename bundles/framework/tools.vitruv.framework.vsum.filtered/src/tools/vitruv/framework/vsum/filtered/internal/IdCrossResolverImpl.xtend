@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import tools.vitruv.framework.change.echange.id.IdResolver
 import tools.vitruv.framework.vsum.filtered.IdCrossResolver
-import accesscontrol.ViewSourceCorrespondence
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.ViewSourceCorrespondence
 
 @FinalFieldsConstructor
 class IdCrossResolverImpl implements IdCrossResolver {
@@ -23,7 +23,7 @@ class IdCrossResolverImpl implements IdCrossResolver {
 		return unfiltered.getEObject(id)
 	}
 	
-	override isNew(String id) {
+	override notPresentInSource(String id) {
 		return !filtered.hasEObject(id)
 	}
 	
@@ -39,7 +39,6 @@ class IdCrossResolverImpl implements IdCrossResolver {
 	}
 	
 	override getResource(URI uri) {
-		// TODO is this appropriate? unfiltered contains at least as much as filtered, so probably yes
 		unfiltered.getResource(uri)
 	}
 	

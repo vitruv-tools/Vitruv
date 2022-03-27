@@ -1,14 +1,14 @@
 /**
  * 
  */
-package accesscontrol.internal;
+package tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.internal;
 
 import java.util.Collection;
 import java.util.Objects;
 
-import accesscontrol.OperationAccessRightEvaluator;
-import accesscontrolsystem.accessright.AccessRight;
-import accesscontrolsystem.accessright.OperationAccessRight;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightEvaluator;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.AccessRight;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accessright.OperationAccessRight;
 
 /**
  * Utility class containing methods to work with {@link OperationAccessRight}

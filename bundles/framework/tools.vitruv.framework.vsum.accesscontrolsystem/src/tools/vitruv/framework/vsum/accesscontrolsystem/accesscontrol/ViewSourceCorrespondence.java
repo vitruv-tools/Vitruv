@@ -1,4 +1,4 @@
-package accesscontrol;
+package tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;

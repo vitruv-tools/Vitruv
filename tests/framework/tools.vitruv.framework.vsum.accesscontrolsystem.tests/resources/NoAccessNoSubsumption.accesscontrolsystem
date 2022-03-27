@@ -6,35 +6,35 @@
   </acessrightprovider>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Albert" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@parent.0"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Berta" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@parent.1"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Caesar" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@parent.2"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Darius" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@parent.3"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Einstein" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@child.0"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Findus" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@child.1"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Grimhild" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@child.2"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <accessrules role="//@roleprovider/@role.5" name="[Albert, Berta, Caesar, Darius][Einstein, Findus, Grimhild, Hartmut]Hartmut" operationAccessRights="//@acessrightprovider/@operationAccessRights.0 //@acessrightprovider/@operationAccessRights.1">
     <element href="Example.registryoffice#//@child.3"/>
-    <containment href="Example.registryoffice#/"/>
+    <elementContainingOrReferencing href="Example.registryoffice#/"/>
   </accessrules>
   <roleprovider>
     <subsumption subsumes="//@roleprovider/@role.5" subsumer="//@roleprovider/@role.1"/>

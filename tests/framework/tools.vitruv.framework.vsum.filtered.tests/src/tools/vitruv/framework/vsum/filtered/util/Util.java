@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
-import accesscontrol.OperationAccessRightEvaluator;
-import accesscontrolsystem.RuleDatabase;
 import registryoffice.RegistryOffice;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -33,12 +31,13 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeFactory;
-import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
+import tools.vitruv.framework.vsum.accesscontrolsystem.RuleDatabase;
+import tools.vitruv.framework.vsum.accesscontrolsystem.accesscontrol.OperationAccessRightEvaluator;
 import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImpl;
-import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplComplexTest;
-import tools.vitruv.framework.vsum.filtered.FilteredVirtualModelImplTest;
+import tools.vitruv.framework.vsum.filtered.tests.FilteredVirtualModelImplComplexTest;
+import tools.vitruv.framework.vsum.filtered.tests.FilteredVirtualModelImplTest;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.testutils.domains.DomainModelCreators;
@@ -90,25 +89,35 @@ public final class Util {
 			return (RuleDatabase) ruleDatabase.get().getContents().get(0);
 		}
 		return null;
-	} 
+	}
 
 	public static final CommittableView createView(VirtualModel virtualModel) {
 		ViewType viewType = ViewTypeFactory.createIdentityMappingViewType("myviewtype");
 		ViewSelector selector = virtualModel.createSelector(viewType);
 		selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
-		return selector.createView().withChangeDerivingTrait(new DefaultStateBasedChangeResolutionStrategy());
+		return selector.createView().withChangeRecordingTrait();
 	}
 
 	public static final RegistryOffice getRegistryOffice(View view) {
 		return view.getRootObjects(RegistryOffice.class).iterator().next();
 	}
 
-	public static String randomName() {
+	public static final String randomName() {
 		return new Random().ints('a', 'z' + 1).limit(5)
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
-	public static FilteredVirtualModelImpl constructFilteredVirtualModelBeforeRootRegistration(ResourceSet set) {
+	public static final FilteredVirtualModelImpl constructFilteredVirtualModelAfterRootRegistration(ResourceSet set) {
+		InternalVirtualModel vmi = Util.createBasicVirtualModel();
+		CommittableView view = Util.createView(vmi);
+		Resource model = set.getResources().get(0);
+		view.registerRoot(model.getContents().get(0), model.getURI());
+		view.commitChangesAndUpdate();
+		return new FilteredVirtualModelImpl(vmi, set.getResources().size() == 2 ? (RuleDatabase) set.getResources().get(1).getContents().get(0) : null,
+				List.of(0), OperationAccessRightEvaluator.create());
+	}
+	
+	public static final FilteredVirtualModelImpl constructFilteredVirtualModelBeforeRootRegistration(ResourceSet set) {
 		InternalVirtualModel vmi = Util.createBasicVirtualModel();
 		RuleDatabase ruleDatabase = set.getResources().size() == 2
 				? (RuleDatabase) set.getResources().get(1).getContents().get(0)
@@ -119,33 +128,22 @@ public final class Util {
 		CommittableView view = Util.createView(impl);
 		Resource model = set.getResources().get(0);
 		view.registerRoot(model.getContents().get(0), model.getURI());
-		view.commitChangesAndUpdate();
+		view.commitChanges();
 		return impl;
 	}
 
-	public static FilteredVirtualModelImpl constructFilteredVirtualModelAfterRootRegistration(ResourceSet set) {
-		InternalVirtualModel vmi = Util.createBasicVirtualModel();
-		CommittableView view = Util.createView(vmi);
-		Resource model = set.getResources().get(0);
-		view.registerRoot(model.getContents().get(0), model.getURI());
-		view.commitChangesAndUpdate();
-		return new FilteredVirtualModelImpl(vmi,
-				(RuleDatabase) set.getResources().get(1).getContents().get(0), List.of(0),
-				OperationAccessRightEvaluator.create());
-	}
-
-	public static void createTempModelFile() {
+	public static final void createTempModelFile() {
 		createTempFile(FilteredVirtualModelImplComplexTest.MODEL_SUFFIX,
 				FilteredVirtualModelImplTest.ORIGINAL_FILE_NAME, FilteredVirtualModelImplTest.TEMP_FILE_NAME);
 	}
 
-	public static void createTempACSFile() {
+	public static final void createTempACSFile() {
 		createTempFile(FilteredVirtualModelImplComplexTest.ACS_SUFFIX,
 				FilteredVirtualModelImplComplexTest.ORIGINAL_ACS_NAME,
 				FilteredVirtualModelImplComplexTest.TEMP_ACS_NAME);
 	}
 
-	public static ResourceSet load(String exampleFileName, String accessControlsystemFileName) {
+	public static final ResourceSet load(String exampleFileName, String accessControlsystemFileName) {
 		ResourceSet set = new ResourceSetImpl();
 		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
 		set.getResource(
@@ -157,7 +155,7 @@ public final class Util {
 		return set;
 	}
 
-	public static String createTempFile(String suffix, String originalName, String tempName) {
+	public static final String createTempFile(String suffix, String originalName, String tempName) {
 		String original = new File("").getAbsolutePath() + "/resources/" + originalName + suffix;
 		String copy = new File("").getAbsolutePath() + "/resources/" + tempName + suffix;
 		try {
@@ -168,7 +166,7 @@ public final class Util {
 		return copy;
 	}
 
-	public static void removeTemporaryFiles() {
+	public static final void removeTemporaryFiles() {
 		try (Stream<Path> paths = Files.walk(Paths.get((new File("").getAbsolutePath() + "/resources/")))) {
 			paths.filter(Files::isRegularFile)
 					.filter(path -> path.getFileName().toString().contains(FilteredVirtualModelImplComplexTest.TEMP))
@@ -188,7 +186,7 @@ public final class Util {
 	 * @param view  the view that was changed
 	 * @return an extracted RegistryOffice
 	 */
-	public static RegistryOffice updateOffice(VirtualModel model, CommittableView view) {
+	public static final RegistryOffice updateOffice(VirtualModel model, CommittableView view) {
 		view.commitChanges();
 //		view = Util.createView(model);
 		return Util.getRegistryOffice(view);
