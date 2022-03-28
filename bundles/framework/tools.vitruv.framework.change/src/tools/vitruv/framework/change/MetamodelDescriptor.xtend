@@ -22,7 +22,7 @@ final class MetamodelDescriptor {
 	}
 
 	/**
-	 * Returns whether the metamodel of the given descriptor is is contained in this 
+	 * Returns whether the metamodel of the given descriptor is contained in this 
 	 * descriptor's metamodel, i.e., whether its namespace URIs are a subset of the 
 	 * ones of this descriptor.
 	 * 
