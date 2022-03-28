@@ -274,5 +274,3 @@ MetaclassEAttributeReference returns common::MetaclassEAttributeReference:
 MetaclassEReferenceReference returns common::MetaclassEReferenceReference:
 	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
 
-DomainReference returns common::DomainReference:
-	domain=ValidID;

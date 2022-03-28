@@ -14,7 +14,6 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.dsls.common;visibility:=reexport
 Export-Package: tools.vitruv.dsls.common.ui,
- tools.vitruv.dsls.common.ui.elements,
  tools.vitruv.dsls.common.ui.quickfix,
  tools.vitruv.dsls.common.ui.validation
 Bundle-Vendor: vitruv.tools
