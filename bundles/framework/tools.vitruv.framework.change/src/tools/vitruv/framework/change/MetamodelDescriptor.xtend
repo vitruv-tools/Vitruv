@@ -26,7 +26,7 @@ final class MetamodelDescriptor {
 	 * descriptor's metamodel, i.e., whether its namespace URIs are a subset of the 
 	 * ones of this descriptor.
 	 * 
-	 * @param descriptorForPpotentiallyContainedMetamodel the descriptor to check for 
+	 * @param descriptorForPotentiallyContainedMetamodel the descriptor to check for 
 	 * 			containment of its metamodel in this one, must not be <code>null</code>
 	 * @return whether the metamodel of the given descriptor is contained in this one
 	 */
