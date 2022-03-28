@@ -7,7 +7,7 @@ import java.util.Set
 
 interface CompositeChange<C extends VitruviusChange> extends VitruviusChange {
 	/**
-	 * Returns the metamodel descriptors for the for the metamodels of the elements whose instances 
+	 * Returns the metamodel descriptors for the metamodels of the elements whose instances 
 	 * have been modified in this change. It collects the metamodel descriptors for all composed 
 	 * changes (according to {@link #getChanges}). 
 	 * 
