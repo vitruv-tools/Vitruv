@@ -3,21 +3,29 @@ package tools.vitruv.framework.propagation
 import java.util.Map
 import java.util.List
 import java.util.ArrayList
-import tools.vitruv.framework.domains.VitruvDomain
+import java.util.HashMap
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	Map<VitruvDomain, List<ChangePropagationSpecification>> sourceDomainToPropagationSpecifications
+	Map<MetamodelDescriptor, List<ChangePropagationSpecification>> sourceMetamodelToPropagationSpecifications
 
 	new(Iterable<ChangePropagationSpecification> specifications) {
-		sourceDomainToPropagationSpecifications = specifications.groupBy [sourceDomain]
+		sourceMetamodelToPropagationSpecifications = new HashMap
+		specifications.forEach [ specification |
+			sourceMetamodelToPropagationSpecifications.computeIfAbsent(specification.sourceMetamodelDescriptor, [
+				new ArrayList
+			]).add(specification)
+		]
 	}
-	
-	override List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain) {
-		val result = sourceDomainToPropagationSpecifications.get(sourceDomain)
-		return if (result !== null) new ArrayList(result) else emptyList
+
+	override List<ChangePropagationSpecification> getChangePropagationSpecifications(
+		MetamodelDescriptor sourceMetamodelDescriptor) {
+		sourceMetamodelToPropagationSpecifications.keySet.filter[sourceMetamodelDescriptor.contains(it)].flatMap [
+			sourceMetamodelToPropagationSpecifications.get(it)
+		].toList
 	}
-	
+
 	override iterator() {
-		return sourceDomainToPropagationSpecifications.values.flatten.toList.iterator()
+		return sourceMetamodelToPropagationSpecifications.values.flatten.toList.iterator()
 	}
 }

@@ -117,15 +117,14 @@ class VirtualModelBuilder {
 		if (changePropagationSpecifications.contains(changePropagationSpecification)) return this
 		
 		for (existingPropagationSpecification : changePropagationSpecifications) {
-			if (existingPropagationSpecification == changePropagationSpecification) return this
-			
-			if (existingPropagationSpecification.sourceDomain.equals(changePropagationSpecification.sourceDomain)
-				&& existingPropagationSpecification.targetDomain.equals(changePropagationSpecification.targetDomain)
-			) {
+			if(existingPropagationSpecification == changePropagationSpecification) return this
+
+			if (existingPropagationSpecification.sourceMetamodelDescriptor.equals(
+				changePropagationSpecification.sourceMetamodelDescriptor) &&
+				existingPropagationSpecification.targetMetamodelDescriptor.equals(
+					changePropagationSpecification.targetMetamodelDescriptor)) {
 				throw new IllegalArgumentException(
-					'''This virtual model configuration already contains the change propagation specification «
-						existingPropagationSpecification» between «existingPropagationSpecification.sourceDomain» and «
-						existingPropagationSpecification.targetDomain»!'''
+					'''This virtual model configuration already contains the change propagation specification «existingPropagationSpecification» between «existingPropagationSpecification.sourceMetamodelDescriptor» and «existingPropagationSpecification.targetMetamodelDescriptor»!'''
 				)
 			}
 		}
@@ -144,14 +143,6 @@ class VirtualModelBuilder {
 		val viewTypeRepository = new ViewTypeRepository()
 		viewTypes.forEach[viewTypeRepository.register(it)]
 		val changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications)
-		for (changePropagationSpecification : changePropagationSpecifications) {
-			checkState(domainRepository.contains(changePropagationSpecification.sourceDomain),
- 				"The change propagation specification’s source domain ‹%s› has not been configured: %s",
- 				changePropagationSpecification.sourceDomain, changePropagationSpecification)
-			checkState(domainRepository.contains(changePropagationSpecification.targetDomain),
- 				"The change propagation specification’s target domain ‹%s› has not been configured: %s",
- 				 changePropagationSpecification.targetDomain, changePropagationSpecification)
-		}
 		for (changePropagationSpecification : changePropagationSpecifications) {
 			changePropagationSpecification.userInteractor = this.userInteractor
 		}

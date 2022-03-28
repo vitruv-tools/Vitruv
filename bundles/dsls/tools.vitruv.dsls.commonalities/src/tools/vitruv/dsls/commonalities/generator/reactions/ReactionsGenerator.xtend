@@ -159,8 +159,8 @@ class ReactionsGenerator implements SubGenerator {
 	private def void generateReactionsForCommonalityAttributeChange(Participation targetParticipation,
 		FluentReactionsSegmentBuilder segment) {
 		commonality.attributes.forEach [ attribute |
-			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation)
-				.generateReactions(segment)
+			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation).
+				generateReactions(segment)
 		]
 	}
 

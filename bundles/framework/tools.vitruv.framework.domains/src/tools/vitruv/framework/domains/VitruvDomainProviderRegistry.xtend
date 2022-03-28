@@ -10,6 +10,7 @@ import java.lang.annotation.Target
 import java.lang.annotation.Retention
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import java.util.Set
 
 /**
  * Registry of all {@linkplain VitruvDomainProvider DomainProviders} known to
@@ -107,6 +108,11 @@ final class VitruvDomainProviderRegistry {
 		return potentialDomainProviders.get(0);
 	}
 
+
+	def static Set<VitruvDomain> findDomainsForMetamodelRootNsUri(String nsUri) {
+		return allDomainProviders.map[domain].filter [it.nsUris.contains(nsUri)].toSet
+	}
+	
 	/**
 	 * Retrieves all providers for domain from the extensions registered to the VitruvDomain
 	 * extension point.

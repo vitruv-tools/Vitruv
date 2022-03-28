@@ -10,13 +10,13 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import org.junit.jupiter.api.TestInfo
 import java.nio.file.Path
 import tools.vitruv.framework.vsum.VirtualModelBuilder
-import java.util.List
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import org.junit.jupiter.api.AfterEach
 import static com.google.common.base.Preconditions.checkArgument
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
@@ -24,7 +24,7 @@ abstract class ViewBasedVitruvApplicationTest {
 	Path testProjectPath
 	@Accessors(PROTECTED_GETTER)
 	TestUserInteraction userInteraction
-	
+
 	/**
 	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
 	 */
@@ -40,15 +40,16 @@ abstract class ViewBasedVitruvApplicationTest {
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		userInteraction = new TestUserInteraction
-		val targetDomains = new VitruvDomainRepositoryImpl(
-			changePropagationSpecifications.flatMap [List.of(sourceDomain, targetDomain)].toSet
+		val domains = new VitruvDomainRepositoryImpl(
+			changePropagationSpecifications.flatMap[sourceMetamodelDescriptor.nsUris + targetMetamodelDescriptor.nsUris].flatMap [
+				VitruvDomainProviderRegistry.findDomainsForMetamodelRootNsUri(it)
+			].toSet
 		)
-		virtualModel = new VirtualModelBuilder()
-			.withStorageFolder(vsumPath)
-			.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction))
-			.withDomainRepository(targetDomains)
-			.withChangePropagationSpecifications(changePropagationSpecifications)
-			.buildAndInitialize()
+		virtualModel = new VirtualModelBuilder() //
+		.withStorageFolder(vsumPath) //
+		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
+		.withDomainRepository(domains) //
+		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
 		this.testProjectPath = testProjectPath
 	}
 
@@ -56,20 +57,21 @@ abstract class ViewBasedVitruvApplicationTest {
 	def final package void closeAfterTest() {
 		virtualModel?.dispose()
 	}
-	
+
 	def getUri(Path viewRelativePath) {
 		checkArgument(viewRelativePath !== null, "The viewRelativePath must not be null!")
 		checkArgument(!viewRelativePath.isEmpty, "The viewRelativePath must not be empty!")
 		return switch (uriMode) {
 			case PLATFORM_URIS: {
 				// platform URIs must always use '/' and be relative to the project (fileName) rather than the workspace
-				createPlatformResourceURI(testProjectPath.fileName.resolve(viewRelativePath).normalize().join('/'), true)
+				createPlatformResourceURI(testProjectPath.fileName.resolve(viewRelativePath).normalize().join('/'),
+					true)
 			}
 			case FILE_URIS:
 				createFileURI(testProjectPath.resolve(viewRelativePath).normalize().toFile())
 		}
 	}
-	
+
 	def protected VirtualModel getVirtualModel() { virtualModel }
-		
+
 }

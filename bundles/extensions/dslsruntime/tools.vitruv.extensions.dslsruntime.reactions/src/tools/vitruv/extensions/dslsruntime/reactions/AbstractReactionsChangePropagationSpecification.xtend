@@ -2,15 +2,15 @@ package tools.vitruv.extensions.dslsruntime.reactions
 
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecification
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 /**
  * A {@link CompositeChangePropagationSpecification} that contains the reactions change processor.
  * To add further change processors extend the implementing class and override the setup method.
  */
 abstract class AbstractReactionsChangePropagationSpecification extends CompositeChangePropagationSpecification {
-
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(sourceDomain, targetDomain);
+		super(MetamodelDescriptor.of(sourceDomain.metamodelRootPackage), MetamodelDescriptor.of(targetDomain.metamodelRootPackage));
 		this.setup();
 	}
 

@@ -12,7 +12,8 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.change.interaction;visibility:=reexport,
  tools.vitruv.framework.util,
  edu.kit.ipd.sdq.activextendannotations
-Export-Package: tools.vitruv.framework.change.description,
+Export-Package: tools.vitruv.framework.change,
+ tools.vitruv.framework.change.description,
  tools.vitruv.framework.change.propagation,
  tools.vitruv.framework.change.recording
 Bundle-Vendor: vitruv.tools

@@ -39,8 +39,13 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
 	}
 
 	@Override
-	public VitruvDomain getDomain(final String fileExtension) {
+	public VitruvDomain getDomainForFileExtension(final String fileExtension) {
 		return this.fileExtension2Domain.get(fileExtension);
+	}
+	
+	@Override
+	public VitruvDomain getDomainForNsUri(final String nsUri) {
+		return this.nsUri2Domain.get(nsUri);
 	}
 
 	@Override

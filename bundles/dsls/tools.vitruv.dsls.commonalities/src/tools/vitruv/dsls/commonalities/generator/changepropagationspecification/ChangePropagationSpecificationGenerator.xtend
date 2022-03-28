@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.Arrays
 import java.util.Set
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -20,16 +21,16 @@ import tools.vitruv.framework.propagation.impl.CompositeChangePropagationSpecifi
 
 import static extension tools.vitruv.dsls.commonalities.generator.changepropagationspecification.ChangePropagationSpecificationConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.getIntermediateMetamodelPackageClassName
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import java.util.HashSet
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
 import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
-import tools.vitruv.framework.domains.VitruvDomainProvider
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.dsls.commonalities.language.Concept
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ChangePropagationSpecificationGenerator implements SubGenerator {
 	@Inject extension GenerationContext generationContext
@@ -39,7 +40,7 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 
 	override beforeGenerate() {
 		if (isNewResourceSet) {
-			resourceSet.resources += domainPairsForChangePropagation.map [
+			resourceSet.resources += metamodelPairsForChangePropagation.map [
 				getChangePropagationSpecificationName(key, value).newResource
 			]
 			resourceSet.resources += newResource(changePropagationSpecificationProviderName)
@@ -48,21 +49,23 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 
 	override generate() {
 		if (isNewResourceSet) {
-			val changePropagationSpecifications = domainPairsForChangePropagation.map [ fromToDomain |
-				generateChangePropagationSpecification(fromToDomain.key, fromToDomain.value)
+			val changePropagationSpecifications = metamodelPairsForChangePropagation.map [ fromToMetamodel |
+				generateChangePropagationSpecification(fromToMetamodel.key, fromToMetamodel.value)
 			]
 			changePropagationSpecifications.forEach[generateType()]
 			changePropagationSpecifications.generateChangePropagationSpecificationsProvider().generateType()
 		}
 	}
 
-	private def JvmGenericType generateChangePropagationSpecification(VitruvDomain fromDomain, VitruvDomain toDomain) {
+	private def JvmGenericType generateChangePropagationSpecification(EPackage fromNamespace, EPackage toNamespace) {
 		val extension typeReferenceBuilder = typeReferenceFactory.create(resourceSet)
-		val dummyReactionsSegments = getReactionsSegmentNames(fromDomain, toDomain).map [ segmentName |
+		val intermediateMetamodelPackageQualifiedName = getConcept(fromNamespace, toNamespace).
+			intermediateMetamodelPackageClassName.qualifiedName
+		val dummyReactionsSegments = getReactionsSegmentNames(fromNamespace, toNamespace).map [ segmentName |
 			TopLevelElementsFactory.eINSTANCE.createReactionsSegment() => [name = segmentName]
 		]
 		TypesFactory.eINSTANCE.createJvmGenericType => [
-			simpleName = getChangePropagationSpecificationName(fromDomain, toDomain)
+			simpleName = getChangePropagationSpecificationName(fromNamespace, toNamespace)
 			packageName = changePropagationSpecificationPackageName
 			superTypes += CompositeChangePropagationSpecification.typeRef
 			visibility = JvmVisibility.PUBLIC
@@ -70,11 +73,12 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 				TypesFactory.eINSTANCE.createJvmConstructor => [
 					visibility = JvmVisibility.PUBLIC
 					body = '''
-					super(new «fromDomain.domainProvider.canonicalNameForReference»().getDomain(),
-						new «toDomain.domainProvider.canonicalNameForReference»().getDomain());
-					«FOR reactionsSegment : dummyReactionsSegments»addChangeMainprocessor(new «
+						super(«MetamodelDescriptor».with("«fromNamespace.nsURI»"),
+							«MetamodelDescriptor».with("«toNamespace.nsURI»"));
+						«FOR reactionsSegment : dummyReactionsSegments»addChangeMainprocessor(new «
 							ClassNamesGenerators.getChangePropagationSpecificationClassNameGenerator(reactionsSegment).qualifiedName»());
-					«ENDFOR»'''
+						«ENDFOR»
+						«EPackage».Registry.INSTANCE.putIfAbsent(«intermediateMetamodelPackageQualifiedName».eNS_URI, «intermediateMetamodelPackageQualifiedName».eINSTANCE);'''
 				]
 			)
 		]
@@ -119,27 +123,28 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 		delegate.doGenerate(typeResource, fsa)
 	}
 
-	private def Set<Pair<? extends VitruvDomain, ? extends VitruvDomain>> getDomainPairsForChangePropagation() {
+	private def Set<Pair<EPackage, EPackage>> getMetamodelPairsForChangePropagation() {
 		commonalityFiles.flatMap [ file |
 			file.commonality.participations.flatMap [
-				val firstPackage = domain.vitruvDomain
-				val secondPackage = file.concept.vitruvDomain
+				val firstPackage = domain.vitruvDomain.metamodelRootPackage
+				val secondPackage = file.concept.vitruvDomain.metamodelRootPackage
 				#[firstPackage -> secondPackage, secondPackage -> firstPackage]
 			]
 		].toSet
 	}
 
-	private def Set<String> getReactionsSegmentNames(VitruvDomain fromDomain, VitruvDomain toDomain) {
+
+	private def Set<String> getReactionsSegmentNames(EPackage fromMetamodel, EPackage toMetamodel) {
 		commonalityFiles.filter [ file |
-			val commonalityDomain = file.concept.vitruvDomain
-			return fromDomain == commonalityDomain || toDomain == commonalityDomain
+			val commonalityPackage = file.concept.vitruvDomain.metamodelRootPackage
+			return fromMetamodel == commonalityPackage || toMetamodel == commonalityPackage
 		].flatMap [ file |
 			file.commonality.participations.map [
-				val participationDomain = domain.vitruvDomain
-				return switch (participationDomain) {
-					case fromDomain:
+				val participationPackage = domain.vitruvDomain.metamodelRootPackage
+				return switch (participationPackage) {
+					case fromMetamodel:
 						getReactionsSegmentFromParticipationToCommonalityName(file.commonality, it)
-					case toDomain:
+					case toMetamodel:
 						getReactionsSegmentFromCommonalityToParticipationName(file.commonality, it)
 					default:
 						null
@@ -148,18 +153,19 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 		].toSet
 	}
 
+	private def Concept getConcept(EPackage fromMetamodel, EPackage toMetamodel) {
+		for (file : commonalityFiles) {
+			if (fromMetamodel == file.concept.vitruvDomain.metamodelRootPackage ||
+				toMetamodel == file.concept.vitruvDomain.metamodelRootPackage) {
+				return file.concept
+			}
+		}
+	}
+
 	private def getCommonalityFiles() {
 		resourceSet.resources.map[optionalContainedCommonalityFile].filterNull
 	}
-	
-	private def VitruvDomainProvider<?> getDomainProvider(VitruvDomain domain) {
-		if (VitruvDomainProviderRegistry.hasDomainProvider(domain.name)) {
-			VitruvDomainProviderRegistry.getDomainProvider(domain.name)
-		} else {
-			domain.name.vitruvDomain.provider
-		}
-	}
-	
+
 	private static def setBody(JvmMember member, StringConcatenationClient body) {
 		member.eAdapters += new CompilationTemplateAdapter() => [compilationTemplate = body]
 	}
@@ -183,7 +189,7 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 	
 	private def ensureHasTrailingSlash(URI uri) {
 		val uriString = uri.toString
-		if (!uriString.endsWith("/")) {
+		if (uri.file && !uriString.endsWith("/")) {
 			URI.createURI(uriString + "/")
 		} else {
 			uri

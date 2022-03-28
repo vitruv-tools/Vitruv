@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeAll
 class AliasesExecutionTest extends IdentifiedExecutionTest {
 	@BeforeAll
 	override generate(@TestProject Path testProject) {
-		changePropagationSpecifications = generator.generate(testProject,
+		generator.generate(testProject,
 			'IdentifiedWithAliases.commonality' -> '''
 				concept test
 				

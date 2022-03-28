@@ -1,5 +1,7 @@
 package tools.vitruv.dsls.reactions.codegen.classgenerators
 
+import java.util.ArrayList
+import org.eclipse.emf.ecore.impl.EPackageImpl
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
@@ -14,7 +16,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElem
 class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;
 	var JvmGenericType generatedClass;
-	
+
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
 		if (!reactionsSegment.isReferenceable) {
@@ -22,9 +24,10 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 		}
 		this.reactionsSegment = reactionsSegment;
 	}
-	
+
 	override generateEmptyClass() {
-		generatedClass = reactionsSegment.toClass(reactionsSegment.changePropagationSpecificationClassNameGenerator.qualifiedName) [
+		generatedClass = reactionsSegment.toClass(
+			reactionsSegment.changePropagationSpecificationClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
 		];
 	}
@@ -42,7 +45,16 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 			// register executor as change processor:
 			members += reactionsSegment.toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
+				val metamodelPackageClassQualifiedNames = new ArrayList
+				metamodelPackageClassQualifiedNames +=
+					#[reactionsSegment.fromDomain.domainForReference.metamodelRootPackage.class,
+						reactionsSegment.toDomain.domainForReference.metamodelRootPackage.class].filter [
+						it !== EPackageImpl
+					].map[name]
 				body = '''
+					«FOR metamodelPackageClassQualifiedName : metamodelPackageClassQualifiedNames»org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.putIfAbsent(«
+						metamodelPackageClassQualifiedName».eNS_URI, «metamodelPackageClassQualifiedName».eINSTANCE);
+					«ENDFOR»
 					this.addChangeMainprocessor(new «reactionsSegment.executorClassNameGenerator.qualifiedName»());
 				'''
 			]

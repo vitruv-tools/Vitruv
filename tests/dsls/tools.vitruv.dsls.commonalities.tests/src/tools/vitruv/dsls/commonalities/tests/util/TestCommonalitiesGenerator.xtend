@@ -29,16 +29,17 @@ import org.eclipse.xtext.xbase.testing.JavaSource
 import static extension java.nio.file.Files.readString
 import static java.lang.System.lineSeparator
 import static java.util.stream.Collectors.toList
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.jdt.core.compiler.CategorizedProblem
 import static extension java.lang.reflect.Modifier.*
 import java.util.List
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.core.runtime.Platform
-import static extension tools.vitruv.testutils.change.processing.MetamodelRegisteringChangePropagationSpecification.registerMetamodelsBeforePropagating
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.hasNoErrors
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import java.util.ArrayList
+import java.util.Set
 import tools.vitruv.dsls.commonalities.generator.changepropagationspecification.ChangePropagationSpecificationConstants
 
 /**
@@ -49,7 +50,9 @@ class TestCommonalitiesGenerator {
 	@Inject Provider<XtextResourceSet> resourceSetProvider
 	@Inject IResourceServiceProvider.Registry resourceServiceRegistry
 
-	def generate(Path testProject, Pair<String, CharSequence>... code) {
+	val List<Class<?>> generatedClasses = new ArrayList
+	
+	def void generate(Path testProject, Pair<String, CharSequence>... code) {
 		checkState(!Platform.isRunning, '''«TestCommonalitiesGenerator.simpleName» can only be used in standalone mode!''')
 		
 		code.writeTo(testProject)
@@ -60,8 +63,12 @@ class TestCommonalitiesGenerator {
 			generateInto(testProject)
 		]
 		
-		compileGeneratedJava(testProject)
-			.findAndCombineChangePropagationSpecifications()
+		compileGeneratedJava(testProject).forEach[generatedClasses += it]
+	}
+	
+	def Set<? extends ChangePropagationSpecification> createChangePropagationSpecifications() {
+		checkState(!generatedClasses.empty, '''Code must have been generated before creating applications''')
+		return generatedClasses.findAndCombineChangePropagationSpecifications.toSet
 	}
 
 	def private writeTo(Iterable<Pair<String, CharSequence>> code, Path testProject) {
@@ -149,8 +156,7 @@ class TestCommonalitiesGenerator {
 				getDeclaredConstructor.modifiers.isPublic
 		].filter[it.packageName == ChangePropagationSpecificationConstants.changePropagationSpecificationPackageName].
 			map [
-				(getDeclaredConstructor.newInstance as ChangePropagationSpecification).
-					registerMetamodelsBeforePropagating()
+				getDeclaredConstructor.newInstance as ChangePropagationSpecification
 			]
 	}
 	

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.internal
+package tools.vitruv.framework.propagation.impl
 
 import java.util.ArrayList
 import java.util.List
@@ -13,8 +13,6 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.propagation.ChangePropagationObserver
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
@@ -25,42 +23,38 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.vsum.internal.ModelRepository
+import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
 
-package class ChangePropagator {
+class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
-	val VitruvDomainRepository domainRepository
-	val ModelRepository resourceRepository
+	val ChangeRecordingModelRepository modelRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val InternalUserInteractor userInteractor
 
-	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository domainRepository, InternalUserInteractor userInteractor) {
-		this.resourceRepository = resourceRepository
+	new(ChangeRecordingModelRepository modelRepository,
+		ChangePropagationSpecificationProvider changePropagationProvider, InternalUserInteractor userInteractor) {
+		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
-		this.domainRepository = domainRepository
 		this.userInteractor = userInteractor
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		val resolvedChange = resourceRepository.applyChange(change)
+		val resolvedChange = modelRepository.applyChange(change)
 		resolvedChange.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
 
-		val changedDomain = resolvedChange.changedDomain
 		if (logger.isTraceEnabled) {
 			logger.trace('''
 				Will now propagate this input change:
 					«resolvedChange»
 			''')
 		}
-		return new ChangePropagation(this, resolvedChange, changedDomain, null).propagateChanges()
+		return new ChangePropagation(this, resolvedChange, null).propagateChanges()
 	}
 
 	@FinalFieldsConstructor
 	private static class ChangePropagation implements ChangePropagationObserver, UserInteractionListener {
 		extension val ChangePropagator outer
 		val VitruviusChange sourceChange
-		val VitruvDomain sourceDomain
 		val ChangePropagation previous
 		val Set<Resource> changedResources = new HashSet
 		val List<EObject> createdObjects = new ArrayList
@@ -82,8 +76,10 @@ package class ChangePropagator {
 			userInteractor.registerUserInputListener(this)
 
 			val propagationResultChanges = try {
-					changePropagationProvider.getChangePropagationSpecifications(sourceDomain).mapFixed [
-						targetDomain -> propagateChangeForChangePropagationSpecification(change, it)
+					sourceChange.affectedEObjectsMetamodelDescriptors.flatMap [
+						changePropagationProvider.getChangePropagationSpecifications(it)
+					].toSet.flatMapFixed [
+						propagateChangeForChangePropagationSpecification(change, it)
 					]
 				} finally {
 					userInteractor.deregisterUserInputListener(this)
@@ -92,28 +88,30 @@ package class ChangePropagator {
 				}
 
 			if (logger.isDebugEnabled) {
-				logger.
-					debug('''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR result : propagationResultChanges SEPARATOR ", "»«result.key»«ENDFOR»}''')
+				logger.debug(
+					'''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR changeInPropagation : propagationResultChanges SEPARATOR ", "»«
+						changeInPropagation.change.affectedEObjectsMetamodelDescriptors»«ENDFOR»}'''
+				)
 			}
 			if (logger.isTraceEnabled) {
 				logger.trace('''
 					Result changes:
 						«FOR result : propagationResultChanges»
-							«result.key»: «result.value»
+							«result.change.affectedEObjectsMetamodelDescriptors»: «result.change»
 						«ENDFOR»
 				''')
 			}
 
 			change.userInteractions = userInteractions
 			val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.flatMapFixed[value]))
+				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.mapFixed[it.change]))
 			val resultingChanges = new ArrayList()
 			resultingChanges += propagatedChange
 
 			val nextPropagations = propagationResultChanges.filter [
-				key.shouldTransitivelyPropagateChanges && value.exists[containsConcreteChange]
+				shouldBeFurtherPropagated && it.change.containsConcreteChange
 			].mapFixed [
-				new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key, this)
+				new ChangePropagation(outer, it.change, this)
 			]
 
 			for (nextPropagation : nextPropagations) {
@@ -127,17 +125,17 @@ package class ChangePropagator {
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
-			resourceRepository.startRecording()
-			for (eChange : change.EChanges) {
-				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel,
-					resourceRepository)
-			}
-			val changes = resourceRepository.endRecording()
+			val changesInPropagation = modelRepository.recordChanges [
+				for (eChange : change.EChanges) {
+					propagationSpecification.propagateChange(eChange, modelRepository.correspondenceModel,
+						modelRepository)
+				}
+			]
 
 			// Store modification information
-			changedResources += changes.flatMap[affectedEObjects].map[eResource].filterNull
+			changedResources += changesInPropagation.flatMap[it.change.affectedEObjects].map[eResource].filterNull
 
-			return changes
+			return changesInPropagation
 		}
 
 		def private AutoCloseable installUserInteractorForChange(VitruviusChange change) {
@@ -157,10 +155,10 @@ package class ChangePropagator {
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
 				checkState(
-					!resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
+					!modelRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
 					"The object %s is part of a correspondence to %s but not in any resource",
 					createdObjectWithoutResource,
-					resourceRepository.correspondenceModel.getCorrespondingEObjects(#[createdObjectWithoutResource]))
+					modelRepository.correspondenceModel.getCorrespondingEObjects(#[createdObjectWithoutResource]))
 				logger.warn("Object was created but has no correspondence and is thus lost: " +
 					createdObjectWithoutResource)
 			}
@@ -177,8 +175,10 @@ package class ChangePropagator {
 		override toString() '''propagate «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR»: «sourceChange»'''
 
 		def private Iterable<String> getPropagationPath() {
-			if(previous === null) List.of("<input change> in " + sourceDomain.toString) else previous.propagationPath +
-				List.of(sourceDomain.toString)
+			if (previous === null)
+				List.of("<input change> in " + sourceChange.affectedEObjectsMetamodelDescriptors.toString)
+			else
+				previous.propagationPath + List.of(sourceChange.affectedEObjectsMetamodelDescriptors.toString)
 		}
 	}
 
@@ -191,22 +191,4 @@ package class ChangePropagator {
 		}
 	}
 
-	def private VitruvDomain getChangedDomain(VitruviusChange change) {
-		val changeDomain = change.changedURIs.fold(null as VitruvDomain) [ changeDomain, changedUri |
-			val resourceDomain = domainRepository.getDomain(changedUri.fileExtension)
-			if (changeDomain === null) {
-				resourceDomain
-			} else if (resourceDomain === null || resourceDomain == changeDomain) {
-				changeDomain
-			} else {
-				throw new IllegalStateException('''
-					This change affects multiple domains («changeDomain» and «resourceDomain»):
-						«change»
-				''')
-			}
-		]
-		checkState(changeDomain !== null, "Cannot determine the domain of this change:%s%s", System.lineSeparator,
-			change)
-		changeDomain
-	}
 }

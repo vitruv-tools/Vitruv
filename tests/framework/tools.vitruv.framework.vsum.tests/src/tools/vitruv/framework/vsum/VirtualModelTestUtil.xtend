@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
@@ -22,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import allElementTypes.AllElementTypesPackage
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 /**
  * Utility methods for the VSUM and view test cases.
@@ -58,7 +59,9 @@ class VirtualModelTestUtil {
     static def createAndLoadTestVirtualModelWithConsistencyPreservation(Path folder) {
         val aetDomain = new AllElementTypesDomainProvider().domain
         return new VirtualModelBuilder().withStorageFolder(folder).withDomain(aetDomain).
-            withChangePropagationSpecification(new RedundancyChangePropagationSpecification(aetDomain, aetDomain)).
+            withChangePropagationSpecification(new RedundancyChangePropagationSpecification(
+            	MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI), MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI)
+            )).
             withUserInteractor(UserInteractionFactory.instance.createUserInteractor(
                 UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))).buildAndInitialize()
     }
@@ -75,8 +78,8 @@ class VirtualModelTestUtil {
             URI.createFileURI(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
         }
 
-        new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-            super(sourceDomain, targetDomain)
+        new(MetamodelDescriptor sourceMetamodelDescriptor, MetamodelDescriptor targetMetamodelDescriptor) {
+            super(sourceMetamodelDescriptor, targetMetamodelDescriptor)
         }
 
         override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {

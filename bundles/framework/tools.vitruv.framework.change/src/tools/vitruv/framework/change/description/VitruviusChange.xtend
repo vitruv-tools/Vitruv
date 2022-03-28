@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import java.util.Set
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -57,6 +58,12 @@ interface VitruviusChange {
 	 * change or if this change was not resolved yet.
 	 */
 	def Set<URI> getChangedURIs()
+	
+	/**
+	 * Returns the descriptors for the metamodels of the elements whose instances have been modified in this change. 
+	 * These elements are the {@link EObject}s returned by {@link getAffectedEObjects}.
+	 */
+	def Set<MetamodelDescriptor> getAffectedEObjectsMetamodelDescriptors()
 
 	/**
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.
