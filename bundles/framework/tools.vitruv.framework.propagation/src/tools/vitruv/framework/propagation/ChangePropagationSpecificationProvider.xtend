@@ -5,7 +5,7 @@ import tools.vitruv.framework.change.MetamodelDescriptor
 
 interface ChangePropagationSpecificationProvider extends Iterable<ChangePropagationSpecification> {
 	/**
-	 * Delivers change propagation specifications that react to changes in instances of the
+	 * Returns change propagation specifications that react to changes in instances of the
 	 * metamodel of the given descriptor. This covers specifications for the exact same metamodel and for
 	 * those metamodels in which the given one is contained.
 	 * 

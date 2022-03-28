@@ -57,9 +57,9 @@ interface ChangePropagationSpecification extends ChangePropagationObservable {
 	 * for the elements changed by the given <code>EChange</code> in order to reflect the changes in the
 	 * target model.
 	 * 
-	 * @param change 			  	the atomic change which shall be propagated. Should be in an instance of a
-	 * 								source metamodel of this specification (see {@link #getSourceMetamodelDescriptor}).
-	 * 								Must not be <code>null</code>.
+	 * @param change 			  	the atomic change which shall be propagated. Should affect only elements in 
+	 * 								an instance of a source metamodel of this specification (see 
+	 * 								{@link #getSourceMetamodelDescriptor}). Must not be <code>null</code>.
 	 * @param correspondenceModel 	the correspondence model to retrieve information about the target
 	 * 								model from. Must not be <code>null</code>.
 	 * @param resourceAccess		an object for resource access, in particular to create new model files.
