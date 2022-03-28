@@ -13,7 +13,7 @@ interface CompositeChange<C extends VitruviusChange> extends VitruviusChange {
 	 * 
 	 * @return the metamodel descriptors of the composed changes 
 	 */
-	def Set<MetamodelDescriptor> getAffectedEObjectsMetamodelDescriptor()
+	override Set<MetamodelDescriptor> getAffectedEObjectsMetamodelDescriptors()
 
 	/**
 	 * Returns the changes this one is composed of.
