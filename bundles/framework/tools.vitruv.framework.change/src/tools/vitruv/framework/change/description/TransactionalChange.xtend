@@ -11,7 +11,7 @@ import java.util.Set
  */
 interface TransactionalChange extends VitruviusChange {
 	/**
-	 * Returns the unique metamodel descriptor for the for the metamodels of the elements whose instances 
+	 * Returns the unique metamodel descriptor for the metamodels of the elements whose instances 
 	 * have been modified in this change.
 	 * 
 	 * @see VitruviusChange#getAffectedEObjectsMetamodelDescriptors 

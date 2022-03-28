@@ -61,8 +61,7 @@ interface VitruviusChange {
 	
 	/**
 	 * Returns the descriptors for the metamodels of the elements whose instances have been modified in this change. 
-	 * These elements are the {@link EObject}s returned by {@link getAffectedEObjects}. One {@link MetamodelDescriptor}
-	 * is returned for each contained {@link TransactionalChange}.
+	 * These elements are the {@link EObject}s returned by {@link getAffectedEObjects}.
 	 */
 	def Set<MetamodelDescriptor> getAffectedEObjectsMetamodelDescriptors()
 
