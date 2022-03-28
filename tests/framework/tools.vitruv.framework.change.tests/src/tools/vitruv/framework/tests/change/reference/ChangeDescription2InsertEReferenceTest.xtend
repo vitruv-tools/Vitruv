@@ -14,6 +14,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import java.util.ArrayList
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -25,11 +26,13 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	}
 	
 	private def Iterable<NonRoot> createNonRootElements(int count) {
-		return (0 ..< count).map [
+		val ArrayList<NonRoot> nonRootElements = new ArrayList<NonRoot>()
+		(0 ..< count).forEach[
 			val element = aet.NonRoot();
 			element.id = it.toString()
-			return element
+			nonRootElements.add(element)
 		]
+		return nonRootElements
 	} 
 
 	def void assertFiveNonRootsNonContainment(List<EChange> actualResult, Pair<NonRoot, Integer>... expectedInsertions) {
@@ -65,7 +68,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	 *  so they are containment-added to the unique persisted root to then be available for non containment insertion.
 	 */
 	def void nonContainmentHelperAddAllAsContainment(Iterable<NonRoot> nonRootElementsToBeContained) {
-		UPR => [ multiValuedContainmentEReference.addAll(nonRootElementsToBeContained) ]
+		UPR.multiValuedContainmentEReference.addAll(nonRootElementsToBeContained)
 	}
 	
 	@Test
@@ -82,10 +85,10 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 			new Pair(nonRootElements.get(4), 4)
 		)
 	}
-	
+		
 	@Test
-	def void testInsertMultipleAtOnceNonContainment() {
-		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
+	def void testInsertMultipleAtOnceNonContainment() {		
+		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)		
 		nonContainmentHelperAddAllAsContainment(nonRootElements)
 		val List<EChange> result = UPR.record [
 			multiValuedNonContainmentEReference.addAll(nonRootElements)
