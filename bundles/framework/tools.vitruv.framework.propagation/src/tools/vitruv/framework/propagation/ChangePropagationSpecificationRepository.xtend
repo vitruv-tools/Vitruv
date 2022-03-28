@@ -4,22 +4,25 @@ import java.util.Map
 import java.util.List
 import java.util.ArrayList
 import java.util.HashMap
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	Map<Metamodel, List<ChangePropagationSpecification>> sourceMetamodelToPropagationSpecifications
+	Map<MetamodelDescriptor, List<ChangePropagationSpecification>> sourceMetamodelToPropagationSpecifications
 
 	new(Iterable<ChangePropagationSpecification> specifications) {
 		sourceMetamodelToPropagationSpecifications = new HashMap
 		specifications.forEach [ specification |
-			sourceMetamodelToPropagationSpecifications.computeIfAbsent(specification.sourceMetamodel, [
+			sourceMetamodelToPropagationSpecifications.computeIfAbsent(specification.sourceMetamodelDescriptor, [
 				new ArrayList
 			]).add(specification)
 		]
 	}
 
-	override List<ChangePropagationSpecification> getChangePropagationSpecifications(Metamodel sourceMetamodel) {
-		val result = sourceMetamodelToPropagationSpecifications.get(sourceMetamodel)
-		return if(result !== null) new ArrayList(result) else emptyList
+	override List<ChangePropagationSpecification> getChangePropagationSpecifications(
+		MetamodelDescriptor sourceMetamodelDescriptor) {
+		sourceMetamodelToPropagationSpecifications.keySet.filter[sourceMetamodelDescriptor.contains(it)].flatMap [
+			sourceMetamodelToPropagationSpecifications.get(it)
+		].toList
 	}
 
 	override iterator() {

@@ -30,7 +30,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.dsls.commonalities.language.Concept
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ChangePropagationSpecificationGenerator implements SubGenerator {
 	@Inject extension GenerationContext generationContext
@@ -73,8 +73,8 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 				TypesFactory.eINSTANCE.createJvmConstructor => [
 					visibility = JvmVisibility.PUBLIC
 					body = '''
-						super(«Metamodel».with("«fromNamespace.nsURI»"),
-							«Metamodel».with("«toNamespace.nsURI»"));
+						super(«MetamodelDescriptor».with("«fromNamespace.nsURI»"),
+							«MetamodelDescriptor».with("«toNamespace.nsURI»"));
 						«FOR reactionsSegment : dummyReactionsSegments»addChangeMainprocessor(new «
 							ClassNamesGenerators.getChangePropagationSpecificationClassNameGenerator(reactionsSegment).qualifiedName»());
 						«ENDFOR»

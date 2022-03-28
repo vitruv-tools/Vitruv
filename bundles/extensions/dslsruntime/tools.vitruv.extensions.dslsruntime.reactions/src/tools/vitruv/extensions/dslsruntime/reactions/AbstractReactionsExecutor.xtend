@@ -8,7 +8,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.propagation.ResourceAccess
 import java.util.List
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecification {
 	static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
@@ -16,8 +16,8 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 	val RoutinesFacadesProvider routinesFacadesProvider;
 	List<IReactionRealization> reactions;
 
-	new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
-		super(sourceMetamodel, targetMetamodel);
+	new(MetamodelDescriptor sourceMetamodelDescriptor, MetamodelDescriptor targetMetamodelDescriptor) {
+		super(sourceMetamodelDescriptor, targetMetamodelDescriptor);
 		this.reactions = newArrayList;
 		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();
@@ -35,8 +35,9 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 		return true
 	}
 
-	override propagateChange(EChange change, CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
-		LOGGER.trace("Call relevant reactions from " + sourceMetamodel + " to " + targetMetamodel);
+	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
+		ResourceAccess resourceAccess) {
+		LOGGER.trace("Call relevant reactions from " + sourceMetamodelDescriptor + " to " + targetMetamodelDescriptor);
 		for (reaction : reactions) {
 			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
 			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);

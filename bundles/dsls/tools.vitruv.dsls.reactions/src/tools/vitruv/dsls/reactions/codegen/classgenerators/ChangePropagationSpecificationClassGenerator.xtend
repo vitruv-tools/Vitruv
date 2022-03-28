@@ -12,7 +12,7 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 import java.util.Set
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;
@@ -39,8 +39,8 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 			superTypes += typeRef(ChangePropagationSpecification);
 			members += reactionsSegment.toConstructor() [
 				body = '''
-				super(«Metamodel».with(«Set».of(«FOR namespaceUri : reactionsSegment.fromMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)), 
-					«Metamodel».with(«Set».of(«FOR namespaceUri : reactionsSegment.toMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)));'''
+				super(«MetamodelDescriptor».with(«Set».of(«FOR namespaceUri : reactionsSegment.fromMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)), 
+					«MetamodelDescriptor».with(«Set».of(«FOR namespaceUri : reactionsSegment.toMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)));'''
 			]
 
 			// register executor as change processor:

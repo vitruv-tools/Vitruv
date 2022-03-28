@@ -5,17 +5,17 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.propagation.ChangePropagationObserver
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.propagation.Metamodel
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
 	val List<ChangePropagationObserver> propagationObserver;
 	var UserInteractor userInteractor;
-	var Metamodel sourceMetamodel;
-	var Metamodel targetMetamodel;
+	var MetamodelDescriptor sourceMetamodelDescriptor;
+	var MetamodelDescriptor targetMetamodelDescriptor;
 
-	new(Metamodel sourceMetamodel, Metamodel targetMetamodel) {
-		this.sourceMetamodel = sourceMetamodel
-		this.targetMetamodel = targetMetamodel
+	new(MetamodelDescriptor sourceMetamodelDescriptor, MetamodelDescriptor targetMetamodelDescriptor) {
+		this.sourceMetamodelDescriptor = sourceMetamodelDescriptor
+		this.targetMetamodelDescriptor = targetMetamodelDescriptor
 		this.propagationObserver = newArrayList();
 	}
 
@@ -23,12 +23,12 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 		return userInteractor;
 	}
 
-	override getSourceMetamodel() {
-		return sourceMetamodel;
+	override getSourceMetamodelDescriptor() {
+		return sourceMetamodelDescriptor;
 	}
 
-	override getTargetMetamodel() {
-		return targetMetamodel;
+	override getTargetMetamodelDescriptor() {
+		return targetMetamodelDescriptor;
 	}
 
 	override setUserInteractor(UserInteractor userInteractor) {
