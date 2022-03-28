@@ -69,7 +69,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	}
 	
 	@Test
-	def void testMultipleAtOnceContainment() {		
+	def void testInsertMultipleAtOnceContainment() {		
 		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
 		val List<EChange> result = UPR.record [
 			multiValuedContainmentEReference.addAll(nonRootElements)
@@ -84,7 +84,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	}
 	
 	@Test
-	def void testMultipleAtOnceNonContainment() {
+	def void testInsertMultipleAtOnceNonContainment() {
 		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
 		nonContainmentHelperAddAllAsContainment(nonRootElements)
 		val List<EChange> result = UPR.record [
@@ -100,32 +100,32 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	}
 	
 	@Test
-	def void testInsertSingleEReferenceNonContainment() {
-		testInsertInNonContainmentEReference(0)
+	def void testInsertSingleNonContainment() {
+		insertAndAssertSingleNonContainment(0)
 	}
 
 	@Test
-	def void testInsertMultipleEReferenceNonContainment() {
-		testInsertInNonContainmentEReference(0)
-		testInsertInNonContainmentEReference(1)
-		testInsertInNonContainmentEReference(2)
-		testInsertInNonContainmentEReference(1)
+	def void testInsertMultipleIterativelyNonContainment() {
+		insertAndAssertSingleNonContainment(0)
+		insertAndAssertSingleNonContainment(1)
+		insertAndAssertSingleNonContainment(2)
+		insertAndAssertSingleNonContainment(1)
 	}
 
 	@Test
-	def void testInsertSingleEReferenceContainment() {
-		testInsertInContainmentEReference(0)
+	def void testInsertSingleContainment() {
+		insertAndAssertSingleContainment(0)
 	}
 
 	@Test
-	def void testInsertMultipleEReferenceContainment() {
-		testInsertInContainmentEReference(0)
-		testInsertInContainmentEReference(1)
-		testInsertInContainmentEReference(2)
-		testInsertInContainmentEReference(1)
+	def void testInsertMultipleIterativelyContainment() {
+		insertAndAssertSingleContainment(0)
+		insertAndAssertSingleContainment(1)
+		insertAndAssertSingleContainment(2)
+		insertAndAssertSingleContainment(1)
 	}
 
-	def private testInsertInContainmentEReference(int expectedIndex) {
+	def private insertAndAssertSingleContainment(int expectedIndex) {
 		// prepare
 		uniquePersistedRoot
 		
@@ -142,7 +142,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 			.assertEmpty
 	}
 
-	def private testInsertInNonContainmentEReference(int expectedIndex) {
+	def private insertAndAssertSingleNonContainment(int expectedIndex) {
 		// prepare
 		val nonRoot = aet.NonRoot
 		uniquePersistedRoot => [
