@@ -18,21 +18,19 @@ import static extension tools.vitruv.framework.tests.change.util.CompoundEChange
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 
 	private static Root UPR;
-	private static final NonRoot NR1 = aet.NonRoot();
-	private static final NonRoot NR2 = aet.NonRoot();
-	private static final NonRoot NR3 = aet.NonRoot();
-	private static final NonRoot NR4 = aet.NonRoot();
-	private static final NonRoot NR5 = aet.NonRoot();
 	
 	@BeforeEach
 	def void prepareComplexTest() {
 		UPR = getUniquePersistedRoot()
-		NR1.id = 1.toString()
-		NR2.id = 2.toString()
-		NR3.id = 3.toString()
-		NR4.id = 4.toString()
-		NR5.id = 5.toString()
 	}
+	
+	private def Iterable<NonRoot> createNonRootElements(int count) {
+		return (0 ..< count).map [
+			val element = aet.NonRoot();
+			element.id = it.toString()
+			return element
+		]
+	} 
 
 	def void assertFiveNonRootsNonContainment(List<EChange> actualResult, Pair<NonRoot, Integer>... expectedInsertions) {
 		assertEquals(actualResult.size, expectedInsertions.size)
@@ -66,35 +64,39 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	/** Elements which are to be inserted as NonContainment-EReferences have to be contained somewhere
 	 *  so they are containment-added to the unique persisted root to then be available for non containment insertion.
 	 */
-	def void nonContainmentHelperAddAllAsContainment() {
-		UPR => [
-			multiValuedContainmentEReference.add(0, NR1)
-			multiValuedContainmentEReference.add(0, NR2)
-			multiValuedContainmentEReference.add(0, NR3)
-			multiValuedContainmentEReference.add(0, NR4)
-			multiValuedContainmentEReference.add(0, NR5)
-		]
+	def void nonContainmentHelperAddAllAsContainment(Iterable<NonRoot> nonRootElementsToBeContained) {
+		UPR => [ multiValuedContainmentEReference.addAll(nonRootElementsToBeContained) ]
 	}
 	
 	@Test
-	def void testMultipleAtOnceContainment() {
-		val List<NonRoot> li = #[NR1, NR2, NR3, NR4, NR5]
+	def void testMultipleAtOnceContainment() {		
+		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
 		val List<EChange> result = UPR.record [
-			multiValuedContainmentEReference.addAll(li)
+			multiValuedContainmentEReference.addAll(nonRootElements)
 		]
-		assertFiveNonRootsContainment(result, new Pair(NR1, 0), new Pair(NR2, 1), new Pair(NR3, 2),
-			new Pair(NR4, 3), new Pair(NR5, 4))
+		assertFiveNonRootsContainment(result, 
+			new Pair(nonRootElements.get(0), 0), 
+			new Pair(nonRootElements.get(1), 1), 
+			new Pair(nonRootElements.get(2), 2),
+			new Pair(nonRootElements.get(3), 3), 
+			new Pair(nonRootElements.get(4), 4)
+		)
 	}
 	
 	@Test
 	def void testMultipleAtOnceNonContainment() {
-		nonContainmentHelperAddAllAsContainment()
-		val List<NonRoot> li = #[NR1, NR2, NR3, NR4, NR5]
+		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
+		nonContainmentHelperAddAllAsContainment(nonRootElements)
 		val List<EChange> result = UPR.record [
-			multiValuedNonContainmentEReference.addAll(li)
+			multiValuedNonContainmentEReference.addAll(nonRootElements)
 		]
-		assertFiveNonRootsNonContainment(result, new Pair(NR1, 0), new Pair(NR2, 1), new Pair(NR3, 2),
-			new Pair(NR4, 3), new Pair(NR5, 4))
+		assertFiveNonRootsNonContainment(result, 
+			new Pair(nonRootElements.get(0), 0), 
+			new Pair(nonRootElements.get(1), 1), 
+			new Pair(nonRootElements.get(2), 2),
+			new Pair(nonRootElements.get(3), 3), 
+			new Pair(nonRootElements.get(4), 4)
+		)
 	}
 	
 	@Test
