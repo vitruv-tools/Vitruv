@@ -4,12 +4,9 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
 import tools.vitruv.dsls.common.elements.MetaclassReference
-import tools.vitruv.framework.domains.VitruvDomainProvider
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
@@ -41,14 +38,6 @@ class ReactionsLanguageHelper {
 
 	static def getJavaClassName(MetaclassReference metaclassReference) {
 		metaclassReference.metaclass?.javaClassName;
-	}
-
-	static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
-		return if (VitruvDomainProviderRegistry.hasDomainProvider(domain.name)) {
-			VitruvDomainProviderRegistry.getDomainProvider(domain.name);
-		} else {
-			null;
-		}
 	}
 
 	def static ReactionsFile getReactionsFile(Resource resource) {
