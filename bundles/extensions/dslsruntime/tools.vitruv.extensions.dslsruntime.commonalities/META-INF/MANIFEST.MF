@@ -9,8 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Require-Bundle: tools.vitruv.framework.domains;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations,
+Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  tools.vitruv.extensions.dslsruntime.commonalities.operators;visibility:=reexport

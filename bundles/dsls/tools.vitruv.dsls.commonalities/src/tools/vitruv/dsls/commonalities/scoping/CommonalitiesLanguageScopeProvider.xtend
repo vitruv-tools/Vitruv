@@ -25,6 +25,8 @@ import java.util.List
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.ReferencedParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
+import tools.vitruv.dsls.common.elements.EPackageRegistryScope
+import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.METAMODEL_IMPORT__PACKAGE
 
 /**
  * This class contains custom scoping description.
@@ -44,12 +46,15 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	@Inject IGlobalScopeProvider globalScopeProvider
 	@Inject extension IQualifiedNameProvider qualifiedNameProvider
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
-
+	@Inject Provider<EPackageRegistryScope> packagesScope
+	
 	// Context differs during content assist:
 	// * If no input is provided yet, the container is the context as the element is not known yet
 	// * If some input is already provided, the element is the context
 	override getScope(EObject context, EReference reference) {
 		switch reference {
+			case METAMODEL_IMPORT__PACKAGE:
+				return packagesScope.get()
 			case PARTICIPATION_CLASS_OPERAND__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationClassOperand) {
 					if (context.isInParticipationConditionContext) {

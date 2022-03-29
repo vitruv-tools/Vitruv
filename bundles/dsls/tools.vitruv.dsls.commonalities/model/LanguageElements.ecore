@@ -70,11 +70,11 @@
       <eParameters name="eDataType" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EDataType"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VitruviusDomain" eSuperTypes="#//Domain">
-    <eOperations name="forVitruvDomain" lowerBound="1" eType="#//VitruviusDomain">
-      <eParameters name="vitruvDomain" eType="#//FrameworkVitruvDomain"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="#//Domain">
+    <eOperations name="forEPackage" lowerBound="1" eType="#//Metamodel">
+      <eParameters name="ePackage" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
     </eOperations>
-    <eOperations name="withClassifierProvider" lowerBound="1" eType="#//VitruviusDomain">
+    <eOperations name="withClassifierProvider" lowerBound="1" eType="#//Metamodel">
       <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metaclasses" ordered="false"
@@ -101,7 +101,6 @@
       <eParameters name="metaclass" lowerBound="1" eType="#//Metaclass"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="FrameworkVitruvDomain" instanceClassName="tools.vitruv.framework.domains.VitruvDomain"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ClassifierProvider" instanceClassName="tools.vitruv.dsls.commonalities.language.elements.ClassifierProvider"/>
   <eClassifiers xsi:type="ecore:EClass" name="MostSpecificType" eSuperTypes="#//Classifier"/>
   <eClassifiers xsi:type="ecore:EClass" name="LeastSpecificType" eSuperTypes="#//Classifier"/>

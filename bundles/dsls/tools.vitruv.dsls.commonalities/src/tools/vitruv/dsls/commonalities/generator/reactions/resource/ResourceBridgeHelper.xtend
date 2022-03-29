@@ -30,7 +30,7 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 				assignable = resourceBridge.copy
 				feature = typeProvider.findMethod(IntermediateResourceBridge, 'setFileExtension')
 				value = XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = resourceClass.superMetaclass.domain.vitruvDomain.fileExtensions.head
+					value = resourceClass.superMetaclass.domain.name
 				]
 			]
 			// We initially disable the automatic persistence for new resource bridges and enable it again at the end
@@ -74,7 +74,7 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 					assignable = resourceBridge.copy
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setIntermediateNS')
 					value = XbaseFactory.eINSTANCE.createXStringLiteral => [
-						value = commonality.concept.vitruvDomain.nsUris.head
+						value = commonality.concept.metamodelRootPackage.nsURI
 					]
 				]
 			)

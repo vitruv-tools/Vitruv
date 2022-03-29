@@ -12,8 +12,8 @@ class LanguageElementsAdapterFactory extends LanguageElementsFactoryImpl {
 		new LeastSpecificTypeI
 	}
 
-	override createVitruviusDomain() {
-		new VitruvDomainAdapter
+	override createMetamodel() {
+		new MetamodelAdapter
 	}
 
 	override createEFeatureAttribute() {

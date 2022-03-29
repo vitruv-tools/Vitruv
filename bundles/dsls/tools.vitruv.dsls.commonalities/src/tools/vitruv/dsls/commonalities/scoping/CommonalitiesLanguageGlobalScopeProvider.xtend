@@ -19,14 +19,14 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopeProvider {
-	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
+	@Inject Provider<MetamodelMetaclassesScope> allMetaclassesScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
 		new ComposedScope(
 			// Delegating to the default global scope provider first ensures that we get actual Concept and
 			// Commonality instances for commonality participation domains and participation classes, rather than
-			// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
+			// EClassAdapters as they would get created by the MetamodelMetaclassesScope.
 			super.getScope(resource, reference, filter),
 			new FilteringScope(_getScope(resource, reference), filter ?: Predicates.alwaysTrue)
 		)

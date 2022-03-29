@@ -6,19 +6,19 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
-import tools.vitruv.dsls.commonalities.language.elements.VitruviusDomainProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
+import tools.vitruv.dsls.commonalities.language.elements.MetamodelProvider
 
 @Singleton
-class VitruvDomainMetaclassesScope implements IScope {
+class MetamodelMetaclassesScope implements IScope {
 
-	@Inject VitruviusDomainProvider vitruviusDomainProvider
+	@Inject MetamodelProvider metamodelProvider
 	@Inject IEObjectDescriptionProvider descriptionProvider
 
 	override getAllElements() {
-		vitruviusDomainProvider.allDomains.flatMap[metaclasses].map(descriptionProvider)
+		metamodelProvider.allDomains.flatMap[metaclasses].map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
@@ -27,7 +27,7 @@ class VitruvDomainMetaclassesScope implements IScope {
 		val className = qName.className
 		if (className === null) return #[]
 
-		return (vitruviusDomainProvider.getDomainByName(domainName)?.metaclasses ?: #[])
+		return (metamodelProvider.getDomainByName(domainName)?.metaclasses ?: #[])
 			.filter[name == className]
 			.map(descriptionProvider)
 	}
@@ -46,6 +46,6 @@ class VitruvDomainMetaclassesScope implements IScope {
 	}
 
 	override toString() {
-		'''«VitruvDomainMetaclassesScope.simpleName» for domains «vitruviusDomainProvider.allDomains.toList»'''
+		'''«MetamodelMetaclassesScope.simpleName» for domains «metamodelProvider.allDomains.toList»'''
 	}
 }

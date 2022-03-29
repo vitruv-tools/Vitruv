@@ -3,18 +3,17 @@ package tools.vitruv.dsls.commonalities.language.elements
 import java.util.Set
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.dsls.commonalities.language.elements.impl.VitruviusDomainImpl
-import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
 import java.util.List
+import tools.vitruv.dsls.commonalities.language.elements.impl.MetamodelImpl
 
-class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvDomain> {
-	VitruvDomain wrappedVitruvDomain
+class MetamodelAdapter extends MetamodelImpl implements Wrapper<EPackage> {
+	EPackage ePackage
 	var extension ClassifierProvider classifierProvider
 
-	override forVitruvDomain(VitruvDomain vitruvDomain) {
-		this.wrappedVitruvDomain = checkNotNull(vitruvDomain)
+	override forEPackage(EPackage ePackage) {
+		this.ePackage = checkNotNull(ePackage)
 		return this
 	}
 
@@ -24,7 +23,7 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 	}
 
 	private def checkDomainSet() {
-		checkState(wrappedVitruvDomain !== null, "No VitruvDomain was set on this adapter!")
+		checkState(ePackage !== null, "No ePackage was set on this adapter!")
 	}
 
 	private def checkClassifierProviderSet() {
@@ -42,7 +41,7 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 	}
 
 	private def Set<EPackage> getRootPackages() {
-		return (List.of(wrappedVitruvDomain.metamodelRootPackage) + wrappedVitruvDomain.furtherRootPackages).toSet
+		return Set.of(ePackage)
 	}
 
 	def Set<EPackage> getAllPackages() {
@@ -71,27 +70,27 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 	override getName() {
 		if (eIsProxy) return null
 		checkDomainSet()
-		wrappedVitruvDomain.name
+		ePackage.name
 	}
 
 	override getWrapped() {
-		wrappedVitruvDomain
+		ePackage
 	}
 
 	override toString() {
-		'''{{«wrappedVitruvDomain?.name»}}'''
+		'''{{«ePackage?.name»}}'''
 	}
 	
 	override equals(Object o) {
 		if (this === o) true
 		else if (o === null) false
-		else if (o instanceof VitruvDomainAdapter) {
-			this.wrappedVitruvDomain == o.wrappedVitruvDomain
+		else if (o instanceof MetamodelAdapter) {
+			this.ePackage == o.ePackage
 		}
 		else false
 	}
 	
 	override hashCode() {
-		5 * ((wrappedVitruvDomain === null) ? 0 : wrappedVitruvDomain.hashCode())
+		5 * ((ePackage === null) ? 0 : ePackage.hashCode())
 	}
 }

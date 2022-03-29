@@ -64,7 +64,7 @@ class ClassifierProvider {
 	// Searches the Ecore package and the domain specific packages for a matching EClassifier:
 	private static def EClassifier findEClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
 		if (qualifiedInstanceClassName.nullOrEmpty) return null
-		var domainPackages = if (containingDomain instanceof VitruvDomainAdapter) {
+		var domainPackages = if (containingDomain instanceof MetamodelAdapter) {
 			containingDomain.allPackages
 		} else { 
 			emptyList

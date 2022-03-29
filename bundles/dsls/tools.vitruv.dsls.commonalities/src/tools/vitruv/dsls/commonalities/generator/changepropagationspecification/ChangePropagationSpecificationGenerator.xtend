@@ -126,8 +126,8 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 	private def Set<Pair<EPackage, EPackage>> getMetamodelPairsForChangePropagation() {
 		commonalityFiles.flatMap [ file |
 			file.commonality.participations.flatMap [
-				val firstPackage = domain.vitruvDomain.metamodelRootPackage
-				val secondPackage = file.concept.vitruvDomain.metamodelRootPackage
+				val firstPackage = domain.metamodelRootPackage
+				val secondPackage = file.concept.metamodelRootPackage
 				#[firstPackage -> secondPackage, secondPackage -> firstPackage]
 			]
 		].toSet
@@ -136,11 +136,11 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 
 	private def Set<String> getReactionsSegmentNames(EPackage fromMetamodel, EPackage toMetamodel) {
 		commonalityFiles.filter [ file |
-			val commonalityPackage = file.concept.vitruvDomain.metamodelRootPackage
+			val commonalityPackage = file.concept.metamodelRootPackage
 			return fromMetamodel == commonalityPackage || toMetamodel == commonalityPackage
 		].flatMap [ file |
 			file.commonality.participations.map [
-				val participationPackage = domain.vitruvDomain.metamodelRootPackage
+				val participationPackage = domain.metamodelRootPackage
 				return switch (participationPackage) {
 					case fromMetamodel:
 						getReactionsSegmentFromParticipationToCommonalityName(file.commonality, it)
@@ -155,8 +155,8 @@ class ChangePropagationSpecificationGenerator implements SubGenerator {
 
 	private def Concept getConcept(EPackage fromMetamodel, EPackage toMetamodel) {
 		for (file : commonalityFiles) {
-			if (fromMetamodel == file.concept.vitruvDomain.metamodelRootPackage ||
-				toMetamodel == file.concept.vitruvDomain.metamodelRootPackage) {
+			if (fromMetamodel == file.concept.metamodelRootPackage ||
+				toMetamodel == file.concept.metamodelRootPackage) {
 				return file.concept
 			}
 		}
