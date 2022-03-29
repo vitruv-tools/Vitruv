@@ -18,7 +18,7 @@ import static extension tools.vitruv.framework.tests.change.util.CompoundEChange
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
-	def private void assertCorrectInsertionNonContainment(List<EChange> actualChanges, Pair<NonRoot, Integer>... expectedInsertions) {
+	def private void assertCorrectInsertionNonContainment(List<EChange> actualChanges, List<Pair<NonRoot, Integer>> expectedInsertions) {
 		assertEquals(actualChanges.size, expectedInsertions.size)
 		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
 		for (insertion : expectedInsertions) {
@@ -30,7 +30,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		stepwiseConsumedResult.assertChangeCount(0)
 	}
 
-	def private void assertCorrectInsertionContainment(List<EChange> actualChanges, Pair<NonRoot, Integer>... expectedInsertions) {
+	def private void assertCorrectInsertionContainment(List<EChange> actualChanges, List<Pair<NonRoot, Integer>> expectedInsertions) {
 		assertEquals(actualChanges.size, expectedInsertions.size*3)
 		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
 		for (insertion : expectedInsertions) {
@@ -53,12 +53,11 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	@ParameterizedTest
 	@ValueSource(ints = #[2,3,5,10])
 	def void testInsertMultipleAtOnceContainment(int count) {
-		val ArrayList<NonRoot> nonRootElements = new ArrayList<NonRoot>()
-		(0 ..< count).forEach[
-			val element = aet.NonRoot();
+		val Iterable<NonRoot> nonRootElements = (0 ..< count).map[
+			val element = aet.NonRoot()
 			element.id = it.toString()
-			nonRootElements.add(element)
-		]		
+			return element
+		]
 		val List<EChange> result = uniquePersistedRoot.record [
 			multiValuedContainmentEReference.addAll(nonRootElements)
 		]
@@ -69,9 +68,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	@ParameterizedTest
 	@ValueSource(ints = #[2,3,5,10])
 	def void testInsertMultipleAtOnceNonContainment(int count) {
-		val ArrayList<NonRoot> nonRootElements = new ArrayList<NonRoot>()
-		(0 ..< count).forEach[ nonRootElements.add(aet.NonRoot()) ]
-
+		val List<NonRoot> nonRootElements = (0 ..< count).map[ aet.NonRoot() ].toList()
 		nonContainmentHelperAddAllAsContainment(nonRootElements)
 		val List<EChange> result = uniquePersistedRoot.record [
 			multiValuedNonContainmentEReference.addAll(nonRootElements)
