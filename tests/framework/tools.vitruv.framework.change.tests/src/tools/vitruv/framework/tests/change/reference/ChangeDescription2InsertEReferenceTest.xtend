@@ -16,17 +16,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 
-class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest {
-
-	def private ArrayList<NonRoot> createNonRootElements(int count) {
-		val ArrayList<NonRoot> nonRootElements = new ArrayList<NonRoot>()
-		(0 ..< count).forEach[
-			val element = aet.NonRoot();
-			element.id = it.toString()
-			nonRootElements.add(element)
-		]
-		return nonRootElements
-	} 
+class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
 	def private void assertCorrectInsertionNonContainment(List<EChange> actualChanges, Pair<NonRoot, Integer>... expectedInsertions) {
 		assertEquals(actualChanges.size, expectedInsertions.size)
@@ -63,23 +53,30 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	@ParameterizedTest
 	@ValueSource(ints = #[2,3,5,10])
 	def void testInsertMultipleAtOnceContainment(int count) {
-		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
+		val ArrayList<NonRoot> nonRootElements = new ArrayList<NonRoot>()
+		(0 ..< count).forEach[
+			val element = aet.NonRoot();
+			element.id = it.toString()
+			nonRootElements.add(element)
+		]		
 		val List<EChange> result = uniquePersistedRoot.record [
 			multiValuedContainmentEReference.addAll(nonRootElements)
 		]
-		val expectedInsertions = this.zipNonRootsWithExpectedInsertionIndeces(nonRootElements, #[0,1,2,3,4])
-		assertCorrectInsertionNonContainment(result, expectedInsertions)
+		val expectedInsertions = this.zipNonRootsWithExpectedInsertionIndeces(nonRootElements, (0 ..< count).toList)
+		assertCorrectInsertionContainment(result, expectedInsertions)
 	}
 
 	@ParameterizedTest
 	@ValueSource(ints = #[2,3,5,10])
 	def void testInsertMultipleAtOnceNonContainment(int count) {
-		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
+		val ArrayList<NonRoot> nonRootElements = new ArrayList<NonRoot>()
+		(0 ..< count).forEach[ nonRootElements.add(aet.NonRoot()) ]
+
 		nonContainmentHelperAddAllAsContainment(nonRootElements)
 		val List<EChange> result = uniquePersistedRoot.record [
 			multiValuedNonContainmentEReference.addAll(nonRootElements)
 		]
-		val expectedInsertions = this.zipNonRootsWithExpectedInsertionIndeces(nonRootElements, #[0,1,2,3,4])
+		val expectedInsertions = this.zipNonRootsWithExpectedInsertionIndeces(nonRootElements, (0 ..< count).toList)
 		assertCorrectInsertionNonContainment(result, expectedInsertions)
 	}
 
