@@ -7,7 +7,6 @@ import org.eclipse.xtext.validation.ValidationMessageAcceptor
 import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import org.eclipse.core.runtime.CoreException
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import org.osgi.framework.FrameworkUtil
 import org.eclipse.xtext.common.types.util.TypeReferences
 
@@ -49,18 +48,6 @@ class ProjectValidation {
 		Class<?> markerType, EObject referenceObject, EStructuralFeature messageTargetFeature) {
 		checkOnClasspath(acceptor, typeReferences, markerType, referenceObject, messageTargetFeature,
 			"The runtime bundle is not on the classpath")
-	}
-
-	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
-		String requiredDomainName, EObject referenceObject) {
-		checkDomainProjectIsOnClasspath(acceptor, typeReferences, requiredDomainName, referenceObject, null)
-	}
-
-	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
-		String requiredDomainName, EObject referenceObject, EStructuralFeature messageTargetFeature) {
-		val domainProviderClass = VitruvDomainProviderRegistry.getDomainProvider(requiredDomainName).class
-		checkOnClasspath(acceptor, typeReferences, domainProviderClass, referenceObject,
-			messageTargetFeature, '''«domainProviderClass.simpleName» is not on the classpath''')
 	}
 
 	def private static checkOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
