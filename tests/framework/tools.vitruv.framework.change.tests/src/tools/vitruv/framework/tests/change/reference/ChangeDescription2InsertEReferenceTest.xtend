@@ -15,6 +15,8 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import java.util.ArrayList
+import org.junit.jupiter.params.provider.ValueSource
+import org.junit.jupiter.params.ParameterizedTest
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -38,12 +40,10 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	def void assertFiveNonRootsNonContainment(List<EChange> actualResult, Pair<NonRoot, Integer>... expectedInsertions) {
 		assertEquals(actualResult.size, expectedInsertions.size)
 		var Iterable<? extends EChange> stepwiseConsumedResult = actualResult
-		for (var int i = 0; i < expectedInsertions.size; i++) {
-			val Pair<NonRoot, Integer> insertion = expectedInsertions.get(i)
+		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
 			val insertAtIndex = insertion.value
 			stepwiseConsumedResult = stepwiseConsumedResult
-				.assertChangeCount(expectedInsertions.size-i)
 				.assertInsertEReference(UPR, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false, false)
 		}
 		stepwiseConsumedResult.assertChangeCount(0)
@@ -52,12 +52,10 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	def void assertFiveNonRootsContainment(List<EChange> actualResult, Pair<NonRoot, Integer>... expectedInsertions) {
 		assertEquals(actualResult.size, expectedInsertions.size*3)
 		var Iterable<? extends EChange> stepwiseConsumedResult = actualResult
-		for (var int i = 0; i < expectedInsertions.size; i++) {
-			val Pair<NonRoot, Integer> insertion = expectedInsertions.get(i)
+		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
 			val insertAtIndex = insertion.value
 			stepwiseConsumedResult = stepwiseConsumedResult
-				.assertChangeCount((expectedInsertions.size-i)*3)
 				.assertCreateAndInsertNonRoot(UPR, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false)
 				.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
 		}
@@ -71,8 +69,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		UPR.multiValuedContainmentEReference.addAll(nonRootElementsToBeContained)
 	}
 	
-	@Test
-	def void testInsertMultipleAtOnceContainment() {		
+	@ParameterizedTest
+	@ValueSource(ints = #[2,3,5,10])
+	def void testInsertMultipleAtOnceContainment(int count) {		
 		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)
 		val List<EChange> result = UPR.record [
 			multiValuedContainmentEReference.addAll(nonRootElements)
@@ -86,8 +85,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		)
 	}
 		
-	@Test
-	def void testInsertMultipleAtOnceNonContainment() {		
+	@ParameterizedTest
+	@ValueSource(ints = #[2,3,5,10])
+	def void testInsertMultipleAtOnceNonContainment(int count) {		
 		val Iterable<NonRoot> nonRootElements = this.createNonRootElements(5)		
 		nonContainmentHelperAddAllAsContainment(nonRootElements)
 		val List<EChange> result = UPR.record [
