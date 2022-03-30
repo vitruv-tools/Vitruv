@@ -20,31 +20,6 @@ import static extension tools.vitruv.framework.tests.change.util.CompoundEChange
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
-	def private void assertCorrectInsertionNonContainment(List<EChange> actualChanges, List<Pair<NonRoot, Integer>> expectedInsertions) {
-		assertEquals(actualChanges.size, expectedInsertions.size)
-		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
-		for (insertion : expectedInsertions) {
-			val nonRoot = insertion.key
-			val insertAtIndex = insertion.value
-			stepwiseConsumedResult = stepwiseConsumedResult
-				.assertInsertEReference(uniquePersistedRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false, false)
-		}
-		stepwiseConsumedResult.assertChangeCount(0)
-	}
-
-	def private void assertCorrectInsertionContainment(List<EChange> actualChanges, List<Pair<NonRoot, Integer>> expectedInsertions) {
-		assertEquals(actualChanges.size, expectedInsertions.size*3)
-		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
-		for (insertion : expectedInsertions) {
-			val nonRoot = insertion.key
-			val insertAtIndex = insertion.value
-			stepwiseConsumedResult = stepwiseConsumedResult
-				.assertCreateAndInsertNonRoot(uniquePersistedRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false)
-				.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
-		}
-		stepwiseConsumedResult.assertChangeCount(0)
-	}
-
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
 	def void testInsertMultipleAtOnceContainment(int count, int insertAt) {
@@ -63,13 +38,22 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 			element.id = it.toString()
 			return element
 		].toList()
-		val List<EChange> result = uniquePersistedRoot.record [
+		val List<EChange> actualChanges = uniquePersistedRoot.record [
 			multiValuedContainmentEReference.addAll(insertAt, nonRootElements)
 		]
 
 		//assert
 		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)].toList
-		assertCorrectInsertionContainment(result, expectedInsertions)
+		assertEquals(actualChanges.size, expectedInsertions.size*3)
+		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
+		for (insertion : expectedInsertions) {
+			val nonRoot = insertion.key
+			val insertAtIndex = insertion.value
+			stepwiseConsumedResult = stepwiseConsumedResult
+				.assertCreateAndInsertNonRoot(uniquePersistedRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false)
+				.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
+		}
+		stepwiseConsumedResult.assertChangeCount(0)
 	}
 
 	@ParameterizedTest
@@ -83,13 +67,21 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		//test
 		val List<NonRoot> nonRootElements = (0 ..< count).map[ aet.NonRoot() ].toList()
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(nonRootElements)
-		val List<EChange> result = uniquePersistedRoot.record [
+		val List<EChange> actualChanges = uniquePersistedRoot.record [
 			multiValuedNonContainmentEReference.addAll(insertAt, nonRootElements)
 		]
 
 		//assert
 		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)].toList
-		assertCorrectInsertionNonContainment(result, expectedInsertions)
+		assertEquals(actualChanges.size, expectedInsertions.size)
+		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
+		for (insertion : expectedInsertions) {
+			val nonRoot = insertion.key
+			val insertAtIndex = insertion.value
+			stepwiseConsumedResult = stepwiseConsumedResult
+				.assertInsertEReference(uniquePersistedRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false, false)
+		}
+		stepwiseConsumedResult.assertChangeCount(0)
 	}
 
 	def private static Stream<Arguments> provideParametersInsertMultipleAtOnceAtIndex() {
