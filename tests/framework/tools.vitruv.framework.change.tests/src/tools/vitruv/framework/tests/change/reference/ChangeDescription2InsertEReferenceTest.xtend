@@ -45,16 +45,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		stepwiseConsumedResult.assertChangeCount(0)
 	}
 
-	/** Elements which are to be inserted as NonContainment-EReferences have to be contained somewhere
-	 *  so they are containment-added to the unique persisted root to then be available for non containment insertion.
-	 */
-	def private void nonContainmentHelperAddAllAsContainment(Iterable<NonRoot> nonRootElementsToBeContained) {
-		uniquePersistedRoot.multiValuedContainmentEReference.addAll(nonRootElementsToBeContained)
-	}	
-			
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
-	def void testInsertMultipleAtOnceAtIndexContainment(int count, int insertAt) {
+	def void testInsertMultipleAtOnceContainment(int count, int insertAt) {
 		//prepare
 		val ids = #['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 		val List<NonRoot> preparationElements = ids.map[ 
@@ -63,7 +56,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 			return element
 		].toList()
 		uniquePersistedRoot.record [ multiValuedContainmentEReference.addAll(preparationElements) ]
-		
+
 	    //test
 	    val List<NonRoot> nonRootElements = (0 ..< count).map[
 			val element = aet.NonRoot()
@@ -73,32 +66,32 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		val List<EChange> result = uniquePersistedRoot.record [
 			multiValuedContainmentEReference.addAll(insertAt, nonRootElements)
 		]
-		
+
 		//assert
-		val expectedInsertions = this.zipNonRootsWithExpectedInsertionIndeces(nonRootElements, (insertAt ..< insertAt + count).toList())
+		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)].toList
 		assertCorrectInsertionContainment(result, expectedInsertions)
 	}
-	
+
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
-	def void testInsertMultipleAtOnceAtIndexNonContainment(int count, int insertAt) {
+	def void testInsertMultipleAtOnceNonContainment(int count, int insertAt) {
 		//prepare
 		val List<NonRoot> preparationElements = (0 ..< 10).map[ aet.NonRoot() ].toList()
-		nonContainmentHelperAddAllAsContainment(preparationElements)
+		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
 		uniquePersistedRoot.record [ multiValuedNonContainmentEReference.addAll(preparationElements) ]
-		
+
 		//test
 		val List<NonRoot> nonRootElements = (0 ..< count).map[ aet.NonRoot() ].toList()
-		nonContainmentHelperAddAllAsContainment(nonRootElements)
+		uniquePersistedRoot.multiValuedContainmentEReference.addAll(nonRootElements)
 		val List<EChange> result = uniquePersistedRoot.record [
 			multiValuedNonContainmentEReference.addAll(insertAt, nonRootElements)
 		]
-		
+
 		//assert
-		val expectedInsertions = this.zipNonRootsWithExpectedInsertionIndeces(nonRootElements, (insertAt ..< insertAt + count).toList())
+		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)].toList
 		assertCorrectInsertionNonContainment(result, expectedInsertions)
-	}	
-	
+	}
+
 	def private static Stream<Arguments> provideParametersInsertMultipleAtOnceAtIndex() {
 	    return Stream.of(
 	            Arguments.of(2, 0),
@@ -114,14 +107,6 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	            Arguments.of(5, 10),
 	            Arguments.of(10, 10)
 	    );
-	}
-	
-	def private ArrayList<Pair<NonRoot, Integer>> zipNonRootsWithExpectedInsertionIndeces(Iterable<NonRoot> nonRoots, List<Integer> integers) {
-		val ArrayList<Pair<NonRoot, Integer>> expectedInsertions = new ArrayList<Pair<NonRoot, Integer>>()
-		integers.forEach[ value, index |
-			expectedInsertions.add(new Pair(nonRoots.get(index), value))
-		]
-		return expectedInsertions
 	}
 
 	@Test
