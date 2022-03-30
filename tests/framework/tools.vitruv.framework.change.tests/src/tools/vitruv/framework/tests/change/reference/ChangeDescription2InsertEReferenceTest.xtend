@@ -17,6 +17,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import java.util.stream.StreamSupport
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
@@ -24,81 +25,61 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
 	def void testInsertMultipleAtOnceContainment(int count, int insertAt) {
 		//prepare
-		val ids = #['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
-		val List<NonRoot> preparationElements = ids.map[ 
-			val element = aet.NonRoot()
-			element.id = it.toString()
-			return element
-		].toList()
+		val preparationElements = (0 ..< 10).map[ aet.NonRoot() ]
 		uniquePersistedRoot.record [ multiValuedContainmentEReference.addAll(preparationElements) ]
 
 	    //test
-	    val List<NonRoot> nonRootElements = (0 ..< count).map[
+	    val nonRootElements = (0 ..< count).map[
 			val element = aet.NonRoot()
 			element.id = it.toString()
 			return element
-		].toList()
-		val List<EChange> actualChanges = uniquePersistedRoot.record [
+		].toList
+		var Iterable<? extends EChange> actualChanges = uniquePersistedRoot.record [
 			multiValuedContainmentEReference.addAll(insertAt, nonRootElements)
 		]
 
 		//assert
-		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)].toList
-		assertEquals(actualChanges.size, expectedInsertions.size*3)
-		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
+		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)]
+		assertEquals(actualChanges.size, expectedInsertions.size*3)		
 		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
 			val insertAtIndex = insertion.value
-			stepwiseConsumedResult = stepwiseConsumedResult
+			actualChanges = actualChanges
 				.assertCreateAndInsertNonRoot(uniquePersistedRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false)
 				.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
 		}
-		stepwiseConsumedResult.assertChangeCount(0)
 	}
 
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
 	def void testInsertMultipleAtOnceNonContainment(int count, int insertAt) {
 		//prepare
-		val List<NonRoot> preparationElements = (0 ..< 10).map[ aet.NonRoot() ].toList()
+		val preparationElements = (0 ..< 10).map[ aet.NonRoot() ].toList
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
 		uniquePersistedRoot.record [ multiValuedNonContainmentEReference.addAll(preparationElements) ]
 
 		//test
-		val List<NonRoot> nonRootElements = (0 ..< count).map[ aet.NonRoot() ].toList()
+		val nonRootElements = (0 ..< count).map[ aet.NonRoot() ].toList
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(nonRootElements)
-		val List<EChange> actualChanges = uniquePersistedRoot.record [
+		var Iterable<? extends EChange> actualChanges = uniquePersistedRoot.record [
 			multiValuedNonContainmentEReference.addAll(insertAt, nonRootElements)
 		]
 
 		//assert
-		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)].toList
+		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size)
-		var Iterable<? extends EChange> stepwiseConsumedResult = actualChanges
 		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
 			val insertAtIndex = insertion.value
-			stepwiseConsumedResult = stepwiseConsumedResult
+			actualChanges = actualChanges
 				.assertInsertEReference(uniquePersistedRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, insertAtIndex, false, false)
 		}
-		stepwiseConsumedResult.assertChangeCount(0)
 	}
 
 	def private static Stream<Arguments> provideParametersInsertMultipleAtOnceAtIndex() {
-	    return Stream.of(
-	            Arguments.of(2, 0),
-	            Arguments.of(3, 0),
-	            Arguments.of(5, 0),
-	            Arguments.of(10, 0),
-	            Arguments.of(2, 5),
-	            Arguments.of(3, 5),
-	            Arguments.of(5, 5),
-	            Arguments.of(10, 5),
-	            Arguments.of(2, 10),
-	            Arguments.of(3, 10),
-	            Arguments.of(5, 10),
-	            Arguments.of(10, 10)
-	    );
+	    val counts = #[2,3,5,10]
+		val insertionIndexes = #[0, 5, 10]		
+		return StreamSupport.stream(insertionIndexes.map [ index | counts.map [ Arguments.of(it, index) ]].flatten.spliterator, false)		
 	}
 
 	@Test
