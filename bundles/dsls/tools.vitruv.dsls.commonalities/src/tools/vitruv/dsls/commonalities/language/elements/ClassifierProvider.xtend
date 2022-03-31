@@ -58,7 +58,7 @@ class ClassifierProvider {
 	def Classifier findClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
 		if (qualifiedInstanceClassName.nullOrEmpty) return null
 		val eClassifier = containingDomain.findEClassifier(qualifiedInstanceClassName)
-		return eClassifier.toClassifier(containingDomain)
+		return eClassifier?.toClassifier(containingDomain)
 	}
 
 	// Searches the Ecore package and the domain specific packages for a matching EClassifier:
