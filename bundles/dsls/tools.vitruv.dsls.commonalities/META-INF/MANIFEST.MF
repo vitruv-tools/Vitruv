@@ -9,7 +9,6 @@ Automatic-Module-Name: tools.vitruv.dsls.common
 Bundle-ActivationPolicy: lazy
 Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.commonalities;visibility:=reexport,
- tools.vitruv.framework.domains,
  tools.vitruv.dsls.reactions,
  org.eclipse.xtext,
  org.eclipse.xtext.xbase,

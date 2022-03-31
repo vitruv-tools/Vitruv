@@ -57,7 +57,7 @@ class CommonalitiesLanguageQualifiedNameProvider extends XbaseQualifiedNameProvi
 		if (packageLikeName === null) return null
 		val result = new ArrayList<String>(4)
 		result.add(packageLikeName)
-		result.add(DOMAIN_METACLASS_SEPARATOR_SEGMENT)
+		result.add(METAMODEL_METACLASS_SEPARATOR_SEGMENT)
 		return result
 	}
 }

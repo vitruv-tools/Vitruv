@@ -25,13 +25,13 @@ class ParticipationClassesScope implements IScope {
 	}
 
 	override getElements(QualifiedName qName) {
-		val domainName = qName.domainName
-		if (domainName === null) return emptyList()
+		val metamodelName = qName.metamodelName
+		if (metamodelName === null) return emptyList()
 		val className = qName.className
 		if (className === null) return emptyList()
 
 		return commonality.participations
-			.filter [name == domainName]
+			.filter [name == metamodelName]
 			.flatMap [allClasses]
 			.filter [name == className]
 			.map(descriptionProvider)

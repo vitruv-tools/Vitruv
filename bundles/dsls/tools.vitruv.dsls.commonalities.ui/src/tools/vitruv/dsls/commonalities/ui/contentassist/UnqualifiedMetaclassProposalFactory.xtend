@@ -13,7 +13,7 @@ class UnqualifiedMetaclassProposalFactory extends CommonalitiesLanguageProposalF
 	override apply(IEObjectDescription description) {
 		completionProposal(description.name.getSegment(1))
 			.appendInfoText(description.name.firstSegment)
-			.appendInfoText(DOMAIN_METACLASS_SEPARATOR)
+			.appendInfoText(METAMODEL_METACLASS_SEPARATOR)
 			.appendText(description.name.getSegment(1))
 			.withImageOf(description.EObjectOrProxy)
 			.usePrefixMatcher(ignoreCase)

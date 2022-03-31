@@ -5,7 +5,8 @@ import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import java.util.HashMap
+import org.eclipse.emf.ecore.EPackage
 
 @Singleton
 class MetamodelProvider {
@@ -20,31 +21,30 @@ class MetamodelProvider {
 
 	// there is currently no way to change the domains while developing, so
 	// it’s okay to cache them.
-	@Lazy(PRIVATE) Map<String, Metamodel> allMetamodelsByName = loadMetamodels()
+	@Lazy(PRIVATE) Map<String, Metamodel> allMetamodelsByName = new HashMap()
 
 	package new() {
 	}
 
-	private def loadMetamodels() {
-		return newHashMap(
-			VitruvDomainProviderRegistry.allDomainProviders.map[domain].map [ domain |
-			val vitruvDomain = LanguageElementsFactory.eINSTANCE.createMetamodel
-				.withClassifierProvider(ClassifierProvider.INSTANCE).forEPackage(domain.metamodelRootPackage)
-			container.contents += vitruvDomain
-			return domain.name -> vitruvDomain
-		])
+	def registerReferencedMetamodel(String name, EPackage ePackage) {
+		if (!allMetamodelsByName.containsKey(name)) {
+			val metamodel = LanguageElementsFactory.eINSTANCE.createMetamodel.withClassifierProvider(
+				ClassifierProvider.INSTANCE).forEPackage(ePackage)
+			allMetamodelsByName.put(name, metamodel)
+			container.contents += metamodel
+		}
 	}
-
+	
 	private def createContainerResource() {
 		val resourceSet = new ResourceSetImpl
 		return resourceSet.createResource(CONTAINER_RESOURCE_URI)
 	}
 
-	def getDomainByName(String name) {
+	def getMetamodelByName(String name) {
 		allMetamodelsByName.get(name)
 	}
 
-	def getAllDomains() {
+	def getAllMetamodels() {
 		allMetamodelsByName.values
 	}
 }

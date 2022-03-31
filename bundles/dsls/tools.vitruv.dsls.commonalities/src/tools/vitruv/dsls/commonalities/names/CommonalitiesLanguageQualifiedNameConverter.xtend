@@ -25,20 +25,22 @@ class CommonalitiesLanguageQualifiedNameConverter extends IQualifiedNameConverte
 	 * 'a.b.c.d' -> #['a', 'b', 'c', 'd'] (java-like)
 	 */
 	override toQualifiedName(String qualifiedNameAsText) {
-		val domainSeparatorIndex = qualifiedNameAsText.indexOf(DOMAIN_METACLASS_SEPARATOR)
+		if (qualifiedNameAsText.startsWith("http://"))
+			return QualifiedName.create(qualifiedNameAsText)
+		val domainSeparatorIndex = qualifiedNameAsText.indexOf(METAMODEL_METACLASS_SEPARATOR)
 		if (domainSeparatorIndex === NOT_FOUND) {
 			return super.toQualifiedName(qualifiedNameAsText)
 		}
 		val domainName = qualifiedNameAsText.substring(0, domainSeparatorIndex)
 		val classAndAttributePart = qualifiedNameAsText.substring(domainSeparatorIndex + 1)
-		return QualifiedName.create(domainName, DOMAIN_METACLASS_SEPARATOR_SEGMENT)
+		return QualifiedName.create(domainName, METAMODEL_METACLASS_SEPARATOR_SEGMENT)
 			.append(super.toQualifiedName(classAndAttributePart))
 	}
 
 	override toString(QualifiedName name) {
-		val domainName = name.domainName
+		val domainName = name.metamodelName
 		if (domainName !== null) {
-			return domainName + DOMAIN_METACLASS_SEPARATOR + super.toString(name.skipFirst(2))
+			return domainName + METAMODEL_METACLASS_SEPARATOR + super.toString(name.skipFirst(2))
 		} else {
 			return super.toString(name)
 		}

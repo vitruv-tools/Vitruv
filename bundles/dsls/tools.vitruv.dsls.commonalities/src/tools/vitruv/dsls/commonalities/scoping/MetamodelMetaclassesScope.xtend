@@ -1,7 +1,5 @@
 package tools.vitruv.dsls.commonalities.scoping
 
-import com.google.inject.Inject
-import com.google.inject.Singleton
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
@@ -10,26 +8,53 @@ import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 import tools.vitruv.dsls.commonalities.language.elements.MetamodelProvider
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.dsls.common.elements.MetamodelImport
+import tools.vitruv.dsls.common.elements.ElementsPackage
+import java.util.Set
+import org.eclipse.xtend.lib.annotations.Data
+import org.eclipse.emf.ecore.EPackage
 
-@Singleton
 class MetamodelMetaclassesScope implements IScope {
+	val IEObjectDescriptionProvider descriptionProvider
+	val MetamodelProvider metamodelProvider
+	val Set<String> metamodelNames
 
-	@Inject MetamodelProvider metamodelProvider
-	@Inject IEObjectDescriptionProvider descriptionProvider
+	new(Resource resource, IEObjectDescriptionProvider descriptionProvider, MetamodelProvider provider) {
+		this.descriptionProvider = descriptionProvider
+		this.metamodelProvider = provider
+		val importedMetamodels = resource.extractImportedMetamodeels
+		this.metamodelNames = importedMetamodels.map[name].toSet
+		importedMetamodels.forEach[provider.registerReferencedMetamodel(name, ePackage)]
+	}
+	
+	@Data
+	static class ImportedMetamodel {
+		val String name
+		val EPackage ePackage
+	}
+
+	private def extractImportedMetamodeels(Resource res) {
+		var imports = res.allContents.filter[eClass == ElementsPackage.eINSTANCE.getMetamodelImport].toList.filter(
+			MetamodelImport).filter[package !== null]
+		val importedMetamodels = imports.map [
+			new ImportedMetamodel(it.name ?: it.package.name, it.package)
+		]
+		return importedMetamodels
+	}
 
 	override getAllElements() {
-		metamodelProvider.allDomains.flatMap[metaclasses].map(descriptionProvider)
+		metamodelNames.map[metamodelProvider.getMetamodelByName(it)].flatMap[metaclasses].map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
-		val domainName = qName.domainName
-		if (domainName === null) return #[]
+		val metamodelName = qName.metamodelName
+		if(metamodelName === null || !metamodelNames.contains(metamodelName)) return #[]
 		val className = qName.className
-		if (className === null) return #[]
+		if(className === null) return #[]
 
-		return (metamodelProvider.getDomainByName(domainName)?.metaclasses ?: #[])
-			.filter[name == className]
-			.map(descriptionProvider)
+		return (metamodelProvider.getMetamodelByName(metamodelName)?.metaclasses ?: #[]). //
+		filter[name == className].map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {
@@ -46,6 +71,7 @@ class MetamodelMetaclassesScope implements IScope {
 	}
 
 	override toString() {
-		'''«MetamodelMetaclassesScope.simpleName» for domains «metamodelProvider.allDomains.toList»'''
+		'''«MetamodelMetaclassesScope.simpleName» for metamodels «metamodelNames»'''
 	}
+
 }

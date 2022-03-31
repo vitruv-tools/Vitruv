@@ -15,7 +15,7 @@ class QualifiedMetaclassProposalFactory extends CommonalitiesLanguageProposalFac
 	override apply(IEObjectDescription description) {
 		completionProposal(description.name)
 			.appendText(description.name.firstSegment)
-			.appendText(DOMAIN_METACLASS_SEPARATOR)
+			.appendText(METAMODEL_METACLASS_SEPARATOR)
 			.appendText(description.name.getSegment(1))
 			.withImageOf(description.EObjectOrProxy)
 			.usePrefixMatcher(metaclassPrefixMatcher)
