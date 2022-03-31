@@ -1,9 +1,7 @@
 package tools.vitruv.framework.tests.change.reference
 
-import allElementTypes.NonRoot
-import java.util.ArrayList
-import java.util.List
 import java.util.stream.Stream
+import java.util.stream.StreamSupport
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -15,9 +13,9 @@ import static allElementTypes.AllElementTypesPackage.Literals.*
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import java.util.stream.StreamSupport
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
@@ -29,17 +27,17 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		uniquePersistedRoot.record [ multiValuedContainmentEReference.addAll(preparationElements) ]
 
 	    //test
-	    val nonRootElements = (0 ..< count).map[
+	    val nonRootElements = (0 ..< count).mapFixed[
 			val element = aet.NonRoot()
 			element.id = it.toString()
 			return element
-		].toList
+		]
 		var Iterable<? extends EChange> actualChanges = uniquePersistedRoot.record [
 			multiValuedContainmentEReference.addAll(insertAt, nonRootElements)
 		]
 
 		//assert
-		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)]
+		val expectedInsertions = nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size*3)		
 		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
@@ -54,12 +52,12 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
 	def void testInsertMultipleAtOnceNonContainment(int count, int insertAt) {
 		//prepare
-		val preparationElements = (0 ..< 10).map[ aet.NonRoot() ].toList
+		val preparationElements = (0 ..< 10).mapFixed[ aet.NonRoot() ]
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
 		uniquePersistedRoot.record [ multiValuedNonContainmentEReference.addAll(preparationElements) ]
 
 		//test
-		val nonRootElements = (0 ..< count).map[ aet.NonRoot() ].toList
+		val nonRootElements = (0 ..< count).mapFixed[ aet.NonRoot() ]
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(nonRootElements)
 		var Iterable<? extends EChange> actualChanges = uniquePersistedRoot.record [
 			multiValuedNonContainmentEReference.addAll(insertAt, nonRootElements)
