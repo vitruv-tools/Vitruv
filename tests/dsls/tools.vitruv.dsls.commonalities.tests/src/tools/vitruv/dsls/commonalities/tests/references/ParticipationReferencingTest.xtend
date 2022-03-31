@@ -29,6 +29,8 @@ class ParticipationReferencingTest {
 	@DisplayName("resolves a reference to a VitruvDomain")
 	def void domainReference() {
 		assertThat(parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+			
 			concept test
 			
 			commonality Test {

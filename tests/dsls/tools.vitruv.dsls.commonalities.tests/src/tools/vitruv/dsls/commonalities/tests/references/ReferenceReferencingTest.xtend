@@ -29,6 +29,8 @@ class ReferenceReferencingTest {
 	@DisplayName("resolves a reference to the declaring Commonality")
 	def void selfReference() {
 		val commonality = parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+
 			concept test
 			
 			commonality Test {
@@ -55,6 +57,8 @@ class ReferenceReferencingTest {
 				commonality Target {}
 			''')
 			assertThat(parseAndValidateInSet('''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				
 				concept test
 				
 				commonality Test {

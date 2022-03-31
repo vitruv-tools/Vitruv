@@ -27,6 +27,9 @@ class ReferenceMappingOperatorExecutionTest extends VitruvApplicationTest {
 			'WithReferenceMappingOperators.commonality' -> '''
 				import tools.vitruv.dsls.commonalities.tests.operators.mock
 				
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				
 				concept operators
 				
 				commonality WithReferenceMappingOperators {

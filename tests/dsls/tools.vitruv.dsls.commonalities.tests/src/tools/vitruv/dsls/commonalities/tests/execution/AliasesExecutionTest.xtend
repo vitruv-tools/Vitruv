@@ -14,6 +14,11 @@ class AliasesExecutionTest extends IdentifiedExecutionTest {
 	override generate(@TestProject Path testProject) {
 		generator.generate(testProject,
 			'IdentifiedWithAliases.commonality' -> '''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept test
 				
 				commonality IdentifiedWithAliases {
@@ -53,6 +58,11 @@ class AliasesExecutionTest extends IdentifiedExecutionTest {
 				}
 			''',
 			'SubWithAliases.commonality' -> '''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept test
 				
 				commonality SubWithAliases {

@@ -35,6 +35,11 @@ class AttributeMappingOperatorExecutionTest extends VitruvApplicationTest {
 				import tools.vitruv.dsls.commonalities.tests.operators.multiply
 				import tools.vitruv.dsls.commonalities.tests.operators.digits
 				
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept operators
 				
 				commonality WithAttributeMappingOperators {

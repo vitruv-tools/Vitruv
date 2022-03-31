@@ -38,6 +38,8 @@ class FeatureMappingReferencingTest {
 	)
 	def void referenceParticipationInSimpleAttributeMapping(String participation, String reference) {
 		val commonality = parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+			
 			concept test
 			
 			commonality Test {
@@ -72,6 +74,9 @@ class FeatureMappingReferencingTest {
 	)
 	def void referenceParticipationInSimpleReferenceMapping(String participation, String reference) {
 		val commonality = parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+		
+		
 			concept test
 			
 			commonality Test {
@@ -107,7 +112,9 @@ class FeatureMappingReferencingTest {
 	def void referenceParticipationInOperatorAttributeMapping(String participation, String reference) {
 		val commonality = parseAndValidate('''
 			import tools.vitruv.dsls.commonalities.tests.operators.digits
-		
+			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+					
 			concept test
 			
 			commonality Test {
@@ -147,6 +154,8 @@ class FeatureMappingReferencingTest {
 		val commonality = parseAndValidate('''
 			import tools.vitruv.dsls.commonalities.tests.operators.mock
 			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+						
 			concept test
 			
 			commonality Test {
@@ -190,6 +199,8 @@ class FeatureMappingReferencingTest {
 	) {
 		inSameResourceSet [
 			val referenced = parseInSet('''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				
 				concept Referenced 
 				
 				commonality Target {
@@ -198,6 +209,8 @@ class FeatureMappingReferencingTest {
 			''')
 			val commonality = parseAndValidateInSet('''
 				import tools.vitruv.dsls.commonalities.tests.operators.mock
+				
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
 				
 				concept test
 				
