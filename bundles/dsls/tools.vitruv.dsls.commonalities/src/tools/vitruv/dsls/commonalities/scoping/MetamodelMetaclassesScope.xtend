@@ -12,20 +12,21 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.dsls.common.elements.MetamodelImport
 import tools.vitruv.dsls.common.elements.ElementsPackage
 import java.util.Set
+import java.util.HashSet
 import org.eclipse.xtend.lib.annotations.Data
 import org.eclipse.emf.ecore.EPackage
 
 class MetamodelMetaclassesScope implements IScope {
 	val IEObjectDescriptionProvider descriptionProvider
 	val MetamodelProvider metamodelProvider
-	val Set<String> metamodelNames
+	val Set<String> metamodelNames = new HashSet
 
 	new(Resource resource, IEObjectDescriptionProvider descriptionProvider, MetamodelProvider provider) {
 		this.descriptionProvider = descriptionProvider
 		this.metamodelProvider = provider
-		val importedMetamodels = resource.extractImportedMetamodeels
-		this.metamodelNames = importedMetamodels.map[name].toSet
-		importedMetamodels.forEach[provider.registerReferencedMetamodel(name, ePackage)]
+		val importedMetamodels = resource.extractImportedMetamodels
+		this.metamodelNames += importedMetamodels.map[name].toSet
+		importedMetamodels.forEach[metamodelProvider.registerReferencedMetamodel(name, ePackage)]
 	}
 	
 	@Data
@@ -34,7 +35,7 @@ class MetamodelMetaclassesScope implements IScope {
 		val EPackage ePackage
 	}
 
-	private def extractImportedMetamodeels(Resource res) {
+	private def extractImportedMetamodels(Resource res) {
 		var imports = res.allContents.filter[eClass == ElementsPackage.eINSTANCE.getMetamodelImport].toList.filter(
 			MetamodelImport).filter[package !== null]
 		val importedMetamodels = imports.map [
