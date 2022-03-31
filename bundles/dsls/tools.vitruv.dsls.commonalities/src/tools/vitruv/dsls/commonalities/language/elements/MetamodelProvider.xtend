@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
 import com.google.inject.Singleton
-import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -19,9 +18,7 @@ class MetamodelProvider {
 	val static CONTAINER_RESOURCE_URI = URI.createURI('synthetic:/commonalities/metamodelAdapters')
 	val container = createContainerResource
 
-	// there is currently no way to change the domains while developing, so
-	// it’s okay to cache them.
-	@Lazy(PRIVATE) Map<String, Metamodel> allMetamodelsByName = new HashMap()
+	Map<String, Metamodel> allMetamodelsByName = new HashMap()
 
 	package new() {
 	}
