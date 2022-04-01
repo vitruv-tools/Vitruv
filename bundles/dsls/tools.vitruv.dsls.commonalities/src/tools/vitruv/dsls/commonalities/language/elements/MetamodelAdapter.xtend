@@ -9,11 +9,11 @@ import java.util.List
 import tools.vitruv.dsls.commonalities.language.elements.impl.MetamodelImpl
 
 class MetamodelAdapter extends MetamodelImpl implements Wrapper<EPackage> {
-	EPackage ePackage
+	EPackage wrappedEPackage
 	var extension ClassifierProvider classifierProvider
 
 	override forEPackage(EPackage ePackage) {
-		this.ePackage = checkNotNull(ePackage)
+		this.wrappedEPackage = checkNotNull(ePackage)
 		return this
 	}
 
@@ -23,7 +23,7 @@ class MetamodelAdapter extends MetamodelImpl implements Wrapper<EPackage> {
 	}
 
 	private def checkDomainSet() {
-		checkState(ePackage !== null, "No ePackage was set on this adapter!")
+		checkState(wrappedEPackage !== null, "No ePackage was set on this adapter!")
 	}
 
 	private def checkClassifierProviderSet() {
@@ -41,7 +41,7 @@ class MetamodelAdapter extends MetamodelImpl implements Wrapper<EPackage> {
 	}
 
 	private def Set<EPackage> getRootPackages() {
-		return Set.of(ePackage)
+		return Set.of(wrappedEPackage)
 	}
 
 	def Set<EPackage> getAllPackages() {
@@ -70,27 +70,27 @@ class MetamodelAdapter extends MetamodelImpl implements Wrapper<EPackage> {
 	override getName() {
 		if (eIsProxy) return null
 		checkDomainSet()
-		ePackage.name
+		wrappedEPackage.name
 	}
 
 	override getWrapped() {
-		ePackage
+		wrappedEPackage
 	}
 
 	override toString() {
-		'''{{«ePackage?.name»}}'''
+		'''{{«wrappedEPackage?.name»}}'''
 	}
 	
 	override equals(Object o) {
 		if (this === o) true
 		else if (o === null) false
 		else if (o instanceof MetamodelAdapter) {
-			this.ePackage == o.ePackage
+			this.wrappedEPackage == o.wrappedEPackage
 		}
 		else false
 	}
 	
 	override hashCode() {
-		5 * ((ePackage === null) ? 0 : ePackage.hashCode())
+		5 * ((wrappedEPackage === null) ? 0 : wrappedEPackage.hashCode())
 	}
 }
