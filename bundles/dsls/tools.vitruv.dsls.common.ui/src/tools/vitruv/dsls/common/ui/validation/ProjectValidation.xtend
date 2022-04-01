@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.CoreException
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.osgi.framework.FrameworkUtil
 import org.eclipse.xtext.common.types.util.TypeReferences
+import org.eclipse.emf.ecore.EPackage
 
 @Utility
 class ProjectValidation {
@@ -48,6 +49,17 @@ class ProjectValidation {
 		Class<?> markerType, EObject referenceObject, EStructuralFeature messageTargetFeature) {
 		checkOnClasspath(acceptor, typeReferences, markerType, referenceObject, messageTargetFeature,
 			"The runtime bundle is not on the classpath")
+	}
+
+	def static checkMetamodelProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
+		EPackage requiredPackage, EObject referenceObject) {
+		checkMetamodelProjectIsOnClasspath(acceptor, typeReferences, requiredPackage, referenceObject, null)
+	}
+
+	def static checkMetamodelProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
+		EPackage requiredPackage, EObject referenceObject, EStructuralFeature messageTargetFeature) {
+		checkOnClasspath(acceptor, typeReferences, requiredPackage.class, referenceObject,
+			messageTargetFeature, '''The bundle providing EPackage "«requiredPackage.nsURI»" is not on the classpath''')
 	}
 
 	def private static checkOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,

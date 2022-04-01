@@ -70,9 +70,11 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 	@DisplayName("fixes a missing domain bundle dependency")
 	def void fixMissingDomainBundle() {
 		val testProject = setupProject()
-		val missingBundle = "tools.vitruv.testutils.domains"
+		val missingBundle = "tools.vitruv.testutils.metamodels"
 
 		val testCommonality = '''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+			
 			concept test
 			
 			commonality Test {
@@ -98,6 +100,8 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 		createProjectAt(projectName, projectLocation) => [configureAsJavaProject()]
 
 		val testCommonality = '''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+			
 			concept test
 			
 			commonality Test {
