@@ -44,7 +44,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	@Inject IGlobalScopeProvider globalScopeProvider
 	@Inject extension IQualifiedNameProvider qualifiedNameProvider
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
-	
+
 	// Context differs during content assist:
 	// * If no input is provided yet, the container is the context as the element is not known yet
 	// * If some input is already provided, the element is the context

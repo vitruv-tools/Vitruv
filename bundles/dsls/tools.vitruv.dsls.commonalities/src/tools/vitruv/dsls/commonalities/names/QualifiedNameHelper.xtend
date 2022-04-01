@@ -10,11 +10,11 @@ class QualifiedNameHelper {
 	public static val METAMODEL_METACLASS_SEPARATOR_SEGMENT = ":"
 
 	static def getQualifiedDomainName(String domainName) {
-		return QualifiedName.create(domainName, tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.METAMODEL_METACLASS_SEPARATOR_SEGMENT)
+		return QualifiedName.create(domainName, METAMODEL_METACLASS_SEPARATOR_SEGMENT)
 	}
 
 	static def hasMetamodelName(QualifiedName name) {
-		return (name.segmentCount > 1 && name.getSegment(1) == tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.METAMODEL_METACLASS_SEPARATOR_SEGMENT)
+		return (name.segmentCount > 1 && name.getSegment(1) == METAMODEL_METACLASS_SEPARATOR_SEGMENT)
 	}
 
 	static def getMetamodelName(QualifiedName name) {
