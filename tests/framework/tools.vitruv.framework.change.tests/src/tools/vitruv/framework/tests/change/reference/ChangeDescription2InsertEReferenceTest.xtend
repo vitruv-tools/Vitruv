@@ -83,7 +83,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleNonContainment() {
-		insertAndAssertSingleNonContainment(0, 0)
+		insertAndAssertSingleNonContainment(0, -1)
 	}
 
 	@ParameterizedTest
@@ -101,7 +101,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleContainment() {
-		insertAndAssertSingleContainment(0, 0)
+		insertAndAssertSingleContainment(0, -1)
 	}
 
 	@ParameterizedTest
@@ -121,6 +121,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		(0 ..< 10).forEach[testCases.add(#[new Pair(it, it)])]
 		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(2,2), new Pair(1,1)])
 		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(0,0), new Pair(2,2), new Pair(4,4)])
+		testCases.add(#[new Pair(10, -1)])
+		testCases.add(#[new Pair(10,-1), new Pair(10,10), new Pair(12,-1)])
+		testCases.add(#[new Pair(0,0), new Pair(11,-1), new Pair(12,-1)])
 		return stream(testCases.map[Arguments.of(it)].spliterator, false)
 	}
 
