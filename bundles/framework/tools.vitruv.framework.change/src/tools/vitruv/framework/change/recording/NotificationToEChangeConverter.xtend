@@ -210,10 +210,20 @@ package final class NotificationToEChangeConverter {
 	}
 
 	private def Iterable<? extends EChange> handleMultiInsertReference(extension NotificationInfo notification) {
-		(newValue as List<EObject>).flatMapFixedIndexed [ index, value |
-			createInsertReferenceChange(notifierModelElement, reference, value, initialIndex + index).
-				surroundWithCreateAndFeatureChangesIfNecessary()
-		]
+		val listOfNewValues = newValue as List<EObject>
+		val numOfElementsInEReferenceAfterInsertion = (notifierModelElement.eGet(reference) as List<EObject>).size
+
+		if (initialIndex == numOfElementsInEReferenceAfterInsertion - listOfNewValues.size) {
+			listOfNewValues.flatMapFixedIndexed [ index, value |
+				createInsertReferenceChange(notifierModelElement, reference, value, -1).
+					surroundWithCreateAndFeatureChangesIfNecessary()
+			]
+		} else {
+			listOfNewValues.flatMapFixedIndexed [ index, value |
+				createInsertReferenceChange(notifierModelElement, reference, value, initialIndex + index).
+					surroundWithCreateAndFeatureChangesIfNecessary()
+			]
+		}
 	}
 
 	private def handleInsertRootChange(extension NotificationInfo notification) {
