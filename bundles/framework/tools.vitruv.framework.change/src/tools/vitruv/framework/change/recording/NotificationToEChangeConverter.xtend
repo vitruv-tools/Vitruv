@@ -1,20 +1,22 @@
 package tools.vitruv.framework.change.recording
 
 import java.util.List
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import static org.eclipse.emf.common.notify.Notification.*
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+
+import static org.eclipse.emf.common.notify.Notification.*
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.change.recording.EChangeCreationUtil.*
 
 /** 
@@ -195,7 +197,15 @@ package final class NotificationToEChangeConverter {
 	}
 
 	private def Iterable<? extends EChange> handleInsertReference(extension NotificationInfo notification) {
-		createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, position).
+		/* If the new value was just inserted and especially at the last position,
+		 * then the index can be changed to -1.
+		 */
+		var newIndex = position
+		var eRef = notifierModelElement.eGet(reference) as List<EObject>
+		if(eRef.indexOf(newModelElementValue) == eRef.size() - 1) {
+			newIndex = -1
+		}
+		createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, newIndex).
 			surroundWithCreateAndFeatureChangesIfNecessary()
 	}
 

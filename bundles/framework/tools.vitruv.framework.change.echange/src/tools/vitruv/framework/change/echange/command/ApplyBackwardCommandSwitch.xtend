@@ -91,7 +91,14 @@ package class ApplyBackwardCommandSwitch {
 		if (change.wasUnset) {
 			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
 		} else {
-			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, change.index)]
+			/* Do not manipulate the change itself, but to convert them to the predefined EMF-Commands,
+			 * change the -1 index back to the last index in the list.
+			 */
+			var index = change.index
+			if(change.index == -1) {
+				index = (change.affectedEObject.eGet(change.affectedFeature) as List<EObject>).size() - 1
+			}
+			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, index)]
 		}
 	}
 
