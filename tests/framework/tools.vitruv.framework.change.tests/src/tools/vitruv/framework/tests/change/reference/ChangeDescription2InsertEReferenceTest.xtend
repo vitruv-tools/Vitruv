@@ -38,7 +38,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		]
 
 		// assert
-		val expectedInsertions = nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
+		val expectedInsertions = 
+			if (insertAt == 10) nonRootElements.mapFixed[new Pair(it, -1)]
+			else nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size * 3)
 		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
@@ -64,8 +66,10 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 			multiValuedNonContainmentEReference.addAll(insertAt, nonRootElements)
 		]
 
-		// assert
-		val expectedInsertions = nonRootElements.indexed().map[new Pair(value, key + insertAt)]
+		// assert		
+		val expectedInsertions = 
+			if (insertAt == 10) nonRootElements.mapFixed[new Pair(it, -1)]
+			else nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size)
 		for (insertion : expectedInsertions) {
 			val nonRoot = insertion.key
