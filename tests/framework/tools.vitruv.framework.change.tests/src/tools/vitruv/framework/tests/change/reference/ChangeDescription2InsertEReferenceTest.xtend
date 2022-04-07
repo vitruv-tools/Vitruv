@@ -16,6 +16,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import java.util.ArrayList
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
@@ -54,7 +55,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		// prepare
 		val preparationElements = (0 ..< 10).mapFixed[aet.NonRoot()]
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
-		uniquePersistedRoot.record[multiValuedNonContainmentEReference.addAll(preparationElements)]
+		uniquePersistedRoot.multiValuedNonContainmentEReference.addAll(preparationElements)
 
 		// test
 		val nonRootElements = (0 ..< count).mapFixed[aet.NonRoot()]
@@ -82,62 +83,79 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleNonContainment() {
-		insertAndAssertSingleNonContainment(0)
+		insertAndAssertSingleNonContainment(0, 0)
 	}
 
-	@Test
-	def void testInsertMultipleIterativelyNonContainment() {
-		insertAndAssertSingleNonContainment(0)
-		insertAndAssertSingleNonContainment(1)
-		insertAndAssertSingleNonContainment(2)
-		insertAndAssertSingleNonContainment(1)
+	@ParameterizedTest
+	@MethodSource("provideParametersInsertElementOneByOne")
+	def void testInsertMultipleIterativelyNonContainment(Iterable<Pair<Integer, Integer>> indecesPair) {
+		// prepare
+		val preparationElements = (0 ..< 10).mapFixed[aet.NonRoot()]
+		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
+		uniquePersistedRoot.multiValuedNonContainmentEReference.addAll(preparationElements)
+
+		for(var i = 0; i < indecesPair.size; i++) {
+			insertAndAssertSingleNonContainment(indecesPair.get(i).key, indecesPair.get(i).value)
+		}
 	}
 
 	@Test
 	def void testInsertSingleContainment() {
-		insertAndAssertSingleContainment(0)
+		insertAndAssertSingleContainment(0, 0)
 	}
 
-	@Test
-	def void testInsertMultipleIterativelyContainment() {
-		insertAndAssertSingleContainment(0)
-		insertAndAssertSingleContainment(1)
-		insertAndAssertSingleContainment(2)
-		insertAndAssertSingleContainment(1)
+	@ParameterizedTest
+	@MethodSource("provideParametersInsertElementOneByOne")
+	def void testInsertMultipleIterativelyContainment(Iterable<Pair<Integer, Integer>> indecesPair) { 
+		// prepare
+		val preparationElements = (0 ..< 10).mapFixed[aet.NonRoot()]
+		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
+
+		for(var i = 0; i < indecesPair.size; i++) {
+			insertAndAssertSingleContainment(indecesPair.get(i).key, indecesPair.get(i).value)
+		}
 	}
 
-	def private void insertAndAssertSingleContainment(int expectedIndex) {
+	def static Stream<Arguments> provideParametersInsertElementOneByOne() {
+		val testCases = new ArrayList<Iterable<Pair<Integer, Integer>>>()
+		(0 ..< 10).forEach[testCases.add(#[new Pair(it, it)])]
+		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(2,2), new Pair(1,1)])
+		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(0,0), new Pair(2,2), new Pair(4,4)])
+		return stream(testCases.map[Arguments.of(it)].spliterator, false)
+	}
+
+	def private void insertAndAssertSingleContainment(int insertAtIndex, int expectedEChangeIndex) {
 		// prepare
 		uniquePersistedRoot
 
 		// test
 		val nonRoot = aet.NonRoot
 		val result = uniquePersistedRoot.record [
-			multiValuedContainmentEReference.add(expectedIndex, nonRoot)
+			multiValuedContainmentEReference.add(insertAtIndex, nonRoot)
 		]
 
 		// assert
 		result.assertChangeCount(3)
-			.assertCreateAndInsertNonRoot(uniquePersistedRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, expectedIndex, false)
+			.assertCreateAndInsertNonRoot(uniquePersistedRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, expectedEChangeIndex, false)
 			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
 			.assertEmpty
 	}
 
-	def private void insertAndAssertSingleNonContainment(int expectedIndex) {
+	def private void insertAndAssertSingleNonContainment(int insertAtIndex, int expectedEChangeIndex) {
 		// prepare
 		val nonRoot = aet.NonRoot
 		uniquePersistedRoot => [
-			multiValuedContainmentEReference.add(expectedIndex, nonRoot)
+			multiValuedContainmentEReference.add(insertAtIndex, nonRoot)
 		]
 
 		// test
 		val result = uniquePersistedRoot.record [
-			multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
+			multiValuedNonContainmentEReference.add(insertAtIndex, nonRoot)
 		]
 
 		// assert
 		result.assertChangeCount(1)
-			.assertInsertEReference(uniquePersistedRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, expectedIndex, false, false)
+			.assertInsertEReference(uniquePersistedRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, expectedEChangeIndex, false, false)
 			.assertEmpty
 	}
 
