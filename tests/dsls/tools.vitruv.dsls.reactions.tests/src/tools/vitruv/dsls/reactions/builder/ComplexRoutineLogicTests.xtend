@@ -15,29 +15,31 @@ import org.junit.jupiter.api.Test
 @InjectWith(ReactionsLanguageInjectorProvider)
 class ComplexRoutineLogicTests extends FluentReactionsBuilderTest {
 
-@Test
+	@Test
 	def void ts() {
 		val builder = create.reactionsFile('createRootTest') +=
 			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).
-				executeActionsIn(AllElementTypesPackage.eINSTANCE) += create.reaction('CreateRootTest').afterElement(Root).created.call [
-				action [
-					execute[ provider |
-						XbaseFactory.eINSTANCE.createXBlockExpression => [
-							val loopVariable = TypesFactory.eINSTANCE.createJvmFormalParameter => [
+				executeActionsIn(AllElementTypesPackage.eINSTANCE) +=
+				create.reaction('CreateRootTest').afterElement(Root).created.call [
+					action [
+						execute[ provider |
+							XbaseFactory.eINSTANCE.createXBlockExpression => [
+								val loopVariable = TypesFactory.eINSTANCE.createJvmFormalParameter => [
 									name = 'b'
 								]
-							expressions += XbaseFactory.eINSTANCE.createXForLoopExpression => [
-								it.declaredParam = loopVariable
-								it.forExpression = XbaseFactory.eINSTANCE.createXListLiteral => [
-									it.elements += XbaseFactory.eINSTANCE.createXNumberLiteral => [
-										value = '10'
+								expressions += XbaseFactory.eINSTANCE.createXForLoopExpression => [
+									it.declaredParam = loopVariable
+									it.forExpression = XbaseFactory.eINSTANCE.createXListLiteral => [
+										it.elements += XbaseFactory.eINSTANCE.createXNumberLiteral => [
+											value = '10'
+										]
 									]
-								]
-								it.eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
-									expressions += XbaseFactory.eINSTANCE.createXAssignment => [
-										feature = loopVariable
-										value = XbaseFactory.eINSTANCE.createXNumberLiteral => [
-											value = '20'
+									it.eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
+										expressions += XbaseFactory.eINSTANCE.createXAssignment => [
+											feature = loopVariable
+											value = XbaseFactory.eINSTANCE.createXNumberLiteral => [
+												value = '20'
+											]
 										]
 									]
 								]
@@ -45,7 +47,6 @@ class ComplexRoutineLogicTests extends FluentReactionsBuilderTest {
 						]
 					]
 				]
-			]
 
 		val reactionResult = '''
 			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
