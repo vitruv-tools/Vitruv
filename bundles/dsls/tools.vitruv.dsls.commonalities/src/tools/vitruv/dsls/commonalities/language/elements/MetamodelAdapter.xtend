@@ -83,7 +83,6 @@ class MetamodelAdapter extends MetamodelImpl implements Wrapper<EPackage> {
 	
 	override equals(Object o) {
 		if (this === o) true
-		else if (o === null) false
 		else if (o instanceof MetamodelAdapter) {
 			this.wrappedEPackage == o.wrappedEPackage
 		}
