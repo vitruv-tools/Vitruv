@@ -41,14 +41,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Adapt Updatesites
-        run: |
-          sed -i 's#https://vitruv-tools.github.io/updatesite/nightly/framework/#file:///${maven.multiModuleProjectDirectory}/../framework/releng/tools.vitruv.updatesite.aggregated/target/final#wresult' cbsdomains/releng/tools.vitruv.domains.cbs.parent/pom.xml
-          if [ ! -s result ]; then exit 1; fi;
-          sed -i 's#https://vitruv-tools.github.io/updatesite/nightly/framework/#file:///${maven.multiModuleProjectDirectory}/../framework/releng/tools.vitruv.updatesite.aggregated/target/final#wresult' cbsapplications/releng/tools.vitruv.applications.cbs.parent/pom.xml
-          if [ ! -s result ]; then exit 1; fi;
-          sed -i 's#https://vitruv-tools.github.io/updatesite/nightly/domains/cbs/#file:///${maven.multiModuleProjectDirectory}/../cbsdomains/releng/tools.vitruv.domains.cbs.updatesite.aggregated/target/final#wresult' cbsapplications/releng/tools.vitruv.applications.cbs.parent/pom.xml
-          if [ ! -s result ]; then exit 1; fi;
       - name: Build Framework
         uses: GabrielBB/xvfb-action@v1
         with:
@@ -68,6 +60,7 @@ jobs:
         working-directory: ./cbsdomains
         run: >
             ./mvnw -B -U clean verify
+            -Dvitruv.framework.path="\${maven.multiModuleProjectDirectory}/../framework"
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
@@ -83,6 +76,8 @@ jobs:
           working-directory: ./cbsapplications
           run: >
             ./mvnw -B -U clean verify
+            -Dvitruv.framework.path=${maven.multiModuleProjectDirectory}/../framework
+            -Dvitruv.domains.path=${maven.multiModuleProjectDirectory}/../cbsdomains
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
