@@ -10,8 +10,9 @@ import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsChangeProp
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
+import java.util.Set
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;
@@ -38,8 +39,8 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 			superTypes += typeRef(ChangePropagationSpecification);
 			members += reactionsSegment.toConstructor() [
 				body = '''
-				super(new «reactionsSegment.fromDomain.domainProviderForReference.canonicalNameForReference»().getDomain(), 
-					new «reactionsSegment.toDomain.domainProviderForReference.canonicalNameForReference»().getDomain());'''
+				super(«MetamodelDescriptor».with(«Set».of(«FOR namespaceUri : reactionsSegment.fromMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)), 
+					«MetamodelDescriptor».with(«Set».of(«FOR namespaceUri : reactionsSegment.toMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)));'''
 			]
 
 			// register executor as change processor:
@@ -47,8 +48,7 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 				visibility = JvmVisibility.PROTECTED;
 				val metamodelPackageClassQualifiedNames = new ArrayList
 				metamodelPackageClassQualifiedNames +=
-					#[reactionsSegment.fromDomain.domainForReference.metamodelRootPackage.class,
-						reactionsSegment.toDomain.domainForReference.metamodelRootPackage.class].filter [
+					(reactionsSegment.fromMetamodels + reactionsSegment.toMetamodels).map[package.class].filter [
 						it !== EPackageImpl
 					].map[name]
 				body = '''

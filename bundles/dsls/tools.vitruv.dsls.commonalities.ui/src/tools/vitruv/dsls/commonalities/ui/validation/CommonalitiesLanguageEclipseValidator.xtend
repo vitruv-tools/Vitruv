@@ -4,10 +4,9 @@ import tools.vitruv.dsls.commonalities.validation.CommonalitiesLanguageValidator
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import tools.vitruv.dsls.common.ui.validation.ProjectValidation
-import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.extensions.dslruntime.commonalities.marker.RuntimeProjectMarker
+import tools.vitruv.dsls.common.elements.MetamodelImport
 
 /**
  * Validations that are only applicable when running in Eclipse.
@@ -19,12 +18,13 @@ class CommonalitiesLanguageEclipseValidator extends CommonalitiesLanguageValidat
 		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RuntimeProjectMarker,
 			commonalityFile, COMMONALITY_FILE__CONCEPT)
 	}
-
+	
 	@Check(NORMAL)
-	def checkParticipationDomainOnClasspath(Participation participation) {
-		if (participation.domainName !== null && !participation.isCommonalityParticipation) {
-			ProjectValidation.checkDomainProjectIsOnClasspath(this, services.typeReferences, participation.domainName,
-				participation)
+	def checkMetamodelOnClasspath(MetamodelImport metamodelImport) {
+		if (metamodelImport.package !== null) {
+			ProjectValidation.checkMetamodelProjectIsOnClasspath(this, services.typeReferences, metamodelImport.package,
+				metamodelImport)
 		}
 	}
+	
 }

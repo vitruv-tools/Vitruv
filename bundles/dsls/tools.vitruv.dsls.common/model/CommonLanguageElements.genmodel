@@ -13,10 +13,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CommonLanguageElements.ecore#//MetamodelImport/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CommonLanguageElements.ecore#//MetamodelImport/useQualifiedNames"/>
     </genClasses>
-    <genClasses ecoreClass="CommonLanguageElements.ecore#//NamedJavaElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference CommonLanguageElements.ecore#//NamedJavaElement/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CommonLanguageElements.ecore#//NamedJavaElement/name"/>
-    </genClasses>
     <genClasses ecoreClass="CommonLanguageElements.ecore#//MetaclassReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference CommonLanguageElements.ecore#//MetaclassReference/metamodel"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference CommonLanguageElements.ecore#//MetaclassReference/metaclass"/>
@@ -32,15 +28,6 @@
     </genClasses>
     <genClasses ecoreClass="CommonLanguageElements.ecore#//MetaclassEReferenceReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference CommonLanguageElements.ecore#//MetaclassEReferenceReference/feature"/>
-    </genClasses>
-    <genClasses ecoreClass="CommonLanguageElements.ecore#//MetamodelReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference CommonLanguageElements.ecore#//MetamodelReference/model"/>
-    </genClasses>
-    <genClasses ecoreClass="CommonLanguageElements.ecore#//DomainReference">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute CommonLanguageElements.ecore#//DomainReference/domain"/>
-    </genClasses>
-    <genClasses ecoreClass="CommonLanguageElements.ecore#//MetamodelImportsContainer">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference CommonLanguageElements.ecore#//MetamodelImportsContainer/metamodelImports"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

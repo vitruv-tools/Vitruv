@@ -34,5 +34,5 @@ class ParameterCorrespondenceTagging {
 	«parameter.metaclass.name»:«parameter.name»'''
 
 	private static def String createMappingContext() '''
-	«context.segment.name»_map_«context.segment.leftDomain.domain»_and_«context.segment.rightDomain.domain»'''
+	«context.segment.name»_map_«context.segment.leftMetamodels.map[name].join»_and_«context.segment.rightMetamodels.map[name].join»'''
 }

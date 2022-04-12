@@ -13,8 +13,8 @@ MappingsFile:
 
 MappingsSegment:
 	'mappings:' name=ValidID
-	'for' leftDomain=DomainReference
-	'and' rightDomain=DomainReference
+	'for' leftMetamodels+=[common::MetamodelImport] (',' leftMetamodels+=[common::MetamodelImport])*
+	'and' rightMetamodels+=[common::MetamodelImport] (',' rightMetamodels+=[common::MetamodelImport])*
 	(mappings+=Mapping |
 	bootstrappings+=Bootstrapping)*;
 

@@ -17,16 +17,20 @@ import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.METAMODEL_IMPORT__PACKAGE
+import tools.vitruv.dsls.common.elements.EPackageRegistryScope
+import tools.vitruv.dsls.commonalities.language.elements.MetamodelProvider
 
 class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopeProvider {
-	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
-
+	@Inject Provider<EPackageRegistryScope> packagesScope
+	@Inject MetamodelProvider metamodelProvider
+	
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
 		new ComposedScope(
 			// Delegating to the default global scope provider first ensures that we get actual Concept and
 			// Commonality instances for commonality participation domains and participation classes, rather than
-			// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
+			// EClassAdapters as they would get created by the MetamodelMetaclassesScope.
 			super.getScope(resource, reference, filter),
 			new FilteringScope(_getScope(resource, reference), filter ?: Predicates.alwaysTrue)
 		)
@@ -34,8 +38,10 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 
 	private def _getScope(Resource resource, EReference reference) {
 		switch (reference) {
-			case PARTICIPATION_CLASS__SUPER_METACLASS:
-				allMetaclassesScope.get()
+			case METAMODEL_IMPORT__PACKAGE:
+				return packagesScope.get()
+			case PARTICIPATION_CLASS__SUPER_METACLASS: 
+				new MetamodelMetaclassesScope(resource, descriptionProvider, metamodelProvider)
 			case COMMONALITY_REFERENCE__REFERENCE_TYPE: // self scope
 				resource.localCommonalityScope
 			case COMMONALITY_ATTRIBUTE_REFERENCE__COMMONALITY: // self scope

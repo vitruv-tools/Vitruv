@@ -5,7 +5,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.IReactionRealization
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.propagation.ResourceAccess
 import java.util.List
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
@@ -17,8 +16,8 @@ abstract class AbstractReactionsExecutor extends AbstractChangePropagationSpecif
 	val RoutinesFacadesProvider routinesFacadesProvider;
 	List<IReactionRealization> reactions;
 
-	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(MetamodelDescriptor.of(sourceDomain.metamodelRootPackage), MetamodelDescriptor.of(targetDomain.metamodelRootPackage));
+	new(MetamodelDescriptor sourceMetamodelDescriptor, MetamodelDescriptor targetMetamodelDescriptor) {
+		super(sourceMetamodelDescriptor, targetMetamodelDescriptor);
 		this.reactions = newArrayList;
 		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();

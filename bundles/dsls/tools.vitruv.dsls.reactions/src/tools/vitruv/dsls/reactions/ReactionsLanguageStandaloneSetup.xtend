@@ -3,7 +3,7 @@
  */
 package tools.vitruv.dsls.reactions
 
-import static tools.vitruv.dsls.common.elements.CommonLanguageElementsInitialization.initializeVitruvDomainsRepository
+import org.eclipse.emf.ecore.plugin.EcorePlugin
 
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
@@ -11,7 +11,8 @@ import static tools.vitruv.dsls.common.elements.CommonLanguageElementsInitializa
 class ReactionsLanguageStandaloneSetup extends ReactionsLanguageStandaloneSetupGenerated {
 
 	def static void doSetup() {
-		initializeVitruvDomainsRepository()
+		// Makes ECore register our custom implementations of EPackages
+		EcorePlugin.ExtensionProcessor.process(null)
 		new ReactionsLanguageStandaloneSetup().createInjectorAndDoEMFRegistration()
 	}
 }

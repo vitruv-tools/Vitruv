@@ -15,13 +15,13 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static tools.vitruv.dsls.commonalities.tests.util.CommonalitiesLanguageCreators.commonalities
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
 import static allElementTypes.AllElementTypesPackage.Literals.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 import static tools.vitruv.testutils.matchers.ModelMatchers.usingEqualsForReferencesTo
+import allElementTypes.AllElementTypesPackage
 
 @ExtendWith(InjectionExtension, ModelPrinterChange)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
@@ -38,6 +38,8 @@ class FeatureMappingReferencingTest {
 	)
 	def void referenceParticipationInSimpleAttributeMapping(String participation, String reference) {
 		val commonality = parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+			
 			concept test
 			
 			commonality Test {
@@ -56,7 +58,7 @@ class FeatureMappingReferencingTest {
 					attribute = commonalities.languageElements.EFeatureAttribute
 						.fromMetaclass(
 							commonalities.languageElements.EClassMetaclass
-								.fromDomain(commonalities.languageElements.VitruviusDomain.forVitruvDomain(aet.domain))
+								.fromDomain(commonalities.languageElements.Metamodel.forEPackage(AllElementTypesPackage.eINSTANCE))
 								.forEClass(aet.Root.eClass)
 						).forEFeature(IDENTIFIED__ID)
 				]
@@ -72,6 +74,9 @@ class FeatureMappingReferencingTest {
 	)
 	def void referenceParticipationInSimpleReferenceMapping(String participation, String reference) {
 		val commonality = parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+		
+		
 			concept test
 			
 			commonality Test {
@@ -90,7 +95,7 @@ class FeatureMappingReferencingTest {
 					attribute = commonalities.languageElements.EFeatureAttribute
 						.fromMetaclass(
 							commonalities.languageElements.EClassMetaclass
-								.fromDomain(commonalities.languageElements.VitruviusDomain.forVitruvDomain(aet.domain))
+								.fromDomain(commonalities.languageElements.Metamodel.forEPackage(AllElementTypesPackage.eINSTANCE))
 								.forEClass(aet.Root.eClass)
 						).forEFeature(ROOT__RECURSIVE_ROOT)
 				]
@@ -107,7 +112,9 @@ class FeatureMappingReferencingTest {
 	def void referenceParticipationInOperatorAttributeMapping(String participation, String reference) {
 		val commonality = parseAndValidate('''
 			import tools.vitruv.dsls.commonalities.tests.operators.digits
-		
+			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+					
 			concept test
 			
 			commonality Test {
@@ -127,7 +134,7 @@ class FeatureMappingReferencingTest {
 					attribute = commonalities.languageElements.EFeatureAttribute
 						.fromMetaclass(
 							commonalities.languageElements.EClassMetaclass
-								.fromDomain(commonalities.languageElements.VitruviusDomain.forVitruvDomain(aet.domain))
+								.fromDomain(commonalities.languageElements.Metamodel.forEPackage(AllElementTypesPackage.eINSTANCE))
 								.forEClass(aet.Root.eClass)
 						).forEFeature(ROOT__SINGLE_VALUED_EATTRIBUTE)
 					]
@@ -147,6 +154,8 @@ class FeatureMappingReferencingTest {
 		val commonality = parseAndValidate('''
 			import tools.vitruv.dsls.commonalities.tests.operators.mock
 			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+						
 			concept test
 			
 			commonality Test {
@@ -167,7 +176,7 @@ class FeatureMappingReferencingTest {
 						attribute = commonalities.languageElements.EFeatureAttribute
 							.fromMetaclass(
 								commonalities.languageElements.EClassMetaclass
-									.fromDomain(commonalities.languageElements.VitruviusDomain.forVitruvDomain(aet.domain))
+									.fromDomain(commonalities.languageElements.Metamodel.forEPackage(AllElementTypesPackage.eINSTANCE))
 									.forEClass(aet.NonRoot.eClass)
 							).forEFeature(IDENTIFIED__ID)
 					]
@@ -190,6 +199,8 @@ class FeatureMappingReferencingTest {
 	) {
 		inSameResourceSet [
 			val referenced = parseInSet('''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				
 				concept Referenced 
 				
 				commonality Target {
@@ -198,6 +209,8 @@ class FeatureMappingReferencingTest {
 			''')
 			val commonality = parseAndValidateInSet('''
 				import tools.vitruv.dsls.commonalities.tests.operators.mock
+				
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
 				
 				concept test
 				
@@ -219,7 +232,7 @@ class FeatureMappingReferencingTest {
 							attribute = commonalities.languageElements.EFeatureAttribute
 								.fromMetaclass(
 									commonalities.languageElements.EClassMetaclass
-										.fromDomain(commonalities.languageElements.VitruviusDomain.forVitruvDomain(aet.domain))
+										.fromDomain(commonalities.languageElements.Metamodel.forEPackage(AllElementTypesPackage.eINSTANCE))
 										.forEClass(aet.NonRoot.eClass)
 								).forEFeature(IDENTIFIED__ID)
 						]

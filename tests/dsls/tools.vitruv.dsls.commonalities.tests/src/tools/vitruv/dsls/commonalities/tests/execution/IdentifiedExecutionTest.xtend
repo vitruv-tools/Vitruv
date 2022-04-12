@@ -40,6 +40,11 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 	def void generate(@TestProject(variant = "commonalities") Path testProject) {
 		generator.generate(testProject,
 			'Identified.commonality' -> '''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept test
 				
 				commonality Identified {
@@ -78,6 +83,11 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 				}
 			''',
 			'SubIdentified.commonality' -> '''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept test
 				
 				commonality SubIdentified {

@@ -15,15 +15,15 @@ class StandaloneReactionIntegration implements IReactionIntegrateable{
     new(MappingsSegment segment, boolean l2r){
     	reactionsSegment = TopLevelElementsFactory.eINSTANCE.createReactionsSegment
 		reactionsSegment.name = segment.name+'Integration'
-		reactionsSegment.fromDomain = getDomain(segment, l2r)
-		reactionsSegment.toDomain = getDomain(segment, !l2r)
+		reactionsSegment.fromMetamodels += getMetamodels(segment, l2r)
+		reactionsSegment.toMetamodels += getMetamodels(segment, !l2r)
     }
     
-    private def getDomain(MappingsSegment segment, boolean l2r){
+    private def getMetamodels(MappingsSegment segment, boolean l2r){
     	if(l2r){
-    		return segment.leftDomain
+    		return segment.leftMetamodels
     	}else {
-    		return segment.rightDomain
+    		return segment.rightMetamodels
     	}
     }
 

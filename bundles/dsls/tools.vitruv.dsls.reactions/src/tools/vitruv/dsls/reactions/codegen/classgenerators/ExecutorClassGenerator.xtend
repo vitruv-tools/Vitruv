@@ -9,10 +9,11 @@ import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
+import java.util.Set
+import tools.vitruv.framework.change.MetamodelDescriptor
 
 class ExecutorClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;
@@ -37,8 +38,8 @@ class ExecutorClassGenerator extends ClassGenerator {
 			superTypes += typeRef(AbstractReactionsExecutor);
 			members += reactionsSegment.toConstructor() [
 				body = '''
-				super(new «reactionsSegment.fromDomain.domainProviderForReference.canonicalNameForReference»().getDomain(), 
-					new «reactionsSegment.toDomain.domainProviderForReference.canonicalNameForReference»().getDomain());'''
+				super(«MetamodelDescriptor».with(«Set».of(«FOR namespaceUri : reactionsSegment.fromMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)), 
+					«MetamodelDescriptor».with(«Set».of(«FOR namespaceUri : reactionsSegment.toMetamodels.map[package.nsURI] SEPARATOR ','»"«namespaceUri»"«ENDFOR»)));'''
 			]
 
 			// create routines facades provider:
@@ -64,4 +65,5 @@ class ExecutorClassGenerator extends ClassGenerator {
 			]
 		]
 	}
+	
 }

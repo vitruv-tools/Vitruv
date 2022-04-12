@@ -11,7 +11,7 @@ class DomainPrefixProposalFactory extends CommonalitiesLanguageProposalFactory {
 	@Inject PrefixMatcher.IgnoreCase ignoreCase
 
 	override apply(IEObjectDescription description) {
-		completionProposal(description.name.firstSegment + DOMAIN_METACLASS_SEPARATOR + '(')
+		completionProposal(description.name.firstSegment + METAMODEL_METACLASS_SEPARATOR + '(')
 			.appendText(description.name.firstSegment)
 			.withImageOf(description.EObjectOrProxy)
 			.usePrefixMatcher(ignoreCase)

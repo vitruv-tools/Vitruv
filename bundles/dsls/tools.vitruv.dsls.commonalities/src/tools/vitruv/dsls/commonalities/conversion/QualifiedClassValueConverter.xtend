@@ -14,7 +14,7 @@ import org.eclipse.xtext.conversion.IValueConverter
 @Singleton
 class QualifiedClassValueConverter implements IValueConverter<String> {
 
-	static val DELIMITER = QualifiedNameHelper.DOMAIN_METACLASS_SEPARATOR
+	static val DELIMITER = QualifiedNameHelper.METAMODEL_METACLASS_SEPARATOR
 	static val DOMAIN_NAME_RULE = 'DomainName'
 	static val UNQUALIFIED_CLASS_RULE = 'UnqualifiedClass'
 

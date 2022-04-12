@@ -15,7 +15,11 @@ var testBasePath = "${testRootPath}/${baseName}"
 var languageElementsModel = "platform:/resource/${baseName}/model/LanguageElements.genmodel"
 
 Workflow {
-
+ 	bean = tools.vitruv.dsls.common.elements.RemapEcoreModel {
+		from = "http://www.eclipse.org/emf/2002/Ecore"
+		to = "platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore"
+	}
+	
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
@@ -50,8 +54,7 @@ Workflow {
 			junitSupport = {
 				junitVersion = "5"
 			}
-			// not used as of now:
-			//referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
+			referencedResource = "platform:/resource/tools.vitruv.dsls.common/model/CommonLanguageElements.genmodel"
 		}
 	}
 

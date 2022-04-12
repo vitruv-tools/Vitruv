@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
-import tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainGenerator
 import tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateMetamodelCodeGenerator
 import tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateMetamodelGenerator
 import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGenerator
@@ -22,7 +21,6 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	@Inject Provider<IntermediateMetamodelGenerator> intermediateMetamodelGenerator
 	@Inject Provider<IntermediateMetamodelCodeGenerator> intermediateMetamodelCodeGenerator
 	@Inject Provider<ReactionsGenerator> reactionsGenerator
-	@Inject Provider<ConceptDomainGenerator> conceptDomainGenerator
 	@Inject Provider<ChangePropagationSpecificationGenerator> changePropagationSpecificationGenerator
 
 	val generationScopes = new HashMap<Resource, GenerationScope>()
@@ -31,7 +29,6 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		#[
 			intermediateMetamodelGenerator.get,
 			intermediateMetamodelCodeGenerator.get,
-			conceptDomainGenerator.get,
 			reactionsGenerator.get,
 			changePropagationSpecificationGenerator.get
 		]

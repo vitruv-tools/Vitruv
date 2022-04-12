@@ -17,6 +17,11 @@ class ConditionsExecutionTest extends IdentifiedExecutionTest {
 	override generate(@TestProject Path testProject) {
 		generator.generate(testProject,
 			'IdentifiedWithConditions.commonality' -> '''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept test
 				
 				commonality IdentifiedWithConditions {
@@ -68,6 +73,11 @@ class ConditionsExecutionTest extends IdentifiedExecutionTest {
 				}
 			''',
 			'SubIdentified.commonality' -> '''
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+				import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as AllElementTypes2
+				import "http://tools.vitruv.testutils.metamodels.pcm_mockup" as PcmMockup
+				import "http://tools.vitruv.testutils.metamodels.uml_mockup" as UmlMockup
+				
 				concept test
 				
 				commonality SubIdentified {

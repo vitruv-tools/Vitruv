@@ -15,7 +15,6 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
@@ -94,37 +93,22 @@ class ReactionsGenerator implements SubGenerator {
 		val reactionsGenerator = reactionsGeneratorProvider.get() => [
 			useResourceSet(resourceSet)
 		]
+		
+		// Generate the Java code for the given reactions:
+		reactionsGenerator.addReactionsFile(reactionsFile)
+		reactionsGenerator.generate(fsa)
 
-		// Temporarily register dummy domains for our generated concept domains:
-		// These are used during the reactions code generation.
-		logger.trace('''Temporarily registering concept domains: «generatedConcepts»''')
-		for (String conceptName : generatedConcepts) {
-			VitruvDomainProviderRegistry.registerDomainProvider(conceptName, conceptName.vitruvDomain.provider)
-		}
-
-		try {
-			// Generate the Java code for the given reactions:
-			reactionsGenerator.addReactionsFile(reactionsFile)
-			reactionsGenerator.generate(fsa)
-
-			// Optionally: Also persist the reactions in the Reactions language itself.
-			if (settings.createReactionFiles) {
-				reactionsGenerator.writeReactions(fsa)
-			}
-		} finally {
-			// Unregister our temporarily registered concept domains again:
-			logger.trace('''Unregistering concept domains again: «generatedConcepts»''')
-			for (String conceptName : generatedConcepts) {
-				VitruvDomainProviderRegistry.unregisterDomainProvider(conceptName)
-			}
+		// Optionally: Also persist the reactions in the Reactions language itself.
+		if (settings.createReactionFiles) {
+			reactionsGenerator.writeReactions(fsa)
 		}
 	}
 
 	private def generateCommonalityFromParticipationSegment(Participation participation) {
 		val segment = create.reactionsSegment(
 			getReactionsSegmentFromParticipationToCommonalityName(commonality, participation)) //
-		.inReactionToChangesIn(participation.domain.vitruvDomain) //
-		.executeActionsIn(commonalityFile.concept.vitruvDomain)
+		.inReactionToChangesIn(participation.domain.metamodelRootPackage) //
+		.executeActionsIn(commonalityFile.concept.metamodelRootPackage)
 		participation.generateParticipationChangeReactions(segment)
 		return segment
 	}
@@ -132,8 +116,8 @@ class ReactionsGenerator implements SubGenerator {
 	private def generateCommonalityToParticipationSegment(Participation participation) {
 		val segment = create.reactionsSegment(
 			getReactionsSegmentFromCommonalityToParticipationName(commonality, participation)) //
-		.inReactionToChangesIn(commonalityFile.concept.vitruvDomain) //
-		.executeActionsIn(participation.domain.vitruvDomain)
+		.inReactionToChangesIn(commonalityFile.concept.metamodelRootPackage) //
+		.executeActionsIn(participation.domain.metamodelRootPackage)
 		participation.generateCommonalityChangeReactions(segment)
 		return segment
 	}

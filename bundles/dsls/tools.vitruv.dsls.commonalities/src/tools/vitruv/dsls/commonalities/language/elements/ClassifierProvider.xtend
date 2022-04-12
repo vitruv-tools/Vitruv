@@ -58,13 +58,13 @@ class ClassifierProvider {
 	def Classifier findClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
 		if (qualifiedInstanceClassName.nullOrEmpty) return null
 		val eClassifier = containingDomain.findEClassifier(qualifiedInstanceClassName)
-		return eClassifier.toClassifier(containingDomain)
+		return eClassifier?.toClassifier(containingDomain)
 	}
 
 	// Searches the Ecore package and the domain specific packages for a matching EClassifier:
 	private static def EClassifier findEClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
 		if (qualifiedInstanceClassName.nullOrEmpty) return null
-		var domainPackages = if (containingDomain instanceof VitruvDomainAdapter) {
+		var domainPackages = if (containingDomain instanceof MetamodelAdapter) {
 			containingDomain.allPackages
 		} else { 
 			emptyList

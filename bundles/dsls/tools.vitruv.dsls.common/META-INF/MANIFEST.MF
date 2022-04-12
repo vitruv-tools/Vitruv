@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations,
- tools.vitruv.framework.domains;visibility:=reexport
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.common,
  tools.vitruv.dsls.common.elements,

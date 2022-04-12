@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.generator.IFileSystemAccess2
-import tools.vitruv.dsls.commonalities.generator.domain.ConceptDomain
 import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.generator.util.guice.InjectingFactoryBase
 import tools.vitruv.dsls.commonalities.language.Commonality
@@ -27,7 +26,6 @@ import tools.vitruv.dsls.commonalities.language.elements.Domain
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
-import tools.vitruv.dsls.commonalities.language.elements.VitruvDomainAdapter
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 import static com.google.common.base.Preconditions.*
@@ -36,6 +34,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.intermediatemo
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import javax.inject.Inject
 import java.util.Set
+import tools.vitruv.dsls.commonalities.language.elements.MetamodelAdapter
 
 @GenerationScoped
 class GenerationContext {
@@ -60,7 +59,7 @@ class GenerationContext {
 	@Inject CommonalitiesGenerationSettings settings
 
 	// TODO Cache for complete ResourceSet (but: how to known when to cleanup)?
-	val Map<String, ConceptDomain> intermediateDomains = new HashMap
+	val Map<String, EPackage> metamodelRootPackageForConcepts = new HashMap
 
 	private new(IFileSystemAccess2 fsa, CommonalityFile commonalityFile) {
 		checkNotNull(fsa, "fsa is null")
@@ -109,15 +108,15 @@ class GenerationContext {
 	}
 
 	def reportGeneratedIntermediateMetamodel(String conceptName, EPackage intermediateMetamodelPackage) {
-		intermediateDomains.put(conceptName, new ConceptDomain(conceptName, intermediateMetamodelPackage))
+		metamodelRootPackageForConcepts.put(conceptName, intermediateMetamodelPackage)
 	}
 
 	def getIntermediateMetamodelPackage(Concept concept) {
-		concept.name.intermediateMetamodelPackage
+		concept.metamodelRootPackage
 	}
 
 	def getIntermediateMetamodelPackage(String conceptName) {
-		conceptName.vitruvDomain.metamodelRootPackage
+		conceptName.metamodelRootPackage
 	}
 	
 	def getIntermediateMetamodelUri(String conceptName) {
@@ -197,27 +196,27 @@ class GenerationContext {
 		mapping.participationAttribute?.correspondingEFeature
 	}
 
-	def getVitruvDomain(Domain domain) {
-		domain.findVitruvDomain
+	def getMetamodelRootPackage(Domain domain) {
+		domain.findMetamodelRootPackage
 	}
 
-	private def dispatch findVitruvDomain(VitruvDomainAdapter adapter) {
+	private def dispatch findMetamodelRootPackage(MetamodelAdapter adapter) {
 		adapter.wrapped
 	}
 
-	private def dispatch findVitruvDomain(Concept concept) {
-		concept.vitruvDomain
+	private def dispatch findMetamodelRootPackage(Concept concept) {
+		concept.metamodelRootPackage
 	}
 
-	def getVitruvDomain(Concept concept) {
-		concept.name.vitruvDomain
+	def getMetamodelRootPackage(Concept concept) {
+		concept.name.metamodelRootPackage
 	}
 
-	def getVitruvDomain(String cName) {
-		intermediateDomains.computeIfAbsent(cName) [ conceptName | 
-			val ePackage = resourceSet.getResource(conceptName.intermediateMetamodelUri, false).contents.head as EPackage
+	def getMetamodelRootPackage(String conceptName) {
+		metamodelRootPackageForConcepts.computeIfAbsent(conceptName) [ cName | 
+			val ePackage = resourceSet.getResource(cName.intermediateMetamodelUri, false).contents.head as EPackage
 			checkState(ePackage !== null, '''No ePackage was registered for the concept ‹«conceptName»›!''')
-			new ConceptDomain(conceptName, ePackage)
+			ePackage
 		]
 	}
 }

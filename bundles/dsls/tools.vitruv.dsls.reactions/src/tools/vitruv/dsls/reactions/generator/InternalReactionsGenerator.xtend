@@ -15,8 +15,6 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import static com.google.common.base.Preconditions.*
 import java.util.ArrayList
 import org.eclipse.xtext.resource.XtextResourceSet
-import tools.vitruv.dsls.common.elements.DomainReference
-import tools.vitruv.dsls.common.elements.ElementsFactory
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import org.eclipse.xtext.resource.IResourceFactory
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -66,8 +64,8 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 				val reactionsFile = res.reactionsFile
 				var ReactionsSegment foundSegment = null;
 				for (segment : reactionsFile.reactionsSegments) {
-					if (segment.fromDomain.domain == reactionsSegment.fromDomain.domain &&
-						segment.toDomain.domain == reactionsSegment.toDomain.domain) {
+					if (segment.fromMetamodels.map[package].equals(reactionsSegment.fromMetamodels.map[package]) &&
+						segment.toMetamodels.map[package].equals(reactionsSegment.toMetamodels.map[package])) {
 						foundSegment = segment;
 					}
 				}
@@ -85,18 +83,12 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 	def private ReactionsSegment addReactionsSegment(ReactionsFile fileToAddTo, ReactionsSegment originalSegment,
 		String segmentName) {
 		val newSegment = TopLevelElementsFactory.eINSTANCE.createReactionsSegment() => [
-			fromDomain = originalSegment.fromDomain.copy()
-			toDomain = originalSegment.toDomain.copy()
+			fromMetamodels += originalSegment.fromMetamodels
+			toMetamodels += originalSegment.toMetamodels
 			name = segmentName;
 		]
 		fileToAddTo.reactionsSegments += newSegment;
 		return newSegment;
-	}
-
-	def private copy(DomainReference referenceToCopy) {
-		ElementsFactory.eINSTANCE.createDomainReference => [
-			domain = referenceToCopy.domain
-		]
 	}
 
 	override addReaction(String sourceFileName, Reaction... reactions) {

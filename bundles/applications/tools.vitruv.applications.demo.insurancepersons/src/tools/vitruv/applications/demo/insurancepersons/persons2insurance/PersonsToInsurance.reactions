@@ -8,8 +8,8 @@ import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.insurance" as insurance
 
 reactions: personsToInsurance
-in reaction to changes in Persons
-execute actions in Insurance
+in reaction to changes in persons
+execute actions in insurance
 
 reaction CreatedPersonRegister {
 	after element persons::PersonRegister created and inserted as root

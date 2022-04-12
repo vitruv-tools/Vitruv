@@ -12,11 +12,11 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static tools.vitruv.dsls.commonalities.tests.util.CommonalitiesLanguageCreators.commonalities
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static org.hamcrest.MatcherAssert.assertThat
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
 import tools.vitruv.testutils.printing.ModelPrinterChange
 import tools.vitruv.testutils.printing.UseModelPrinter
 import tools.vitruv.dsls.commonalities.tests.util.CommonalitiesLanguageElementsPrinter
 import static tools.vitruv.testutils.matchers.ModelMatchers.usingEqualsForReferencesTo
+import allElementTypes.AllElementTypesPackage
 
 @ExtendWith(InjectionExtension, ModelPrinterChange)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
@@ -29,6 +29,8 @@ class ParticipationReferencingTest {
 	@DisplayName("resolves a reference to a VitruvDomain")
 	def void domainReference() {
 		assertThat(parseAndValidate('''
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as AllElementTypes
+			
 			concept test
 			
 			commonality Test {
@@ -40,7 +42,7 @@ class ParticipationReferencingTest {
 				parts += commonalities.ParticipationClass => [
 					superMetaclass = commonalities.languageElements.EClassMetaclass
 						.forEClass(aet.Root.eClass)
-						.fromDomain(commonalities.languageElements.VitruviusDomain.forVitruvDomain(aet.domain))
+						.fromDomain(commonalities.languageElements.Metamodel.forEPackage(AllElementTypesPackage.eINSTANCE))
 				]
 			], usingEqualsForReferencesTo(commonalities.languageElements.EClassMetaclass.eClass)))
 	}

@@ -12,13 +12,13 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 
 import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Test
+import allElementTypes.AllElementTypesPackage
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ReactionsLanguageInjectorProvider)
@@ -27,7 +27,6 @@ class ReactionsGeneratorTest {
 	@Inject Provider<InMemoryFileSystemAccess> fsaProvider
 	@Inject Provider<IReactionsGenerator> generatorProvider
 	@Inject Provider<XtextResourceSet> resourceSetProvider
-	static val allElementTypesDomain = new AllElementTypesDomainProvider().domain
 	static val CHANGE_PROPAGATION_SPEC_NAME_SUFFIX = 'ChangePropagationSpecification'
 	static val EXECUTOR_CLASS_NAME = 'ReactionsExecutor'
 	static val REACTION_NAME = 'TestReaction'
@@ -40,8 +39,8 @@ class ReactionsGeneratorTest {
 		val create = new FluentReactionsLanguageBuilder()
 		val fileBuilder = create.reactionsFile(reactionsFileName);
 		fileBuilder +=
-			create.reactionsSegment(reactionsFileName).inReactionToChangesIn(allElementTypesDomain).executeActionsIn(
-				allElementTypesDomain) += create.reaction(reactionName).afterAnyChange.
+			create.reactionsSegment(reactionsFileName).inReactionToChangesIn(AllElementTypesPackage.eINSTANCE).executeActionsIn(
+				AllElementTypesPackage.eINSTANCE) += create.reaction(reactionName).afterAnyChange.
 				call [
 					action[
 						execute[createPrintlnStatement]

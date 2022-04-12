@@ -24,9 +24,9 @@ class ReactionsLanguageUtil {
 	 * @return the formatted representation of the metamodel pair
 	 */
 	static def String getFormattedMetamodelPair(ReactionsSegment reactionsSegment) {
-		val sourceDomainName = reactionsSegment.fromDomain?.domain;
-		val targetDomainName = reactionsSegment.toDomain?.domain;
-		return "(" + sourceDomainName + ", " + targetDomainName + ")";
+		val sourceMetamodelsNames = reactionsSegment.fromMetamodels.map[name];
+		val targetMetamodelsNames = reactionsSegment.toMetamodels.map[name];
+		return "(" + sourceMetamodelsNames + ", " + targetMetamodelsNames + ")";
 	}
 
 	// reactions segment name:
