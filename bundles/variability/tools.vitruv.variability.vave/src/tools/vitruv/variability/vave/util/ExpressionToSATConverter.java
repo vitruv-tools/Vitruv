@@ -58,7 +58,8 @@ public class ExpressionToSATConverter {
 
 	public void setIntsForOptions(Map<Option, Integer> optionToIntMap) {
 		this.optionToIntMap.putAll(optionToIntMap);
-		this.curVal = optionToIntMap.values().stream().mapToInt(v -> v).max().getAsInt();
+		if (!optionToIntMap.isEmpty())
+			this.curVal = optionToIntMap.values().stream().mapToInt(v -> v).max().getAsInt();
 	}
 
 	private void createClauseRec(Term<? extends Option> expr, List<Integer> literals) {
@@ -82,6 +83,7 @@ public class ExpressionToSATConverter {
 					value = ++this.curVal;
 					this.optionToIntMap.put(variable.getOption(), value);
 					System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+					throw new RuntimeException("There was no value bound to option " + variable.getOption());
 				}
 			}
 			literals.add(-value);
@@ -101,6 +103,7 @@ public class ExpressionToSATConverter {
 					value = ++this.curVal;
 					this.optionToIntMap.put(variable.getOption(), value);
 					System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+					throw new RuntimeException("There was no value bound to option " + variable.getOption());
 				}
 			}
 			literals.add(value);

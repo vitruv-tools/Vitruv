@@ -27,6 +27,7 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	public VirtualProductModelImpl(final Configuration configuration, final VsumFileSystemLayout fileSystemLayout, final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository, final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		super(fileSystemLayout, userInteractor, domainRepository, changePropagationSpecificationProvider);
 		this.configuration = configuration;
+		this.hints = new ArrayList<>();
 	}
 
 	@Override

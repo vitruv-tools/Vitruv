@@ -250,6 +250,23 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
+		// check conditions of configuration
+		List<SystemRevision> sysrevs = configuration.getOption().stream().filter(o -> o instanceof SystemRevision).map(sr -> (SystemRevision) sr).collect(Collectors.toList());
+		if (sysrevs.isEmpty() && !this.system.getSystemrevision().isEmpty()) {
+			throw new RuntimeException("Configuration does not contain a system revision.");
+		} else if (sysrevs.size() > 1) {
+			// more than one system revision in configuration -> merge config
+		} else if (sysrevs.size() == 1) {
+			// check if config is complete and valid
+			FeatureModel fm = this.externalizeDomain(sysrevs.get(0));
+			if (!fm.isComplete(configuration)) {
+				throw new RuntimeException("Configuration is not complete.");
+			}
+			if (!fm.isValid(configuration)) {
+				throw new RuntimeException("Configuration is not valid.");
+			}
+		}
+
 		for (Mapping mapping : this.system.getMapping()) {
 			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + new OptionsCollector().doSwitch(mapping.getExpression()).stream().map(o -> {
 				if (o instanceof FeatureRevision)
@@ -292,6 +309,51 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 
 		Collection<Option> options = new OptionsCollector().doSwitch(expression);
+
+		// check if expression is valid
+		Configuration configuration = virtualProductModel.getConfiguration();
+		List<SystemRevision> sysrevs = configuration.getOption().stream().filter(o -> o instanceof SystemRevision).map(sr -> (SystemRevision) sr).collect(Collectors.toList());
+		if (sysrevs.isEmpty() && !this.system.getSystemrevision().isEmpty()) {
+			throw new RuntimeException("Configuration does not contain a system revision.");
+		} else if (sysrevs.size() > 1) {
+			// more than one system revision in configuration -> merge config
+		} else if (sysrevs.size() == 1) {
+			// check if expression is valid
+//			FeatureModel fm = this.externalizeDomain(sysrevs.get(0));
+//			if (!fm.isComplete(configuration)) {
+//				throw new RuntimeException("Configuration is not complete.");
+//			}
+//			if (!fm.isValid(configuration)) {
+//				throw new RuntimeException("Configuration is not valid.");
+//			}
+//			if (!fm.isValid(expression)) {
+//				throw new RuntimeException("Expression is not valid.");
+//			}
+		}
+
+		// check if configuration implies expression
+		// NOTE: as we currently treat an expression only as a simple set of features, we do not need to use SAT here and instead just check if all feature options in expression are contained in configuration
+		boolean allContained = true;
+		for (Option option : options) {
+			if (option instanceof Feature) {
+				boolean found = configuration.getOption().stream().filter(o -> o == option || (o instanceof FeatureRevision && ((FeatureRevision) o).eContainer() == option)).findAny().isPresent();
+				if (!found && !((Feature)option).getFeaturerevision().isEmpty()) {
+					allContained = false;
+					break;
+				}
+			} else if (option instanceof FeatureRevision) {
+				if (!configuration.getOption().contains(option)) {
+					allContained = false;
+					break;
+				}
+			} else if (option instanceof SystemRevision) {
+				throw new RuntimeException("An expression provided to internalizeChanges should not contain System Revisions.");
+			}
+		}
+		// if (!virtualProductModel.getConfiguration().getOption().containsAll(options)) {
+		if (!allContained) {
+			throw new RuntimeException("Configuration of product does not imply provided expression.");
+		}
 
 		// check if the expression covers any hints. if yes, then delete the respective hints.
 		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
@@ -479,7 +541,9 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 
 		// obtain root feature for sysrev
-		List<Feature> enabledRootFeatures = this.system.getFeature().stream().filter(p -> sysrev.getEnablesoptions().contains(p) && p.eContainer() instanceof vavemodel.System).collect(Collectors.toList());
+//		List<Feature> enabledRootFeatures = this.system.getFeature().stream().filter(p -> sysrev.getEnablesoptions().contains(p) && p.eContainer() instanceof vavemodel.System).collect(Collectors.toList());
+		List<Feature> enabledRootFeatures = this.system.getFeature().stream().filter(p -> sysrev.getEnablesoptions().contains(p) && p.eContainer() instanceof vavemodel.System && sysrev.getEnablesconstraints().stream().filter(ct -> ct instanceof TreeConstraint).map(tc -> (TreeConstraint) tc).filter(tc -> tc.getFeature().contains(p)).findAny().isEmpty()).collect(Collectors.toList());
+
 //		if (enabledRootFeatures.size() > 1)
 //			throw new Exception("More than one root feature is enabled by the system revision " + sysrev);
 //		else if (enabledRootFeatures.size() < 1)
@@ -488,7 +552,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (!enabledRootFeatures.isEmpty())
 			rootFeature = enabledRootFeatures.get(0);
 
-		FeatureModel featuremodel = new FeatureModel(rootFeature, sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
+		FeatureModel featuremodel = new FeatureModel((Feature) mapOriginalCopiedLiterals.get(rootFeature), sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
 
 		return featuremodel;
 	}

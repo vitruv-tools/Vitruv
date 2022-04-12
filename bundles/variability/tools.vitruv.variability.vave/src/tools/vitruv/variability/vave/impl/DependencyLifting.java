@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,7 +63,7 @@ public class DependencyLifting {
 		FeatureModel fm = vave.externalizeDomain(sysrev);
 
 		// select relevant mappings for sysrev
-		Collection<Mapping> selectedMappings = new ArrayList<>();
+		List<Mapping> selectedMappings = new ArrayList<>();
 		for (Mapping mapping : vave.getSystem().getMapping()) {
 			OptionsCollector oc = new OptionsCollector();
 			Collection<Option> options = oc.doSwitch(mapping.getExpression());
@@ -156,9 +157,9 @@ public class DependencyLifting {
 		}
 
 		// compute dependencies between mappings based on their fragments
-		Map<String, Set<Mapping>> objectIdInsertedByMappings = new HashMap<>();
-		Map<String, Set<Mapping>> objectIdRemovedByMappings = new HashMap<>();
-		Map<String, Set<Mapping>> objectIdUsedByMappings = new HashMap<>(); // all use-changes require insert changes of the same id and exclude remove changes
+		Map<String, Set<Mapping>> objectIdInsertedByMappings = new LinkedHashMap<>();
+		Map<String, Set<Mapping>> objectIdRemovedByMappings = new LinkedHashMap<>();
+		Map<String, Set<Mapping>> objectIdUsedByMappings = new LinkedHashMap<>(); // all use-changes require insert changes of the same id and exclude remove changes
 
 		// traverse every mapping, delta module, change, and check to which there are dependencies
 		// example: this change in mapping M1 adds statement to method, other change in other mapping M2 adds method. then M1 requires M2.
@@ -223,8 +224,8 @@ public class DependencyLifting {
 		System.out.println("REMOVALS LIST: " + objectIdRemovedByMappings);
 		System.out.println("USES LIST: " + objectIdUsedByMappings);
 
-		Map<Mapping, Set<Mapping>> requires = new HashMap<>();
-		Map<Mapping, Set<Mapping>> excludes = new HashMap<>();
+		Map<Mapping, Set<Mapping>> requires = new LinkedHashMap<>();
+		Map<Mapping, Set<Mapping>> excludes = new LinkedHashMap<>();
 
 		for (Entry<String, Set<Mapping>> entry : objectIdUsedByMappings.entrySet()) {
 			for (Mapping mapping : entry.getValue()) {
@@ -252,8 +253,25 @@ public class DependencyLifting {
 
 		boolean repairHappened = false;
 
+		// order requires dependencies such that the mappings with the fewest dependencies are processed first.
+		List<Entry<Mapping, Set<Mapping>>> orderedRequires = requires.entrySet().stream().sorted((e1, e2) -> {
+			int numE1Deps = e1.getValue().size();
+			if (e1.getValue().contains(e1.getKey()))
+				numE1Deps--;
+			int numE2Deps = e2.getValue().size();
+			if (e2.getValue().contains(e2.getKey()))
+				numE2Deps--;
+			if (numE1Deps < numE2Deps)
+				return -1;
+			else if (numE1Deps > numE2Deps)
+				return 1;
+			else
+				return 0;
+		}).collect(Collectors.toList());
+
 		// for every dependency, create sat solver instance, add respective clauses, and check if it is satisfiable
-		for (Entry<Mapping, Set<Mapping>> entry : requires.entrySet()) {
+		// for (Entry<Mapping, Set<Mapping>> entry : requires.entrySet()) {
+		for (Entry<Mapping, Set<Mapping>> entry : orderedRequires) {
 			// check if feature model has no root and if current mapping has only a single feature and requires no other mapping but itself
 			OptionsCollector oc = new OptionsCollector();
 			List<Option> requiringFeatures = oc.doSwitch(entry.getKey().getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
@@ -270,8 +288,23 @@ public class DependencyLifting {
 
 				repairHappened = true;
 			}
+			// order the required mappings such that dependencies to the mappings with most dependencies are processed first (this is a heuristic)
+			List<Mapping> orderedRequired = entry.getValue().stream().sorted((e1, e2) -> {
+				int numE1Deps = requires.get(e1).size();
+				if (requires.get(e1).contains(e1))
+					numE1Deps--;
+				int numE2Deps = requires.get(e2).size();
+				if (requires.get(e2).contains(e2))
+					numE2Deps--;
+				if (numE1Deps < numE2Deps)
+					return 1;
+				else if (numE1Deps > numE2Deps)
+					return -1;
+				else
+					return 0;
+			}).collect(Collectors.toList());
 			// for every mapping that is required, we check if its presence is guaranteed
-			for (Mapping requiredMapping : entry.getValue()) {
+			for (Mapping requiredMapping : orderedRequired) {
 				// create new solver instance
 				ISolver solver = SolverFactory.newDefault();
 				try {
@@ -415,7 +448,7 @@ public class DependencyLifting {
 			}
 		}
 		for (Entry<Mapping, Set<Mapping>> entry : excludes.entrySet()) {
-			// for every mapping that is required, we check if its presence is guaranteed
+			// for every mapping that is excluded, we check if its absence is guaranteed
 			for (Mapping excludedMapping : entry.getValue()) {
 				// create new solver instance
 				ISolver solver = SolverFactory.newDefault();

@@ -277,7 +277,9 @@ public class VaveDependencyLiftingTest {
 		vave.internalizeDomain(fm);
 		
 		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-
+		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
+		config.getOption().add(featureCore);
+		
 		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
 		{
 			final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
@@ -307,6 +309,7 @@ public class VaveDependencyLiftingTest {
 		config.getOption().clear();
 		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size()-1));
 		config.getOption().add(featureCore.getFeaturerevision().get(0));
+		config.getOption().add(featureA);
 		final VirtualProductModel vmp0ext = vave.externalizeProduct(projectFolder.resolve("vmp0ext"), config);
 		{
 			final ResourceSet resourceSet = vmp0ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
@@ -337,6 +340,7 @@ public class VaveDependencyLiftingTest {
 		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size()-1));
 		config.getOption().add(featureCore.getFeaturerevision().get(0));
 		config.getOption().add(featureA.getFeaturerevision().get(0));
+		config.getOption().add(featureB);
 		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
 		{
 			final ResourceSet resourceSet2 = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
