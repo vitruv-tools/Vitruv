@@ -10,10 +10,10 @@ import org.eclipse.emf.compare.rcp.EMFCompareRCPPlugin
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
 
@@ -46,7 +46,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         newState.checkNoProxies("new state")
         oldState.checkNoProxies("old state")
         val monitoredResourceSet = new ResourceSetImpl()
-        val currentStateCopy = oldState.copyInto(monitoredResourceSet)
+        val currentStateCopy = ResourceCopier.copyResource(oldState, monitoredResourceSet, true)
         return currentStateCopy.record [
             if (oldState.URI != newState.URI) {
                 currentStateCopy.URI = newState.URI
@@ -73,7 +73,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         oldState.checkNoProxies("old state")
         // Setup resolver and copy state:
         val monitoredResourceSet = new ResourceSetImpl()
-        val currentStateCopy = oldState.copyInto(monitoredResourceSet)
+        val currentStateCopy = ResourceCopier.copyResource(oldState, monitoredResourceSet, true)
         return currentStateCopy.record [
             currentStateCopy.contents.clear()
         ]
@@ -104,18 +104,5 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
         val merger = new BatchMerger(mergerRegistry)
         merger.copyAllLeftToRight(changes, new BasicMonitor)
-    }
-
-    /**
-     * Creates a new resource set, creates a resource and copies the content of the orignal resource.
-     */
-    private def Resource copyInto(Resource resource, ResourceSet resourceSet) {
-        val uri = resource.URI
-        val copy = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-        val elementsCopy = EcoreUtil.copyAll(resource.contents)
-        elementsCopy.forEach[eAdapters.clear]
-        copy.contents.addAll(elementsCopy)
-        resourceSet.resources += copy
-        return copy
     }
 }

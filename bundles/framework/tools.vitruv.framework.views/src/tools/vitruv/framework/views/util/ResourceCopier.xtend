@@ -2,12 +2,15 @@ package tools.vitruv.framework.views.util
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.nio.file.Files
+import java.util.HashMap
+import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier
+import org.eclipse.emf.ecore.xmi.XMLResource
 
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
@@ -32,13 +35,26 @@ class ResourceCopier {
      * 
      * @param originalResources The resources to copy
      * @param newResourceSet The resource set to which the copies are attached
+     * @param copyXmlIds If <code>true</code>, xmi:id values are copied even if they are not attached to the elements but only the resource
      * @param rootElementPredicate A predicate to include only a subset of the root elements of the <code>originalResources</code>
+     * @returns A mapping from each original resource to its copy
      */
-    static def copyResources(Iterable<Resource> originalResources, ResourceSet newResourceSet, (EObject)=>Boolean rootElementPredicate) {
+    static def Map<Resource, Resource> copyResources(Iterable<Resource> originalResources, ResourceSet newResourceSet,
+        Boolean copyXmlIds, (EObject)=>Boolean rootElementPredicate) {
+        val resourceMapping = new HashMap<Resource, Resource>()
         for (umlResource : originalResources.filter[isWritableUmlResource].toList) {
-            tools.vitruv.framework.views.util.ResourceCopier.copyUmlResource(umlResource, newResourceSet)
+            val copy = copyUmlResource(umlResource, newResourceSet)
+            if (copyXmlIds) {
+                if (umlResource instanceof XMLResource && copy instanceof XMLResource) {
+                    copyUmlIds(umlResource as XMLResource, copy as XMLResource)
+                }
+            }
+            resourceMapping.put(umlResource, copy)
         }
-        originalResources.filter[!isWritableUmlResource].toList.copyResourcesInternal(newResourceSet, rootElementPredicate)
+        val otherMapping = originalResources.filter[!isWritableUmlResource].toList.copyResourcesInternal(newResourceSet,
+            copyXmlIds, rootElementPredicate)
+        otherMapping.keySet.forEach[resourceMapping.put(it, otherMapping.get(it))]
+        return resourceMapping
     }
 
     /**
@@ -46,9 +62,25 @@ class ResourceCopier {
      * 
      * @param originalResources The resources to copy
      * @param newResourceSet The resource set to which the copies are attached
+     * @param copyXmlIds If <code>true</code>, xmi:id values are copied even if they are not attached to the elements but only the resource
+     * @returns A mapping from each original resource to its copy
      */
-    static def copyResources(Iterable<Resource> originalResources, ResourceSet newResourceSet) {
-        copyResources(originalResources, newResourceSet) [true]
+    static def Map<Resource, Resource> copyResources(Iterable<Resource> originalResources, ResourceSet newResourceSet,
+        Boolean copyXmlIds) {
+        copyResources(originalResources, newResourceSet, copyXmlIds)[true]
+    }
+
+    /**
+     * Copies all elements and references in the give resource to the given new resource set.
+     * 
+     * @param originalResource The resource to copy
+     * @param newResourceSet The resource set to which the copy is attached
+     * @param copyXmlIds If <code>true</code>, xmi:id values are copied even if they are not attached to the elements but only the resource
+     * @returns The newly created copy of the resource
+     */
+    static def Resource copyResource(Resource originalResource, ResourceSet newResourceSet, Boolean copyXmlIds) {
+        val mapping = copyResources(#[originalResource], newResourceSet, copyXmlIds)
+        return mapping.get(originalResource)
     }
 
     /**
@@ -65,17 +97,18 @@ class ResourceCopier {
      * To circumvent the issue, we store the UML model to a temporary resource and reload it,
      * because save/load properly handles the situation not covered by the copier. 
      */
-    private static def void copyUmlResource(Resource originalResource, ResourceSet newResourceSet) {
+    private static def Resource copyUmlResource(Resource originalResource, ResourceSet newResourceSet) {
         val originalURI = originalResource.URI
         val tempFilePath = Files.createTempFile(null, "." + originalURI.fileExtension)
         val tempURI = URI.createFileURI(tempFilePath.toString)
         originalResource.URI = tempURI
         originalResource.save(null)
         originalResource.URI = originalURI
-        val viewResource = newResourceSet.getResource(tempURI, true)
-        viewResource.URI = originalURI
+        val copiedResource = newResourceSet.getResource(tempURI, true)
+        copiedResource.URI = originalURI
         Files.delete(tempFilePath)
-        EcoreUtil.resolveAll(viewResource)
+        EcoreUtil.resolveAll(copiedResource)
+        return copiedResource
     }
 
     /**
@@ -86,9 +119,10 @@ class ResourceCopier {
      * We must NOT copy these elements but only copy the containing element and then resolve it to avoid 
      * element duplication.
      */
-    private static def void copyResourcesInternal(Iterable<Resource> originalResources, ResourceSet newResourceSet,
-        (EObject)=>Boolean rootElementPredicate) {
+    private static def Map<Resource, Resource> copyResourcesInternal(Iterable<Resource> originalResources,
+        ResourceSet newResourceSet, Boolean copyXmlIds, (EObject)=>Boolean rootElementPredicate) {
         val copier = new Copier(true)
+        var resourceMapping = new HashMap<Resource, Resource>()
         for (originalResource : originalResources) {
             val elementsContainedInResource = originalResource.contents.filter [
                 !isContainedInOtherThanOwnResource(originalResources)
@@ -97,15 +131,24 @@ class ResourceCopier {
         }
         copier.copyReferences()
         for (originalResource : originalResources) {
-            val viewResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.createResource(
-                originalResource.URI).checkNotNull("Cannot create view resource: %s", originalResource.URI)
+            val copiedResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.
+                createResource(originalResource.URI).checkNotNull("Cannot create resource copy: %s",
+                    originalResource.URI)
             val selectedRootElements = originalResource.contents.filter[rootElementPredicate.apply(it)]
             val mappedRootElements = selectedRootElements.map [
                 checkNotNull(copier.get(it), "corresponding object for %s is null", it)
             ]
-            viewResource.contents.addAll(mappedRootElements)
-            newResourceSet.resources += viewResource
+            copiedResource.contents.addAll(mappedRootElements)
+            if (copyXmlIds) {
+                if (originalResource instanceof XMLResource && copiedResource instanceof XMLResource) {
+                    copyIds(originalResource as XMLResource, copiedResource as XMLResource, selectedRootElements,
+                        copier)
+                }
+            }
+            newResourceSet.resources += copiedResource
+            resourceMapping.put(originalResource, copiedResource)
         }
+        return resourceMapping
     }
 
     private static def boolean isContainedInOtherThanOwnResource(EObject eObject, Iterable<Resource> resources) {
@@ -115,5 +158,29 @@ class ResourceCopier {
 
     private static def boolean isWritableUmlResource(Resource resource) {
         resource.URI.fileExtension == "uml" && !resource.URI.isPathmap
+    }
+
+    /**
+     * Copies the IDs of the source's elements to the target. 
+     * It is expected that both resources are in an identical state.
+     */
+    private static def void copyUmlIds(XMLResource source, XMLResource target) {
+        val sourceIterator = source.allContents
+        val targetIterator = target.allContents
+        while (sourceIterator.hasNext && targetIterator.hasNext) {
+            val sourceObject = sourceIterator.next
+            val destinationObject = targetIterator.next
+            target.setID(destinationObject, source.getID(sourceObject))
+        }
+    }
+
+    private static def void copyIds(XMLResource source, XMLResource target, Iterable<EObject> sourceElements,
+        Copier copier) {
+        sourceElements.forEach [ sourceElement |
+            val targetElement = copier.get(sourceElement)
+            checkNotNull(targetElement, "corresponding object for %s is null", sourceElement)
+            target.setID(targetElement, source.getID(sourceElement))
+            copyIds(source, target, sourceElement.eContents, copier)
+        ]
     }
 }
