@@ -17,6 +17,7 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.variability.vave.util.ExpressionToSATConverter;
+import tools.vitruv.variability.vave.util.OptionsCollector;
 import vavemodel.Configuration;
 import vavemodel.CrossTreeConstraint;
 import vavemodel.Expression;
@@ -245,6 +246,29 @@ public class FeatureModel {
 			for (int[] clause : clauses)
 				solver.addClause(new VecInt(clause));
 
+			// for every option in expression find corresponding option from fm and map it to same int in optionToIntMap
+			OptionsCollector oc = new OptionsCollector();
+			Collection<Option> expressionOptions = oc.doSwitch(expression);
+			for (Option option : expressionOptions) {
+				if (option instanceof Feature) {
+					final Feature feature = (Feature) option;
+					Optional<Feature> featureOptional = this.featureOptions.stream().filter(o -> o instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(feature.getName())).findAny();
+					if (featureOptional.isPresent()) {
+						optionToIntMap.put((Feature) option, optionToIntMap.get(featureOptional.get()));
+					} else {
+						throw new RuntimeException("There is an option in expression that is not in feature model.");
+					}
+				} else if (option instanceof FeatureRevision) {
+					final FeatureRevision featureRevision = (FeatureRevision) option;
+					Optional<FeatureRevision> featureRevisionOptional = this.featureOptions.stream().filter(o -> o instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> fr.getRevisionID() == featureRevision.getRevisionID() && ((Feature) featureRevision.eContainer()).getName().equals(((Feature) fr.eContainer()).getName())).findAny();
+					if (featureRevisionOptional.isPresent()) {
+						optionToIntMap.put((FeatureRevision) option, optionToIntMap.get(featureRevisionOptional.get()));
+					} else {
+						throw new RuntimeException("There is an option in expression that is not in feature model.");
+					}
+				}
+			}
+			
 			ExpressionToSATConverter e2satconv = new ExpressionToSATConverter();
 			e2satconv.setIntsForOptions(new HashMap<>(optionToIntMap));
 			Collection<int[]> expressionClauses = e2satconv.convertExpr2Sat(expression);

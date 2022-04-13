@@ -11,11 +11,13 @@ import java.util.Optional;
 import vavemodel.Conjunction;
 import vavemodel.Disjunction;
 import vavemodel.Expression;
+import vavemodel.False;
 import vavemodel.Feature;
 import vavemodel.FeatureRevision;
 import vavemodel.Not;
 import vavemodel.Option;
 import vavemodel.Term;
+import vavemodel.True;
 import vavemodel.Variable;
 
 public class ExpressionToSATConverter {
@@ -38,13 +40,18 @@ public class ExpressionToSATConverter {
 		} else { // if (expr instanceof Disjunction) {
 			// we create a new clause whenever we encounter a disjunction that has as a parent a conjunction
 			int[] clause = this.createClause(expr);
-			clauses.add(clause);
+			if (clause != null)
+				clauses.add(clause);
 		}
 	}
 
 	private int[] createClause(Term<? extends Option> expr) {
 		List<Integer> clause = new ArrayList<>();
 		this.createClauseRec(expr, clause);
+		if (clause.contains(null)) {
+			// we chose null to represent value true. therefore, if null appears in clause, simply ignore it.
+			return null;
+		}
 		return clause.stream().mapToInt(v -> v).toArray();
 	}
 
@@ -68,25 +75,32 @@ public class ExpressionToSATConverter {
 			this.createClauseRec(((Disjunction<? extends Option>) expr).getTerm().get(0), literals);
 			this.createClauseRec(((Disjunction<? extends Option>) expr).getTerm().get(1), literals);
 		} else if (expr instanceof Not) {
-			Variable<? extends Option> variable = (Variable<? extends Option>) ((Not<? extends Option>) expr).getTerm();
-			Integer value = this.optionToIntMap.get(variable.getOption());
-			if (value == null) {
-				if (variable.getOption() instanceof FeatureRevision) {
-					// look for feature of feature revision
-					Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getOption().eContainer()).getName())).map(e -> e.getKey()).findAny();
-					if (featureOpt.isPresent()) {
-						value = this.optionToIntMap.get(featureOpt.get());
-						System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getOption());
+			Term<? extends Option> notOption = ((Not) expr).getTerm();
+			if (notOption instanceof Variable) {
+				Variable<? extends Option> variable = (Variable<? extends Option>) ((Not<? extends Option>) expr).getTerm();
+				Integer value = this.optionToIntMap.get(variable.getOption());
+				if (value == null) {
+					if (variable.getOption() instanceof FeatureRevision) {
+						// look for feature of feature revision
+						Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getOption().eContainer()).getName())).map(e -> e.getKey()).findAny();
+						if (featureOpt.isPresent()) {
+							value = this.optionToIntMap.get(featureOpt.get());
+							System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getOption());
+						}
+					}
+					if (value == null) {
+						value = ++this.curVal;
+						this.optionToIntMap.put(variable.getOption(), value);
+						System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
+						throw new RuntimeException("There was no value bound to option " + variable.getOption());
 					}
 				}
-				if (value == null) {
-					value = ++this.curVal;
-					this.optionToIntMap.put(variable.getOption(), value);
-					System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
-					throw new RuntimeException("There was no value bound to option " + variable.getOption());
-				}
+				literals.add(-value);
+			} else if (notOption instanceof True) {
+				// negated true is false -> do nothing
+			} else if (notOption instanceof False) {
+				literals.add(null);
 			}
-			literals.add(-value);
 		} else if (expr instanceof Variable) {
 			Variable<? extends Option> variable = (Variable<? extends Option>) expr;
 			Integer value = this.optionToIntMap.get(variable.getOption());
@@ -107,6 +121,10 @@ public class ExpressionToSATConverter {
 				}
 			}
 			literals.add(value);
+		} else if (expr instanceof True) {
+			literals.add(null);
+		} else if (expr instanceof False) {
+			// false -> do nothing
 		}
 	}
 

@@ -258,23 +258,27 @@ public class VaveDependencyLiftingTest {
 		// Feature Core
 		Feature featureCore = VavemodelFactory.eINSTANCE.createFeature();
 		featureCore.setName("featureCore");
-		vave.getSystem().getFeature().add(featureCore);
+//		vave.getSystem().getFeature().add(featureCore);
 
 		// Feature A
 		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
-		vave.getSystem().getFeature().add(featureA);
+//		vave.getSystem().getFeature().add(featureA);
 
 		// Feature B
 		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
 		featureB.setName("featureB");
-		vave.getSystem().getFeature().add(featureB);
+//		vave.getSystem().getFeature().add(featureB);
 
 		FeatureModel fm = new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
 		fm.getFeatureOptions().add(featureCore);
 		fm.getFeatureOptions().add(featureA);
 		fm.getFeatureOptions().add(featureB);
 		vave.internalizeDomain(fm);
+		
+		featureA = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureA")).findAny().get();
+		featureB = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureB")).findAny().get();
+		featureCore = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureCore")).findAny().get();
 		
 		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));

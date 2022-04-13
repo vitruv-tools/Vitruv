@@ -319,16 +319,16 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			// more than one system revision in configuration -> merge config
 		} else if (sysrevs.size() == 1) {
 			// check if expression is valid
-//			FeatureModel fm = this.externalizeDomain(sysrevs.get(0));
-//			if (!fm.isComplete(configuration)) {
-//				throw new RuntimeException("Configuration is not complete.");
-//			}
-//			if (!fm.isValid(configuration)) {
-//				throw new RuntimeException("Configuration is not valid.");
-//			}
-//			if (!fm.isValid(expression)) {
-//				throw new RuntimeException("Expression is not valid.");
-//			}
+			FeatureModel fm = this.externalizeDomain(sysrevs.get(0));
+			if (!fm.isComplete(configuration)) {
+				throw new RuntimeException("Configuration is not complete.");
+			}
+			if (!fm.isValid(configuration)) {
+				throw new RuntimeException("Configuration is not valid.");
+			}
+			if (!fm.isValid(expression)) {
+				throw new RuntimeException("Expression is not valid.");
+			}
 		}
 
 		// check if configuration implies expression
