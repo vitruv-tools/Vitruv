@@ -20,6 +20,9 @@ reaction CreateRootTest {
 }
 
 routine createRoot(minimal::Root rootElement) {
+	match {
+		require absence of minimal::Root corresponding to rootElement 
+	}
 	action {
 		val newRoot = create minimal::Root and initialize {
 			newRoot.id = rootElement.id;
@@ -40,7 +43,7 @@ reaction DeleteRootTest {
 
 routine deleteRoot(minimal::Root rootElement) {
 	match {
-		val oldModel = retrieve asserted minimal::Root corresponding to rootElement
+		val oldModel = retrieve minimal::Root corresponding to rootElement
 	}
 	action {
 		delete oldModel
@@ -124,6 +127,7 @@ reaction CreatedNonRootEObjectInList {
 routine insertNonRoot(minimal::Root rootElement, minimal::NonRoot insertedNonRoot) {
 	match {
 		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
+		require absence of minimal::NonRoot corresponding to insertedNonRoot
 	}
 	action {
 		val newNonRoot = create minimal::NonRoot and initialize {
@@ -149,7 +153,7 @@ reaction DeletedNonRootEObjectInList {
 
 routine removeNonRoot(minimal::NonRoot removedNonRoot) {
 	match {
-		val targetElement = retrieve asserted minimal::NonRoot corresponding to removedNonRoot
+		val targetElement = retrieve minimal::NonRoot corresponding to removedNonRoot
 	}
 	action {
 		call {
@@ -166,7 +170,7 @@ reaction ReplacedNonRootEObjectSingleReaction {
 	after element minimal::NonRoot replaced at minimal::Root[singleValuedContainmentEReference]
 	call {
 		if (oldValue !== null) {
-			deleteNonRootEObjectSingle(oldValue);
+			deleteNonRootEObjectSingle(affectedEObject, oldValue);
 		}
 		if (newValue !== null) {
 			createNonRootEObjectSingle(affectedEObject, newValue);
@@ -174,9 +178,11 @@ reaction ReplacedNonRootEObjectSingleReaction {
 	}
 }
 
-routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
+routine deleteNonRootEObjectSingle(minimal::Root container, minimal::NonRoot containedObject) {
 	match {
-		val targetElement = retrieve asserted minimal::NonRoot corresponding to containedObject
+		val correspondingContainer = retrieve asserted minimal::Root corresponding to container
+		val targetElement = retrieve minimal::NonRoot corresponding to containedObject
+			with targetElement.eContainer === correspondingContainer
 	}
 	action {
 		remove correspondence between containedObject and targetElement
@@ -190,6 +196,7 @@ routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
 routine createNonRootEObjectSingle(minimal::Root sourceRoot, minimal::NonRoot containedObject) {
 	match {
 		val targetElement = retrieve asserted minimal::Root corresponding to sourceRoot
+		require absence of minimal::NonRoot corresponding to containedObject
 	}
 	action {
 		val newNonRoot = create minimal::NonRoot and initialize {
@@ -334,6 +341,7 @@ reaction HelperReactionForNonRootObjectContainerInitialization {
 routine createNonRootObjectContainer(minimal::Root rootElement, minimal::NonRootObjectContainerHelper nonRootObjectContainer) {
 	match {
 		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
+		require absence of minimal::NonRootObjectContainerHelper corresponding to nonRootObjectContainer
 	}
 	action {
 		val newNonRootContainer = create minimal::NonRootObjectContainerHelper and initialize {
@@ -357,6 +365,7 @@ reaction AddNonRootObjectToHelperContainer {
 routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container, minimal::NonRoot insertedNonRoot) {
 	match {
 		val nonRootContainer = retrieve asserted minimal::NonRootObjectContainerHelper corresponding to container
+		require absence of minimal::NonRoot corresponding to insertedNonRoot
 	}
 	action {
 		val newNonRoot = create minimal::NonRoot and initialize {
@@ -376,7 +385,7 @@ reaction RemovedNonRootObjectFromHelperContainer {
 
 routine deleteNonRootFromContainer(minimal::NonRoot removedNonRoot) {
 	match {
-		val correspondingNonRoot = retrieve asserted minimal::NonRoot corresponding to removedNonRoot
+		val correspondingNonRoot = retrieve minimal::NonRoot corresponding to removedNonRoot
 	}
 	action {
 		delete correspondingNonRoot
