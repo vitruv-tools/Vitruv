@@ -3,7 +3,7 @@ import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChanges
 import org.eclipse.emf.ecore.change.FeatureChange
 import tools.vitruv.framework.change.echange.^root.RootEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
 
 import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal 
 
@@ -28,9 +28,8 @@ routine createRoot(minimal::Root rootElement) {
 			newRoot.id = rootElement.id;
 		}
 		call {
-			val targetModel = rootElement.eResource.URI.trimFileExtension.lastSegment.replace('Source', 'Target') 
-				+ '.' + new AllElementTypesDomainProvider().domain.fileExtensions.get(0)
-			persistProjectRelative(rootElement, newRoot, targetModel)
+			val targetModel = rootElement.eResource.URI.trimFileExtension.lastSegment.replace('Source', 'Target').allElementTypes 
+			persistProjectRelative(rootElement, newRoot, targetModel.toString)
 		}
 		add correspondence between newRoot and rootElement
 	}

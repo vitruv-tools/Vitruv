@@ -13,7 +13,7 @@ Export-Package: tools.vitruv.dsls.reactions.builder;x-internal:=true,
 Automatic-Module-Name: tools.vitruv.dsls.reactions.tests
 Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.testutils,
- tools.vitruv.testutils.domains,
+ tools.vitruv.testutils.metamodels,
  tools.vitruv.dsls.reactions,
  org.eclipse.xtext.xbase.junit,
  org.eclipse.xtext.builder,

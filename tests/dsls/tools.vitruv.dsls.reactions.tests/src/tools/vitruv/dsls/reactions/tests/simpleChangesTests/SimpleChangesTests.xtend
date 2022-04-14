@@ -14,9 +14,9 @@ import static org.hamcrest.CoreMatchers.is
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import org.junit.jupiter.api.Disabled
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
 import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
 
 class SimpleChangesTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'SimpleChangeSource'.allElementTypes
