@@ -11,6 +11,8 @@ import tools.vitruv.testutils.TestProject
 import org.junit.jupiter.api.TestInstance
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import static com.google.common.base.Preconditions.checkNotNull
+import org.junit.jupiter.api.BeforeEach
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ReactionsLanguageInjectorProvider)
@@ -26,6 +28,11 @@ abstract class ReactionsExecutionTest extends VitruvApplicationTest {
 		]
 	)
 
+	@BeforeEach
+	def void patchDomain() {
+		new AllElementTypesDomainProvider().domain.enableTransitiveChangePropagation()
+	}
+	
 	protected abstract def TestReactionsCompiler createCompiler(TestReactionsCompiler.Factory factory)
 
 	@BeforeAll

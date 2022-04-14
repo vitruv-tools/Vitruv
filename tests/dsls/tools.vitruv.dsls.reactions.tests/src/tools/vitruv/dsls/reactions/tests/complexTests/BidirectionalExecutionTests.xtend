@@ -65,13 +65,14 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 			]
 		]
 
-		assertThat(propagatedChanges.size, is(1))
+		assertThat(propagatedChanges.size, is(2))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges
 		assertThat(consequentialSourceModelChange.EChanges.get(0), is(instanceOf(CreateEObject)))
 		assertThat(consequentialSourceModelChange.EChanges.get(1), is(instanceOf(ReplaceSingleValuedEReference)))
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 		assertThat(Root.from(SOURCE_MODEL).singleValuedContainmentEReference.id, is('bidirectionalId'))
 		assertThat(Root.from(TARGET_MODEL).singleValuedContainmentEReference.id, is('bidirectionalId'))
+		assertThat(propagatedChanges.get(1).consequentialChanges.EChanges, is(emptyList))
 	}
 
 	/** Regression test for #175:
@@ -85,13 +86,14 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 			nonRootObjectContainerHelper.nonRootObjectsContainment.remove(0)
 		]
 
-		assertThat(propagatedChanges.size, is(1))
+		assertThat(propagatedChanges.size, is(2))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges
 		assertThat(consequentialSourceModelChange.EChanges.get(0), is(instanceOf(RemoveEReference)))
 		assertThat(consequentialSourceModelChange.EChanges.get(1), is(instanceOf(DeleteEObject)))
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 		assertThat(Root.from(SOURCE_MODEL).nonRootObjectContainerHelper.nonRootObjectsContainment.size, is(2))
 		assertThat(Root.from(TARGET_MODEL).nonRootObjectContainerHelper.nonRootObjectsContainment.size, is(2))
+		assertThat(propagatedChanges.get(1).consequentialChanges.EChanges, is(emptyList))
 	}
 
 	/** Regression test for #175:
@@ -103,11 +105,12 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	def void testApplyRemoveRootInOtherModel() {
 		val propagatedChanges = resourceAt(TARGET_MODEL).propagate [delete(emptyMap)]
 
-		assertThat(propagatedChanges.size, is(1))
+		assertThat(propagatedChanges.size, is(2))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges
 		assertThat(consequentialSourceModelChange.EChanges.get(0), is(instanceOf(RemoveRootEObject)))
 		assertThat(consequentialSourceModelChange.EChanges.get(1), is(instanceOf(DeleteEObject)))
 		assertThat(resourceAt(SOURCE_MODEL), doesNotExist())
 		assertThat(resourceAt(TARGET_MODEL), doesNotExist())
+		assertThat(propagatedChanges.get(1).consequentialChanges.EChanges, is(emptyList))
 	}
 }
