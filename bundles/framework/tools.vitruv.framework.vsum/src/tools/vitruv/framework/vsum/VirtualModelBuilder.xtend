@@ -137,7 +137,6 @@ class VirtualModelBuilder {
 		checkState(storageFolder !== null, "No storage folder was configured!")
 		checkState(userInteractor !== null, "No user interactor was configured!")
 		if (domainRepository === null) {
-			checkState(!domains.isEmpty, "No domains were configured!")
 			domainRepository = new VitruvDomainRepositoryImpl(domains)
 		}
 		val viewTypeRepository = new ViewTypeRepository()
