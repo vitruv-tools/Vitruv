@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: tools.vitruv.framework.views
 Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
- tools.vitruv.testutils.domains,
+ tools.vitruv.testutils.metamodels,
  org.eclipse.core.expressions,
  org.apache.commons.lang,
  org.eclipse.xtend.lib,
