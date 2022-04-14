@@ -1,54 +1,63 @@
 package tools.vitruv.framework.views.changederivation
 
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
+
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 
 class UmlStateChangeTest extends StateChangePropagationTest {
-	@Test
-	def void testRenameTypes() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testRenameTypes(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
 		umlRoot.classes.get(0) => [name = "RenamedClass"]
 		umlRoot.interfaces.get(0) => [name = "RenamedInterface"]
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 
-	@Test
-	def void testNewAttributes() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testNewAttributes(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		umlRoot.classes.get(0) => [
 			attributes += uml.Attribute => [attributeName = "NewlyAddedAttribute"]
 		]
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 
-	@Test
-	def void testNewMethod() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testNewMethod(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
 		umlRoot.interfaces.get(0) => [
 			methods += uml.Method => [name = "NewlyAddedMethod"]
 		]
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 
-	@Test
-	def void testNewClass() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testNewClass(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
 		umlRoot.classes += uml.Class => [name = "NewlyAddedClass"]
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 
-	@Test
-	def void testReplaceClass() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testReplaceClass(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
 		umlRoot.classes.remove(0)
 		umlRoot.classes += uml.Class => [name = "NewlyAddedClass"]
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 
-	@Test
-	def void testDeleteClass() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testDeleteClass(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		umlRoot.classes.remove(0)
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 
-	@Test
-	def void testNewInterface() {
+	@ParameterizedTest(name = "{1}")
+	@MethodSource("strategiesToTest")
+	def void testNewInterface(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
 		umlRoot.interfaces += uml.Interface => [name = "NewlyAddedInterface"]
-		compareChanges(umlModel, umlCheckpoint)
+		compareChanges(umlModel, umlCheckpoint, strategyToTest)
 	}
 }

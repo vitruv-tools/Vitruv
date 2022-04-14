@@ -3,7 +3,8 @@ package tools.vitruv.framework.views.changederivation
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
@@ -25,9 +26,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		getModelURI("Test.allElementTypes")
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("create new resource and calculate state-based difference")
-	def void createNewResource() {
+	@MethodSource("strategiesToTest")
+	def void createNewResource(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new ResourceSetImpl().createResource(testUri) => [
 			contents += aet.Root => [
 				id = "Root"
@@ -49,9 +51,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(modelResource))
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("delete existing resource and calculate state-based difference")
-	def void deleteResource() {
+	@MethodSource("strategiesToTest")
+	def void deleteResource(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new Capture<Resource>
 		resourceSet.record [
 			createResource(testUri) => [
@@ -75,9 +78,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertTrue(validationResourceSet.resources.get(0).contents.empty)
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("replace root element and calculate state-based difference")
-	def void replaceRootElement() {
+	@MethodSource("strategiesToTest")
+	def void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new Capture<Resource>
 		resourceSet.record [
 			createResource(testUri) => [
@@ -105,9 +109,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("change a root element property and calculate state-based difference")
-	def void changeRootElementFeature() {
+	@MethodSource("strategiesToTest")
+	def void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
@@ -135,9 +140,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("change a non-root element property and calculate state-based difference")
-	def void changeNonRootElementFeature() {
+	@MethodSource("strategiesToTest")
+	def void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		val containedRoot = aet.Root
@@ -168,9 +174,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("move a resource to new location and calculate state-based difference")
-	def void moveResource() {
+	@MethodSource("strategiesToTest")
+	def void moveResource(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
@@ -204,9 +211,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
 	}
 
-	@Test
+	@ParameterizedTest(name = "{1}")
 	@DisplayName("move a resource to new location changing root feature and calculate state-based difference")
-	def void moveResourceAndChangeRootFeature() {
+	@MethodSource("strategiesToTest")
+	def void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest, String name) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
