@@ -139,6 +139,37 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
+	
+	@ParameterizedTest(name = "{1}")
+    @DisplayName("change a root element's id and calculate state-based difference")
+    @MethodSource("strategiesToTest")
+    def void changeRootElementId(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+        val modelResource = new Capture<Resource>
+        val root = aet.Root
+        resourceSet.record [
+            createResource(testUri) => [
+                contents += root => [
+                    id = "Root"
+                ]
+            ] >> modelResource
+        ]
+        (-modelResource).save(null)
+
+        resourceSet.record [
+            root.id = "Root2"
+        ]
+
+        val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
+        val oldState = validationResourceSet.getResource(testUri, true)
+        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+        assertEquals(1, changes.EChanges.size)
+        assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+
+        changes.unresolve().resolveAndApply(validationResourceSet)
+
+        assertEquals(1, validationResourceSet.resources.size)
+        assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
+    }
 
 	@ParameterizedTest(name = "{1}")
 	@DisplayName("change a non-root element property and calculate state-based difference")
@@ -167,12 +198,50 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+		assertEquals(1, changes.EChanges.size)
+        assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
 		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
+	
+	@ParameterizedTest(name = "{1}")
+    @DisplayName("change a non-root element's id and calculate state-based difference")
+    @MethodSource("strategiesToTest")
+    def void changeNonRootElementId(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+        val modelResource = new Capture<Resource>
+        val root = aet.Root
+        val containedRoot = aet.Root
+        resourceSet.record [
+            createResource(testUri) => [
+                contents += root => [
+                    id = "Root"
+                    recursiveRoot = containedRoot => [
+                        id = "ContainedRoot"
+                        singleValuedEAttribute = 0
+                    ]
+                ]
+            ] >> modelResource
+        ]
+        (-modelResource).save(null)
+
+        resourceSet.record [
+            containedRoot.id = "ContainedRoot2"
+        ]
+
+        val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
+        val oldState = validationResourceSet.getResource(testUri, true)
+        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+        assertEquals(1, changes.EChanges.size)
+        assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+
+        changes.unresolve().resolveAndApply(validationResourceSet)
+
+        assertEquals(1, validationResourceSet.resources.size)
+        assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
+    }
 
 	@ParameterizedTest(name = "{1}")
 	@DisplayName("move a resource to new location and calculate state-based difference")
