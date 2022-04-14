@@ -16,7 +16,6 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static tools.vitruv.testutils.metamodels.AllElementTypes2Creators.aet2
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
@@ -27,6 +26,10 @@ import allElementTypes.Root
 import allElementTypes2.Root2
 import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
 import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.pcm_mockup
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.uml_mockup
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes2
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
