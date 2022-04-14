@@ -9,7 +9,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.ui,
  tools.vitruv.testutils,
- tools.vitruv.testutils.domains,
+ tools.vitruv.testutils.metamodels,
  org.eclipse.xtext.testing,
  org.eclipse.xtext.ui.testing,
  org.eclipse.xtext.xbase.testing,

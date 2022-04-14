@@ -2,8 +2,6 @@ package tools.vitruv.dsls.commonalities.tests.execution
 
 import static org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes2
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
@@ -20,6 +18,8 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes2
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
