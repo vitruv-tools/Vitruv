@@ -11,9 +11,9 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
-import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
 import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
 
 class ImportTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'ImportTestsModelSource'.allElementTypes
