@@ -7,9 +7,9 @@ Automatic-Module-Name: tools.vitruv.testutils.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: vitruv.tools
 Require-Bundle: tools.vitruv.testutils,
+ tools.vitruv.testutils.metamodels,
  org.junit.jupiter.api,
  org.junit.jupiter.params,
  org.hamcrest.core,
  com.google.guava,
- org.eclipse.xtend.lib,
- tools.vitruv.testutils.domains
+ org.eclipse.xtend.lib
