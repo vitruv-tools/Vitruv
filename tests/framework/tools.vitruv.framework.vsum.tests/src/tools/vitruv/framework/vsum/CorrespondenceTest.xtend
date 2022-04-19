@@ -23,8 +23,6 @@ import tools.vitruv.testutils.TestLogging
 import tools.vitruv.testutils.TestProject
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.TestViewFactory
-import tools.vitruv.testutils.domains.PcmMockupDomainProvider
-import tools.vitruv.testutils.domains.UmlMockupDomainProvider
 import uml_mockup.UInterface
 import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
@@ -85,7 +83,6 @@ class CorrespondenceTest {
 		return new VirtualModelBuilder()
 			.withStorageFolder(testProjectFolder.resolve(vsumName))
 			.withUserInteractorForResultProvider(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))
-			.withDomains(new UmlMockupDomainProvider().getDomain(), new PcmMockupDomainProvider().getDomain())
 			.buildAndInitialize()
 	}
 
