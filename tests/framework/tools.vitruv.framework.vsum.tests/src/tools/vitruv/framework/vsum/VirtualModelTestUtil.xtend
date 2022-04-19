@@ -75,7 +75,14 @@ class VirtualModelTestUtil {
 
     static class RedundancyChangePropagationSpecification extends AbstractChangePropagationSpecification {
         static def getTargetResourceUri(URI sourceUri) {
-            URI.createFileURI(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
+            val sourceUriWithoutFileExtension = sourceUri.trimFileExtension.toFileString
+            val copySuffix = "Copy"
+        	if (sourceUriWithoutFileExtension.endsWith(copySuffix)) {
+        		val sourceUriWithoutSuffix = sourceUriWithoutFileExtension.substring(0, sourceUriWithoutFileExtension.length - copySuffix.length) 
+        		URI.createFileURI(sourceUriWithoutSuffix + "." + sourceUri.fileExtension)
+        	} else {
+        		URI.createFileURI(sourceUriWithoutFileExtension + copySuffix + "." + sourceUri.fileExtension)
+        	}
         }
 
         new(MetamodelDescriptor sourceMetamodelDescriptor, MetamodelDescriptor targetMetamodelDescriptor) {
