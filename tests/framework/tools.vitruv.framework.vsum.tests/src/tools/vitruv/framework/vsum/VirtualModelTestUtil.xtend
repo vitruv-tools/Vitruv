@@ -15,7 +15,6 @@ import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.vsum.VirtualModelBuilder
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
@@ -47,8 +46,7 @@ class VirtualModelTestUtil {
      * Creates an empty virtual model without a change propagation specification.
      */
     static def createAndLoadTestVirtualModel(Path folder) {
-        return new VirtualModelBuilder().withStorageFolder(folder).withDomain(
-            new AllElementTypesDomainProvider().domain).withUserInteractor(
+        return new VirtualModelBuilder().withStorageFolder(folder).withUserInteractor(
             UserInteractionFactory.instance.createUserInteractor(
                 UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))).buildAndInitialize()
     }
@@ -57,8 +55,7 @@ class VirtualModelTestUtil {
      * Creates an empty virtual model with a {@link RedundancyChangePropagationSpecification}.
      */
     static def createAndLoadTestVirtualModelWithConsistencyPreservation(Path folder) {
-        val aetDomain = new AllElementTypesDomainProvider().domain
-        return new VirtualModelBuilder().withStorageFolder(folder).withDomain(aetDomain).
+        return new VirtualModelBuilder().withStorageFolder(folder).
             withChangePropagationSpecification(new RedundancyChangePropagationSpecification(
             	MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI), MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI)
             )).
