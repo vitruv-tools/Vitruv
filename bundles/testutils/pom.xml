@@ -16,7 +16,6 @@
 	<modules>
 		<module>tools.vitruv.testutils</module>
 		<module>tools.vitruv.testutils.metamodels</module>
-		<module>tools.vitruv.testutils.domains</module>
 	</modules>
 
 </project>
