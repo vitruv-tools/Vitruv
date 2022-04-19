@@ -107,7 +107,7 @@ class AttributeMappingOperatorExecutionTest extends VitruvApplicationTest {
 
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
-			singleValuedPrimitiveTypeEAttribute2 = 123500
+			singleValuedPrimitiveTypeEAttribute2 = 123000
 		]))
 		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
