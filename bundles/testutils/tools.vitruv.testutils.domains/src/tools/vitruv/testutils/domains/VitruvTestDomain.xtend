@@ -10,6 +10,10 @@ package abstract class VitruvTestDomain extends AbstractVitruvDomain {
 		String... fileExtensions) {
 		super(name, metamodelRootPackage, fileExtensions)
 	}
+	
+	override shouldTransitivelyPropagateChanges() {
+		true
+	}
 
 	override isUserVisible() {
 		false
