@@ -166,12 +166,15 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
-                assertEquals(1, changes.EChanges.filter(CreateEObject).map[affectedEObject].filter(Root).filter [
-                    id == "Root2"
-                ].size)
-                assertEquals(1, changes.EChanges.filter(DeleteEObject).map[affectedEObject].filter(Root).filter [
-                    id == "Root"
-                ].size)
+                val Iterable<DeleteEObject<?>> deleteChanges = newArrayList(changes.EChanges.filter(DeleteEObject))
+                assertEquals(1, deleteChanges.size)
+                assertTrue(deleteChanges.head.affectedEObject instanceof Root)
+                assertEquals("Root", (deleteChanges.head.affectedEObject as Root).id)
+
+                val Iterable<CreateEObject<?>> createChanges = newArrayList(changes.EChanges.filter(CreateEObject))
+                assertEquals(1, createChanges.size)
+                assertTrue(createChanges.head.affectedEObject instanceof Root)
+                assertEquals("Root2", (createChanges.head.affectedEObject as Root).id)
             }
             case NEVER: {
                 assertEquals(1, changes.EChanges.size)
@@ -251,12 +254,15 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
-                assertEquals(1, changes.EChanges.filter(CreateEObject).map[affectedEObject].filter(Root).filter [
-                    id == "ContainedRoot2"
-                ].size)
-                assertEquals(1, changes.EChanges.filter(DeleteEObject).map[affectedEObject].filter(Root).filter [
-                    id == "ContainedRoot"
-                ].size)
+                val Iterable<DeleteEObject<?>> deleteChanges = newArrayList(changes.EChanges.filter(DeleteEObject))
+                assertEquals(1, deleteChanges.size)
+                assertTrue(deleteChanges.head.affectedEObject instanceof Root)
+                assertEquals("ContainedRoot", (deleteChanges.head.affectedEObject as Root).id)
+
+                val Iterable<CreateEObject<?>> createChanges = newArrayList(changes.EChanges.filter(CreateEObject))
+                assertEquals(1, createChanges.size)
+                assertTrue(createChanges.head.affectedEObject instanceof Root)
+                assertEquals("ContainedRoot2", (createChanges.head.affectedEObject as Root).id)
             }
             case NEVER: {
                 assertEquals(1, changes.EChanges.size)
