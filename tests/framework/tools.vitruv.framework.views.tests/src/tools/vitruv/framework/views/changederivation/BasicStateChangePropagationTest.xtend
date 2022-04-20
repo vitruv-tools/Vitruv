@@ -1,5 +1,6 @@
 package tools.vitruv.framework.views.changederivation
 
+import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.DisplayName
@@ -143,7 +144,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	@ParameterizedTest(name = "{1}")
     @DisplayName("change a root element's id and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    def void changeRootElementId(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+    def void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest, String name) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
         resourceSet.record [
@@ -162,8 +163,21 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
         val oldState = validationResourceSet.getResource(testUri, true)
         val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
-        assertEquals(1, changes.EChanges.size)
-        assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+        switch (strategyToTest.useIdentifiers) {
+            case ONLY,
+            case WHEN_AVAILABLE: {
+                assertEquals(1, changes.EChanges.filter(CreateEObject).map[affectedEObject].filter(Root).filter [
+                    id == "Root2"
+                ].size)
+                assertEquals(1, changes.EChanges.filter(DeleteEObject).map[affectedEObject].filter(Root).filter [
+                    id == "Root"
+                ].size)
+            }
+            case NEVER: {
+                assertEquals(1, changes.EChanges.size)
+                assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+            }
+        }
 
         changes.unresolve().resolveAndApply(validationResourceSet)
 
@@ -210,7 +224,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	@ParameterizedTest(name = "{1}")
     @DisplayName("change a non-root element's id and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    def void changeNonRootElementId(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+    def void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest, String name) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
         val containedRoot = aet.Root
@@ -234,8 +248,21 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
         val oldState = validationResourceSet.getResource(testUri, true)
         val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
-        assertEquals(1, changes.EChanges.size)
-        assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+        switch (strategyToTest.useIdentifiers) {
+            case ONLY,
+            case WHEN_AVAILABLE: {
+                assertEquals(1, changes.EChanges.filter(CreateEObject).map[affectedEObject].filter(Root).filter [
+                    id == "ContainedRoot2"
+                ].size)
+                assertEquals(1, changes.EChanges.filter(DeleteEObject).map[affectedEObject].filter(Root).filter [
+                    id == "ContainedRoot"
+                ].size)
+            }
+            case NEVER: {
+                assertEquals(1, changes.EChanges.size)
+                assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+            }
+        }
 
         changes.unresolve().resolveAndApply(validationResourceSet)
 
