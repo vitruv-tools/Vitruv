@@ -25,12 +25,21 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
  * @author Timur Saglam
  */
 class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
-    val UseIdentifiers useIdentifiers
+    /** The identifier matching behavior used by this strategy */
+    public val UseIdentifiers useIdentifiers
 
+    /**
+     * Creates a new instance with the default identifier matching behavior 
+     * which is match by identifier when available.
+     */
     new() {
         this(UseIdentifiers.WHEN_AVAILABLE)
     }
 
+    /**
+     * Creates a new instance with the provided identifier matching behavior.
+     * @param useIdentifiers The identifier matching behavior to use.
+     */
     new(UseIdentifiers useIdentifiers) {
         this.useIdentifiers = useIdentifiers
     }
