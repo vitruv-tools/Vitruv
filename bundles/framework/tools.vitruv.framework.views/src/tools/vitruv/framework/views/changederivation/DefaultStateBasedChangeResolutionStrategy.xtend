@@ -4,9 +4,9 @@ import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.BasicMonitor
 import org.eclipse.emf.compare.EMFCompare
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl
 import org.eclipse.emf.compare.merge.BatchMerger
 import org.eclipse.emf.compare.merge.IMerger
-import org.eclipse.emf.compare.rcp.EMFCompareRCPPlugin
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.resource.Resource
@@ -101,17 +101,16 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
      * Compares states using EMFCompare and replays the changes to the current state.
      */
     private def compareStatesAndReplayChanges(Notifier newState, Notifier currentState) {
-        val matchEngineRegistry = EMFCompareRCPPlugin.getDefault.getMatchEngineFactoryRegistry
-        val matchEngineFactory = new MatchEngineFactoryImpl(useIdentifiers)
-        matchEngineFactory.ranking = 20 // default engine ranking is 10, must be higher to override.
-        matchEngineRegistry.add(matchEngineFactory)
-
         val scope = new DefaultComparisonScope(newState, currentState, null)
-        val comparison = EMFCompare.builder.setMatchEngineFactoryRegistry(matchEngineRegistry).build.compare(scope)
-        val changes = comparison.differences
+        val emfCompare = (EMFCompare.builder => [
+            matchEngineFactoryRegistry = MatchEngineFactoryRegistryImpl.createStandaloneInstance => [
+                add(new MatchEngineFactoryImpl(useIdentifiers))
+            ]
+        ]).build
+        val differences = emfCompare.compare(scope).differences
         // Replay the EMF compare differences
         val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
         val merger = new BatchMerger(mergerRegistry)
-        merger.copyAllLeftToRight(changes, new BasicMonitor)
+        merger.copyAllLeftToRight(differences, new BasicMonitor)
     }
 }

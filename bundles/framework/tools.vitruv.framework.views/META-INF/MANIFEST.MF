@@ -9,7 +9,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.domains,
  tools.vitruv.framework.change,
  org.eclipse.emf.compare,
- org.eclipse.emf.compare.rcp,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.activextendannotations
