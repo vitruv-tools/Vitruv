@@ -43,7 +43,7 @@ class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector
 			val viewSources = view.viewSource.viewSourceModels
 			val selection = view.selection
 			val resourcesWithSelectedElements = viewSources.filter[contents.exists[selection.isViewObjectSelected(it)]]
-			ResourceCopier.copyResources(resourcesWithSelectedElements, viewResourceSet, false) [selection.isViewObjectSelected(it)]
+			ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet) [selection.isViewObjectSelected(it)]
 		]
 	}
 }

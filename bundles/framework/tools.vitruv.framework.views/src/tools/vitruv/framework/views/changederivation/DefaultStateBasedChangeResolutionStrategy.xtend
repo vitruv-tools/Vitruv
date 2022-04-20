@@ -55,7 +55,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         newState.checkNoProxies("new state")
         oldState.checkNoProxies("old state")
         val monitoredResourceSet = new ResourceSetImpl()
-        val currentStateCopy = ResourceCopier.copyResource(oldState, monitoredResourceSet, true)
+        val currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet)
         return currentStateCopy.record [
             if (oldState.URI != newState.URI) {
                 currentStateCopy.URI = newState.URI
@@ -82,7 +82,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         oldState.checkNoProxies("old state")
         // Setup resolver and copy state:
         val monitoredResourceSet = new ResourceSetImpl()
-        val currentStateCopy = ResourceCopier.copyResource(oldState, monitoredResourceSet, true)
+        val currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet)
         return currentStateCopy.record [
             currentStateCopy.contents.clear()
         ]

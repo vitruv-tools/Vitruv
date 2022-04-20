@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil.Copier
 import org.eclipse.emf.ecore.xmi.XMLResource
 
 import static extension com.google.common.base.Preconditions.checkNotNull
+import static extension com.google.common.base.Preconditions.checkState
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
 
 /**
@@ -30,17 +31,49 @@ class ResourceCopier {
     }
 
     /**
-     * Copies some or all of the elements and references in the given resources to the given new resource set.
+     * Copies some or all of the elements and references in the given view source resources to the given new resource set.
      * The copied root elements can be restricted with the <code>rootElementPredicate</code>.
      * 
-     * @param originalResources The resources to copy
+     * @param originalResources The view source resources to copy
      * @param newResourceSet The resource set to which the copies are attached
-     * @param copyXmlIds If <code>true</code>, xmi:id values are copied even if they are not attached to the elements but only the resource
      * @param rootElementPredicate A predicate to include only a subset of the root elements of the <code>originalResources</code>
      * @returns A mapping from each original resource to its copy
      */
-    static def Map<Resource, Resource> copyResources(Iterable<Resource> originalResources, ResourceSet newResourceSet,
-        Boolean copyXmlIds, (EObject)=>Boolean rootElementPredicate) {
+    static def Map<Resource, Resource> copyViewSourceResources(Iterable<Resource> originalResources,
+        ResourceSet newResourceSet, (EObject)=>Boolean rootElementPredicate) {
+        // do not copy xmi:id for view source resources as the change recorder does not record them
+        // and thus the information will be lost when propagating changes back to the view source
+        copyResources(originalResources, newResourceSet, false, rootElementPredicate)
+    }
+
+    /**
+     * Copies all elements and references in the given view resources to the given new resource set.
+     * 
+     * @param originalResources The view resources to copy
+     * @param newResourceSet The resource set to which the copies are attached
+     * @returns A mapping from each original resource to its copy
+     */
+    static def Map<Resource, Resource> copyViewResources(Iterable<Resource> originalResources,
+        ResourceSet newResourceSet) {
+        // copy xmi:id for view resources such that an exact copy is created
+        // this is e.g. necessary for change deriving strategies that rely on identifiers
+        copyResources(originalResources, newResourceSet, true)[true]
+    }
+
+    /**
+     * Copies all elements and references in the give view resource to the given new resource set.
+     * 
+     * @param originalResource The view resource to copy
+     * @param newResourceSet The resource set to which the copy is attached
+     * @returns The newly created copy of the resource
+     */
+    static def Resource copyViewResource(Resource originalResource, ResourceSet newResourceSet) {
+        val mapping = copyViewResources(#[originalResource], newResourceSet)
+        return mapping.get(originalResource)
+    }
+
+    private static def Map<Resource, Resource> copyResources(Iterable<Resource> originalResources,
+        ResourceSet newResourceSet, Boolean copyXmlIds, (EObject)=>Boolean rootElementPredicate) {
         val resourceMapping = new HashMap<Resource, Resource>()
         for (umlResource : originalResources.filter[isWritableUmlResource].toList) {
             val copy = copyUmlResource(umlResource, newResourceSet)
@@ -55,32 +88,6 @@ class ResourceCopier {
             copyXmlIds, rootElementPredicate)
         otherMapping.keySet.forEach[resourceMapping.put(it, otherMapping.get(it))]
         return resourceMapping
-    }
-
-    /**
-     * Copies all elements and references in the given resources to the given new resource set.
-     * 
-     * @param originalResources The resources to copy
-     * @param newResourceSet The resource set to which the copies are attached
-     * @param copyXmlIds If <code>true</code>, xmi:id values are copied even if they are not attached to the elements but only the resource
-     * @returns A mapping from each original resource to its copy
-     */
-    static def Map<Resource, Resource> copyResources(Iterable<Resource> originalResources, ResourceSet newResourceSet,
-        Boolean copyXmlIds) {
-        copyResources(originalResources, newResourceSet, copyXmlIds)[true]
-    }
-
-    /**
-     * Copies all elements and references in the give resource to the given new resource set.
-     * 
-     * @param originalResource The resource to copy
-     * @param newResourceSet The resource set to which the copy is attached
-     * @param copyXmlIds If <code>true</code>, xmi:id values are copied even if they are not attached to the elements but only the resource
-     * @returns The newly created copy of the resource
-     */
-    static def Resource copyResource(Resource originalResource, ResourceSet newResourceSet, Boolean copyXmlIds) {
-        val mapping = copyResources(#[originalResource], newResourceSet, copyXmlIds)
-        return mapping.get(originalResource)
     }
 
     /**
@@ -169,9 +176,13 @@ class ResourceCopier {
         val targetIterator = target.allContents
         while (sourceIterator.hasNext && targetIterator.hasNext) {
             val sourceObject = sourceIterator.next
-            val destinationObject = targetIterator.next
-            target.setID(destinationObject, source.getID(sourceObject))
+            val targetObject = targetIterator.next
+            checkState(sourceObject.eClass === targetObject.eClass, "non matching elements %s and %s", sourceObject,
+                targetObject)
+            target.setID(targetObject, source.getID(sourceObject))
         }
+        checkState(!sourceIterator.hasNext, "source uml resource has too many elements")
+        checkState(!targetIterator.hasNext, "target uml resource has too many elements")
     }
 
     private static def void copyIds(XMLResource source, XMLResource target, Iterable<EObject> sourceElements,
