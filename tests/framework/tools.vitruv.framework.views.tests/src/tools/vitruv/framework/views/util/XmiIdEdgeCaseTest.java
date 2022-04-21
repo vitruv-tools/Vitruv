@@ -72,7 +72,7 @@ public class XmiIdEdgeCaseTest {
 
 	@Test
 	public void testMultiResourceCopy() {
-		XMLResource umlModel2 = (XMLResource) resourceSet.createResource(getModelURI("my.uml_mockup"));
+		XMLResource umlModel2 = (XMLResource) resourceSet.createResource(getModelURI("my2.uml_mockup"));
 		UPackage uPackage1 = uml.Package();
 		umlModel2.getContents().add(uPackage1);
 		uPackage1.setName("Package1");
