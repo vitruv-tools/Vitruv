@@ -146,14 +146,19 @@ class ResourceCopier {
                 checkNotNull(copier.get(it), "corresponding object for %s is null", it)
             ]
             copiedResource.contents.addAll(mappedRootElements)
-            if (copyXmlIds) {
-                if (originalResource instanceof XMLResource && copiedResource instanceof XMLResource) {
-                    copyIds(originalResource as XMLResource, copiedResource as XMLResource, selectedRootElements,
-                        copier)
-                }
-            }
             newResourceSet.resources += copiedResource
             resourceMapping.put(originalResource, copiedResource)
+        }
+
+        if (copyXmlIds) {
+            for (entry: copier.entrySet) {
+                val sourceElement = entry.key
+                val targetElement = entry.value
+                if (sourceElement.eResource instanceof XMLResource && targetElement.eResource instanceof XMLResource) {
+                    val id = (sourceElement.eResource as XMLResource).getID(sourceElement)
+                    (targetElement.eResource as XMLResource).setID(targetElement, id)
+                }
+            }
         }
         return resourceMapping
     }
@@ -183,15 +188,5 @@ class ResourceCopier {
         }
         checkState(!sourceIterator.hasNext, "source uml resource has too many elements")
         checkState(!targetIterator.hasNext, "target uml resource has too many elements")
-    }
-
-    private static def void copyIds(XMLResource source, XMLResource target, Iterable<EObject> sourceElements,
-        Copier copier) {
-        sourceElements.forEach [ sourceElement |
-            val targetElement = copier.get(sourceElement)
-            checkNotNull(targetElement, "corresponding object for %s is null", sourceElement)
-            target.setID(targetElement, source.getID(sourceElement))
-            copyIds(source, target, sourceElement.eContents, copier)
-        ]
     }
 }
