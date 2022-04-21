@@ -27,10 +27,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		getModelURI("Test.allElementTypes")
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("create new resource and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void createNewResource(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void createNewResource(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new ResourceSetImpl().createResource(testUri) => [
 			contents += aet.Root => [
 				id = "Root"
@@ -52,10 +52,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(modelResource))
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("delete existing resource and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void deleteResource(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void deleteResource(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new Capture<Resource>
 		resourceSet.record [
 			createResource(testUri) => [
@@ -79,10 +79,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertTrue(validationResourceSet.resources.get(0).contents.empty)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("replace root element and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new Capture<Resource>
 		resourceSet.record [
 			createResource(testUri) => [
@@ -110,10 +110,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("change a root element property and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
@@ -141,10 +141,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
 	
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
     @DisplayName("change a root element's id and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    def void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest, String name) {
+    def void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
         resourceSet.record [
@@ -188,10 +188,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
     }
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("change a non-root element property and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		val containedRoot = aet.Root
@@ -224,10 +224,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
 	}
 	
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
     @DisplayName("change a non-root element's id and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    def void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest, String name) {
+    def void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
         val containedRoot = aet.Root
@@ -276,10 +276,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
     }
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("move a resource to new location and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void moveResource(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void moveResource(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
@@ -313,10 +313,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@DisplayName("move a resource to new location changing root feature and calculate state-based difference")
 	@MethodSource("strategiesToTest")
-	def void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest) {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
@@ -352,5 +352,4 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(2, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
 	}
-
 }

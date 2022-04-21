@@ -6,30 +6,30 @@ import org.junit.jupiter.params.provider.MethodSource
 import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 
 class PcmStateChangeTest extends StateChangePropagationTest {
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
+	def void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest) {
 		pcmRoot.components += pcm.Component => [name = "NewlyAddedComponent"]
 		compareChanges(pcmModel, pcmCheckpoint, strategyToTest)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest) {
 		pcmRoot.components.get(0).name = "RenamedComponent"
 		compareChanges(pcmModel, pcmCheckpoint, strategyToTest)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest, String name) {
+	def void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest) {
 		pcmRoot.components.remove(0)
 		compareChanges(pcmModel, pcmCheckpoint, strategyToTest)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
+	def void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest) {
 		val newInterface = pcm.Interface => [name = "NewlyAddedInterface"]
 		pcmRoot.interfaces += pcm.Interface
 		newInterface.methods += pcm.Method => [name = "newMethod"]
@@ -37,9 +37,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 		compareChanges(pcmModel, pcmCheckpoint, strategyToTest)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
+	def void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest) {
 		val newInterface = pcm.Interface => [
 			name = "NewlyAddedInterface"
 		]
@@ -51,9 +51,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 		compareChanges(pcmModel, pcmCheckpoint, strategyToTest)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testAddDifferentProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
+	def void testAddDifferentProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest) {
 		val firstInterface = pcm.Interface => [name = "NewlyAddedInterface"]
 		val secondInterface = pcm.Interface => [name = "NewlyAddedInterface2"]
 		pcmRoot.interfaces += #[firstInterface, secondInterface]
@@ -62,9 +62,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 		compareChanges(pcmModel, pcmCheckpoint, strategyToTest)
 	}
 
-	@ParameterizedTest(name = "{1}")
+	@ParameterizedTest()
 	@MethodSource("strategiesToTest")
-	def void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest, String strategyName) {
+	def void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest) {
 		pcmRoot.interfaces += (1 .. 3).map [ index |
 			pcm.Interface => [name = '''NewlyAddedInterface«index»''']
 		]

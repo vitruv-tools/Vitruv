@@ -12,8 +12,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Named
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.junit.jupiter.params.provider.Arguments
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.recording.ChangeRecorder
@@ -76,9 +76,9 @@ abstract class StateChangePropagationTest {
 	
 	static def strategiesToTest() {
 	    Stream.of(
-	        Arguments.of(new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.WHEN_AVAILABLE), "identifiers when available"),
-	        Arguments.of(new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.ONLY), "only identifiers"),
-	        Arguments.of(new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.NEVER), "never identifiers")
+	        Named.of("identifiers when available", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.WHEN_AVAILABLE)),
+	        Named.of("only identifiers", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.ONLY)),
+	        Named.of("never identifiers", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.NEVER))
 	    )
 	}
 	
