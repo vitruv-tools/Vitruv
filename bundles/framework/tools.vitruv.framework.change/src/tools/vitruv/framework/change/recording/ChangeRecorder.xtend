@@ -40,6 +40,10 @@ import tools.vitruv.framework.change.echange.EChange
  * that all objects that have been removed from their containment reference without being added to a new containment
  * reference while changes were being recorded have been deleted, resulting in an appropriate delete change.
  * The recorder considers resources being loaded as existing and does thus not produce changes for it.
+ *
+ * Does not record changes of the <code>xmi:id</code> tag in an 
+ * {@link org.eclipse.emf.ecore.xmi.XMLResource XMLResource} if it is not stored in the element 
+ * but directly in the <code>Resource</code>.
  */
 class ChangeRecorder implements AutoCloseable {
 	// invariant: if the recording adapter is installed on a notifier, it is also installed on all children
