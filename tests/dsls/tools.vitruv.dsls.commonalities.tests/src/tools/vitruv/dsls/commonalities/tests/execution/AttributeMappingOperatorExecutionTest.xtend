@@ -18,8 +18,8 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes2
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes2
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
