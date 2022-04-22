@@ -3,13 +3,14 @@ package tools.vitruv.testutils
 import java.util.Collection
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import tools.vitruv.framework.views.CommittableView
-import tools.vitruv.framework.views.ViewProvider
 import tools.vitruv.framework.views.View
+import tools.vitruv.framework.views.ViewProvider
 import tools.vitruv.framework.views.ViewTypeFactory
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
 
-import static org.hamcrest.MatcherAssert.assertThat
-import static org.hamcrest.CoreMatchers.not
 import static org.hamcrest.CoreMatchers.equalTo
+import static org.hamcrest.CoreMatchers.not
+import static org.hamcrest.MatcherAssert.assertThat
 
 @FinalFieldsConstructor
 class TestViewFactory {
@@ -34,10 +35,30 @@ class TestViewFactory {
      * Records the performed changes, commits the recorded changes, and closes the view afterwards.
      */
     def void changeViewRecordingChanges(View view, (CommittableView)=>void modelModification) {
-        val committableView = view.withChangeRecordingTrait
-        modelModification.apply(committableView)
-        committableView.commitChanges()
-        committableView.close()
+        changeView(view.withChangeRecordingTrait, modelModification)
+    }
+
+    /**
+     * Changes the given view according to the given modification function. 
+     * Derives the performed changes using the default strategy, commits the derived changes, and closes the view afterwards.
+     */
+    def void changeViewDerivingChanges(View view, (CommittableView)=>void modelModification) {
+        changeView(view.withChangeDerivingTrait, modelModification)
+    }
+
+    /**
+     * Changes the given view according to the given modification function. 
+     * Derives the performed changes using the provided strategy, commits the derived changes, and closes the view afterwards.
+     */
+    def void changeViewDerivingChanges(View view, StateBasedChangeResolutionStrategy strategy,
+        (CommittableView)=>void modelModification) {
+        changeView(view.withChangeDerivingTrait(strategy), modelModification)
+    }
+
+    private def void changeView(CommittableView view, (CommittableView)=>void modelModification) {
+        modelModification.apply(view)
+        view.commitChanges()
+        view.close()
     }
 
     /**

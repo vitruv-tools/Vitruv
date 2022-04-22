@@ -48,7 +48,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
 
     private def setupReferenceState() {
         originalStateViewResourceSet = new ResourceSetImpl
-        ResourceCopier.copyResources(view.viewResourceSet.resources, originalStateViewResourceSet)
+        ResourceCopier.copyViewResources(view.viewResourceSet.resources, originalStateViewResourceSet)
         originalStateResourceMapping = new HashMap
         view.viewResourceSet.resources.forEach[resource | originalStateResourceMapping.put(resource, originalStateViewResourceSet.resources.findFirst[URI === resource.URI])]
     }
@@ -58,7 +58,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         val propagatedChanges = new ArrayList()
         val allResources = new HashSet(originalStateResourceMapping.keySet)
         allResources.addAll(view.viewResourceSet.resources) // consider newly added resources
-        for (changedResource: allResources.filter[!URI.isPathmap]) {
+        for (changedResource : allResources.filter[!URI.isPathmap]) {
             val change = generateChange(changedResource, originalStateResourceMapping.get(changedResource))
             if (change.containsConcreteChange) {
                 propagatedChanges += viewSource.propagateChange(change)
@@ -78,11 +78,9 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
     private def VitruviusChange generateChange(Resource newState, Resource referenceState) {
         if (referenceState === null) {
             return changeResolutionStrategy.getChangeSequenceForCreated(newState)
-        }
-        else if (newState === null) {
+        } else if (newState === null) {
             return changeResolutionStrategy.getChangeSequenceForDeleted(referenceState)
-        }
-        else {
+        } else {
             return changeResolutionStrategy.getChangeSequenceBetween(newState, referenceState)
         }
     }

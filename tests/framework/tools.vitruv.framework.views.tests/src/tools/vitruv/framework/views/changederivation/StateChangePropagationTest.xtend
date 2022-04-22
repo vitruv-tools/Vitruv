@@ -1,40 +1,40 @@
 package tools.vitruv.framework.views.changederivation
 
+import java.nio.file.Path
+import java.util.stream.Stream
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Named
+import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
-import uml_mockup.UPackage
-import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
-import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy
-import org.junit.jupiter.api.^extension.ExtendWith
+import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.testutils.TestLogging
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.AfterEach
 import tools.vitruv.testutils.TestProject
-import java.nio.file.Path
+import tools.vitruv.testutils.TestProjectManager
+import uml_mockup.UPackage
 
 import static org.junit.jupiter.api.Assertions.*
 import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
-import tools.vitruv.testutils.TestProjectManager
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import tools.vitruv.framework.change.recording.ChangeRecorder
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.xtend.lib.annotations.Accessors
+
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
 	var Path testProjectFolder
-	@Accessors(PROTECTED_GETTER)
-	var StateBasedChangeResolutionStrategy strategyToTest
 	@Accessors(PROTECTED_GETTER)
 	var Resource umlCheckpoint
 	@Accessors(PROTECTED_GETTER)
@@ -59,7 +59,6 @@ abstract class StateChangePropagationTest {
 	def void setup(@TestProject Path testProjectFolder) {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
-		strategyToTest = new DefaultStateBasedChangeResolutionStrategy()
 		resourceSet = new ResourceSetImpl().withGlobalFactories()
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories()
 		changeRecorder = new ChangeRecorder(resourceSet)
@@ -75,6 +74,14 @@ abstract class StateChangePropagationTest {
 		pcmModel.startRecording
 	}
 	
+	static def strategiesToTest() {
+	    Stream.of(
+	        Named.of("identifiers when available", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.WHEN_AVAILABLE)),
+	        Named.of("only identifiers", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.ONLY)),
+	        Named.of("never identifiers", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.NEVER))
+	    )
+	}
+	
 	/**
 	 * Stops recording in case the test does not call getRecordedChanges() or getChangeFromComparisonWithCheckpoint().
 	 */
@@ -87,7 +94,7 @@ abstract class StateChangePropagationTest {
 	 * USE THIS METHOD TO COMPARE RESULTS!
 	 * Compares two changes: The recorded change sequence and the resolved changes by the state delta based strategy.
 	 */
-	protected def compareChanges(Resource model, Resource checkpoint) {
+	protected def compareChanges(Resource model, Resource checkpoint, StateBasedChangeResolutionStrategy strategyToTest) {
 		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
 		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
