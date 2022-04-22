@@ -16,7 +16,7 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import org.junit.jupiter.api.Disabled
 import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
 import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes
 
 class SimpleChangesTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'SimpleChangeSource'.allElementTypes

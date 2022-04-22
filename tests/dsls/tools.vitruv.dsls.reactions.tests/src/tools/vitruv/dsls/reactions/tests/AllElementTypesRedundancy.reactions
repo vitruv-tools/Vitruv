@@ -3,7 +3,7 @@ import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChanges
 import org.eclipse.emf.ecore.change.FeatureChange
 import tools.vitruv.framework.change.echange.^root.RootEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes
 
 import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal 
 

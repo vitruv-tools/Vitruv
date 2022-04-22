@@ -13,7 +13,7 @@ import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecution
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
 import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes
 
 class ImportTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'ImportTestsModelSource'.allElementTypes

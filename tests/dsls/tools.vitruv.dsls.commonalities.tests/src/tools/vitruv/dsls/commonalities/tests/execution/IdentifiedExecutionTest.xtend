@@ -26,10 +26,10 @@ import allElementTypes.Root
 import allElementTypes2.Root2
 import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
 import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.pcm_mockup
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.uml_mockup
-import static extension tools.vitruv.testutils.metamodels.TestMetamodelsFileExtensions.allElementTypes2
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes2
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.allElementTypes
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.uml_mockup
+import static extension tools.vitruv.testutils.metamodels.TestMetamodelsPathFactory.pcm_mockup
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)

@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.nio.file.Path
 
 @Utility
-class TestMetamodelsFileExtensions {
+class TestMetamodelsPathFactory {
 	static def allElementTypes(String modelName) {
 		Path.of(modelName + ".allElementTypes")
 	}
