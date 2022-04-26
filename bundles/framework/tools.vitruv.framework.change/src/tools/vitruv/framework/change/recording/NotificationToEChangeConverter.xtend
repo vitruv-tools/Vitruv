@@ -27,6 +27,8 @@ import static extension tools.vitruv.framework.change.recording.EChangeCreationU
 package final class NotificationToEChangeConverter {
 	extension val TypeInferringAtomicEChangeFactory changeFactory = TypeInferringAtomicEChangeFactory.instance
 	
+	final static int INSERT_LAST_INDEX = -1;
+	
 	val (EObject, EObject)=>boolean isCreateChange
 
 	def createDeleteChange(EObjectSubtractedEChange<?> change) {
@@ -203,7 +205,7 @@ package final class NotificationToEChangeConverter {
 		var newIndex = position
 		var eRef = notifierModelElement.eGet(reference) as List<EObject>
 		if(eRef.indexOf(newModelElementValue) == eRef.size() - 1) {
-			newIndex = -1
+			newIndex = INSERT_LAST_INDEX
 		}
 		createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, newIndex).
 			surroundWithCreateAndFeatureChangesIfNecessary()
@@ -215,7 +217,7 @@ package final class NotificationToEChangeConverter {
 
 		if (initialIndex == numOfElementsInEReferenceAfterInsertion - listOfNewValues.size) {
 			listOfNewValues.flatMapFixedIndexed [ index, value |
-				createInsertReferenceChange(notifierModelElement, reference, value, -1).
+				createInsertReferenceChange(notifierModelElement, reference, value, INSERT_LAST_INDEX).
 					surroundWithCreateAndFeatureChangesIfNecessary()
 			]
 		} else {

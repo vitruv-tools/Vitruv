@@ -32,6 +32,8 @@ import static extension tools.vitruv.framework.change.echange.command.ChangeComm
 package class ApplyBackwardCommandSwitch {
 	static val Logger logger = Logger.getLogger(ApplyBackwardCommandSwitch)
 	
+	final static int INSERT_LAST_INDEX = -1;
+	
 	def package dispatch static List<Command> getCommands(EChange change) {
 		#[]
 	}
@@ -95,7 +97,7 @@ package class ApplyBackwardCommandSwitch {
 			 * change the -1 index back to the last index in the list.
 			 */
 			var index = change.index
-			if(change.index == -1) {
+			if(change.index == INSERT_LAST_INDEX) {
 				index = (change.affectedEObject.eGet(change.affectedFeature) as List<EObject>).size() - 1
 			}
 			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, index)]

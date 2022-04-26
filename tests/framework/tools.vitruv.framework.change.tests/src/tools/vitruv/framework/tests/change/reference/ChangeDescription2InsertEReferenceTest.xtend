@@ -20,11 +20,14 @@ import java.util.ArrayList
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
+	final static int INSERT_LAST_INDEX = -1;
+	final static int NUM_PREPARATION_ELEMENTS = 10;
+
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
 	def void testInsertMultipleAtOnceContainment(int count, int insertAt) {
 		// prepare
-		val preparationElements = (0 ..< 10).map[aet.NonRoot()]
+		val preparationElements = (0 ..< NUM_PREPARATION_ELEMENTS).map[aet.NonRoot()]
 		uniquePersistedRoot.record[multiValuedContainmentEReference.addAll(preparationElements)]
 
 		// test
@@ -39,7 +42,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 		// assert
 		val expectedInsertions = 
-			if (insertAt == 10) nonRootElements.mapFixed[new Pair(it, -1)]
+			if (insertAt == NUM_PREPARATION_ELEMENTS) nonRootElements.mapFixed[new Pair(it, INSERT_LAST_INDEX)]
 			else nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size * 3)
 		for (insertion : expectedInsertions) {
@@ -55,7 +58,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	@MethodSource("provideParametersInsertMultipleAtOnceAtIndex")
 	def void testInsertMultipleAtOnceNonContainment(int count, int insertAt) {
 		// prepare
-		val preparationElements = (0 ..< 10).mapFixed[aet.NonRoot()]
+		val preparationElements = (0 ..< NUM_PREPARATION_ELEMENTS).mapFixed[aet.NonRoot()]
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
 		uniquePersistedRoot.multiValuedNonContainmentEReference.addAll(preparationElements)
 
@@ -68,7 +71,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 		// assert		
 		val expectedInsertions = 
-			if (insertAt == 10) nonRootElements.mapFixed[new Pair(it, -1)]
+			if (insertAt == NUM_PREPARATION_ELEMENTS) nonRootElements.mapFixed[new Pair(it, INSERT_LAST_INDEX)]
 			else nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size)
 		for (insertion : expectedInsertions) {
@@ -87,14 +90,14 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleNonContainment() {
-		insertAndAssertSingleNonContainment(0, -1)
+		insertAndAssertSingleNonContainment(0, INSERT_LAST_INDEX)
 	}
 
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertElementOneByOne")
 	def void testInsertMultipleIterativelyNonContainment(Iterable<Pair<Integer, Integer>> indecesPair) {
 		// prepare
-		val preparationElements = (0 ..< 10).mapFixed[aet.NonRoot()]
+		val preparationElements = (0 ..< NUM_PREPARATION_ELEMENTS).mapFixed[aet.NonRoot()]
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
 		uniquePersistedRoot.multiValuedNonContainmentEReference.addAll(preparationElements)
 
@@ -105,14 +108,14 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleContainment() {
-		insertAndAssertSingleContainment(0, -1)
+		insertAndAssertSingleContainment(0, INSERT_LAST_INDEX)
 	}
 
 	@ParameterizedTest
 	@MethodSource("provideParametersInsertElementOneByOne")
 	def void testInsertMultipleIterativelyContainment(Iterable<Pair<Integer, Integer>> indecesPair) { 
 		// prepare
-		val preparationElements = (0 ..< 10).mapFixed[aet.NonRoot()]
+		val preparationElements = (0 ..< NUM_PREPARATION_ELEMENTS).mapFixed[aet.NonRoot()]
 		uniquePersistedRoot.multiValuedContainmentEReference.addAll(preparationElements)
 
 		for(var i = 0; i < indecesPair.size; i++) {
@@ -122,12 +125,12 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	def static Stream<Arguments> provideParametersInsertElementOneByOne() {
 		val testCases = new ArrayList<Iterable<Pair<Integer, Integer>>>()
-		(0 ..< 10).forEach[testCases.add(#[new Pair(it, it)])]
+		(0 ..< NUM_PREPARATION_ELEMENTS).forEach[testCases.add(#[new Pair(it, it)])]
 		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(2,2), new Pair(1,1)])
 		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(0,0), new Pair(2,2), new Pair(4,4)])
-		testCases.add(#[new Pair(10, -1)])
-		testCases.add(#[new Pair(10,-1), new Pair(10,10), new Pair(12,-1)])
-		testCases.add(#[new Pair(0,0), new Pair(11,-1), new Pair(12,-1)])
+		testCases.add(#[new Pair(10, INSERT_LAST_INDEX)])
+		testCases.add(#[new Pair(10,INSERT_LAST_INDEX), new Pair(10,10), new Pair(12,INSERT_LAST_INDEX)])
+		testCases.add(#[new Pair(0,0), new Pair(11,INSERT_LAST_INDEX), new Pair(12,INSERT_LAST_INDEX)])
 		return stream(testCases.map[Arguments.of(it)].spliterator, false)
 	}
 
