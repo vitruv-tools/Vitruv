@@ -18,6 +18,7 @@ import static org.eclipse.emf.common.notify.Notification.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.change.recording.EChangeCreationUtil.*
+import tools.vitruv.framework.change.echange.EChangeUtil
 
 /** 
  * Converts an EMF notification to an {@link EChange}.
@@ -26,8 +27,6 @@ import static extension tools.vitruv.framework.change.recording.EChangeCreationU
 @FinalFieldsConstructor
 package final class NotificationToEChangeConverter {
 	extension val TypeInferringAtomicEChangeFactory changeFactory = TypeInferringAtomicEChangeFactory.instance
-	
-	final static int INSERT_LAST_INDEX = -1;
 	
 	val (EObject, EObject)=>boolean isCreateChange
 
@@ -205,7 +204,7 @@ package final class NotificationToEChangeConverter {
 		var newIndex = position
 		var eRef = notifierModelElement.eGet(reference) as List<EObject>
 		if(eRef.indexOf(newModelElementValue) == eRef.size() - 1) {
-			newIndex = INSERT_LAST_INDEX
+			newIndex = EChangeUtil.LAST_POSITION_INDEX
 		}
 		createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, newIndex).
 			surroundWithCreateAndFeatureChangesIfNecessary()
@@ -217,7 +216,7 @@ package final class NotificationToEChangeConverter {
 
 		if (initialIndex == numOfElementsInEReferenceAfterInsertion - listOfNewValues.size) {
 			listOfNewValues.flatMapFixedIndexed [ index, value |
-				createInsertReferenceChange(notifierModelElement, reference, value, INSERT_LAST_INDEX).
+				createInsertReferenceChange(notifierModelElement, reference, value, EChangeUtil.LAST_POSITION_INDEX).
 					surroundWithCreateAndFeatureChangesIfNecessary()
 			]
 		} else {

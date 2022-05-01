@@ -13,6 +13,9 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
  */
 @Utility
 class EChangeUtil {
+	
+	public final static int LAST_POSITION_INDEX = -1;
+	
 	static def dispatch isContainmentRemoval(EChange change) {
 		false
 	}

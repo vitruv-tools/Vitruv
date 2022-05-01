@@ -17,10 +17,11 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapF
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import java.util.ArrayList
+import tools.vitruv.framework.change.echange.EChangeUtil
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest { 
 
-	final static int INSERT_LAST_INDEX = -1;
+	
 	final static int NUM_PREPARATION_ELEMENTS = 10;
 
 	@ParameterizedTest
@@ -42,7 +43,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 		// assert
 		val expectedInsertions = 
-			if (insertAt == NUM_PREPARATION_ELEMENTS) nonRootElements.mapFixed[new Pair(it, INSERT_LAST_INDEX)]
+			if (insertAt == NUM_PREPARATION_ELEMENTS) nonRootElements.mapFixed[new Pair(it, EChangeUtil.LAST_POSITION_INDEX)]
 			else nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size * 3)
 		for (insertion : expectedInsertions) {
@@ -71,7 +72,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 		// assert		
 		val expectedInsertions = 
-			if (insertAt == NUM_PREPARATION_ELEMENTS) nonRootElements.mapFixed[new Pair(it, INSERT_LAST_INDEX)]
+			if (insertAt == NUM_PREPARATION_ELEMENTS) nonRootElements.mapFixed[new Pair(it, EChangeUtil.LAST_POSITION_INDEX)]
 			else nonRootElements.indexed().mapFixed[new Pair(value, key + insertAt)]
 		assertEquals(actualChanges.size, expectedInsertions.size)
 		for (insertion : expectedInsertions) {
@@ -90,7 +91,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleNonContainment() {
-		insertAndAssertSingleNonContainment(0, INSERT_LAST_INDEX)
+		insertAndAssertSingleNonContainment(0, EChangeUtil.LAST_POSITION_INDEX)
 	}
 
 	@ParameterizedTest
@@ -108,7 +109,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	@Test
 	def void testInsertSingleContainment() {
-		insertAndAssertSingleContainment(0, INSERT_LAST_INDEX)
+		insertAndAssertSingleContainment(0, EChangeUtil.LAST_POSITION_INDEX)
 	}
 
 	@ParameterizedTest
@@ -128,9 +129,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		(0 ..< NUM_PREPARATION_ELEMENTS).forEach[testCases.add(#[new Pair(it, it)])]
 		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(2,2), new Pair(1,1)])
 		testCases.add(#[new Pair(0,0), new Pair(1,1), new Pair(0,0), new Pair(2,2), new Pair(4,4)])
-		testCases.add(#[new Pair(10, INSERT_LAST_INDEX)])
-		testCases.add(#[new Pair(10,INSERT_LAST_INDEX), new Pair(10,10), new Pair(12,INSERT_LAST_INDEX)])
-		testCases.add(#[new Pair(0,0), new Pair(11,INSERT_LAST_INDEX), new Pair(12,INSERT_LAST_INDEX)])
+		testCases.add(#[new Pair(10, EChangeUtil.LAST_POSITION_INDEX)])
+		testCases.add(#[new Pair(10,EChangeUtil.LAST_POSITION_INDEX), new Pair(10,10), new Pair(12,EChangeUtil.LAST_POSITION_INDEX)])
+		testCases.add(#[new Pair(0,0), new Pair(11,EChangeUtil.LAST_POSITION_INDEX), new Pair(12,EChangeUtil.LAST_POSITION_INDEX)])
 		return stream(testCases.map[Arguments.of(it)].spliterator, false)
 	}
 
