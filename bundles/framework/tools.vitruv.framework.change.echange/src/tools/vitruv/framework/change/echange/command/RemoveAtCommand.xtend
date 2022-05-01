@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.edit.command.RemoveCommand
 import org.eclipse.emf.edit.domain.EditingDomain
+import tools.vitruv.framework.change.echange.EChangeUtil
 
 /**
  * Command which is used to remove a entry of a EList at a specific index.
@@ -51,16 +52,23 @@ class RemoveAtCommand extends RemoveCommand {
 	}
 
 	override void doExecute() {
-		ownerList.remove(index);
+		if(index == EChangeUtil.LAST_POSITION_INDEX) {
+			ownerList.remove(ownerList.size - 1)
+		} else {
+			ownerList.remove(index);
+		}
 	}
 
 	override boolean prepare() {
-		var result = super.prepare() && 0 <= index && index < ownerList.size() && (collection.size() == 1);
+		var result = super.prepare() && (collection.size() == 1) //
+			&& ((0 <= index && index < ownerList.size()) || (index == EChangeUtil.LAST_POSITION_INDEX && ownerList.size() > 0))
+			
 		if (!result) {
 			return false;
 		}
-		// Check if get(index) == object		
-		return ownerList.get(index).equals(collection.get(0))
+		// Check if get(index) == object
+		val elementAtIndex = if (index == EChangeUtil.LAST_POSITION_INDEX) ownerList.get(ownerList.size - 1) else ownerList.get(index)
+		return elementAtIndex.equals(collection.get(0))
 	}
 
 	override void doUndo() {
