@@ -87,7 +87,6 @@ class ChangeRecorder implements AutoCloseable {
 
 	/**
 	 * Add the given elements and all its contained elements ({@link Resource}s, {@link EObject}s) to the recorder.
-	 * Register all existing elements at the {@link IdResolverAndRepository} with existing UUIDs.
 	 * 
 	 * @param notifier - the {@link Notifier} to add the recorder to
 	 * @throws IllegalStateException if the recorder is already disposed

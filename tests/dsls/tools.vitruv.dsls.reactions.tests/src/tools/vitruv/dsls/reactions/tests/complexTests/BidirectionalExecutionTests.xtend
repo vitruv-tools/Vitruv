@@ -75,13 +75,8 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 		assertThat(propagatedChanges.get(1).consequentialChanges.EChanges, is(emptyList))
 	}
 
-	/** Regression test for #175:
-	 *  Removing an object from its container for which the UUID is not cached in the local UUID resolver,
-	 *  the UUID resolution failed: Local and global resolution both failed, because the object
-	 *  has a changed URI (due to removal from container).
-	 */
 	@Test
-	def void testApplyRemoveInOtherModel() {
+	def void testApplyRemoveInTargetModel() {
 		val propagatedChanges = Root.from(TARGET_MODEL).propagate [
 			nonRootObjectContainerHelper.nonRootObjectsContainment.remove(0)
 		]
@@ -96,13 +91,8 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 		assertThat(propagatedChanges.get(1).consequentialChanges.EChanges, is(emptyList))
 	}
 
-	/** Regression test for #175:
-	 *  Removing a root object from a resource for which the UUID is not cached in the local UUID resolver,
-	 *  the UUID resolution failed: Local and global resolution both failed, because the object
-	 *  has a changed URI (due to removal from container).
-	 */
 	@Test
-	def void testApplyRemoveRootInOtherModel() {
+	def void testApplyRemoveRootInTargetModel() {
 		val propagatedChanges = resourceAt(TARGET_MODEL).propagate [delete(emptyMap)]
 
 		assertThat(propagatedChanges.size, is(2))
