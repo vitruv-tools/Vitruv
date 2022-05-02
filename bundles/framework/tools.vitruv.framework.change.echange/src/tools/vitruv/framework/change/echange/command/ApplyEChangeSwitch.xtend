@@ -1,10 +1,11 @@
 package tools.vitruv.framework.change.echange.command
 
-import tools.vitruv.framework.change.echange.EChange
-import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import static com.google.common.base.Preconditions.checkState
+import org.eclipse.emf.common.command.Command
+import tools.vitruv.framework.change.echange.EChange
+
 import static com.google.common.base.Preconditions.checkArgument
+import static com.google.common.base.Preconditions.checkState
 
 /**
  * Utility class for applying an EChange.
@@ -33,12 +34,7 @@ class ApplyEChangeSwitch {
 
 		for (Command c : commands) {
 			checkState(c.canExecute, "cannot execute command generated for EChange: %s", change)
-			try {
-				c.execute()
-			} catch (UnsupportedOperationException e) {
-				// Some features are derived but not marked as such an cannot be modified,
-				// so catch that exception and move on
-			}
+			c.execute()
 		}
 	}
 
