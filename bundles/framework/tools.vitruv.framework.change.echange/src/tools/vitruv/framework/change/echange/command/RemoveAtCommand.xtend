@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.EChangeUtil
  */
 class RemoveAtCommand extends RemoveCommand {
 	/**
-	 * Index at which the value is removed in the list.
+	 * Unresolved index as initialized. This may also contain meta indeces as the {@code EChangeUtil.LAST_POSITION_INDEX}.
 	 */
 	var int index;
 
@@ -44,31 +44,33 @@ class RemoveAtCommand extends RemoveCommand {
 	}
 
 	/**
-	 * Returns the index at which the value will be removed.
-	 * @return The index
+	 * Returns the unresolved index, which may contain meta indeces as the {@code EChangeUtil.LAST_POSITION_INDEX}.
+	 * @return The unresolved index
 	 */
-	def int getIndex() {
+	def int getUnresolvedIndex() {
 		return this.index;
+	}
+	
+	/**
+	 * Returns the resolved index at which the value will be removed.
+	 * @return The resolved index
+	 */
+	def int getResolvedIndex() {
+		return if (index == EChangeUtil.LAST_POSITION_INDEX) ownerList.size - 1 else index
 	}
 
 	override void doExecute() {
-		if(index == EChangeUtil.LAST_POSITION_INDEX) {
-			ownerList.remove(ownerList.size - 1)
-		} else {
-			ownerList.remove(index);
-		}
+		ownerList.remove(resolvedIndex)
 	}
 
 	override boolean prepare() {
-		var result = super.prepare() && (collection.size() == 1) //
-			&& ((0 <= index && index < ownerList.size()) || (index == EChangeUtil.LAST_POSITION_INDEX && ownerList.size() > 0))
+		var result = super.prepare() && collection.size() == 1 && 0 <= resolvedIndex && resolvedIndex < ownerList.size()
 			
 		if (!result) {
 			return false;
 		}
-		// Check if get(index) == object
-		val elementAtIndex = if (index == EChangeUtil.LAST_POSITION_INDEX) ownerList.get(ownerList.size - 1) else ownerList.get(index)
-		return elementAtIndex.equals(collection.get(0))
+		// Check if get(index) == object		
+		return ownerList.get(resolvedIndex).equals(collection.get(0))
 	}
 
 	override void doUndo() {

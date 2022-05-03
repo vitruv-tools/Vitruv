@@ -212,19 +212,20 @@ package final class NotificationToEChangeConverter {
 
 	private def Iterable<? extends EChange> handleMultiInsertReference(extension NotificationInfo notification) {
 		val listOfNewValues = newValue as List<EObject>
-		val numOfElementsInEReferenceAfterInsertion = (notifierModelElement.eGet(reference) as List<EObject>).size
-
-		if (initialIndex == numOfElementsInEReferenceAfterInsertion - listOfNewValues.size) {
-			listOfNewValues.flatMapFixedIndexed [ index, value |
-				createInsertReferenceChange(notifierModelElement, reference, value, EChangeUtil.LAST_POSITION_INDEX).
-					surroundWithCreateAndFeatureChangesIfNecessary()
-			]
-		} else {
-			listOfNewValues.flatMapFixedIndexed [ index, value |
-				createInsertReferenceChange(notifierModelElement, reference, value, initialIndex + index).
-					surroundWithCreateAndFeatureChangesIfNecessary()
-			]
-		}
+		val sizeAfterInsertion = (notifierModelElement.eGet(reference) as List<EObject>).size
+		val numOfNewValues = listOfNewValues.size
+				
+		listOfNewValues.flatMapFixedIndexed [ index, value |
+			createInsertReferenceChange(notifierModelElement, reference, value, getEChangeIndex(initialIndex, index, sizeAfterInsertion, numOfNewValues)).
+				surroundWithCreateAndFeatureChangesIfNecessary()
+		]
+	}
+	
+	private def int getEChangeIndex(int originalFirstInsertionPosition, int counterOfCurrentInsertion, int sizeAfterInsertion, int numOfNewValues) {
+		return if (originalFirstInsertionPosition == sizeAfterInsertion - numOfNewValues) 
+			EChangeUtil.LAST_POSITION_INDEX 
+		else 
+			originalFirstInsertionPosition + counterOfCurrentInsertion
 	}
 
 	private def handleInsertRootChange(extension NotificationInfo notification) {
