@@ -98,7 +98,7 @@ class RemoveAtCommandTest extends CommandTest {
 		assertSame(removeAtCommand.ownerList, list)
 		assertTrue(removeAtCommand.collection.contains(value))
 		assertEquals(removeAtCommand.collection.size, 1)
-		assertEquals(removeAtCommand.index, index)
+		assertEquals(removeAtCommand.unresolvedIndex, index)
 		return removeAtCommand
 	}
 
@@ -108,7 +108,7 @@ class RemoveAtCommandTest extends CommandTest {
 	def private static void assertRemovedCorrectValueFrom(RemoveAtCommand command, EList<?> list) {
 		var value = command.collection.get(0)
 		var size = list.size
-		assertEquals(list.get(command.index), value)
+		assertEquals(list.get(command.unresolvedIndex), value)
 		command.assertExecuteCommand
 		assertFalse(list.contains(value))
 		assertEquals(list.size, size - 1)
