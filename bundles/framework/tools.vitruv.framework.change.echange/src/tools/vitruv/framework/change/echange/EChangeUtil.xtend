@@ -14,6 +14,10 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 @Utility
 class EChangeUtil {
 	
+	/**
+	 * Special index which indicates that an element is added at the end of a reference.
+	 * This is used to keep execution semantics of multiple Echanges more independent from each other.  
+	 */
 	public final static int LAST_POSITION_INDEX = -1;
 	
 	static def dispatch isContainmentRemoval(EChange change) {
