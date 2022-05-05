@@ -198,12 +198,12 @@ package final class NotificationToEChangeConverter {
 	}
 
 	private def Iterable<? extends EChange> handleInsertReference(extension NotificationInfo notification) {
-		/* If the new value was just inserted and especially at the last position,
-		 * then the index can be changed to -1.
-		 */
+		/* If the new value was just inserted at the last position the index can be
+		 * changed to {@code EChangeUtil.LAST_POSITION_INDEX}.
+		 */		 
 		var newIndex = position
-		var eRef = notifierModelElement.eGet(reference) as List<EObject>
-		if(eRef.indexOf(newModelElementValue) == eRef.size() - 1) {
+		var eRef = notifierModelElement.eGet(reference) as Iterable<Object>
+		if (isInsertionAtLastPosition(position, eRef.size(), 1)) {
 			newIndex = EChangeUtil.LAST_POSITION_INDEX
 		}
 		createInsertReferenceChange(notifierModelElement, reference, newModelElementValue, newIndex).
@@ -212,20 +212,26 @@ package final class NotificationToEChangeConverter {
 
 	private def Iterable<? extends EChange> handleMultiInsertReference(extension NotificationInfo notification) {
 		val listOfNewValues = newValue as List<EObject>
-		val sizeAfterInsertion = (notifierModelElement.eGet(reference) as List<EObject>).size
-		val numOfNewValues = listOfNewValues.size
-				
-		listOfNewValues.flatMapFixedIndexed [ index, value |
-			createInsertReferenceChange(notifierModelElement, reference, value, getEChangeIndex(initialIndex, index, sizeAfterInsertion, numOfNewValues)).
-				surroundWithCreateAndFeatureChangesIfNecessary()
-		]
+		val numOfElementsInEReferenceAfterInsertion = (notifierModelElement.eGet(reference) as Iterable<Object>).size
+
+		/* If the first new element an therefore all other new elements as well are inserted at the last position,
+		 * the insertion index can be changed to {@code EChangeUtil.LAST_POSITION_INDEX} for all elements.
+		 */
+		if (isInsertionAtLastPosition(initialIndex, numOfElementsInEReferenceAfterInsertion, listOfNewValues.size)) {
+			listOfNewValues.flatMapFixedIndexed [ index, value |
+				createInsertReferenceChange(notifierModelElement, reference, value, EChangeUtil.LAST_POSITION_INDEX).
+					surroundWithCreateAndFeatureChangesIfNecessary()
+			]
+		} else {
+			listOfNewValues.flatMapFixedIndexed [ index, value |
+				createInsertReferenceChange(notifierModelElement, reference, value, initialIndex + index).
+					surroundWithCreateAndFeatureChangesIfNecessary()
+			]
+		}
 	}
 	
-	private def int getEChangeIndex(int originalFirstInsertionPosition, int counterOfCurrentInsertion, int sizeAfterInsertion, int numOfNewValues) {
-		return if (originalFirstInsertionPosition == sizeAfterInsertion - numOfNewValues) 
-			EChangeUtil.LAST_POSITION_INDEX 
-		else 
-			originalFirstInsertionPosition + counterOfCurrentInsertion
+	private def boolean isInsertionAtLastPosition(int positionOfFirstInsertion, int sizeAfterInsertions, int numberOfInsertions) {
+		return positionOfFirstInsertion == sizeAfterInsertions - numberOfInsertions
 	}
 
 	private def handleInsertRootChange(extension NotificationInfo notification) {
