@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>tools.vitruv.variability.vave</module>
+		<module>tools.vitruv.variability.vave.model</module>
 	</modules>
 
 </project>

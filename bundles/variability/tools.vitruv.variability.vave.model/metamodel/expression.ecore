@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="expression" nsURI="http://tools.vitruv/Expression/1.0" nsPrefix="expression">
+  <eClassifiers xsi:type="ecore:EClass" name="Conjunction">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//NaryExpression">
+      <eTypeArguments eTypeParameter="#//Conjunction/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Not">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//UnaryExpression">
+      <eTypeArguments eTypeParameter="#//Not/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Expression" abstract="true">
+    <eTypeParameters name="T"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BinaryExpression" abstract="true">
+    <eTypeParameters name="T"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" containment="true">
+      <eGenericType eClassifier="#//Expression">
+        <eTypeArguments eTypeParameter="#//BinaryExpression/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" lowerBound="1" containment="true">
+      <eGenericType eClassifier="#//Expression">
+        <eTypeArguments eTypeParameter="#//BinaryExpression/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//BinaryExpression/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="True">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//Constant">
+      <eTypeArguments eTypeParameter="#//True/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable">
+    <eTypeParameters name="T"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1">
+      <eGenericType eTypeParameter="#//Variable/T"/>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//Variable/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnaryExpression" abstract="true">
+    <eTypeParameters name="T"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        containment="true">
+      <eGenericType eClassifier="#//Expression">
+        <eTypeArguments eTypeParameter="#//UnaryExpression/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//UnaryExpression/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Equivalence">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//BinaryExpression">
+      <eTypeArguments eTypeParameter="#//Equivalence/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="False">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//Constant">
+      <eTypeArguments eTypeParameter="#//False/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Disjunction">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//NaryExpression">
+      <eTypeArguments eTypeParameter="#//Disjunction/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Implication">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//BinaryExpression">
+      <eTypeArguments eTypeParameter="#//Implication/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constant" abstract="true">
+    <eTypeParameters name="T"/>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//Constant/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NaryExpression" abstract="true">
+    <eTypeParameters name="T"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        upperBound="-1" containment="true">
+      <eGenericType eClassifier="#//Expression">
+        <eTypeArguments eTypeParameter="#//NaryExpression/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//Expression">
+      <eTypeArguments eTypeParameter="#//NaryExpression/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>
