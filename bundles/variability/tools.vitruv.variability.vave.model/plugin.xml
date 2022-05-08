@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated vavemodel -->
+      <package
+            uri="http://tools.vitruv/Vave/1.0"
+            class="tools.vitruv.variability.vave.model.vavemodel.VavemodelPackage"
+            genModel="metamodel/vave.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated expression -->
+      <package
+            uri="http://tools.vitruv/Expression/1.0"
+            class="tools.vitruv.variability.vave.model.expression.ExpressionPackage"
+            genModel="metamodel/expression.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated vave -->
+      <package
+            uri="http://tools.vitruv/Vave/1.0"
+            class="tools.vitruv.variability.vave.model.vave.VavePackage"
+            genModel="metamodel/vave.genmodel"/>
+   </extension>
+
+</plugin>
