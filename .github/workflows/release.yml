@@ -1,11 +1,10 @@
-name: CI
+name: Release
 
 on:
   push:
     branches: [master]
   create:
     tags:
-  pull_request:
   schedule:
     - cron: '0 3 * * *' # run nightly at 3:00 am
 
