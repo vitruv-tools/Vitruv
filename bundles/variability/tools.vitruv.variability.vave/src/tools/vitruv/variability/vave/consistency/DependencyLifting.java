@@ -1,4 +1,4 @@
-package tools.vitruv.variability.vave.impl;
+package tools.vitruv.variability.vave.consistency;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +26,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.impl.FeatureModel;
 import tools.vitruv.variability.vave.util.ExpressionPrinter;
 import tools.vitruv.variability.vave.util.ExpressionSimplifier;
 import tools.vitruv.variability.vave.util.ExpressionToCNFConverter;
@@ -50,8 +51,13 @@ import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 import vavemodel.util.VavemodelSwitch;
 
-public class DependencyLifting {
+public class DependencyLifting implements ConsistencyRule {
 
+	@Override
+	public void internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSysRev) {
+		this.liftingDependenciesBetweenFeatures(vave, newSysRev);
+	}
+	
 	public FeatureModel liftingDependenciesBetweenFeatures(VirtualVaVeModel vave, SystemRevision sysrev) {
 
 		// After every internalizeChanges, retrieve dependencies between deltas of vave model

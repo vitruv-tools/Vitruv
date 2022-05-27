@@ -36,7 +36,7 @@ import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import tools.vitruv.variability.vave.impl.DependencyLifting;
+import tools.vitruv.variability.vave.consistency.DependencyLifting;
 import tools.vitruv.variability.vave.impl.FeatureModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;

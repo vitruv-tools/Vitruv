@@ -6,8 +6,7 @@
       <!-- @generated vavemodel -->
       <package
             uri="http://tools.vitruv/Vave/1.0"
-            class="vavemodel.VavemodelPackage"
-            genModel="metamodel/vavemodel.genmodel"/>
+            class="vavemodel.VavemodelPackage"/>
    </extension>
 
 </plugin>
