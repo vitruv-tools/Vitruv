@@ -11,8 +11,8 @@ Workflow {
 	}
 
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.variability.vave/src-gen"
-		genModel = "platform:/resource/tools.vitruv.variability.vave/metamodel/vavemodel.genmodel"
+		srcPath = "platform:/resource/tools.vitruv.variability.vave.model/src-gen"
+		genModel = "platform:/resource/tools.vitruv.variability.vave.model/metamodel/vavemodel.genmodel"
 		generateCustomClasses = false
 	}
 
