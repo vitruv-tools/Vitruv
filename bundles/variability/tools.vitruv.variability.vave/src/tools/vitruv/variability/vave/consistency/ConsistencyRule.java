@@ -12,19 +12,35 @@ import vavemodel.SystemRevision;
  */
 public interface ConsistencyRule {
 
-	public default void externalizeProductPre(Configuration configuration) {}
+	public default ConsistencyResult externalizeProductPre(Configuration configuration) {
+		return null;
+	}
 	
-	public default void externalizeProductPost() {}
+	public default ConsistencyResult externalizeProductPost() {
+		return null;
+	}
 	
-	public default void internalizeChangesPre(Expression<FeatureOption> expression) {}
+	public default ConsistencyResult internalizeChangesPre(Expression<FeatureOption> expression) {
+		return null;
+	}
 	
-	public default void internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) {}
+	public default ConsistencyResult internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) {
+		return null;
+	}
 	
-	public default void externalizeDomainPre() {}
+	public default ConsistencyResult externalizeDomainPre() {
+		return null;
+	}
 	
-	public default void externalizeDomainPost() {}
+	public default ConsistencyResult externalizeDomainPost() {
+		return null;
+	}
 	
-	public default void internalizeDomainPre() {}
+	public default ConsistencyResult internalizeDomainPre() {
+		return null;
+	}
 	
-	public default void internalizeDomainPost(SystemRevision newSystemRevision, FeatureModel oldFeatureModel, FeatureModel newFeatureModel) {}
+	public default ConsistencyResult internalizeDomainPost(SystemRevision newSystemRevision, FeatureModel oldFeatureModel, FeatureModel newFeatureModel) {
+		return null;
+	}
 }

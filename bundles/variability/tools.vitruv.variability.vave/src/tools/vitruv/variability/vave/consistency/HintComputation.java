@@ -34,21 +34,33 @@ import vavemodel.SystemRevision;
  */
 public class HintComputation implements ConsistencyRule {
 
-	private Collection<Feature[]> hints = new ArrayList<>(); 
-	
-	@Override
-	public void externalizeProductPre(Configuration config) {
-		// check if any of the hinted feature interactions are contained in the configuration. if yes, then add a hint to the product.
-		for (Feature[] featureInteraction : this.hints) {
-			if (config.getOption().containsAll(Arrays.asList(featureInteraction))) {
-				vsum.addHint(featureInteraction);
-				System.out.println("RELEVANT HINT: " + Arrays.asList(featureInteraction));
-			}
+	public class Result implements ConsistencyResult {
+		private Collection<Feature[]> hints;
+
+		public Result(Collection<Feature[]> hints) {
+			this.hints = hints;
 		}
 	}
 
+	private Collection<Feature[]> hints = new ArrayList<>();
+
 	@Override
-	public void internalizeChangesPre(Expression<FeatureOption> expr) {
+	public ConsistencyResult externalizeProductPre(Configuration config) {
+		Collection<Feature[]> hints = new ArrayList<>();
+
+		// check if any of the hinted feature interactions are contained in the configuration. if yes, then add a hint to the product.
+		for (Feature[] featureInteraction : this.hints) {
+			if (config.getOption().containsAll(Arrays.asList(featureInteraction))) {
+				hints.add(featureInteraction);
+				System.out.println("RELEVANT HINT: " + Arrays.asList(featureInteraction));
+			}
+		}
+		
+		return new Result(hints);
+	}
+
+	@Override
+	public ConsistencyResult internalizeChangesPre(Expression<FeatureOption> expr) {
 		// check if the expression covers any hints. if yes, then delete the respective hints.
 		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
 		Iterator<Feature[]> hintsIt = this.hints.iterator();
@@ -59,16 +71,17 @@ public class HintComputation implements ConsistencyRule {
 				System.out.println("FIXED HINT: " + Arrays.asList(featureInteraction));
 			}
 		}
+		return null;
 	}
 
 	@Override
-	public void internalizeDomainPost(SystemRevision newSystemRevision, FeatureModel fm_prev, FeatureModel fm_cur) {
+	public ConsistencyResult internalizeDomainPost(SystemRevision newSystemRevision, FeatureModel fm_prev, FeatureModel fm_cur) {
 		// inconsistency type 2 cause
 
 		// obtain feature model at previous system revision
-	//	FeatureModel fm_prev = fmAtOldSysrev;
+		// FeatureModel fm_prev = fmAtOldSysrev;
 		// obtain new feature model
-	//	FeatureModel fm_cur = fm;
+		// FeatureModel fm_cur = fm;
 
 		Collection<FeatureOption> enabledFOs = newSystemRevision.getEnablesoptions();
 		List<Feature> enabledFs = enabledFOs.stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).collect(Collectors.toList());
@@ -181,6 +194,7 @@ public class HintComputation implements ConsistencyRule {
 
 		// TODO: also consider feature interactions with negative features?
 
+		return null;
 	}
 
 }

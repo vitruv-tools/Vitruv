@@ -53,11 +53,19 @@ import vavemodel.util.VavemodelSwitch;
 
 public class DependencyLifting implements ConsistencyRule {
 
-	@Override
-	public void internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSysRev) {
-		this.liftingDependenciesBetweenFeatures(vave, newSysRev);
+	public class Result implements ConsistencyResult {
+		private FeatureModel repairedFeatureModel;
+
+		public Result(FeatureModel repairedFeatureModel) {
+			this.repairedFeatureModel = repairedFeatureModel;
+		}
 	}
-	
+
+	@Override
+	public ConsistencyResult internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSysRev) {
+		return new Result(this.liftingDependenciesBetweenFeatures(vave, newSysRev));
+	}
+
 	public FeatureModel liftingDependenciesBetweenFeatures(VirtualVaVeModel vave, SystemRevision sysrev) {
 
 		// After every internalizeChanges, retrieve dependencies between deltas of vave model

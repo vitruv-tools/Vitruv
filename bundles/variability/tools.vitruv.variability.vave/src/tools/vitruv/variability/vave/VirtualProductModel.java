@@ -15,6 +15,6 @@ public interface VirtualProductModel extends InternalVirtualModel {
 
 	public void clearDeltas();
 
-	public void addHint(Feature[] featureInteraction);
+//	public void addHint(Feature[] featureInteraction);
 
 }

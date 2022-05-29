@@ -19,7 +19,7 @@ import vavemodel.Feature;
 public class VirtualProductModelImpl extends VirtualModelImpl implements VirtualProductModel {
 
 	private Configuration configuration;
-	private Collection<Feature[]> hints;
+//	private Collection<Feature[]> hints;
 
 	// original changes
 	private Collection<VitruviusChange> deltas = new ArrayList<>();
@@ -27,7 +27,7 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	public VirtualProductModelImpl(final Configuration configuration, final VsumFileSystemLayout fileSystemLayout, final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository, final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		super(fileSystemLayout, userInteractor, domainRepository, changePropagationSpecificationProvider);
 		this.configuration = configuration;
-		this.hints = new ArrayList<>();
+//		this.hints = new ArrayList<>();
 	}
 
 	@Override
@@ -51,9 +51,9 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 		this.deltas.clear();
 	}
 
-	@Override
-	public void addHint(Feature[] featureInteraction) {
-		this.hints.add(featureInteraction);
-	}
+//	@Override
+//	public void addHint(Feature[] featureInteraction) {
+//		this.hints.add(featureInteraction);
+//	}
 
 }

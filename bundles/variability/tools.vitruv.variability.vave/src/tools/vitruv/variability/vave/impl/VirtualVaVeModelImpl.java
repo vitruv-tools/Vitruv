@@ -85,8 +85,6 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	private VirtualProductModelInitializer vpmi = null;
 	private Collection<ConsistencyRule> consistencyRules = new ArrayList<>();
 
-	private Collection<Feature[]> hints = new ArrayList<>();
-
 	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws IOException {
 		this(domains, changePropagationSpecifications, irp, storageFolder, null);
 	}
@@ -459,7 +457,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			// clear deltas in product
 			virtualProductModel.clearDeltas();
 		}
-		
+
 		// trigger consistency preservation
 		for (ConsistencyRule consistencyRule : this.consistencyRules)
 			consistencyRule.internalizeChangesPost(this, newsysrev);
@@ -476,7 +474,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (sysrev == null) {
 			return new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
 		}
-		
+
 		// trigger consistency preservation
 		for (ConsistencyRule consistencyRule : this.consistencyRules)
 			consistencyRule.externalizeDomainPre();
@@ -551,7 +549,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// trigger consistency preservation
 		for (ConsistencyRule consistencyRule : this.consistencyRules)
 			consistencyRule.externalizeDomainPost();
-		
+
 		return featuremodel;
 	}
 
@@ -559,7 +557,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// trigger consistency preservation
 		for (ConsistencyRule consistencyRule : this.consistencyRules)
 			consistencyRule.internalizeDomainPre();
-		
+
 		FeatureModel fmAtOldSysrev = null;
 
 		// create a new system revision and link it to predecessor system revision
@@ -731,11 +729,11 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				}
 			}
 		}
-		
+
 		// Trigger consistency preservation
 		for (ConsistencyRule consistencyRule : this.consistencyRules)
 			consistencyRule.internalizeDomainPost(newsysrev, fmAtOldSysrev, fm);
-		
+
 		this.save();
 	}
 
