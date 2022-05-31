@@ -15,4 +15,9 @@ public class ExternalizeDomainResult extends OperationResult<FeatureModel> {
 	public FeatureModel getResult() {
 		return this.featureModel;
 	}
+	
+	@Override
+	public void setResult(FeatureModel featureModel) {
+		this.featureModel = featureModel;
+	}
 }

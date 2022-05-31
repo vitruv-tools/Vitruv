@@ -21,6 +21,7 @@ import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.FeatureModel;
+import tools.vitruv.variability.vave.util.OptionsCollector;
 import vavemodel.Configuration;
 import vavemodel.Expression;
 import vavemodel.Feature;
@@ -61,6 +62,9 @@ public class HintComputation implements ConsistencyRule {
 
 	@Override
 	public ConsistencyResult internalizeChangesPre(Expression<FeatureOption> expr) {
+		
+		Collection<Option> options = new OptionsCollector().doSwitch(expr);
+
 		// check if the expression covers any hints. if yes, then delete the respective hints.
 		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
 		Iterator<Feature[]> hintsIt = this.hints.iterator();

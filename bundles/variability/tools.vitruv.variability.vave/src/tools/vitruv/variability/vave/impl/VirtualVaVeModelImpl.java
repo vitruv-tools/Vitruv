@@ -6,15 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -27,11 +24,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.sat4j.core.VecInt;
-import org.sat4j.minisat.SolverFactory;
-import org.sat4j.specs.ContradictionException;
-import org.sat4j.specs.ISolver;
-import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl;
@@ -45,11 +37,12 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
+import tools.vitruv.variability.vave.OperationResult;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualProductModelInitializer;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.consistency.ConsistencyResult;
 import tools.vitruv.variability.vave.consistency.ConsistencyRule;
-import tools.vitruv.variability.vave.consistency.DependencyLifting;
 import tools.vitruv.variability.vave.util.ExpressionComparator;
 import tools.vitruv.variability.vave.util.ExpressionCopier;
 import tools.vitruv.variability.vave.util.ExpressionEvaluator;
@@ -191,7 +184,20 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 	}
 
-	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws IOException {
+	private void triggerConsistencyRule(OperationResult operationResult, ConsistencyRuleTrigger consistencyRuleTrigger) {
+		for (ConsistencyRule consistencyRule : this.consistencyRules) {
+			ConsistencyResult consistencyResult = consistencyRuleTrigger.trigger(consistencyRule); //consistencyRule.externalizeProductPost();
+			if (consistencyResult != null) {
+				operationResult.addConsistencyResult(consistencyRule.getClass(), consistencyResult);
+			}
+		}
+	}
+	
+	private interface ConsistencyRuleTrigger {
+		public ConsistencyResult trigger(ConsistencyRule consistencyRule);
+	}
+	
+	public ExternalizeProductResult externalizeProduct(Path storageFolder, Configuration configuration) throws IOException {
 
 		// Check preconditions of configuration
 		List<SystemRevision> sysrevs = configuration.getOption().stream().filter(o -> o instanceof SystemRevision).map(sr -> (SystemRevision) sr).collect(Collectors.toList());
@@ -201,7 +207,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			// more than one system revision in configuration -> merge config
 		} else if (sysrevs.size() == 1) {
 			// check if config is complete and valid
-			FeatureModel fm = this.externalizeDomain(sysrevs.get(0));
+			FeatureModel fm = this.externalizeDomain(sysrevs.get(0)).getResult();
 			if (!fm.isComplete(configuration)) {
 				throw new RuntimeException("Configuration is not complete.");
 			}
@@ -209,10 +215,6 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				throw new RuntimeException("Configuration is not valid.");
 			}
 		}
-
-		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.externalizeProductPre(configuration);
 
 		// Setup vitruv
 		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(this.irp);
@@ -257,6 +259,11 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (this.vpmi != null)
 			this.vpmi.initialize(vsum);
 
+		ExternalizeProductResult externalizeProductResult = new ExternalizeProductResult(vsum);
+
+		// trigger consistency preservation
+		this.triggerConsistencyRule(externalizeProductResult, consistencyRule -> consistencyRule.externalizeProductPre(configuration));
+
 		// HERE STARTS THE VAVE STUFF
 
 		// optional: add configuration to unified system
@@ -284,13 +291,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		vsum.clearDeltas();
 
 		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.externalizeProductPost();
+		this.triggerConsistencyRule(externalizeProductResult, consistencyRule -> consistencyRule.externalizeProductPost());
 
-		return vsum;
+		return externalizeProductResult;
 	}
 
-	public FeatureModel internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws IOException {
+	public InternalizeChangesResult internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws IOException {		
 		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
 
 		// NOTE: the following could be achieved with an OCL constraint
@@ -310,7 +316,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			// more than one system revision in configuration -> merge config
 		} else if (sysrevs.size() == 1) {
 			// check if expression is valid
-			FeatureModel fm = this.externalizeDomain(sysrevs.get(0));
+			FeatureModel fm = this.externalizeDomain(sysrevs.get(0)).getResult();
 			if (!fm.isComplete(configuration)) {
 				throw new RuntimeException("Configuration is not complete.");
 			}
@@ -346,9 +352,11 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			throw new RuntimeException("Configuration of product does not imply provided expression.");
 		}
 
+		InternalizeChangesResult internalizeChangesResult = new InternalizeChangesResult();
+
 		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.internalizeChangesPre(expression);
+		this.triggerConsistencyRule(internalizeChangesResult, consistencyRule -> consistencyRule.internalizeChangesPre(expression));
+
 
 		// create a new system revision and link it to predecessor system revision
 		SystemRevision tempcursysrev = null;
@@ -459,25 +467,26 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 
 		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.internalizeChangesPost(this, newsysrev);
+		this.triggerConsistencyRule(internalizeChangesResult, consistencyRule -> consistencyRule.internalizeChangesPost(this, newsysrev));
 
 		this.save();
 
-		return new DependencyLifting().liftingDependenciesBetweenFeatures(this, newsysrev);
+		return internalizeChangesResult;
 	}
 
-	public FeatureModel externalizeDomain(SystemRevision sysrev) {
+	public ExternalizeDomainResult externalizeDomain(SystemRevision sysrev) {
 		if (sysrev != null && sysrev.getEnablesoptions() == null) {
 			throw new IllegalArgumentException("There are no enabled options by that system revision.");
 		}
 		if (sysrev == null) {
-			return new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
+			return new ExternalizeDomainResult(new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>()));
 		}
 
+		ExternalizeDomainResult externalizeDomainResult = new ExternalizeDomainResult(null);
+		
 		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.externalizeDomainPre();
+		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPre());
+
 
 		// copy all feature options and store them in two separate lists: one with only features and one with both features and feature revisions.
 		HashMap<Feature, Feature> mapOriginalCopiedFeatures = new HashMap<Feature, Feature>();
@@ -546,17 +555,21 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		FeatureModel featuremodel = new FeatureModel((Feature) mapOriginalCopiedLiterals.get(rootFeature), sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
 
+		externalizeDomainResult.setResult(featuremodel);
+		
 		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.externalizeDomainPost();
+		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPost());
 
-		return featuremodel;
+
+		return externalizeDomainResult;
 	}
 
-	public void internalizeDomain(FeatureModel fm) throws IOException {
+	public InternalizeDomainResult internalizeDomain(FeatureModel fm) throws IOException {
+		InternalizeDomainResult internalizeDomainResult = new InternalizeDomainResult();
+		
 		// trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.internalizeDomainPre();
+		this.triggerConsistencyRule(internalizeDomainResult, consistencyRule -> consistencyRule.internalizeDomainPre());
+
 
 		FeatureModel fmAtOldSysrev = null;
 
@@ -590,7 +603,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		else { // if we are here, there is at least one system revision and a feature model of that system revision
 				// retrieve state of feature model before it was modified
-			fmAtOldSysrev = this.externalizeDomain(fm.getSysrev());
+			fmAtOldSysrev = this.externalizeDomain(fm.getSysrev()).getResult();
 
 			// diff the updated fm with the old fm
 
@@ -731,10 +744,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 
 		// Trigger consistency preservation
-		for (ConsistencyRule consistencyRule : this.consistencyRules)
-			consistencyRule.internalizeDomainPost(newsysrev, fmAtOldSysrev, fm);
+		final FeatureModel finalFeatureModelAtOldSysRev = fmAtOldSysrev;
+		this.triggerConsistencyRule(internalizeDomainResult, consistencyRule -> consistencyRule.internalizeDomainPost(newsysrev, finalFeatureModelAtOldSysRev, fm));
 
 		this.save();
+		
+		return internalizeDomainResult;
 	}
 
 }

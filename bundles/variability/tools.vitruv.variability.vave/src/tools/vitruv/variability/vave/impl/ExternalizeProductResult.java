@@ -16,4 +16,9 @@ public class ExternalizeProductResult extends OperationResult<VirtualProductMode
 	public VirtualProductModel getResult() {
 		return this.product;
 	}
+	
+	@Override
+	public void setResult(VirtualProductModel product) {
+		this.product = product;
+	}
 }

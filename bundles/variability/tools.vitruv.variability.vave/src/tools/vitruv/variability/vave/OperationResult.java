@@ -24,4 +24,8 @@ public abstract class OperationResult<T> {
 	public T getResult() {
 		throw new RuntimeException("This operation does not provide a result.");
 	}
+	
+	public void setResult(T result) {
+		throw new RuntimeException("This operation does not provide a result.");
+	}
 }

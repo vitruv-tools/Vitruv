@@ -3,7 +3,11 @@ package tools.vitruv.variability.vave;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import tools.vitruv.variability.vave.impl.ExternalizeDomainResult;
+import tools.vitruv.variability.vave.impl.ExternalizeProductResult;
 import tools.vitruv.variability.vave.impl.FeatureModel;
+import tools.vitruv.variability.vave.impl.InternalizeChangesResult;
+import tools.vitruv.variability.vave.impl.InternalizeDomainResult;
 import vavemodel.Configuration;
 import vavemodel.Expression;
 import vavemodel.FeatureOption;
@@ -27,7 +31,7 @@ public interface VirtualVaVeModel {
 	 * @return The Virtual Product Model (VSUM) which consists of one or multiple dependent domains representing the configuration.
 	 * @throws IOException In case of problems when writing the externalized product to the disk.
 	 */
-	public VirtualProductModel externalizeProduct(Path storageFolder, Configuration configuration) throws IOException;
+	public ExternalizeProductResult externalizeProduct(Path storageFolder, Configuration configuration) throws IOException;
 
 	/**
 	 * Internalizes the changes performed on a product view into the unified system based on a manually provided expression. A new system revision is added and becomes the successor to the current system revision, new feature revisions are created for the features appearing in the expression and set as successors to the current revisions of those features and enabled by the new system revision,
@@ -37,7 +41,7 @@ public interface VirtualVaVeModel {
 	 * @param expression          The expression (currently a conjunction of variables (features) to which the recorded deltas should be mapped and which is provided manually by the user)
 	 * @throws IOException In case of problems when writing the updated VaVe model to the disk.
 	 */
-	public FeatureModel internalizeChanges(VirtualProductModel virtualModel, Expression<FeatureOption> expression) throws IOException;
+	public InternalizeChangesResult internalizeChanges(VirtualProductModel virtualModel, Expression<FeatureOption> expression) throws IOException;
 
 	/**
 	 * Externalizes a view on the domain of the unified system based on a system revision.
@@ -46,7 +50,7 @@ public interface VirtualVaVeModel {
 	 * @param sysrev The system revision as point in time for which the domain view should be externalized
 	 * @return The domain of the unified system in the form of a feature model
 	 */
-	public FeatureModel externalizeDomain(SystemRevision sysrev);
+	public ExternalizeDomainResult externalizeDomain(SystemRevision sysrev);
 
 	/**
 	 * Internalizes the changes performed on a domain view (i.e., feature model) into the unified system.
@@ -54,6 +58,6 @@ public interface VirtualVaVeModel {
 	 * @param fm The modified feature model view.
 	 * @throws IOException In case of problems when writing the updated VaVe model to the disk.
 	 */
-	public void internalizeDomain(FeatureModel fm) throws IOException;
+	public InternalizeDomainResult internalizeDomain(FeatureModel fm) throws IOException;
 
 }
