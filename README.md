@@ -36,3 +36,4 @@ The project is structured as follows:
 | Domains | A domain defines the necessary concepts for one metamodel. It defines the metamodel namespaces a domain consists of, defines utilities specific for this metamodel and defines the way in which editors for this metamodel are watched for changes.
 | Applications | An application is defined for a pair of domains. It essentially consists of the consistency-restoring transformations that keep model instances of these two domains consistent. It can also define further features for the domains, e.g. the integration of existing models.
 | Views | A view is defined for a single or a set of domains. It specifies a specify view on the models, e.g. a UML class diagram view on Java code. |
+| Variability | The metamodels and corresponding operations for extending Vitruv with variability in space (features, variants) and time (feature revisions, system revisions). |

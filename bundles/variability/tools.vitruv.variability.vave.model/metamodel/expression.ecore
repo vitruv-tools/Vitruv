@@ -91,7 +91,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NaryExpression" abstract="true">
     <eTypeParameters name="T"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" lowerBound="1"
         upperBound="-1" containment="true">
       <eGenericType eClassifier="#//Expression">
         <eTypeArguments eTypeParameter="#//NaryExpression/T"/>

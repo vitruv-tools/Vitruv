@@ -4,7 +4,7 @@
     <semanticResources>expression.ecore</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_khK-QM03EeyTgsVmwclosQ">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_k_Lv8M03EeyTgsVmwclosQ" name="expression class diagram" repPath="#_k_IsoM03EeyTgsVmwclosQ" changeId="14434b4e-03ff-4c88-9d06-22cd34a0658d">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_k_Lv8M03EeyTgsVmwclosQ" name="expression class diagram" repPath="#_k_IsoM03EeyTgsVmwclosQ" changeId="59784f0d-edac-44c8-9584-634f9f62600b">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="expression.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -1024,9 +1024,9 @@
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC%20ESupertypes']"/>
     </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_GGm8fM07EeyTgsVmwclosQ" name="[1..*] expression" sourceNode="_COhtEM06EeyTgsVmwclosQ" targetNode="_A58KoM04EeyTgsVmwclosQ">
-      <target xmi:type="ecore:EReference" href="expression.ecore#//NaryExpression/expression"/>
-      <semanticElements xmi:type="ecore:EReference" href="expression.ecore#//NaryExpression/expression"/>
+    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_GGm8fM07EeyTgsVmwclosQ" name="[1..*] expressions" sourceNode="_COhtEM06EeyTgsVmwclosQ" targetNode="_A58KoM04EeyTgsVmwclosQ">
+      <target xmi:type="ecore:EReference" href="expression.ecore#//NaryExpression/expressions"/>
+      <semanticElements xmi:type="ecore:EReference" href="expression.ecore#//NaryExpression/expressions"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_v86lsM7gEeynce2NlMZ3mw" description="_ra2vwM7gEeynce2NlMZ3mw" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_v86lss7gEeynce2NlMZ3mw" showIcon="false">
           <labelFormat>bold</labelFormat>
