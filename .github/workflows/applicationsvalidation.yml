@@ -11,6 +11,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: framework
+      - name: Checkout DSLs
+        uses: actions/checkout@v2
+        with:
+          path: dsls
+          repository: vitruv-tools/Vitruv-DSLs
+          ref: main
+          fetch-depth: 0
       - name: Checkout CBS Domains
         uses: actions/checkout@v2
         with:
@@ -27,7 +34,9 @@ jobs:
           fetch-depth: 0
       - name: Checkout Matching Domains/Applications Branches
         run: |
-          cd cbsdomains
+          cd dsls
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
+          cd ../cbsdomains
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
           cd ../cbsapplications
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
@@ -42,11 +51,25 @@ jobs:
         with:
           java-version: 11
       - name: Build Framework
+        working-directory: ./framework
+        run: >
+          ./mvnw -B -U package -Dmaven.test.skip=true
+          -Dstyle.color=always
+          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
+          -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn
+          -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
+          -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
+          -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
+        env: 
+          MAVEN_OPTS: -Djansi.force=true
+      - name: Build DSLs
         uses: GabrielBB/xvfb-action@v1
         with:
-          working-directory: ./framework
+          working-directory: ./dsls
           run: >
-            ./mvnw -B -U package -Dmaven.test.skip=true
+            ./mvnw -B -U clean verify
+            -Dvitruv.framework.path=${maven.multiModuleProjectDirectory}/../framework
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
@@ -77,6 +100,7 @@ jobs:
           run: >
             ./mvnw -B -U clean verify
             -Dvitruv.framework.path=${maven.multiModuleProjectDirectory}/../framework
+            -Dvitruv.dsls.path=${maven.multiModuleProjectDirectory}/../dsls
             -Dvitruv.domains.path=${maven.multiModuleProjectDirectory}/../cbsdomains
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
