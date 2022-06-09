@@ -34,24 +34,6 @@ Workflow {
 	}
 	
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.extensions.integration.correspondence/src-gen"
-		genModel = "platform:/resource/tools.vitruv.extensions.integration.correspondence/model/integration_correspondence.genmodel"
-		generateCustomClasses = false
-	}
-	
-	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.extensions.dslsruntime.commonalities/src-gen"
-		genModel = "platform:/resource/tools.vitruv.extensions.dslsruntime.commonalities/model/RuntimeMetamodels.genmodel"
-		generateCustomClasses = false
-	}
-	
-	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.extensions.dslsruntime.reactions/src-gen"
-		genModel = "platform:/resource/tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.genmodel"
-		generateCustomClasses = false
-	}
-
-	component = EcoreGenerator {
 		srcPath = "${testutilsMetamodelsPluginPath}/metamodels/src"
 		genModel = "${testutilsMetamodelsPluginPath}/metamodels/allElementTypes.genmodel"
 		generateCustomClasses = false
