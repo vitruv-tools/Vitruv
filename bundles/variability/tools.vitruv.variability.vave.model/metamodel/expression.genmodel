@@ -50,7 +50,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="expression.ecore#//NaryExpression">
       <genTypeParameters ecoreTypeParameter="expression.ecore#//NaryExpression/T"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expression.ecore#//NaryExpression/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expression.ecore#//NaryExpression/expressions"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

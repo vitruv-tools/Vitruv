@@ -16,39 +16,41 @@
       <genEnumLiterals ecoreEnumLiteral="vave.ecore#//GroupType/OR"/>
     </genEnums>
     <genClasses ecoreClass="vave.ecore#//System">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/constraint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/constraints"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vave.ecore#//System/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/mapping"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/deltamodule"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/feature"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/systemrevision"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/configuration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/mappings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/deltaModules"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/features"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/systemRevisions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//System/configurations"/>
     </genClasses>
     <genClasses ecoreClass="vave.ecore#//Feature">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vave.ecore#//Feature/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//Feature/treeconstraint"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//Feature/featurerevision"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//Feature/childTreeConstraints"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//Feature/featureRevisions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Feature/parentTreeConstraint"/>
     </genClasses>
     <genClasses ecoreClass="vave.ecore#//CrossTreeConstraint">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//CrossTreeConstraint/expression"/>
     </genClasses>
     <genClasses ecoreClass="vave.ecore#//TreeConstraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vave.ecore#//TreeConstraint/type"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//TreeConstraint/feature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//TreeConstraint/childFeatures"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference vave.ecore#//TreeConstraint/parentFeature"/>
     </genClasses>
     <genClasses ecoreClass="vave.ecore#//FeatureRevision"/>
     <genClasses ecoreClass="vave.ecore#//DeltaModule">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//DeltaModule/deltamodule"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//DeltaModule/deltaModules"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//DeltaModule/change"/>
     </genClasses>
     <genClasses image="false" ecoreClass="vave.ecore#//Constraint">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Constraint/enablingsystemrevisions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Constraint/enablingSystemRevisions"/>
     </genClasses>
     <genClasses image="false" ecoreClass="vave.ecore#//Option"/>
     <genClasses ecoreClass="vave.ecore#//Mapping">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Mapping/deltamodule"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Mapping/deltaModules"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vave.ecore#//Mapping/expression"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Mapping/enablingsystemrevisions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Mapping/enablingSystemRevisions"/>
     </genClasses>
     <genClasses image="false" ecoreClass="vave.ecore#//Revision">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Revision/successors"/>
@@ -56,16 +58,16 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vave.ecore#//Revision/revisionID"/>
     </genClasses>
     <genClasses image="false" ecoreClass="vave.ecore#//FeatureOption">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//FeatureOption/enablingsystemrevisions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//FeatureOption/enablingSystemRevisions"/>
     </genClasses>
     <genClasses ecoreClass="vave.ecore#//SystemRevision">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/enablesoptions"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/enablesconstraints"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/enablesmappings"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/rootfeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/enablesFeatureOptions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/enablesConstraints"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/enablesMappings"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//SystemRevision/rootFeature"/>
     </genClasses>
     <genClasses ecoreClass="vave.ecore#//Configuration">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Configuration/option"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vave.ecore#//Configuration/options"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

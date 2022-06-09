@@ -2,26 +2,28 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="vave" nsURI="http://tools.vitruv/Vave/1.0" nsPrefix="vave">
   <eClassifiers xsi:type="ecore:EClass" name="System">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraint" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
         eType="#//CrossTreeConstraint" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
         eType="#//Mapping" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deltaModules" upperBound="-1"
         eType="#//DeltaModule" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
         eType="#//Feature" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="systemrevision" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="systemRevisions" upperBound="-1"
         eType="#//SystemRevision" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="configuration" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="configurations" upperBound="-1"
         eType="#//Configuration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//FeatureOption">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="treeconstraint" upperBound="-1"
-        eType="#//TreeConstraint" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="featurerevision" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childTreeConstraints" upperBound="-1"
+        eType="#//TreeConstraint" containment="true" eOpposite="#//TreeConstraint/parentFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureRevisions" upperBound="-1"
         eType="#//FeatureRevision" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentTreeConstraint" eType="#//TreeConstraint"
+        eOpposite="#//TreeConstraint/childFeatures"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CrossTreeConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
@@ -33,8 +35,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeConstraint" eSuperTypes="#//Constraint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//GroupType"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" lowerBound="1"
-        upperBound="-1" eType="#//Feature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childFeatures" lowerBound="1"
+        upperBound="-1" eType="#//Feature" eOpposite="#//Feature/parentTreeConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentFeature" lowerBound="1"
+        eType="#//Feature" eOpposite="#//Feature/childTreeConstraints"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="GroupType">
     <eLiterals name="MANDATORY"/>
@@ -44,19 +48,19 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureRevision" eSuperTypes="#//Revision #//FeatureOption"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeltaModule">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deltaModules" upperBound="-1"
         eType="#//DeltaModule"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="change" lowerBound="1"
         upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constraint" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enablingsystemrevisions"
-        eType="#//SystemRevision" eOpposite="#//SystemRevision/enablesconstraints"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enablingSystemRevisions"
+        upperBound="-1" eType="#//SystemRevision" eOpposite="#//SystemRevision/enablesConstraints"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Option" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deltamodule" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deltaModules" lowerBound="1"
         upperBound="-1" eType="#//DeltaModule"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         containment="true">
@@ -64,8 +68,8 @@
         <eTypeArguments eClassifier="#//Option"/>
       </eGenericType>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enablingsystemrevisions"
-        eType="#//SystemRevision" eOpposite="#//SystemRevision/enablesmappings"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enablingSystemRevisions"
+        upperBound="-1" eType="#//SystemRevision" eOpposite="#//SystemRevision/enablesMappings"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Revision" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="successors" upperBound="-1"
@@ -75,20 +79,20 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="revisionID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureOption" abstract="true" eSuperTypes="#//Option">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enablingsystemrevisions"
-        eType="#//SystemRevision" eOpposite="#//SystemRevision/enablesoptions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enablingSystemRevisions"
+        upperBound="-1" eType="#//SystemRevision" eOpposite="#//SystemRevision/enablesFeatureOptions"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SystemRevision" eSuperTypes="#//Option #//Revision">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enablesoptions" upperBound="-1"
-        eType="#//FeatureOption" eOpposite="#//FeatureOption/enablingsystemrevisions"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enablesconstraints" upperBound="-1"
-        eType="#//Constraint" eOpposite="#//Constraint/enablingsystemrevisions"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="enablesmappings" upperBound="-1"
-        eType="#//Mapping" eOpposite="#//Mapping/enablingsystemrevisions"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rootfeature" eType="#//Feature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enablesFeatureOptions"
+        upperBound="-1" eType="#//FeatureOption" eOpposite="#//FeatureOption/enablingSystemRevisions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enablesConstraints" upperBound="-1"
+        eType="#//Constraint" eOpposite="#//Constraint/enablingSystemRevisions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enablesMappings" upperBound="-1"
+        eType="#//Mapping" eOpposite="#//Mapping/enablingSystemRevisions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rootFeature" eType="#//Feature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Configuration">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="option" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="options" upperBound="-1"
         eType="#//Option"/>
   </eClassifiers>
 </ecore:EPackage>
