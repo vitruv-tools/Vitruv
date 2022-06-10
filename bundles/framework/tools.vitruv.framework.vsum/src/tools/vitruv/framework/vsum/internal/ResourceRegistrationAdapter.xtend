@@ -1,4 +1,4 @@
-package tools.vitruv.framework.util
+package tools.vitruv.framework.vsum.internal
 
 import org.eclipse.emf.common.notify.Adapter
 import org.eclipse.emf.ecore.resource.ResourceSet
