@@ -45,7 +45,7 @@ jobs:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
           external_repository: vitruv-tools/updatesite
           destination_dir: nightly/framework
-          publish_dir: releng/tools.vitruv.updatesite.aggregated/target/final
+          publish_dir: releng/tools.vitruv.updatesite/target/repository
           publish_branch: master
       - name: Determine Release Version
         if: startsWith(github.ref, 'refs/tags/releases/') && github.repository_owner == 'vitruv-tools'
@@ -60,6 +60,6 @@ jobs:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
           external_repository: vitruv-tools/updatesite
           destination_dir: release/framework/${{ steps.releaseVersion.outputs.tag }}
-          publish_dir: releng/tools.vitruv.updatesite.aggregated/target/final
+          publish_dir: releng/tools.vitruv.updatesite/target/repository
           publish_branch: master
           
