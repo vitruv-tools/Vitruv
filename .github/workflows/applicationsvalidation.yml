@@ -12,7 +12,7 @@ jobs:
         with:
           path: framework
       - name: Checkout DSLs
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: dsls
           repository: vitruv-tools/Vitruv-DSLs
@@ -70,7 +70,7 @@ jobs:
           working-directory: ./dsls
           run: >
             ./mvnw -B -U clean verify
-            -Dvitruv.framework.path=${maven.multiModuleProjectDirectory}/../framework
+            -Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
