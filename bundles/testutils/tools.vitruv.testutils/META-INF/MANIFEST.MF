@@ -5,8 +5,7 @@ Bundle-SymbolicName: tools.vitruv.testutils
 Automatic-Module-Name: tools.vitruv.testutils
 Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
- org.apache.log4j,
+Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.propagation;visibility:=reexport,
  tools.vitruv.framework.util,
  org.eclipse.xtend.lib,
@@ -14,8 +13,8 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.hamcrest.core,
  org.junit.jupiter.api,
  org.junit.platform.commons,
- org.eclipse.emf.compare,
  org.junit.jupiter.params,
+ org.eclipse.emf.compare,
  org.eclipse.xtext.ui.testing,
  org.slf4j.api,
  ch.qos.logback.classic,
@@ -25,7 +24,6 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.java
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
- tools.vitruv.testutils.domains,
  tools.vitruv.testutils.matchers,
  tools.vitruv.testutils.printing,
  tools.vitruv.testutils.xtext
