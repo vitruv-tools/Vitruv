@@ -18,7 +18,6 @@
 		<module>tests</module>
 		<module>features</module>
 		<module>releng/tools.vitruv.updatesite</module>
-		<module>releng/tools.vitruv.updatesite.aggregated</module>
 	</modules>
 
 </project>
