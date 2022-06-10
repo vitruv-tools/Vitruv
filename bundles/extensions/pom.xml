@@ -15,8 +15,6 @@
 
 	<modules>
 		<module>changevisualization</module>
-		<module>dslsruntime</module>
-		<module>integration</module>
 	</modules>
 
 </project>
