@@ -1,4 +1,4 @@
-package tools.vitruv.framework.util
+package tools.vitruv.testutils
 
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.xtend.lib.annotations.Accessors
