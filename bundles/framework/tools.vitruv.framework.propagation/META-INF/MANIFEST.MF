@@ -10,7 +10,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.correspondence;visibility:=reexport,
  tools.vitruv.framework.userinteraction;visibility:=reexport,
  tools.vitruv.framework.change;visibility:=reexport,
- tools.vitruv.framework.util
+ edu.kit.ipd.sdq.commons.util.java
 Export-Package: tools.vitruv.framework.propagation,
  tools.vitruv.framework.propagation.impl
 Bundle-Vendor: vitruv.tools

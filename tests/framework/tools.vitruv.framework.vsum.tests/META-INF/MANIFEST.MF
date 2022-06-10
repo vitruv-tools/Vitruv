@@ -13,6 +13,8 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
  org.eclipse.uml2.uml,
  org.junit.jupiter.api,
- org.hamcrest.core
+ org.hamcrest.core,
+ edu.kit.ipd.sdq.commons.util.java,
+ edu.kit.ipd.sdq.commons.util.emf
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools

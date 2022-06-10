@@ -11,8 +11,9 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore.change,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- tools.vitruv.framework.util,
- edu.kit.ipd.sdq.activextendannotations
+ edu.kit.ipd.sdq.activextendannotations,
+ edu.kit.ipd.sdq.commons.util.emf,
+ edu.kit.ipd.sdq.commons.util.java
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.correspondence,
  tools.vitruv.framework.correspondence.impl,
