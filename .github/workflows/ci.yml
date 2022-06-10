@@ -14,16 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: 11
       - name: Build and Verify
         uses: GabrielBB/xvfb-action@v1
