@@ -6,25 +6,23 @@ Automatic-Module-Name: tools.vitruv.testutils
 Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
- tools.vitruv.framework.propagation;visibility:=reexport,
- tools.vitruv.framework.util,
- org.eclipse.xtend.lib,
- edu.kit.ipd.sdq.activextendannotations,
- org.hamcrest.core,
- org.junit.jupiter.api,
- org.junit.platform.commons,
- org.junit.jupiter.params,
- org.eclipse.emf.compare,
- org.eclipse.xtext.ui.testing,
  org.slf4j.api,
  ch.qos.logback.classic,
  ch.qos.logback.core,
+ org.junit.jupiter.api,
+ org.junit.platform.commons,
+ org.junit.jupiter.params,
+ org.hamcrest.core,
+ org.eclipse.emf.compare,
+ org.eclipse.xtend.lib,
+ edu.kit.ipd.sdq.activextendannotations,
  edu.kit.ipd.sdq.commons.util.eclipse,
  edu.kit.ipd.sdq.commons.util.emf,
- edu.kit.ipd.sdq.commons.util.java
+ edu.kit.ipd.sdq.commons.util.java,
+ tools.vitruv.framework.propagation;visibility:=reexport,
+ tools.vitruv.framework.util
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
  tools.vitruv.testutils.matchers,
- tools.vitruv.testutils.printing,
- tools.vitruv.testutils.xtext
+ tools.vitruv.testutils.printing
 Bundle-Vendor: vitruv.tools
