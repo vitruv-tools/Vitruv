@@ -61,7 +61,7 @@ jobs:
         working-directory: ./cbsdomains
         run: >
             ./mvnw -B -U clean verify
-            -Dvitruv.framework.path="\${maven.multiModuleProjectDirectory}/../framework"
+            -Dvitruv.framework.path="\${GITHUB_WORKSPACE}/framework"
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
@@ -77,8 +77,8 @@ jobs:
           working-directory: ./cbsapplications
           run: >
             ./mvnw -B -U clean verify
-            -Dvitruv.framework.path=${maven.multiModuleProjectDirectory}/../framework
-            -Dvitruv.domains.path=${maven.multiModuleProjectDirectory}/../cbsdomains
+            -Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework
+            -Dvitruv.domains.path=${GITHUB_WORKSPACE}/cbsdomains
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
