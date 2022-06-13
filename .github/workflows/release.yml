@@ -5,6 +5,7 @@ on:
     branches: [master]
   create:
     tags:
+      - 'releases/**'
   schedule:
     - cron: '0 3 * * *' # run nightly at 3:00 am
 
