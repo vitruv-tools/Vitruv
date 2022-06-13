@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.PriorityQueue
-import static extension tools.vitruv.framework.util.ObjectResolutionUtil.getHierarchicUriFragment
+import static extension tools.vitruv.framework.change.echange.id.ObjectResolutionUtil.getHierarchicUriFragment
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap

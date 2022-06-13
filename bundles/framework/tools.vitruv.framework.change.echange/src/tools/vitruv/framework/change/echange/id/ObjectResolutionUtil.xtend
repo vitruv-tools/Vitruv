@@ -1,4 +1,4 @@
-package tools.vitruv.framework.util
+package tools.vitruv.framework.change.echange.id
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.ecore.util.EcoreUtil

@@ -33,8 +33,7 @@ Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.root.impl,
  tools.vitruv.framework.change.echange.root.util,
  tools.vitruv.framework.change.echange.util,
- tools.vitruv.framework.change.echange.id;x-friends:="tools.vitruv.framework.change,
-  tools.vitruv.framework.change.tests"
+ tools.vitruv.framework.change.echange.id
 Require-Bundle: org.eclipse.xtend.lib,
  org.apache.log4j,
  org.eclipse.emf.ecore.edit,
