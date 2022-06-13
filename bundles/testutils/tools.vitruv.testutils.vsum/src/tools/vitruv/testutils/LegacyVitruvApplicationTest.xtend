@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.checkArgument
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
-import static extension tools.vitruv.framework.util.ObjectResolutionUtil.getHierarchicUriFragment
+import static extension tools.vitruv.framework.change.echange.id.ObjectResolutionUtil.getHierarchicUriFragment
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.

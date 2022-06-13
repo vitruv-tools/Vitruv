@@ -22,7 +22,6 @@
    <requires>
       <import plugin="tools.vitruv.framework.vsum"/>
       <import plugin="org.apache.log4j"/>
-      <import plugin="tools.vitruv.framework.util"/>
       <import plugin="org.eclipse.xtend.lib"/>
       <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
       <import plugin="org.hamcrest.core"/>
