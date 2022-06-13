@@ -58,14 +58,14 @@ jobs:
       - name: Build Framework
         working-directory: ./framework
         run: >
-          ./mvnw -B -U package -Dmaven.test.skip=true
-          -Dstyle.color=always
-          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
-          -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
+          ./mvnw -B -U package '-Dmaven.test.skip=true'
+          '-Dstyle.color=always'
+          '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+          '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn'
+          '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn'
+          '-Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn'
+          '-Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn'
+          '-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog'
         env: 
           MAVEN_OPTS: -Djansi.force=true
       - name: Build DSLs
@@ -82,20 +82,20 @@ jobs:
             -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
             -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
-        env: 
+        env:
           MAVEN_OPTS: -Djansi.force=true
       - name: Build Domains
         working-directory: ./cbsdomains
         run: >
             ./mvnw -B -U clean verify
-            -Dvitruv.framework.path="\${GITHUB_WORKSPACE}/framework"
-            -Dstyle.color=always
-            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
-            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn
-            -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
-            -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
-            -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
+            '-Dvitruv.framework.path="\${GITHUB_WORKSPACE}/framework"'
+            '-Dstyle.color=always'
+            '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+            '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn'
+            '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn'
+            '-Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn'
+            '-Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn'
+            '-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog'
         env: 
           MAVEN_OPTS: -Djansi.force=true
       - name: Build Applications
