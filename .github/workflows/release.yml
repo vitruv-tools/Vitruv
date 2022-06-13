@@ -62,4 +62,3 @@ jobs:
           destination_dir: release/framework/${{ steps.releaseVersion.outputs.tag }}
           publish_dir: releng/tools.vitruv.updatesite/target/repository
           publish_branch: master
-          
