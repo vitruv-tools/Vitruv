@@ -88,7 +88,7 @@ jobs:
         working-directory: ./cbsdomains
         run: >
             ./mvnw -B -U clean verify
-            '-Dvitruv.framework.path="\${GITHUB_WORKSPACE}/framework"'
+            '-Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework'
             '-Dstyle.color=always'
             '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
             '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn'
