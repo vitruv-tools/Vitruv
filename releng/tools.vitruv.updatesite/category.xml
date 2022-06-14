@@ -18,13 +18,13 @@
    <feature id="tools.vitruv.framework.vsum.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.testutils.vsum.feature_2.1.0.qualifier.jar" id="tools.vitruv.testutils.feature" version="2.1.0.qualifier">
+   <feature url="features/tools.vitruv.testutils.vsum.feature_2.1.0.qualifier.jar" id="tools.vitruv.testutils.vsum.feature" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
    <feature id="tools.vitruv.testutils.vsum.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature type="features/tools.vitruv.extensions.changevisualization.feature_2.1.0.qualifier.jar" url="features/tools.vitruv.extensions.changevisualization.feature_2.1.0.qualifier.jar" id="tools.vitruv.extensions.changevisualization.feature" version="2.1.0.qualifier">
+   <feature url="features/tools.vitruv.extensions.changevisualization.feature_2.1.0.qualifier.jar" id="tools.vitruv.extensions.changevisualization.feature" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
    <feature id="tools.vitruv.extensions.changevisualization.feature.source" version="2.1.0.qualifier">
