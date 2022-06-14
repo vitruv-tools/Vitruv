@@ -15,7 +15,6 @@
 	<modules>
 		<module>framework</module>
 		<module>domains</module>
-		<module>tools.vitruv.testutils.tests</module>
 	</modules>
 	
 </project>

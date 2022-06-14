@@ -14,9 +14,7 @@
 	<name>TestUtils Modules</name>
 
 	<modules>
-		<module>tools.vitruv.testutils</module>
 		<module>tools.vitruv.testutils.vsum</module>
-		<module>tools.vitruv.testutils.metamodels</module>
 	</modules>
 
 </project>

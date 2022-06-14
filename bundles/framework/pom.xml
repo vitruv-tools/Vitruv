@@ -15,14 +15,8 @@
 
 	<modules>
 		<module>tools.vitruv.framework.applications</module>
-		<module>tools.vitruv.framework.change</module>
-		<module>tools.vitruv.framework.change.echange</module>
-		<module>tools.vitruv.framework.change.interaction</module>
-		<module>tools.vitruv.framework.correspondence</module>
 		<module>tools.vitruv.framework.domains</module>
 		<module>tools.vitruv.framework.domains.ui</module>
-		<module>tools.vitruv.framework.propagation</module>
-		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.views</module>
 		<module>tools.vitruv.framework.vsum</module>
 		<module>tools.vitruv.framework.vsum.ui</module>
