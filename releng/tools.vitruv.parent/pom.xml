@@ -68,4 +68,18 @@
 		</pluginManagement>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>local-change</id>
+			<activation>
+				<property>
+					<name>vitruv.change.path</name>
+				</property>
+			</activation>
+			<properties>
+				<vitruv.change.url>file:///${vitruv.change.path}/releng/tools.vitruv.change.updatesite/target/repository</vitruv.change.url>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>
