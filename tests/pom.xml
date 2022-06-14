@@ -14,9 +14,7 @@
 
 	<modules>
 		<module>framework</module>
-		<module>dsls</module>
 		<module>domains</module>
-		<module>applications</module>
 		<module>tools.vitruv.testutils.tests</module>
 	</modules>
 	

@@ -16,9 +16,7 @@
 		<module>framework</module>
 		<module>testutils</module>
 		<module>extensions</module>
-		<module>dsls</module>
 		<module>domains</module>
-		<module>applications</module>
 	</modules>
 
 </project>
