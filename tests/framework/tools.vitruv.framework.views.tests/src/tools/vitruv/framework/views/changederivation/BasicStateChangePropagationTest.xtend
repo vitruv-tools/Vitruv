@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import tools.vitruv.framework.util.Capture
+import tools.vitruv.testutils.Capture
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.CoreMatchers.instanceOf
@@ -21,7 +21,7 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.util.Capture.operator_doubleGreaterThan
+import static extension tools.vitruv.testutils.Capture.operator_doubleGreaterThan
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
     private def getTestUri() {

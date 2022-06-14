@@ -16,6 +16,7 @@
 		<module>tools.vitruv.framework.change.feature</module>
 		<module>tools.vitruv.framework.vsum.feature</module>
 		<module>tools.vitruv.testutils.feature</module>
+		<module>tools.vitruv.testutils.vsum.feature</module>
 		<module>tools.vitruv.extensions.changevisualization.feature</module>
 		<module>tools.vitruv.domains.demo.feature</module>
 	</modules>

@@ -18,7 +18,6 @@ import static java.nio.file.Files.createDirectories
 import static java.nio.file.Files.createDirectory
 import static java.nio.file.Files.walk
 import static java.util.Comparator.reverseOrder
-import static tools.vitruv.framework.util.VitruviusConstants.getTestProjectMarkerFileName
 import java.util.regex.Pattern
 import org.eclipse.core.resources.ResourcesPlugin
 import static com.google.common.base.Preconditions.checkNotNull
@@ -28,6 +27,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import java.nio.file.NoSuchFileException
 import java.util.stream.Stream
 import org.eclipse.core.runtime.Platform
+import static extension tools.vitruv.framework.propagation.ProjectMarker.markAsProjectRootFolder
 
 /**
  * Extension managing the test projects for Eclipse tests. Test classes using this extension can have test project 
@@ -114,7 +114,7 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 
 		context.getStore(projectNamespace).getOrComputeIfAbsent(projectPath, [
 			val projectDir = createUniqueDirectory(workspace.resolve(projectPath)) => [
-				createFile(resolve(testProjectMarkerFileName))
+				markAsProjectRootFolder()
 			]
 			new ProjectGuard(projectDir, context)
 		], ProjectGuard).projectDir

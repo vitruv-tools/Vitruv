@@ -9,9 +9,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
  tools.vitruv.framework.change,
- tools.vitruv.framework.util;visibility:=reexport,
  org.eclipse.core.runtime,
- edu.kit.ipd.sdq.activextendannotations
+ edu.kit.ipd.sdq.activextendannotations,
+ edu.kit.ipd.sdq.commons.util.java
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.domains,
  tools.vitruv.framework.domains.repository

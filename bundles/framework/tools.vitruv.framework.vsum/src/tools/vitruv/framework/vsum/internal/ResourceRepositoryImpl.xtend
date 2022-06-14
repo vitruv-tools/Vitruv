@@ -14,7 +14,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI

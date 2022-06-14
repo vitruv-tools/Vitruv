@@ -7,14 +7,15 @@ Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: tools.vitruv.framework.views
 Require-Bundle: org.apache.log4j,
- tools.vitruv.testutils,
+ tools.vitruv.testutils.vsum,
  tools.vitruv.testutils.metamodels,
  org.eclipse.core.expressions,
  org.eclipse.xtend.lib,
  org.eclipse.uml2.uml,
  org.junit.jupiter.api,
  org.junit.jupiter.params,
- org.hamcrest.core
+ org.hamcrest.core,
+ edu.kit.ipd.sdq.commons.util.java
 Bundle-ClassPath: ., lib/byte-buddy-1.12.4.jar, lib/mockito-core-4.2.0.jar, lib/objenesis-3.2.jar
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools
