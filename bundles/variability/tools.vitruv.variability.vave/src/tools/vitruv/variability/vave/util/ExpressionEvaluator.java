@@ -19,7 +19,7 @@ import vavemodel.util.VavemodelSwitch;
  */
 public class ExpressionEvaluator extends VavemodelSwitch<Boolean> {
 
-	private Configuration configuration;
+	protected Configuration configuration;
 
 	public ExpressionEvaluator(Configuration configuration) {
 		this.configuration = configuration;
@@ -57,7 +57,7 @@ public class ExpressionEvaluator extends VavemodelSwitch<Boolean> {
 	@Override
 	public <T extends Option> Boolean caseVariable(Variable<T> variable) {
 		// return this.configuration.getOption().contains(variable.getOption());
-		// for feature revisions: check if the configuration contains this feature or a newer one
+		// for feature revisions: check if the configuration contains this feature revision or a newer one
 		return this.configuration.getOption().contains(variable.getOption())
 				|| variable.getOption() instanceof FeatureRevision && this.configuration.getOption().stream().filter(o -> o instanceof FeatureRevision && ((FeatureRevision) o).eContainer().equals(((FeatureRevision) variable.getOption()).eContainer()) && ((FeatureRevision) o).getRevisionID() >= ((FeatureRevision) variable.getOption()).getRevisionID()).findAny().isPresent();
 	}

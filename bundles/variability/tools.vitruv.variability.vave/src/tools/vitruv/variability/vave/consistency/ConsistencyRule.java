@@ -20,7 +20,7 @@ public interface ConsistencyRule {
 		return null;
 	}
 	
-	public default ConsistencyResult internalizeChangesPre(Expression<FeatureOption> expression) {
+	public default ConsistencyResult internalizeChangesPre(VirtualVaVeModel vave, Expression<FeatureOption> expression) {
 		return null;
 	}
 	

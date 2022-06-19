@@ -31,7 +31,7 @@ import vavemodel.Option;
 import vavemodel.SystemRevision;
 
 /**
- * Performs consistency preservation from problem space (feature model) to solution space (product) by computing hints for not yet implemented features or pair-wise feature interactions.
+ * Performs consistency preservation from problem space (feature model) to solution space (product) by computing hints for not yet implemented features or potential pair-wise feature interactions.
  */
 public class HintComputation implements ConsistencyRule {
 
@@ -61,21 +61,24 @@ public class HintComputation implements ConsistencyRule {
 	}
 
 	@Override
-	public ConsistencyResult internalizeChangesPre(Expression<FeatureOption> expr) {
-		
+	public ConsistencyResult internalizeChangesPre(VirtualVaVeModel vave, Expression<FeatureOption> expr) {
 		Collection<Option> options = new OptionsCollector().doSwitch(expr);
 
+		Collection<Feature[]> removedHints = new ArrayList<>();
+		
 		// check if the expression covers any hints. if yes, then delete the respective hints.
 		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
 		Iterator<Feature[]> hintsIt = this.hints.iterator();
 		while (hintsIt.hasNext()) {
 			Feature[] featureInteraction = hintsIt.next();
 			if (options.containsAll(Arrays.asList(featureInteraction))) {
+				removedHints.add(featureInteraction);
 				hintsIt.remove();
 				System.out.println("FIXED HINT: " + Arrays.asList(featureInteraction));
 			}
 		}
-		return null;
+		
+		return new Result(removedHints);
 	}
 
 	@Override
@@ -147,6 +150,8 @@ public class HintComputation implements ConsistencyRule {
 		}
 		Collection<int[]> newClauses = fm_cur.computeClauses(newfmOptionToIntMap);
 
+		Collection<Feature[]> newHints = new ArrayList<>();
+		
 //		for (Feature f1 : enabledFs) {
 //			for (Feature f2 : enabledFs) {
 		for (int i = 0; i < enabledFs.size(); i++) {
@@ -188,8 +193,10 @@ public class HintComputation implements ConsistencyRule {
 
 				if (!oldSat && newSat) {
 					// feature interaction is new
-					this.hints.add(new Feature[] { f1, f2 });
-					System.out.println("ADDED HINT: " + f1 + " / " + f2);
+					Feature[] hint = new Feature[] { f1, f2 };
+					this.hints.add(hint);
+					newHints.add(hint);
+					//System.out.println("ADDED HINT: " + f1 + " / " + f2);
 				}
 			}
 		}
@@ -198,7 +205,7 @@ public class HintComputation implements ConsistencyRule {
 
 		// TODO: also consider feature interactions with negative features?
 
-		return null;
+		return new Result(newHints);
 	}
 
 }

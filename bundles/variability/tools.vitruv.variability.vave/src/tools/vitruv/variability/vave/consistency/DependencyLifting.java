@@ -51,6 +51,9 @@ import vavemodel.Variable;
 import vavemodel.VavemodelFactory;
 import vavemodel.util.VavemodelSwitch;
 
+/**
+ * Performs consistency preservation from solution space (product) to problem space (feature model) by computing dependencies between deltas and lifting them to constraints between features.
+ */
 public class DependencyLifting implements ConsistencyRule {
 
 	public class Result implements ConsistencyResult {
@@ -74,7 +77,7 @@ public class DependencyLifting implements ConsistencyRule {
 		// otherwise, add implication of depending features
 
 		// start by translating the feature model at given system revision to sat
-		FeatureModel fm = vave.externalizeDomain(sysrev);
+		FeatureModel fm = vave.externalizeDomain(sysrev).getResult();
 
 		// select relevant mappings for sysrev
 		List<Mapping> selectedMappings = new ArrayList<>();

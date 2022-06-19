@@ -252,7 +252,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		final VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
 		fileSystemLayout.prepare();
 
-		final VirtualProductModelImpl vsum = new VirtualProductModelImpl(configuration, fileSystemLayout, userInteractor, this.domainRepository, changeSpecificationRepository);
+		final VirtualProductModelImpl vsum = new VirtualProductModelImpl(this, configuration, fileSystemLayout, userInteractor, this.domainRepository, changeSpecificationRepository);
 		vsum.loadExistingModels();
 		// VirtualModelManager.getInstance().putVirtualModel(vsum);
 
@@ -267,7 +267,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// HERE STARTS THE VAVE STUFF
 
 		// optional: add configuration to unified system
-		// this.system.getConfiguration().add(configuration);
+		this.system.getConfiguration().add(configuration);
 
 		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
 
@@ -355,7 +355,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		InternalizeChangesResult internalizeChangesResult = new InternalizeChangesResult();
 
 		// trigger consistency preservation
-		this.triggerConsistencyRule(internalizeChangesResult, consistencyRule -> consistencyRule.internalizeChangesPre(expression));
+		this.triggerConsistencyRule(internalizeChangesResult, consistencyRule -> consistencyRule.internalizeChangesPre(this, expression));
 
 
 		// create a new system revision and link it to predecessor system revision
