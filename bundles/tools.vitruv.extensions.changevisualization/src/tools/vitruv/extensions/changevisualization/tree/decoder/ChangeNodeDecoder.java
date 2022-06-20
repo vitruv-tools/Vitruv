@@ -19,7 +19,7 @@ import tools.vitruv.extensions.changevisualization.tree.decoder.echange.RemoveRo
 import tools.vitruv.extensions.changevisualization.tree.decoder.echange.ReplaceSingleValuedEAttributeDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.echange.ReplaceSingleValuedEReferenceDecoder;
 import tools.vitruv.extensions.changevisualization.utils.ModelHelper;
-import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.change.atomic.EChange;
 
 /**
  * Helper class to generate {@link ChangeNode}s from eChanges. Central place to register new {@link ChangeDecoder} 

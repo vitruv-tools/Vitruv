@@ -8,7 +8,7 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import tools.vitruv.extensions.changevisualization.tree.FeatureNode;
-import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.change.atomic.EChange;
 
 /**
  * MultipleFeatureProcessors are used to process more than one structural feature at once.

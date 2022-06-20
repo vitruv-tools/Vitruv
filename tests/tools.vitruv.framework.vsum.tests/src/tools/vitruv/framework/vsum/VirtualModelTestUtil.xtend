@@ -7,8 +7,8 @@ import java.util.List
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.change.atomic.EChange
+import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.CorrespondenceModel
 import tools.vitruv.framework.propagation.ResourceAccess

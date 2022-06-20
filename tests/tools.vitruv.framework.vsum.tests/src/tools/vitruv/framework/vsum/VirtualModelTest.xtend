@@ -9,10 +9,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.change.atomic.eobject.CreateEObject
+import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.ViewTypeFactory

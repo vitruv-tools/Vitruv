@@ -21,7 +21,7 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.emf.common.util,
  org.eclipse.emf.ecore,
  tools.vitruv.framework.change.description,
- tools.vitruv.framework.change.echange,
+ tools.vitruv.change.atomic,
  tools.vitruv.framework.domains,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.internal
