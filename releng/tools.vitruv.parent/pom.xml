@@ -12,7 +12,18 @@
 	<version>2.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
+	<properties>
+		<!-- A local updatesite for the change core can be specified by overwriting these properties. It defaults to the nightly Vitruv change updatesite. -->
+		<vitruv.change.url>https://vitruv-tools.github.io/updatesite/nightly/change/</vitruv.change.url>
+	</properties>
+
 	<repositories>
+		<!-- The specific Vitruv change updatesite to be potentially overwritten by local builds -->
+		<repository>
+			<id>Vitruv Change</id>
+			<layout>p2</layout>
+			<url>${vitruv.change.url}</url>
+		</repository>
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
@@ -45,5 +56,19 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>local-change</id>
+			<activation>
+				<property>
+					<name>vitruv.change.path</name>
+				</property>
+			</activation>
+			<properties>
+				<vitruv.change.url>file:///${vitruv.change.path}/releng/tools.vitruv.change.updatesite/target/repository</vitruv.change.url>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
