@@ -13,7 +13,7 @@ import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.CorrespondenceModel
 import tools.vitruv.change.propagation.ResourceAccess
 import tools.vitruv.change.propagation.impl.AbstractChangePropagationSpecification
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.change.interaction.UserInteractionFactory
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 
 import static org.junit.jupiter.api.Assertions.assertEquals

@@ -15,7 +15,7 @@ import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
 import tools.vitruv.change.correspondence.Correspondence
 import tools.vitruv.change.correspondence.CorrespondenceModel
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.change.interaction.UserInteractionFactory
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone

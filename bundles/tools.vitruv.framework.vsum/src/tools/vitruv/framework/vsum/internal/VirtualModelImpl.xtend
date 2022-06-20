@@ -12,7 +12,7 @@ import tools.vitruv.change.composite.propagation.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.change.propagation.impl.ChangePropagator
-import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import tools.vitruv.change.interaction.InternalUserInteractor
 import tools.vitruv.framework.views.ViewSelector
 import tools.vitruv.framework.views.ViewType
 import tools.vitruv.framework.views.ViewTypeProvider

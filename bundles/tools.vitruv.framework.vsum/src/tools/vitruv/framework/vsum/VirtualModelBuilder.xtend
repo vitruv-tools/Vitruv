@@ -10,9 +10,9 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.change.propagation.ChangePropagationSpecification
 import tools.vitruv.change.propagation.ChangePropagationSpecificationRepository
-import tools.vitruv.framework.userinteraction.InteractionResultProvider
-import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.change.interaction.InteractionResultProvider
+import tools.vitruv.change.interaction.InternalUserInteractor
+import tools.vitruv.change.interaction.UserInteractionFactory
 import tools.vitruv.framework.views.ViewType
 import tools.vitruv.framework.views.ViewTypeRepository
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
