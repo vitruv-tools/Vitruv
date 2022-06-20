@@ -16,17 +16,17 @@
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/metamodels/demo/</url>
+			<url>https://kit-sdq.github.io/updatesite/release/metamodels/demo/latest/</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/commons/</url>
+			<url>https://kit-sdq.github.io/updatesite/release/commons/latest/</url>
 		</repository>
 		<repository>
 			<id>XAnnotations</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/xannotations/</url>
+			<url>https://kit-sdq.github.io/updatesite/release/xannotations/latest/</url>
 		</repository>
 	</repositories>
 
