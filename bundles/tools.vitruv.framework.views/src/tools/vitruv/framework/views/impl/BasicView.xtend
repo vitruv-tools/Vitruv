@@ -9,8 +9,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.propagation.ChangePropagationAbortCause
-import tools.vitruv.framework.change.propagation.ChangePropagationListener
+import tools.vitruv.change.composite.propagation.ChangePropagationAbortCause
+import tools.vitruv.change.composite.propagation.ChangePropagationListener
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.ViewSelection
 import tools.vitruv.framework.views.ViewSelector

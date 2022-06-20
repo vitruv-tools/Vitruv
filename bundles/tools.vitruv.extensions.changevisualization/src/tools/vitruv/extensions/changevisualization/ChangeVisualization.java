@@ -14,7 +14,7 @@ import tools.vitruv.extensions.changevisualization.tree.decoder.TreeChangeDataSe
 import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
-import tools.vitruv.framework.change.description.PropagatedChange;
+import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.vsum.internal.PropagatedChangeListener;
 

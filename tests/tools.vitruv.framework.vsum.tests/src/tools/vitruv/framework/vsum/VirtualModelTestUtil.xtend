@@ -6,10 +6,10 @@ import java.nio.file.Path
 import java.util.List
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.atomic.EChange
 import tools.vitruv.change.atomic.root.InsertRootEObject
-import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.CorrespondenceModel
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
@@ -21,7 +21,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import allElementTypes.AllElementTypesPackage
-import tools.vitruv.framework.change.MetamodelDescriptor
+import tools.vitruv.change.composite.MetamodelDescriptor
 
 /**
  * Utility methods for the VSUM and view test cases.

@@ -34,9 +34,9 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.change.description.CompositeContainerChange;
-import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory;
+import tools.vitruv.change.composite.description.CompositeContainerChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /**

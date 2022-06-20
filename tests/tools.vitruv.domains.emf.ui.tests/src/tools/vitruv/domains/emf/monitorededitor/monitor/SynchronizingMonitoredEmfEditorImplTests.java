@@ -39,7 +39,7 @@ import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.atomic.feature.FeatureEChange;
 
 public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {

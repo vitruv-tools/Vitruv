@@ -30,7 +30,7 @@ import org.mockito.MockitoAnnotations;
 import allElementTypes.AllElementTypesPackage;
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
-import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.eobject.CreateEObject;
 import tools.vitruv.change.atomic.eobject.DeleteEObject;

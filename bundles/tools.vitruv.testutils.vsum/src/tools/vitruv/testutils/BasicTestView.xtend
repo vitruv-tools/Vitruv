@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 import static com.google.common.base.Preconditions.checkArgument

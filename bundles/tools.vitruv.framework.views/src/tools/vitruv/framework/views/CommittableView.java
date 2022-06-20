@@ -2,7 +2,7 @@ package tools.vitruv.framework.views;
 
 import java.util.List;
 
-import tools.vitruv.framework.change.description.PropagatedChange;
+import tools.vitruv.change.composite.description.PropagatedChange;
 
 /**
  * A {@link View} that allows to commit its changes back to the underlying {@link ChangeableViewSource}.

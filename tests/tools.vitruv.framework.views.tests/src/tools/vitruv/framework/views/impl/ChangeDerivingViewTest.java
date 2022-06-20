@@ -27,7 +27,7 @@ import org.mockito.MockitoAnnotations;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
-import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.atomic.eobject.EobjectPackage;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.change.atomic.root.InsertRootEObject;

@@ -6,9 +6,9 @@ import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.propagation.ChangePropagationListener
+import tools.vitruv.change.composite.description.PropagatedChange
+import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.propagation.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.propagation.impl.ChangePropagator

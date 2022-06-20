@@ -1,8 +1,8 @@
 package tools.vitruv.framework.vsum.helper
 
 import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.change.composite.description.PropagatedChange
+import tools.vitruv.change.composite.description.VitruviusChange
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 

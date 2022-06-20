@@ -33,7 +33,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.EditorManagementListenerMgr;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
-import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
 
 /**
  * <p>

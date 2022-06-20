@@ -20,11 +20,11 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import tools.vitruv.change.composite.propagation.ChangePropagationListener;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
-import tools.vitruv.framework.change.description.PropagatedChange;
-import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.propagation.ChangePropagationListener;
+import tools.vitruv.change.composite.description.PropagatedChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.VirtualModel;

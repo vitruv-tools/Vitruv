@@ -1,7 +1,7 @@
 package tools.vitruv.framework.views.impl
 
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy

@@ -13,7 +13,7 @@ import tools.vitruv.change.atomic.eobject.CreateEObject
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.change.atomic.root.InsertRootEObject
-import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.ViewTypeFactory
 import tools.vitruv.framework.vsum.VirtualModelTestUtil.RedundancyChangePropagationSpecification
