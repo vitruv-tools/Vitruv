@@ -10,7 +10,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.change.correspondence.CorrespondenceModel
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
@@ -19,7 +19,7 @@ import tools.vitruv.framework.vsum.VirtualModelBuilder
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import allElementTypes.AllElementTypesPackage
 import tools.vitruv.framework.change.MetamodelDescriptor
 

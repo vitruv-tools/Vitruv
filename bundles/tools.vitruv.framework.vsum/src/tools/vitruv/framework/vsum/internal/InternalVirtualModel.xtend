@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum.internal
 
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.change.correspondence.CorrespondenceModel
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.vsum.VirtualModel
 

@@ -32,7 +32,7 @@ import static extension com.google.common.base.Preconditions.checkNotNull
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.claimOne
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import static extension tools.vitruv.framework.vsum.VirtualModelTestUtil.*
 
 @ExtendWith(TestProjectManager)
