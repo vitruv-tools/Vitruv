@@ -11,8 +11,8 @@ import tools.vitruv.change.atomic.EChange
 import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.CorrespondenceModel
-import tools.vitruv.framework.propagation.ResourceAccess
-import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
+import tools.vitruv.change.propagation.ResourceAccess
+import tools.vitruv.change.propagation.impl.AbstractChangePropagationSpecification
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 

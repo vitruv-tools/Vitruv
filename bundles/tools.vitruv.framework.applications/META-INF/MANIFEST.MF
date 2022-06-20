@@ -6,7 +6,7 @@ Bundle-SymbolicName: tools.vitruv.framework.applications;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.applications
 Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: tools.vitruv.framework.propagation;visibility:=reexport,
+Require-Bundle: tools.vitruv.change.propagation;visibility:=reexport,
  tools.vitruv.framework.domains;visibility:=reexport,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,

@@ -8,8 +8,8 @@ import java.util.Set
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import tools.vitruv.framework.propagation.ChangePropagationSpecificationRepository
+import tools.vitruv.change.propagation.ChangePropagationSpecification
+import tools.vitruv.change.propagation.ChangePropagationSpecificationRepository
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory

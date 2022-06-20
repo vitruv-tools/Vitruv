@@ -21,7 +21,7 @@ import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import tools.vitruv.change.composite.description.VitruviusChange
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
-import tools.vitruv.framework.propagation.ChangeInPropagation
+import tools.vitruv.change.propagation.ChangeInPropagation
 import java.util.Set
 import static com.google.common.base.Preconditions.checkState
 import java.util.HashSet

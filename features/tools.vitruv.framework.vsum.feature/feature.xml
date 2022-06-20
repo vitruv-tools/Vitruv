@@ -39,7 +39,7 @@
       <import plugin="org.eclipse.gmf.runtime.diagram.ui"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor"/>
       <import feature="tools.vitruv.framework.change.feature" version="2.1.0.qualifier"/>
-      <import plugin="tools.vitruv.framework.propagation"/>
+      <import plugin="tools.vitruv.change.propagation"/>
       <import plugin="tools.vitruv.framework.change"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.eclipse"/>

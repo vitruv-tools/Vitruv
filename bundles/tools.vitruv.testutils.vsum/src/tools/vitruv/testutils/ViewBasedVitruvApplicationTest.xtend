@@ -3,7 +3,7 @@ package tools.vitruv.testutils
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.vsum.VirtualModel
 import org.junit.jupiter.api.BeforeEach
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import tools.vitruv.change.propagation.ChangePropagationSpecification
 
 import static tools.vitruv.testutils.UriMode.*
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl

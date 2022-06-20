@@ -1,6 +1,6 @@
 package tools.vitruv.framework.applications
 
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import tools.vitruv.change.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 import java.util.Set
 
