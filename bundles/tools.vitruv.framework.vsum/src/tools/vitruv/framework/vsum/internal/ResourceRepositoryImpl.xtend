@@ -13,15 +13,15 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
-import tools.vitruv.framework.change.recording.ChangeRecorder
-import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+import tools.vitruv.change.composite.recording.ChangeRecorder
+import static tools.vitruv.change.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
+import tools.vitruv.change.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
-import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChange
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
-import tools.vitruv.framework.propagation.ChangeInPropagation
+import tools.vitruv.change.propagation.ChangeInPropagation
 import java.util.Set
 import static com.google.common.base.Preconditions.checkState
 import java.util.HashSet

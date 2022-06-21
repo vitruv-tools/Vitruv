@@ -9,11 +9,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.change.atomic.eobject.CreateEObject
+import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.change.atomic.root.InsertRootEObject
+import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.ViewTypeFactory
 import tools.vitruv.framework.vsum.VirtualModelTestUtil.RedundancyChangePropagationSpecification
@@ -32,7 +32,7 @@ import static extension com.google.common.base.Preconditions.checkNotNull
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.claimOne
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import static extension tools.vitruv.framework.vsum.VirtualModelTestUtil.*
 
 @ExtendWith(TestProjectManager)

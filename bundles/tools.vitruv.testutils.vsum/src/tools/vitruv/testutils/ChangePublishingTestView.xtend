@@ -9,10 +9,10 @@ import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.change.composite.description.PropagatedChange
+import tools.vitruv.change.composite.description.TransactionalChange
+import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.vsum.VirtualModel
 

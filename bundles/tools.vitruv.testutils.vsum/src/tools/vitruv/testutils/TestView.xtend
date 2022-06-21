@@ -7,7 +7,7 @@ import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.change.composite.description.PropagatedChange
 
 import static com.google.common.base.Preconditions.checkState
 

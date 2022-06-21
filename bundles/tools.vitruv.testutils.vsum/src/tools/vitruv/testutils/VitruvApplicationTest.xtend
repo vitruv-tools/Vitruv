@@ -8,7 +8,7 @@ import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import tools.vitruv.change.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel

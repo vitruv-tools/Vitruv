@@ -2,7 +2,7 @@ package tools.vitruv.extensions.changevisualization.tree.decoder.echange;
 
 import java.util.Map;
 
-import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.change.atomic.EChange;
 
 /**
  * Decoder for eChanges with a insert or remove semantic

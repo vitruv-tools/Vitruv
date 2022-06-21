@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.change.atomic.EChange;
 
 /**
  * Decoder for eChanges that have a name feature to display
@@ -32,7 +32,7 @@ public class EObjectNameDecoder extends AbstractChangeDecoder {
 	}	
 
 	/* (non-Javadoc)
-	 * @see tools.vitruv.extensions.changevisualization.tree.decoder.echange.AbstractChangeDecoder#generateString(tools.vitruv.framework.change.echange.EChange, java.util.Map)
+	 * @see tools.vitruv.extensions.changevisualization.tree.decoder.echange.AbstractChangeDecoder#generateString(tools.vitruv.change.atomic.EChange, java.util.Map)
 	 */
 	@Override
 	protected String generateString(EChange eChange, Map<String, Object> structuralFeatures2values) {

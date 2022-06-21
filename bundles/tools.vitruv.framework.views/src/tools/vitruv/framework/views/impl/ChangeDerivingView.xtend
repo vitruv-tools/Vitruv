@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy

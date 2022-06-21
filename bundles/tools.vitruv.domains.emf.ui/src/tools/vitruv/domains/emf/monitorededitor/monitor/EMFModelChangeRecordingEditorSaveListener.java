@@ -20,8 +20,8 @@ import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEdito
 import tools.vitruv.domains.emf.monitorededitor.tools.ISaveEventListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
-import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.recording.ChangeRecorder;
+import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.recording.ChangeRecorder;
 
 /**
  * <p>

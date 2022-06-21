@@ -5,9 +5,9 @@ import tools.vitruv.framework.applications.VitruvApplication
 import java.util.Map
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.ResourcesPlugin
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import tools.vitruv.change.propagation.ChangePropagationSpecification
 import java.util.Set
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.change.interaction.UserInteractionFactory
 import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderApplicator
 import tools.vitruv.framework.vsum.VirtualModelBuilder

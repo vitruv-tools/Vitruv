@@ -25,8 +25,8 @@
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="tools.vitruv.framework.change"/>
-      <import plugin="tools.vitruv.framework.change.echange"/>
+      <import plugin="tools.vitruv.change.composite"/>
+      <import plugin="tools.vitruv.change.atomic"/>
       <import plugin="tools.vitruv.framework.domains"/>
       <import plugin="tools.vitruv.framework.vsum"/>
    </requires>

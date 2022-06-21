@@ -2,7 +2,7 @@ package tools.vitruv.testutils
 
 import org.eclipse.emf.common.notify.Notifier
 import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.change.composite.description.PropagatedChange
 
 /**
  * An extension of the {@link TestView}, which provides non-transactional options for change recording, i.e.,

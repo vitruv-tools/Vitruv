@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum.internal
 
 import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.framework.domains.VitruvDomain
 
 /**

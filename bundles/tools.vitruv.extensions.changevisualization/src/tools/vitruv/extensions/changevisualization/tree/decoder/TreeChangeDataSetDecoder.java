@@ -14,9 +14,9 @@ import tools.vitruv.extensions.changevisualization.common.ChangeDataSet.ChangeTy
 import tools.vitruv.extensions.changevisualization.tree.TreeChangeDataSet;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.MultipleFeatureProcessor;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.OldValueNewValueProcessor;
-import tools.vitruv.framework.change.description.PropagatedChange;
-import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.change.composite.description.PropagatedChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.framework.domains.VitruvDomain;
 
 /**
