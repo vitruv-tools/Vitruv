@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="tools.vitruv.testutils.feature.source" version="2.1.0.qualifier">
-      <category name="Vitruv Change"/>
-   </feature>
    <feature url="features/tools.vitruv.framework.vsum.feature_2.1.0.qualifier.jar" id="tools.vitruv.framework.vsum.feature" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
