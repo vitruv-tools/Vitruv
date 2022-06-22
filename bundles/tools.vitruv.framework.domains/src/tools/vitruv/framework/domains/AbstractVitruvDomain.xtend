@@ -1,25 +1,16 @@
 package tools.vitruv.framework.domains
 
 import java.util.Collections
-import java.util.Map
 import java.util.Set
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.framework.domains.VitruvDomain
-import org.eclipse.emf.ecore.EClass
 import java.util.HashSet
-import java.util.HashMap
-import static java.util.Collections.emptySet
-import static java.util.Collections.emptyMap
 
 abstract class AbstractVitruvDomain implements VitruvDomain {
 	String name
 	Set<String> fileExtensions
 	Set<String> nsURIs
 	EPackage metamodelRootPackage
-	Set<EPackage> furtherRootPackages
-	Map<Object, Object> defaultLoadOptions
-	Map<Object, Object> defaultSaveOptions
 
 	/**
 	 * Returns the namespace URI of the given {@link EPackage} and all subpackages.
@@ -28,26 +19,15 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		return (#[rootPackage.nsURI] + rootPackage.ESubpackages.map[it.nsURIsRecursive].flatten).toSet
 	}
 
-	/** 
-	 * Convenience method if the domain consists of only a single namespace
-	 */
 	new(String name, EPackage metamodelRootPackage, String... fileExtensions) {
-		initialize(name, metamodelRootPackage, emptySet, emptyMap, emptyMap, fileExtensions)
+		initialize(name, metamodelRootPackage, fileExtensions)
 	}
 
-	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, String... fileExtensions) {
-		initialize(name, metamodelRootPackage, furtherRootPackages, emptyMap, emptyMap, fileExtensions)
-	}
-
-	protected def void initialize(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages,
-		Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
+	protected def void initialize(String name, EPackage metamodelRootPackage, String... fileExtensions) {
 		this.name = name
 		this.fileExtensions = new HashSet(fileExtensions)
 		this.metamodelRootPackage = metamodelRootPackage
-		this.furtherRootPackages = new HashSet(furtherRootPackages)
-		this.nsURIs = (metamodelRootPackage.nsURIsRecursive + furtherRootPackages.map[nsURIsRecursive].flatten).toSet
-		this.defaultLoadOptions = new HashMap(defaultLoadOptions)
-		this.defaultSaveOptions = new HashMap(defaultSaveOptions)
+		this.nsURIs = metamodelRootPackage.nsURIsRecursive
 	}
 
 	override getName() {
@@ -58,24 +38,12 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		return metamodelRootPackage
 	}
 
-	override getFurtherRootPackages() {
-		return Collections.unmodifiableSet(furtherRootPackages)
-	}
-
 	override getFileExtensions() {
 		return Collections.unmodifiableSet(fileExtensions)
 	}
 
 	override getNsUris() {
 		return Collections.unmodifiableSet(nsURIs)
-	}
-
-	override getDefaultLoadOptions() {
-		return Collections.unmodifiableMap(defaultLoadOptions)
-	}
-
-	override getDefaultSaveOptions() {
-		return Collections.unmodifiableMap(defaultSaveOptions)
 	}
 
 	override toString() {
