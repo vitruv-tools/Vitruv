@@ -86,7 +86,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			''')
 		}
 
-		finishChangePropagation(unresolvedChange)
+		finishChangePropagation(unresolvedChange, result)
 		informPropagatedChangeListeners(result)
 		LOGGER.info("Finished change propagation")
 		return result
@@ -97,9 +97,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
-	private def void finishChangePropagation(VitruviusChange change) {
-		changePropagationListeners.forEach[finishedChangePropagation]
-		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
+	private def void finishChangePropagation(VitruviusChange inputChange, Iterable<PropagatedChange> generatedChanges) {
+		changePropagationListeners.forEach[finishedChangePropagation(generatedChanges)]
+		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «inputChange»''')
 	}
 
 	override Path getFolder() {

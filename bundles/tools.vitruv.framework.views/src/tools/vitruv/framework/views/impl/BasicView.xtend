@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import tools.vitruv.change.composite.description.PropagatedChange
 
 package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
@@ -88,7 +89,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
         // do nothing
     }
 
-    override finishedChangePropagation() {
+    override finishedChangePropagation(Iterable<PropagatedChange> propagatedChanges) {
         modelChanged = true
     }
 
