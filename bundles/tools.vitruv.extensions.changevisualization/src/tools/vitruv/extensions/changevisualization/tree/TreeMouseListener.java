@@ -17,7 +17,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
+import tools.vitruv.extensions.changevisualization.ChangeVisualizationUI;
 
 /**
  * This listener is used to react to mouse events for a {@link ChangeTree}
@@ -25,11 +25,13 @@ import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
  * @author Andreas Loeffler 
  */
 public class TreeMouseListener extends MouseAdapter {
+	private final TabHighlighting tabHighlighting;
 	
 	/**
 	 * A listener implementing the reaction to clicks on the tree-nodes	  
 	 */
-	public TreeMouseListener() {		
+	public TreeMouseListener(TabHighlighting tabHighlighting) {
+		this.tabHighlighting = tabHighlighting;
 	}
 
 	/**
@@ -83,9 +85,9 @@ public class TreeMouseListener extends MouseAdapter {
 	 * @param popupMenu The menu to add the item to
 	 */
 	private void addInfoItem(JPopupMenu popupMenu) {
-		if(ChangeVisualizationUI.getInstance().getActiveChangesTab().getHighlightID()!=null) {
+		if(tabHighlighting.getHighlightID()!=null) {
 			popupMenu.addSeparator();
-			JLabel info=new JLabel(" Highlighted ID = "+ChangeVisualizationUI.getInstance().getActiveChangesTab().getHighlightID());
+			JLabel info=new JLabel(" Highlighted ID = "+tabHighlighting.getHighlightID());
 			info.setFont(ChangeVisualizationUI.DEFAULT_MENUITEM_FONT);
 			popupMenu.add(info);
 		}
@@ -102,12 +104,12 @@ public class TreeMouseListener extends MouseAdapter {
 		copySearchItem.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				StringSelection stringSelection = new StringSelection(ChangeVisualizationUI.getInstance().getActiveChangesTab().getHighlightID());
+				StringSelection stringSelection = new StringSelection(tabHighlighting.getHighlightID());
 			    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			    clipboard.setContents(stringSelection, null);
 			} 					
 		});
-		copySearchItem.setEnabled(ChangeVisualizationUI.getInstance().getActiveChangesTab().getHighlightID()!=null);
+		copySearchItem.setEnabled(tabHighlighting.getHighlightID()!=null);
 		popupMenu.add(copySearchItem);
 	}
 
@@ -122,10 +124,10 @@ public class TreeMouseListener extends MouseAdapter {
 		resetSearchItem.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChangeVisualizationUI.getInstance().getActiveChangesTab().setHighlightID(null);				
+				tabHighlighting.setHighlightID(null);				
 			} 					
 		});
-		resetSearchItem.setEnabled(ChangeVisualizationUI.getInstance().getActiveChangesTab().getHighlightID()!=null);
+		resetSearchItem.setEnabled(tabHighlighting.getHighlightID()!=null);
 		popupMenu.add(resetSearchItem);
 	}
 
@@ -144,7 +146,7 @@ public class TreeMouseListener extends MouseAdapter {
 				String input=JOptionPane.showInputDialog(treeUI, "Please input the ID to search :");
 				if(input==null) return;
 				input=input.trim();
-				ChangeVisualizationUI.getInstance().getActiveChangesTab().setHighlightID(input);				
+				tabHighlighting.setHighlightID(input);				
 			} 					
 		});
 		popupMenu.add(searchItem);
@@ -174,7 +176,7 @@ public class TreeMouseListener extends MouseAdapter {
 			menuItem.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ChangeVisualizationUI.getInstance().getActiveChangesTab().setHighlightID(highlightID);								
+					tabHighlighting.setHighlightID(highlightID);								
 				} 					
 			});
 			popupMenu.add(menuItem);
