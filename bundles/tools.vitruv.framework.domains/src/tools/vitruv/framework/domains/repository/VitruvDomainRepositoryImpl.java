@@ -53,24 +53,4 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
 		return this.fileExtension2Domain.values().iterator();
 	}
 
-	@Override
-	public VitruvDomain getDomain(EObject object) {
-		for (VitruvDomain domain : nsUri2Domain.values()) {
-			if (domain.isInstanceOfDomainMetamodel(object)) {
-				return domain;
-			}
-		}
-		throw new IllegalStateException("No domain for given object <" + object + "> registered");
-	}
-
-	@Override
-	public boolean hasDomain(EObject object) {
-		for (VitruvDomain domain : nsUri2Domain.values()) {
-			if (domain.isInstanceOfDomainMetamodel(object)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 }

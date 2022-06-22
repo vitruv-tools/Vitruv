@@ -16,8 +16,6 @@ interface VitruvDomain {
 	def Map<Object, Object> getDefaultLoadOptions()
 	def Map<Object, Object> getDefaultSaveOptions()
 
-	def boolean isInstanceOfDomainMetamodel(EObject object)
-
 	/**
 	 * Whether any changes made to models of this domain should be
 	 * propagated to other domains through registered change propagation

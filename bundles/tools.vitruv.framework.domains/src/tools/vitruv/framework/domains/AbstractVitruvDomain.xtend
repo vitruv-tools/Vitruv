@@ -78,19 +78,6 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		return Collections.unmodifiableMap(defaultSaveOptions)
 	}
 
-	override isInstanceOfDomainMetamodel(EObject eObject) {
-		if (eObject === null) {
-			return false
-		}
-		val eClass = if(eObject instanceof EClass) eObject else eObject.eClass()
-
-		if (null === eClass || null === eClass.EPackage || null === eClass.EPackage.nsURI ||
-			!this.nsURIs.contains(eClass.EPackage.nsURI)) {
-			return false
-		}
-		return true
-	}
-
 	override toString() {
 		return '''domain ‘«name»’'''
 	}
