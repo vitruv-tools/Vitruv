@@ -9,8 +9,4 @@ abstract class VitruvDemoDomain extends AbstractVitruvDomain {
 		super(name, metamodelRootPackage, fileExtensions)
 	}
 
-	override isUserVisible() {
-		false
-	}
-
 }

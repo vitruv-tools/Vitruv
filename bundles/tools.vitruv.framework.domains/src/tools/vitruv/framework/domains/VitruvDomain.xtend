@@ -19,13 +19,6 @@ interface VitruvDomain {
 	def boolean isInstanceOfDomainMetamodel(EObject object)
 
 	/**
-	 * Whether this domain should be visible to users. Some domains exist only
-	 * for technical or demonstration purposes, in which case {@code false}
-	 * should be returned by this method. 
-	 */
-	def boolean isUserVisible()
-
-	/**
 	 * Whether any changes made to models of this domain should be
 	 * propagated to other domains through registered change propagation
 	 * specifications.

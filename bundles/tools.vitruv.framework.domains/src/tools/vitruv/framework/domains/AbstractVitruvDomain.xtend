@@ -95,10 +95,6 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		return '''domain ‘«name»’'''
 	}
 
-	override isUserVisible() {
-		true
-	}
-
 	override shouldTransitivelyPropagateChanges() {
 		false
 	}
