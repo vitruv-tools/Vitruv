@@ -30,7 +30,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
-	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
 
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
@@ -87,7 +86,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 
 		finishChangePropagation(unresolvedChange, result)
-		informPropagatedChangeListeners(result)
 		LOGGER.info("Finished change propagation")
 		return result
 	}
@@ -123,44 +121,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * Registers the given {@link PropagatedChangeListener}.
-	 * The listener must not be <code>null</code>.
-	 */
-	override synchronized void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.add(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
-	}
-
-	/**
-	 * Unregister the given {@link PropagatedChangeListener}. 
-	 * The listener must not be <code>null</code>.
-	 */
-	override synchronized void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.remove(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
-	}
-
-	/**
 	 * Returns the name of the virtual model.
 	 * 
 	 * @return The name of the virtual model
 	 */
 	def getName() {
 		folder.fileName.toString
-	}
-
-	/**
-	 * This method informs the registered {@link PropagatedChangeListener}s of the propagation result.
-	 * 
-	 * @param propagationResult The propagation result
-	 */
-	def private void informPropagatedChangeListeners(List<PropagatedChange> propagationResult) {
-		if (this.propagatedChangeListeners.isEmpty()) {
-			return
-		}
-		val sourceDomain = getSourceDomain(propagationResult)
-		val targetDomain = getTargetDomain(propagationResult)
-		for (PropagatedChangeListener propagatedChangeListener : this.propagatedChangeListeners) {
-			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult)
-		}
 	}
 
 	override void dispose() {
