@@ -50,8 +50,4 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		return '''domain ‘«name»’'''
 	}
 
-	override shouldTransitivelyPropagateChanges() {
-		false
-	}
-
 }
