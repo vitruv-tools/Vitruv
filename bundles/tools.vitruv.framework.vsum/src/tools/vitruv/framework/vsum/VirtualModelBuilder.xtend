@@ -5,9 +5,6 @@ import java.nio.file.Path
 import java.util.Collection
 import java.util.HashSet
 import java.util.Set
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.change.propagation.ChangePropagationSpecification
 import tools.vitruv.change.propagation.ChangePropagationSpecificationRepository
 import tools.vitruv.change.interaction.InteractionResultProvider
@@ -22,20 +19,10 @@ import tools.vitruv.framework.vsum.internal.VirtualModelImpl
 import static com.google.common.base.Preconditions.checkState
 
 class VirtualModelBuilder {
-	var VitruvDomainRepository domainRepository = null
-	val Set<VitruvDomain> domains = new HashSet()
 	val Set<ViewType<?>> viewTypes = new HashSet()
 	val Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet()
 	var Path storageFolder
 	var InternalUserInteractor userInteractor
-	
-	def VirtualModelBuilder withDomainRepository(VitruvDomainRepository repository) {
-		checkState(domains.isEmpty, "You must not configure a domain provider registry after configuring individual domains!")
-		checkState(domainRepository === null || domainRepository == repository, "There is already another domain repository configured: %s", domainRepository)
-
-		this.domainRepository = repository
-		return this
-	}
 	
 	def VirtualModelBuilder withStorageFolder(File folder) {
 		withStorageFolder(folder.toPath)
@@ -55,41 +42,6 @@ class VirtualModelBuilder {
 		checkState(this.userInteractor === null || this.userInteractor == userInteractor,
 			"There is already another user interactor set: %s", this.userInteractor)
 		this.userInteractor = userInteractor
-		return this
-	}
-	
-	def VirtualModelBuilder withDomains(VitruvDomain... domains) {
-		for (domain : domains) withDomain(domain)
-		return this
-	}
-	
-	def VirtualModelBuilder withDomains(Iterable<VitruvDomain> domains) {
-		for (domain : domains) withDomain(domain)
-		return this
-	}
-	
-	def VirtualModelBuilder withDomain(VitruvDomain domain) {
-		checkState(domainRepository === null, "You must not configure individual domains after a domain repository was set!")
-		if (domains.contains(domain)) return this
-		
-		for (existingDomain : domains) {
-			for (nsURI : domain.nsUris) {
-				if (existingDomain.nsUris.contains(nsURI)) {
-					throw new IllegalArgumentException(
-						'''This virtual model configuration already contains the domain «domain» registering the nsURI «nsURI»!'''
-					)
-				}
-			}
-			for (fileExtension : domain.fileExtensions) {
-				if (existingDomain.fileExtensions.contains(fileExtension)) {
-					throw new IllegalArgumentException(
-						'''This virtual model configuration already contains the domain «domain» registering the file extension «fileExtension»!'''
-					)
-				}
-			}
-		}
-		
-		domains += domain
 		return this
 	}
 	
@@ -136,9 +88,6 @@ class VirtualModelBuilder {
 	def InternalVirtualModel buildAndInitialize() {
 		checkState(storageFolder !== null, "No storage folder was configured!")
 		checkState(userInteractor !== null, "No user interactor was configured!")
-		if (domainRepository === null) {
-			domainRepository = new VitruvDomainRepositoryImpl(domains)
-		}
 		val viewTypeRepository = new ViewTypeRepository()
 		viewTypes.forEach[viewTypeRepository.register(it)]
 		val changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications)
@@ -148,7 +97,7 @@ class VirtualModelBuilder {
 
 		val fileSystemLayout = new VsumFileSystemLayout(storageFolder)
 		fileSystemLayout.prepare()
-		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, viewTypeRepository, changeSpecificationRepository)
+		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, viewTypeRepository, changeSpecificationRepository)
 		vsum.loadExistingModels()
 		return vsum
 	}
