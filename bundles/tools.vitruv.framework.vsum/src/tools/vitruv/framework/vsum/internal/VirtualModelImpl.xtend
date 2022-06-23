@@ -17,7 +17,6 @@ import tools.vitruv.framework.views.ViewSelector
 import tools.vitruv.framework.views.ViewType
 import tools.vitruv.framework.views.ViewTypeProvider
 import tools.vitruv.framework.views.ViewTypeRepository
-import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 import static com.google.common.base.Preconditions.checkArgument
@@ -30,7 +29,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
-	val extension ChangeDomainExtractor changeDomainExtractor
 
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository, ViewTypeRepository viewTypeRepository,
@@ -38,7 +36,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.fileSystemLayout = fileSystemLayout
 		this.viewTypeRepository = viewTypeRepository
 		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
-		changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 		changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
