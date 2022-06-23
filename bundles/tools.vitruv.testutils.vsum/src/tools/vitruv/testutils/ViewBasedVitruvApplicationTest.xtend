@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach
 import tools.vitruv.change.propagation.ChangePropagationSpecification
 
 import static tools.vitruv.testutils.UriMode.*
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import org.junit.jupiter.api.TestInfo
 import java.nio.file.Path
 import tools.vitruv.framework.vsum.VirtualModelBuilder
@@ -16,7 +15,6 @@ import static com.google.common.base.Preconditions.checkArgument
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
@@ -40,15 +38,9 @@ abstract class ViewBasedVitruvApplicationTest {
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		userInteraction = new TestUserInteraction
-		val domains = new VitruvDomainRepositoryImpl(
-			changePropagationSpecifications.flatMap[sourceMetamodelDescriptor.nsUris + targetMetamodelDescriptor.nsUris].flatMap [
-				VitruvDomainProviderRegistry.findDomainsForMetamodelRootNsUri(it)
-			].toSet
-		)
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
-		.withDomainRepository(domains) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
 		this.testProjectPath = testProjectPath
 	}
