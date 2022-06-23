@@ -118,5 +118,9 @@ public class DefaultImplementations {
 			return null;
 		}
 
+		@Override
+		public void setTransitivePropagationEnabled(boolean enabled) {
+		}
+
 	}
 }
