@@ -8,7 +8,6 @@ import java.util.Set;
 
 import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.change.composite.propagation.ChangePropagationAbortCause;
 import tools.vitruv.change.composite.propagation.ChangePropagationListener;
 import tools.vitruv.change.composite.propagation.ChangeableModelRepository;
 import tools.vitruv.extensions.changevisualization.tree.decoder.TreeChangeDataSetDecoder;
