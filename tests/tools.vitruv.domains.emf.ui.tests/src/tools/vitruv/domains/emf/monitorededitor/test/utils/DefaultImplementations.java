@@ -119,7 +119,7 @@ public class DefaultImplementations {
 		}
 
 		@Override
-		public void setTransitivePropagationEnabled(boolean enabled) {
+		public void setTransitiveChangePropagationEnabled(boolean enabled) {
 		}
 
 	}

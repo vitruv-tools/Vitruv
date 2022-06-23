@@ -145,8 +145,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		viewType.createSelector(this)
 	}
 	
-	override setTransitivePropagationEnabled(boolean enabled) {
-		changePropagator.transitivePropagationEnabled = enabled
+	override setTransitiveChangePropagationEnabled(boolean enabled) {
+		changePropagator.transitiveChangePropagationEnabled = enabled
 	}
 	
 }

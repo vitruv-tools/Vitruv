@@ -12,5 +12,5 @@ interface VirtualModel extends ChangeableModelRepository, ViewProvider, ViewType
 	 * Enables or disables transitive propagation of changes when passed to {@link #propagateChange(VitruviusChange)}.
 	 * Transitive propagation is enabled by default.
 	 */
-	def void setTransitivePropagationEnabled(boolean enabled)
+	def void setTransitiveChangePropagationEnabled(boolean enabled)
 }
