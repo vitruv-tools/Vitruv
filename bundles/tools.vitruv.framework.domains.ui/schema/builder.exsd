@@ -6,7 +6,7 @@
          <meta.schema plugin="tools.vitruv.framework.domains.ui" id="builder" name="Vitruvius Project Builder"/>
       </appinfo>
       <documentation>
-         Defines a VitruvProjectBuilder to use for a specified VitruvDomain.
+         Defines a VitruvProjectBuilder to use for a specific kind of monitoring changes.
       </documentation>
    </annotation>
 
@@ -52,21 +52,18 @@
          <attribute name="builderId" type="string" use="required">
             <annotation>
                <documentation>
-                  The id of the builder to apply for the specified domain. The builder should be a subclass of VitruvProjectBuilder.
+                  The id of the builder. The builder should be a subclass of VitruvProjectBuilder.
                </documentation>
                <appinfo>
                   <meta.attribute kind="identifier" basedOn="org.eclipse.core.resources.builders/@id"/>
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="domain" type="string" use="required">
+         <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  The domain to apply the specified builder for.
+                  
                </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":tools.vitruv.framework.domains.VitruvDomain"/>
-               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -93,14 +90,13 @@
       name=&quot;Vitruv EMF Project Builder&quot;
       point=&quot;tools.vitruv.framework.domains.ui.builder&quot;&gt;
    &lt;assignment
-         builder_id=&quot;tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id&quot;
-         domain=&quot;tools.vitruv.framework.domains.AbstractVitruvDomain&quot;&gt;
+      name=&quot;Vitruv EMF Project Builder&quot;
+         builder_id=&quot;tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id&quot;&gt;
    &lt;/assignment&gt;
 &lt;/extension&gt;
 &lt;/pre&gt;
 &lt;/p&gt;
-The example registers a build with ID &quot;tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id&quot; as a default for all domains, defined by &quot;tools.vitruv.framework.domains.AbstractVitruvDomain&quot;.
-Using a subclass of that domain will apply the given builder only for the specified domain.
+The example registers a build with ID &quot;tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id&quot;.
       </documentation>
    </annotation>
 
@@ -119,7 +115,7 @@ Using a subclass of that domain will apply the given builder only for the specif
          <meta.section type="copyright"/>
       </appinfo>
       <documentation>
-         Copyright (c) 2014-2021 vitruv.tools&lt;br&gt;
+         Copyright (c) 2014-2022 vitruv.tools&lt;br&gt;
 Karlsruhe Institute of Technology (KIT), Software Design and Quality, Karlsruhe, Germany
 
 This program and the accompanying materials are made 

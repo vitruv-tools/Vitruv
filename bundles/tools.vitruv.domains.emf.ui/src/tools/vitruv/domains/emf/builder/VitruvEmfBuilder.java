@@ -49,6 +49,10 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
     public VitruvEmfBuilder() {
         this(null, null, null);
     }
+    
+    private boolean monitorsModelWithFileExtension(String fileExtension) {
+    	return fileExtension != null && fileExtension != "" && (getMonitoredFileExtensions().isEmpty() || getMonitoredFileExtensions().contains(fileExtension));
+    }
 
     public VitruvEmfBuilder(final IResourceDeltaProviding resourceDeltaProviding,
             final IProjectProviding projectProviding, final EMFEditorMonitorFactory monitorFactory) {
@@ -101,7 +105,7 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
         return new IVitruviusAccessor() {
             @Override
             public boolean isModelMonitored(final URI modelUri) {
-                boolean doMonitor = getMonitoredFileExtensions().contains(modelUri.fileExtension());
+                boolean doMonitor = monitorsModelWithFileExtension(modelUri.fileExtension());
                 doMonitor &= VitruvEmfBuilder.this.isFileBelongingToThisProject(modelUri);
                 LOGGER.trace("Monitor " + modelUri + "? " + doMonitor);
                 return doMonitor;
@@ -134,7 +138,7 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
         public boolean visit(final IResourceDelta delta) throws CoreException {
             final IResource iResource = delta.getResource();
             final String fileExtension = iResource.getFileExtension();
-            final boolean isMonitoredResource = getMonitoredFileExtensions().contains(fileExtension);
+            final boolean isMonitoredResource = monitorsModelWithFileExtension(fileExtension);
             if (isMonitoredResource) {
                 switch (delta.getKind()) {
                 case IResourceDelta.ADDED:
@@ -230,7 +234,7 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
 
 	private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
 		final String fileExtension = iResource.getFileExtension();
-		if (getMonitoredFileExtensions().contains(fileExtension)) {
+		if (monitorsModelWithFileExtension(fileExtension)) {
 			final URI uri = createPlatformResourceURI(iResource);
 			try (CommittableView view = getViewForURI(uri).withChangeDerivingTrait()) {
 				switch (fileChangeKind) {
@@ -265,7 +269,7 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
 
     private void triggerSynchronisation(final IResource iResource) {
         LOGGER.trace("Triggering synchronization for " + iResource);
-        if (getMonitoredFileExtensions().contains(iResource.getFileExtension())) {
+        if (monitorsModelWithFileExtension(iResource.getFileExtension())) {
             final URI uri = createPlatformResourceURI(iResource);
             this.emfMonitor.triggerSynchronisation(uri);
         }

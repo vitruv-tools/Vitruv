@@ -12,15 +12,19 @@ import static com.google.common.base.Preconditions.checkArgument
 import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.buildIncrementally
 import java.nio.file.Path
+import org.eclipse.xtend.lib.annotations.Accessors
 
 final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicator {
 	static val LOGGER = Logger.getLogger(VitruvProjectBuilderApplicatorImpl)
 
+	@Accessors
+	val String name
 	val String builderId
 	var Boolean isPropagateAfterBuild = null
 	var Integer millisecondsToPropagateAfter = null
 	
-	new(String builderId) {
+	new(String name, String builderId) {
+		this.name = name
 		this.builderId = builderId
 	}
 
@@ -37,7 +41,7 @@ final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderAp
 	override void addBuilder(IProject project, Path virtualModelFolder, Set<String> fileExtensions) {
 		checkArgument(project !== null, "Project must not be null")
 		checkArgument(virtualModelFolder !== null, "Virtual model folder must not be null")
-		checkArgument(!fileExtensions.nullOrEmpty, "File extensions of builder must not be null or empty")
+		checkArgument(fileExtensions !== null, "File extensions of builder must not be")
 		try {
 			val copiedProjectDescription = project.description
 			if (!project.hasBuilder(builderId)) {
