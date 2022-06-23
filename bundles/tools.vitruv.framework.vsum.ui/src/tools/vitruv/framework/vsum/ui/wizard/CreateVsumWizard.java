@@ -9,7 +9,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import tools.vitruv.framework.applications.VitruvApplication;
-import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderApplicator;
 import tools.vitruv.framework.vsum.ui.util.VitruvInstanceCreator;
 
 import java.util.Map;
@@ -19,7 +19,7 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 	private static Logger logger = Logger.getLogger(CreateVsumWizard.class);
 	private static final String WINDOWTITLE = "New Vitruv Project";
 	protected ProjectNamePage projectNamePage;
-	protected DomainSelectionPage domainSelectionPage;
+	protected ApplicatorSelectionPage applicatorSelectionPage;
 	protected ApplicationSelectionPage applicationSelectionPage;
 	private boolean finished = false;
 	
@@ -38,10 +38,10 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		projectNamePage = new ProjectNamePage(this);
-		domainSelectionPage = new DomainSelectionPage();
+		applicatorSelectionPage = new ApplicatorSelectionPage();
 		applicationSelectionPage = new ApplicationSelectionPage();
 		addPage(projectNamePage);
-		addPage(domainSelectionPage);
+		addPage(applicatorSelectionPage);
 		addPage(applicationSelectionPage);
 	}
 
@@ -55,24 +55,21 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 		String name = projectNamePage.getEnteredName();
 		logger.info("Vitruvius wizard completed: ");
 		logger.info("  Vsum name: " + name);
-		Map<IProject, Set<VitruvDomain>> projectsToDomains = domainSelectionPage.getCheckedDomains();
+		Map<IProject, Set<VitruvProjectBuilderApplicator>> projectsToApplicators = applicatorSelectionPage.getCheckedApplicators();
 		Iterable<VitruvApplication> applications = applicationSelectionPage.getSelectedApplications();
-		for (IProject project : projectsToDomains.keySet()) {
-			for (VitruvDomain domain : projectsToDomains.get(project)) {
-				logger.info("  Selected domain " + domain.getName() + " in project " + project.getName());
+		for (IProject project : projectsToApplicators.keySet()) {
+			for (VitruvProjectBuilderApplicator applicator : projectsToApplicators.get(project)) {
+				logger.info("  Selected builder " + applicator.getName() + " in project " + project.getName());
 			}
 		}
 		for (VitruvApplication application : applications) {
 			logger.info("  Selected application: " + application.getName());
 		}
-		return new VitruvInstanceCreator(name, projectsToDomains, applications).createVsumProject();
+		return new VitruvInstanceCreator(name, projectsToApplicators, applications).createVsumProject();
 	}
 
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		if (page == domainSelectionPage) {
-			applicationSelectionPage.setDomains(domainSelectionPage.getSelectedDomains());
-		}
 		return super.getNextPage(page);
 	}
 
