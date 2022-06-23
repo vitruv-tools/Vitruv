@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import tools.vitruv.change.composite.description.PropagatedChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.propagation.ChangePropagationAbortCause;
 import tools.vitruv.change.composite.propagation.ChangePropagationListener;
 import tools.vitruv.change.composite.propagation.ChangeableModelRepository;
@@ -57,7 +58,7 @@ public class ModelRepositoryChanges implements ChangePropagationListener, Serial
 	}
 
 	@Override
-	public void startedChangePropagation() {
+	public void startedChangePropagation(VitruviusChange changeToPropagate) {
 		// Do nothing
 	}
 
@@ -73,11 +74,6 @@ public class ModelRepositoryChanges implements ChangePropagationListener, Serial
 		getDataSetGenerationListener().forEach(listener -> listener.changeDataSetGenerated(extractedDataSet));
 	}
 
-	@Override
-	public void abortedChangePropagation(ChangePropagationAbortCause cause) {
-		// Do nothing
-	}
-	
 	public void registerChangeDataSetGenerationListener(ChangeDataSetGenerationListener changeDataSetGenerationListener) {
 		getDataSetGenerationListener().add(changeDataSetGenerationListener);
 	}
