@@ -146,7 +146,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override setTransitiveChangePropagationEnabled(boolean enabled) {
-		changePropagator.transitiveChangePropagationEnabled = enabled
+		changePropagator.transitivePropagationEnabled = enabled
 	}
 	
 }
