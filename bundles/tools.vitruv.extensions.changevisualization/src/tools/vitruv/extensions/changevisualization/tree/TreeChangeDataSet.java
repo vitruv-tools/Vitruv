@@ -110,12 +110,10 @@ public class TreeChangeDataSet extends ChangeDataSet implements Serializable{
 	 * Constructs a new TreeChangeDataSet
 	 * 
 	 * @param id The ID of the changeDataSet
-	 * @param sourceModelInfo The source model info String
-	 * @param targetModelInfo The target model info String
 	 * @param rootNode The root node holding the whole tree
 	 */
-	public TreeChangeDataSet(String id, String sourceModelInfo, String targetModelInfo, DefaultMutableTreeNode rootNode) {
-		super(id, sourceModelInfo, targetModelInfo);
+	public TreeChangeDataSet(String id, DefaultMutableTreeNode rootNode) {
+		super(id);
 		this.rootNode=rootNode;				
 	}	
 

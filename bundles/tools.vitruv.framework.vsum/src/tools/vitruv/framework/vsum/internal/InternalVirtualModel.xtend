@@ -10,9 +10,5 @@ interface InternalVirtualModel extends VirtualModel, ChangeableViewSource {
 
 	def ModelInstance getModelInstance(URI modelUri)
 
-	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
-
-	def void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
-
 	def void dispose()
 }

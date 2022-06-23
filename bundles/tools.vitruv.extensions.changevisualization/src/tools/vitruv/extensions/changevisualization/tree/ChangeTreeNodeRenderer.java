@@ -14,7 +14,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
-import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
 
 /**
@@ -112,6 +111,18 @@ public class ChangeTreeNodeRenderer extends DefaultTreeCellRenderer {
 	 */
 	private Icon defaultClosedIcon;
 
+	private TabHighlighting tabHighlighting;
+	
+	private boolean isActive = false;
+	
+	public ChangeTreeNodeRenderer(TabHighlighting tabHighlighting) {
+		this.tabHighlighting = tabHighlighting;
+	}
+	
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf,
 			int row, boolean hasFocus) {
@@ -203,13 +214,11 @@ public class ChangeTreeNodeRenderer extends DefaultTreeCellRenderer {
 	 * @return true if we should be highlighted
 	 */
 	private boolean shouldHighlight(JTree tree, int row, Object value) {
-		// We dont highlight if there is nothing to highlight
-		ChangesTab activeTab = ChangeVisualizationUI.getInstance().getActiveChangesTab();
-		if (activeTab == null) {
-			// We are currently showing some other tab but none which holds changes
+		if (!isActive) {
 			return false;
 		}
-		String highlightID = activeTab == null ? null : activeTab.getHighlightID();
+		
+		String highlightID = tabHighlighting.getHighlightID();
 		if (highlightID == null) {
 			return false;
 		}

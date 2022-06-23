@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import tools.vitruv.extensions.changevisualization.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 
 /**
@@ -65,10 +66,8 @@ public class ChangeDataSetTable extends JPanel implements MouseWheelListener{
 		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 300 );//ID
 		table.getColumnModel().getColumn( 1 ).setPreferredWidth( 70 );//Time
 		table.getColumnModel().getColumn( 2 ).setPreferredWidth( 70 );//propagated changes
-		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//propagated changes
-		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//propagated changes
-		table.getColumnModel().getColumn( 5 ).setPreferredWidth( 70 );//original changes
-		table.getColumnModel().getColumn( 6 ).setPreferredWidth( 70 );//consequential changes
+		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//original changes
+		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//consequential changes
 
 		//Add the table to a scrollpane
 		JScrollPane scroller=new JScrollPane(table);
@@ -89,8 +88,6 @@ public class ChangeDataSetTable extends JPanel implements MouseWheelListener{
 		Vector<String> columnNames = new Vector<String>();
 		columnNames.add("ID");
 		columnNames.add("Time");
-		columnNames.add("Source Model");
-		columnNames.add("Target Model");
 		columnNames.add("Propagated changes");
 		columnNames.add("Original changes");
 		columnNames.add("Consequential changes");
@@ -109,9 +106,9 @@ public class ChangeDataSetTable extends JPanel implements MouseWheelListener{
 			//JTable uses this method to determine the default renderer editor for each cell
 			public Class<?> getColumnClass(int c) {
 				switch(c){
+				case 2:
+				case 3:
 				case 4:
-				case 5:
-				case 6:
 					return Integer.class;
 				case 1:
 					return Date.class;
@@ -226,8 +223,6 @@ public class ChangeDataSetTable extends JPanel implements MouseWheelListener{
 		Vector<Object> line=new Vector<Object>();
 		line.add(changeDataSet.getChangeDataSetID());		
 		line.add(changeDataSet.getCreationTime());
-		line.add(changeDataSet.getSourceModelInfo());
-		line.add(changeDataSet.getTargetModelInfo());
 		line.add(changeDataSet.getNrPropagatedChanges());
 		line.add(changeDataSet.getNrOriginalChanges());
 		line.add(changeDataSet.getNrConsequentialChanges());

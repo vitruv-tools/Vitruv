@@ -4,6 +4,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -17,7 +18,6 @@ import tools.vitruv.extensions.changevisualization.tree.decoder.feature.OldValue
 import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.atomic.EChange;
-import tools.vitruv.framework.domains.VitruvDomain;
 
 /**
  * Helper class to generate {@link TreeChangeDataSets}s from propagation results and
@@ -92,30 +92,15 @@ public class TreeChangeDataSetDecoder {
 	 * {@link ChangeDataSet} can be acquired.
 	 * 
 	 * @param id The id of the changeDataSet to create
-	 * @param sourceDomain The source model domain
-	 * @param targetDomain The target model domain
-	 * @param propagationResult The propagation result to decode
+	 * @param changes The changes to present, must not be <code>null</code>
 	 */
-	public TreeChangeDataSetDecoder(String id, VitruvDomain sourceDomain, VitruvDomain targetDomain,
-			List<PropagatedChange> propagationResult) {
-		
-		//Create the root node
-		rootNode=new DefaultMutableTreeNode(id);
-
-		//Walk all changes, create their nodes and update change counts
-		if(propagationResult!=null) {
-			//Walk all propagated changes and create its nodes
-			for(PropagatedChange propChange:propagationResult) {			
-				DefaultMutableTreeNode propChangeNode = encodeTree(propChange);		
-				//Add the propagated change node the root node. This node already has all sibling nodes created
-				rootNode.add(propChangeNode);		
-			}
+	public TreeChangeDataSetDecoder(String id, Iterable<PropagatedChange> changes) {
+		rootNode = new DefaultMutableTreeNode(id);
+		for(PropagatedChange propChange:changes) {			
+			DefaultMutableTreeNode propChangeNode = encodeTree(propChange);		
+			rootNode.add(propChangeNode);		
 		}
-		
-		String sourceModelInfo=sourceDomain==null?"-":sourceDomain.getName();
-		String targetModelInfo=targetDomain==null?"-":targetDomain.getName();
-		
-		changeDataSet=new TreeChangeDataSet(id, sourceModelInfo, targetModelInfo, rootNode);
+		changeDataSet = new TreeChangeDataSet(id, rootNode);
 		changeDataSet.setNrPropagatedChanges(getNrPropagatedChanges());
 		changeDataSet.setNrOriginalChanges(getNrOriginalChanges());
 		changeDataSet.setNrConsequentialChanges(getNrConsequentialChanges());
@@ -141,7 +126,9 @@ public class TreeChangeDataSetDecoder {
 		setNrPropagatedChanges(getNrPropagatedChanges()+1);
 		
 		//Create a propagated change childnode
-		DefaultMutableTreeNode propChangeNode=new DefaultMutableTreeNode(PROPAGATED_CHANGE_STRING+" "+getNrPropagatedChanges());
+		String sourceMetamodelsString = propChange.getOriginalChange().getAffectedEObjectsMetamodelDescriptors().stream().flatMap(descriptor -> descriptor.getNsUris().stream()).collect(Collectors.joining(", "));
+		String targetMetamodelsString = propChange.getConsequentialChanges().getAffectedEObjectsMetamodelDescriptors().stream().flatMap(descriptor -> descriptor.getNsUris().stream()).collect(Collectors.joining(", "));
+		DefaultMutableTreeNode propChangeNode=new DefaultMutableTreeNode(PROPAGATED_CHANGE_STRING+" "+getNrPropagatedChanges() + "(from: " + sourceMetamodelsString + "; to: " + targetMetamodelsString + ")");
 
 		//Process original changes
 		DefaultMutableTreeNode origNode = encodeTree(ChangeType.ORIGINAL_CHANGE,propChange.getOriginalChange());

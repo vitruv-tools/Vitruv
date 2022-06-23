@@ -47,16 +47,6 @@ public abstract class ChangeDataSet implements Serializable{
 	private final String id;
 	
 	/**
-	 * Information about the source model
-	 */
-	private final String sourceModelInfo;
-	
-	/**
-	 * Information about the target model
-	 */
-	private final String targetModelInfo;
-
-	/**
 	 * The number of propagated changes in this changeDataSet
 	 */
 	private int nrPropagatedChanges=0;
@@ -75,14 +65,10 @@ public abstract class ChangeDataSet implements Serializable{
 	 * This constructor is called by subclasses to initialize the general ChangeDataSet
 	 * 
 	 * @param id The ID of the changeDataSet
-	 * @param sourceModelInfo The source model info String
-	 * @param targetModelInfo The target model info String
 	 */
-	protected ChangeDataSet(String id, String sourceModelInfo, String targetModelInfo) {
+	protected ChangeDataSet(String id) {
 		this.id=id;
 		this.creationTime=new Date();
-		this.sourceModelInfo=sourceModelInfo;
-		this.targetModelInfo=targetModelInfo;		
 	}
 		
 	/**
@@ -167,22 +153,6 @@ public abstract class ChangeDataSet implements Serializable{
 	 */
 	public int getNrConsequentialChanges() {
 		return nrConsequentialChanges;
-	}
-	
-	/**
-	 * Returns the sourceModelInfo
-	 * @return The sourceModelInfo
-	 */
-	public String getSourceModelInfo() {
-		return sourceModelInfo;
-	}
-
-	/**
-	 * Returns the targetModelInfo
-	 * @return The targetModelInfo
-	 */
-	public String getTargetModelInfo() {
-		return targetModelInfo;
 	}
 
 	/**
