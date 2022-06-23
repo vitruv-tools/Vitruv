@@ -94,7 +94,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	private def void startChangePropagation(VitruviusChange change) {
 		if(LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
-		changePropagationListeners.forEach[startedChangePropagation]
+		changePropagationListeners.forEach[startedChangePropagation(change)]
 	}
 
 	private def void finishChangePropagation(VitruviusChange inputChange, Iterable<PropagatedChange> generatedChanges) {
