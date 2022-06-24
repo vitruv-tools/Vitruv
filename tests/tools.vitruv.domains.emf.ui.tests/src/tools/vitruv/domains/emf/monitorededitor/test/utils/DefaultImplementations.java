@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.change.composite.propagation.ChangePropagationListener;
+import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.change.composite.description.PropagatedChange;
@@ -119,7 +120,7 @@ public class DefaultImplementations {
 		}
 
 		@Override
-		public void setTransitiveChangePropagationEnabled(boolean enabled) {
+		public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
 		}
 
 	}

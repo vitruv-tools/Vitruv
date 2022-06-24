@@ -21,6 +21,7 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkNotNull
+import tools.vitruv.change.propagation.ChangePropagationMode
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -145,8 +146,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		viewType.createSelector(this)
 	}
 	
-	override setTransitiveChangePropagationEnabled(boolean enabled) {
-		changePropagator.transitivePropagationEnabled = enabled
+	override setChangePropagationMode(ChangePropagationMode changePropagationMode) {
+		changePropagator.changePropagationMode = changePropagationMode
 	}
 	
 }
