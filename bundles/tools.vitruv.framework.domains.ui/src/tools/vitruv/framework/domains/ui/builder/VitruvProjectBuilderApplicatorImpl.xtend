@@ -41,7 +41,7 @@ final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderAp
 	override void addBuilder(IProject project, Path virtualModelFolder, Set<String> fileExtensions) {
 		checkArgument(project !== null, "Project must not be null")
 		checkArgument(virtualModelFolder !== null, "Virtual model folder must not be null")
-		checkArgument(fileExtensions !== null, "File extensions of builder must not be")
+		checkArgument(fileExtensions !== null, "File extensions of builder must not be null")
 		try {
 			val copiedProjectDescription = project.description
 			if (!project.hasBuilder(builderId)) {

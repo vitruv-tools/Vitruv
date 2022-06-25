@@ -7,7 +7,7 @@ import java.nio.file.Path
 
 interface VitruvProjectBuilderApplicator {
 	/**
-	 * Returns the name of builder
+	 * Returns the name of the builder
 	 */
 	def String getName()
 	

@@ -18,7 +18,7 @@ final class VitruvProjectBuilderRegistry {
 	}
 
 	/**
-	 * Registers project builder with the given name and ID.
+	 * Registers a project builder with the given name and ID.
 	 */
 	def void registerProjectBuilder(String name, String projectBuilderId) {
 		checkArgument(!name.nullOrEmpty, "Project builder name must not be null or empty")
