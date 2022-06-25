@@ -9,7 +9,6 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.propagation.ChangePropagationListener
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.change.propagation.impl.ChangePropagator
 import tools.vitruv.change.interaction.InternalUserInteractor
@@ -32,11 +31,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
-		VitruvDomainRepository domainRepository, ViewTypeRepository viewTypeRepository,
+		ViewTypeRepository viewTypeRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
 		this.viewTypeRepository = viewTypeRepository
-		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
+		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout)
 		changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,

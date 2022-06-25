@@ -13,7 +13,6 @@ import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.change.composite.description.TransactionalChange
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.recording.ChangeRecorder
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.vsum.VirtualModel
 
 import static com.google.common.base.Preconditions.checkArgument
@@ -34,15 +33,14 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	var renewResourceCacheAfterPropagation = true
 
 	/**
-	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
+	 * Creates a test view that will store its persisted resources in the
 	 * provided {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction},
 	 * use the provided {@code uriMode}.
 	 */
 	new(
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
-		UriMode uriMode,
-		VitruvDomainRepository targetDomains
+		UriMode uriMode
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
@@ -51,7 +49,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	}
 
 	/**
-	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
+	 * Creates a test view that will store its persisted resources in the
 	 * provided {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction},
 	 * use the provided {@code uriMode} and be connected to the provided {@code virtualModel}.
 	 */
@@ -59,10 +57,9 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
 		UriMode uriMode,
-		VirtualModel virtualModel,
-		VitruvDomainRepository targetDomains
+		VirtualModel virtualModel
 	) {
-		this(persistenceDirectory, userInteraction, uriMode, targetDomains)
+		this(persistenceDirectory, userInteraction, uriMode)
 		registerChangeProcessor [change|virtualModel.propagateChange(change)]
 	}
 

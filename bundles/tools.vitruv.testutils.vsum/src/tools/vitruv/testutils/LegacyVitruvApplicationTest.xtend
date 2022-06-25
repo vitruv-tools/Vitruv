@@ -3,7 +3,6 @@ package tools.vitruv.testutils
 import tools.vitruv.testutils.VitruvApplicationTest
 import java.nio.file.Path
 import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.checkArgument
@@ -22,10 +21,8 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	@DelegateExcept(TestView)
 	NonTransactionalTestView testView
 
-	override generateTestView(Path testProjectPath, TestUserInteraction userInteraction,
-		VitruvDomainRepository targetDomains) {
-		val testView = new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel,
-			targetDomains)
+	override generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
+		val testView = new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
 		testView.renewResourceCacheAfterPropagation = false
 		this.testView = testView
 	}

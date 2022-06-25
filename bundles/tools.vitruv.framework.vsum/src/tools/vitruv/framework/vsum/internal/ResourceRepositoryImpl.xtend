@@ -6,7 +6,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
@@ -30,7 +29,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
 	val ResourceSet modelsResourceSet
 	val ResourceSet correspondencesResourceSet
-	val VitruvDomainRepository domainRepository
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
@@ -72,8 +70,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		}
 	}
 
-	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
-		this.domainRepository = domainRepository
+	new(VsumFileSystemLayout fileSystemLayout) {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
@@ -134,13 +131,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 			if (!hasRecorder(modelInstance.URI.fileExtension)) {
-				val domain = domainRepository.getDomainForFileExtension(modelInstance.URI.fileExtension)
-				val fileExtensions = if (domain !== null) {  
-					domain.fileExtensions
-				} else {
-					#{modelInstance.URI.fileExtension}
-				}
-				registerRecorder(fileExtensions, modelsResourceSet)
+				registerRecorder(#{modelInstance.URI.fileExtension}, modelsResourceSet)
 			}
 			val recorder = getRecorder(modelInstance.URI.fileExtension)
 			recorder.addToRecording(modelInstance.resource)

@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.change.composite.description.PropagatedChange
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 import static com.google.common.base.Preconditions.checkArgument
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
@@ -33,23 +32,22 @@ class BasicTestView implements TestView {
 	val UriMode uriMode
 
 	/**
-	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
-	 *  provided {@code persistenceDirectory}, and use the provided {@code uriMode}.
+	 * Creates a test view that will store its persisted resources in the
+	 * provided {@code persistenceDirectory}, and use the provided {@code uriMode}.
 	 */
-	new(Path persistenceDirectory, UriMode uriMode, VitruvDomainRepository targetDomains) {
-		this(persistenceDirectory, new TestUserInteraction(), uriMode, targetDomains)
+	new(Path persistenceDirectory, UriMode uriMode) {
+		this(persistenceDirectory, new TestUserInteraction(), uriMode)
 	}
 
 	/**
-	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
+	 * Creates a test view that will store its persisted resources in the
 	 * provided {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction},
 	 * and use the provided {@code uriMode}.
 	 */
 	new(
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
-		UriMode uriMode,
-		VitruvDomainRepository targetDomains
+		UriMode uriMode
 	) {
 		this(
 			persistenceDirectory,

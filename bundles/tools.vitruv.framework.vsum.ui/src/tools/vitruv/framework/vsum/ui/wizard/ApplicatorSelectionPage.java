@@ -19,9 +19,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.domains.VitruvDomainProvider;
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry;
+import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderApplicator;
 import tools.vitruv.framework.vsum.ui.util.ProjectCreator;
 
 import java.util.HashMap;
@@ -29,22 +27,22 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DomainSelectionPage extends WizardPage {
+public class ApplicatorSelectionPage extends WizardPage {
 
 	private static final String DEFAULT_NEW_PROJECT_NAME = "MyProject";
 	private static final String CREATE_PROJECT_BUTTON_LABEL = "Create new project";
-	private static final String SELECTION_LABEL = "Select involved projects and their domains:";
-	private static final String PAGENAME = "Project and Domain Selection";
-	private static final String DESCRIPTION = "Select projects and their domains";
-	private Map<IProject, Set<VitruvDomain>> selectedDomainsForProjects;
+	private static final String SELECTION_LABEL = "Select involved projects and their monitors:";
+	private static final String PAGENAME = "Project and Monitor Selection";
+	private static final String DESCRIPTION = "Select projects and their monitors";
+	private Map<IProject, Set<VitruvProjectBuilderApplicator>> selectedApplicatorsForProjects;
 	private Tree tree;
 	private Composite container;
 	
-	protected DomainSelectionPage() {
+	protected ApplicatorSelectionPage() {
 		super(PAGENAME);
 		setTitle(PAGENAME);
 		setDescription(DESCRIPTION);
-		this.selectedDomainsForProjects = new HashMap<>();
+		this.selectedApplicatorsForProjects = new HashMap<>();
 	}
 
 	@Override
@@ -72,17 +70,17 @@ public class DomainSelectionPage extends WizardPage {
 						// check a project automatically, when one of it's domains is checked
 						if (null != parent) {
 							parent.setChecked(true);
-							selectedDomainsForProjects.get(parent.getData()).add((VitruvDomain) item.getData());
+							selectedApplicatorsForProjects.get(parent.getData()).add((VitruvProjectBuilderApplicator) item.getData());
 						}
 					} else {
 						// all domains get unselected, when project is unselected
 						if (null == parent) {
 							for (TreeItem child : item.getItems()) {
 								child.setChecked(false);
-								selectedDomainsForProjects.get(item.getData()).remove(child.getData());
+								selectedApplicatorsForProjects.get(item.getData()).remove(child.getData());
 							}
 						} else {
-							selectedDomainsForProjects.get(parent.getData()).remove(item.getData());
+							selectedApplicatorsForProjects.get(parent.getData()).remove(item.getData());
 						}
 					}
 					// only finish if something is checked.
@@ -126,43 +124,43 @@ public class DomainSelectionPage extends WizardPage {
 	private void initializeProjectList() {
 		tree.removeAll();
 		IProject projects[] = getProjects();
-		Iterable<VitruvDomainProvider<?>> domainProviders = VitruvDomainProviderRegistry.getAllDomainProviders();
+		Iterable<VitruvProjectBuilderApplicator> applicators = VitruvProjectBuilderApplicator.getApplicators();
 		for (IProject project : projects) {
 			TreeItem t = new TreeItem(tree, SWT.CHECK);
 			t.setText(project.getName());
 			t.setData(project);
-			selectedDomainsForProjects.put(project, new HashSet<>());
-			for (VitruvDomainProvider<?> provider : domainProviders) {
+			selectedApplicatorsForProjects.put(project, new HashSet<>());
+			for (VitruvProjectBuilderApplicator applicator : applicators) {
 				TreeItem childItem = new TreeItem(t, SWT.CHECK);
-				childItem.setText(provider.getDomain().getName());
-				childItem.setData(provider.getDomain());
+				childItem.setText(applicator.getName());
+				childItem.setData(applicator);
 			}
 		}
 	}
 	
 	/**
 	 * Returns a HashMap of Projects, where every project is mapped to all of
-	 * it's selected domains, respectively.
+	 * it's selected applicators, respectively.
 	 * 
-	 * @return a HashMap that maps all project to their checked domains,
+	 * @return a HashMap that maps all project to their checked applicators,
 	 *         respectively
 	 */
-	public Map<IProject, Set<VitruvDomain>> getCheckedDomains() {
-		return selectedDomainsForProjects;
+	public Map<IProject, Set<VitruvProjectBuilderApplicator>> getCheckedApplicators() {
+		return selectedApplicatorsForProjects;
 	}
 
 	private IProject[] getProjects() {
 		return ResourcesPlugin.getWorkspace().getRoot().getProjects();
 	}
 
-	Iterable<VitruvDomain> getSelectedDomains() {
-		Set<VitruvDomain> domains = new HashSet<>();
-		for (Set<VitruvDomain> domainSet : selectedDomainsForProjects.values()) {
-			for (VitruvDomain domain : domainSet) {
-				domains.add(domain);
+	Iterable<VitruvProjectBuilderApplicator> getSelectedApplicators() {
+		Set<VitruvProjectBuilderApplicator> applicators = new HashSet<>();
+		for (Set<VitruvProjectBuilderApplicator> applicatorsSet : selectedApplicatorsForProjects.values()) {
+			for (VitruvProjectBuilderApplicator applicator : applicatorsSet) {
+				applicators.add(applicator);
 			}
 		}
-		return domains;
+		return applicators;
 	}
 
 }

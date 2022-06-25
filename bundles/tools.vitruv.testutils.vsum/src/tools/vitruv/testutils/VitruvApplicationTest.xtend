@@ -6,15 +6,12 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.change.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 import static tools.vitruv.testutils.UriMode.*
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class VitruvApplicationTest implements TestView {
@@ -37,22 +34,15 @@ abstract class VitruvApplicationTest implements TestView {
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val userInteraction = new TestUserInteraction
-		val domains = new VitruvDomainRepositoryImpl(
-			changePropagationSpecifications.flatMap[sourceMetamodelDescriptor.nsUris + targetMetamodelDescriptor.nsUris].flatMap [
-				VitruvDomainProviderRegistry.findDomainsForMetamodelRootNsUri(it)
-			].toSet
-		)
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
-		.withDomainRepository(domains) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
-		testView = generateTestView(testProjectPath, userInteraction, domains)
+		testView = generateTestView(testProjectPath, userInteraction)
 	}
 
-	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction,
-		VitruvDomainRepository targetDomains) {
-		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel, targetDomains)
+	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
+		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
 	}
 
 	@AfterEach

@@ -24,6 +24,21 @@ abstract class VitruvProjectBuilder extends IncrementalProjectBuilder {
 	protected def Set<String> getMonitoredFileExtensions() {
 		command.fileExtensions
 	}
+	
+	/**
+	 * The builder is supposed to monitor only changes of files having one of the monitored file extensions,
+	 * according to {@link #getMonitoredFileExtensions()}. Not having any file extensions explicitly specified means
+	 * that the builder will monitor changes of every file it can process. 
+	 * 
+	 * @param fileExtension the file extension to query for being monitored, must not be {@code null}
+	 * @return {@code true} if the given file extension is monitored, either because it is specified as a
+	 * monitored file extension according to {@link #getMonitoredFileExtensions} or because no restriction of
+	 * monitored file extensions is specified, i.e., the return value of 
+	 * {@link #getMonitoredFileExtensions} is empty; {@code false} otherwise 
+	 */
+    protected def boolean isMonitoringChangesOfFilesWithExtension(String fileExtension) {
+    	return getMonitoredFileExtensions().isEmpty() || (!fileExtension.nullOrEmpty && getMonitoredFileExtensions().contains(fileExtension));
+    }
 
 	private def void initializeBuilder() {
 		startMonitoring
