@@ -3,8 +3,8 @@ name: CI
 on:
   push:
     branches: [master]
-  create:
-    tags:
+  release:
+    types: [created]
   pull_request:
   schedule:
     - cron: '0 3 * * *' # run nightly at 3:00 am
@@ -50,13 +50,13 @@ jobs:
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
       - name: Determine Release Version
-        if: startsWith(github.ref, 'refs/tags/releases/') && github.repository_owner == 'vitruv-tools'
+        if: github.event_name == 'release' && github.repository_owner == 'vitruv-tools'
         id: releaseVersion
-        uses: little-core-labs/get-git-tag@v3.0.2
-        with:
-           tagRegex: "releases/(.*)"
+        run: |
+          releaseVersion=$(echo ${{ github.event.release.tag_name }} | sed 's/^releases\///') #trimm "releases/" prefix from tag name
+          echo "::set-output name=tag::$releaseVersion"
       - name: Publish Release Update Site
-        if: startsWith(github.ref, 'refs/tags/releases/') && github.repository_owner == 'vitruv-tools'
+        if: github.event_name == 'release' && github.repository_owner == 'vitruv-tools'
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
