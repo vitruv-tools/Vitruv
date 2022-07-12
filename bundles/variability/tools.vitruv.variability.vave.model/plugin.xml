@@ -26,4 +26,12 @@
             genModel="metamodel/vave.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated featuremodel -->
+      <package
+            uri="http://tools.vitruv/FeatureModel/1.0"
+            class="tools.vitruv.variability.vave.model.featuremodel.FeaturemodelPackage"
+            genModel="metamodel/featuremodel.genmodel"/>
+   </extension>
+
 </plugin>

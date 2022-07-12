@@ -11,7 +11,10 @@ Export-Package: tools.vitruv.variability.vave.model.vave,
  tools.vitruv.variability.vave.model.vave.util,
  tools.vitruv.variability.vave.model.expression,
  tools.vitruv.variability.vave.model.expression.impl,
- tools.vitruv.variability.vave.model.expression.util
+ tools.vitruv.variability.vave.model.expression.util,
+ tools.vitruv.variability.vave.model.featuremodel,
+ tools.vitruv.variability.vave.model.featuremodel.impl,
+ tools.vitruv.variability.vave.model.featuremodel.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  tools.vitruv.framework.change.echange;visibility:=reexport,

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.variability.vave.model/src-gen" editDirectory="/tools.vitruv.variability.vave.model.edit/src-gen"
+    editorDirectory="/tools.vitruv.variability.vave.model.editor/src-gen" modelPluginID="tools.vitruv.variability.vave.model"
+    modelName="Featuremodel" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="/tools.vitruv.variability.vave.model.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../tools.vitruv.framework.change.echange/metamodel/echange.genmodel#//echange expression.genmodel#//expression vave.genmodel#//vave"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>featuremodel.ecore</foreignModel>
+  <genPackages prefix="Featuremodel" basePackage="tools.vitruv.variability.vave.model"
+      disposableProviderFactory="true" ecorePackage="featuremodel.ecore#/">
+    <genClasses ecoreClass="featuremodel.ecore#//FeatureModel">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//FeatureModel/systemRevision"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//FeatureModel/rootFeatures"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//FeatureModel/crossTreeConstraints"/>
+    </genClasses>
+    <genClasses ecoreClass="featuremodel.ecore#//ViewFeature">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/originalRevisions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/originalFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/childTreeConstraints"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/parentTreeConstraint"/>
+    </genClasses>
+    <genClasses ecoreClass="featuremodel.ecore#//ViewTreeConstraint">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewTreeConstraint/originalTreeConstraint"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewTreeConstraint/childFeatures"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewTreeConstraint/parentFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="featuremodel.ecore#//ViewCrossTreeConstraint">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewCrossTreeConstraint/originalCrossTreeConstraint"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewCrossTreeConstraint/expression"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

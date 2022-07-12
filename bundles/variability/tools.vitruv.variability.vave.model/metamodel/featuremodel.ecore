@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="featuremodel" nsURI="http://tools.vitruv/FeatureModel/1.0" nsPrefix="featuremodel">
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="systemRevision" lowerBound="1"
+        eType="ecore:EClass vave.ecore#//SystemRevision"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rootFeatures" lowerBound="1"
+        upperBound="-1" eType="#//ViewFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="crossTreeConstraints" upperBound="-1"
+        eType="#//ViewCrossTreeConstraint"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalRevisions" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass vave.ecore#//FeatureRevision"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalFeature" lowerBound="1"
+        eType="ecore:EClass vave.ecore#//Feature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childTreeConstraints" upperBound="-1"
+        eType="#//ViewTreeConstraint" eOpposite="#//ViewTreeConstraint/parentFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentTreeConstraint" lowerBound="1"
+        eType="#//ViewTreeConstraint" eOpposite="#//ViewTreeConstraint/childFeatures"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewTreeConstraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalTreeConstraint"
+        lowerBound="1" eType="ecore:EClass vave.ecore#//TreeConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childFeatures" lowerBound="1"
+        upperBound="-1" eType="#//ViewFeature" eOpposite="#//ViewFeature/parentTreeConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentFeature" lowerBound="1"
+        eType="#//ViewFeature" eOpposite="#//ViewFeature/childTreeConstraints"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ViewCrossTreeConstraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalCrossTreeConstraint"
+        lowerBound="1" eType="ecore:EClass vave.ecore#//CrossTreeConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1">
+      <eGenericType eClassifier="ecore:EClass expression.ecore#//Expression">
+        <eTypeArguments eClassifier="ecore:EClass vave.ecore#//FeatureOption"/>
+      </eGenericType>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>
