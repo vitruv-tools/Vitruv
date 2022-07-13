@@ -20,7 +20,7 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import tools.vitruv.variability.vave.impl.FeatureModel;
+import tools.vitruv.variability.vave.util.FeatureModel;
 import tools.vitruv.variability.vave.util.OptionsCollector;
 import vavemodel.Configuration;
 import vavemodel.Expression;

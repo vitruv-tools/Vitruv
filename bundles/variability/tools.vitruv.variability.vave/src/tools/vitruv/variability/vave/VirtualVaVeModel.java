@@ -5,14 +5,14 @@ import java.nio.file.Path;
 
 import tools.vitruv.variability.vave.impl.ExternalizeDomainResult;
 import tools.vitruv.variability.vave.impl.ExternalizeProductResult;
-import tools.vitruv.variability.vave.impl.FeatureModel;
 import tools.vitruv.variability.vave.impl.InternalizeChangesResult;
 import tools.vitruv.variability.vave.impl.InternalizeDomainResult;
-import vavemodel.Configuration;
-import vavemodel.Expression;
-import vavemodel.FeatureOption;
-import vavemodel.System;
-import vavemodel.SystemRevision;
+import tools.vitruv.variability.vave.model.expression.Expression;
+import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.vave.Configuration;
+import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.System;
+import tools.vitruv.variability.vave.model.vave.SystemRevision;
 
 public interface VirtualVaVeModel {
 

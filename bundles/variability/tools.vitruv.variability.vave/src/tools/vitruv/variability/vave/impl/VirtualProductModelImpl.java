@@ -14,13 +14,11 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import vavemodel.Configuration;
-import vavemodel.Feature;
+import tools.vitruv.variability.vave.model.vave.Configuration;
 
 public class VirtualProductModelImpl extends VirtualModelImpl implements VirtualProductModel {
 
 	private Configuration configuration;
-//	private Collection<Feature[]> hints;
 	private VirtualVaVeModel vave;
 
 	// original changes
@@ -29,7 +27,6 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	public VirtualProductModelImpl(VirtualVaVeModel vave, final Configuration configuration, final VsumFileSystemLayout fileSystemLayout, final InternalUserInteractor userInteractor, final VitruvDomainRepository domainRepository, final ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		super(fileSystemLayout, userInteractor, domainRepository, changePropagationSpecificationProvider);
 		this.configuration = configuration;
-//		this.hints = new ArrayList<>();
 	}
 
 	@Override
@@ -52,10 +49,5 @@ public class VirtualProductModelImpl extends VirtualModelImpl implements Virtual
 	public void clearDeltas() {
 		this.deltas.clear();
 	}
-
-//	@Override
-//	public void addHint(Feature[] featureInteraction) {
-//		this.hints.add(featureInteraction);
-//	}
 
 }

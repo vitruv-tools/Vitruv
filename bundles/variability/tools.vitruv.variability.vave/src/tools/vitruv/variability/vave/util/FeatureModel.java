@@ -1,4 +1,4 @@
-package tools.vitruv.variability.vave.impl;
+package tools.vitruv.variability.vave.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,8 +16,6 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
-import tools.vitruv.variability.vave.util.ExpressionToSATConverter;
-import tools.vitruv.variability.vave.util.OptionsCollector;
 import vavemodel.Configuration;
 import vavemodel.CrossTreeConstraint;
 import vavemodel.Expression;
