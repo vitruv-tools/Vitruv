@@ -1,7 +1,7 @@
 package tools.vitruv.framework.views.changederivation
 
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChange
 
 /** 
  * Strategy for resolving state-based changes to individual change sequences.

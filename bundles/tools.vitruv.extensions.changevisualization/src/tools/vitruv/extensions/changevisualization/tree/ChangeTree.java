@@ -31,9 +31,9 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import tools.vitruv.extensions.changevisualization.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
-import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.LabelValuePanel;
 
 /**
@@ -92,7 +92,7 @@ public class ChangeTree extends ChangeComponent {
 	/**
 	 * The renderer that renders the nodes of the tree
 	 */
-	private final ChangeTreeNodeRenderer changeEventTreeRenderer=new ChangeTreeNodeRenderer();
+	private final ChangeTreeNodeRenderer changeEventTreeRenderer;
 
 	/**
 	 * The splitpane splitting tree from details
@@ -186,13 +186,14 @@ public class ChangeTree extends ChangeComponent {
 	/**
 	 * Constructs a ChangeTree UI visualizing change events in the form of a tree
 	 */
-	public ChangeTree() {
+	public ChangeTree(TabHighlighting tabHighlighting) {
 		super(new BorderLayout());
 		
 		createUI();
+		this.changeEventTreeRenderer = new ChangeTreeNodeRenderer(tabHighlighting);
 		
 		//Add listeners and renderes to the treeUI and scrollpane
-		ml=new TreeMouseListener();
+		ml=new TreeMouseListener(tabHighlighting);
 		treeUI.addMouseListener(ml);
 
 		treeUI.getSelectionModel().addTreeSelectionListener(tsl);
@@ -217,8 +218,16 @@ public class ChangeTree extends ChangeComponent {
 				}
 			}
 		});
-
-	}	
+	}
+	
+	public void setEnabled(boolean isEnabled) {
+		changeEventTreeRenderer.setEnabled(isEnabled);
+		if (isEnabled) {
+			treeUI.addMouseListener(ml);
+		} else {
+			treeUI.removeMouseListener(ml);
+		}
+	}
 
 	/**
 	 * Creates the UI

@@ -22,13 +22,6 @@ jobs:
           repository: vitruv-tools/Vitruv-DSLs
           ref: main
           fetch-depth: 0
-      - name: Checkout CBS Domains
-        uses: actions/checkout@v3
-        with:
-          path: cbsdomains
-          repository: vitruv-tools/Vitruv-Domains-ComponentBasedSystems
-          ref: master
-          fetch-depth: 0
       - name: Checkout CBS Applications
         uses: actions/checkout@v3
         with:
@@ -36,11 +29,9 @@ jobs:
           repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
           ref: master
           fetch-depth: 0
-      - name: Checkout Matching Domains/Applications Branches
+      - name: Checkout Matching DSLs/Applications Branches
         run: |
           cd dsls
-          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
-          cd ../cbsdomains
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
           cd ../cbsapplications
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
@@ -84,20 +75,6 @@ jobs:
             -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
         env:
           MAVEN_OPTS: -Djansi.force=true
-      - name: Build Domains
-        working-directory: ./cbsdomains
-        run: >
-            ./mvnw -B -U clean verify
-            '-Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework'
-            '-Dstyle.color=always'
-            '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-            '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn'
-            '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn'
-            '-Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn'
-            '-Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn'
-            '-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog'
-        env: 
-          MAVEN_OPTS: -Djansi.force=true
       - name: Build Applications
         uses: GabrielBB/xvfb-action@v1
         with:
@@ -106,7 +83,6 @@ jobs:
             ./mvnw -B -U clean verify
             -Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework
             -Dvitruv.dsls.path=${GITHUB_WORKSPACE}/dsls
-            -Dvitruv.domains.path=${GITHUB_WORKSPACE}/cbsdomains
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn

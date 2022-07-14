@@ -17,5 +17,4 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.activextendannotations,
  edu.kit.ipd.sdq.commons.util.emf,
  edu.kit.ipd.sdq.commons.util.java
-Export-Package: tools.vitruv.testutils,
- tools.vitruv.testutils.domains
+Export-Package: tools.vitruv.testutils

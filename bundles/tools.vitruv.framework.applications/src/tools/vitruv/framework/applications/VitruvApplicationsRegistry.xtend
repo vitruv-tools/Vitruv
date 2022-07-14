@@ -6,9 +6,11 @@ import java.util.HashSet
 import java.util.Collections
 import java.util.List
 import org.eclipse.core.runtime.Platform
+import org.apache.log4j.Logger
 
 class VitruvApplicationsRegistry {
 	public static String EXTENSION_POINT_ID = "tools.vitruv.framework.applications.application"
+	static Logger LOGGER = Logger.getLogger(VitruvApplicationsRegistry)
 	
 	@Accessors(PUBLIC_GETTER)
 	static VitruvApplicationsRegistry instance = new VitruvApplicationsRegistry
@@ -49,7 +51,12 @@ class VitruvApplicationsRegistry {
 		val List<VitruvApplication> applications = newArrayList();
 		if (Platform.running) {
 			Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
-				it.createExecutableExtension("class")
+				try {
+					it.createExecutableExtension("class")
+				} catch (Exception e) {
+					LOGGER.warn("Error when loading application for extension " + it)
+					null;
+				}
 			].filter(VitruvApplication).forEach[applications.add(it)];
 		}
 		return applications;

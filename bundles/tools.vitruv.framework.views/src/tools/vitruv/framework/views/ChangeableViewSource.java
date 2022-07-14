@@ -1,6 +1,6 @@
 package tools.vitruv.framework.views;
 
-import tools.vitruv.framework.change.propagation.ChangeableModelRepository;
+import tools.vitruv.change.composite.propagation.ChangeableModelRepository;
 
 /**
  * A specific {@link ViewSource} that can be changed, such that views are able

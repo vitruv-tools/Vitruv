@@ -3,12 +3,11 @@ package tools.vitruv.testutils
 import tools.vitruv.testutils.VitruvApplicationTest
 import java.nio.file.Path
 import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.checkArgument
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
-import static extension tools.vitruv.framework.change.echange.id.ObjectResolutionUtil.getHierarchicUriFragment
+import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.
@@ -22,10 +21,8 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	@DelegateExcept(TestView)
 	NonTransactionalTestView testView
 
-	override generateTestView(Path testProjectPath, TestUserInteraction userInteraction,
-		VitruvDomainRepository targetDomains) {
-		val testView = new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel,
-			targetDomains)
+	override generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
+		val testView = new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
 		testView.renewResourceCacheAfterPropagation = false
 		this.testView = testView
 	}

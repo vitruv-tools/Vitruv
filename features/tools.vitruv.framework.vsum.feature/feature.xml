@@ -20,17 +20,22 @@
    </license>
 
    <requires>
+      <import plugin="tools.vitruv.change.propagation"/>
       <import plugin="com.google.guava"/>
+      <import plugin="org.apache.log4j"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
       <import plugin="org.eclipse.xtend.lib"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.apache.log4j"/>
-      <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.eclipse"/>
+      <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
+      <import plugin="tools.vitruv.change.composite"/>
       <import plugin="org.eclipse.emf.compare"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.commands"/>
       <import plugin="org.eclipse.jface"/>
@@ -38,23 +43,11 @@
       <import plugin="org.eclipse.emf.transaction"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.ui"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor"/>
-      <import feature="tools.vitruv.framework.change.feature" version="2.1.0.qualifier"/>
-      <import plugin="tools.vitruv.framework.propagation"/>
-      <import plugin="tools.vitruv.framework.change"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.eclipse"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
+      <import feature="tools.vitruv.change.feature" version="2.1.0.qualifier"/>
    </requires>
 
    <plugin
          id="tools.vitruv.framework.applications"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.domains"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -10,6 +10,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import tools.vitruv.extensions.changevisualization.ChangeVisualizationUI;
+
 /**
  * A dialog displaying some information the user can select 
  * 

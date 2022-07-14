@@ -3,7 +3,7 @@ package tools.vitruv.framework.vsum.internal
 import org.eclipse.emf.common.util.URI
 import java.util.Collection
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.propagation.ChangeRecordingModelRepository
+import tools.vitruv.change.propagation.ChangeRecordingModelRepository
 
 package interface ModelRepository extends ChangeRecordingModelRepository {
 	/**

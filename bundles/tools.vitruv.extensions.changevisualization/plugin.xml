@@ -5,11 +5,11 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            name="Sample Category"
+            name="Vitruv"
             id="tools.vitruv.extensions.changevisualization.commands.category">
       </category>
       <command
-            name="Enable change visualization"
+            name="Show Change Visualization Dialog"
             categoryId="tools.vitruv.extensions.changevisualization.commands.category"
             id="tools.vitruv.extensions.changevisualization.commands.sampleCommand">
       </command>
@@ -22,22 +22,13 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            sequence="M1+6"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-   </extension>
-   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          <command
                commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
-               label="Toggle change visualization"
+               label="Show Change Visualization Dialog"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -57,7 +48,7 @@
             locationURI="popup:org.eclipse.sirius.ui.tools.views.model.explorer#PopupMenu">
          <command
                commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
-               label="Toggle change visualization"
+               label="Show Change Visualization Dialog"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -77,7 +68,7 @@
             locationURI="popup:org.eclipse.papyrus.views.modelexplorer">
          <command
                commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
-               label="Toggle change visualization"
+               label="Show Change Visualization Dialog"
                style="push">
             <visibleWhen
                   checkEnabled="false">

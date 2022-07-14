@@ -13,12 +13,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import tools.vitruv.framework.applications.VitruvApplication;
 import tools.vitruv.framework.applications.VitruvApplicationsRegistry;
-import tools.vitruv.framework.domains.VitruvDomain;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 public class ApplicationSelectionPage extends WizardPage {
 
@@ -35,7 +32,6 @@ public class ApplicationSelectionPage extends WizardPage {
 		setTitle(PAGENAME);
 		setDescription(DESCRIPTION);
 		selectedApplications = new HashSet<>();
-		tree = null;
 	}
 
 	@Override
@@ -67,36 +63,24 @@ public class ApplicationSelectionPage extends WizardPage {
 
 		setControl(container);
 		setPageComplete(false);
+		addApplications();
 	}
 
 	public Collection<VitruvApplication> getSelectedApplications() {
 		return selectedApplications;
 	}
 
-	public void setDomains(Iterable<VitruvDomain> domains) {
-		tree.removeAll();
-		List<VitruvDomain> selectedDomains = new ArrayList<>();
-		for (VitruvDomain domain : domains) {
-			selectedDomains.add(domain);	
-		}
-		
+	private void addApplications() {
 		Iterable<VitruvApplication> applications = VitruvApplicationsRegistry.getInstance().getApplications();
-		// Display only those who are in selectedDomains
 		for (VitruvApplication application : applications) {
-			boolean containsAll = true;
-			for (VitruvDomain domain : application.getVitruvDomains()) {
-				if (!selectedDomains.contains(domain)) {
-					containsAll = false;
-					break;
-				}
-			}
-			if (containsAll) {
-				addToTree(application);
-			}
+			addToTree(application);
 		}
 	}
 
 	private void addToTree(VitruvApplication application) {
+		if (tree == null) {
+			return;
+		}
 		TreeItem t = new TreeItem(tree, SWT.CHECK);
 		t.setText(application.getName());
 		t.setData(application);

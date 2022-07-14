@@ -15,8 +15,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Named
 import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.Repository
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.testutils.TestLogging
 import tools.vitruv.testutils.TestProject

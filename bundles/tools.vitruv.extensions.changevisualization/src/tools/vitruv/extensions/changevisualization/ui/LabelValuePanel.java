@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import tools.vitruv.extensions.changevisualization.ChangeVisualizationUI;
+
 /**
  * Displays a String array in a scrollable UI. The string array must be of size [x][2].
  * The values at [x][0] are used as label text on the left, [x][1] are displayed in textFields

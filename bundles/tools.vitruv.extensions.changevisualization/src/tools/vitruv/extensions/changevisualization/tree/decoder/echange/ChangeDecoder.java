@@ -1,6 +1,6 @@
 package tools.vitruv.extensions.changevisualization.tree.decoder.echange;
 
-import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.change.atomic.EChange;
 
 /**
  * Interface to implement for ChangeDecoders that want to realize a eChange individual text to display in the tree

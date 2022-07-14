@@ -6,22 +6,21 @@ import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.propagation.ChangePropagationListener
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.propagation.impl.ChangePropagator
-import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import tools.vitruv.change.composite.description.PropagatedChange
+import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.propagation.ChangePropagationListener
+import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider
+import tools.vitruv.change.propagation.impl.ChangePropagator
+import tools.vitruv.change.interaction.InternalUserInteractor
 import tools.vitruv.framework.views.ViewSelector
 import tools.vitruv.framework.views.ViewType
 import tools.vitruv.framework.views.ViewTypeProvider
 import tools.vitruv.framework.views.ViewTypeRepository
-import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkNotNull
+import tools.vitruv.change.propagation.ChangePropagationMode
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -30,16 +29,13 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
-	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
-	val extension ChangeDomainExtractor changeDomainExtractor
 
 	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
-		VitruvDomainRepository domainRepository, ViewTypeRepository viewTypeRepository,
+		ViewTypeRepository viewTypeRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
 		this.viewTypeRepository = viewTypeRepository
-		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
-		changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
+		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout)
 		changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
@@ -86,20 +82,19 @@ class VirtualModelImpl implements InternalVirtualModel {
 			''')
 		}
 
-		finishChangePropagation(unresolvedChange)
-		informPropagatedChangeListeners(result)
+		finishChangePropagation(unresolvedChange, result)
 		LOGGER.info("Finished change propagation")
 		return result
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
 		if(LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
-		changePropagationListeners.forEach[startedChangePropagation]
+		changePropagationListeners.forEach[startedChangePropagation(change)]
 	}
 
-	private def void finishChangePropagation(VitruviusChange change) {
-		changePropagationListeners.forEach[finishedChangePropagation]
-		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
+	private def void finishChangePropagation(VitruviusChange inputChange, Iterable<PropagatedChange> generatedChanges) {
+		changePropagationListeners.forEach[finishedChangePropagation(generatedChanges)]
+		if(LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «inputChange»''')
 	}
 
 	override Path getFolder() {
@@ -123,44 +118,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * Registers the given {@link PropagatedChangeListener}.
-	 * The listener must not be <code>null</code>.
-	 */
-	override synchronized void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.add(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
-	}
-
-	/**
-	 * Unregister the given {@link PropagatedChangeListener}. 
-	 * The listener must not be <code>null</code>.
-	 */
-	override synchronized void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.remove(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
-	}
-
-	/**
 	 * Returns the name of the virtual model.
 	 * 
 	 * @return The name of the virtual model
 	 */
 	def getName() {
 		folder.fileName.toString
-	}
-
-	/**
-	 * This method informs the registered {@link PropagatedChangeListener}s of the propagation result.
-	 * 
-	 * @param propagationResult The propagation result
-	 */
-	def private void informPropagatedChangeListeners(List<PropagatedChange> propagationResult) {
-		if (this.propagatedChangeListeners.isEmpty()) {
-			return
-		}
-		val sourceDomain = getSourceDomain(propagationResult)
-		val targetDomain = getTargetDomain(propagationResult)
-		for (PropagatedChangeListener propagatedChangeListener : this.propagatedChangeListeners) {
-			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult)
-		}
 	}
 
 	override void dispose() {
@@ -181,5 +144,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		 */
 		viewType.createSelector(this)
 	}
-
+	
+	override setChangePropagationMode(ChangePropagationMode changePropagationMode) {
+		changePropagator.changePropagationMode = changePropagationMode
+	}
+	
 }

@@ -2,11 +2,15 @@ package tools.vitruv.framework.domains.ui.builder
 
 import org.eclipse.core.resources.IProject
 import java.util.Set
-import tools.vitruv.framework.domains.VitruvDomain
 import com.google.common.collect.Sets
 import java.nio.file.Path
 
 interface VitruvProjectBuilderApplicator {
+	/**
+	 * Returns the name of the builder
+	 */
+	def String getName()
+	
 	/**
 	 * Enables or disables automatically running change propagation after a build was triggered in the generated builder.
 	 */
@@ -35,8 +39,8 @@ interface VitruvProjectBuilderApplicator {
 	 */
 	def void removeBuilder(IProject project) throws IllegalStateException
 	
-	static def Set<VitruvProjectBuilderApplicator> getApplicatorsForVitruvDomain(VitruvDomain domain) {
-		Sets.newHashSet(VitruvProjectBuilderRegistry.INSTANCE.getProjectBuilderIds(domain).map[new VitruvProjectBuilderApplicatorImpl(it)])
+	static def Set<VitruvProjectBuilderApplicator> getApplicators() {
+		Sets.newHashSet(VitruvProjectBuilderRegistry.INSTANCE.allProjectBuilderIds.map[new VitruvProjectBuilderApplicatorImpl(it.key, it.value)])
 	}
 	
 }

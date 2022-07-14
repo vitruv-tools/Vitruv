@@ -13,9 +13,9 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.PInterface
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
-import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.change.correspondence.Correspondence
+import tools.vitruv.change.correspondence.CorrespondenceModel
+import tools.vitruv.change.interaction.UserInteractionFactory
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 class CorrespondenceTest {

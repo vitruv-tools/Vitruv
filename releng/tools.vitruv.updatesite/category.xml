@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="tools.vitruv.testutils.feature.source" version="2.1.0.qualifier">
-      <category name="Vitruv Change"/>
-   </feature>
    <feature url="features/tools.vitruv.framework.vsum.feature_2.1.0.qualifier.jar" id="tools.vitruv.framework.vsum.feature" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
@@ -21,20 +18,9 @@
    <feature id="tools.vitruv.extensions.changevisualization.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.domains.demo.feature_2.1.0.qualifier.jar" id="tools.vitruv.domains.demo.feature" version="2.1.0.qualifier">
-      <category name="Vitruv Demos"/>
-   </feature>
-   <feature id="tools.vitruv.domains.demo.feature.source" version="2.1.0.qualifier">
-      <category name="Vitruv Demos"/>
-   </feature>
    <category-def name="Vitruv Framework" label="Vitruv V-SUM Framework">
       <description>
          The Vitruv framework, including the essential V-SUM and optional extensions
-      </description>
-   </category-def>
-   <category-def name="Vitruv Demos" label="Vitruv Demos">
-      <description>
-         Demo domains and applications for the Vitruv framework
       </description>
    </category-def>
 </site>

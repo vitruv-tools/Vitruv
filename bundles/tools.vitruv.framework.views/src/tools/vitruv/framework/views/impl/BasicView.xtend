@@ -9,8 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.propagation.ChangePropagationAbortCause
-import tools.vitruv.framework.change.propagation.ChangePropagationListener
+import tools.vitruv.change.composite.propagation.ChangePropagationListener
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.ViewSelection
 import tools.vitruv.framework.views.ViewSelector
@@ -20,6 +19,8 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import tools.vitruv.change.composite.description.PropagatedChange
+import tools.vitruv.change.composite.description.VitruviusChange
 
 package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
@@ -84,15 +85,11 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
         return closed
     }
 
-    override abortedChangePropagation(ChangePropagationAbortCause cause) {
-        // do nothing
-    }
-
-    override finishedChangePropagation() {
+    override finishedChangePropagation(Iterable<PropagatedChange> propagatedChanges) {
         modelChanged = true
     }
 
-    override startedChangePropagation() {
+    override startedChangePropagation(VitruviusChange changeToPropagate) {
         // do nothing
     }
 
