@@ -25,7 +25,7 @@ jobs:
           repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
           ref: main
           fetch-depth: 0
-      - name: Checkout Matching Domains/Applications Branches
+      - name: Checkout Matching DSLs/Applications Branches
         run: |
           cd dsls
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
