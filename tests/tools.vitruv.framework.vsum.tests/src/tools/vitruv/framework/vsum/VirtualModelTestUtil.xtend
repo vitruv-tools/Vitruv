@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum
 import allElementTypes.Root
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.nio.file.Path
-import java.util.List
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.change.composite.description.VitruviusChange
@@ -19,7 +18,6 @@ import tools.vitruv.framework.vsum.VirtualModelBuilder
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
-import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import allElementTypes.AllElementTypesPackage
 import tools.vitruv.change.composite.MetamodelDescriptor
 
@@ -108,12 +106,12 @@ class VirtualModelTestUtil {
                     val newRoot = aet.Root => [
                         id = insertedRoot.id
                     ]
-                    correspondenceModel.createAndAddCorrespondence(List.of(insertedRoot), List.of(newRoot))
+                    correspondenceModel.addCorrespondenceBetween(insertedRoot, newRoot, null)
                     newRoot
                 }
 
             if(insertedRoot.eContainer !== null) {
-                val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, Root)
+                val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, Root, null)
                 assertEquals(1, correspondingObjects.size)
                 correspondingObjects.get(0).recursiveRoot = correspondingRoot
             }

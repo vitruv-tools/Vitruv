@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
-import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 class CorrespondenceTest {
@@ -131,7 +130,7 @@ class CorrespondenceTest {
 		val UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg))
+		correspondenceModel.addCorrespondenceBetween(repo, pkg, null)
 		saveUPackageInNewFile(vsum)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
@@ -143,7 +142,7 @@ class CorrespondenceTest {
 		val UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-		correspondenceModel.createAndAddCorrespondence(List.of(repo), List.of(pkg)) // execute the test
+		correspondenceModel.addCorrespondenceBetween(repo, pkg, null) // execute the test
 		moveUMLPackage(vsum)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
@@ -196,7 +195,7 @@ class CorrespondenceTest {
 		val Repository repo2 = testLoadObject(vsum2, alternativePcmInstanceURI, Repository)
 		val UPackage pkg2 = testLoadObject(vsum2, alternativeUMLInstanceURI, UPackage)
 		val CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
-		corresp2.createAndAddCorrespondence(List.of(repo2), List.of(pkg2))
+		corresp2.addCorrespondenceBetween(repo2, pkg2, null)
 		assertTrue(corresp2.hasCorrespondences()) // obtain
 		val Correspondence repo2pkg2 = corresp2.getCorrespondences(List.of(repo2)).claimOne
 		assertEquals(Set.of(repo2, pkg2), (repo2pkg2.leftEObjects + repo2pkg2.rightEObjects).toSet)
@@ -221,7 +220,7 @@ class CorrespondenceTest {
 	def private Correspondence createRepo2PkgCorrespondence(Repository repo, UPackage pkg,
 		CorrespondenceModel corresp) {
 		// until this point the correspondence instance is empty
-		val Correspondence repo2pkg = corresp.createAndAddCorrespondence(List.of(repo), List.of(pkg))
+		val Correspondence repo2pkg = corresp.addCorrespondenceBetween(repo, pkg, null)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		return repo2pkg
 	}
@@ -270,11 +269,11 @@ class CorrespondenceTest {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// add correspondence
-		corresp.createAndAddCorrespondence(List.of(repoInterface), List.of(pkgInterface)) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		corresp.addCorrespondenceBetween(repoInterface, pkgInterface, null) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// 3. EOC: pcmIfac _tAgfwPxjEeOD3p0i_uuRbQ <=> umlIface _vWjxIPxjEeOD3p0i_uuRbQ
 		// remove correspondence
-		corresp.removeCorrespondencesFor(List.of(repoInterface), null) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		corresp.removeCorrespondencesBetween(repoInterface, pkgInterface, null) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// check whether it is removed
 		val Set<Correspondence> repoInterfaceCorresp = corresp.getCorrespondences(List.of(repoInterface))
