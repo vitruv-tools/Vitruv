@@ -32,7 +32,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 		if (resolvedObject === null) {
 			return emptyList
 		} else {
-			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, type, tag)
+			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, tag).filter(type)
 		}
 	}
 

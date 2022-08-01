@@ -9,7 +9,6 @@ import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.atomic.EChange
 import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.change.composite.recording.ChangeRecorder
-import tools.vitruv.change.correspondence.CorrespondenceModel
 import tools.vitruv.change.propagation.ResourceAccess
 import tools.vitruv.change.propagation.impl.AbstractChangePropagationSpecification
 import tools.vitruv.change.interaction.UserInteractionFactory
@@ -20,6 +19,8 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import allElementTypes.AllElementTypesPackage
 import tools.vitruv.change.composite.MetamodelDescriptor
+import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
+import tools.vitruv.change.correspondence.Correspondence
 
 /**
  * Utility methods for the VSUM and view test cases.
@@ -84,14 +85,14 @@ class VirtualModelTestUtil {
             super(sourceMetamodelDescriptor, targetMetamodelDescriptor)
         }
 
-        override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
+        override doesHandleChange(EChange change, EditableCorrespondenceModelView<Correspondence> correspondenceModel) {
             if(change instanceof InsertRootEObject) {
                 return change.newValue instanceof Root
             }
             return false
         }
 
-        override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
+        override propagateChange(EChange change, EditableCorrespondenceModelView<Correspondence> correspondenceModel,
             extension ResourceAccess resourceAccess) {
             if(!doesHandleChange(change, correspondenceModel)) {
                 return
@@ -111,7 +112,7 @@ class VirtualModelTestUtil {
                 }
 
             if(insertedRoot.eContainer !== null) {
-                val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, Root, null)
+                val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, null).filter(Root)
                 assertEquals(1, correspondingObjects.size)
                 correspondingObjects.get(0).recursiveRoot = correspondingRoot
             }
