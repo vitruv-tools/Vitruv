@@ -188,14 +188,6 @@ public class ChangeVisualizationUI extends JFrame implements MonitoredRepository
 	}
 
 	/**
-	 * Main method to start offline instance of the ChangeVisualization
-	 * @param args Command line arguments, are ignored
-	 */
-	public static void main(String[] args) {
-		new ChangeVisualizationUI(new ChangeVisualizationDataModel()).setVisible(true);
-	}
-
-	/**
 	 * Listener for the usual zoom in/out on text elements
 	 */
 	private final MouseWheelListener mwl = new MouseWheelListener() {
