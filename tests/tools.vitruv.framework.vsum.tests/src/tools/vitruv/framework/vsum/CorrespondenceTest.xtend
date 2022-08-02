@@ -144,7 +144,7 @@ class CorrespondenceTest {
 		for (correspondingObject : correspondingObjects) {
 			assertNotNull(correspondingObject, "Corresponding object is null")
 			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(
-				List.of(correspondingObject)).flatten
+				correspondingObject)
 			assertNotNull(reverseCorrespondingObjects.claimOne, "Reverse corresponding object is null")
 			LOGGER.info('''A: «reverseCorrespondingObjects» corresponds to B: «correspondingObject»''')
 		}
