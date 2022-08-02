@@ -296,7 +296,6 @@ public class ChangeVisualizationUI extends JFrame implements MonitoredRepository
 				return ChangeDataSetPersistenceHelper.FILE_DESCRIPTION;
 			}
 		});
-		chooser.showSaveDialog(ChangeVisualizationUI.this);
 		return chooser;
 	}
 
