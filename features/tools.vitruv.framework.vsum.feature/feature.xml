@@ -37,13 +37,6 @@
       <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.commands"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.transaction"/>
-      <import plugin="org.eclipse.gmf.runtime.diagram.ui"/>
-      <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor"/>
-      <import feature="tools.vitruv.change.feature" version="2.1.0.qualifier"/>
    </requires>
 
    <plugin
@@ -76,13 +69,6 @@
 
    <plugin
          id="tools.vitruv.framework.vsum.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.domains.emf.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
