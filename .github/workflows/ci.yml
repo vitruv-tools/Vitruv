@@ -5,9 +5,9 @@ on:
     branches: [main]
   release:
     types: [created]
-  pull_request:
   schedule:
     - cron: '0 3 * * *' # run nightly at 3:00 am
+  workflow_call:
 
 jobs:
   build:
@@ -38,6 +38,13 @@ jobs:
           -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
         env: 
           MAVEN_OPTS: -Djansi.force=true
+      - name: Store Change Artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v3
+        with:
+          name: framework
+          path: releng/tools.vitruv.updatesite/target/repository
+          retention-days: 1
       - name: Publish Nightly Update Site
         if: github.ref == 'refs/heads/main' && github.repository_owner == 'vitruv-tools'
         uses: peaceiris/actions-gh-pages@v3
