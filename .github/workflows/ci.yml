@@ -38,7 +38,7 @@ jobs:
           -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
         env: 
           MAVEN_OPTS: -Djansi.force=true
-      - name: Store Change Artifact
+      - name: Store Framework Artifact
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v3
         with:
