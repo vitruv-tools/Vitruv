@@ -1,15 +1,22 @@
-name: Application Validation
+name: Validation
 
 on:
   pull_request:
 
 jobs:
-  validate:
+  validate_framework:
+    name: Framework
+    uses: ./.github/workflows/ci.yml
+
+  validate_dsls:
+    needs: validate_framework
+    name: DSLs
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Framework
-        uses: actions/checkout@v3
+      - name: Download Framework Artifact
+        uses: actions/download-artifact@v3
         with:
+          name: framework
           path: framework
       - name: Checkout DSLs
         uses: actions/checkout@v3
@@ -18,18 +25,9 @@ jobs:
           repository: vitruv-tools/Vitruv-DSLs
           ref: main
           fetch-depth: 0
-      - name: Checkout CBS Applications
-        uses: actions/checkout@v3
-        with:
-          path: cbsapplications
-          repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
-          ref: main
-          fetch-depth: 0
-      - name: Checkout Matching DSLs/Applications Branches
+      - name: Checkout Matching DSLs Branch
         run: |
           cd dsls
-          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
-          cd ../cbsapplications
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
       - name: Cache
         uses: actions/cache@v3
@@ -42,26 +40,13 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
-      - name: Build Framework
-        working-directory: ./framework
-        run: >
-          ./mvnw -B -U package -Dmaven.test.skip=true
-          -Dstyle.color=always
-          -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
-          -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
-          -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
-        env: 
-          MAVEN_OPTS: -Djansi.force=true
-      - name: Build DSLs
+      - name: Build and Verify DSLs
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: ./dsls
           run: >
             ./mvnw -B -U clean verify
-            -Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework
+            -Dvitruv.framework.url=file:///${{ github.workspace }}/framework
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
@@ -71,14 +56,58 @@ jobs:
             -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
         env: 
           MAVEN_OPTS: -Djansi.force=true
-      - name: Build Applications
+      - name: Store DSLs Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dsls
+          path: dsls/releng/tools.vitruv.dsls.updatesite/target/repository
+          retention-days: 1
+
+  validate_cbs_applications:
+    needs: [validate_framework, validate_dsls]
+    name: Applications
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Framework Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: framework
+          path: framework
+      - name: Download DSLs Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dsls
+          path: dsls
+      - name: Checkout CBS Applications
+        uses: actions/checkout@v3
+        with:
+          path: cbsapplications
+          repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
+          ref: main
+          fetch-depth: 0
+      - name: Checkout Matching Applications Branch
+        run: |
+          cd cbsapplications
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 11
+      - name: Build and Verify Applications
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: ./cbsapplications
           run: >
             ./mvnw -B -U clean verify
-            -Dvitruv.framework.path=${GITHUB_WORKSPACE}/framework
-            -Dvitruv.dsls.path=${GITHUB_WORKSPACE}/dsls
+            -Dvitruv.framework.url=file:///${{ github.workspace }}/framework
+            -Dvitruv.dsls.url=file:///${{ github.workspace }}/dsls
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
