@@ -91,9 +91,6 @@ class VirtualModelBuilder {
 		val viewTypeRepository = new ViewTypeRepository()
 		viewTypes.forEach[viewTypeRepository.register(it)]
 		val changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications)
-		for (changePropagationSpecification : changePropagationSpecifications) {
-			changePropagationSpecification.userInteractor = this.userInteractor
-		}
 
 		val fileSystemLayout = new VsumFileSystemLayout(storageFolder)
 		fileSystemLayout.prepare()
