@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.checkArgument
 import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
-import tools.vitruv.testutils.views.ChangePublishingTestView
 import tools.vitruv.testutils.views.NonTransactionalTestView
 import tools.vitruv.testutils.views.TestView
 
@@ -24,10 +23,11 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	@DelegateExcept(TestView)
 	NonTransactionalTestView testView
 
-	override generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
-		val testView = new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
-		testView.renewResourceCacheAfterPropagation = false
+	override generateTestView(Path testProjectPath, Path vsumPath) {
+		val testView = new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath, changePropagationSpecifications, uriMode)
+		testView.disposeViewResourcesAfterPropagation = false
 		this.testView = testView
+		return testView
 	}
 
 	override <T extends EObject> Iterable<T> getCorrespondingEObjects(EObject object, Class<T> type, String tag) {

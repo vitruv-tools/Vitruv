@@ -5,14 +5,14 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import java.nio.file.Path
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.change.propagation.ChangePropagationSpecification
-import tools.vitruv.testutils.views.TestView
 import tools.vitruv.testutils.views.UriMode
 import tools.vitruv.testutils.views.ChangePublishingTestView
+import tools.vitruv.testutils.views.NonTransactionalTestView
 
-class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView {
+class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, NonTransactionalTestView {
 	InternalVirtualModel virtualModel
 	@Delegate
-	TestView testView
+	NonTransactionalTestView testView
 	Iterable<ChangePropagationSpecification> changePropagationSpecifications
 	UriMode uriMode
 
@@ -37,7 +37,7 @@ class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView {
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
 	}
 
-	private def TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
+	private def NonTransactionalTestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
 		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
 	}
 

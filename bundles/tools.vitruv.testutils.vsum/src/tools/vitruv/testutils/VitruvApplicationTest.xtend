@@ -8,8 +8,6 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.change.propagation.ChangePropagationSpecification
 
 import tools.vitruv.testutils.views.UriMode
-import tools.vitruv.testutils.views.TestView
-import tools.vitruv.testutils.views.ChangePublishingTestView
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class VitruvApplicationTest implements VirtualModelBasedTestView {
@@ -28,12 +26,11 @@ abstract class VitruvApplicationTest implements VirtualModelBasedTestView {
 
 	@BeforeEach
 	def final void initialize(@TestProject Path testProjectPath, @TestProject(variant="vsum") Path vsumPath) {
-		testView = new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath,
-			changePropagationSpecifications, uriMode)
+		testView = generateTestView(testProjectPath, vsumPath)
 	}
 
-	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
-		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
+	def package VirtualModelBasedTestView generateTestView(Path testProjectPath, Path vsumPath) {
+		new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath, changePropagationSpecifications, uriMode)
 	}
 
 	@AfterEach
