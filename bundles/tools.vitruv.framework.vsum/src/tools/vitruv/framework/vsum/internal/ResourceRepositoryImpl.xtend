@@ -25,6 +25,7 @@ import java.util.HashSet
 import tools.vitruv.change.composite.description.TransactionalChange
 import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel
 import tools.vitruv.change.correspondence.view.CorrespondenceModelViewFactory
+import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
