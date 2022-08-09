@@ -39,6 +39,10 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, tag).filter(type)
 		}
 	}
+	
+	private def getInternalVirtualModel() {
+		return virtualModel as InternalVirtualModel
+	}
 
 	override <T extends EObject> Iterable<T> getCorrespondingEObjects(EObject object, Class<T> type) {
 		getCorrespondingEObjects(object, type, null)
