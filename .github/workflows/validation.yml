@@ -120,6 +120,7 @@ jobs:
 
   validate_tool_adapters:
     needs: [validate_framework]
+    name: Tool Adapters
     runs-on: ubuntu-latest
     steps:
       - name: Download Framework Artifact
