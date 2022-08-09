@@ -117,3 +117,52 @@ jobs:
             -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
         env: 
           MAVEN_OPTS: -Djansi.force=true
+
+  validate_tool_adapters:
+    needs: [validate_framework]
+    name: Tool Adapters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Framework Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: framework
+          path: framework
+      - name: Checkout Tool Adapters
+        uses: actions/checkout@v3
+        with:
+          path: tool_adapters
+          repository: vitruv-tools/Vitruv-Tool-Adapters
+          ref: main
+          fetch-depth: 0
+      - name: Checkout Matching Tool Adapters Branch
+        run: |
+          cd tool_adapters
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 11
+      - name: Build and Verify Tools Adapters
+        uses: GabrielBB/xvfb-action@v1
+        with: 
+          working-directory: ./tool_adapters
+          run: >
+            ./mvnw -B -U package -Dmaven.test.skip=true
+            -Dvitruv.framework.url=file:///${{ github.workspace }}/framework
+            -Dstyle.color=always
+            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
+            -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
+        env: 
+          MAVEN_OPTS: -Djansi.force=true
