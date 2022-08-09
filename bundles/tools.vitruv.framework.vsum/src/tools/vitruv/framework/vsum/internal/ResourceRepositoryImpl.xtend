@@ -178,10 +178,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		change.resolveAndApply(modelsResourceSet)
 	}
 
-	override URI getMetadataModelURI(String... metadataKey) {
-		fileSystemLayout.getConsistencyMetadataModelURI(metadataKey)
-	}
-
 	override Resource getModelResource(URI uri) {
 		getCreateOrLoadModel(uri).resource
 	}
