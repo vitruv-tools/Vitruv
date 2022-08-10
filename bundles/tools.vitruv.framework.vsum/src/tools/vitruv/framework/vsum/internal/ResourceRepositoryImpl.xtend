@@ -13,8 +13,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.change.composite.recording.ChangeRecorder
-import static tools.vitruv.change.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
-import tools.vitruv.change.correspondence.InternalCorrespondenceModel
+import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
@@ -24,6 +23,8 @@ import java.util.Set
 import static com.google.common.base.Preconditions.checkState
 import java.util.HashSet
 import tools.vitruv.change.composite.description.TransactionalChange
+import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel
+import tools.vitruv.change.correspondence.view.CorrespondenceModelViewFactory
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -31,7 +32,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	val ResourceSet correspondencesResourceSet
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
-	val InternalCorrespondenceModel correspondenceModel
+	val PersistableCorrespondenceModel correspondenceModel
 	val extension FileExtensionRecorderMapping fileExtensionsRecorderMapping = new FileExtensionRecorderMapping
 	
 	var isRecording = false
@@ -74,7 +75,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
+		this.correspondenceModel = createPersistableCorrespondenceModel(fileSystemLayout.correspondencesURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [
 			if(!isLoading) getCreateOrLoadModel(it.URI)
 		]
@@ -104,7 +105,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override getCorrespondenceModel() {
-		correspondenceModel.genericView
+		return CorrespondenceModelViewFactory.createEditableCorrespondenceModelView(correspondenceModel)
 	}
 
 	override getModel(URI modelURI) {

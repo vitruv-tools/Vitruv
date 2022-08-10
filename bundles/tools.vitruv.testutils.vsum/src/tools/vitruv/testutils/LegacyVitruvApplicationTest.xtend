@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.checkArgument
-import static extension tools.vitruv.change.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
 
 /** 
@@ -33,7 +32,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 		if (resolvedObject === null) {
 			return emptyList
 		} else {
-			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, type, tag)
+			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, tag).filter(type)
 		}
 	}
 
