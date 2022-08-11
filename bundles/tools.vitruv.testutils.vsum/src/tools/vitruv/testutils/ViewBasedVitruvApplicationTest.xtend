@@ -5,7 +5,6 @@ import tools.vitruv.framework.vsum.VirtualModel
 import org.junit.jupiter.api.BeforeEach
 import tools.vitruv.change.propagation.ChangePropagationSpecification
 
-import static tools.vitruv.testutils.UriMode.*
 import org.junit.jupiter.api.TestInfo
 import java.nio.file.Path
 import tools.vitruv.framework.vsum.VirtualModelBuilder
@@ -15,6 +14,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.testutils.views.UriMode
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
@@ -31,7 +31,7 @@ abstract class ViewBasedVitruvApplicationTest {
 	/**
 	 * Determines which {@link UriMode} should be used for this test.
 	 */
-	def protected UriMode getUriMode() { FILE_URIS }
+	def protected UriMode getUriMode() { UriMode.FILE_URIS }
 
 	@BeforeEach
 	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject Path testProjectPath,

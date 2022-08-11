@@ -15,25 +15,25 @@ class VsumFileSystemLayout {
 	static final String CORRESPONDENCES_FILE = "correspondences.correspondence";
 	static final String MODELS_FILE = "models.models";
 	static final String VSUM_FOLDER_NAME = "vsum";
-    static final String CONSISTENCY_METADATA_FOLDER_NAME = "consistencymetadata";
-    
+	static final String CONSISTENCY_METADATA_FOLDER_NAME = "consistencymetadata";
+
 	val Path vsumProjectFolder
 	var prepared = false
-	
+
 	new(Path vsumProjectFolder) {
-		this.vsumProjectFolder = vsumProjectFolder 
+		this.vsumProjectFolder = vsumProjectFolder
 	}
-	
+
 	def void prepare() throws IOException {
-		createDirectories(vsumFolder) 
-		createDirectories(consistencyMetadataFolder) 
-		prepared = true 
+		createDirectories(vsumFolder)
+		createDirectories(consistencyMetadataFolder)
+		prepared = true
 	}
-	
+
 	def private Path getMetadataFilePath(String... metadataKey) {
 		checkArgument(metadataKey !== null || metadataKey.length > 0, "The key must have at least one part!")
 		checkArgument(metadataKey.get(metadataKey.length - 1).contains('.'), "metadataKey is missing a file extension!")
-		
+
 		return metadataKey.fold(Path.of("")) [ last, keyPart |
 			checkArgument(keyPart !== null, "A key part must not be null!")
 			// URL-encoding the string makes it save for being a file part,
@@ -50,7 +50,7 @@ class VsumFileSystemLayout {
 			last.resolve(URLEncoder.encode(preparedKeyPart, UTF_8))
 		]
 	}
-	
+
 	/** 
 	 * Gets the {@link URI} of a model that stores metadata.
 	 * @param metadataKeyThe key uniquely identifying the metadata model. The different parts of the key
@@ -61,37 +61,37 @@ class VsumFileSystemLayout {
 	 */
 	def URI getConsistencyMetadataModelURI(String... metadataKey) {
 		checkPrepared()
-		var metadataPath = consistencyMetadataFolder.resolve(getMetadataFilePath(metadataKey)) 
+		var metadataPath = consistencyMetadataFolder.resolve(getMetadataFilePath(metadataKey))
 		return metadataPath.toFile.createFileURI()
 	}
-	
+
 	def URI getCorrespondencesURI() {
 		checkPrepared()
 		return vsumFolder.resolve(CORRESPONDENCES_FILE).toFile.createFileURI()
 	}
-	
+
 	def Path getModelsNamesFilesPath() {
 		checkPrepared()
 		return vsumFolder.resolve(MODELS_FILE)
 	}
-	
+
 	def Path getVsumProjectFolder() {
-		return this.vsumProjectFolder 
+		return this.vsumProjectFolder
 	}
 
 	def private getVsumFolder() {
-		vsumProjectFolder.resolve(VSUM_FOLDER_NAME) 
+		vsumProjectFolder.resolve(VSUM_FOLDER_NAME)
 	}
 
 	def private Path getConsistencyMetadataFolder() {
-		vsumProjectFolder.resolve(CONSISTENCY_METADATA_FOLDER_NAME) 
+		vsumProjectFolder.resolve(CONSISTENCY_METADATA_FOLDER_NAME)
 	}
-	
+
 	override String toString() {
-		return '''@«vsumProjectFolder»''' 
+		return '''@«vsumProjectFolder»'''
 	}
-	
+
 	def private void checkPrepared() {
-		checkState(prepared, "The file system layout has not been loaded yet!") 
+		checkState(prepared, "The file system layout has not been loaded yet!")
 	}
 }
