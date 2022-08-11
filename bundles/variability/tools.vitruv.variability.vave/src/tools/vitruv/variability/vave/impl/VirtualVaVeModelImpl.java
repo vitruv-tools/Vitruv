@@ -47,8 +47,10 @@ import tools.vitruv.variability.vave.model.expression.BinaryExpression;
 import tools.vitruv.variability.vave.model.expression.Conjunction;
 import tools.vitruv.variability.vave.model.expression.Expression;
 import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
+import tools.vitruv.variability.vave.model.expression.NaryExpression;
 import tools.vitruv.variability.vave.model.expression.UnaryExpression;
 import tools.vitruv.variability.vave.model.expression.Variable;
+import tools.vitruv.variability.vave.model.expression.util.ExpressionSwitch;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
 import tools.vitruv.variability.vave.model.vave.Configuration;
 import tools.vitruv.variability.vave.model.vave.Constraint;
@@ -62,13 +64,9 @@ import tools.vitruv.variability.vave.model.vave.Option;
 import tools.vitruv.variability.vave.model.vave.SystemRevision;
 import tools.vitruv.variability.vave.model.vave.TreeConstraint;
 import tools.vitruv.variability.vave.model.vave.VaveFactory;
-import tools.vitruv.variability.vave.util.ExpressionComparator;
-import tools.vitruv.variability.vave.util.ExpressionCopier;
-import tools.vitruv.variability.vave.util.ExpressionEvaluator;
-import tools.vitruv.variability.vave.util.ExpressionValidator;
-import tools.vitruv.variability.vave.util.OptionsCollector;
-import vavemodel.Term;
-import vavemodel.util.VavemodelSwitch;
+import tools.vitruv.variability.vave.util.ExpressionUtil;
+import tools.vitruv.variability.vave.util.FeatureModelUtil;
+import tools.vitruv.variability.vave.util.OptionUtil;
 
 /**
  * Contains an instance of a unified system from the unified conceptual model. Provides implementations of unified operations eD, iD, eP, and iC. At the beginning and end of each operation, registered variability-aware consistency rules are triggered. Each operation returns its own result object to which consistency rules can add their own consistency preservation results.
@@ -150,37 +148,44 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (predecessor != null) {
 			// create new mappings (where old system revision is replaced by new system revision) for every existing mapping with the old system revision in its expression
 			for (Mapping oldMapping : new ArrayList<>(this.system.getMappings())) {
-				Collection<Option> mappingOptions = new OptionsCollector().doSwitch(oldMapping.getExpression());
+				Collection<Option> mappingOptions = OptionUtil.collect(oldMapping.getExpression());
 				if (mappingOptions.contains(predecessor)) {
 					Mapping newMapping = VaveFactory.eINSTANCE.createMapping();
 					newMapping.getDeltaModules().addAll(oldMapping.getDeltaModules());
 					newMapping.setExpression(EcoreUtil.copy(oldMapping.getExpression()));
 
-					VavemodelSwitch<Object> exprSwitch = new VavemodelSwitch<>() {
+					ExpressionSwitch<Object> exprSwitch = new ExpressionSwitch<>() {
 						@Override
-						public <T extends Option> Collection<Option> caseBinaryExpression(BinaryExpression<T> e) {
-							for (Term t : e.getTerm())
-								doSwitch(t);
+						public <T> Collection<Option> caseNaryExpression(NaryExpression<T> e) {
+							for (Expression<?> childExpression : e.getExpressions())
+								doSwitch(childExpression);
 							return null;
 						}
 
 						@Override
-						public <T extends Option> Collection<Option> caseUnaryExpression(UnaryExpression<T> e) {
-							doSwitch(e.getTerm());
+						public <T> Collection<Option> caseBinaryExpression(BinaryExpression<T> e) {
+							doSwitch(e.getLeft());
+							doSwitch(e.getRight());
 							return null;
 						}
 
 						@Override
-						public <T extends Option> Collection<Option> caseVariable(Variable<T> v) {
-							if (v.getOption() instanceof SystemRevision && v.getOption().equals(predecessor)) {
+						public <T> Collection<Option> caseUnaryExpression(UnaryExpression<T> e) {
+							doSwitch(e.getExpression());
+							return null;
+						}
+
+						@Override
+						public <T> Collection<Option> caseVariable(Variable<T> v) {
+							if (v.getValue() instanceof SystemRevision && v.getValue().equals(predecessor)) {
 								Variable<SystemRevision> vcast = (Variable<SystemRevision>) v;
-								vcast.setOption(newsysrev);
+								vcast.setValue(newsysrev);
 							}
 							return null;
 						}
 					};
 					exprSwitch.doSwitch(newMapping.getExpression());
-					this.system.getMapping().add(newMapping);
+					this.system.getMappings().add(newMapping);
 				}
 			}
 		}
@@ -210,10 +215,10 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		} else if (systemRevisions.size() == 1) {
 			// check if config is complete and valid
 			FeatureModel featureModel = this.externalizeDomain(systemRevisions.get(0)).getResult();
-			if (!featureModel.isComplete(configuration)) {
+			if (!FeatureModelUtil.isComplete(featureModel, configuration)) {
 				throw new RuntimeException("Configuration is not complete.");
 			}
-			if (!featureModel.isValid(configuration)) {
+			if (!FeatureModelUtil.isValid(featureModel, configuration)) {
 				throw new RuntimeException("Configuration is not valid.");
 			}
 		}
@@ -271,18 +276,16 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// optional: add configuration to unified system
 		this.system.getConfigurations().add(configuration);
 
-		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
-
 		for (Mapping mapping : this.system.getMappings()) {
-			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + new OptionsCollector().doSwitch(mapping.getExpression()).stream().map(o -> {
+			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + OptionUtil.collect(mapping.getExpression()).stream().map(o -> {
 				if (o instanceof FeatureRevision)
 					return (((Feature) ((FeatureRevision) o).eContainer()).getName() + "." + ((FeatureRevision) o).getRevisionID());
 				else
 					return o.toString();
 			}).collect(Collectors.joining(", ")));
 			// retrieve only these delta modules whose mapping evaluates to true
-			if (mapping.getExpression() == null || ee.eval(mapping.getExpression())) {
-				System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + new OptionsCollector().doSwitch(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
+			if (mapping.getExpression() == null || ExpressionUtil.eval(mapping.getExpression(), configuration)) {
+				System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + OptionUtil.collect(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
 				for (DeltaModule deltamodule : mapping.getDeltaModules()) {
 					// One VitruviusChange per DeltaModule
 					VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
@@ -302,12 +305,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
 
 		// NOTE: the following could be achieved with an OCL constraint
-		boolean expressionIsWellFormed = new ExpressionValidator().doSwitch(expression);
+		boolean expressionIsWellFormed = ExpressionUtil.validate(expression);
 		if (!expressionIsWellFormed) {
 			throw new IllegalArgumentException("Expression is not well formed");
 		}
 
-		Collection<Option> options = new OptionsCollector().doSwitch(expression);
+		Collection<Option> options = new ArrayList<Option>(OptionUtil.collect(expression));
 
 		// check if expression is valid
 		Configuration configuration = virtualProductModel.getConfiguration();
@@ -319,13 +322,13 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		} else if (sysrevs.size() == 1) {
 			// check if expression is valid
 			FeatureModel fm = this.externalizeDomain(sysrevs.get(0)).getResult();
-			if (!fm.isComplete(configuration)) {
+			if (!FeatureModelUtil.isComplete(fm, configuration)) {
 				throw new RuntimeException("Configuration is not complete.");
 			}
-			if (!fm.isValid(configuration)) {
+			if (!FeatureModelUtil.isValid(fm, configuration)) {
 				throw new RuntimeException("Configuration is not valid.");
 			}
-			if (!fm.isValid(expression)) {
+			if (!FeatureModelUtil.isValid(fm, expression)) {
 				throw new RuntimeException("Expression is not valid.");
 			}
 		}
@@ -528,9 +531,9 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				// copy cross tree constraints
 				CrossTreeConstraint copiedCTC = VaveFactory.eINSTANCE.createCrossTreeConstraint();
 				// copy CTC expression
-				Expression<FeatureOption> copiedExpression = ExpressionCopier.copy(((CrossTreeConstraint) constraint).getExpression());
-				new VavemodelSwitch<Void>() {
-					public <T extends Option> Void caseVariable(Variable<T> object) {
+				Expression<FeatureOption> copiedExpression = ExpressionUtil.copy(((CrossTreeConstraint) constraint).getExpression());
+				new ExpressionSwitch<Void>() {
+					public <T> Void caseVariable(Variable<T> object) {
 						object.setValue((T) mapOriginalCopiedLiterals.get(object.getValue()));
 						return null;
 					};
@@ -553,9 +556,9 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (!enabledRootFeatures.isEmpty())
 			rootFeature = enabledRootFeatures.get(0);
 
-		FeatureModel featuremodel = new FeatureModel((Feature) mapOriginalCopiedLiterals.get(rootFeature), sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
+		FeatureModel featureModel = new FeatureModel((Feature) mapOriginalCopiedLiterals.get(rootFeature), sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
 
-		externalizeDomainResult.setResult(featuremodel);
+		externalizeDomainResult.setResult(featureModel);
 
 		// trigger consistency preservation
 		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPost());
@@ -708,22 +711,28 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				else if (oldCTC.isEmpty()) {
 					CrossTreeConstraint newCTC = VaveFactory.eINSTANCE.createCrossTreeConstraint();
 					// copy CTC expression
-					Term<FeatureOption> copiedExpression = ExpressionCopier.copy(ctc.getExpression());
+					Expression<FeatureOption> copiedExpression = ExpressionCopier.copy(ctc.getExpression());
 
 					// replace feature option instances in expression with instances from vave model (unified system)
-					new VavemodelSwitch<Void>() {
-						public <T extends Option> Void caseBinaryExpression(BinaryExpression<T> object) {
+					new ExpressionSwitch<Void>() {
+						public <T> Void caseNaryExpression(NaryExpression<T> object) {
+							for (Expression<?> childExpression : object.getExpressions())
+								doSwitch(childExpression);
+							return null;
+						}
+
+						public <T> Void caseBinaryExpression(BinaryExpression<T> object) {
 							doSwitch(object.getLeft());
 							doSwitch(object.getRight());
 							return null;
 						}
 
-						public <T extends Option> Void caseUnaryExpression(UnaryExpression<T> object) {
+						public <T> Void caseUnaryExpression(UnaryExpression<T> object) {
 							doSwitch(object.getExpression());
 							return null;
 						}
 
-						public <T extends Option> Void caseVariable(Variable<T> object) {
+						public <T> Void caseVariable(Variable<T> object) {
 							if (object.getValue() instanceof Feature) {
 								object.setValue((T) system.getFeatures().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getValue()).getName())).findAny().get());
 							} else if (object.getValue() instanceof FeatureRevision) {

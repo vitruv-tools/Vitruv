@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.sat4j.core.VecInt;
@@ -20,8 +20,7 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
 import tools.vitruv.variability.vave.VirtualVaVeModel;
-import tools.vitruv.variability.vave.util.FeatureModel;
-import tools.vitruv.variability.vave.util.OptionsCollector;
+import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
 import vavemodel.Configuration;
 import vavemodel.Expression;
 import vavemodel.Feature;
@@ -56,7 +55,7 @@ public class HintComputation implements ConsistencyRule {
 				System.out.println("RELEVANT HINT: " + Arrays.asList(featureInteraction));
 			}
 		}
-		
+
 		return new Result(hints);
 	}
 
@@ -65,7 +64,7 @@ public class HintComputation implements ConsistencyRule {
 		Collection<Option> options = new OptionsCollector().doSwitch(expr);
 
 		Collection<Feature[]> removedHints = new ArrayList<>();
-		
+
 		// check if the expression covers any hints. if yes, then delete the respective hints.
 		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
 		Iterator<Feature[]> hintsIt = this.hints.iterator();
@@ -77,7 +76,7 @@ public class HintComputation implements ConsistencyRule {
 				System.out.println("FIXED HINT: " + Arrays.asList(featureInteraction));
 			}
 		}
-		
+
 		return new Result(removedHints);
 	}
 
@@ -151,7 +150,7 @@ public class HintComputation implements ConsistencyRule {
 		Collection<int[]> newClauses = fm_cur.computeClauses(newfmOptionToIntMap);
 
 		Collection<Feature[]> newHints = new ArrayList<>();
-		
+
 //		for (Feature f1 : enabledFs) {
 //			for (Feature f2 : enabledFs) {
 		for (int i = 0; i < enabledFs.size(); i++) {
@@ -196,7 +195,7 @@ public class HintComputation implements ConsistencyRule {
 					Feature[] hint = new Feature[] { f1, f2 };
 					this.hints.add(hint);
 					newHints.add(hint);
-					//System.out.println("ADDED HINT: " + f1 + " / " + f2);
+					// System.out.println("ADDED HINT: " + f1 + " / " + f2);
 				}
 			}
 		}

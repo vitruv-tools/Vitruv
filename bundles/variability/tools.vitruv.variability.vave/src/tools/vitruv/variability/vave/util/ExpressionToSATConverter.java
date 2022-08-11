@@ -8,23 +8,24 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import vavemodel.Conjunction;
-import vavemodel.Disjunction;
-import vavemodel.Expression;
-import vavemodel.False;
-import vavemodel.Feature;
-import vavemodel.FeatureRevision;
-import vavemodel.Not;
-import vavemodel.Option;
-import vavemodel.Term;
-import vavemodel.True;
-import vavemodel.Variable;
+import tools.vitruv.variability.vave.model.expression.Conjunction;
+import tools.vitruv.variability.vave.model.expression.Disjunction;
+import tools.vitruv.variability.vave.model.expression.Expression;
+import tools.vitruv.variability.vave.model.expression.False;
+import tools.vitruv.variability.vave.model.expression.Not;
+import tools.vitruv.variability.vave.model.expression.True;
+import tools.vitruv.variability.vave.model.expression.Variable;
+import tools.vitruv.variability.vave.model.vave.Feature;
+import tools.vitruv.variability.vave.model.vave.FeatureRevision;
+import tools.vitruv.variability.vave.model.vave.Option;
 
+/**
+ * Converts an expression with options as literals (i.e., values of variables) into a collection of int arrays that can be passed to a SAT solver.
+ */
 public class ExpressionToSATConverter {
 
-	public Collection<int[]> convertExpr2Sat(Expression<? extends Object> expr) {
-		ExpressionToCNFConverter converter = new ExpressionToCNFConverter();
-		Expression<? extends Object> exprCNF = converter.convert(expr);
+	public <T extends Option> Collection<int[]> convertExpr2Sat(Expression<T> expr) {
+		Expression<T> exprCNF = ExpressionUtil.convertToCNF(expr);
 
 		Collection<int[]> clauses = new ArrayList<>();
 		this.createClausesRec(exprCNF, clauses);
@@ -32,11 +33,12 @@ public class ExpressionToSATConverter {
 		return clauses;
 	}
 
-	private void createClausesRec(Term<? extends Option> expr, Collection<int[]> clauses) {
+	private <T extends Option> void createClausesRec(Expression<T> expr, Collection<int[]> clauses) {
 		// if the expression is a conjunction we recurse
 		if (expr instanceof Conjunction) {
-			this.createClausesRec(((Conjunction<? extends Option>) expr).getTerm().get(0), clauses);
-			this.createClausesRec(((Conjunction<? extends Option>) expr).getTerm().get(1), clauses);
+			for (Expression<T> childExpr : ((Conjunction<T>) expr).getExpressions()) {
+				this.createClausesRec(childExpr, clauses);
+			}
 		} else { // if (expr instanceof Disjunction) {
 			// we create a new clause whenever we encounter a disjunction that has as a parent a conjunction
 			int[] clause = this.createClause(expr);
@@ -45,7 +47,7 @@ public class ExpressionToSATConverter {
 		}
 	}
 
-	private int[] createClause(Term<? extends Option> expr) {
+	private <T extends Option> int[] createClause(Expression<T> expr) {
 		List<Integer> clause = new ArrayList<>();
 		this.createClauseRec(expr, clause);
 		if (clause.contains(null)) {
@@ -69,30 +71,31 @@ public class ExpressionToSATConverter {
 			this.curVal = optionToIntMap.values().stream().mapToInt(v -> v).max().getAsInt();
 	}
 
-	private void createClauseRec(Term<? extends Option> expr, List<Integer> literals) {
+	private <T extends Option> void createClauseRec(Expression<T> expr, List<Integer> literals) {
 		// if the expression is a disjunction we recurse
 		if (expr instanceof Disjunction) {
-			this.createClauseRec(((Disjunction<? extends Option>) expr).getTerm().get(0), literals);
-			this.createClauseRec(((Disjunction<? extends Option>) expr).getTerm().get(1), literals);
+			for (Expression<T> childExpr : ((Disjunction<T>) expr).getExpressions()) {
+				this.createClauseRec(childExpr, literals);
+			}
 		} else if (expr instanceof Not) {
-			Term<? extends Option> notOption = ((Not) expr).getTerm();
+			Expression<T> notOption = ((Not<T>) expr).getExpression();
 			if (notOption instanceof Variable) {
-				Variable<? extends Option> variable = (Variable<? extends Option>) ((Not<? extends Option>) expr).getTerm();
-				Integer value = this.optionToIntMap.get(variable.getOption());
+				Variable<T> variable = (Variable<T>) ((Not<T>) expr).getExpression();
+				Integer value = this.optionToIntMap.get(variable.getValue());
 				if (value == null) {
-					if (variable.getOption() instanceof FeatureRevision) {
+					if (variable.getValue() instanceof FeatureRevision) {
 						// look for feature of feature revision
-						Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getOption().eContainer()).getName())).map(e -> e.getKey()).findAny();
+						Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getValue().eContainer()).getName())).map(e -> e.getKey()).findAny();
 						if (featureOpt.isPresent()) {
 							value = this.optionToIntMap.get(featureOpt.get());
-							System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getOption());
+							System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getValue());
 						}
 					}
 					if (value == null) {
 						value = ++this.curVal;
-						this.optionToIntMap.put(variable.getOption(), value);
-						System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
-						throw new RuntimeException("There was no value bound to option " + variable.getOption());
+						this.optionToIntMap.put(variable.getValue(), value);
+						System.out.println("NEW VAL : " + value + " for option " + variable.getValue());
+						throw new RuntimeException("There was no value bound to option " + variable.getValue());
 					}
 				}
 				literals.add(-value);
@@ -102,22 +105,22 @@ public class ExpressionToSATConverter {
 				literals.add(null);
 			}
 		} else if (expr instanceof Variable) {
-			Variable<? extends Option> variable = (Variable<? extends Option>) expr;
-			Integer value = this.optionToIntMap.get(variable.getOption());
+			Variable<T> variable = (Variable<T>) expr;
+			Integer value = this.optionToIntMap.get(variable.getValue());
 			if (value == null) {
-				if (variable.getOption() instanceof FeatureRevision) {
+				if (variable.getValue() instanceof FeatureRevision) {
 					// look for feature of feature revision
-					Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getOption().eContainer()).getName())).map(e -> e.getKey()).findAny();
+					Optional<Option> featureOpt = this.optionToIntMap.entrySet().stream().filter(e -> e.getKey() instanceof Feature && Objects.equals(((Feature) e.getKey()).getName(), ((Feature) variable.getValue().eContainer()).getName())).map(e -> e.getKey()).findAny();
 					if (featureOpt.isPresent()) {
 						value = this.optionToIntMap.get(featureOpt.get());
-						System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getOption());
+						System.out.println("USED FEATURE VAL " + value + " FOR FEATURE REVISION " + variable.getValue());
 					}
 				}
 				if (value == null) {
 					value = ++this.curVal;
-					this.optionToIntMap.put(variable.getOption(), value);
-					System.out.println("NEW VAL : " + value + " for option " + variable.getOption());
-					throw new RuntimeException("There was no value bound to option " + variable.getOption());
+					this.optionToIntMap.put(variable.getValue(), value);
+					System.out.println("NEW VAL : " + value + " for option " + variable.getValue());
+					throw new RuntimeException("There was no value bound to option " + variable.getValue());
 				}
 			}
 			literals.add(value);

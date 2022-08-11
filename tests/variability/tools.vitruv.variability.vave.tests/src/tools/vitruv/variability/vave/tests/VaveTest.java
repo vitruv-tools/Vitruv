@@ -61,7 +61,7 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
-import tools.vitruv.variability.vave.util.ExpressionEvaluator;
+import tools.vitruv.variability.vave.util.old.ExpressionEvaluator;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
 import vavemodel.Disjunction;

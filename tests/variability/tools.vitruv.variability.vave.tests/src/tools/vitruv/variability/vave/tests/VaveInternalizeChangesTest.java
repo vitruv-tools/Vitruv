@@ -34,7 +34,7 @@ import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
-import tools.vitruv.variability.vave.util.FeatureModel;
+import tools.vitruv.variability.vave.util.old.FeatureModel;
 import vavemodel.Configuration;
 import vavemodel.Conjunction;
 import vavemodel.CrossTreeConstraint;

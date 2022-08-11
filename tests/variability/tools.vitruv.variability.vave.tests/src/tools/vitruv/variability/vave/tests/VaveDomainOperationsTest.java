@@ -22,7 +22,7 @@ import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
-import tools.vitruv.variability.vave.util.FeatureModel;
+import tools.vitruv.variability.vave.util.old.FeatureModel;
 import vavemodel.CrossTreeConstraint;
 import vavemodel.Feature;
 import vavemodel.FeatureOption;
