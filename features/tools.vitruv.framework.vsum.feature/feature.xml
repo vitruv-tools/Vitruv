@@ -27,27 +27,16 @@
       <import plugin="org.eclipse.xtend.lib"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.eclipse"/>
-      <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
       <import plugin="tools.vitruv.change.composite"/>
       <import plugin="org.eclipse.emf.compare"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
-      <import plugin="org.eclipse.ui"/>
    </requires>
 
    <plugin
          id="tools.vitruv.framework.applications"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.domains.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -62,13 +51,6 @@
 
    <plugin
          id="tools.vitruv.framework.vsum"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.vsum.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
