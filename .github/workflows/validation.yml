@@ -56,9 +56,9 @@ jobs:
           path: dsls/releng/tools.vitruv.dsls.updatesite/target/repository
           retention-days: 1
 
-  validate_cbs_applications:
+  validate_casestudies:
     needs: [validate_framework, build_dsls]
-    name: Applications
+    name: Case Studies
     runs-on: ubuntu-latest
     steps:
       - name: Download Framework Artifact
@@ -71,16 +71,16 @@ jobs:
         with:
           name: dsls
           path: dsls
-      - name: Checkout CBS Applications
+      - name: Checkout Case Studies
         uses: actions/checkout@v3
         with:
-          path: cbsapplications
-          repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
+          path: casestudies
+          repository: vitruv-tools/Vitruv-CaseStudies
           ref: main
           fetch-depth: 0
-      - name: Checkout Matching Applications Branch
+      - name: Checkout Matching Case Studies Branch
         run: |
-          cd cbsapplications
+          cd casestudies
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
       - name: Cache
         uses: actions/cache@v3
@@ -93,10 +93,10 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
-      - name: Build and Verify Applications
+      - name: Build and Verify Case Studies
         uses: GabrielBB/xvfb-action@v1
         with:
-          working-directory: ./cbsapplications
+          working-directory: ./casestudies
           run: >
             ./mvnw -B -U clean verify
             -Dvitruv.framework.url=file:///${{ github.workspace }}/framework
