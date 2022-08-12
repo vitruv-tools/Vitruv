@@ -8,16 +8,10 @@ jobs:
     name: Framework
     uses: ./.github/workflows/ci.yml
 
-  validate_dsls:
-    needs: validate_framework
+  build_dsls:
     name: DSLs
     runs-on: ubuntu-latest
     steps:
-      - name: Download Framework Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: framework
-          path: framework
       - name: Checkout DSLs
         uses: actions/checkout@v3
         with:
@@ -40,13 +34,12 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
-      - name: Build and Verify DSLs
+      - name: Build DSLs
         uses: GabrielBB/xvfb-action@v1
         with:
           working-directory: ./dsls
           run: >
-            ./mvnw -B -U clean verify
-            -Dvitruv.framework.url=file:///${{ github.workspace }}/framework
+            ./mvnw -B -U clean package
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
@@ -64,7 +57,7 @@ jobs:
           retention-days: 1
 
   validate_cbs_applications:
-    needs: [validate_framework, validate_dsls]
+    needs: [validate_framework, build_dsls]
     name: Applications
     runs-on: ubuntu-latest
     steps:
