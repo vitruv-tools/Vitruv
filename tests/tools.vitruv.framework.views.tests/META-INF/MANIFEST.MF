@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framwork Views Tests
 Bundle-SymbolicName: tools.vitruv.framework.views.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.views.tests
-Bundle-Version: 2.1.0.qualifier
+Bundle-Version: 3.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: tools.vitruv.framework.views
 Require-Bundle: org.apache.log4j,
