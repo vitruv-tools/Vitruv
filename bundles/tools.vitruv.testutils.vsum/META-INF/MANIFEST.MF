@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv V-SUM Testutils
 Bundle-SymbolicName: tools.vitruv.testutils.vsum
-Bundle-Version: 3.0.0.qualifier
+Bundle-Version: 3.0.1.qualifier
 Bundle-Vendor: tools.vitruv
 Automatic-Module-Name: tools.vitruv.testutils.vsum
 Bundle-RequiredExecutionEnvironment: JavaSE-11
