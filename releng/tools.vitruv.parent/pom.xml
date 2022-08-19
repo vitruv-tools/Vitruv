@@ -14,7 +14,7 @@
 	
 	<properties>
 		<!-- A local updatesite for the change core can be specified by overwriting these properties. It defaults to the nightly Vitruv change updatesite. -->
-		<vitruv.change.url>https://vitruv-tools.github.io/updatesite/nightly/change/</vitruv.change.url>
+		<vitruv.change.url>https://vitruv-tools.github.io/updatesite/nightly/change</vitruv.change.url>
 	</properties>
 
 	<repositories>
