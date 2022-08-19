@@ -46,7 +46,7 @@ jobs:
           path: releng/tools.vitruv.updatesite/target/repository
           retention-days: 1
       - name: Publish Nightly Update Site
-        if: github.ref == 'refs/heads/main' && github.repository_owner == 'vitruv-tools'
+        if: github.event_name != 'release' && github.ref == 'refs/heads/main' && github.repository_owner == 'vitruv-tools'
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
