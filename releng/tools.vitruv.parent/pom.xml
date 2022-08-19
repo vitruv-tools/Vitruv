@@ -9,12 +9,12 @@
 		<version>2.0.2</version>
 	</parent>
 	<artifactId>framework-parent</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.0.0</version>
 	<packaging>pom</packaging>
 	
 	<properties>
 		<!-- A local updatesite for the change core can be specified by overwriting these properties. It defaults to the nightly Vitruv change updatesite. -->
-		<vitruv.change.url>https://vitruv-tools.github.io/updatesite/nightly/change</vitruv.change.url>
+		<vitruv.change.url>https://vitruv-tools.github.io/updatesite/release/change/latest</vitruv.change.url>
 	</properties>
 
 	<repositories>

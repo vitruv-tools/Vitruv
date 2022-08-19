@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/tools.vitruv.framework.vsum.feature_3.0.0.qualifier.jar" id="tools.vitruv.framework.vsum.feature" version="3.0.0.qualifier">
+   <feature url="features/tools.vitruv.framework.vsum.feature_3.0.0.jar" id="tools.vitruv.framework.vsum.feature" version="3.0.0">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.framework.vsum.feature.source" version="3.0.0.qualifier">
+   <feature id="tools.vitruv.framework.vsum.feature.source" version="3.0.0">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.testutils.vsum.feature_3.0.0.qualifier.jar" id="tools.vitruv.testutils.vsum.feature" version="3.0.0.qualifier">
+   <feature url="features/tools.vitruv.testutils.vsum.feature_3.0.0.jar" id="tools.vitruv.testutils.vsum.feature" version="3.0.0">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.testutils.vsum.feature.source" version="3.0.0.qualifier">
+   <feature id="tools.vitruv.testutils.vsum.feature.source" version="3.0.0">
       <category name="Vitruv Framework"/>
    </feature>
    <category-def name="Vitruv Framework" label="Vitruv V-SUM Framework">
