@@ -4,7 +4,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tests</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <relativePath>../.polyglot.pom.tycho</relativePath>
   </parent>
   <artifactId>tools.vitruv.framework.views.tests</artifactId>
