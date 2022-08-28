@@ -21,14 +21,13 @@ import tools.vitruv.testutils.domains.AllElementTypesDomain;
 import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
+import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.vave.CrossTreeConstraint;
+import tools.vitruv.variability.vave.model.vave.Feature;
+import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.GroupType;
+import tools.vitruv.variability.vave.model.vave.TreeConstraint;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
-import tools.vitruv.variability.vave.util.old.FeatureModel;
-import vavemodel.CrossTreeConstraint;
-import vavemodel.Feature;
-import vavemodel.FeatureOption;
-import vavemodel.GroupType;
-import vavemodel.TreeConstraint;
-import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveDomainOperationsTest {

@@ -108,6 +108,12 @@ public final class ExpressionUtil {
 		else if (expression instanceof Not)
 			return !eval(((Not<T>) expression).getExpression(), configuration);
 		else if (expression instanceof Variable) {
+			// NOTE: this was the previous behavior:
+			// for feature revisions: check if the configuration contains this feature revision or a newer one
+			// for feature: check if the configuration contains this feature or any revision of it
+//			return this.configuration.getOption().contains(variable.getValue()) || variable.getValue() instanceof Feature && this.configuration.getOption().stream().filter(o -> o instanceof FeatureRevision && ((FeatureRevision) o).eContainer().equals(variable.getOption())).findAny().isPresent()
+//					|| variable.getValue() instanceof FeatureRevision && this.configuration.getOption().stream().filter(o -> o instanceof FeatureRevision && ((FeatureRevision) o).eContainer().equals(((FeatureRevision) variable.getOption()).eContainer()) && ((FeatureRevision) o).getRevisionID() >= ((FeatureRevision) variable.getOption()).getRevisionID()).findAny().isPresent();
+
 			// return this.configuration.getOption().contains(variable.getOption());
 			// for feature revisions: check if the configuration contains this feature revision or a newer one
 			Variable<T> variable = (Variable<T>) expression;

@@ -61,19 +61,21 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
-import tools.vitruv.variability.vave.util.old.ExpressionEvaluator;
-import vavemodel.Configuration;
-import vavemodel.Conjunction;
-import vavemodel.Disjunction;
-import vavemodel.Expression;
-import vavemodel.Feature;
-import vavemodel.FeatureOption;
-import vavemodel.FeatureRevision;
-import vavemodel.Implication;
-import vavemodel.Not;
-import vavemodel.Option;
-import vavemodel.Variable;
-import vavemodel.VavemodelFactory;
+import tools.vitruv.variability.vave.model.expression.Conjunction;
+import tools.vitruv.variability.vave.model.expression.Disjunction;
+import tools.vitruv.variability.vave.model.expression.Expression;
+import tools.vitruv.variability.vave.model.expression.Implication;
+import tools.vitruv.variability.vave.model.expression.Not;
+import tools.vitruv.variability.vave.model.expression.True;
+import tools.vitruv.variability.vave.model.expression.Variable;
+import tools.vitruv.variability.vave.model.vave.Configuration;
+import tools.vitruv.variability.vave.model.vave.CrossTreeConstraint;
+import tools.vitruv.variability.vave.model.vave.Feature;
+import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.FeatureRevision;
+import tools.vitruv.variability.vave.model.vave.GroupType;
+import tools.vitruv.variability.vave.model.vave.Option;
+import tools.vitruv.variability.vave.model.vave.TreeConstraint;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveTest {
@@ -144,16 +146,16 @@ public class VaveTest {
 		}
 	}
 
-	private Expression<FeatureOption> createExpression(vavemodel.System system) {
+	private Expression<FeatureOption> createExpression(System system) {
 		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
-		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		Feature car = VavemodelFactory.eINSTANCE.createFeature();
 		car.setName("Car");
-		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
 		engineType.setName("EngineType");
 		system.getFeature().add(car);
 		system.getFeature().add(engineType);
-		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
 		variable1.setOption(car);
 		variable2.setOption(engineType);
 		conjunction.getTerm().add(variable1);
@@ -246,7 +248,7 @@ public class VaveTest {
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		// Expression<FeatureOption> expression = createExpression(vave.getSystem());
-		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
@@ -282,12 +284,12 @@ public class VaveTest {
 	@Test // Test wrt. problem space and feature revisions
 	public void testCarVaveModelCreationWithFeaturesOnly() {
 		// create tree content of simple vave model instance
-		vavemodel.System system = VavemodelFactory.eINSTANCE.createSystem();
-		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature electric = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
+		System system = VavemodelFactory.eINSTANCE.createSystem();
+		Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
+		Feature electric = VavemodelFactory.eINSTANCE.createFeature();
+		Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
 		car.setName("car");
 		engineType.setName("engineType");
 		gasoline.setName("gasoline");
@@ -298,28 +300,28 @@ public class VaveTest {
 		system.getFeature().add(electric);
 		system.getFeature().add(smogControl);
 		system.getFeature().add(engineType);
-		vavemodel.TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr1.setType(vavemodel.GroupType.XOR);
+		TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr1.setType(GroupType.XOR);
 		// Make Engine Type mandatory by adding a tree constraint of type XOR to its
 		// parent feature Car
 		addContainment(car, treeconstr1, "treeconstraint");
 		addContainment(treeconstr1, engineType, "feature");
 		// Make Smog Control optional
-		vavemodel.TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr2.setType(vavemodel.GroupType.XORNONE);
+		TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr2.setType(GroupType.XORNONE);
 		addContainment(car, treeconstr2, "treeconstraint");
 		addContainment(treeconstr2, smogControl, "feature");
 		// Make OR-Group between Gasoline and Electric with Engine Type parent
-		vavemodel.TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr3.setType(vavemodel.GroupType.OR);
+		TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr3.setType(GroupType.OR);
 		addContainment(engineType, treeconstr3, "treeconstraint");
 		addContainment(treeconstr3, gasoline, "feature");
 		addContainment(treeconstr3, electric, "feature");
 		// create cross-tree constraint implication: gasoline implies smog control
-		vavemodel.CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
-		vavemodel.Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
-		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
+		Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
+		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
 		crosstreeconstr1.setExpression(implication1);
 		implication1.getTerm().add(variable1);
 		implication1.getTerm().add(variable2);
@@ -348,12 +350,12 @@ public class VaveTest {
 	@Test // Test wrt. problem space and feature revisions
 	public void testCarVaveModelCreationWithFeatureRevisions() {
 		// create tree content of simple vave model instance
-		vavemodel.System system = VavemodelFactory.eINSTANCE.createSystem();
-		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature electric = VavemodelFactory.eINSTANCE.createFeature();
-		vavemodel.Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
+		System system = VavemodelFactory.eINSTANCE.createSystem();
+		Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
+		Feature electric = VavemodelFactory.eINSTANCE.createFeature();
+		Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
 		car.setName("car");
 		engineType.setName("engineType");
 		gasoline.setName("gasoline");
@@ -376,26 +378,26 @@ public class VaveTest {
 		FeatureRevision smogControl_1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
 		smogControl_1.setRevisionID(1);
 		smogControl.getFeaturerevision().add(smogControl_1);
-		vavemodel.TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr1.setType(vavemodel.GroupType.XOR);
+		TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr1.setType(GroupType.XOR);
 		// Make Engine Type mandatory by adding a tree constraint of type XOR to its
 		// parent feature Car
 		addContainment(car, treeconstr1, "treeconstraint");
 		addContainment(treeconstr1, engineType, "feature");
-		vavemodel.TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr2.setType(vavemodel.GroupType.XORNONE);
+		TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr2.setType(GroupType.XORNONE);
 		addContainment(car, treeconstr2, "treeconstraint");
 		addContainment(treeconstr2, smogControl, "feature");
-		vavemodel.TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr3.setType(vavemodel.GroupType.OR);
+		TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		treeconstr3.setType(GroupType.OR);
 		addContainment(engineType, treeconstr3, "treeconstraint");
 		addContainment(treeconstr3, gasoline, "feature");
 		addContainment(treeconstr3, electric, "feature");
 		// create cross-tree constraint implication: gasoline implies smog control
-		vavemodel.CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
-		vavemodel.Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
-		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
+		Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
+		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
 		crosstreeconstr1.setExpression(implication1);
 		implication1.getTerm().add(variable1);
 		implication1.getTerm().add(variable2);
@@ -428,7 +430,7 @@ public class VaveTest {
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vaveSaved = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		// Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
-		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("vave", new XMIResourceFactoryImpl());

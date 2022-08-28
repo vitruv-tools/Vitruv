@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,26 +25,32 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.model.expression.BinaryExpression;
+import tools.vitruv.variability.vave.model.expression.Disjunction;
+import tools.vitruv.variability.vave.model.expression.Expression;
+import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
+import tools.vitruv.variability.vave.model.expression.NaryExpression;
+import tools.vitruv.variability.vave.model.expression.Not;
+import tools.vitruv.variability.vave.model.expression.UnaryExpression;
+import tools.vitruv.variability.vave.model.expression.Variable;
+import tools.vitruv.variability.vave.model.expression.util.ExpressionSwitch;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.featuremodel.FeaturemodelFactory;
+import tools.vitruv.variability.vave.model.featuremodel.ViewCrossTreeConstraint;
+import tools.vitruv.variability.vave.model.featuremodel.ViewFeature;
+import tools.vitruv.variability.vave.model.featuremodel.ViewTreeConstraint;
+import tools.vitruv.variability.vave.model.vave.DeltaModule;
+import tools.vitruv.variability.vave.model.vave.Feature;
+import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.FeatureRevision;
+import tools.vitruv.variability.vave.model.vave.GroupType;
+import tools.vitruv.variability.vave.model.vave.Mapping;
+import tools.vitruv.variability.vave.model.vave.Option;
+import tools.vitruv.variability.vave.model.vave.SystemRevision;
 import tools.vitruv.variability.vave.util.ExpressionToSATConverter;
-import vavemodel.BinaryExpression;
-import vavemodel.CrossTreeConstraint;
-import vavemodel.DeltaModule;
-import vavemodel.Disjunction;
-import vavemodel.Feature;
-import vavemodel.FeatureOption;
-import vavemodel.FeatureRevision;
-import vavemodel.GroupType;
-import vavemodel.Mapping;
-import vavemodel.Not;
-import vavemodel.Option;
-import vavemodel.SystemRevision;
-import vavemodel.Term;
-import vavemodel.TreeConstraint;
-import vavemodel.UnaryExpression;
-import vavemodel.Variable;
-import vavemodel.VavemodelFactory;
-import vavemodel.util.VavemodelSwitch;
+import tools.vitruv.variability.vave.util.ExpressionUtil;
+import tools.vitruv.variability.vave.util.FeatureModelUtil;
+import tools.vitruv.variability.vave.util.OptionUtil;
 
 /**
  * Performs consistency preservation from solution space (product) to problem space (feature model) by computing dependencies between deltas and lifting them to constraints between features.
@@ -58,66 +63,57 @@ public class DependencyLifting implements ConsistencyRule {
 		public Result(FeatureModel repairedFeatureModel) {
 			this.repairedFeatureModel = repairedFeatureModel;
 		}
+
+		public FeatureModel getRepairedFeatureModel() {
+			return this.repairedFeatureModel;
+		}
 	}
 
 	@Override
-	public ConsistencyResult internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSysRev) {
-		return new Result(this.liftingDependenciesBetweenFeatures(vave, newSysRev));
-	}
-
-	public FeatureModel liftingDependenciesBetweenFeatures(VirtualVaVeModel vave, SystemRevision sysrev) {
-
+	public ConsistencyResult internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) {
 		// After every internalizeChanges, retrieve dependencies between deltas of vave model
 		// If dependencies have been detected, find mapped features of deltas
 		// check if features already depend on problem space (via implication or exclusion)
 		// otherwise, add implication of depending features
 
 		// start by translating the feature model at given system revision to sat
-		FeatureModel fm = vave.externalizeDomain(sysrev).getResult();
 
-		// select relevant mappings for sysrev
+		// externalize domain at system revision to obtain a feature model, add missing constraints to feature model, return feature model
+		FeatureModel currentFeatureModel = vave.externalizeDomain(newSystemRevision).getResult();
+
+		// select relevant mappings for system revision
 		List<Mapping> selectedMappings = new ArrayList<>();
-		for (Mapping mapping : vave.getSystem().getMapping()) {
-			OptionsCollector oc = new OptionsCollector();
-			Collection<Option> options = oc.doSwitch(mapping.getExpression());
-			if (options.contains(sysrev)) {
+		for (Mapping mapping : vave.getSystem().getMappings()) {
+			Collection<Option> options = OptionUtil.collect(mapping.getExpression());
+			if (options.contains(newSystemRevision)) {
 				selectedMappings.add(mapping);
 				System.out.println("SELECTED MAPPING: " + mapping);
 			}
 		}
 
 		// assign integers to every feature that is enabled by system revision
-		Collection<FeatureOption> enabledFeatureOptions = sysrev.getEnablesoptions();
+		Collection<FeatureOption> enabledFeatureOptions = newSystemRevision.getEnablesFeatureOptions();
 		int currentInt = 0;
-		Map<Option, Integer> optionToIntMap = new HashMap<>();
-		optionToIntMap.put(sysrev, ++currentInt);
+		Map<FeatureOption, Integer> featureOptionToIntMap = new HashMap<>();
 		for (FeatureOption fo : enabledFeatureOptions) {
 			if (fo instanceof Feature) {
-				optionToIntMap.put(fo, ++currentInt);
-				System.out.println("ASSIGN VALUE " + optionToIntMap.get(fo) + " TO FEATURE " + fo);
+				featureOptionToIntMap.put(fo, ++currentInt);
+				System.out.println("ASSIGN VALUE " + featureOptionToIntMap.get(fo) + " TO FEATURE " + fo);
 			}
 		}
 		for (FeatureOption fo : enabledFeatureOptions) {
 			if (fo instanceof FeatureRevision) {
 				Feature feature = (Feature) ((FeatureRevision) fo).eContainer();
-				if (optionToIntMap.get(feature) == null) {
-					optionToIntMap.put(feature, ++currentInt);
-					System.out.println("ASSIGN VALUE " + optionToIntMap.get(feature) + " TO FEATURE " + fo);
+				if (featureOptionToIntMap.get(feature) == null) {
+					featureOptionToIntMap.put(feature, ++currentInt);
+					System.out.println("ASSIGN VALUE " + featureOptionToIntMap.get(feature) + " TO FEATURE " + fo);
 				}
-				optionToIntMap.put(fo, optionToIntMap.get(feature));
-				System.out.println("ASSIGN VALUE " + optionToIntMap.get(fo) + " TO FEATURE REVISION " + fo);
+				featureOptionToIntMap.put(fo, featureOptionToIntMap.get(feature));
+				System.out.println("ASSIGN VALUE " + featureOptionToIntMap.get(fo) + " TO FEATURE REVISION " + fo);
 			}
 		}
-		Map<FeatureOption, Integer> fmOptionToIntMap = new HashMap<>();
-		for (Entry<Option, Integer> entry : optionToIntMap.entrySet()) {
-			if (entry.getKey() instanceof Feature) {
-				Feature fmFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) entry.getKey()).getName())).findAny().get();
-				fmOptionToIntMap.put(fmFeature, entry.getValue());
-			} else if (entry.getKey() instanceof FeatureRevision) {
-				FeatureRevision fmFeatureRevision = fm.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) entry.getKey()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) entry.getKey()).getRevisionID()).findAny().get();
-				fmOptionToIntMap.put(fmFeatureRevision, entry.getValue());
-			}
-		}
+		Map<Option, Integer> optionToIntMap = new HashMap<>(featureOptionToIntMap);
+		optionToIntMap.put(newSystemRevision, ++currentInt);
 
 		// compute clauses for mappings
 		Map<Mapping, Collection<int[]>> mappingToPosClauses = new HashMap<>();
@@ -125,10 +121,7 @@ public class DependencyLifting implements ConsistencyRule {
 		for (Mapping mapping : selectedMappings) {
 			// convert positive expression to CNF
 			{
-				// convert expression to CNF
-//				ExpressionToCNFConverter ec = new ExpressionToCNFConverter();
-//				Expression<? extends Option> cnfExpr = ec.convert(mapping.getExpression());
-				// convert CNF to SAT int vector
+				// convert expression to CNF SAT int vector
 				ExpressionToSATConverter e2sc = new ExpressionToSATConverter();
 				e2sc.setIntsForOptions(optionToIntMap);
 				Collection<int[]> clauses = e2sc.convertExpr2Sat(mapping.getExpression());
@@ -144,15 +137,10 @@ public class DependencyLifting implements ConsistencyRule {
 			}
 			// convert negative expression to CNF
 			{
-				// copy expression by creating CNF (we are actually only interested in the copy, not in the cnf conversion)
-				ExpressionToCNFConverter ec = new ExpressionToCNFConverter();
-				Term<Option> cnfCopyExpr = ec.convert(mapping.getExpression());
+				Expression<Option> cnfCopyExpr = ExpressionUtil.copy(mapping.getExpression());
 				// negate CNF
-				Not<Option> not = VavemodelFactory.eINSTANCE.createNot();
-				not.setTerm(cnfCopyExpr);
-//				// convert expression to CNF
-//				ExpressionToCNFConverter ec2 = new ExpressionToCNFConverter();
-//				Expression<? extends Option> cnfExpr = ec2.convert(not);
+				Not<Option> not = ExpressionFactory.eINSTANCE.createNot();
+				not.setExpression(cnfCopyExpr);
 				// convert expression to CNF SAT int vector
 				ExpressionToSATConverter e2sc = new ExpressionToSATConverter();
 				e2sc.setIntsForOptions(optionToIntMap);
@@ -177,7 +165,7 @@ public class DependencyLifting implements ConsistencyRule {
 		// traverse every mapping, delta module, change, and check to which there are dependencies
 		// example: this change in mapping M1 adds statement to method, other change in other mapping M2 adds method. then M1 requires M2.
 		for (Mapping mapping : selectedMappings) {
-			for (DeltaModule deltaModule : mapping.getDeltamodule()) {
+			for (DeltaModule deltaModule : mapping.getDeltaModules()) {
 				for (EChange change : deltaModule.getChange()) {
 					// for every change, check its type, affected value, new value, old value, etc.
 					if (change instanceof EObjectExistenceEChange<?>) {
@@ -267,16 +255,16 @@ public class DependencyLifting implements ConsistencyRule {
 		boolean repairHappened = false;
 
 		// order requires dependencies such that the mappings with the fewest dependencies are processed first.
-		List<Entry<Mapping, Set<Mapping>>> orderedRequires = requires.entrySet().stream().sorted((e1, e2) -> {
-			int numE1Deps = e1.getValue().size();
-			if (e1.getValue().contains(e1.getKey()))
-				numE1Deps--;
-			int numE2Deps = e2.getValue().size();
-			if (e2.getValue().contains(e2.getKey()))
-				numE2Deps--;
-			if (numE1Deps < numE2Deps)
+		List<Entry<Mapping, Set<Mapping>>> orderedRequires = requires.entrySet().stream().sorted((entry1, entry2) -> {
+			int numberDependenciesEntry1 = entry1.getValue().size();
+			if (entry1.getValue().contains(entry1.getKey()))
+				numberDependenciesEntry1--;
+			int numberDependenciesEntry2 = entry2.getValue().size();
+			if (entry2.getValue().contains(entry2.getKey()))
+				numberDependenciesEntry2--;
+			if (numberDependenciesEntry1 < numberDependenciesEntry2)
 				return -1;
-			else if (numE1Deps > numE2Deps)
+			else if (numberDependenciesEntry1 > numberDependenciesEntry2)
 				return 1;
 			else
 				return 0;
@@ -286,43 +274,47 @@ public class DependencyLifting implements ConsistencyRule {
 		// for (Entry<Mapping, Set<Mapping>> entry : requires.entrySet()) {
 		for (Entry<Mapping, Set<Mapping>> entry : orderedRequires) {
 			// check if feature model has no root and if current mapping has only a single feature and requires no other mapping but itself
-			OptionsCollector oc = new OptionsCollector();
-			List<Option> requiringFeatures = oc.doSwitch(entry.getKey().getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
-			if (fm.getRootFeature() == null && requiringFeatures.size() == 1 && (entry.getValue().isEmpty() || entry.getValue().size() == 1 && entry.getValue().contains(entry.getKey()))) {
+			List<Option> requiringFeatures = OptionUtil.collect(entry.getKey().getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
+			if (currentFeatureModel.getRootFeatures().isEmpty() && requiringFeatures.size() == 1 && (entry.getValue().isEmpty() || entry.getValue().size() == 1 && entry.getValue().contains(entry.getKey()))) {
 				Feature requiringFeature = null;
 				if (requiringFeatures.get(0) instanceof FeatureRevision)
 					requiringFeature = (Feature) requiringFeatures.get(0).eContainer();
 				else
 					requiringFeature = (Feature) requiringFeatures.get(0);
-				final Feature finalRequiringFeature = requiringFeature;
-				final Feature fmRequiringFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(finalRequiringFeature.getName())).findAny().get();
+//				final Feature finalRequiringFeature = requiringFeature;
+//				final Feature fmRequiringFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(finalRequiringFeature.getName())).findAny().get();
+				ViewFeature viewRequiringFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+				viewRequiringFeature.setOriginalFeature(requiringFeature);
+				viewRequiringFeature.setName(requiringFeature.getName());
 				// add it as root feature
-				fm.setRootFeature(fmRequiringFeature);
+				currentFeatureModel.getRootFeatures().add(viewRequiringFeature);
 
 				repairHappened = true;
 			}
+
 			// order the required mappings such that dependencies to the mappings with most dependencies are processed first (this is a heuristic)
-			List<Mapping> orderedRequired = entry.getValue().stream().sorted((e1, e2) -> {
-				int numE1Deps = requires.get(e1).size();
-				if (requires.get(e1).contains(e1))
-					numE1Deps--;
-				int numE2Deps = requires.get(e2).size();
-				if (requires.get(e2).contains(e2))
-					numE2Deps--;
-				if (numE1Deps < numE2Deps)
+			List<Mapping> orderedRequired = entry.getValue().stream().sorted((entry1, entry2) -> {
+				int numberDependenciesEntry1 = requires.get(entry1).size();
+				if (requires.get(entry1).contains(entry1))
+					numberDependenciesEntry1--;
+				int numberDependenciesEntry2 = requires.get(entry2).size();
+				if (requires.get(entry2).contains(entry2))
+					numberDependenciesEntry2--;
+				if (numberDependenciesEntry1 < numberDependenciesEntry2)
 					return 1;
-				else if (numE1Deps > numE2Deps)
+				else if (numberDependenciesEntry1 > numberDependenciesEntry2)
 					return -1;
 				else
 					return 0;
 			}).collect(Collectors.toList());
+
 			// for every mapping that is required, we check if its presence is guaranteed
 			for (Mapping requiredMapping : orderedRequired) {
 				// create new solver instance
 				ISolver solver = SolverFactory.newDefault();
 				try {
 					// add feature model constraints to solver
-					for (int[] clause : computeFMClauses(fm, fmOptionToIntMap)) {
+					for (int[] clause : FeatureModelUtil.computeClauses(currentFeatureModel, featureOptionToIntMap)) {
 						solver.addClause(new VecInt(clause));
 					}
 					// add requiring mapping positively
@@ -336,16 +328,11 @@ public class DependencyLifting implements ConsistencyRule {
 					// check for satisfiability
 					if (solver.isSatisfiable()) {
 						System.out.println("VIOLATION! MAPPING " + entry.getKey() + " requires MAPPING " + requiredMapping + "!!!");
-						// externalize domain at sysrev to obtain a feature model, add missing constraints to feature model, return feature model
-						// use option collector to check how many features exist in expression of requiring and required mapping.
-//						// we start with the requiring mapping
-//						OptionsCollector oc = new OptionsCollector();
-//						List<Option> requiringFeatures = oc.doSwitch(entry.getKey().getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
-						// next we do the required mapping
-						OptionsCollector oc2 = new OptionsCollector();
-						List<Option> requiredFeatures = oc2.doSwitch(requiredMapping.getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
+
+						// collect options to check how many features exist in expression of requiring and required mapping
+						List<Option> requiredFeatures = OptionUtil.collect(requiredMapping.getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
 						// if its only a single feature each and the requiring feature does not have a parent, add it as child of the required feature
-						boolean addedTC = false;
+						boolean addedTreeConstraint = false;
 						if (requiringFeatures.size() == 1 && requiredFeatures.size() == 1) {
 							Feature requiringFeature = null;
 							if (requiringFeatures.get(0) instanceof FeatureRevision)
@@ -357,100 +344,105 @@ public class DependencyLifting implements ConsistencyRule {
 								requiredFeature = (Feature) requiredFeatures.get(0).eContainer();
 							else
 								requiredFeature = (Feature) requiredFeatures.get(0);
-							// if requiring feature does not have a parent, add it as optional child to required feature
-							final Feature finalRequiringFeature = requiringFeature;
-							final Feature finalRequiredFeature = requiredFeature;
-							final Feature fmRequiringFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(finalRequiringFeature.getName())).findAny().get();
-							final Feature fmRequiredFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(finalRequiredFeature.getName())).findAny().get();
 
-							Feature parent = getParent(fm, fmRequiredFeature);
+							// NOTE: at this point (after iC) every view feature should have an original feature
+
+							// obtain view features in feature model
+							ViewFeature viewRequiredFeature = this.findViewFeatureForFeature(currentFeatureModel.getRootFeatures().get(0), requiredFeature);
+							ViewFeature viewRequiringFeature = this.findViewFeatureForFeature(currentFeatureModel.getRootFeatures().get(0), requiringFeature);
+
 							// check if required feature is direct optional child of requiring feature
-							if (parent == fmRequiringFeature) {
-								Optional<TreeConstraint> of = fm.getTreeConstraints().stream().filter(tc -> tc.getFeature().contains(fmRequiredFeature)).findAny();
-								if (of.isPresent()) {
-									TreeConstraint tc = of.get();
-									if (tc.getType() == GroupType.ORNONE && tc.getFeature().size() == 1) {
-										tc.setType(GroupType.XOR);
-										addedTC = true;
-										repairHappened = true;
-									}
+							if (viewRequiredFeature != null && viewRequiredFeature.getParentTreeConstraint() != null && viewRequiredFeature.getParentTreeConstraint().getParentFeature() != null && viewRequiredFeature.getParentTreeConstraint().getParentFeature().getOriginalFeature() == requiringFeature) {
+								// if yes, and it is optional and only child, make it mandatory
+								if (viewRequiredFeature.getParentTreeConstraint().getType() == GroupType.OPTIONAL && viewRequiredFeature.getParentTreeConstraint().getChildFeatures().size() == 1) {
+									viewRequiredFeature.getParentTreeConstraint().setType(GroupType.MANDATORY);
+									addedTreeConstraint = true;
+									repairHappened = true;
 								}
 							}
 
-							// check if it already has a parent
-							if (!addedTC && fm.getTreeConstraints().stream().filter(tc -> tc.getFeature().contains(fmRequiringFeature)).findAny().isEmpty()) {
+							// check if requiring feature already has a parent. if requiring feature does not have a parent, add it as optional child to required feature.
+							if (!addedTreeConstraint && (viewRequiringFeature == null || viewRequiringFeature.getParentTreeConstraint() == null)) { // currentFeatureModel.getTreeConstraints().stream().filter(tc -> tc.getFeature().contains(fmRequiringFeature)).findAny().isEmpty()) {
 								// check if required feature is indirect child of requiring feature (to ensure there is no cycle in the fm)
-								while (parent != null && parent != fmRequiredFeature) {
-									parent = getParent(fm, parent);
+								ViewFeature viewParentFeatureOfRequiredFeature = viewRequiredFeature; // .getParentTreeConstraint().getParentFeature();
+								while (viewParentFeatureOfRequiredFeature != null && viewParentFeatureOfRequiredFeature.getOriginalFeature() != requiringFeature) {
+									if (viewParentFeatureOfRequiredFeature.getParentTreeConstraint() != null && viewParentFeatureOfRequiredFeature.getParentTreeConstraint().getParentFeature() != null)
+										viewParentFeatureOfRequiredFeature = viewParentFeatureOfRequiredFeature.getParentTreeConstraint().getParentFeature();
+									else
+										viewParentFeatureOfRequiredFeature = null;
 								}
-								if (parent == null) {
-									TreeConstraint tc = VavemodelFactory.eINSTANCE.createTreeConstraint();
-									tc.setType(GroupType.ORNONE);
-									tc.getFeature().add(fmRequiringFeature);
-									fmRequiredFeature.getTreeconstraint().add(tc);
-									fm.getTreeConstraints().add(tc);
-									addedTC = true;
+								if (viewParentFeatureOfRequiredFeature == null) {
+									// if not, then add requiring feature as optional child of required feature
+									ViewTreeConstraint newViewTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewTreeConstraint();
+									newViewTreeConstraint.setType(GroupType.OPTIONAL);
+									if (viewRequiringFeature == null) {
+										viewRequiringFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+										viewRequiringFeature.setOriginalFeature(requiringFeature);
+										viewRequiringFeature.setName(requiringFeature.getName());
+									}
+									newViewTreeConstraint.getChildFeatures().add(viewRequiringFeature);
+									if (viewRequiredFeature == null) {
+										viewRequiredFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+										viewRequiredFeature.setOriginalFeature(requiredFeature);
+										viewRequiredFeature.setName(requiredFeature.getName());
+									}
+									viewRequiredFeature.getChildTreeConstraints().add(newViewTreeConstraint);
+									addedTreeConstraint = true;
 									repairHappened = true;
-									System.out.println("ADDED TC: " + fmRequiringFeature + " as child of " + fmRequiredFeature);
+									System.out.println("ADDED TC: " + requiringFeature + " as child of " + requiredFeature);
 									System.out.println("ADDED TC: " + entry.getKey() + " as child of " + requiredMapping);
 								}
 							}
 						}
-						if (!addedTC) {
-							// add CTC
-							CrossTreeConstraint ctc = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
-							fm.getCrossTreeConstraints().add(ctc);
-							Disjunction<FeatureOption> disjunction = VavemodelFactory.eINSTANCE.createDisjunction();
-							Not<FeatureOption> not = VavemodelFactory.eINSTANCE.createNot();
+						if (!addedTreeConstraint) { // if no tree constraint was added so far, add a cross-tree constraint
+							ExpressionSwitch<Expression<FeatureOption>> systemRevisionRemover = new ExpressionSwitch<Expression<FeatureOption>>() {
+								public <T> Expression<FeatureOption> caseNaryExpression(NaryExpression<T> object) {
+									for (int i = 0; i < object.getExpressions().size(); i++)
+										object.getExpressions().set(i, (Expression<T>) doSwitch(object.getExpressions().get(i)));
+									return (NaryExpression<FeatureOption>) object;
+								};
 
-							VavemodelSwitch<Term<FeatureOption>> systemRevisionRemover = new VavemodelSwitch<Term<FeatureOption>>() {
-								public <T extends Option> vavemodel.Term<FeatureOption> caseBinaryExpression(vavemodel.BinaryExpression<T> object) {
-									object.getTerm().set(0, (Term<T>) doSwitch(object.getTerm().get(0)));
-									object.getTerm().set(1, (Term<T>) doSwitch(object.getTerm().get(1)));
+								public <T> Expression<FeatureOption> caseBinaryExpression(BinaryExpression<T> object) {
+									object.setLeft((Expression<T>) doSwitch(object.getLeft()));
+									object.setRight((Expression<T>) doSwitch(object.getRight()));
 									return (BinaryExpression<FeatureOption>) object;
 								};
 
-								public <T extends Option> vavemodel.Term<FeatureOption> caseUnaryExpression(vavemodel.UnaryExpression<T> object) {
-									object.setTerm((Term<T>) doSwitch(object.getTerm()));
+								public <T> Expression<FeatureOption> caseUnaryExpression(UnaryExpression<T> object) {
+									object.setExpression((Expression<T>) doSwitch(object.getExpression()));
 									return (UnaryExpression<FeatureOption>) object;
 								};
 
-								public <T extends Option> vavemodel.Term<FeatureOption> caseVariable(vavemodel.Variable<T> object) {
-									if (object.getOption() instanceof SystemRevision) {
-										if (object.getOption() == sysrev) {
-											return VavemodelFactory.eINSTANCE.createTrue();
+								public <T> Expression<FeatureOption> caseVariable(Variable<T> object) {
+									if (object.getValue() instanceof SystemRevision) {
+										if (object.getValue() == newSystemRevision) {
+											return ExpressionFactory.eINSTANCE.createTrue();
 										} else {
-											return VavemodelFactory.eINSTANCE.createFalse();
+											return ExpressionFactory.eINSTANCE.createFalse();
 										}
 									} else {
-										if (object.getOption() instanceof Feature) {
-											Feature fmFeature = fm.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) object.getOption()).getName())).findAny().get();
-											object.setOption((T) fmFeature);
-										} else if (object.getOption() instanceof FeatureRevision) {
-											Optional<FeatureRevision> fmFeatureRevisionOpt = fm.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr)
-													.filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) object.getOption()).eContainer()).getName()) && fr.getRevisionID() >= ((FeatureRevision) object.getOption()).getRevisionID()).findAny();
-											if (fmFeatureRevisionOpt.isEmpty())
-												System.out.println("ERROR");
-											FeatureRevision fmFeatureRevision = fmFeatureRevisionOpt.get();
-											object.setOption((T) fmFeatureRevision);
-										}
 										return (Variable<FeatureOption>) object;
 									}
 								};
 							};
 
-							Term<FeatureOption> leftTerm = new ExpressionSimplifier<FeatureOption>().doSwitch(systemRevisionRemover.doSwitch(new ExpressionSimplifier<Option>().doSwitch(entry.getKey().getExpression())));
-							Term<FeatureOption> rightTerm = new ExpressionSimplifier<FeatureOption>().doSwitch(systemRevisionRemover.doSwitch(new ExpressionSimplifier<Option>().doSwitch(requiredMapping.getExpression())));
+							Expression<FeatureOption> leftTerm = ExpressionUtil.simplify(systemRevisionRemover.doSwitch(ExpressionUtil.simplify(entry.getKey().getExpression())));
+							Expression<FeatureOption> rightTerm = ExpressionUtil.simplify(systemRevisionRemover.doSwitch(ExpressionUtil.simplify(requiredMapping.getExpression())));
 
-							not.setTerm(leftTerm); // set expression of requiring mapping without system revision
-							disjunction.getTerm().add(not);
-							disjunction.getTerm().add(rightTerm); // set expression of required mapping without system revision
+							Disjunction<FeatureOption> disjunction = ExpressionFactory.eINSTANCE.createDisjunction();
+							Not<FeatureOption> not = ExpressionFactory.eINSTANCE.createNot();
+							not.setExpression(leftTerm); // set expression of requiring mapping without system revision
+							disjunction.getExpressions().add(not);
+							disjunction.getExpressions().add(rightTerm); // set expression of required mapping without system revision
 
-							ctc.setExpression(disjunction);
+							ViewCrossTreeConstraint viewCrossTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewCrossTreeConstraint();
+							viewCrossTreeConstraint.setExpression(disjunction);
+
+							currentFeatureModel.getCrossTreeConstraints().add(viewCrossTreeConstraint);
 
 							repairHappened = true;
 
-							System.out.println("ADD CTC: " + new ExpressionPrinter().doSwitch(ctc.getExpression()));
+							System.out.println("ADD CTC: " + ExpressionUtil.toString(viewCrossTreeConstraint.getExpression()));
 						}
 					}
 				} catch (ContradictionException e) {
@@ -467,7 +459,7 @@ public class DependencyLifting implements ConsistencyRule {
 				ISolver solver = SolverFactory.newDefault();
 				try {
 					// add feature model constraints to solver
-					for (int[] clause : computeFMClauses(fm, fmOptionToIntMap)) {
+					for (int[] clause : FeatureModelUtil.computeClauses(currentFeatureModel, featureOptionToIntMap)) {
 						solver.addClause(new VecInt(clause));
 					}
 					// add requiring mapping positively
@@ -481,10 +473,8 @@ public class DependencyLifting implements ConsistencyRule {
 					// check for satisfiability
 					if (solver.isSatisfiable()) {
 						System.out.println("VIOLATION! MAPPING " + entry.getKey() + " excludes MAPPING " + excludedMapping + "!!!");
-						// if both mappings have only one feature in their expression, both features have the same parent and are optional, then we can move them into an alternative group
-						// TODO
-						// if above is not the case, then simply add a ctc
-						// TODO
+						// POSSIBLE IMPROVEMENT: if both mappings have only one feature in their expression, both features have the same parent and are optional, then we can move them into an alternative group
+						// POSSIBLE IMPROVEMENT: if above is not the case, then simply add a cross-tree constraint
 
 						repairHappened = true;
 					}
@@ -497,98 +487,22 @@ public class DependencyLifting implements ConsistencyRule {
 		}
 
 		if (!repairHappened)
-			return null;
+			return new Result(null);
 		else
-			return fm;
+			return new Result(currentFeatureModel);
 	}
 
-	private static Feature getParent(final FeatureModel fm, final Feature f) {
-		Optional<TreeConstraint> of = fm.getTreeConstraints().stream().filter(tc -> tc.getFeature().contains(f)).findAny();
-		if (of.isPresent()) {
-			return (Feature) of.get().eContainer();
-		} else {
+	private ViewFeature findViewFeatureForFeature(ViewFeature viewFeature, Feature feature) {
+		if (viewFeature.getOriginalFeature() == feature)
+			return viewFeature;
+		else {
+			for (ViewTreeConstraint childViewTreeConstraint : viewFeature.getChildTreeConstraints()) {
+				for (ViewFeature childViewFeature : childViewTreeConstraint.getChildFeatures()) {
+					return this.findViewFeatureForFeature(childViewFeature, feature);
+				}
+			}
 			return null;
 		}
-	}
-
-	private static Collection<int[]> computeFMClauses(final FeatureModel fm, Map<FeatureOption, Integer> featureOptionToIntMap) {
-		Collection<int[]> fmClauses = new ArrayList<>();
-		Set<TreeConstraint> treeconstr = fm.getTreeConstraints();
-		Set<CrossTreeConstraint> crosstreeconstr = fm.getCrossTreeConstraints();
-//		Map<FeatureOption, Integer> featureOptionToIntMap = new HashMap<>();
-//		int i = 0;
-//		for (FeatureOption fo : fm.getFeatureOptions()) {
-//			featureOptionToIntMap.put(fo, i);
-//			i++;
-//		}
-		for (Option fo : featureOptionToIntMap.keySet()) {
-			if (fo instanceof FeatureRevision) {
-				// add clause that says "feature revision implies feature"
-				// also the other way round?
-				// this is not needed!
-			} else if (fo instanceof Feature) {
-				// do nothing?
-				// do nothing!
-			}
-		}
-		for (TreeConstraint tc : treeconstr) {
-			// first, children imply parents
-			for (Feature feature : tc.getFeature()) {
-				fmClauses.add(new int[] { -featureOptionToIntMap.get(feature), featureOptionToIntMap.get(tc.eContainer()) });
-			}
-			// second, depending on tc type, add relation between siblings and/or parent
-			if (tc.getType() == GroupType.ORNONE) {
-				// do nothing (only parent implies child)
-			} else if (tc.getType() == GroupType.OR) {
-				ArrayList<Integer> parentchild = new ArrayList<>();
-				ArrayList<Integer> siblings = new ArrayList<>();
-				parentchild.add(-featureOptionToIntMap.get(tc.eContainer()));
-				for (Feature feature : tc.getFeature()) {
-					parentchild.add(featureOptionToIntMap.get(feature));
-//					siblings.add(featureOptionToIntMap.get(feature));
-				}
-				fmClauses.add(parentchild.stream().mapToInt(val -> val).toArray());
-//				fmClauses.add(siblings.stream().mapToInt(val -> val).toArray());
-			} else if (tc.getType() == GroupType.XOR) { // !D v !E // mandatory or alternative group
-				for (int i = 0; i < tc.getFeature().size(); i++) {
-					for (int j = i + 1; j < tc.getFeature().size(); j++) {
-						ArrayList<Integer> literals = new ArrayList<>();
-						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(i)));
-						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(j)));
-						fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
-					}
-				}
-				ArrayList<Integer> literals = new ArrayList<>();
-				literals.add(-featureOptionToIntMap.get(tc.eContainer()));
-				for (Feature feature : tc.getFeature()) {
-					literals.add(featureOptionToIntMap.get(feature));
-				}
-				fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
-			} else if (tc.getType() == GroupType.XORNONE) { // at most one, no parent-child relation required
-				for (int i = 0; i < tc.getFeature().size(); i++) {
-					for (int j = i + 1; j < tc.getFeature().size(); j++) {
-						ArrayList<Integer> literals = new ArrayList<>();
-						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(i)));
-						literals.add(-featureOptionToIntMap.get(tc.getFeature().get(j)));
-						fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
-					}
-				}
-			}
-		}
-		for (CrossTreeConstraint ctc : crosstreeconstr) {
-			// add clause for ctc
-			ExpressionToSATConverter e2sc = new ExpressionToSATConverter();
-			e2sc.setIntsForOptions(featureOptionToIntMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
-			Collection<int[]> ctcCnf = e2sc.convertExpr2Sat(ctc.getExpression());
-			fmClauses.addAll(ctcCnf);
-		}
-//		for (int[] clause : fmClauses) {
-//			String modelString = "";
-//			for (int val : clause)
-//				modelString += val + ", ";
-//			System.out.println("FM CLAUSE: " + modelString);
-//		}
-		return fmClauses;
 	}
 
 }

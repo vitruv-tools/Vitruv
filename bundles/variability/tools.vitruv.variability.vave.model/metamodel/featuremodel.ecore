@@ -18,6 +18,7 @@
         eType="#//ViewTreeConstraint" eOpposite="#//ViewTreeConstraint/parentFeature"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parentTreeConstraint" lowerBound="1"
         eType="#//ViewTreeConstraint" eOpposite="#//ViewTreeConstraint/childFeatures"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewTreeConstraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="originalTreeConstraint"
@@ -26,6 +27,7 @@
         upperBound="-1" eType="#//ViewFeature" eOpposite="#//ViewFeature/parentTreeConstraint"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parentFeature" lowerBound="1"
         eType="#//ViewFeature" eOpposite="#//ViewFeature/childTreeConstraints"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EEnum vave.ecore#//GroupType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewCrossTreeConstraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="originalCrossTreeConstraint"

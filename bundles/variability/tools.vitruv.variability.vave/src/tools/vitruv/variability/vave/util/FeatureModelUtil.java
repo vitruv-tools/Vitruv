@@ -134,7 +134,7 @@ public final class FeatureModelUtil {
 		}
 	}
 
-	private static Set<FeatureOption> collectFeatureOptions(FeatureModel featureModel) {
+	public static Set<FeatureOption> collectFeatureOptions(FeatureModel featureModel) {
 		Set<FeatureOption> featureOptions = new HashSet<>();
 		for (ViewFeature viewFeature : featureModel.getRootFeatures())
 			collectFeaturesRec(viewFeature, featureOptions);

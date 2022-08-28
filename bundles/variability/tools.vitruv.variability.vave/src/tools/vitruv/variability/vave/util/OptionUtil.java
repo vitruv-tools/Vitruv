@@ -17,7 +17,6 @@ import tools.vitruv.variability.vave.model.vave.FeatureRevision;
 import tools.vitruv.variability.vave.model.vave.Option;
 import tools.vitruv.variability.vave.model.vave.SystemRevision;
 import tools.vitruv.variability.vave.model.vave.util.VaveSwitch;
-import tools.vitruv.variability.vave.util.old.OptionComparator;
 
 /**
  * Utility class for options.
@@ -36,7 +35,7 @@ public final class OptionUtil {
 
 			@Override
 			public Boolean caseFeatureRevision(FeatureRevision o2) {
-				return o2.getRevisionID() == ((FeatureRevision) o1).getRevisionID() && OptionComparator.equals(o1.eContainer(), o2.eContainer());
+				return o2.getRevisionID() == ((FeatureRevision) o1).getRevisionID() && OptionUtil.compare(o1.eContainer(), o2.eContainer());
 			}
 
 			@Override

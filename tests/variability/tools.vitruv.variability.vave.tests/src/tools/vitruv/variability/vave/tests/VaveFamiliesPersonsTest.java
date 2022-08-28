@@ -52,8 +52,7 @@ import tools.vitruv.testutils.matchers.ModelMatchers;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
-import vavemodel.Configuration;
-import vavemodel.VavemodelFactory;
+import tools.vitruv.variability.vave.model.vave.Configuration;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 @Disabled // does not work anymore as it uses test view

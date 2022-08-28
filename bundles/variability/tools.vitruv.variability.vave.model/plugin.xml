@@ -3,14 +3,6 @@
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated vavemodel -->
-      <package
-            uri="http://tools.vitruv/Vave/1.0"
-            class="tools.vitruv.variability.vave.model.vavemodel.VavemodelPackage"
-            genModel="metamodel/vave.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated expression -->
       <package
             uri="http://tools.vitruv/Expression/1.0"

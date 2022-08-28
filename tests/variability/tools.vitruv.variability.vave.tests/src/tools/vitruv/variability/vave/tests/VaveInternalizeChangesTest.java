@@ -33,18 +33,18 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
+import tools.vitruv.variability.vave.model.expression.Conjunction;
+import tools.vitruv.variability.vave.model.expression.True;
+import tools.vitruv.variability.vave.model.expression.Variable;
+import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.vave.Configuration;
+import tools.vitruv.variability.vave.model.vave.CrossTreeConstraint;
+import tools.vitruv.variability.vave.model.vave.Feature;
+import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.FeatureRevision;
+import tools.vitruv.variability.vave.model.vave.Option;
+import tools.vitruv.variability.vave.model.vave.TreeConstraint;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
-import tools.vitruv.variability.vave.util.old.FeatureModel;
-import vavemodel.Configuration;
-import vavemodel.Conjunction;
-import vavemodel.CrossTreeConstraint;
-import vavemodel.Feature;
-import vavemodel.FeatureOption;
-import vavemodel.FeatureRevision;
-import vavemodel.Option;
-import vavemodel.TreeConstraint;
-import vavemodel.Variable;
-import vavemodel.VavemodelFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveInternalizeChangesTest {
@@ -84,7 +84,7 @@ public class VaveInternalizeChangesTest {
 		// propagate recorded changes into vmp1
 		vmp1.propagateChange(recordedChange);
 
-		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
 
 		assertEquals(1, vave.getSystem().getSystemrevision().size());
@@ -113,7 +113,7 @@ public class VaveInternalizeChangesTest {
 		// propagate recorded changes into vmp1
 		vmp1.propagateChange(recordedChange);
 
-		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
 
 		assertEquals(1, vave.getSystem().getSystemrevision().size());
@@ -171,7 +171,7 @@ public class VaveInternalizeChangesTest {
 		// propagate recorded changes into vmp1
 		vmp1.propagateChange(recordedChange);
 
-		vavemodel.Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
 		variableA.setOption(featureA);
 		vave.internalizeChanges(vmp1, variableA); // system revision 1
 
@@ -200,7 +200,7 @@ public class VaveInternalizeChangesTest {
 	@Test
 	public void MultipleInternalizeChangesWithFeatureRevisionExpression(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
-		
+
 //		// Feature a, Feature b
 //		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
 //		featureA.setName("featureA");
@@ -219,7 +219,7 @@ public class VaveInternalizeChangesTest {
 		vave.internalizeDomain(fm);
 		featureA = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureA")).findAny().get();
 		featureB = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureB")).findAny().get();
-		
+
 		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
 		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
 		config.getOption().add(featureA);
@@ -241,7 +241,7 @@ public class VaveInternalizeChangesTest {
 			vmp1.propagateChange(recordedChange);
 		}
 
-		vavemodel.Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
 		variableA.setOption(featureA);
 		vave.internalizeChanges(vmp1, variableA); // system revision 1
 
@@ -288,7 +288,7 @@ public class VaveInternalizeChangesTest {
 			vmp1ext.propagateChange(recordedChange2);
 		}
 
-		vavemodel.Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
 		variableB.setOption(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 2 and feature revision 1 of feature B
 
@@ -394,7 +394,7 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with feature A
-		vavemodel.Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
 		variableA.setOption(featureA);
 		vave.internalizeChanges(vmp1, variableA); // system revision 1
 
@@ -423,7 +423,7 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with features A and B
-		vavemodel.Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
 		variableB.setOption(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 2 and feature revision 1 of feature B
 
@@ -509,7 +509,7 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with feature A
-		vavemodel.Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
 		variableA.setOption(featureA);
 		vave.internalizeChanges(vmp0ext, variableA); // system revision 2 and feature revision 1 of feature A
 
@@ -539,7 +539,7 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with features A and B
-		vavemodel.Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
 		variableB.setOption(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 3 and feature revision 1 of feature B
 

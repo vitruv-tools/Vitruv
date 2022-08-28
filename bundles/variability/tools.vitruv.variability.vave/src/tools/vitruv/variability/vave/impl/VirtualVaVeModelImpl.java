@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,8 +52,11 @@ import tools.vitruv.variability.vave.model.expression.UnaryExpression;
 import tools.vitruv.variability.vave.model.expression.Variable;
 import tools.vitruv.variability.vave.model.expression.util.ExpressionSwitch;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.featuremodel.FeaturemodelFactory;
+import tools.vitruv.variability.vave.model.featuremodel.ViewCrossTreeConstraint;
+import tools.vitruv.variability.vave.model.featuremodel.ViewFeature;
+import tools.vitruv.variability.vave.model.featuremodel.ViewTreeConstraint;
 import tools.vitruv.variability.vave.model.vave.Configuration;
-import tools.vitruv.variability.vave.model.vave.Constraint;
 import tools.vitruv.variability.vave.model.vave.CrossTreeConstraint;
 import tools.vitruv.variability.vave.model.vave.DeltaModule;
 import tools.vitruv.variability.vave.model.vave.Feature;
@@ -123,10 +126,10 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return this.system;
 	}
 
-	private SystemRevision createNewSystemRevision(SystemRevision predecessor, int id) {
+	private SystemRevision createNewSystemRevision(Collection<SystemRevision> predecessors, int id) {
 		SystemRevision newsysrev = VaveFactory.eINSTANCE.createSystemRevision();
 		newsysrev.setRevisionID(id);
-		if (predecessor != null) {
+		for (SystemRevision predecessor : predecessors) {
 			predecessor.getSuccessors().add(newsysrev);
 			newsysrev.getPredecessors().add(predecessor);
 		}
@@ -368,7 +371,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			tempcursysrev = this.system.getSystemRevisions().get(this.system.getSystemRevisions().size() - 1); // TODO add branch (by using sys rev of product) and merge points
 		}
 		final SystemRevision cursysrev = tempcursysrev;
-		SystemRevision newSystemRevision = this.createNewSystemRevision(cursysrev, cursysrev != null ? cursysrev.getRevisionID() + 1 : 1);
+		SystemRevision newSystemRevision = this.createNewSystemRevision(Arrays.asList(new SystemRevision[] { cursysrev }), cursysrev != null ? cursysrev.getRevisionID() + 1 : 1);
 
 		if (cursysrev != null) {
 			// enable same features and feature revisions as the current system revision also in the new system revision, except those for which a new feature revision was created.
@@ -478,85 +481,58 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return internalizeChangesResult;
 	}
 
-	public ExternalizeDomainResult externalizeDomain(SystemRevision sysrev) {
-		if (sysrev != null && sysrev.getEnablesFeatureOptions() == null) {
-			throw new IllegalArgumentException("There are no enabled options by that system revision.");
-		}
-		if (sysrev == null) {
-			return new ExternalizeDomainResult(new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>()));
+	private ViewFeature traverseFeatureModel(Feature feature, SystemRevision systemRevision) {
+		ViewFeature viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+		viewFeature.setOriginalFeature(feature);
+
+		for (TreeConstraint treeConstraint : feature.getChildTreeConstraints()) {
+			if (systemRevision.getEnablesConstraints().contains(treeConstraint)) {
+				ViewTreeConstraint viewTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewTreeConstraint();
+				viewTreeConstraint.setOriginalTreeConstraint(treeConstraint);
+				viewFeature.getChildTreeConstraints().add(viewTreeConstraint);
+
+				for (Feature childFeature : treeConstraint.getChildFeatures()) {
+					if (systemRevision.getEnablesFeatureOptions().contains(childFeature)) {
+						ViewFeature viewChildFeature = traverseFeatureModel(childFeature, systemRevision);
+						viewTreeConstraint.getChildFeatures().add(viewChildFeature);
+					}
+				}
+			}
 		}
 
+		return viewFeature;
+	}
+
+	public ExternalizeDomainResult externalizeDomain(SystemRevision systemRevision) {
+		if (systemRevision != null && systemRevision.getEnablesFeatureOptions() == null)
+			throw new IllegalArgumentException("The given system revision does not enable any options.");
+
 		ExternalizeDomainResult externalizeDomainResult = new ExternalizeDomainResult(null);
+
+		// if no system revision is given we return an empty feature model
+		if (systemRevision == null) {
+			FeatureModel featureModel = FeaturemodelFactory.eINSTANCE.createFeatureModel();
+			externalizeDomainResult.setResult(featureModel);
+			return externalizeDomainResult;
+		}
 
 		// trigger consistency preservation
 		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPre());
 
-		// copy all feature options and store them in two separate lists: one with only features and one with both features and feature revisions.
-		HashMap<Feature, Feature> mapOriginalCopiedFeatures = new HashMap<Feature, Feature>();
-		HashMap<FeatureOption, FeatureOption> mapOriginalCopiedLiterals = new HashMap<FeatureOption, FeatureOption>();
-		for (FeatureOption fo : sysrev.getEnablesFeatureOptions()) {
-			if (fo instanceof Feature) {
-				Feature copiedFeature = VaveFactory.eINSTANCE.createFeature();
-				copiedFeature.setName(((Feature) fo).getName());
-				mapOriginalCopiedFeatures.put((Feature) fo, copiedFeature);
-				mapOriginalCopiedLiterals.put(fo, copiedFeature);
+		// create feature model view
+		FeatureModel featureModel = FeaturemodelFactory.eINSTANCE.createFeatureModel();
+		featureModel.setSystemRevision(systemRevision);
+
+		ViewFeature viewRootFeature = this.traverseFeatureModel(systemRevision.getRootFeature(), systemRevision);
+		featureModel.getRootFeatures().add(viewRootFeature);
+
+		for (CrossTreeConstraint crossTreeConstraint : this.system.getConstraints()) {
+			if (systemRevision.getEnablesConstraints().contains(crossTreeConstraint)) {
+				ViewCrossTreeConstraint viewCrossTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewCrossTreeConstraint();
+				viewCrossTreeConstraint.setOriginalCrossTreeConstraint(crossTreeConstraint);
+				featureModel.getCrossTreeConstraints().add(viewCrossTreeConstraint);
 			}
 		}
-		for (FeatureOption fo : sysrev.getEnablesFeatureOptions()) {
-			if (fo instanceof FeatureRevision) {
-				FeatureRevision copiedFO = VaveFactory.eINSTANCE.createFeatureRevision();
-				copiedFO.setRevisionID(((FeatureRevision) fo).getRevisionID());
-				mapOriginalCopiedFeatures.get(fo.eContainer()).getFeatureRevisions().add(copiedFO);
-				mapOriginalCopiedLiterals.put(fo, copiedFO);
-			}
-		}
-
-		Set<TreeConstraint> treeConstraints = new HashSet<>();
-		Set<CrossTreeConstraint> crossTreeConstraints = new HashSet<>();
-		for (Constraint constraint : sysrev.getEnablesConstraints()) {
-			// copy tree constraints setting parent (container) and children from previously copied features
-			if (constraint instanceof TreeConstraint) {
-				TreeConstraint copiedTreeConstraint = VaveFactory.eINSTANCE.createTreeConstraint();
-				copiedTreeConstraint.setType(((TreeConstraint) constraint).getType());
-
-				// find copied parent feature via original and set that copied feature as container
-				Feature containingFeature = mapOriginalCopiedFeatures.get(constraint.eContainer());
-				containingFeature.getChildTreeConstraints().add(copiedTreeConstraint);
-				for (Feature childFeature : ((TreeConstraint) constraint).getChildFeatures()) {
-					copiedTreeConstraint.getChildFeatures().add(mapOriginalCopiedFeatures.get(childFeature));
-				}
-
-				treeConstraints.add(copiedTreeConstraint);
-			} else if (constraint instanceof CrossTreeConstraint) {
-				// copy cross tree constraints
-				CrossTreeConstraint copiedCTC = VaveFactory.eINSTANCE.createCrossTreeConstraint();
-				// copy CTC expression
-				Expression<FeatureOption> copiedExpression = ExpressionUtil.copy(((CrossTreeConstraint) constraint).getExpression());
-				new ExpressionSwitch<Void>() {
-					public <T> Void caseVariable(Variable<T> object) {
-						object.setValue((T) mapOriginalCopiedLiterals.get(object.getValue()));
-						return null;
-					};
-				}.doSwitch(copiedExpression);
-				copiedCTC.setExpression((Expression<FeatureOption>) copiedExpression);
-
-				crossTreeConstraints.add(copiedCTC);
-			}
-		}
-
-		// obtain root feature for sysrev
-//		List<Feature> enabledRootFeatures = this.system.getFeature().stream().filter(p -> sysrev.getEnablesoptions().contains(p) && p.eContainer() instanceof vavemodel.System).collect(Collectors.toList());
-		List<Feature> enabledRootFeatures = this.system.getFeatures().stream().filter(p -> sysrev.getEnablesFeatureOptions().contains(p) && p.eContainer() instanceof vavemodel.System && sysrev.getEnablesConstraints().stream().filter(ct -> ct instanceof TreeConstraint).map(tc -> (TreeConstraint) tc).filter(tc -> tc.getChildFeatures().contains(p)).findAny().isEmpty()).collect(Collectors.toList());
-
-//		if (enabledRootFeatures.size() > 1)
-//			throw new Exception("More than one root feature is enabled by the system revision " + sysrev);
-//		else if (enabledRootFeatures.size() < 1)
-//			throw new Exception("No root feature is enabled by the system revision " + sysrev);
-		Feature rootFeature = null;
-		if (!enabledRootFeatures.isEmpty())
-			rootFeature = enabledRootFeatures.get(0);
-
-		FeatureModel featureModel = new FeatureModel((Feature) mapOriginalCopiedLiterals.get(rootFeature), sysrev, new HashSet<>(mapOriginalCopiedLiterals.values()), treeConstraints, crossTreeConstraints);
 
 		externalizeDomainResult.setResult(featureModel);
 
@@ -566,193 +542,132 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return externalizeDomainResult;
 	}
 
-	public InternalizeDomainResult internalizeDomain(FeatureModel fm) throws IOException {
+	private Feature integrateFeatureModelTree(ViewFeature viewFeature, SystemRevision newSystemRevision) {
+		if (viewFeature.getOriginalFeature() != null) {
+			// NOTE: currently we do not revision the name of a feature. if a feature name is modified, it is therefore modified in all revisions (past and future).
+			if (!Objects.equals(viewFeature.getName(), viewFeature.getOriginalFeature().getName())) {
+				viewFeature.getOriginalFeature().setName(viewFeature.getName());
+			}
+
+			// feature already existed. check if its children (i.e., tree constraints) are new or were modified.
+			for (ViewTreeConstraint viewTreeConstraint : viewFeature.getChildTreeConstraints()) {
+				// if new tree constraint (i.e., does not have original tree constraint) was added in view, create it, add it to system, and enable it by new system revision
+				if (viewTreeConstraint.getOriginalTreeConstraint() == null) {
+					TreeConstraint newTreeConstraint = VaveFactory.eINSTANCE.createTreeConstraint();
+					newTreeConstraint.setType(viewTreeConstraint.getType());
+					viewFeature.getOriginalFeature().getChildTreeConstraints().add(newTreeConstraint);
+					newSystemRevision.getEnablesConstraints().add(newTreeConstraint);
+					// set newly created original tree constraint
+					viewTreeConstraint.setOriginalTreeConstraint(newTreeConstraint);
+
+					// recurse into child features, add resulting feature as child to tree constraint
+					for (ViewFeature viewChildFeature : viewTreeConstraint.getChildFeatures()) {
+						Feature childFeature = this.integrateFeatureModelTree(viewChildFeature, newSystemRevision);
+						newTreeConstraint.getChildFeatures().add(childFeature);
+					}
+				}
+				// if existing tree constraint (i.e., has original tree constraint) was modified (i.e., its parent feature and children features were modified), create new tree constraint, add it to system, and enable it by new system revision
+				else {
+					// tree constraint was not modified
+					if (viewTreeConstraint.getOriginalTreeConstraint().getChildFeatures().size() == viewTreeConstraint.getChildFeatures().size() && viewTreeConstraint.getOriginalTreeConstraint().getChildFeatures().containsAll(viewTreeConstraint.getChildFeatures().stream().map(vf -> vf.getOriginalFeature()).collect(Collectors.toList()))
+							&& viewTreeConstraint.getOriginalTreeConstraint().getParentFeature() == viewFeature.getOriginalFeature()) {
+						newSystemRevision.getEnablesConstraints().add(viewTreeConstraint.getOriginalTreeConstraint());
+
+						// recurse into child features, add resulting feature as child to tree constraint
+						for (ViewFeature viewChildFeature : viewTreeConstraint.getChildFeatures()) {
+							this.integrateFeatureModelTree(viewChildFeature, newSystemRevision);
+							// the children of the tree constraint were not modified
+						}
+					}
+					// tree constraint was modified
+					else {
+						TreeConstraint newTreeConstraint = VaveFactory.eINSTANCE.createTreeConstraint();
+						newTreeConstraint.setType(newTreeConstraint.getType());
+						viewFeature.getOriginalFeature().getChildTreeConstraints().add(newTreeConstraint);
+						newSystemRevision.getEnablesConstraints().add(newTreeConstraint);
+						// overwrite original tree constraint of modified view tree constraint
+						viewTreeConstraint.setOriginalTreeConstraint(newTreeConstraint);
+
+						// recurse into child features, add resulting feature as child to tree constraint
+						for (ViewFeature viewChildFeature : viewTreeConstraint.getChildFeatures()) {
+							Feature childFeature = this.integrateFeatureModelTree(viewChildFeature, newSystemRevision);
+							newTreeConstraint.getChildFeatures().add(childFeature);
+						}
+					}
+				}
+			}
+
+			return viewFeature.getOriginalFeature();
+		} else {
+			// it is a new feature
+			Feature newFeature = VaveFactory.eINSTANCE.createFeature();
+			newFeature.setName(viewFeature.getName());
+			newSystemRevision.getEnablesFeatureOptions().add(newFeature);
+			viewFeature.setOriginalFeature(newFeature);
+
+			// process its child tree constraints and recurse into child features
+			for (ViewTreeConstraint viewTreeConstraint : viewFeature.getChildTreeConstraints()) {
+				// regardless if the view tree constraint has an original tree constraint or not, it is always either new (no original) or modified (because its parent is a new feature), thus we must create a new tree constraint in any case
+				TreeConstraint newTreeConstraint = VaveFactory.eINSTANCE.createTreeConstraint();
+				newTreeConstraint.setType(newTreeConstraint.getType());
+				newFeature.getChildTreeConstraints().add(newTreeConstraint);
+				newSystemRevision.getEnablesConstraints().add(newTreeConstraint);
+				// overwrite original tree constraint of modified view tree constraint
+				viewTreeConstraint.setOriginalTreeConstraint(newTreeConstraint);
+
+				// recurse into child features, add resulting feature as child to tree constraint
+				for (ViewFeature viewChildFeature : viewTreeConstraint.getChildFeatures()) {
+					Feature childFeature = this.integrateFeatureModelTree(viewChildFeature, newSystemRevision);
+					newTreeConstraint.getChildFeatures().add(childFeature);
+				}
+			}
+
+			return newFeature;
+		}
+	}
+
+	public InternalizeDomainResult internalizeDomain(FeatureModel featureModel) throws IOException {
+		// ensure that the feature model has exactly one root feature (i.e., in case of a merge with multiple root features after eD there must only remain one root feature)
+		if (featureModel.getRootFeatures().size() > 1)
+			throw new RuntimeException("Feature model has more than one root feature!");
+		else if (featureModel.getRootFeatures().isEmpty())
+			throw new RuntimeException("Feature model does not have a root feature!");
+
 		InternalizeDomainResult internalizeDomainResult = new InternalizeDomainResult();
 
 		// trigger consistency preservation
 		this.triggerConsistencyRule(internalizeDomainResult, consistencyRule -> consistencyRule.internalizeDomainPre());
 
-		FeatureModel fmAtOldSysrev = null;
-
 		// create a new system revision and link it to predecessor system revision
-		SystemRevision tempcursysrev = null;
-		if (!system.getSystemRevisions().isEmpty()) {
-			tempcursysrev = this.system.getSystemRevisions().get(this.system.getSystemRevisions().size() - 1); // TODO add branch (by using sys rev of product) and merge points
-		}
-		final SystemRevision cursysrev = tempcursysrev;
-		SystemRevision newSystemRevision = this.createNewSystemRevision(cursysrev, cursysrev != null ? cursysrev.getRevisionID() + 1 : 1);
+		SystemRevision newSystemRevision = this.createNewSystemRevision(Arrays.asList(new SystemRevision[] { featureModel.getSystemRevision() }), system.getSystemRevisions().size() + 1); // since system revisions cannot be deleted (as we do not yet support eUS) we can simply use the number of system revisions to compute the new id
+		this.transferMappings(featureModel.getSystemRevision(), newSystemRevision);
 
-		this.transferMappings(cursysrev, newSystemRevision);
+		// integrate feature model tree (i.e., features and tree constraints) of view into system
+		this.integrateFeatureModelTree(featureModel.getRootFeatures().get(0), newSystemRevision); // diff root feature of feature model with root feature of system revision in system
 
-		// NOTE: fm stores (copy of) root node, ctcs, sysrev
-		if (fm.getSystemRevision() == null) { // if we create the very first system revision, we don't need to do a diff
-			System.out.println("FIRST!!!");
-
-			newSystemRevision.getEnablesFeatureOptions().addAll(fm.getFeatureOptions());
-			newSystemRevision.getEnablesConstraints().addAll(fm.getTreeConstraints());
-			newSystemRevision.getEnablesConstraints().addAll(fm.getCrossTreeConstraints());
-
-			// add very first features and constraints in fm to system
-			// this.system.getFeature().add(fm.getRootFeature());
-			// this.system.getFeature().addAll((Collection<? extends Feature>) unchangedFeatureOptions.stream().filter(p -> p instanceof Feature));
-			Set<Feature> features = fm.getFeatureOptions().stream().filter(p -> p instanceof Feature).map(v -> (Feature) v).collect(Collectors.toSet());
-			this.system.getFeatures().addAll(features);
-			if (features.size() != fm.getFeatureOptions().size())
-				throw new IllegalArgumentException("It is not allowed to add new feature revisions to the domain manually!");
-			this.system.getConstraints().addAll(fm.getCrossTreeConstraints());
-		}
-
-		else { // if we are here, there is at least one system revision and a feature model of that system revision
-				// retrieve state of feature model before it was modified
-			fmAtOldSysrev = this.externalizeDomain(fm.getSystemRevision()).getResult();
-
-			// diff the updated fm with the old fm
-
-			Map<String, Feature> featureNameMap = new HashMap<>();
-
-			// first do the feature options
-			for (FeatureOption fo : fm.getFeatureOptions()) {
-				// if it is a feature revision
-				if (fo instanceof FeatureRevision) {
-					// it must have existed before!
-					Optional<FeatureRevision> oldFR = fmAtOldSysrev.getFeatureOptions().stream().filter(p -> p instanceof FeatureRevision && ((Feature) p.eContainer()).getName().equals(((Feature) fo.eContainer()).getName()) && ((FeatureRevision) p).getRevisionID() == ((FeatureRevision) fo).getRevisionID()).map(v -> (FeatureRevision) v).findAny();
-					if (oldFR.isEmpty())
-						throw new IllegalArgumentException("It is now allowed to add new feature revisions to the domain manually or use feature revisions that were not part of the previously externalized feature model!");
-					// retrieve instances of feature and feature revision from unified system
-					Optional<Feature> containingF = this.system.getFeatures().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(((Feature) oldFR.get().eContainer()).getName())).map(v -> (Feature) v).findAny();
-					if (containingF.isEmpty())
-						throw new IllegalArgumentException("Feature does not exist in system!");
-					Optional<FeatureRevision> containingFR = containingF.get().getFeatureRevisions().stream().filter(p -> p.getRevisionID() == ((FeatureRevision) fo).getRevisionID()).findAny();
-					if (containingFR.isEmpty())
-						throw new IllegalArgumentException("Feature revision does not exist in feature!");
-					// enable it by the new system revision
-					newSystemRevision.getEnablesFeatureOptions().add(containingF.get());
-					newSystemRevision.getEnablesFeatureOptions().add(containingFR.get());
+		// integrate cross-tree constraints of view into system
+		for (ViewCrossTreeConstraint viewCrossTreeConstraint : featureModel.getCrossTreeConstraints()) {
+			// if view ctc has original ctc check if its expressions is structurally equal and enable it by new system revision
+			if (viewCrossTreeConstraint.getOriginalCrossTreeConstraint() != null) {
+				if (ExpressionUtil.structuralEquivalence(viewCrossTreeConstraint.getOriginalCrossTreeConstraint().getExpression(), viewCrossTreeConstraint.getExpression())) {
+					// ctc was not modified, nothing to do
+				} else {
+					viewCrossTreeConstraint.getOriginalCrossTreeConstraint().setExpression(ExpressionUtil.copy(viewCrossTreeConstraint.getExpression()));
 				}
-				// if it is a feature
-				else if (fo instanceof Feature) {
-					// check if it is new or existed before
-					Optional<Feature> oldF = fmAtOldSysrev.getFeatureOptions().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(((Feature) fo).getName())).map(v -> (Feature) v).findAny();
-					// if it is new
-					if (oldF.isEmpty()) {
-						// we need to create new instance for feature!
-						Feature newF = VaveFactory.eINSTANCE.createFeature();
-						newF.setName(((Feature) fo).getName());
-						featureNameMap.put(newF.getName(), newF);
-						// enable it by the new system revision
-						newSystemRevision.getEnablesFeatureOptions().add(newF);
-						this.system.getFeatures().add(newF);
-					}
-					// if it is old
-					else if (oldF.isPresent()) {
-						// retrieve containing feature
-						Optional<Feature> containingF = this.system.getFeatures().stream().filter(p -> p instanceof Feature && ((Feature) p).getName().equals(oldF.get().getName())).map(v -> (Feature) v).findAny();
-						if (containingF.isEmpty())
-							throw new IllegalArgumentException("Feature does not exist in system: " + oldF.get().getName());
-						// enable it by the new system revision
-						newSystemRevision.getEnablesFeatureOptions().add(containingF.get());
-						featureNameMap.put(containingF.get().getName(), containingF.get());
-					}
-				}
+				newSystemRevision.getEnablesConstraints().add(viewCrossTreeConstraint.getOriginalCrossTreeConstraint());
 			}
-
-			// next do the tree constraints
-			for (TreeConstraint tc : fm.getTreeConstraints()) {
-				Optional<TreeConstraint> oldTC = fmAtOldSysrev.getTreeConstraints().stream()
-						.filter(p -> p.getType() == tc.getType() && ((Feature) p.eContainer()).getName().equals(((Feature) tc.eContainer()).getName()) && p.getFeature().size() == tc.getFeature().size() && p.getFeature().stream().allMatch(p2 -> tc.getFeature().stream().filter(p3 -> p3.getName().equals(p2.getName())).findAny().isPresent())).findAny();
-				if (oldTC.isPresent()) {
-					// retrieve containing feature instance from unified system
-					Optional<Feature> containingF = this.system.getFeatures().stream().filter(p -> p.getName().equals(((Feature) oldTC.get().eContainer()).getName())).findAny();
-					if (containingF.isEmpty()) {
-						throw new IllegalStateException("The containing feature of the constraint does, for some reason, not exist in the unified system!");
-					} else {
-						// retrieve instance of tree constraint from feature in the unified system
-						Optional<TreeConstraint> containedTC = containingF.get().getChildTreeConstraints().stream().filter(p -> p.getType() == tc.getType() && p.getChildFeatures().size() == tc.getChildFeatures().size() && p.getChildFeatures().stream().allMatch(p2 -> tc.getChildFeatures().stream().filter(p3 -> p3.getName().equals(p2.getName())).findAny().isPresent())).findAny();
-						// if the tree constraint is not a child of the same feature in the unified system, it means that it was moved as a child of another feature. in this case we also create a new instance of the constraint.
-						if (containedTC.isEmpty()) {
-							throw new IllegalStateException("The constraint existed in the externalized feature model but, for some reason, does not exist as a child of the same feature in the unified system!");
-						}
-						// the tree constraint was not modified in the externalized domain, the containing feature was found in the system, and the containing feature contained the same constraint (this case should always happen!)
-						else {
-							// enable it by new system revision
-							newSystemRevision.getEnablesConstraints().add(containedTC.get());
-						}
-					}
-				} else if (oldTC.isEmpty()) {
-					// create new constraint
-					TreeConstraint newTC = VaveFactory.eINSTANCE.createTreeConstraint();
-					newTC.setType(tc.getType());
-					Feature containedParentFeature = featureNameMap.get(((Feature) tc.eContainer()).getName());
-					if (containedParentFeature == null)
-						throw new IllegalArgumentException("Parent feature should have been contained in internalized FM but was not!");
-					containedParentFeature.getParentTreeConstraint().add(newTC);
-					for (Feature childFeature : tc.getChildFeatures()) {
-						Feature containedChildFeature = featureNameMap.get(childFeature.getName());
-						if (containedChildFeature == null)
-							throw new IllegalArgumentException("Child feature should have been contained in internalized FM but was not!");
-						newTC.getChildFeatures().add(containedChildFeature);
-					}
-					newSystemRevision.getEnablesConstraints().add(newTC);
-				}
-			}
-
-			// finally do the cross tree constraints
-			for (CrossTreeConstraint ctc : fm.getCrossTreeConstraints()) {
-				Optional<CrossTreeConstraint> oldCTC = fmAtOldSysrev.getCrossTreeConstraints().stream().filter(oldCtc -> ExpressionComparator.equals(ctc.getExpression(), oldCtc.getExpression())).findAny();
-				// if ctc already existed in the externalized view then it remained unchanged and will be enabled by the new system revision
-				if (oldCTC.isPresent()) {
-					Optional<CrossTreeConstraint> containedCTC = system.getConstraints().stream().filter(ct -> ExpressionComparator.equals(ctc.getExpression(), ct.getExpression())).findAny();
-					if (containedCTC.isPresent())
-						newSystemRevision.getEnablesConstraints().add(containedCTC.get());
-					else
-						throw new IllegalArgumentException("Could not find matching CTC in unified system!");
-				}
-				// if ctc did not exist in the externalized view then we create it and let the new system revision enable it
-				else if (oldCTC.isEmpty()) {
-					CrossTreeConstraint newCTC = VaveFactory.eINSTANCE.createCrossTreeConstraint();
-					// copy CTC expression
-					Expression<FeatureOption> copiedExpression = ExpressionCopier.copy(ctc.getExpression());
-
-					// replace feature option instances in expression with instances from vave model (unified system)
-					new ExpressionSwitch<Void>() {
-						public <T> Void caseNaryExpression(NaryExpression<T> object) {
-							for (Expression<?> childExpression : object.getExpressions())
-								doSwitch(childExpression);
-							return null;
-						}
-
-						public <T> Void caseBinaryExpression(BinaryExpression<T> object) {
-							doSwitch(object.getLeft());
-							doSwitch(object.getRight());
-							return null;
-						}
-
-						public <T> Void caseUnaryExpression(UnaryExpression<T> object) {
-							doSwitch(object.getExpression());
-							return null;
-						}
-
-						public <T> Void caseVariable(Variable<T> object) {
-							if (object.getValue() instanceof Feature) {
-								object.setValue((T) system.getFeatures().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getValue()).getName())).findAny().get());
-							} else if (object.getValue() instanceof FeatureRevision) {
-								Feature containedFeature = system.getFeatures().stream().filter(f -> Objects.equals(f.getName(), ((Feature) object.getValue().eContainer()).getName())).findAny().get();
-								object.setValue((T) containedFeature.getFeatureRevisions().stream().filter(fr -> fr.getRevisionID() == ((FeatureRevision) object.getValue()).getRevisionID()).findAny().get());
-							}
-							return null;
-						}
-					}.doSwitch(copiedExpression);
-
-					newCTC.setExpression((Expression<FeatureOption>) copiedExpression);
-					this.system.getConstraints().add(newCTC);
-					newSystemRevision.getEnablesConstraints().add(newCTC);
-				}
+			// if view ctc has no original ctc create a new ctc in system with same expression (copy it) and enable it by new systme revision
+			else {
+				CrossTreeConstraint newCrossTreeConstraint = VaveFactory.eINSTANCE.createCrossTreeConstraint();
+				newCrossTreeConstraint.setExpression(ExpressionUtil.copy(viewCrossTreeConstraint.getExpression()));
+				this.system.getConstraints().add(newCrossTreeConstraint);
+				newSystemRevision.getEnablesConstraints().add(newCrossTreeConstraint);
 			}
 		}
 
 		// Trigger consistency preservation
-		final FeatureModel finalFeatureModelAtOldSysRev = fmAtOldSysrev;
-		this.triggerConsistencyRule(internalizeDomainResult, consistencyRule -> consistencyRule.internalizeDomainPost(newSystemRevision, finalFeatureModelAtOldSysRev, fm));
+		FeatureModel featureModelAtOldSystemRevision = this.externalizeDomain(featureModel.getSystemRevision()).getResult();
+		this.triggerConsistencyRule(internalizeDomainResult, consistencyRule -> consistencyRule.internalizeDomainPost(newSystemRevision, featureModelAtOldSystemRevision, featureModel));
 
 		this.save();
 

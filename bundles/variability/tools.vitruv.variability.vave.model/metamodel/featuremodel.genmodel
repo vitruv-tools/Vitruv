@@ -19,11 +19,13 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/originalFeature"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/childTreeConstraints"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewFeature/parentTreeConstraint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute featuremodel.ecore#//ViewFeature/name"/>
     </genClasses>
     <genClasses ecoreClass="featuremodel.ecore#//ViewTreeConstraint">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewTreeConstraint/originalTreeConstraint"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewTreeConstraint/childFeatures"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewTreeConstraint/parentFeature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute featuremodel.ecore#//ViewTreeConstraint/type"/>
     </genClasses>
     <genClasses ecoreClass="featuremodel.ecore#//ViewCrossTreeConstraint">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference featuremodel.ecore#//ViewCrossTreeConstraint/originalCrossTreeConstraint"/>

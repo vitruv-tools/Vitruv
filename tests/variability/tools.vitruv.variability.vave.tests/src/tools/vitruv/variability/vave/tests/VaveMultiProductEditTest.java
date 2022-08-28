@@ -32,9 +32,9 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
-import vavemodel.Configuration;
-import vavemodel.FeatureOption;
-import vavemodel.VavemodelFactory;
+import tools.vitruv.variability.vave.model.expression.True;
+import tools.vitruv.variability.vave.model.vave.Configuration;
+import tools.vitruv.variability.vave.model.vave.FeatureOption;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveMultiProductEditTest {
@@ -85,17 +85,17 @@ public class VaveMultiProductEditTest {
 		// create vave system
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 //		System system = vave.getSystem();
-//		vavemodel.Feature car = VavemodelFactory.eINSTANCE.createFeature();
-//		vavemodel.Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+//		Feature car = VavemodelFactory.eINSTANCE.createFeature();
+//		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
 //		system.getFeature().add(car);
 //		system.getFeature().add(engineType);
-//		vavemodel.Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-//		vavemodel.Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+//		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
+//		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
 //		variable1.setOption(car);
 //		variable2.setOption(engineType);
 //		conjunction.getTerm().add(variable1);
 //		conjunction.getTerm().add(variable2);
-		vavemodel.True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
 
 		// externalize virtual model product (vmp)
 		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
