@@ -53,6 +53,7 @@ import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.model.vave.Configuration;
+import tools.vitruv.variability.vave.model.vave.VaveFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 @Disabled // does not work anymore as it uses test view
@@ -202,8 +203,8 @@ public class VaveFamiliesPersonsTest {
 
 		this.vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), testProjectPath);
 
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), config);
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
+		this.virtualModel = vave.externalizeProduct(testProjectPath.resolve("vsum"), config).getResult();
 
 		this.resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 

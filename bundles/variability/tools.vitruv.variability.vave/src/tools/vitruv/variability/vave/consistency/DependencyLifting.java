@@ -70,7 +70,7 @@ public class DependencyLifting implements ConsistencyRule {
 	}
 
 	@Override
-	public ConsistencyResult internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) {
+	public Result internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) {
 		// After every internalizeChanges, retrieve dependencies between deltas of vave model
 		// If dependencies have been detected, find mapped features of deltas
 		// check if features already depend on problem space (via implication or exclusion)

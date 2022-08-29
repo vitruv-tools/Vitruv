@@ -32,14 +32,16 @@ import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
+import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
 import tools.vitruv.variability.vave.model.expression.True;
 import tools.vitruv.variability.vave.model.vave.Configuration;
 import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.VaveFactory;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveMultiProductEditTest {
 
-	Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+	Configuration config = VaveFactory.eINSTANCE.createConfiguration();
 
 	private URI createTestModelResourceUri(final String suffix, Path projectFolder) {
 		return URI.createFileURI(projectFolder.resolve((("root" + suffix) + ".allElementTypes")).toString());
@@ -54,7 +56,7 @@ public class VaveMultiProductEditTest {
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
 
 		// externalize virtual model products (vmp)
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config).getResult(); // empty product
 
 		// modify vmp1
 		// record changes
@@ -95,10 +97,10 @@ public class VaveMultiProductEditTest {
 //		variable2.setOption(engineType);
 //		conjunction.getTerm().add(variable1);
 //		conjunction.getTerm().add(variable2);
-		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = ExpressionFactory.eINSTANCE.createTrue();
 
 		// externalize virtual model product (vmp)
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config); // empty product
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vmp1"), config).getResult(); // empty product
 		Resource vmp1Resource = null;
 		Resource vmp1copyResource = null;
 		Resource vmp1extResource = null;
@@ -126,18 +128,18 @@ public class VaveMultiProductEditTest {
 
 		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
 
-		assertEquals(vave.getSystem().getSystemrevision().size(), 1);
-		assertEquals(vave.getSystem().getSystemrevision().get(0).getRevisionID(), 1);
+		assertEquals(vave.getSystem().getSystemRevisions().size(), 1);
+		assertEquals(vave.getSystem().getSystemRevisions().get(0).getRevisionID(), 1);
 
-		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(0));
 
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config).getResult();
 		final ModelInstance vmp1extModelInstance = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		vmp1extResource = vmp1extModelInstance.getResource();
 		Assert.assertEquals(vmp1extResource.getContents().size(), 1);
 		MatcherAssert.<Resource>assertThat(vmp1extResource, ModelMatchers.containsModelOf(vmp1copyResource));
 
-		final VirtualProductModel vmp1ext4 = vave.externalizeProduct(projectFolder.resolve("vmp1ext4"), config);
+		final VirtualProductModel vmp1ext4 = vave.externalizeProduct(projectFolder.resolve("vmp1ext4"), config).getResult();
 		final ModelInstance vmp1ext4ModelInstance = vmp1ext4.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		Resource vmp1ext4Resource = vmp1ext4ModelInstance.getResource();
 		Assert.assertEquals(vmp1extResource.getContents().size(), 1);
@@ -168,7 +170,7 @@ public class VaveMultiProductEditTest {
 //		MatcherAssert.<Resource>assertThat(vmp1Resource, ModelMatchers.containsModelOf(monitoredResource2));
 
 		// before internalization of changes the product must contain only one root
-		final VirtualProductModel vmp1ext2 = vave.externalizeProduct(projectFolder.resolve("vmp1ext2"), config);
+		final VirtualProductModel vmp1ext2 = vave.externalizeProduct(projectFolder.resolve("vmp1ext2"), config).getResult();
 		final ModelInstance vmp1ext2ModelInstance = vmp1ext2.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		Resource vmp1ext2Resource = vmp1ext2ModelInstance.getResource();
 		Assert.assertEquals(vmp1ext2Resource.getContents().size(), 1);
@@ -177,14 +179,14 @@ public class VaveMultiProductEditTest {
 
 		vave.internalizeChanges(vmp1, trueConstant); // system revision 2
 
-		assertEquals(vave.getSystem().getSystemrevision().size(), 2);
-		assertEquals(vave.getSystem().getSystemrevision().get(1).getRevisionID(), 2);
+		assertEquals(vave.getSystem().getSystemRevisions().size(), 2);
+		assertEquals(vave.getSystem().getSystemRevisions().get(1).getRevisionID(), 2);
 
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(1));
 
 		// after internalization of changes the product must contain two roots
-		final VirtualProductModel vmp1ext3 = vave.externalizeProduct(projectFolder.resolve("vmp1ext3"), config);
+		final VirtualProductModel vmp1ext3 = vave.externalizeProduct(projectFolder.resolve("vmp1ext3"), config).getResult();
 		final ModelInstance vmp1ext3ModelInstance = vmp1ext3.getModelInstance(this.createTestModelResourceUri("", projectFolder));
 		Resource vmp1ext3Resource = vmp1ext3ModelInstance.getResource();
 		Assert.assertEquals(vmp1ext2Resource.getContents().size(), 1);

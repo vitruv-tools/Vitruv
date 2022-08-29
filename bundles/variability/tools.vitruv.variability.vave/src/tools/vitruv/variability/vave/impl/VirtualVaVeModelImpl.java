@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -89,10 +88,10 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	}
 
 	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder, VirtualProductModelInitializer vpmi) throws IOException {
-		if (Files.exists(storageFolder.resolve("vavemodel.vave"))) {
+		if (Files.exists(storageFolder.resolve("model.vave"))) {
 			// load
 			this.resource = new XMIResourceImpl();
-			File source = new File(storageFolder.resolve("vavemodel.vave").toString());
+			File source = new File(storageFolder.resolve("model.vave").toString());
 			this.resource.load(new FileInputStream(source), new HashMap<Object, Object>());
 			this.system = tools.vitruv.variability.vave.model.vave.System.class.cast(this.resource.getContents().get(0));
 		} else {
@@ -132,6 +131,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		for (SystemRevision predecessor : predecessors) {
 			predecessor.getSuccessors().add(newsysrev);
 			newsysrev.getPredecessors().add(predecessor);
+			newsysrev.setRootFeature(predecessor.getRootFeature());
 		}
 		this.system.getSystemRevisions().add(newsysrev);
 		return newsysrev;
@@ -366,25 +366,26 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		this.triggerConsistencyRule(internalizeChangesResult, consistencyRule -> consistencyRule.internalizeChangesPre(this, expression));
 
 		// create a new system revision and link it to predecessor system revision
-		SystemRevision tempcursysrev = null;
-		if (!system.getSystemRevisions().isEmpty()) {
-			tempcursysrev = this.system.getSystemRevisions().get(this.system.getSystemRevisions().size() - 1); // TODO add branch (by using sys rev of product) and merge points
+		SystemRevision currentSystemRevision = null;
+		List<SystemRevision> predecessors = new ArrayList<>();
+		if (!this.system.getSystemRevisions().isEmpty()) {
+			currentSystemRevision = this.system.getSystemRevisions().get(this.system.getSystemRevisions().size() - 1); // TODO add branch (by using sys rev of product) and merge points
+			predecessors.add(currentSystemRevision);
 		}
-		final SystemRevision cursysrev = tempcursysrev;
-		SystemRevision newSystemRevision = this.createNewSystemRevision(Arrays.asList(new SystemRevision[] { cursysrev }), cursysrev != null ? cursysrev.getRevisionID() + 1 : 1);
+		SystemRevision newSystemRevision = this.createNewSystemRevision(predecessors, currentSystemRevision != null ? currentSystemRevision.getRevisionID() + 1 : 1);
 
-		if (cursysrev != null) {
+		if (currentSystemRevision != null) {
 			// enable same features and feature revisions as the current system revision also in the new system revision, except those for which a new feature revision was created.
-			for (FeatureOption featureoption : cursysrev.getEnablesFeatureOptions()) {
+			for (FeatureOption featureoption : currentSystemRevision.getEnablesFeatureOptions()) {
 				if (!(featureoption instanceof FeatureRevision) || !options.contains(featureoption.eContainer()))
 					newSystemRevision.getEnablesFeatureOptions().add(featureoption);
 			}
 
 			// enable same constraints as the current system revision
-			newSystemRevision.getEnablesConstraints().addAll(cursysrev.getEnablesConstraints());
+			newSystemRevision.getEnablesConstraints().addAll(currentSystemRevision.getEnablesConstraints());
 		}
 
-		this.transferMappings(cursysrev, newSystemRevision);
+		this.transferMappings(currentSystemRevision, newSystemRevision);
 
 		// make sure all options in the expression are enabled by the system revision
 		// TODO
@@ -484,11 +485,14 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	private ViewFeature traverseFeatureModel(Feature feature, SystemRevision systemRevision) {
 		ViewFeature viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
 		viewFeature.setOriginalFeature(feature);
+		viewFeature.setName(feature.getName());
+		viewFeature.getOriginalRevisions().addAll(feature.getFeatureRevisions().stream().filter(fr -> systemRevision.getEnablesFeatureOptions().contains(fr)).collect(Collectors.toList()));
 
 		for (TreeConstraint treeConstraint : feature.getChildTreeConstraints()) {
 			if (systemRevision.getEnablesConstraints().contains(treeConstraint)) {
 				ViewTreeConstraint viewTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewTreeConstraint();
 				viewTreeConstraint.setOriginalTreeConstraint(treeConstraint);
+				viewTreeConstraint.setType(treeConstraint.getType());
 				viewFeature.getChildTreeConstraints().add(viewTreeConstraint);
 
 				for (Feature childFeature : treeConstraint.getChildFeatures()) {
@@ -507,24 +511,25 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (systemRevision != null && systemRevision.getEnablesFeatureOptions() == null)
 			throw new IllegalArgumentException("The given system revision does not enable any options.");
 
-		ExternalizeDomainResult externalizeDomainResult = new ExternalizeDomainResult(null);
-
 		// if no system revision is given we return an empty feature model
 		if (systemRevision == null) {
 			FeatureModel featureModel = FeaturemodelFactory.eINSTANCE.createFeatureModel();
-			externalizeDomainResult.setResult(featureModel);
-			return externalizeDomainResult;
+			return new ExternalizeDomainResult(featureModel);
 		}
-
-		// trigger consistency preservation
-		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPre());
 
 		// create feature model view
 		FeatureModel featureModel = FeaturemodelFactory.eINSTANCE.createFeatureModel();
 		featureModel.setSystemRevision(systemRevision);
 
-		ViewFeature viewRootFeature = this.traverseFeatureModel(systemRevision.getRootFeature(), systemRevision);
-		featureModel.getRootFeatures().add(viewRootFeature);
+		ExternalizeDomainResult externalizeDomainResult = new ExternalizeDomainResult(featureModel);
+
+		// trigger consistency preservation
+		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPre());
+
+		if (systemRevision.getRootFeature() != null) {
+			ViewFeature viewRootFeature = this.traverseFeatureModel(systemRevision.getRootFeature(), systemRevision);
+			featureModel.getRootFeatures().add(viewRootFeature);
+		}
 
 		for (CrossTreeConstraint crossTreeConstraint : this.system.getConstraints()) {
 			if (systemRevision.getEnablesConstraints().contains(crossTreeConstraint)) {
@@ -549,6 +554,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				viewFeature.getOriginalFeature().setName(viewFeature.getName());
 			}
 
+			newSystemRevision.getEnablesFeatureOptions().add(viewFeature.getOriginalFeature());
+
 			// feature already existed. check if its children (i.e., tree constraints) are new or were modified.
 			for (ViewTreeConstraint viewTreeConstraint : viewFeature.getChildTreeConstraints()) {
 				// if new tree constraint (i.e., does not have original tree constraint) was added in view, create it, add it to system, and enable it by new system revision
@@ -566,11 +573,11 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 						newTreeConstraint.getChildFeatures().add(childFeature);
 					}
 				}
-				// if existing tree constraint (i.e., has original tree constraint) was modified (i.e., its parent feature and children features were modified), create new tree constraint, add it to system, and enable it by new system revision
+				// if existing tree constraint (i.e., has original tree constraint) was modified (i.e., its parent feature or children features or type were modified), create new tree constraint, add it to system, and enable it by new system revision
 				else {
 					// tree constraint was not modified
 					if (viewTreeConstraint.getOriginalTreeConstraint().getChildFeatures().size() == viewTreeConstraint.getChildFeatures().size() && viewTreeConstraint.getOriginalTreeConstraint().getChildFeatures().containsAll(viewTreeConstraint.getChildFeatures().stream().map(vf -> vf.getOriginalFeature()).collect(Collectors.toList()))
-							&& viewTreeConstraint.getOriginalTreeConstraint().getParentFeature() == viewFeature.getOriginalFeature()) {
+							&& viewTreeConstraint.getOriginalTreeConstraint().getParentFeature() == viewFeature.getOriginalFeature() && viewTreeConstraint.getType() == viewTreeConstraint.getOriginalTreeConstraint().getType()) {
 						newSystemRevision.getEnablesConstraints().add(viewTreeConstraint.getOriginalTreeConstraint());
 
 						// recurse into child features, add resulting feature as child to tree constraint
@@ -582,7 +589,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 					// tree constraint was modified
 					else {
 						TreeConstraint newTreeConstraint = VaveFactory.eINSTANCE.createTreeConstraint();
-						newTreeConstraint.setType(newTreeConstraint.getType());
+						newTreeConstraint.setType(viewTreeConstraint.getType());
 						viewFeature.getOriginalFeature().getChildTreeConstraints().add(newTreeConstraint);
 						newSystemRevision.getEnablesConstraints().add(newTreeConstraint);
 						// overwrite original tree constraint of modified view tree constraint
@@ -604,6 +611,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			newFeature.setName(viewFeature.getName());
 			newSystemRevision.getEnablesFeatureOptions().add(newFeature);
 			viewFeature.setOriginalFeature(newFeature);
+			this.system.getFeatures().add(newFeature);
 
 			// process its child tree constraints and recurse into child features
 			for (ViewTreeConstraint viewTreeConstraint : viewFeature.getChildTreeConstraints()) {
@@ -639,11 +647,14 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		this.triggerConsistencyRule(internalizeDomainResult, consistencyRule -> consistencyRule.internalizeDomainPre());
 
 		// create a new system revision and link it to predecessor system revision
-		SystemRevision newSystemRevision = this.createNewSystemRevision(Arrays.asList(new SystemRevision[] { featureModel.getSystemRevision() }), system.getSystemRevisions().size() + 1); // since system revisions cannot be deleted (as we do not yet support eUS) we can simply use the number of system revisions to compute the new id
+		List<SystemRevision> predecessors = new ArrayList<>();
+		if (featureModel.getSystemRevision() != null)
+			predecessors.add(featureModel.getSystemRevision());
+		SystemRevision newSystemRevision = this.createNewSystemRevision(predecessors, this.system.getSystemRevisions().size() + 1); // since system revisions cannot be deleted (as we do not yet support eUS) we can simply use the number of system revisions to compute the new id
 		this.transferMappings(featureModel.getSystemRevision(), newSystemRevision);
 
 		// integrate feature model tree (i.e., features and tree constraints) of view into system
-		this.integrateFeatureModelTree(featureModel.getRootFeatures().get(0), newSystemRevision); // diff root feature of feature model with root feature of system revision in system
+		newSystemRevision.setRootFeature(this.integrateFeatureModelTree(featureModel.getRootFeatures().get(0), newSystemRevision)); // diff root feature of feature model with root feature of system revision in system
 
 		// integrate cross-tree constraints of view into system
 		for (ViewCrossTreeConstraint viewCrossTreeConstraint : featureModel.getCrossTreeConstraints()) {

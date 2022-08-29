@@ -16,7 +16,6 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -64,6 +63,7 @@ import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.model.expression.Conjunction;
 import tools.vitruv.variability.vave.model.expression.Disjunction;
 import tools.vitruv.variability.vave.model.expression.Expression;
+import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
 import tools.vitruv.variability.vave.model.expression.Implication;
 import tools.vitruv.variability.vave.model.expression.Not;
 import tools.vitruv.variability.vave.model.expression.True;
@@ -75,12 +75,15 @@ import tools.vitruv.variability.vave.model.vave.FeatureOption;
 import tools.vitruv.variability.vave.model.vave.FeatureRevision;
 import tools.vitruv.variability.vave.model.vave.GroupType;
 import tools.vitruv.variability.vave.model.vave.Option;
+import tools.vitruv.variability.vave.model.vave.System;
 import tools.vitruv.variability.vave.model.vave.TreeConstraint;
+import tools.vitruv.variability.vave.model.vave.VaveFactory;
+import tools.vitruv.variability.vave.util.ExpressionUtil;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveTest {
 
-	Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+	Configuration config = VaveFactory.eINSTANCE.createConfiguration();
 
 	public static class RedundancyChangePropagationSpecification extends AbstractChangePropagationSpecification {
 		public static URI getTargetResourceUri(final URI sourceUri) {
@@ -147,19 +150,19 @@ public class VaveTest {
 	}
 
 	private Expression<FeatureOption> createExpression(System system) {
-		Conjunction<FeatureOption> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
-		Feature car = VavemodelFactory.eINSTANCE.createFeature();
+		Conjunction<FeatureOption> conjunction = ExpressionFactory.eINSTANCE.createConjunction();
+		Feature car = VaveFactory.eINSTANCE.createFeature();
 		car.setName("Car");
-		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
+		Feature engineType = VaveFactory.eINSTANCE.createFeature();
 		engineType.setName("EngineType");
-		system.getFeature().add(car);
-		system.getFeature().add(engineType);
-		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
-		variable1.setOption(car);
-		variable2.setOption(engineType);
-		conjunction.getTerm().add(variable1);
-		conjunction.getTerm().add(variable2);
+		system.getFeatures().add(car);
+		system.getFeatures().add(engineType);
+		Variable<FeatureOption> variable1 = ExpressionFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable2 = ExpressionFactory.eINSTANCE.createVariable();
+		variable1.setValue(car);
+		variable2.setValue(engineType);
+		conjunction.getExpressions().add(variable1);
+		conjunction.getExpressions().add(variable2);
 		return conjunction;
 	}
 
@@ -180,7 +183,7 @@ public class VaveTest {
 	public void testVSUMCreation() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
-		VirtualProductModel vsum = vave.externalizeProduct(this.projectFolder, config);
+		VirtualProductModel vsum = vave.externalizeProduct(this.projectFolder, config).getResult();
 		assertNotNull(vsum);
 	}
 
@@ -189,9 +192,9 @@ public class VaveTest {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
-		Expression<FeatureOption> expression = VavemodelFactory.eINSTANCE.createTrue();
+		Expression<FeatureOption> expression = ExpressionFactory.eINSTANCE.createTrue();
 
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config).getResult();
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
 		changeRecorder.addToRecording(resourceSet);
@@ -220,7 +223,7 @@ public class VaveTest {
 
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, changePropagationSpecifications, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config);
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config).getResult();
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -248,8 +251,8 @@ public class VaveTest {
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		// Expression<FeatureOption> expression = createExpression(vave.getSystem());
-		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
-		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
+		True<FeatureOption> trueConstant = ExpressionFactory.eINSTANCE.createTrue();
+		final VirtualProductModel virtualModel = vave.externalizeProduct(this.projectFolder.resolve("vsum"), config).getResult(); // empty product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -273,9 +276,9 @@ public class VaveTest {
 
 		vave.internalizeChanges(virtualModel, trueConstant);
 
-		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(0));
 
-		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
+		final VirtualProductModel virtualModel2 = vave.externalizeProduct(this.projectFolder.resolve("vsum2"), config).getResult();
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
@@ -284,50 +287,50 @@ public class VaveTest {
 	@Test // Test wrt. problem space and feature revisions
 	public void testCarVaveModelCreationWithFeaturesOnly() {
 		// create tree content of simple vave model instance
-		System system = VavemodelFactory.eINSTANCE.createSystem();
-		Feature car = VavemodelFactory.eINSTANCE.createFeature();
-		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
-		Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
-		Feature electric = VavemodelFactory.eINSTANCE.createFeature();
-		Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
+		System system = VaveFactory.eINSTANCE.createSystem();
+		Feature car = VaveFactory.eINSTANCE.createFeature();
+		Feature engineType = VaveFactory.eINSTANCE.createFeature();
+		Feature gasoline = VaveFactory.eINSTANCE.createFeature();
+		Feature electric = VaveFactory.eINSTANCE.createFeature();
+		Feature smogControl = VaveFactory.eINSTANCE.createFeature();
 		car.setName("car");
 		engineType.setName("engineType");
 		gasoline.setName("gasoline");
 		electric.setName("electric");
 		smogControl.setName("smogControl");
-		system.getFeature().add(car);
-		system.getFeature().add(gasoline);
-		system.getFeature().add(electric);
-		system.getFeature().add(smogControl);
-		system.getFeature().add(engineType);
-		TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr1.setType(GroupType.XOR);
+		system.getFeatures().add(car);
+		system.getFeatures().add(gasoline);
+		system.getFeatures().add(electric);
+		system.getFeatures().add(smogControl);
+		system.getFeatures().add(engineType);
+		TreeConstraint treeconstr1 = VaveFactory.eINSTANCE.createTreeConstraint();
+		treeconstr1.setType(GroupType.MANDATORY);
 		// Make Engine Type mandatory by adding a tree constraint of type XOR to its
 		// parent feature Car
-		addContainment(car, treeconstr1, "treeconstraint");
-		addContainment(treeconstr1, engineType, "feature");
+		car.getChildTreeConstraints().add(treeconstr1);
+		treeconstr1.getChildFeatures().add(engineType);
 		// Make Smog Control optional
-		TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr2.setType(GroupType.XORNONE);
-		addContainment(car, treeconstr2, "treeconstraint");
-		addContainment(treeconstr2, smogControl, "feature");
+		TreeConstraint treeconstr2 = VaveFactory.eINSTANCE.createTreeConstraint();
+		treeconstr2.setType(GroupType.OPTIONAL);
+		car.getChildTreeConstraints().add(treeconstr2);
+		treeconstr2.getChildFeatures().add(smogControl);
 		// Make OR-Group between Gasoline and Electric with Engine Type parent
-		TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		TreeConstraint treeconstr3 = VaveFactory.eINSTANCE.createTreeConstraint();
 		treeconstr3.setType(GroupType.OR);
-		addContainment(engineType, treeconstr3, "treeconstraint");
-		addContainment(treeconstr3, gasoline, "feature");
-		addContainment(treeconstr3, electric, "feature");
+		engineType.getChildTreeConstraints().add(treeconstr3);
+		treeconstr3.getChildFeatures().add(gasoline);
+		treeconstr3.getChildFeatures().add(electric);
 		// create cross-tree constraint implication: gasoline implies smog control
-		CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
-		Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
-		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		CrossTreeConstraint crosstreeconstr1 = VaveFactory.eINSTANCE.createCrossTreeConstraint();
+		Implication<FeatureOption> implication1 = ExpressionFactory.eINSTANCE.createImplication();
+		Variable<FeatureOption> variable1 = ExpressionFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable2 = ExpressionFactory.eINSTANCE.createVariable();
 		crosstreeconstr1.setExpression(implication1);
-		implication1.getTerm().add(variable1);
-		implication1.getTerm().add(variable2);
-		variable1.setOption(gasoline);
-		variable2.setOption(smogControl);
-		system.getConstraint().add(crosstreeconstr1);
+		implication1.setLeft(variable1);
+		implication1.setRight(variable2);
+		variable1.setValue(gasoline);
+		variable2.setValue(smogControl);
+		system.getConstraints().add(crosstreeconstr1);
 
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
@@ -337,73 +340,73 @@ public class VaveTest {
 		resource.getContents().add(system);
 
 		Diagnostic d = Diagnostician.INSTANCE.validate(system);
-		System.out.println("MESSAGE: " + d.getMessage());
+		java.lang.System.out.println("MESSAGE: " + d.getMessage());
 
 		try {
 			resource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("FOLDER: " + this.projectFolder);
+		java.lang.System.out.println("FOLDER: " + this.projectFolder);
 	}
 
 	@Test // Test wrt. problem space and feature revisions
 	public void testCarVaveModelCreationWithFeatureRevisions() {
 		// create tree content of simple vave model instance
-		System system = VavemodelFactory.eINSTANCE.createSystem();
-		Feature car = VavemodelFactory.eINSTANCE.createFeature();
-		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
-		Feature gasoline = VavemodelFactory.eINSTANCE.createFeature();
-		Feature electric = VavemodelFactory.eINSTANCE.createFeature();
-		Feature smogControl = VavemodelFactory.eINSTANCE.createFeature();
+		System system = VaveFactory.eINSTANCE.createSystem();
+		Feature car = VaveFactory.eINSTANCE.createFeature();
+		Feature engineType = VaveFactory.eINSTANCE.createFeature();
+		Feature gasoline = VaveFactory.eINSTANCE.createFeature();
+		Feature electric = VaveFactory.eINSTANCE.createFeature();
+		Feature smogControl = VaveFactory.eINSTANCE.createFeature();
 		car.setName("car");
 		engineType.setName("engineType");
 		gasoline.setName("gasoline");
 		electric.setName("electric");
 		smogControl.setName("smogControl");
-		system.getFeature().add(car);
-		system.getFeature().add(gasoline);
-		system.getFeature().add(electric);
-		system.getFeature().add(smogControl);
-		system.getFeature().add(engineType);
-		FeatureRevision car_1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
+		system.getFeatures().add(car);
+		system.getFeatures().add(gasoline);
+		system.getFeatures().add(electric);
+		system.getFeatures().add(smogControl);
+		system.getFeatures().add(engineType);
+		FeatureRevision car_1 = VaveFactory.eINSTANCE.createFeatureRevision();
 		car_1.setRevisionID(1);
-		car.getFeaturerevision().add(car_1);
-		FeatureRevision gasoline_1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
+		car.getFeatureRevisions().add(car_1);
+		FeatureRevision gasoline_1 = VaveFactory.eINSTANCE.createFeatureRevision();
 		gasoline_1.setRevisionID(1);
-		gasoline.getFeaturerevision().add(gasoline_1);
-		FeatureRevision electric_1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
+		gasoline.getFeatureRevisions().add(gasoline_1);
+		FeatureRevision electric_1 = VaveFactory.eINSTANCE.createFeatureRevision();
 		electric_1.setRevisionID(1);
-		electric.getFeaturerevision().add(electric_1);
-		FeatureRevision smogControl_1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
+		electric.getFeatureRevisions().add(electric_1);
+		FeatureRevision smogControl_1 = VaveFactory.eINSTANCE.createFeatureRevision();
 		smogControl_1.setRevisionID(1);
-		smogControl.getFeaturerevision().add(smogControl_1);
-		TreeConstraint treeconstr1 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr1.setType(GroupType.XOR);
+		smogControl.getFeatureRevisions().add(smogControl_1);
+		TreeConstraint treeconstr1 = VaveFactory.eINSTANCE.createTreeConstraint();
+		treeconstr1.setType(GroupType.MANDATORY);
 		// Make Engine Type mandatory by adding a tree constraint of type XOR to its
 		// parent feature Car
-		addContainment(car, treeconstr1, "treeconstraint");
-		addContainment(treeconstr1, engineType, "feature");
-		TreeConstraint treeconstr2 = VavemodelFactory.eINSTANCE.createTreeConstraint();
-		treeconstr2.setType(GroupType.XORNONE);
-		addContainment(car, treeconstr2, "treeconstraint");
-		addContainment(treeconstr2, smogControl, "feature");
-		TreeConstraint treeconstr3 = VavemodelFactory.eINSTANCE.createTreeConstraint();
+		car.getChildTreeConstraints().add(treeconstr1);
+		treeconstr1.getChildFeatures().add(engineType);
+		TreeConstraint treeconstr2 = VaveFactory.eINSTANCE.createTreeConstraint();
+		treeconstr2.setType(GroupType.OPTIONAL);
+		car.getChildTreeConstraints().add(treeconstr2);
+		treeconstr2.getChildFeatures().add(smogControl);
+		TreeConstraint treeconstr3 = VaveFactory.eINSTANCE.createTreeConstraint();
 		treeconstr3.setType(GroupType.OR);
-		addContainment(engineType, treeconstr3, "treeconstraint");
-		addContainment(treeconstr3, gasoline, "feature");
-		addContainment(treeconstr3, electric, "feature");
+		engineType.getChildTreeConstraints().add(treeconstr3);
+		treeconstr3.getChildFeatures().add(gasoline);
+		treeconstr3.getChildFeatures().add(electric);
 		// create cross-tree constraint implication: gasoline implies smog control
-		CrossTreeConstraint crosstreeconstr1 = VavemodelFactory.eINSTANCE.createCrossTreeConstraint();
-		Implication<FeatureOption> implication1 = VavemodelFactory.eINSTANCE.createImplication();
-		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
+		CrossTreeConstraint crosstreeconstr1 = VaveFactory.eINSTANCE.createCrossTreeConstraint();
+		Implication<FeatureOption> implication1 = ExpressionFactory.eINSTANCE.createImplication();
+		Variable<FeatureOption> variable1 = ExpressionFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> variable2 = ExpressionFactory.eINSTANCE.createVariable();
 		crosstreeconstr1.setExpression(implication1);
-		implication1.getTerm().add(variable1);
-		implication1.getTerm().add(variable2);
-		variable1.setOption(gasoline);
-		variable2.setOption(smogControl);
-		system.getConstraint().add(crosstreeconstr1);
+		implication1.setLeft(variable1);
+		implication1.setRight(variable2);
+		variable1.setValue(gasoline);
+		variable2.setValue(smogControl);
+		system.getConstraints().add(crosstreeconstr1);
 
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
@@ -418,24 +421,18 @@ public class VaveTest {
 		}
 	}
 
-	private void addContainment(EObject container, EObject containment, String structFeature) {
-		EStructuralFeature eStructFeature = container.eClass().getEStructuralFeature(structFeature);
-		List<EObject> features = (List<EObject>) container.eGet(eStructFeature);
-		features.add(containment);
-	}
-
 	@Test
 	public void saveAndLoad() throws Exception {
 		Set<VitruvDomain> domains = new HashSet<>();
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		VirtualVaVeModel vaveSaved = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 		// Expression<FeatureOption> expression = createExpression(vaveSaved.getSystem());
-		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = ExpressionFactory.eINSTANCE.createTrue();
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("vave", new XMIResourceFactoryImpl());
 
-		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), config); // empty product
+		final VirtualProductModel virtualModel = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum"), config).getResult(); // empty product
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -459,19 +456,19 @@ public class VaveTest {
 
 		vaveSaved.internalizeChanges(virtualModel, trueConstant);
 
-		config.getOption().add(vaveSaved.getSystem().getSystemrevision().get(0));
+		config.getOptions().add(vaveSaved.getSystem().getSystemRevisions().get(0));
 
-		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), config);
+		final VirtualProductModel virtualModel2 = vaveSaved.externalizeProduct(this.projectFolder.resolve("vsum2"), config).getResult();
 
 		final ModelInstance vsumModel2 = virtualModel2.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 		MatcherAssert.<Resource>assertThat(vsumModel2.getResource(), ModelMatchers.containsModelOf(monitoredResource));
 
 		VirtualVaVeModel vaveLoaded = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), this.projectFolder);
 
-		config.getOption().clear();
-		config.getOption().add(vaveLoaded.getSystem().getSystemrevision().get(0));
+		config.getOptions().clear();
+		config.getOptions().add(vaveLoaded.getSystem().getSystemRevisions().get(0));
 
-		final VirtualProductModel virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), config);
+		final VirtualProductModel virtualModel3 = vaveLoaded.externalizeProduct(this.projectFolder.resolve("vsum3"), config).getResult();
 
 		final ModelInstance vsumModel3 = virtualModel3.getModelInstance(this.createTestModelResourceUri("", this.projectFolder));
 
@@ -481,108 +478,100 @@ public class VaveTest {
 
 	@Test
 	public void conjunctionEvalTest() {
-		Feature a = VavemodelFactory.eINSTANCE.createFeature();
-		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+		Feature a = VaveFactory.eINSTANCE.createFeature();
+		Feature b = VaveFactory.eINSTANCE.createFeature();
 
-		Conjunction<Option> conjunction = VavemodelFactory.eINSTANCE.createConjunction();
-		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
-		va.setOption(a);
-		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
-		vb.setOption(b);
-		conjunction.getTerm().add(va);
-		conjunction.getTerm().add(vb);
+		Conjunction<Option> conjunction = ExpressionFactory.eINSTANCE.createConjunction();
+		Variable<Option> va = ExpressionFactory.eINSTANCE.createVariable();
+		va.setValue(a);
+		Variable<Option> vb = ExpressionFactory.eINSTANCE.createVariable();
+		vb.setValue(b);
+		conjunction.getExpressions().add(va);
+		conjunction.getExpressions().add(vb);
 
-		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-		configuration.getOption().add(a);
+		Configuration configuration = VaveFactory.eINSTANCE.createConfiguration();
+		configuration.getOptions().add(a);
 
-		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+		assertFalse(ExpressionUtil.eval(conjunction, configuration));
 
-		assertFalse(ee.eval(conjunction));
+		configuration.getOptions().add(b);
 
-		configuration.getOption().add(b);
-
-		assertTrue(ee.eval(conjunction));
+		assertTrue(ExpressionUtil.eval(conjunction, configuration));
 	}
 
 	@Test
 	public void implicationEvalTest() {
-		Feature a = VavemodelFactory.eINSTANCE.createFeature();
-		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+		Feature a = VaveFactory.eINSTANCE.createFeature();
+		Feature b = VaveFactory.eINSTANCE.createFeature();
 
-		Implication<Option> implication = VavemodelFactory.eINSTANCE.createImplication();
-		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
-		va.setOption(a);
-		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
-		vb.setOption(b);
-		implication.getTerm().add(va);
-		implication.getTerm().add(vb);
+		Implication<Option> implication = ExpressionFactory.eINSTANCE.createImplication();
+		Variable<Option> va = ExpressionFactory.eINSTANCE.createVariable();
+		va.setValue(a);
+		Variable<Option> vb = ExpressionFactory.eINSTANCE.createVariable();
+		vb.setValue(b);
+		implication.setLeft(va);
+		implication.setRight(vb);
 
-		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-		configuration.getOption().add(a);
+		Configuration configuration = VaveFactory.eINSTANCE.createConfiguration();
+		configuration.getOptions().add(a);
 
-		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+		assertFalse(ExpressionUtil.eval(implication, configuration));
 
-		assertFalse(ee.eval(implication));
+		configuration.getOptions().add(b);
 
-		configuration.getOption().add(b);
-
-		assertTrue(ee.eval(implication));
+		assertTrue(ExpressionUtil.eval(implication, configuration));
 	}
 
 	@Test
 	public void disjunctionEvalTest() {
-		Feature a = VavemodelFactory.eINSTANCE.createFeature();
-		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+		Feature a = VaveFactory.eINSTANCE.createFeature();
+		Feature b = VaveFactory.eINSTANCE.createFeature();
 
-		Disjunction<Option> disjunction = VavemodelFactory.eINSTANCE.createDisjunction();
-		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
-		va.setOption(a);
-		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
-		vb.setOption(b);
-		disjunction.getTerm().add(va);
-		disjunction.getTerm().add(vb);
+		Disjunction<Option> disjunction = ExpressionFactory.eINSTANCE.createDisjunction();
+		Variable<Option> va = ExpressionFactory.eINSTANCE.createVariable();
+		va.setValue(a);
+		Variable<Option> vb = ExpressionFactory.eINSTANCE.createVariable();
+		vb.setValue(b);
+		disjunction.getExpressions().add(va);
+		disjunction.getExpressions().add(vb);
 
-		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
+		Configuration configuration = VaveFactory.eINSTANCE.createConfiguration();
 
-		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+		assertFalse(ExpressionUtil.eval(disjunction, configuration));
 
-		assertFalse(ee.eval(disjunction));
+		configuration.getOptions().add(a);
 
-		configuration.getOption().add(a);
+		assertTrue(ExpressionUtil.eval(disjunction, configuration));
 
-		assertTrue(ee.eval(disjunction));
+		configuration.getOptions().add(b);
 
-		configuration.getOption().add(b);
-
-		assertTrue(ee.eval(disjunction));
+		assertTrue(ExpressionUtil.eval(disjunction, configuration));
 	}
 
 	@Test
 	public void disjunctionNotEvalTest() {
-		Feature a = VavemodelFactory.eINSTANCE.createFeature();
-		Feature b = VavemodelFactory.eINSTANCE.createFeature();
+		Feature a = VaveFactory.eINSTANCE.createFeature();
+		Feature b = VaveFactory.eINSTANCE.createFeature();
 
-		Disjunction<Option> disjunction = VavemodelFactory.eINSTANCE.createDisjunction();
-		Variable<Option> va = VavemodelFactory.eINSTANCE.createVariable();
-		va.setOption(a);
-		Variable<Option> vb = VavemodelFactory.eINSTANCE.createVariable();
-		vb.setOption(b);
-		disjunction.getTerm().add(va);
-		disjunction.getTerm().add(vb);
+		Disjunction<Option> disjunction = ExpressionFactory.eINSTANCE.createDisjunction();
+		Variable<Option> va = ExpressionFactory.eINSTANCE.createVariable();
+		va.setValue(a);
+		Variable<Option> vb = ExpressionFactory.eINSTANCE.createVariable();
+		vb.setValue(b);
+		disjunction.getExpressions().add(va);
+		disjunction.getExpressions().add(vb);
 
-		Not<Option> not = VavemodelFactory.eINSTANCE.createNot();
-		not.setTerm(disjunction);
+		Not<Option> not = ExpressionFactory.eINSTANCE.createNot();
+		not.setExpression(disjunction);
 
-		Configuration configuration = VavemodelFactory.eINSTANCE.createConfiguration();
-		configuration.getOption().add(a);
+		Configuration configuration = VaveFactory.eINSTANCE.createConfiguration();
+		configuration.getOptions().add(a);
 
-		ExpressionEvaluator ee = new ExpressionEvaluator(configuration);
+		assertFalse(ExpressionUtil.eval(not, configuration));
 
-		assertFalse(ee.eval(not));
+		configuration.getOptions().add(b);
 
-		configuration.getOption().add(b);
-
-		assertFalse(ee.eval(not));
+		assertFalse(ExpressionUtil.eval(not, configuration));
 	}
 
 }

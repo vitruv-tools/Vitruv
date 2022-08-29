@@ -34,17 +34,21 @@ import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.model.expression.Conjunction;
+import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
 import tools.vitruv.variability.vave.model.expression.True;
 import tools.vitruv.variability.vave.model.expression.Variable;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.featuremodel.FeaturemodelFactory;
+import tools.vitruv.variability.vave.model.featuremodel.ViewFeature;
+import tools.vitruv.variability.vave.model.featuremodel.ViewTreeConstraint;
 import tools.vitruv.variability.vave.model.vave.Configuration;
-import tools.vitruv.variability.vave.model.vave.CrossTreeConstraint;
 import tools.vitruv.variability.vave.model.vave.Feature;
 import tools.vitruv.variability.vave.model.vave.FeatureOption;
-import tools.vitruv.variability.vave.model.vave.FeatureRevision;
+import tools.vitruv.variability.vave.model.vave.GroupType;
 import tools.vitruv.variability.vave.model.vave.Option;
-import tools.vitruv.variability.vave.model.vave.TreeConstraint;
+import tools.vitruv.variability.vave.model.vave.VaveFactory;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
+import tools.vitruv.variability.vave.util.ExpressionUtil;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveInternalizeChangesTest {
@@ -69,8 +73,8 @@ public class VaveInternalizeChangesTest {
 	@Test
 	public void InternalizeChangesWithTrueExpression(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -84,22 +88,22 @@ public class VaveInternalizeChangesTest {
 		// propagate recorded changes into vmp1
 		vmp1.propagateChange(recordedChange);
 
-		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = ExpressionFactory.eINSTANCE.createTrue();
 		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
 
-		assertEquals(1, vave.getSystem().getSystemrevision().size());
-		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getRevisionID());
-		assertEquals(1, vave.getSystem().getMapping().size());
-		assertEquals(vave.getSystem().getSystemrevision().get(0), ((Variable<Option>) vave.getSystem().getMapping().get(0).getExpression()).getOption());
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
-		assertEquals(1, vave.getSystem().getMapping().get(0).getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getSystemRevisions().size());
+		assertEquals(1, vave.getSystem().getSystemRevisions().get(0).getRevisionID());
+		assertEquals(1, vave.getSystem().getMappings().size());
+		assertEquals(vave.getSystem().getSystemRevisions().get(0), ((Variable<Option>) vave.getSystem().getMappings().get(0).getExpression()).getValue());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
+		assertEquals(1, vave.getSystem().getMappings().get(0).getDeltaModules().size());
 	}
 
 	@Test
 	public void MultipleInternalizeChangesWithTrueExpression(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -113,18 +117,18 @@ public class VaveInternalizeChangesTest {
 		// propagate recorded changes into vmp1
 		vmp1.propagateChange(recordedChange);
 
-		True<FeatureOption> trueConstant = VavemodelFactory.eINSTANCE.createTrue();
+		True<FeatureOption> trueConstant = ExpressionFactory.eINSTANCE.createTrue();
 		vave.internalizeChanges(vmp1, trueConstant); // system revision 1
 
-		assertEquals(1, vave.getSystem().getSystemrevision().size());
-		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getRevisionID());
-		assertEquals(1, vave.getSystem().getMapping().size());
-		assertEquals(vave.getSystem().getSystemrevision().get(0), ((Variable<Option>) vave.getSystem().getMapping().get(0).getExpression()).getOption());
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
-		assertEquals(1, vave.getSystem().getMapping().get(0).getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getSystemRevisions().size());
+		assertEquals(1, vave.getSystem().getSystemRevisions().get(0).getRevisionID());
+		assertEquals(1, vave.getSystem().getMappings().size());
+		assertEquals(vave.getSystem().getSystemRevisions().get(0), ((Variable<Option>) vave.getSystem().getMappings().get(0).getExpression()).getValue());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
+		assertEquals(1, vave.getSystem().getMappings().get(0).getDeltaModules().size());
 
-		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(0));
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config).getResult();
 
 		final ResourceSet resourceSet2 = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
 		final ChangeRecorder changeRecorder2 = new ChangeRecorder(resourceSet2);
@@ -139,25 +143,25 @@ public class VaveInternalizeChangesTest {
 
 		vave.internalizeChanges(vmp1ext, trueConstant); // system revision 2
 
-		assertEquals(2, vave.getSystem().getSystemrevision().size());
-		assertEquals(2, vave.getSystem().getSystemrevision().get(1).getRevisionID());
-		assertEquals(3, vave.getSystem().getMapping().size()); // changed mappings are copied and old system revision gets replaced with new one
-		assertEquals(vave.getSystem().getSystemrevision().get(0), ((Variable<Option>) vave.getSystem().getMapping().get(0).getExpression()).getOption());
-		assertEquals(vave.getSystem().getSystemrevision().get(1), ((Variable<Option>) vave.getSystem().getMapping().get(1).getExpression()).getOption());
-		assertEquals(vave.getSystem().getSystemrevision().get(1), ((Variable<Option>) vave.getSystem().getMapping().get(2).getExpression()).getOption());
+		assertEquals(2, vave.getSystem().getSystemRevisions().size());
+		assertEquals(2, vave.getSystem().getSystemRevisions().get(1).getRevisionID());
+		assertEquals(3, vave.getSystem().getMappings().size()); // changed mappings are copied and old system revision gets replaced with new one
+		assertEquals(vave.getSystem().getSystemRevisions().get(0), ((Variable<Option>) vave.getSystem().getMappings().get(0).getExpression()).getValue());
+		assertEquals(vave.getSystem().getSystemRevisions().get(1), ((Variable<Option>) vave.getSystem().getMappings().get(1).getExpression()).getValue());
+		assertEquals(vave.getSystem().getSystemRevisions().get(1), ((Variable<Option>) vave.getSystem().getMappings().get(2).getExpression()).getValue());
 	}
 
 	@Test
 	public void InternalizeChangesWithFeatureRevisionExpression(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 		// Feature a, Feature b
-		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
+		Feature featureA = VaveFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
-		vave.getSystem().getFeature().add(featureA);
+		vave.getSystem().getFeatures().add(featureA);
 
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-		config.getOption().add(featureA);
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
+		config.getOptions().add(featureA);
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 
 		final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 		final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -171,30 +175,30 @@ public class VaveInternalizeChangesTest {
 		// propagate recorded changes into vmp1
 		vmp1.propagateChange(recordedChange);
 
-		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
-		variableA.setOption(featureA);
+		Variable<FeatureOption> variableA = ExpressionFactory.eINSTANCE.createVariable();
+		variableA.setValue(featureA);
 		vave.internalizeChanges(vmp1, variableA); // system revision 1
 
-		assertEquals(1, vave.getSystem().getSystemrevision().size());
-		assertEquals(1, vave.getSystem().getSystemrevision().get(0).getRevisionID());
-		assertEquals(1, vave.getSystem().getMapping().size());
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
-		assertEquals(1, vave.getSystem().getMapping().get(0).getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getSystemRevisions().size());
+		assertEquals(1, vave.getSystem().getSystemRevisions().get(0).getRevisionID());
+		assertEquals(1, vave.getSystem().getMappings().size());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
+		assertEquals(1, vave.getSystem().getMappings().get(0).getDeltaModules().size());
 
-		Conjunction<Option> expectedConjunction = VavemodelFactory.eINSTANCE.createConjunction();
+		Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-		Variable<Option> expectedVariableSystemRevision1 = VavemodelFactory.eINSTANCE.createVariable();
-		expectedVariableSystemRevision1.setOption(vave.getSystem().getSystemrevision().get(0));
-		expectedConjunction.getTerm().add(expectedVariableSystemRevision1);
+		Variable<Option> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
+		expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(0));
+		expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
 
-		Variable<Option> expectedVariableA = VavemodelFactory.eINSTANCE.createVariable();
-		FeatureRevision featrev1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
-		featrev1.setRevisionID(1);
-		expectedVariableA.setOption(featrev1);
-		expectedConjunction.getTerm().add(expectedVariableA);
+		Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
+		expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
+		expectedConjunction.getExpressions().add(expectedVariableA);
+
+		assertTrue(ExpressionUtil.structuralEquivalence(expectedConjunction, vave.getSystem().getMappings().get(0).getExpression()));
 
 		EqualityHelper eh = new EqualityHelper();
-		assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMapping().get(0).getExpression()));
+		assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(0).getExpression()));
 	}
 
 	@Test
@@ -202,29 +206,32 @@ public class VaveInternalizeChangesTest {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 
 //		// Feature a, Feature b
-//		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
+//		Feature featureA = VaveFactory.eINSTANCE.createFeature();
 //		featureA.setName("featureA");
 //		vave.getSystem().getFeature().add(featureA);
-//		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
+//		Feature featureB = VaveFactory.eINSTANCE.createFeature();
 //		featureB.setName("featureB");
 //		vave.getSystem().getFeature().add(featureB);
 
-		FeatureModel fm = new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
-		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
-		featureA.setName("featureA");
-		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
-		featureB.setName("featureB");
-		fm.getFeatureOptions().add(featureA);
-		fm.getFeatureOptions().add(featureB);
+		FeatureModel fm = FeaturemodelFactory.eINSTANCE.createFeatureModel(); // new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
+		ViewFeature viewFeatureA = FeaturemodelFactory.eINSTANCE.createViewFeature();
+		viewFeatureA.setName("featureA");
+		ViewFeature viewFeatureB = FeaturemodelFactory.eINSTANCE.createViewFeature();
+		viewFeatureB.setName("featureB");
+		fm.getRootFeatures().add(viewFeatureA);
+		ViewTreeConstraint tc = FeaturemodelFactory.eINSTANCE.createViewTreeConstraint();
+		tc.setType(GroupType.OPTIONAL);
+		viewFeatureA.getChildTreeConstraints().add(tc);
+		tc.getChildFeatures().add(viewFeatureB);
 		vave.internalizeDomain(fm);
-		featureA = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureA")).findAny().get();
-		featureB = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureB")).findAny().get();
+		Feature featureA = vave.getSystem().getFeatures().stream().filter(f -> f.getName().equals("featureA")).findAny().get();
+		Feature featureB = vave.getSystem().getFeatures().stream().filter(f -> f.getName().equals("featureB")).findAny().get();
 
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-		config.getOption().add(featureA);
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+		config.getOptions().add(featureA);
 
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 
 		{
 			// add fragment for feature a
@@ -241,33 +248,31 @@ public class VaveInternalizeChangesTest {
 			vmp1.propagateChange(recordedChange);
 		}
 
-		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
-		variableA.setOption(featureA);
+		Variable<FeatureOption> variableA = ExpressionFactory.eINSTANCE.createVariable();
+		variableA.setValue(featureA);
 		vave.internalizeChanges(vmp1, variableA); // system revision 1
 
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
 
 		{
-			Conjunction<Option> expectedConjunction = VavemodelFactory.eINSTANCE.createConjunction();
-			Variable<Option> expectedVariableSystemRevision1 = VavemodelFactory.eINSTANCE.createVariable();
-			expectedVariableSystemRevision1.setOption(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-			expectedConjunction.getTerm().add(expectedVariableSystemRevision1);
+			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+			Variable<Option> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
+			expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+			expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
 
-			Variable<Option> expectedVariableA = VavemodelFactory.eINSTANCE.createVariable();
-			FeatureRevision featrev1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
-			featrev1.setRevisionID(1);
-			expectedVariableA.setOption(featrev1);
-			expectedConjunction.getTerm().add(expectedVariableA);
+			Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
+			expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
+			expectedConjunction.getExpressions().add(expectedVariableA);
 
 			EqualityHelper eh = new EqualityHelper();
-			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMapping().get(0).getExpression()));
+			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(0).getExpression()));
 		}
 
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		config.getOption().add(featureB);
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		config.getOptions().add(featureB);
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config).getResult();
 
 		assertEquals(0, vmp1ext.getDeltas().size());
 
@@ -288,52 +293,48 @@ public class VaveInternalizeChangesTest {
 			vmp1ext.propagateChange(recordedChange2);
 		}
 
-		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
-		variableB.setOption(featureB);
+		Variable<FeatureOption> variableB = ExpressionFactory.eINSTANCE.createVariable();
+		variableB.setValue(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 2 and feature revision 1 of feature B
 
-		assertEquals(2, vave.getSystem().getDeltamodule().size());
+		assertEquals(2, vave.getSystem().getDeltaModules().size());
 
 		{
-			Conjunction<Option> expectedConjunction = VavemodelFactory.eINSTANCE.createConjunction();
+			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-			Variable<Option> expectedVariableSystemRevision2 = VavemodelFactory.eINSTANCE.createVariable();
-			expectedVariableSystemRevision2.setOption(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-			expectedConjunction.getTerm().add(expectedVariableSystemRevision2);
+			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
+			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
 
-			Variable<Option> expectedVariableB = VavemodelFactory.eINSTANCE.createVariable();
-			FeatureRevision featrev1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
-			featrev1.setRevisionID(1);
-			expectedVariableB.setOption(featrev1);
-			expectedConjunction.getTerm().add(expectedVariableB);
+			Variable<Option> expectedVariableB = ExpressionFactory.eINSTANCE.createVariable();
+			expectedVariableB.setValue(featureB.getFeatureRevisions().get(0));
+			expectedConjunction.getExpressions().add(expectedVariableB);
 
 			EqualityHelper eh = new EqualityHelper();
-			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMapping().get(1).getExpression()));
+			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(2).getExpression()));
 		}
 
 		{
-			Conjunction<Option> expectedConjunction = VavemodelFactory.eINSTANCE.createConjunction();
+			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-			Variable<Option> expectedVariableSystemRevision2 = VavemodelFactory.eINSTANCE.createVariable();
-			expectedVariableSystemRevision2.setOption(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-			expectedConjunction.getTerm().add(expectedVariableSystemRevision2);
+			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
+			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
 
-			Variable<Option> expectedVariableA = VavemodelFactory.eINSTANCE.createVariable();
-			FeatureRevision featrev1 = VavemodelFactory.eINSTANCE.createFeatureRevision();
-			featrev1.setRevisionID(1);
-			expectedVariableA.setOption(featrev1);
-			expectedConjunction.getTerm().add(expectedVariableA);
+			Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
+			expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
+			expectedConjunction.getExpressions().add(expectedVariableA);
 
 			EqualityHelper eh = new EqualityHelper();
-			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMapping().get(2).getExpression()));
+			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(1).getExpression()));
 		}
 
 		// externalize product with feature a and b simultaneously
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		config.getOption().add(featureB.getFeaturerevision().get(0));
-		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		config.getOptions().add(featureB.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config).getResult();
 
 		// add fragment for features a and b
 		{
@@ -349,16 +350,16 @@ public class VaveInternalizeChangesTest {
 			vmp2ext.propagateChange(recordedChange3);
 		}
 
-		Conjunction<FeatureOption> expressionConjunction = VavemodelFactory.eINSTANCE.createConjunction();
-		expressionConjunction.getTerm().add(variableA);
-		expressionConjunction.getTerm().add(variableB);
+		Conjunction<FeatureOption> expressionConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+		expressionConjunction.getExpressions().add(variableA);
+		expressionConjunction.getExpressions().add(variableB);
 		vave.internalizeChanges(vmp2ext, expressionConjunction); // system revision 3 and feature revision 2 of feature a and feature b
 
 		{
-			assertEquals(4, vave.getSystem().getSystemrevision().size());
-			assertEquals(2, vave.getSystem().getFeature().size());
-			assertEquals(6, vave.getSystem().getMapping().size());
-			assertEquals(3, vave.getSystem().getDeltamodule().size());
+			assertEquals(4, vave.getSystem().getSystemRevisions().size());
+			assertEquals(2, vave.getSystem().getFeatures().size());
+			assertEquals(6, vave.getSystem().getMappings().size());
+			assertEquals(3, vave.getSystem().getDeltaModules().size());
 		}
 	}
 
@@ -367,16 +368,16 @@ public class VaveInternalizeChangesTest {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 
 		// Feature a, Feature b
-		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
+		Feature featureA = VaveFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
-		vave.getSystem().getFeature().add(featureA);
-		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
+		vave.getSystem().getFeatures().add(featureA);
+		Feature featureB = VaveFactory.eINSTANCE.createFeature();
 		featureB.setName("featureB");
-		vave.getSystem().getFeature().add(featureB);
+		vave.getSystem().getFeatures().add(featureB);
 
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
 
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 
 		{
 			// add fragment for feature a
@@ -394,17 +395,17 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with feature A
-		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
-		variableA.setOption(featureA);
+		Variable<FeatureOption> variableA = ExpressionFactory.eINSTANCE.createVariable();
+		variableA.setValue(featureA);
 		vave.internalizeChanges(vmp1, variableA); // system revision 1
 
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with feature A
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(0));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config).getResult();
 
 		assertEquals(0, vmp1ext.getDeltas().size());
 
@@ -423,30 +424,30 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with features A and B
-		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
-		variableB.setOption(featureB);
+		Variable<FeatureOption> variableB = ExpressionFactory.eINSTANCE.createVariable();
+		variableB.setValue(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 2 and feature revision 1 of feature B
 
-		assertEquals(2, vave.getSystem().getDeltamodule().size());
+		assertEquals(2, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with feature a and b
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		config.getOption().add(featureB.getFeaturerevision().get(0));
-		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(1));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		config.getOptions().add(featureB.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config).getResult();
 
 		// externalize product with feature a
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		final VirtualProductModel vmp3ext = vave.externalizeProduct(projectFolder.resolve("vmp3ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(1));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp3ext = vave.externalizeProduct(projectFolder.resolve("vmp3ext"), config).getResult();
 
 		// externalize product with feature b
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
-		config.getOption().add(featureB.getFeaturerevision().get(0));
-		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(1));
+		config.getOptions().add(featureB.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config).getResult();
 	}
 
 //	@Test
@@ -454,16 +455,16 @@ public class VaveInternalizeChangesTest {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 
 		// Feature a, Feature b
-		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
+		Feature featureA = VaveFactory.eINSTANCE.createFeature();
 		featureA.setName("featureA");
-		vave.getSystem().getFeature().add(featureA);
-		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
+		vave.getSystem().getFeatures().add(featureA);
+		Feature featureB = VaveFactory.eINSTANCE.createFeature();
 		featureB.setName("featureB");
-		vave.getSystem().getFeature().add(featureB);
+		vave.getSystem().getFeatures().add(featureB);
 
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
 
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 
 		{
 			final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
@@ -480,14 +481,14 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with expression TRUE
-		vave.internalizeChanges(vmp1, VavemodelFactory.eINSTANCE.createTrue()); // system revision 1
+		vave.internalizeChanges(vmp1, ExpressionFactory.eINSTANCE.createTrue()); // system revision 1
 
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with empty config
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(0));
-		final VirtualProductModel vmp0ext = vave.externalizeProduct(projectFolder.resolve("vmp0ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(0));
+		final VirtualProductModel vmp0ext = vave.externalizeProduct(projectFolder.resolve("vmp0ext"), config).getResult();
 
 		assertEquals(0, vmp0ext.getDeltas().size());
 
@@ -509,17 +510,17 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with feature A
-		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
-		variableA.setOption(featureA);
+		Variable<FeatureOption> variableA = ExpressionFactory.eINSTANCE.createVariable();
+		variableA.setValue(featureA);
 		vave.internalizeChanges(vmp0ext, variableA); // system revision 2 and feature revision 1 of feature A
 
-		assertEquals(2, vave.getSystem().getDeltamodule().size());
+		assertEquals(2, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with feature A
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(1));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(1));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config).getResult();
 
 		assertEquals(0, vmp1ext.getDeltas().size());
 
@@ -539,30 +540,30 @@ public class VaveInternalizeChangesTest {
 		}
 
 		// internalize product with features A and B
-		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
-		variableB.setOption(featureB);
+		Variable<FeatureOption> variableB = ExpressionFactory.eINSTANCE.createVariable();
+		variableB.setValue(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 3 and feature revision 1 of feature B
 
-		assertEquals(3, vave.getSystem().getDeltamodule().size());
+		assertEquals(3, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with feature a and b
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(2));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		config.getOption().add(featureB.getFeaturerevision().get(0));
-		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(2));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		config.getOptions().add(featureB.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp2ext = vave.externalizeProduct(projectFolder.resolve("vmp2ext"), config).getResult();
 
 		// externalize product with feature a
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(2));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		final VirtualProductModel vmp3ext = vave.externalizeProduct(projectFolder.resolve("vmp3ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(2));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp3ext = vave.externalizeProduct(projectFolder.resolve("vmp3ext"), config).getResult();
 
 		// externalize product with feature b
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(2));
-		config.getOption().add(featureB.getFeaturerevision().get(0));
-		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(2));
+		config.getOptions().add(featureB.getFeatureRevisions().get(0));
+		final VirtualProductModel vmp4ext = vave.externalizeProduct(projectFolder.resolve("vmp4ext"), config).getResult();
 	}
 
 }

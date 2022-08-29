@@ -46,16 +46,16 @@ public final class FeatureModelUtil {
 			}
 		}
 		// root feature
-		if (featureModel.getRootFeatures().isEmpty())
-			throw new IllegalStateException("No root feature in feature model.");
-		else {
-			for (ViewFeature viewFeature : featureModel.getRootFeatures()) {
-				if (featureOptionToIntMap.containsKey(viewFeature.getOriginalFeature()))
-					fmClauses.add(new int[] { featureOptionToIntMap.get(viewFeature.getOriginalFeature()) });
-				else
-					System.out.println("WARNING: no literal for root feature!");
-			}
+//		if (featureModel.getRootFeatures().isEmpty())
+//			throw new IllegalStateException("No root feature in feature model.");
+//		else {
+		for (ViewFeature viewFeature : featureModel.getRootFeatures()) {
+			if (featureOptionToIntMap.containsKey(viewFeature.getOriginalFeature()))
+				fmClauses.add(new int[] { featureOptionToIntMap.get(viewFeature.getOriginalFeature()) });
+			else
+				System.out.println("WARNING: no literal for root feature!");
 		}
+//		}
 		for (ViewTreeConstraint tc : collectTreeConstraints(featureModel)) {
 			// first, children imply parents
 			for (ViewFeature feature : tc.getChildFeatures()) {
@@ -118,7 +118,7 @@ public final class FeatureModelUtil {
 		return fmClauses;
 	}
 
-	private static Collection<ViewTreeConstraint> collectTreeConstraints(FeatureModel featureModel) {
+	public static Collection<ViewTreeConstraint> collectTreeConstraints(FeatureModel featureModel) {
 		Collection<ViewTreeConstraint> viewTreeConstraints = new ArrayList<>();
 		for (ViewFeature viewFeature : featureModel.getRootFeatures())
 			collectTreeConstraintsRec(viewFeature, viewTreeConstraints);
@@ -137,18 +137,19 @@ public final class FeatureModelUtil {
 	public static Set<FeatureOption> collectFeatureOptions(FeatureModel featureModel) {
 		Set<FeatureOption> featureOptions = new HashSet<>();
 		for (ViewFeature viewFeature : featureModel.getRootFeatures())
-			collectFeaturesRec(viewFeature, featureOptions);
+			collectFeatureOptionsRec(viewFeature, featureOptions);
 		for (ViewCrossTreeConstraint viewCrossTreeConstraint : featureModel.getCrossTreeConstraints())
 			featureOptions.addAll(OptionUtil.collect(viewCrossTreeConstraint.getExpression()));
+		featureOptions.remove(null);
 		return featureOptions;
 	}
 
-	private static void collectFeaturesRec(ViewFeature viewFeature, Set<FeatureOption> featureOptions) {
+	private static void collectFeatureOptionsRec(ViewFeature viewFeature, Set<FeatureOption> featureOptions) {
 		featureOptions.add(viewFeature.getOriginalFeature());
 		featureOptions.addAll(viewFeature.getOriginalRevisions());
 		for (ViewTreeConstraint viewTreeConstraint : viewFeature.getChildTreeConstraints()) {
 			for (ViewFeature childViewFeature : viewTreeConstraint.getChildFeatures()) {
-				collectFeaturesRec(childViewFeature, featureOptions);
+				collectFeatureOptionsRec(childViewFeature, featureOptions);
 			}
 		}
 	}
@@ -199,7 +200,7 @@ public final class FeatureModelUtil {
 			// for every option in configuration
 			for (Option option : configuration.getOptions()) {
 				// make sure it exists in the feature model
-				if (!optionToIntMap.containsKey(option))
+				if (!(option instanceof SystemRevision) && !optionToIntMap.containsKey(option))
 					throw new RuntimeException("There is an option in configuration that is not in feature model.");
 
 				if (option instanceof Feature || option instanceof FeatureRevision) {

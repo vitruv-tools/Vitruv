@@ -36,24 +36,30 @@ import tools.vitruv.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.testutils.metamodels.AllElementTypesCreators;
 import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
+import tools.vitruv.variability.vave.consistency.DependencyLifting;
 import tools.vitruv.variability.vave.impl.VirtualVaVeModelImpl;
 import tools.vitruv.variability.vave.model.expression.BinaryExpression;
 import tools.vitruv.variability.vave.model.expression.Conjunction;
 import tools.vitruv.variability.vave.model.expression.Disjunction;
 import tools.vitruv.variability.vave.model.expression.Expression;
 import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
+import tools.vitruv.variability.vave.model.expression.NaryExpression;
 import tools.vitruv.variability.vave.model.expression.Not;
 import tools.vitruv.variability.vave.model.expression.UnaryExpression;
 import tools.vitruv.variability.vave.model.expression.Variable;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
+import tools.vitruv.variability.vave.model.featuremodel.FeaturemodelFactory;
+import tools.vitruv.variability.vave.model.featuremodel.ViewFeature;
+import tools.vitruv.variability.vave.model.featuremodel.ViewTreeConstraint;
 import tools.vitruv.variability.vave.model.vave.Configuration;
-import tools.vitruv.variability.vave.model.vave.CrossTreeConstraint;
 import tools.vitruv.variability.vave.model.vave.Feature;
 import tools.vitruv.variability.vave.model.vave.FeatureOption;
+import tools.vitruv.variability.vave.model.vave.GroupType;
 import tools.vitruv.variability.vave.model.vave.Option;
-import tools.vitruv.variability.vave.model.vave.TreeConstraint;
+import tools.vitruv.variability.vave.model.vave.VaveFactory;
 import tools.vitruv.variability.vave.tests.VaveTest.RedundancyChangePropagationSpecification;
 import tools.vitruv.variability.vave.util.ExpressionToSATConverter;
+import tools.vitruv.variability.vave.util.ExpressionUtil;
 
 @ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class VaveDependencyLiftingTest {
@@ -77,9 +83,14 @@ public class VaveDependencyLiftingTest {
 
 	private int countSize(Expression<? extends Option> expr) {
 		if (expr instanceof UnaryExpression) {
-			return 1 + countSize(((UnaryExpression<? extends Option>) expr).getTerm());
+			return 1 + countSize(((UnaryExpression<? extends Option>) expr).getExpression());
 		} else if (expr instanceof BinaryExpression) {
-			return 1 + countSize(((BinaryExpression<? extends Option>) expr).getTerm().get(0)) + countSize(((BinaryExpression<? extends Option>) expr).getTerm().get(1));
+			return 1 + countSize(((BinaryExpression<? extends Option>) expr).getLeft()) + countSize(((BinaryExpression<? extends Option>) expr).getRight());
+		} else if (expr instanceof NaryExpression) {
+			int sum = 1;
+			for (Expression<? extends Option> childExpr : ((NaryExpression<? extends Option>) expr).getExpressions())
+				sum += countSize(childExpr);
+			return sum;
 		} else {
 			return 1;
 		}
@@ -89,18 +100,25 @@ public class VaveDependencyLiftingTest {
 		if (expr instanceof Variable) {
 			return true;
 		} else if (expr instanceof Not) {
-			if (((Not<? extends Option>) expr).getTerm() instanceof Variable) {
+			if (((Not<? extends Option>) expr).getExpression() instanceof Variable) {
 				return true;
 			}
 		} else if (expr instanceof Disjunction) {
-			if (((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Not || ((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Variable || ((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Disjunction) {
-				if (((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Not || ((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Variable || ((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Disjunction) {
-					return checkNormalForm(((Disjunction<? extends Option>) expr).getTerm().get(0)) && checkNormalForm(((Disjunction<? extends Option>) expr).getTerm().get(1));
-				}
-
-			}
+			for (Expression<? extends Option> childExpression : ((Disjunction<? extends Option>) expr).getExpressions())
+				if (!(childExpression instanceof Not || childExpression instanceof Variable || childExpression instanceof Disjunction) || !checkNormalForm(childExpression))
+					return false;
+			return true;
+//			if (((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Not || ((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Variable || ((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Disjunction) {
+//				if (((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Not || ((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Variable || ((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Disjunction) {
+//					return checkNormalForm(((Disjunction<? extends Option>) expr).getTerm().get(0)) && checkNormalForm(((Disjunction<? extends Option>) expr).getTerm().get(1));
+//				}
+//			}
 		} else if (expr instanceof Conjunction) {
-			return checkNormalForm(((Conjunction<? extends Option>) expr).getTerm().get(0)) && checkNormalForm(((Conjunction<? extends Option>) expr).getTerm().get(1));
+			for (Expression<? extends Option> childExpression : ((Conjunction<? extends Option>) expr).getExpressions())
+				if (!checkNormalForm(childExpression))
+					return false;
+			return true;
+//			return checkNormalForm(((Conjunction<? extends Option>) expr).getTerm().get(0)) && checkNormalForm(((Conjunction<? extends Option>) expr).getTerm().get(1));
 		}
 		return false;
 	}
@@ -111,16 +129,15 @@ public class VaveDependencyLiftingTest {
 		Variable<FeatureOption> variableB = ExpressionFactory.eINSTANCE.createVariable();
 
 		// Case simple disjunction A⋁B
-		Disjunction<FeatureOption> disjunction = VavemodelFactory.eINSTANCE.createDisjunction();
-		disjunction.getTerm().add(variableA);
-		disjunction.getTerm().add(variableB);
+		Disjunction<FeatureOption> disjunction = ExpressionFactory.eINSTANCE.createDisjunction();
+		disjunction.getExpressions().add(variableA);
+		disjunction.getExpressions().add(variableB);
 
-		ExpressionToCNFConverter ec = new ExpressionToCNFConverter();
-		Expression<? extends Option> cnfExpr = ec.convert(disjunction);
+		Expression<? extends Option> cnfExpr = ExpressionUtil.convertToCNF(disjunction);
 
-		Disjunction<FeatureOption> groundTruth = VavemodelFactory.eINSTANCE.createDisjunction();
-		groundTruth.getTerm().add(variableA);
-		groundTruth.getTerm().add(variableB);
+		Disjunction<FeatureOption> groundTruth = ExpressionFactory.eINSTANCE.createDisjunction();
+		groundTruth.getExpressions().add(variableA);
+		groundTruth.getExpressions().add(variableB);
 
 		assertEquals(cnfExpr.eContents().size(), groundTruth.eContents().size());
 		assertTrue(checkNormalForm(cnfExpr));
@@ -140,20 +157,18 @@ public class VaveDependencyLiftingTest {
 		Conjunction<FeatureOption> leftConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 		Conjunction<FeatureOption> rightConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-		leftConjunction.getTerm().add(variableA);
-		leftConjunction.getTerm().add(variableB);
-		rightConjunction.getTerm().add(variableC);
-		rightConjunction.getTerm().add(variableD);
-		innerDisjunction.getTerm().add(leftConjunction);
-		innerDisjunction.getTerm().add(rightConjunction);
-		outerDisjunction.getTerm().add(innerDisjunction);
-		outerDisjunction.getTerm().add(variableE);
+		leftConjunction.getExpressions().add(variableA);
+		leftConjunction.getExpressions().add(variableB);
+		rightConjunction.getExpressions().add(variableC);
+		rightConjunction.getExpressions().add(variableD);
+		innerDisjunction.getExpressions().add(leftConjunction);
+		innerDisjunction.getExpressions().add(rightConjunction);
+		outerDisjunction.getExpressions().add(innerDisjunction);
+		outerDisjunction.getExpressions().add(variableE);
 
-		ExpressionValidator ev = new ExpressionValidator();
-		assertTrue(ev.doSwitch(outerDisjunction));
+		assertTrue(ExpressionUtil.validate(outerDisjunction));
 
-		ExpressionToCNFConverter ec = new ExpressionToCNFConverter();
-		Expression<? extends Option> cnfExpr = ec.convert(outerDisjunction);
+		Expression<? extends Option> cnfExpr = ExpressionUtil.convertToCNF(outerDisjunction);
 
 		System.out.println("SIZE INPUT: " + countSize(outerDisjunction));
 		System.out.println("SIZE OUTPUT: " + countSize(cnfExpr));
@@ -169,32 +184,30 @@ public class VaveDependencyLiftingTest {
 		Variable<FeatureOption> variableD = ExpressionFactory.eINSTANCE.createVariable();
 		Variable<FeatureOption> variableE = ExpressionFactory.eINSTANCE.createVariable();
 
-		variableA.setOption(VavemodelFactory.eINSTANCE.createFeature());
-		variableB.setOption(VavemodelFactory.eINSTANCE.createFeature());
-		variableC.setOption(VavemodelFactory.eINSTANCE.createFeature());
-		variableD.setOption(VavemodelFactory.eINSTANCE.createFeature());
-		variableE.setOption(VavemodelFactory.eINSTANCE.createFeature());
+		variableA.setValue(VaveFactory.eINSTANCE.createFeature());
+		variableB.setValue(VaveFactory.eINSTANCE.createFeature());
+		variableC.setValue(VaveFactory.eINSTANCE.createFeature());
+		variableD.setValue(VaveFactory.eINSTANCE.createFeature());
+		variableE.setValue(VaveFactory.eINSTANCE.createFeature());
 
 		// Case complex conjunction (((A⋀B)⋁(C⋀D))⋁E)
-		Disjunction<FeatureOption> outerDisjunction = VavemodelFactory.eINSTANCE.createDisjunction();
-		Disjunction<FeatureOption> innerDisjunction = VavemodelFactory.eINSTANCE.createDisjunction();
-		Conjunction<FeatureOption> leftConjunction = VavemodelFactory.eINSTANCE.createConjunction();
-		Conjunction<FeatureOption> rightConjunction = VavemodelFactory.eINSTANCE.createConjunction();
+		Disjunction<FeatureOption> outerDisjunction = ExpressionFactory.eINSTANCE.createDisjunction();
+		Disjunction<FeatureOption> innerDisjunction = ExpressionFactory.eINSTANCE.createDisjunction();
+		Conjunction<FeatureOption> leftConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+		Conjunction<FeatureOption> rightConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-		leftConjunction.getTerm().add(variableA);
-		leftConjunction.getTerm().add(variableB);
-		rightConjunction.getTerm().add(variableC);
-		rightConjunction.getTerm().add(variableD);
-		innerDisjunction.getTerm().add(leftConjunction);
-		innerDisjunction.getTerm().add(rightConjunction);
-		outerDisjunction.getTerm().add(innerDisjunction);
-		outerDisjunction.getTerm().add(variableE);
+		leftConjunction.getExpressions().add(variableA);
+		leftConjunction.getExpressions().add(variableB);
+		rightConjunction.getExpressions().add(variableC);
+		rightConjunction.getExpressions().add(variableD);
+		innerDisjunction.getExpressions().add(leftConjunction);
+		innerDisjunction.getExpressions().add(rightConjunction);
+		outerDisjunction.getExpressions().add(innerDisjunction);
+		outerDisjunction.getExpressions().add(variableE);
 
-		ExpressionValidator ev = new ExpressionValidator();
-		assertTrue(ev.doSwitch(outerDisjunction));
+		assertTrue(ExpressionUtil.validate(outerDisjunction));
 
-		ExpressionToCNFConverter ec = new ExpressionToCNFConverter();
-		Expression<? extends Option> cnfExpr = ec.convert(outerDisjunction);
+		Expression<? extends Option> cnfExpr = ExpressionUtil.convertToCNF(outerDisjunction);
 
 		System.out.println("SIZE INPUT: " + countSize(outerDisjunction));
 		System.out.println("SIZE OUTPUT: " + countSize(cnfExpr));
@@ -203,11 +216,11 @@ public class VaveDependencyLiftingTest {
 
 		ExpressionToSATConverter e2sc = new ExpressionToSATConverter();
 
-		e2sc.setIntForOption(1, variableA.getOption());
-		e2sc.setIntForOption(2, variableB.getOption());
-		e2sc.setIntForOption(3, variableC.getOption());
-		e2sc.setIntForOption(4, variableD.getOption());
-		e2sc.setIntForOption(5, variableE.getOption());
+		e2sc.setIntForOption(1, variableA.getValue());
+		e2sc.setIntForOption(2, variableB.getValue());
+		e2sc.setIntForOption(3, variableC.getValue());
+		e2sc.setIntForOption(4, variableD.getValue());
+		e2sc.setIntForOption(5, variableE.getValue());
 
 		Collection<int[]> clauses = e2sc.convertExpr2Sat(cnfExpr);
 		ISolver solver = new ModelIterator(SolverFactory.newDefault());
@@ -252,35 +265,40 @@ public class VaveDependencyLiftingTest {
 		VirtualVaVeModel vave = setupVave(projectFolder);
 
 		// Feature Core
-		Feature featureCore = VavemodelFactory.eINSTANCE.createFeature();
-		featureCore.setName("featureCore");
+		ViewFeature viewFeatureCore = FeaturemodelFactory.eINSTANCE.createViewFeature();
+		viewFeatureCore.setName("featureCore");
 //		vave.getSystem().getFeature().add(featureCore);
 
 		// Feature A
-		Feature featureA = VavemodelFactory.eINSTANCE.createFeature();
-		featureA.setName("featureA");
+		ViewFeature viewFeatureA = FeaturemodelFactory.eINSTANCE.createViewFeature();
+		viewFeatureA.setName("featureA");
 //		vave.getSystem().getFeature().add(featureA);
 
 		// Feature B
-		Feature featureB = VavemodelFactory.eINSTANCE.createFeature();
-		featureB.setName("featureB");
+		ViewFeature viewFeatureB = FeaturemodelFactory.eINSTANCE.createViewFeature();
+		viewFeatureB.setName("featureB");
 //		vave.getSystem().getFeature().add(featureB);
 
-		FeatureModel fm = new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
-		fm.getFeatureOptions().add(featureCore);
-		fm.getFeatureOptions().add(featureA);
-		fm.getFeatureOptions().add(featureB);
+		FeatureModel fm = FeaturemodelFactory.eINSTANCE.createFeatureModel();
+		fm.getRootFeatures().add(viewFeatureCore);
+
+		ViewTreeConstraint viewTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewTreeConstraint();
+		viewTreeConstraint.setType(GroupType.OPTIONAL);
+		viewTreeConstraint.getChildFeatures().add(viewFeatureA);
+		viewTreeConstraint.getChildFeatures().add(viewFeatureB);
+		viewFeatureCore.getChildTreeConstraints().add(viewTreeConstraint);
+
 		vave.internalizeDomain(fm);
 
-		featureA = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureA")).findAny().get();
-		featureB = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureB")).findAny().get();
-		featureCore = vave.getSystem().getFeature().stream().filter(f -> f.getName().equals("featureCore")).findAny().get();
+		Feature featureA = vave.getSystem().getFeatures().stream().filter(f -> f.getName().equals("featureA")).findAny().get();
+		Feature featureB = vave.getSystem().getFeatures().stream().filter(f -> f.getName().equals("featureB")).findAny().get();
+		Feature featureCore = vave.getSystem().getFeatures().stream().filter(f -> f.getName().equals("featureCore")).findAny().get();
 
-		Configuration config = VavemodelFactory.eINSTANCE.createConfiguration();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-		config.getOption().add(featureCore);
+		Configuration config = VaveFactory.eINSTANCE.createConfiguration();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+		config.getOptions().add(featureCore);
 
-		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config);
+		final VirtualProductModel vmp1 = vave.externalizeProduct(projectFolder.resolve("vsum"), config).getResult();
 		{
 			final ResourceSet resourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
 			final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -299,18 +317,18 @@ public class VaveDependencyLiftingTest {
 			vmp1.propagateChange(recordedChange);
 		}
 		// internalize product with expression Core
-		Variable<FeatureOption> variableCore = VavemodelFactory.eINSTANCE.createVariable();
-		variableCore.setOption(featureCore);
+		Variable<FeatureOption> variableCore = ExpressionFactory.eINSTANCE.createVariable();
+		variableCore.setValue(featureCore);
 		vave.internalizeChanges(vmp1, variableCore); // system revision 1
 
-		assertEquals(1, vave.getSystem().getDeltamodule().size());
+		assertEquals(1, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with core config
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-		config.getOption().add(featureCore.getFeaturerevision().get(0));
-		config.getOption().add(featureA);
-		final VirtualProductModel vmp0ext = vave.externalizeProduct(projectFolder.resolve("vmp0ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+		config.getOptions().add(featureCore.getFeatureRevisions().get(0));
+		config.getOptions().add(featureA);
+		final VirtualProductModel vmp0ext = vave.externalizeProduct(projectFolder.resolve("vmp0ext"), config).getResult();
 		{
 			final ResourceSet resourceSet = vmp0ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
 			final ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet);
@@ -329,19 +347,19 @@ public class VaveDependencyLiftingTest {
 			vmp0ext.propagateChange(recordedChange);
 		}
 		// internalize product with feature A
-		Variable<FeatureOption> variableA = VavemodelFactory.eINSTANCE.createVariable();
-		variableA.setOption(featureA);
+		Variable<FeatureOption> variableA = ExpressionFactory.eINSTANCE.createVariable();
+		variableA.setValue(featureA);
 		vave.internalizeChanges(vmp0ext, variableA); // system revision 2 and feature revision 1 of feature A
 
-		assertEquals(2, vave.getSystem().getDeltamodule().size());
+		assertEquals(2, vave.getSystem().getDeltaModules().size());
 
 		// externalize product with feature A
-		config.getOption().clear();
-		config.getOption().add(vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
-		config.getOption().add(featureCore.getFeaturerevision().get(0));
-		config.getOption().add(featureA.getFeaturerevision().get(0));
-		config.getOption().add(featureB);
-		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config);
+		config.getOptions().clear();
+		config.getOptions().add(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+		config.getOptions().add(featureCore.getFeatureRevisions().get(0));
+		config.getOptions().add(featureA.getFeatureRevisions().get(0));
+		config.getOptions().add(featureB);
+		final VirtualProductModel vmp1ext = vave.externalizeProduct(projectFolder.resolve("vmp1ext"), config).getResult();
 		{
 			final ResourceSet resourceSet2 = vmp1ext.getModelInstance(this.createTestModelResourceUri("", projectFolder)).getResource().getResourceSet();
 			final ChangeRecorder changeRecorder2 = new ChangeRecorder(resourceSet2);
@@ -361,14 +379,14 @@ public class VaveDependencyLiftingTest {
 			vmp1ext.propagateChange(recordedChange2);
 		}
 		// internalize product with features A and B
-		Variable<FeatureOption> variableB = VavemodelFactory.eINSTANCE.createVariable();
-		variableB.setOption(featureB);
+		Variable<FeatureOption> variableB = ExpressionFactory.eINSTANCE.createVariable();
+		variableB.setValue(featureB);
 		vave.internalizeChanges(vmp1ext, variableB); // system revision 3 and feature revision 1 of feature B
 
-		assertEquals(3, vave.getSystem().getDeltamodule().size());
+		assertEquals(3, vave.getSystem().getDeltaModules().size());
 
 		DependencyLifting dl = new DependencyLifting();
-		FeatureModel updatedFM = dl.liftingDependenciesBetweenFeatures(vave, vave.getSystem().getSystemrevision().get(vave.getSystem().getSystemrevision().size() - 1));
+		FeatureModel updatedFM = dl.internalizeChangesPost(vave, vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1)).getRepairedFeatureModel();
 
 		System.out.println("FM: " + updatedFM);
 

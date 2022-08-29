@@ -9,6 +9,7 @@ Automatic-Module-Name: tools.vitruv.variability.vave
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.sat4j,
  tools.vitruv.variability.vave,
+ tools.vitruv.variability.vave.consistency,
  tools.vitruv.variability.vave.impl,
  tools.vitruv.variability.vave.util
 Require-Bundle: org.eclipse.core.runtime,
