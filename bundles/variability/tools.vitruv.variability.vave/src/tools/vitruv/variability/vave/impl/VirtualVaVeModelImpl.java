@@ -42,14 +42,10 @@ import tools.vitruv.variability.vave.VirtualProductModelInitializer;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.consistency.ConsistencyResult;
 import tools.vitruv.variability.vave.consistency.ConsistencyRule;
-import tools.vitruv.variability.vave.model.expression.BinaryExpression;
 import tools.vitruv.variability.vave.model.expression.Conjunction;
 import tools.vitruv.variability.vave.model.expression.Expression;
 import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
-import tools.vitruv.variability.vave.model.expression.NaryExpression;
-import tools.vitruv.variability.vave.model.expression.UnaryExpression;
 import tools.vitruv.variability.vave.model.expression.Variable;
-import tools.vitruv.variability.vave.model.expression.util.ExpressionSwitch;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
 import tools.vitruv.variability.vave.model.featuremodel.FeaturemodelFactory;
 import tools.vitruv.variability.vave.model.featuremodel.ViewCrossTreeConstraint;
@@ -88,6 +84,10 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	}
 
 	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder, VirtualProductModelInitializer vpmi) throws IOException {
+		this(domains, changePropagationSpecifications, irp, storageFolder, vpmi, null);
+	}
+
+	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder, VirtualProductModelInitializer vpmi, Collection<ConsistencyRule> consistencyRules) throws IOException {
 		if (Files.exists(storageFolder.resolve("model.vave"))) {
 			// load
 			this.resource = new XMIResourceImpl();
@@ -114,6 +114,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		this.changePropagationSpecifications.addAll(changePropagationSpecifications);
 		this.irp = irp;
 		this.vpmi = vpmi;
+		if (consistencyRules != null)
+			this.consistencyRules.addAll(consistencyRules);
 	}
 
 	private void save() throws IOException {
@@ -147,49 +149,54 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 	}
 
-	private void transferMappings(SystemRevision predecessor, SystemRevision newsysrev) {
+	private void transferMappings(SystemRevision predecessor, SystemRevision newSystemRevision) {
 		if (predecessor != null) {
 			// create new mappings (where old system revision is replaced by new system revision) for every existing mapping with the old system revision in its expression
-			for (Mapping oldMapping : new ArrayList<>(this.system.getMappings())) {
-				Collection<Option> mappingOptions = OptionUtil.collect(oldMapping.getExpression());
-				if (mappingOptions.contains(predecessor)) {
-					Mapping newMapping = VaveFactory.eINSTANCE.createMapping();
-					newMapping.getDeltaModules().addAll(oldMapping.getDeltaModules());
-					newMapping.setExpression(EcoreUtil.copy(oldMapping.getExpression()));
+			for (Mapping predecessorMapping : new ArrayList<>(predecessor.getEnablesMappings())) {
+				newSystemRevision.getEnablesMappings().add(predecessorMapping);
+				this.system.getMappings().add(predecessorMapping);
 
-					ExpressionSwitch<Object> exprSwitch = new ExpressionSwitch<>() {
-						@Override
-						public <T> Collection<Option> caseNaryExpression(NaryExpression<T> e) {
-							for (Expression<?> childExpression : e.getExpressions())
-								doSwitch(childExpression);
-							return null;
-						}
-
-						@Override
-						public <T> Collection<Option> caseBinaryExpression(BinaryExpression<T> e) {
-							doSwitch(e.getLeft());
-							doSwitch(e.getRight());
-							return null;
-						}
-
-						@Override
-						public <T> Collection<Option> caseUnaryExpression(UnaryExpression<T> e) {
-							doSwitch(e.getExpression());
-							return null;
-						}
-
-						@Override
-						public <T> Collection<Option> caseVariable(Variable<T> v) {
-							if (v.getValue() instanceof SystemRevision && v.getValue().equals(predecessor)) {
-								Variable<SystemRevision> vcast = (Variable<SystemRevision>) v;
-								vcast.setValue(newsysrev);
-							}
-							return null;
-						}
-					};
-					exprSwitch.doSwitch(newMapping.getExpression());
-					this.system.getMappings().add(newMapping);
-				}
+//				Collection<FeatureOption> mappingOptions = OptionUtil.collect(predecessorMapping.getExpression());
+//				if (mappingOptions.contains(predecessor)) {
+//					Mapping newMapping = VaveFactory.eINSTANCE.createMapping();
+//					newMapping.getDeltaModules().addAll(predecessorMapping.getDeltaModules());
+//					newMapping.setExpression(EcoreUtil.copy(predecessorMapping.getExpression()));
+//
+//					newSystemRevision.getEnablesMappings().add(newMapping);
+//				
+//					ExpressionSwitch<Object> exprSwitch = new ExpressionSwitch<>() {
+//						@Override
+//						public <T> Collection<Option> caseNaryExpression(NaryExpression<T> e) {
+//							for (Expression<?> childExpression : e.getExpressions())
+//								doSwitch(childExpression);
+//							return null;
+//						}
+//
+//						@Override
+//						public <T> Collection<Option> caseBinaryExpression(BinaryExpression<T> e) {
+//							doSwitch(e.getLeft());
+//							doSwitch(e.getRight());
+//							return null;
+//						}
+//
+//						@Override
+//						public <T> Collection<Option> caseUnaryExpression(UnaryExpression<T> e) {
+//							doSwitch(e.getExpression());
+//							return null;
+//						}
+//
+//						@Override
+//						public <T> Collection<Option> caseVariable(Variable<T> v) {
+//							if (v.getValue() instanceof SystemRevision && v.getValue().equals(predecessor)) {
+//								Variable<SystemRevision> vcast = (Variable<SystemRevision>) v;
+//								vcast.setValue(newsysrev);
+//							}
+//							return null;
+//						}
+//					};
+//					exprSwitch.doSwitch(newMapping.getExpression());
+//					this.system.getMappings().add(newMapping);
+//				}
 			}
 		}
 	}
@@ -215,6 +222,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			throw new RuntimeException("Configuration does not contain a system revision.");
 		} else if (systemRevisions.size() > 1) {
 			// more than one system revision in configuration -> merge config
+			throw new RuntimeException("Configuration contains more than one system revision. System revisions can only be merged via externalizeDomain/internalizeDomain.");
 		} else if (systemRevisions.size() == 1) {
 			// check if config is complete and valid
 			FeatureModel featureModel = this.externalizeDomain(systemRevisions.get(0)).getResult();
@@ -279,20 +287,22 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// optional: add configuration to unified system
 		this.system.getConfigurations().add(configuration);
 
-		for (Mapping mapping : this.system.getMappings()) {
-			System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + OptionUtil.collect(mapping.getExpression()).stream().map(o -> {
-				if (o instanceof FeatureRevision)
-					return (((Feature) ((FeatureRevision) o).eContainer()).getName() + "." + ((FeatureRevision) o).getRevisionID());
-				else
-					return o.toString();
-			}).collect(Collectors.joining(", ")));
-			// retrieve only these delta modules whose mapping evaluates to true
-			if (mapping.getExpression() == null || ExpressionUtil.eval(mapping.getExpression(), configuration)) {
-				System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + OptionUtil.collect(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
-				for (DeltaModule deltamodule : mapping.getDeltaModules()) {
-					// One VitruviusChange per DeltaModule
-					VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
-					vsum.propagateChange(vitruvchange);
+		if (!systemRevisions.isEmpty()) {
+			for (Mapping mapping : systemRevisions.get(0).getEnablesMappings()) {
+				System.out.println("Evaluating Mapping: " + mapping.getExpression() + " : " + OptionUtil.collect(mapping.getExpression()).stream().map(o -> {
+					if (o instanceof FeatureRevision)
+						return (((Feature) ((FeatureRevision) o).eContainer()).getName() + "." + ((FeatureRevision) o).getRevisionID());
+					else
+						return o.toString();
+				}).collect(Collectors.joining(", ")));
+				// retrieve only these delta modules whose mapping evaluates to true
+				if (mapping.getExpression() == null || ExpressionUtil.eval(mapping.getExpression(), configuration)) {
+					System.out.println("Selected Mapping: " + mapping.getExpression() + " : " + OptionUtil.collect(mapping.getExpression()).stream().map(Object::toString).collect(Collectors.joining(", ")));
+					for (DeltaModule deltamodule : mapping.getDeltaModules()) {
+						// One VitruviusChange per DeltaModule
+						VitruviusChange vitruvchange = new TransactionalChangeImpl(deltamodule.getChange());
+						vsum.propagateChange(vitruvchange);
+					}
 				}
 			}
 		}
@@ -310,7 +320,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// NOTE: the following could be achieved with an OCL constraint
 		boolean expressionIsWellFormed = ExpressionUtil.validate(expression);
 		if (!expressionIsWellFormed) {
-			throw new IllegalArgumentException("Expression is not well formed");
+			throw new IllegalArgumentException("Expression is not well formed.");
 		}
 
 		Collection<Option> options = new ArrayList<Option>(OptionUtil.collect(expression));
@@ -321,7 +331,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		if (sysrevs.isEmpty() && !this.system.getSystemRevisions().isEmpty()) {
 			throw new RuntimeException("Configuration does not contain a system revision.");
 		} else if (sysrevs.size() > 1) {
-			// more than one system revision in configuration -> merge config
+			// more than one system revision in configuration -> merge config allowed or can system revisions be only be merged in iD
 		} else if (sysrevs.size() == 1) {
 			// check if expression is valid
 			FeatureModel fm = this.externalizeDomain(sysrevs.get(0)).getResult();
@@ -400,10 +410,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 					featurerev.setRevisionID(1);
 					feature.getFeatureRevisions().add(featurerev);
 				} else {
-					FeatureRevision curfeaturerev = feature.getFeatureRevisions().get(feature.getFeatureRevisions().size() - 1);
-					featurerev.setRevisionID(curfeaturerev.getRevisionID() + 1);
-					featurerev.getPredecessors().add(curfeaturerev);
-					curfeaturerev.getSuccessors().add(featurerev);
+					// FeatureRevision curfeaturerev = feature.getFeatureRevisions().get(feature.getFeatureRevisions().size() - 1);
+					Collection<FeatureRevision> curfeaturerevs = virtualProductModel.getConfiguration().getOptions().stream().filter(o -> o instanceof FeatureRevision && ((Feature) o.eContainer()) == feature).map(o -> (FeatureRevision) o).collect(Collectors.toList());
+					featurerev.setRevisionID(feature.getFeatureRevisions().size() + 1);
+					featurerev.getPredecessors().addAll(curfeaturerevs);
+					for (FeatureRevision curfeaturerev : curfeaturerevs)
+						curfeaturerev.getSuccessors().add(featurerev);
 					feature.getFeatureRevisions().add(featurerev);
 				}
 				feature.getFeatureRevisions().add(featurerev); // set feature as container for feature revision
@@ -414,6 +426,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			}
 		}
 
+		// NOTE: feature revisions in expression also need to be considered in expression of new mapping
+
 		// Every mapping receives a new expression such that it contains the new system revision, the new feature revisions and features, and add expression to mapping.
 
 		{
@@ -421,40 +435,53 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			Mapping mapping = VaveFactory.eINSTANCE.createMapping();
 
 			// create mapping expression
-			Expression<Option> mappingExpression;
-			if (newFeatureRevisions.isEmpty()) {
-				Variable<Option> srvariable = ExpressionFactory.eINSTANCE.createVariable();
-				srvariable.setValue(newSystemRevision);
-				mappingExpression = srvariable;
-			} else {
+			Expression<FeatureOption> mappingExpression;
+//			if (newFeatureRevisions.isEmpty()) {
+//				Variable<Option> srvariable = ExpressionFactory.eINSTANCE.createVariable();
+//				srvariable.setValue(newSystemRevision);
+//				mappingExpression = srvariable;
+//			} else {
+			if (!newFeatureRevisions.isEmpty()) {
 				// NOTE: for now, we assume the user provides expression consisting only of conjunctions of variables (features)
-				Conjunction<Option> initialConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-				mappingExpression = initialConjunction;
-				Variable<Option> newSystemRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
-				newSystemRevisionVariable.setValue(newSystemRevision);
-				initialConjunction.getExpressions().add(newSystemRevisionVariable);
-				Conjunction<Option> currentConjunction = initialConjunction;
-				if (newFeatureRevisions.size() > 1) {
-					for (int i = 0; i < newFeatureRevisions.size() - 1; i++) {
-						Conjunction<Option> newConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-						FeatureRevision featureRevision = newFeatureRevisions.get(i);
+//				Conjunction<FeatureOption> initialConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+//				mappingExpression = initialConjunction;
+//				Variable<FeatureOption> newSystemRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
+//				newSystemRevisionVariable.setValue(newSystemRevision);
+//				initialConjunction.getExpressions().add(newSystemRevisionVariable);
+//				Conjunction<FeatureOption> currentConjunction = initialConjunction;
+//				if (newFeatureRevisions.size() > 1) {
+//					for (int i = 0; i < newFeatureRevisions.size() - 1; i++) {
+//						Conjunction<Option> newConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+//						FeatureRevision featureRevision = newFeatureRevisions.get(i);
+//
+//						Variable<Option> featureRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
+//						featureRevisionVariable.setValue(featureRevision);
+//						newConjunction.getExpressions().add(featureRevisionVariable);
+//						currentConjunction.getExpressions().add(newConjunction);
+//						currentConjunction = newConjunction;
+//					}
+//				}
 
-						Variable<Option> featureRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
-						featureRevisionVariable.setValue(featureRevision);
-						newConjunction.getExpressions().add(featureRevisionVariable);
-						currentConjunction.getExpressions().add(newConjunction);
-						currentConjunction = newConjunction;
-					}
+				Conjunction<FeatureOption> currentConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+				for (FeatureRevision featureRevision : newFeatureRevisions) {
+					Variable<FeatureOption> featureRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
+					featureRevisionVariable.setValue(featureRevision);
+					currentConjunction.getExpressions().add(featureRevisionVariable);
 				}
+				mappingExpression = currentConjunction;
 
-				// add last feature revision
-				Variable<Option> expression_featurerev = ExpressionFactory.eINSTANCE.createVariable();
-				expression_featurerev.setValue(newFeatureRevisions.get(newFeatureRevisions.size() - 1));
-				currentConjunction.getExpressions().add(expression_featurerev);
+//				// add last feature revision
+//				Variable<FeatureOption> expression_featurerev = ExpressionFactory.eINSTANCE.createVariable();
+//				expression_featurerev.setValue(newFeatureRevisions.get(newFeatureRevisions.size() - 1));
+//				currentConjunction.getExpressions().add(expression_featurerev);
+			} else {
+				mappingExpression = ExpressionFactory.eINSTANCE.createTrue();
 			}
 
 			// set expression of mapping
 			mapping.setExpression(mappingExpression);
+
+			newSystemRevision.getEnablesMappings().add(mapping);
 
 			// add mapping to us
 			this.system.getMappings().add(mapping);
@@ -482,11 +509,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return internalizeChangesResult;
 	}
 
-	private ViewFeature traverseFeatureModel(Feature feature, SystemRevision systemRevision) {
-		ViewFeature viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
-		viewFeature.setOriginalFeature(feature);
-		viewFeature.setName(feature.getName());
-		viewFeature.getOriginalRevisions().addAll(feature.getFeatureRevisions().stream().filter(fr -> systemRevision.getEnablesFeatureOptions().contains(fr)).collect(Collectors.toList()));
+	private ViewFeature traverseFeatureModel(Feature feature, SystemRevision systemRevision, Map<Feature, ViewFeature> featureToViewMap) {
+//		ViewFeature viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+//		viewFeature.setOriginalFeature(feature);
+//		viewFeature.setName(feature.getName());
+//		viewFeature.getOriginalRevisions().addAll(feature.getFeatureRevisions().stream().filter(fr -> systemRevision.getEnablesFeatureOptions().contains(fr)).collect(Collectors.toList()));
+		ViewFeature viewFeature = featureToViewMap.get(feature);
 
 		for (TreeConstraint treeConstraint : feature.getChildTreeConstraints()) {
 			if (systemRevision.getEnablesConstraints().contains(treeConstraint)) {
@@ -497,7 +525,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 				for (Feature childFeature : treeConstraint.getChildFeatures()) {
 					if (systemRevision.getEnablesFeatureOptions().contains(childFeature)) {
-						ViewFeature viewChildFeature = traverseFeatureModel(childFeature, systemRevision);
+						ViewFeature viewChildFeature = traverseFeatureModel(childFeature, systemRevision, featureToViewMap);
 						viewTreeConstraint.getChildFeatures().add(viewChildFeature);
 					}
 				}
@@ -526,8 +554,30 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// trigger consistency preservation
 		this.triggerConsistencyRule(externalizeDomainResult, consistencyRule -> consistencyRule.externalizeDomainPre());
 
+		Map<Feature, ViewFeature> featureToViewMap = new HashMap<>();
+		for (FeatureOption featureOption : systemRevision.getEnablesFeatureOptions()) {
+			if (featureOption instanceof Feature) {
+				ViewFeature viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+				Feature feature = (Feature) featureOption;
+				viewFeature.setOriginalFeature(feature);
+				viewFeature.setName(feature.getName());
+				featureToViewMap.put(feature, viewFeature);
+			} else if (featureOption instanceof FeatureRevision) {
+				Feature feature = (Feature) featureOption.eContainer();
+				ViewFeature viewFeature = featureToViewMap.get(feature);
+				if (viewFeature == null) {
+					viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
+					viewFeature.setOriginalFeature(feature);
+					viewFeature.setName(feature.getName());
+					featureToViewMap.put(feature, viewFeature);
+				}
+				viewFeature.getOriginalRevisions().add((FeatureRevision) featureOption);
+			}
+		}
+		featureModel.getFeatureOptions().addAll(featureToViewMap.values());
+
 		if (systemRevision.getRootFeature() != null) {
-			ViewFeature viewRootFeature = this.traverseFeatureModel(systemRevision.getRootFeature(), systemRevision);
+			ViewFeature viewRootFeature = this.traverseFeatureModel(systemRevision.getRootFeature(), systemRevision, featureToViewMap);
 			featureModel.getRootFeatures().add(viewRootFeature);
 		}
 
@@ -535,6 +585,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			if (systemRevision.getEnablesConstraints().contains(crossTreeConstraint)) {
 				ViewCrossTreeConstraint viewCrossTreeConstraint = FeaturemodelFactory.eINSTANCE.createViewCrossTreeConstraint();
 				viewCrossTreeConstraint.setOriginalCrossTreeConstraint(crossTreeConstraint);
+				viewCrossTreeConstraint.setExpression(ExpressionUtil.copy(crossTreeConstraint.getExpression()));
 				featureModel.getCrossTreeConstraints().add(viewCrossTreeConstraint);
 			}
 		}
@@ -555,6 +606,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			}
 
 			newSystemRevision.getEnablesFeatureOptions().add(viewFeature.getOriginalFeature());
+			newSystemRevision.getEnablesFeatureOptions().addAll(viewFeature.getOriginalRevisions());
 
 			// feature already existed. check if its children (i.e., tree constraints) are new or were modified.
 			for (ViewTreeConstraint viewTreeConstraint : viewFeature.getChildTreeConstraints()) {
@@ -638,8 +690,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		// ensure that the feature model has exactly one root feature (i.e., in case of a merge with multiple root features after eD there must only remain one root feature)
 		if (featureModel.getRootFeatures().size() > 1)
 			throw new RuntimeException("Feature model has more than one root feature!");
-		else if (featureModel.getRootFeatures().isEmpty())
-			throw new RuntimeException("Feature model does not have a root feature!");
+//		else if (featureModel.getRootFeatures().isEmpty())
+//			throw new RuntimeException("Feature model does not have a root feature!");
 
 		InternalizeDomainResult internalizeDomainResult = new InternalizeDomainResult();
 
@@ -653,8 +705,30 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		SystemRevision newSystemRevision = this.createNewSystemRevision(predecessors, this.system.getSystemRevisions().size() + 1); // since system revisions cannot be deleted (as we do not yet support eUS) we can simply use the number of system revisions to compute the new id
 		this.transferMappings(featureModel.getSystemRevision(), newSystemRevision);
 
+		// integrate any unconstrained features (not in the feature tree)
+		for (ViewFeature viewFeature : featureModel.getFeatureOptions()) {
+			if (viewFeature.getOriginalFeature() != null) {
+				// NOTE: currently we do not revision the name of a feature. if a feature name is modified, it is therefore modified in all revisions (past and future).
+				if (!Objects.equals(viewFeature.getName(), viewFeature.getOriginalFeature().getName())) {
+					viewFeature.getOriginalFeature().setName(viewFeature.getName());
+				}
+
+				newSystemRevision.getEnablesFeatureOptions().add(viewFeature.getOriginalFeature());
+				newSystemRevision.getEnablesFeatureOptions().addAll(viewFeature.getOriginalRevisions());
+			} else {
+				// it is a new feature
+				Feature newFeature = VaveFactory.eINSTANCE.createFeature();
+				newFeature.setName(viewFeature.getName());
+				newSystemRevision.getEnablesFeatureOptions().add(newFeature);
+				newSystemRevision.getEnablesFeatureOptions().addAll(viewFeature.getOriginalRevisions());
+				viewFeature.setOriginalFeature(newFeature);
+				this.system.getFeatures().add(newFeature);
+			}
+		}
+
 		// integrate feature model tree (i.e., features and tree constraints) of view into system
-		newSystemRevision.setRootFeature(this.integrateFeatureModelTree(featureModel.getRootFeatures().get(0), newSystemRevision)); // diff root feature of feature model with root feature of system revision in system
+		if (!featureModel.getRootFeatures().isEmpty())
+			newSystemRevision.setRootFeature(this.integrateFeatureModelTree(featureModel.getRootFeatures().get(0), newSystemRevision)); // diff root feature of feature model with root feature of system revision in system
 
 		// integrate cross-tree constraints of view into system
 		for (ViewCrossTreeConstraint viewCrossTreeConstraint : featureModel.getCrossTreeConstraints()) {

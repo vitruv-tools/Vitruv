@@ -65,7 +65,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         containment="true">
       <eGenericType eClassifier="ecore:EClass expression.ecore#//Expression">
-        <eTypeArguments eClassifier="#//Option"/>
+        <eTypeArguments eClassifier="#//FeatureOption"/>
       </eGenericType>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="enablingSystemRevisions"

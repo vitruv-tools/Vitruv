@@ -59,10 +59,11 @@ public final class FeatureModelUtil {
 		for (ViewTreeConstraint tc : collectTreeConstraints(featureModel)) {
 			// first, children imply parents
 			for (ViewFeature feature : tc.getChildFeatures()) {
-				fmClauses.add(new int[] { -featureOptionToIntMap.get(feature.getOriginalFeature()), featureOptionToIntMap.get(tc.getOriginalTreeConstraint().getParentFeature()) });
+				// fmClauses.add(new int[] { -featureOptionToIntMap.get(feature.getOriginalFeature()), featureOptionToIntMap.get(tc.getOriginalTreeConstraint().getParentFeature()) });
+				fmClauses.add(new int[] { -featureOptionToIntMap.get(feature.getOriginalFeature()), featureOptionToIntMap.get(tc.getParentFeature().getOriginalFeature()) });
 			}
 			// second, depending on tc type, add relation between siblings and/or parent
-			if (tc.getOriginalTreeConstraint().getType() == GroupType.OPTIONAL) { // ORNONE
+			if (tc.getType() == GroupType.OPTIONAL) { // ORNONE
 				// do nothing
 			} else if (tc.getOriginalTreeConstraint().getType() == GroupType.MANDATORY) { // all
 				// parents imply children
@@ -136,6 +137,11 @@ public final class FeatureModelUtil {
 
 	public static Set<FeatureOption> collectFeatureOptions(FeatureModel featureModel) {
 		Set<FeatureOption> featureOptions = new HashSet<>();
+		for (ViewFeature viewFeature : featureModel.getFeatureOptions()) {
+			if (viewFeature.getOriginalFeature() != null)
+				featureOptions.add(viewFeature.getOriginalFeature());
+			featureOptions.addAll(viewFeature.getOriginalRevisions());
+		}
 		for (ViewFeature viewFeature : featureModel.getRootFeatures())
 			collectFeatureOptionsRec(viewFeature, featureOptions);
 		for (ViewCrossTreeConstraint viewCrossTreeConstraint : featureModel.getCrossTreeConstraints())
@@ -201,7 +207,7 @@ public final class FeatureModelUtil {
 			for (Option option : configuration.getOptions()) {
 				// make sure it exists in the feature model
 				if (!(option instanceof SystemRevision) && !optionToIntMap.containsKey(option))
-					throw new RuntimeException("There is an option in configuration that is not in feature model.");
+					throw new RuntimeException("There is an option in configuration that is not in feature model: " + option);
 
 				if (option instanceof Feature || option instanceof FeatureRevision) {
 					int literal = optionToIntMap.get(option);
@@ -259,8 +265,8 @@ public final class FeatureModelUtil {
 			// for every option in expression make sure it exists in the feature model
 			Collection<T> expressionOptions = OptionUtil.collect(expression);
 			for (Option option : expressionOptions)
-				if (!optionToIntMap.containsKey(option))
-					throw new RuntimeException("There is an option in expression that is not in feature model.");
+				if (!(option instanceof SystemRevision) && !optionToIntMap.containsKey(option)) // TODO: we should check here if system revision is in system
+					throw new RuntimeException("There is an option in expression that is not in feature model (in case of feature or feature revision) or not in system (in case of system revision).");
 
 			ExpressionToSATConverter e2satconv = new ExpressionToSATConverter();
 			e2satconv.setIntsForOptions(new HashMap<>(optionToIntMap));

@@ -1,7 +1,7 @@
 package tools.vitruv.variability.vave.tests;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -94,7 +94,7 @@ public class VaveInternalizeChangesTest {
 		assertEquals(1, vave.getSystem().getSystemRevisions().size());
 		assertEquals(1, vave.getSystem().getSystemRevisions().get(0).getRevisionID());
 		assertEquals(1, vave.getSystem().getMappings().size());
-		assertEquals(vave.getSystem().getSystemRevisions().get(0), ((Variable<Option>) vave.getSystem().getMappings().get(0).getExpression()).getValue());
+		assertTrue(vave.getSystem().getMappings().get(0).getExpression() instanceof True);
 		assertEquals(1, vave.getSystem().getDeltaModules().size());
 		assertEquals(1, vave.getSystem().getMappings().get(0).getDeltaModules().size());
 	}
@@ -123,7 +123,7 @@ public class VaveInternalizeChangesTest {
 		assertEquals(1, vave.getSystem().getSystemRevisions().size());
 		assertEquals(1, vave.getSystem().getSystemRevisions().get(0).getRevisionID());
 		assertEquals(1, vave.getSystem().getMappings().size());
-		assertEquals(vave.getSystem().getSystemRevisions().get(0), ((Variable<Option>) vave.getSystem().getMappings().get(0).getExpression()).getValue());
+		assertTrue(vave.getSystem().getMappings().get(0).getExpression() instanceof True);
 		assertEquals(1, vave.getSystem().getDeltaModules().size());
 		assertEquals(1, vave.getSystem().getMappings().get(0).getDeltaModules().size());
 
@@ -145,10 +145,9 @@ public class VaveInternalizeChangesTest {
 
 		assertEquals(2, vave.getSystem().getSystemRevisions().size());
 		assertEquals(2, vave.getSystem().getSystemRevisions().get(1).getRevisionID());
-		assertEquals(3, vave.getSystem().getMappings().size()); // changed mappings are copied and old system revision gets replaced with new one
-		assertEquals(vave.getSystem().getSystemRevisions().get(0), ((Variable<Option>) vave.getSystem().getMappings().get(0).getExpression()).getValue());
-		assertEquals(vave.getSystem().getSystemRevisions().get(1), ((Variable<Option>) vave.getSystem().getMappings().get(1).getExpression()).getValue());
-		assertEquals(vave.getSystem().getSystemRevisions().get(1), ((Variable<Option>) vave.getSystem().getMappings().get(2).getExpression()).getValue());
+		assertEquals(2, vave.getSystem().getMappings().size()); // changed mappings are copied and old system revision gets replaced with new one
+		assertTrue(vave.getSystem().getMappings().get(0).getExpression() instanceof True);
+		assertTrue(vave.getSystem().getMappings().get(1).getExpression() instanceof True);
 	}
 
 	@Test
@@ -185,13 +184,13 @@ public class VaveInternalizeChangesTest {
 		assertEquals(1, vave.getSystem().getDeltaModules().size());
 		assertEquals(1, vave.getSystem().getMappings().get(0).getDeltaModules().size());
 
-		Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
+		Conjunction<FeatureOption> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-		Variable<Option> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
-		expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(0));
-		expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
+//		Variable<FeatureOption> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
+//		expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(0));
+//		expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
 
-		Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
+		Variable<FeatureOption> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
 		expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
 		expectedConjunction.getExpressions().add(expectedVariableA);
 
@@ -256,9 +255,9 @@ public class VaveInternalizeChangesTest {
 
 		{
 			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-			Variable<Option> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
-			expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
-			expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
+//			Variable<Option> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
+//			expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+//			expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
 
 			Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
 			expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
@@ -302,31 +301,31 @@ public class VaveInternalizeChangesTest {
 		{
 			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
-			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
-			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
+//			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
+//			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+//			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
 
 			Variable<Option> expectedVariableB = ExpressionFactory.eINSTANCE.createVariable();
 			expectedVariableB.setValue(featureB.getFeatureRevisions().get(0));
 			expectedConjunction.getExpressions().add(expectedVariableB);
 
 			EqualityHelper eh = new EqualityHelper();
-			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(2).getExpression()));
+			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(1).getExpression()));
 		}
 
 		{
 			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
-			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
-			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
+//			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
+//			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
+//			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
 
 			Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
 			expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
 			expectedConjunction.getExpressions().add(expectedVariableA);
 
 			EqualityHelper eh = new EqualityHelper();
-			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(1).getExpression()));
+			assertTrue(eh.equals(expectedConjunction, vave.getSystem().getMappings().get(0).getExpression()));
 		}
 
 		// externalize product with feature a and b simultaneously
@@ -358,7 +357,7 @@ public class VaveInternalizeChangesTest {
 		{
 			assertEquals(4, vave.getSystem().getSystemRevisions().size());
 			assertEquals(2, vave.getSystem().getFeatures().size());
-			assertEquals(6, vave.getSystem().getMappings().size());
+			assertEquals(3, vave.getSystem().getMappings().size());
 			assertEquals(3, vave.getSystem().getDeltaModules().size());
 		}
 	}

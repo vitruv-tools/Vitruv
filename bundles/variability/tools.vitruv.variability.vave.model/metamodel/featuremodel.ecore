@@ -8,6 +8,8 @@
         upperBound="-1" eType="#//ViewFeature"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="crossTreeConstraints" upperBound="-1"
         eType="#//ViewCrossTreeConstraint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureOptions" upperBound="-1"
+        eType="#//ViewFeature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViewFeature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="originalRevisions" lowerBound="1"

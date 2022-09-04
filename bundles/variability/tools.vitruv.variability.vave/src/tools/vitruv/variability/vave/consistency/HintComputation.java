@@ -135,10 +135,10 @@ public class HintComputation implements ConsistencyRule {
 //				}
 //			}
 ////			oldClauses = FeatureModelUtil.computeClauses(currentFeatureModel, oldfmOptionToIntMap);
-			previousFeatureModelClauses = FeatureModelUtil.computeClauses(currentFeatureModel, optionToIntMap);
+			previousFeatureModelClauses = FeatureModelUtil.computeClauses(previousFeatureModel, optionToIntMap);
 			// add clauses for negations of features that are not contained in feature model but enabled in new system revision
 			Set<FeatureOption> featureOptionsNotInPreviousFeatureModel = new HashSet<>(optionToIntMap.keySet());
-			featureOptionsNotInPreviousFeatureModel.removeAll(FeatureModelUtil.collectFeatureOptions(currentFeatureModel));
+			featureOptionsNotInPreviousFeatureModel.removeAll(FeatureModelUtil.collectFeatureOptions(previousFeatureModel));
 			for (FeatureOption featureOption : featureOptionsNotInPreviousFeatureModel)
 				previousFeatureModelClauses.add(new int[] { -optionToIntMap.get(featureOption) });
 		}
@@ -201,7 +201,7 @@ public class HintComputation implements ConsistencyRule {
 					Feature[] hint = new Feature[] { f1, f2 };
 					this.hints.add(hint);
 					newHints.add(hint);
-					// System.out.println("ADDED HINT: " + f1 + " / " + f2);
+					System.out.println("ADDED HINT: " + f1 + " / " + f2);
 				}
 			}
 		}
