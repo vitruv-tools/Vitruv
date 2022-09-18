@@ -43,6 +43,7 @@ import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.consistency.ConsistencyResult;
 import tools.vitruv.variability.vave.consistency.ConsistencyRule;
 import tools.vitruv.variability.vave.model.expression.Conjunction;
+import tools.vitruv.variability.vave.model.expression.Constant;
 import tools.vitruv.variability.vave.model.expression.Expression;
 import tools.vitruv.variability.vave.model.expression.ExpressionFactory;
 import tools.vitruv.variability.vave.model.expression.Variable;
@@ -67,7 +68,8 @@ import tools.vitruv.variability.vave.util.FeatureModelUtil;
 import tools.vitruv.variability.vave.util.OptionUtil;
 
 /**
- * Contains an instance of a unified system from the unified conceptual model. Provides implementations of unified operations eD, iD, eP, and iC. At the beginning and end of each operation, registered variability-aware consistency rules are triggered. Each operation returns its own result object to which consistency rules can add their own consistency preservation results.
+ * Contains an instance of a unified system from the unified conceptual model. Provides implementations of unified operations externalizeDomain (eD), internalizeDomain (iD), externalizeProduct (eP), and internalizeChanges (iC). At the beginning and end of each operation, registered variability-aware consistency rules are triggered. Each operation returns its own result object to which consistency
+ * rules can add their own consistency preservation results.
  */
 public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
@@ -75,8 +77,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 	private final tools.vitruv.variability.vave.model.vave.System system;
 	private final Resource resource;
 	private final Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet<ChangePropagationSpecification>();
-	private final InteractionResultProvider irp;
-	private final VirtualProductModelInitializer vpmi;
+	private final InteractionResultProvider interactionResultProvider;
+	private final VirtualProductModelInitializer productInitializer;
 	private final Collection<ConsistencyRule> consistencyRules = new ArrayList<>();
 
 	public VirtualVaVeModelImpl(Set<VitruvDomain> domains, Set<ChangePropagationSpecification> changePropagationSpecifications, InteractionResultProvider irp, Path storageFolder) throws IOException {
@@ -112,8 +114,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		this.domainRepository = new VitruvDomainRepositoryImpl(domains);
 		this.changePropagationSpecifications.addAll(changePropagationSpecifications);
-		this.irp = irp;
-		this.vpmi = vpmi;
+		this.interactionResultProvider = irp;
+		this.productInitializer = vpmi;
 		if (consistencyRules != null)
 			this.consistencyRules.addAll(consistencyRules);
 	}
@@ -127,93 +129,63 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return this.system;
 	}
 
+	/**
+	 * Creates a new system revision, sets it as successor for all predecessor system revisions, sets the root feature of the predecessor system revision and sets its revision ID.
+	 * 
+	 * @param predecessors A set of system revisions that are the direct predecessors of the system revision to be created.
+	 * @param id           The ID of the system revision to be created.
+	 * @return The created system revision.
+	 */
 	private SystemRevision createNewSystemRevision(Collection<SystemRevision> predecessors, int id) {
-		SystemRevision newsysrev = VaveFactory.eINSTANCE.createSystemRevision();
-		newsysrev.setRevisionID(id);
+		SystemRevision newSystemRevision = VaveFactory.eINSTANCE.createSystemRevision();
+		newSystemRevision.setRevisionID(id);
 		for (SystemRevision predecessor : predecessors) {
-			predecessor.getSuccessors().add(newsysrev);
-			newsysrev.getPredecessors().add(predecessor);
-			newsysrev.setRootFeature(predecessor.getRootFeature());
+			predecessor.getSuccessors().add(newSystemRevision);
+			newSystemRevision.getPredecessors().add(predecessor);
+			newSystemRevision.setRootFeature(predecessor.getRootFeature());
 		}
-		this.system.getSystemRevisions().add(newsysrev);
-		return newsysrev;
+		this.system.getSystemRevisions().add(newSystemRevision);
+		return newSystemRevision;
 	}
 
-	private void transferDomain(SystemRevision predecessor, SystemRevision newsysrev) {
-		if (predecessor != null) {
-			// enable the same feature options
-			newsysrev.getEnablesFeatureOptions().addAll(predecessor.getEnablesFeatureOptions());
-
-			// enable the same constraints
-			newsysrev.getEnablesConstraints().addAll(predecessor.getEnablesConstraints());
-		}
-	}
-
+	/**
+	 * Lets the new system revision enable all mappings of its predecessor system revision.
+	 * 
+	 * @param predecessor       The direct predecessor system revision of the new system revision.
+	 * @param newSystemRevision The new system revision.
+	 */
 	private void transferMappings(SystemRevision predecessor, SystemRevision newSystemRevision) {
 		if (predecessor != null) {
-			// create new mappings (where old system revision is replaced by new system revision) for every existing mapping with the old system revision in its expression
 			for (Mapping predecessorMapping : new ArrayList<>(predecessor.getEnablesMappings())) {
 				newSystemRevision.getEnablesMappings().add(predecessorMapping);
 				this.system.getMappings().add(predecessorMapping);
-
-//				Collection<FeatureOption> mappingOptions = OptionUtil.collect(predecessorMapping.getExpression());
-//				if (mappingOptions.contains(predecessor)) {
-//					Mapping newMapping = VaveFactory.eINSTANCE.createMapping();
-//					newMapping.getDeltaModules().addAll(predecessorMapping.getDeltaModules());
-//					newMapping.setExpression(EcoreUtil.copy(predecessorMapping.getExpression()));
-//
-//					newSystemRevision.getEnablesMappings().add(newMapping);
-//				
-//					ExpressionSwitch<Object> exprSwitch = new ExpressionSwitch<>() {
-//						@Override
-//						public <T> Collection<Option> caseNaryExpression(NaryExpression<T> e) {
-//							for (Expression<?> childExpression : e.getExpressions())
-//								doSwitch(childExpression);
-//							return null;
-//						}
-//
-//						@Override
-//						public <T> Collection<Option> caseBinaryExpression(BinaryExpression<T> e) {
-//							doSwitch(e.getLeft());
-//							doSwitch(e.getRight());
-//							return null;
-//						}
-//
-//						@Override
-//						public <T> Collection<Option> caseUnaryExpression(UnaryExpression<T> e) {
-//							doSwitch(e.getExpression());
-//							return null;
-//						}
-//
-//						@Override
-//						public <T> Collection<Option> caseVariable(Variable<T> v) {
-//							if (v.getValue() instanceof SystemRevision && v.getValue().equals(predecessor)) {
-//								Variable<SystemRevision> vcast = (Variable<SystemRevision>) v;
-//								vcast.setValue(newsysrev);
-//							}
-//							return null;
-//						}
-//					};
-//					exprSwitch.doSwitch(newMapping.getExpression());
-//					this.system.getMappings().add(newMapping);
-//				}
 			}
 		}
 	}
 
+	/**
+	 * Executes the given consistency rule trigger on all enabled consistency rules in vave and adds their result to the operation result.
+	 * 
+	 * @param operationResult        The result of the vave operation during which it was triggered.
+	 * @param consistencyRuleTrigger The trigger of the consistency rule.
+	 */
 	private void triggerConsistencyRule(OperationResult operationResult, ConsistencyRuleTrigger consistencyRuleTrigger) {
 		for (ConsistencyRule consistencyRule : this.consistencyRules) {
-			ConsistencyResult consistencyResult = consistencyRuleTrigger.trigger(consistencyRule); // consistencyRule.externalizeProductPost();
+			ConsistencyResult consistencyResult = consistencyRuleTrigger.trigger(consistencyRule);
 			if (consistencyResult != null) {
 				operationResult.addConsistencyResult(consistencyRule.getClass(), consistencyResult);
 			}
 		}
 	}
 
+	/**
+	 * Interface for triggering consistency rules.
+	 */
 	private interface ConsistencyRuleTrigger {
 		public ConsistencyResult trigger(ConsistencyRule consistencyRule);
 	}
 
+	@Override
 	public ExternalizeProductResult externalizeProduct(Path storageFolder, Configuration configuration) throws IOException {
 
 		// Check preconditions of configuration
@@ -235,7 +207,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 
 		// Setup vitruv
-		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(this.irp);
+		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(this.interactionResultProvider);
 
 		if (storageFolder == null)
 			throw new IllegalArgumentException("No storage folder was configured!");
@@ -274,8 +246,8 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		vsum.loadExistingModels();
 		// VirtualModelManager.getInstance().putVirtualModel(vsum);
 
-		if (this.vpmi != null)
-			this.vpmi.initialize(vsum);
+		if (this.productInitializer != null)
+			this.productInitializer.initialize(vsum);
 
 		ExternalizeProductResult externalizeProductResult = new ExternalizeProductResult(vsum);
 
@@ -284,7 +256,6 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		// HERE STARTS THE VAVE STUFF
 
-		// optional: add configuration to unified system
 		this.system.getConfigurations().add(configuration);
 
 		if (!systemRevisions.isEmpty()) {
@@ -314,8 +285,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return externalizeProductResult;
 	}
 
+	@Override
 	public InternalizeChangesResult internalizeChanges(VirtualProductModel virtualProductModel, Expression<FeatureOption> expression) throws IOException {
-		// NOTE: for now we treat the expression provided by the user as a simple set of features. we ignore negations, disjunctions, feature revisions, etc.
+		// NOTE: we allow the expression provided by the user to be a conjunction of features only. We forbid negations, disjunctions, feature revisions, etc.
+		if (!(expression instanceof Constant<?>) && !(expression instanceof Variable<?>) && (!(expression instanceof Conjunction<?>) || ((Conjunction<FeatureOption>) expression).getExpressions().stream().filter(e -> !(e instanceof Constant) && (!(e instanceof Variable) || !(((Variable<FeatureOption>) e).getValue() instanceof Feature))).findAny().isPresent())) {
+			throw new IllegalArgumentException("Expression may only be a conjunction of features.");
+		}
 
 		// NOTE: the following could be achieved with an OCL constraint
 		boolean expressionIsWellFormed = ExpressionUtil.validate(expression);
@@ -327,14 +302,15 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		// check if expression is valid
 		Configuration configuration = virtualProductModel.getConfiguration();
-		List<SystemRevision> sysrevs = configuration.getOptions().stream().filter(o -> o instanceof SystemRevision).map(sr -> (SystemRevision) sr).collect(Collectors.toList());
-		if (sysrevs.isEmpty() && !this.system.getSystemRevisions().isEmpty()) {
+		List<SystemRevision> currentSystemRevisions = configuration.getOptions().stream().filter(o -> o instanceof SystemRevision).map(sr -> (SystemRevision) sr).collect(Collectors.toList());
+		if (currentSystemRevisions.isEmpty() && !this.system.getSystemRevisions().isEmpty()) {
 			throw new RuntimeException("Configuration does not contain a system revision.");
-		} else if (sysrevs.size() > 1) {
-			// more than one system revision in configuration -> merge config allowed or can system revisions be only be merged in iD
-		} else if (sysrevs.size() == 1) {
+		} else if (currentSystemRevisions.size() > 1) {
+			// more than one system revision in configuration is not allowed. system revisions can only be merged via internalizeDomain operation.
+			throw new RuntimeException("Configuration contains more than one system revision. Only one is allowed.");
+		} else if (currentSystemRevisions.size() == 1) {
 			// check if expression is valid
-			FeatureModel fm = this.externalizeDomain(sysrevs.get(0)).getResult();
+			FeatureModel fm = this.externalizeDomain(currentSystemRevisions.get(0)).getResult();
 			if (!FeatureModelUtil.isComplete(fm, configuration)) {
 				throw new RuntimeException("Configuration is not complete.");
 			}
@@ -344,10 +320,16 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 			if (!FeatureModelUtil.isValid(fm, expression)) {
 				throw new RuntimeException("Expression is not valid.");
 			}
+			if (!currentSystemRevisions.get(0).getEnablesFeatureOptions().containsAll(options)) {
+				throw new RuntimeException("Options in expression are not enabled by system revision of configuration.");
+			}
 		}
+		SystemRevision currentSystemRevision = null;
+		if (!currentSystemRevisions.isEmpty())
+			currentSystemRevision = currentSystemRevisions.get(0);
 
 		// check if configuration implies expression
-		// NOTE: as we currently treat an expression only as a simple set of features, we do not need to use SAT here and instead just check if all feature options in expression are contained in configuration
+		// NOTE: as we treat an expression only as a simple set of features, we do not need to use SAT here and instead just check if all feature options in expression are contained in configuration
 		boolean allContained = true;
 		for (Option option : options) {
 			if (option instanceof Feature) {
@@ -365,7 +347,6 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				throw new RuntimeException("An expression provided to internalizeChanges should not contain System Revisions.");
 			}
 		}
-		// if (!virtualProductModel.getConfiguration().getOption().containsAll(options)) {
 		if (!allContained) {
 			throw new RuntimeException("Configuration of product does not imply provided expression.");
 		}
@@ -376,13 +357,11 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		this.triggerConsistencyRule(internalizeChangesResult, consistencyRule -> consistencyRule.internalizeChangesPre(this, expression));
 
 		// create a new system revision and link it to predecessor system revision
-		SystemRevision currentSystemRevision = null;
 		List<SystemRevision> predecessors = new ArrayList<>();
-		if (!this.system.getSystemRevisions().isEmpty()) {
-			currentSystemRevision = this.system.getSystemRevisions().get(this.system.getSystemRevisions().size() - 1); // TODO add branch (by using sys rev of product) and merge points
+		if (currentSystemRevision != null) {
 			predecessors.add(currentSystemRevision);
 		}
-		SystemRevision newSystemRevision = this.createNewSystemRevision(predecessors, currentSystemRevision != null ? currentSystemRevision.getRevisionID() + 1 : 1);
+		SystemRevision newSystemRevision = this.createNewSystemRevision(predecessors, this.system.getSystemRevisions().size() + 1);
 
 		if (currentSystemRevision != null) {
 			// enable same features and feature revisions as the current system revision also in the new system revision, except those for which a new feature revision was created.
@@ -390,37 +369,32 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				if (!(featureoption instanceof FeatureRevision) || !options.contains(featureoption.eContainer()))
 					newSystemRevision.getEnablesFeatureOptions().add(featureoption);
 			}
-
 			// enable same constraints as the current system revision
 			newSystemRevision.getEnablesConstraints().addAll(currentSystemRevision.getEnablesConstraints());
 		}
 
 		this.transferMappings(currentSystemRevision, newSystemRevision);
 
-		// make sure all options in the expression are enabled by the system revision
-		// TODO
-
 		// create new feature revisions for features that appear in expression
 		List<FeatureRevision> newFeatureRevisions = new ArrayList<>();
 		for (Option option : options) {
 			if (option instanceof Feature) {
 				Feature feature = (Feature) option;
-				FeatureRevision featurerev = VaveFactory.eINSTANCE.createFeatureRevision();
+				FeatureRevision featureRevision = VaveFactory.eINSTANCE.createFeatureRevision();
 				if (feature.getFeatureRevisions().isEmpty()) {
-					featurerev.setRevisionID(1);
-					feature.getFeatureRevisions().add(featurerev);
+					featureRevision.setRevisionID(1);
+					feature.getFeatureRevisions().add(featureRevision);
 				} else {
-					// FeatureRevision curfeaturerev = feature.getFeatureRevisions().get(feature.getFeatureRevisions().size() - 1);
-					Collection<FeatureRevision> curfeaturerevs = virtualProductModel.getConfiguration().getOptions().stream().filter(o -> o instanceof FeatureRevision && ((Feature) o.eContainer()) == feature).map(o -> (FeatureRevision) o).collect(Collectors.toList());
-					featurerev.setRevisionID(feature.getFeatureRevisions().size() + 1);
-					featurerev.getPredecessors().addAll(curfeaturerevs);
-					for (FeatureRevision curfeaturerev : curfeaturerevs)
-						curfeaturerev.getSuccessors().add(featurerev);
-					feature.getFeatureRevisions().add(featurerev);
+					Collection<FeatureRevision> currentFeatureRevisions = virtualProductModel.getConfiguration().getOptions().stream().filter(o -> o instanceof FeatureRevision && ((Feature) o.eContainer()) == feature).map(o -> (FeatureRevision) o).collect(Collectors.toList());
+					featureRevision.setRevisionID(feature.getFeatureRevisions().size() + 1);
+					featureRevision.getPredecessors().addAll(currentFeatureRevisions);
+					for (FeatureRevision curfeaturerev : currentFeatureRevisions)
+						curfeaturerev.getSuccessors().add(featureRevision);
+					feature.getFeatureRevisions().add(featureRevision);
 				}
-				feature.getFeatureRevisions().add(featurerev); // set feature as container for feature revision
-				newFeatureRevisions.add(featurerev);
-				newSystemRevision.getEnablesFeatureOptions().add(featurerev); // enable feature revisions by new system revision
+				feature.getFeatureRevisions().add(featureRevision); // set feature as container for feature revision
+				newFeatureRevisions.add(featureRevision);
+				newSystemRevision.getEnablesFeatureOptions().add(featureRevision); // enable feature revisions by new system revision
 				if (!newSystemRevision.getEnablesFeatureOptions().contains(feature))
 					newSystemRevision.getEnablesFeatureOptions().add(feature);
 			}
@@ -436,31 +410,9 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 			// create mapping expression
 			Expression<FeatureOption> mappingExpression;
-//			if (newFeatureRevisions.isEmpty()) {
-//				Variable<Option> srvariable = ExpressionFactory.eINSTANCE.createVariable();
-//				srvariable.setValue(newSystemRevision);
-//				mappingExpression = srvariable;
-//			} else {
+
 			if (!newFeatureRevisions.isEmpty()) {
 				// NOTE: for now, we assume the user provides expression consisting only of conjunctions of variables (features)
-//				Conjunction<FeatureOption> initialConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-//				mappingExpression = initialConjunction;
-//				Variable<FeatureOption> newSystemRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
-//				newSystemRevisionVariable.setValue(newSystemRevision);
-//				initialConjunction.getExpressions().add(newSystemRevisionVariable);
-//				Conjunction<FeatureOption> currentConjunction = initialConjunction;
-//				if (newFeatureRevisions.size() > 1) {
-//					for (int i = 0; i < newFeatureRevisions.size() - 1; i++) {
-//						Conjunction<Option> newConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-//						FeatureRevision featureRevision = newFeatureRevisions.get(i);
-//
-//						Variable<Option> featureRevisionVariable = ExpressionFactory.eINSTANCE.createVariable();
-//						featureRevisionVariable.setValue(featureRevision);
-//						newConjunction.getExpressions().add(featureRevisionVariable);
-//						currentConjunction.getExpressions().add(newConjunction);
-//						currentConjunction = newConjunction;
-//					}
-//				}
 
 				Conjunction<FeatureOption> currentConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 				for (FeatureRevision featureRevision : newFeatureRevisions) {
@@ -470,10 +422,6 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 				}
 				mappingExpression = currentConjunction;
 
-//				// add last feature revision
-//				Variable<FeatureOption> expression_featurerev = ExpressionFactory.eINSTANCE.createVariable();
-//				expression_featurerev.setValue(newFeatureRevisions.get(newFeatureRevisions.size() - 1));
-//				currentConjunction.getExpressions().add(expression_featurerev);
 			} else {
 				mappingExpression = ExpressionFactory.eINSTANCE.createTrue();
 			}
@@ -483,7 +431,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 			newSystemRevision.getEnablesMappings().add(mapping);
 
-			// add mapping to us
+			// add mapping to unified system
 			this.system.getMappings().add(mapping);
 
 			// set fragments (i.e., deltas recorded in product) of mapping
@@ -509,11 +457,15 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return internalizeChangesResult;
 	}
 
+	/**
+	 * Traverses the feature model to construct a view on a feature model at a given system revision.
+	 * @param feature The feature from which the traversal starts.
+	 * @param systemRevision The system revision at the view on a feature model shall be created.
+	 * @param featureToViewMap A map from features to view features of the feature model.
+	 * @return A ViewFeature which corresponds to the root feature of the traversal.
+	 */
 	private ViewFeature traverseFeatureModel(Feature feature, SystemRevision systemRevision, Map<Feature, ViewFeature> featureToViewMap) {
-//		ViewFeature viewFeature = FeaturemodelFactory.eINSTANCE.createViewFeature();
-//		viewFeature.setOriginalFeature(feature);
-//		viewFeature.setName(feature.getName());
-//		viewFeature.getOriginalRevisions().addAll(feature.getFeatureRevisions().stream().filter(fr -> systemRevision.getEnablesFeatureOptions().contains(fr)).collect(Collectors.toList()));
+
 		ViewFeature viewFeature = featureToViewMap.get(feature);
 
 		for (TreeConstraint treeConstraint : feature.getChildTreeConstraints()) {
@@ -535,6 +487,7 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return viewFeature;
 	}
 
+	@Override
 	public ExternalizeDomainResult externalizeDomain(SystemRevision systemRevision) {
 		if (systemRevision != null && systemRevision.getEnablesFeatureOptions() == null)
 			throw new IllegalArgumentException("The given system revision does not enable any options.");
@@ -598,6 +551,12 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		return externalizeDomainResult;
 	}
 
+	/**
+	 * Integrates a potentially changed view on the feature model into the vave system during the vave operation internalizeDomain.
+	 * @param viewFeature The view feature from which the traversal of the feature model starts.
+	 * @param newSystemRevision The new system revision created during the vave operation internalizeDomain.
+	 * @return A feature which corresponds to the root feature of the traversal.
+	 */
 	private Feature integrateFeatureModelTree(ViewFeature viewFeature, SystemRevision newSystemRevision) {
 		if (viewFeature.getOriginalFeature() != null) {
 			// NOTE: currently we do not revision the name of a feature. if a feature name is modified, it is therefore modified in all revisions (past and future).
@@ -686,12 +645,11 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 		}
 	}
 
+	@Override
 	public InternalizeDomainResult internalizeDomain(FeatureModel featureModel) throws IOException {
 		// ensure that the feature model has exactly one root feature (i.e., in case of a merge with multiple root features after eD there must only remain one root feature)
 		if (featureModel.getRootFeatures().size() > 1)
 			throw new RuntimeException("Feature model has more than one root feature!");
-//		else if (featureModel.getRootFeatures().isEmpty())
-//			throw new RuntimeException("Feature model does not have a root feature!");
 
 		InternalizeDomainResult internalizeDomainResult = new InternalizeDomainResult();
 
@@ -732,16 +690,16 @@ public class VirtualVaVeModelImpl implements VirtualVaVeModel {
 
 		// integrate cross-tree constraints of view into system
 		for (ViewCrossTreeConstraint viewCrossTreeConstraint : featureModel.getCrossTreeConstraints()) {
-			// if view ctc has original ctc check if its expressions is structurally equal and enable it by new system revision
+			// if view cross-tree constraint has original cross-tree constraint check if its expressions is structurally equal and enable it by new system revision
 			if (viewCrossTreeConstraint.getOriginalCrossTreeConstraint() != null) {
 				if (ExpressionUtil.structuralEquivalence(viewCrossTreeConstraint.getOriginalCrossTreeConstraint().getExpression(), viewCrossTreeConstraint.getExpression())) {
-					// ctc was not modified, nothing to do
+					// cross-tree constraint was not modified, nothing to do
 				} else {
 					viewCrossTreeConstraint.getOriginalCrossTreeConstraint().setExpression(ExpressionUtil.copy(viewCrossTreeConstraint.getExpression()));
 				}
 				newSystemRevision.getEnablesConstraints().add(viewCrossTreeConstraint.getOriginalCrossTreeConstraint());
 			}
-			// if view ctc has no original ctc create a new ctc in system with same expression (copy it) and enable it by new systme revision
+			// if view cross-tree constraint has no original cross-tree constraint, create a new cross-tree constraint in system with same expression (copy it) and enable it by new system revision
 			else {
 				CrossTreeConstraint newCrossTreeConstraint = VaveFactory.eINSTANCE.createCrossTreeConstraint();
 				newCrossTreeConstraint.setExpression(ExpressionUtil.copy(viewCrossTreeConstraint.getExpression()));

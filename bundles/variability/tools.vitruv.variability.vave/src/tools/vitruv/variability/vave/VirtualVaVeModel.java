@@ -47,17 +47,17 @@ public interface VirtualVaVeModel {
 	 * Externalizes a view on the domain of the unified system based on a system revision.
 	 * 
 	 * @param system The unified system
-	 * @param sysrev The system revision as point in time for which the domain view should be externalized
+	 * @param systemRevision The system revision as point in time for which the domain view should be externalized
 	 * @return The domain of the unified system in the form of a feature model
 	 */
-	public ExternalizeDomainResult externalizeDomain(SystemRevision sysrev);
+	public ExternalizeDomainResult externalizeDomain(SystemRevision systemRevision);
 
 	/**
 	 * Internalizes the changes performed on a domain view (i.e., feature model) into the unified system.
 	 * 
-	 * @param fm The modified feature model view.
+	 * @param featureModel The modified feature model view.
 	 * @throws IOException In case of problems when writing the updated VaVe model to the disk.
 	 */
-	public InternalizeDomainResult internalizeDomain(FeatureModel fm) throws IOException;
+	public InternalizeDomainResult internalizeDomain(FeatureModel featureModel) throws IOException;
 
 }

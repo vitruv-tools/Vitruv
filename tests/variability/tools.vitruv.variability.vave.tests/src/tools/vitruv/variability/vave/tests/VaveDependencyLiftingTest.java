@@ -108,17 +108,12 @@ public class VaveDependencyLiftingTest {
 				if (!(childExpression instanceof Not || childExpression instanceof Variable || childExpression instanceof Disjunction) || !checkNormalForm(childExpression))
 					return false;
 			return true;
-//			if (((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Not || ((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Variable || ((Disjunction<? extends Option>) expr).getTerm().get(0) instanceof Disjunction) {
-//				if (((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Not || ((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Variable || ((Disjunction<? extends Option>) expr).getTerm().get(1) instanceof Disjunction) {
-//					return checkNormalForm(((Disjunction<? extends Option>) expr).getTerm().get(0)) && checkNormalForm(((Disjunction<? extends Option>) expr).getTerm().get(1));
-//				}
-//			}
+
 		} else if (expr instanceof Conjunction) {
 			for (Expression<? extends Option> childExpression : ((Conjunction<? extends Option>) expr).getExpressions())
 				if (!checkNormalForm(childExpression))
 					return false;
 			return true;
-//			return checkNormalForm(((Conjunction<? extends Option>) expr).getTerm().get(0)) && checkNormalForm(((Conjunction<? extends Option>) expr).getTerm().get(1));
 		}
 		return false;
 	}
@@ -209,9 +204,6 @@ public class VaveDependencyLiftingTest {
 
 		Expression<? extends Option> cnfExpr = ExpressionUtil.convertToCNF(outerDisjunction);
 
-		System.out.println("SIZE INPUT: " + countSize(outerDisjunction));
-		System.out.println("SIZE OUTPUT: " + countSize(cnfExpr));
-
 		assertTrue(checkNormalForm(cnfExpr)); // we don't know whether its the right CNF, but IF it is a CNF
 
 		ExpressionToSATConverter e2sc = new ExpressionToSATConverter();
@@ -230,7 +222,6 @@ public class VaveDependencyLiftingTest {
 		Set<int[]> models = new HashSet<>();
 		int i = 0;
 		while (solver.isSatisfiable()) {
-			// int[] model = solver.findModel();
 			int[] model = solver.model();
 			models.add(model);
 			String modelString = "";
@@ -267,17 +258,14 @@ public class VaveDependencyLiftingTest {
 		// Feature Core
 		ViewFeature viewFeatureCore = FeaturemodelFactory.eINSTANCE.createViewFeature();
 		viewFeatureCore.setName("featureCore");
-//		vave.getSystem().getFeature().add(featureCore);
 
 		// Feature A
 		ViewFeature viewFeatureA = FeaturemodelFactory.eINSTANCE.createViewFeature();
 		viewFeatureA.setName("featureA");
-//		vave.getSystem().getFeature().add(featureA);
 
 		// Feature B
 		ViewFeature viewFeatureB = FeaturemodelFactory.eINSTANCE.createViewFeature();
 		viewFeatureB.setName("featureB");
-//		vave.getSystem().getFeature().add(featureB);
 
 		FeatureModel fm = FeaturemodelFactory.eINSTANCE.createFeatureModel();
 		fm.getRootFeatures().add(viewFeatureCore);
@@ -387,8 +375,6 @@ public class VaveDependencyLiftingTest {
 
 		DependencyLifting dl = new DependencyLifting();
 		FeatureModel updatedFM = dl.internalizeChangesPost(vave, vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1)).getRepairedFeatureModel();
-
-		System.out.println("FM: " + updatedFM);
 
 	}
 

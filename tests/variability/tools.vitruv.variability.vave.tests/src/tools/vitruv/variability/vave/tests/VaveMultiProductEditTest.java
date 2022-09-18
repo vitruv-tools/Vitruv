@@ -86,17 +86,6 @@ public class VaveMultiProductEditTest {
 		domains.add(new AllElementTypesDomainProvider().getDomain());
 		// create vave system
 		VirtualVaVeModel vave = new VirtualVaVeModelImpl(domains, new HashSet<>(), UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null), projectFolder);
-//		System system = vave.getSystem();
-//		Feature car = VavemodelFactory.eINSTANCE.createFeature();
-//		Feature engineType = VavemodelFactory.eINSTANCE.createFeature();
-//		system.getFeature().add(car);
-//		system.getFeature().add(engineType);
-//		Variable<FeatureOption> variable1 = VavemodelFactory.eINSTANCE.createVariable();
-//		Variable<FeatureOption> variable2 = VavemodelFactory.eINSTANCE.createVariable();
-//		variable1.setOption(car);
-//		variable2.setOption(engineType);
-//		conjunction.getTerm().add(variable1);
-//		conjunction.getTerm().add(variable2);
 		True<FeatureOption> trueConstant = ExpressionFactory.eINSTANCE.createTrue();
 
 		// externalize virtual model product (vmp)

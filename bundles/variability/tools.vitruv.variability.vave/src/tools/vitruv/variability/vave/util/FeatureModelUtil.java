@@ -46,71 +46,57 @@ public final class FeatureModelUtil {
 			}
 		}
 		// root feature
-//		if (featureModel.getRootFeatures().isEmpty())
-//			throw new IllegalStateException("No root feature in feature model.");
-//		else {
 		for (ViewFeature viewFeature : featureModel.getRootFeatures()) {
 			if (featureOptionToIntMap.containsKey(viewFeature.getOriginalFeature()))
 				fmClauses.add(new int[] { featureOptionToIntMap.get(viewFeature.getOriginalFeature()) });
 			else
 				System.out.println("WARNING: no literal for root feature!");
 		}
-//		}
-		for (ViewTreeConstraint tc : collectTreeConstraints(featureModel)) {
+		for (ViewTreeConstraint viewTreeConstraint : collectTreeConstraints(featureModel)) {
 			// first, children imply parents
-			for (ViewFeature feature : tc.getChildFeatures()) {
+			for (ViewFeature feature : viewTreeConstraint.getChildFeatures()) {
 				// fmClauses.add(new int[] { -featureOptionToIntMap.get(feature.getOriginalFeature()), featureOptionToIntMap.get(tc.getOriginalTreeConstraint().getParentFeature()) });
-				fmClauses.add(new int[] { -featureOptionToIntMap.get(feature.getOriginalFeature()), featureOptionToIntMap.get(tc.getParentFeature().getOriginalFeature()) });
+				fmClauses.add(new int[] { -featureOptionToIntMap.get(feature.getOriginalFeature()), featureOptionToIntMap.get(viewTreeConstraint.getParentFeature().getOriginalFeature()) });
 			}
-			// second, depending on tc type, add relation between siblings and/or parent
-			if (tc.getType() == GroupType.OPTIONAL) { // ORNONE
+			// second, depending on tree constraint type, add relation between siblings and/or parent
+			if (viewTreeConstraint.getType() == GroupType.OPTIONAL) { // ORNONE
 				// do nothing
-			} else if (tc.getOriginalTreeConstraint().getType() == GroupType.MANDATORY) { // all
+			} else if (viewTreeConstraint.getOriginalTreeConstraint().getType() == GroupType.MANDATORY) { // all
 				// parents imply children
-				for (ViewFeature feature : tc.getChildFeatures()) {
+				for (ViewFeature feature : viewTreeConstraint.getChildFeatures()) {
 					ArrayList<Integer> literals = new ArrayList<>();
-					literals.add(-featureOptionToIntMap.get(tc.getOriginalTreeConstraint().getParentFeature()));
+					literals.add(-featureOptionToIntMap.get(viewTreeConstraint.getOriginalTreeConstraint().getParentFeature()));
 					literals.add(featureOptionToIntMap.get(feature.getOriginalFeature()));
 					fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
 				}
-			} else if (tc.getOriginalTreeConstraint().getType() == GroupType.OR) { // at least one
+			} else if (viewTreeConstraint.getOriginalTreeConstraint().getType() == GroupType.OR) { // at least one
 				// parent implies at least one child
 				ArrayList<Integer> literals = new ArrayList<>();
-				literals.add(-featureOptionToIntMap.get(tc.getOriginalTreeConstraint().getParentFeature()));
-				for (ViewFeature feature : tc.getChildFeatures())
+				literals.add(-featureOptionToIntMap.get(viewTreeConstraint.getOriginalTreeConstraint().getParentFeature()));
+				for (ViewFeature feature : viewTreeConstraint.getChildFeatures())
 					literals.add(featureOptionToIntMap.get(feature.getOriginalFeature()));
 				fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
-			} else if (tc.getOriginalTreeConstraint().getType() == GroupType.ALTERNATIVE) { // XOR. !D v !E // exactly one. mandatory or alternative group
+			} else if (viewTreeConstraint.getOriginalTreeConstraint().getType() == GroupType.ALTERNATIVE) { // XOR. !D v !E // exactly one. mandatory or alternative group
 				// siblings exclude each other
-				for (int i = 0; i < tc.getChildFeatures().size(); i++) {
-					for (int j = i + 1; j < tc.getChildFeatures().size(); j++) {
+				for (int i = 0; i < viewTreeConstraint.getChildFeatures().size(); i++) {
+					for (int j = i + 1; j < viewTreeConstraint.getChildFeatures().size(); j++) {
 						ArrayList<Integer> literals = new ArrayList<>();
-						literals.add(-featureOptionToIntMap.get(tc.getChildFeatures().get(i).getOriginalFeature()));
-						literals.add(-featureOptionToIntMap.get(tc.getChildFeatures().get(j).getOriginalFeature()));
+						literals.add(-featureOptionToIntMap.get(viewTreeConstraint.getChildFeatures().get(i).getOriginalFeature()));
+						literals.add(-featureOptionToIntMap.get(viewTreeConstraint.getChildFeatures().get(j).getOriginalFeature()));
 						fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
 					}
 				}
 				// parent implies at least one child
 				ArrayList<Integer> literals = new ArrayList<>();
-				literals.add(-featureOptionToIntMap.get(tc.getOriginalTreeConstraint().getParentFeature()));
-				for (ViewFeature feature : tc.getChildFeatures()) {
+				literals.add(-featureOptionToIntMap.get(viewTreeConstraint.getOriginalTreeConstraint().getParentFeature()));
+				for (ViewFeature feature : viewTreeConstraint.getChildFeatures()) {
 					literals.add(featureOptionToIntMap.get(feature.getOriginalFeature()));
 				}
 				fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
 			}
-//			else if (tc.getOriginalTreeConstraint().getType() == GroupType.XORNONE) { // at most one, no parent-child relation required
-//				for (int i = 0; i < tc.getChildFeatures().size(); i++) {
-//					for (int j = i + 1; j < tc.getChildFeatures().size(); j++) {
-//						ArrayList<Integer> literals = new ArrayList<>();
-//						literals.add(-featureOptionToIntMap.get(tc.getChildFeatures().get(i)));
-//						literals.add(-featureOptionToIntMap.get(tc.getChildFeatures().get(j)));
-//						fmClauses.add(literals.stream().mapToInt(val -> val).toArray());
-//					}
-//				}
-//			}
 		}
 		for (ViewCrossTreeConstraint ctc : featureModel.getCrossTreeConstraints()) {
-			// add clause for ctc
+			// add clause for cross tree constraint
 			ExpressionToSATConverter e2sc = new ExpressionToSATConverter();
 			e2sc.setIntsForOptions(featureOptionToIntMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
 			Collection<int[]> ctcCnf = e2sc.convertExpr2Sat(ctc.getExpression());
@@ -169,11 +155,9 @@ public final class FeatureModelUtil {
 		if (sysrevs.isEmpty())
 			return false;
 
-		// since our implementation does not yet require partial configurations, any feature that is not explicitly selected is assumed deselected
+		// since our implementation does not require partial configurations, any feature that is not explicitly selected is assumed deselected
 		// this means that there are no negative (i.e., deselected) features in configurations, and we do not need to make sure that no feature revisions are selected for deselected features
 		// finally, we do not require features to be selected. instead, we assume every feature to be selected of which at least one feature revision is selected in the configuration
-
-		// in summary: there is currently not much to do here.
 
 		return true;
 	}

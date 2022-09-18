@@ -32,7 +32,7 @@ public final class ExpressionUtil {
 	private ExpressionUtil() {
 	}
 
-	/*
+	/**
 	 * Compares two expression for structural equivalence.
 	 */
 	public static <T> boolean structuralEquivalence(Expression<T> e1, Expression<T> e2) {
@@ -57,7 +57,7 @@ public final class ExpressionUtil {
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
 
-	/*
+	/**
 	 * Creates a copy of a given expression. All terms are copied including variables and constants. The options of variables are not copied.
 	 */
 	public static <T> Expression<T> copy(Expression<T> expression) {
@@ -85,7 +85,7 @@ public final class ExpressionUtil {
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
 
-	/*
+	/**
 	 * Evaluates an expression with respect to a given configuration.
 	 */
 	public static <T extends Option> boolean eval(Expression<T> expression, Configuration configuration) {
@@ -114,7 +114,6 @@ public final class ExpressionUtil {
 //			return this.configuration.getOption().contains(variable.getValue()) || variable.getValue() instanceof Feature && this.configuration.getOption().stream().filter(o -> o instanceof FeatureRevision && ((FeatureRevision) o).eContainer().equals(variable.getOption())).findAny().isPresent()
 //					|| variable.getValue() instanceof FeatureRevision && this.configuration.getOption().stream().filter(o -> o instanceof FeatureRevision && ((FeatureRevision) o).eContainer().equals(((FeatureRevision) variable.getOption()).eContainer()) && ((FeatureRevision) o).getRevisionID() >= ((FeatureRevision) variable.getOption()).getRevisionID()).findAny().isPresent();
 
-			// return this.configuration.getOption().contains(variable.getOption());
 			// for feature revisions: check if the configuration contains this feature revision or a newer one
 			Variable<T> variable = (Variable<T>) expression;
 			return configuration.getOptions().contains(variable.getValue())
@@ -127,7 +126,7 @@ public final class ExpressionUtil {
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
 
-	/*
+	/**
 	 * Returns a string representation of a given expression.
 	 */
 	public static String toString(Expression<?> expression) {
@@ -159,7 +158,7 @@ public final class ExpressionUtil {
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
 
-	/*
+	/**
 	 * Returns a new expression that is a simplification of the old expression.
 	 */
 	public static <T> Expression<T> simplify(Expression<T> expression) {
@@ -246,7 +245,7 @@ public final class ExpressionUtil {
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
 
-	/*
+	/**
 	 * Validates the well-formedness of an expression.
 	 */
 	public static <T> boolean validate(Expression<T> expression) {
@@ -267,7 +266,7 @@ public final class ExpressionUtil {
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
 
-	/*
+	/**
 	 * Converts the given expression into CNF.
 	 */
 	public static <T> Expression<T> convertToCNF(Expression<T> expression) {
@@ -362,9 +361,5 @@ public final class ExpressionUtil {
 		} else
 			throw new IllegalStateException("Expression contains unknown operations or literals.");
 	}
-
-//	public static <T> Collection<int[]> convertToSAT(Expression<T> expression) {
-//		return null; // TODO
-//	}
 
 }

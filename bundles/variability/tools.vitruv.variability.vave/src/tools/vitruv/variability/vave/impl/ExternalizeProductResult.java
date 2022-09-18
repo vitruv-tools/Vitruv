@@ -3,6 +3,9 @@ package tools.vitruv.variability.vave.impl;
 import tools.vitruv.variability.vave.OperationResult;
 import tools.vitruv.variability.vave.VirtualProductModel;
 
+/**
+ * Provides a Virtual Product Model as result of the vave operation externalizeProduct.
+ */
 public class ExternalizeProductResult extends OperationResult<VirtualProductModel> {
 
 	private VirtualProductModel product;

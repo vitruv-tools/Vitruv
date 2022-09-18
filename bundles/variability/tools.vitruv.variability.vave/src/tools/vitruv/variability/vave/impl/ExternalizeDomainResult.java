@@ -3,6 +3,9 @@ package tools.vitruv.variability.vave.impl;
 import tools.vitruv.variability.vave.OperationResult;
 import tools.vitruv.variability.vave.model.featuremodel.FeatureModel;
 
+/**
+ * Provides a feature model as result of the vave operation externalizeDomain.
+ */
 public class ExternalizeDomainResult extends OperationResult<FeatureModel> {
 
 	private FeatureModel featureModel;

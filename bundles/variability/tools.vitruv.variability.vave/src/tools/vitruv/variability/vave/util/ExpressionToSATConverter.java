@@ -33,15 +33,15 @@ public class ExpressionToSATConverter {
 		return clauses;
 	}
 
-	private <T extends Option> void createClausesRec(Expression<T> expr, Collection<int[]> clauses) {
+	private <T extends Option> void createClausesRec(Expression<T> expression, Collection<int[]> clauses) {
 		// if the expression is a conjunction we recurse
-		if (expr instanceof Conjunction) {
-			for (Expression<T> childExpr : ((Conjunction<T>) expr).getExpressions()) {
+		if (expression instanceof Conjunction) {
+			for (Expression<T> childExpr : ((Conjunction<T>) expression).getExpressions()) {
 				this.createClausesRec(childExpr, clauses);
 			}
 		} else { // if (expr instanceof Disjunction) {
 			// we create a new clause whenever we encounter a disjunction that has as a parent a conjunction
-			int[] clause = this.createClause(expr);
+			int[] clause = this.createClause(expression);
 			if (clause != null)
 				clauses.add(clause);
 		}

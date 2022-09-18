@@ -69,21 +69,17 @@ public class DependencyLifting implements ConsistencyRule {
 		}
 	}
 
+	/**
+	 * Performs consistency preservation after every execution of the vave operation internalizeChanges. Retrieves dependencies between deltas of the Vave Model. If dependencies have been detected, finds mapped features of deltas. Checks if features already depend on problem space (via implication or exclusion). Otherwise, adds implication or exclusion of depending features.
+	 */
 	@Override
-	public Result internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) {
-		// After every internalizeChanges, retrieve dependencies between deltas of vave model
-		// If dependencies have been detected, find mapped features of deltas
-		// check if features already depend on problem space (via implication or exclusion)
-		// otherwise, add implication of depending features
+	public Result internalizeChangesPost(VirtualVaVeModel vave, SystemRevision newSystemRevision) { 
 
 		// select relevant mappings for system revision
 		List<Mapping> selectedMappings = new ArrayList<>();
 		for (Mapping mapping : newSystemRevision.getEnablesMappings()) {
-//			Collection<FeatureOption> options = OptionUtil.collect(mapping.getExpression());
-//			if (options.contains(newSystemRevision)) {
 			selectedMappings.add(mapping);
 			System.out.println("SELECTED MAPPING: " + mapping);
-//			}
 		}
 
 		// compute dependencies between mappings based on their fragments
@@ -274,7 +270,6 @@ public class DependencyLifting implements ConsistencyRule {
 
 		// REQUIRES
 		// for every dependency, create sat solver instance, add respective clauses, and check if it is satisfiable
-		// for (Entry<Mapping, Set<Mapping>> entry : requires.entrySet()) {
 		for (Entry<Mapping, Set<Mapping>> entry : orderedRequires) {
 			// check if feature model has no root and if current mapping has only a single feature and requires no other mapping but itself
 			List<FeatureOption> requiringFeatures = OptionUtil.collect(entry.getKey().getExpression()).stream().filter(o -> o instanceof FeatureOption).collect(Collectors.toList());
@@ -468,8 +463,6 @@ public class DependencyLifting implements ConsistencyRule {
 					requiringFeature = (Feature) requiringFeatures.get(0).eContainer();
 				else
 					requiringFeature = (Feature) requiringFeatures.get(0);
-				if (requiringFeature.getName().equals("Fav"))
-					System.out.println("ASF");
 				ViewFeature viewRequiringFeature = this.findViewFeatureForFeature(currentFeatureModel.getRootFeatures().get(0), requiringFeature);
 				// ... and it does not have a parent ...
 				if (viewRequiringFeature == null || viewRequiringFeature.getParentTreeConstraint() == null && requiringFeature != currentFeatureModel.getRootFeatures().get(0).getOriginalFeature()) {

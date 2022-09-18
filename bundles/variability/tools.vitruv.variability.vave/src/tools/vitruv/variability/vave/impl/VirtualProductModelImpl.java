@@ -16,6 +16,9 @@ import tools.vitruv.variability.vave.VirtualProductModel;
 import tools.vitruv.variability.vave.VirtualVaVeModel;
 import tools.vitruv.variability.vave.model.vave.Configuration;
 
+/**
+ * Implementation of the Virtual Product Model interface. 
+ */
 public class VirtualProductModelImpl extends VirtualModelImpl implements VirtualProductModel {
 
 	private Configuration configuration;

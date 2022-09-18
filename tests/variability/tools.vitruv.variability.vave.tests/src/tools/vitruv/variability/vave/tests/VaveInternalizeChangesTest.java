@@ -186,10 +186,6 @@ public class VaveInternalizeChangesTest {
 
 		Conjunction<FeatureOption> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-//		Variable<FeatureOption> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
-//		expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(0));
-//		expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
-
 		Variable<FeatureOption> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
 		expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
 		expectedConjunction.getExpressions().add(expectedVariableA);
@@ -203,14 +199,6 @@ public class VaveInternalizeChangesTest {
 	@Test
 	public void MultipleInternalizeChangesWithFeatureRevisionExpression(@TestProject final Path projectFolder) throws Exception {
 		VirtualVaVeModel vave = setupVave(projectFolder);
-
-//		// Feature a, Feature b
-//		Feature featureA = VaveFactory.eINSTANCE.createFeature();
-//		featureA.setName("featureA");
-//		vave.getSystem().getFeature().add(featureA);
-//		Feature featureB = VaveFactory.eINSTANCE.createFeature();
-//		featureB.setName("featureB");
-//		vave.getSystem().getFeature().add(featureB);
 
 		FeatureModel fm = FeaturemodelFactory.eINSTANCE.createFeatureModel(); // new FeatureModel(null, null, new HashSet<FeatureOption>(), new HashSet<TreeConstraint>(), new HashSet<CrossTreeConstraint>());
 		ViewFeature viewFeatureA = FeaturemodelFactory.eINSTANCE.createViewFeature();
@@ -255,9 +243,6 @@ public class VaveInternalizeChangesTest {
 
 		{
 			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-//			Variable<Option> expectedVariableSystemRevision1 = ExpressionFactory.eINSTANCE.createVariable();
-//			expectedVariableSystemRevision1.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
-//			expectedConjunction.getExpressions().add(expectedVariableSystemRevision1);
 
 			Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
 			expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));
@@ -301,10 +286,6 @@ public class VaveInternalizeChangesTest {
 		{
 			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
 
-//			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
-//			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
-//			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
-
 			Variable<Option> expectedVariableB = ExpressionFactory.eINSTANCE.createVariable();
 			expectedVariableB.setValue(featureB.getFeatureRevisions().get(0));
 			expectedConjunction.getExpressions().add(expectedVariableB);
@@ -315,10 +296,6 @@ public class VaveInternalizeChangesTest {
 
 		{
 			Conjunction<Option> expectedConjunction = ExpressionFactory.eINSTANCE.createConjunction();
-
-//			Variable<Option> expectedVariableSystemRevision2 = ExpressionFactory.eINSTANCE.createVariable();
-//			expectedVariableSystemRevision2.setValue(vave.getSystem().getSystemRevisions().get(vave.getSystem().getSystemRevisions().size() - 1));
-//			expectedConjunction.getExpressions().add(expectedVariableSystemRevision2);
 
 			Variable<Option> expectedVariableA = ExpressionFactory.eINSTANCE.createVariable();
 			expectedVariableA.setValue(featureA.getFeatureRevisions().get(0));

@@ -47,11 +47,13 @@ public class HintComputation implements ConsistencyRule {
 
 	private Collection<Feature[]> hints = new ArrayList<>();
 
+	/**
+	 * Checks if any of the hinted feature interactions are contained in the configuration. If yes, the hint is added to the product.
+	 */
 	@Override
 	public ConsistencyResult externalizeProductPre(Configuration config) {
 		Collection<Feature[]> hints = new ArrayList<>();
 
-		// check if any of the hinted feature interactions are contained in the configuration. if yes, then add a hint to the product.
 		for (Feature[] featureInteraction : this.hints) {
 			if (config.getOptions().containsAll(Arrays.asList(featureInteraction))) {
 				hints.add(featureInteraction);
@@ -62,14 +64,15 @@ public class HintComputation implements ConsistencyRule {
 		return new Result(hints);
 	}
 
+	/**
+	 * 	Checks if the expression covers any hints. If yes, the respective hints are deleted.
+	 */
 	@Override
 	public ConsistencyResult internalizeChangesPre(VirtualVaVeModel vave, Expression<FeatureOption> expression) {
-//		Collection<Option> options = new OptionsCollector().doSwitch(expr);
 		Collection<FeatureOption> options = OptionUtil.collect(expression);
 
 		Collection<Feature[]> removedHints = new ArrayList<>();
 
-		// check if the expression covers any hints. if yes, then delete the respective hints.
 		// NOTE: we can do this easily with the OptionCollector as long as we assume that expressions are always conjunctions of positive features (see NOTE at the top of this method)!
 		Iterator<Feature[]> hintsIt = this.hints.iterator();
 		while (hintsIt.hasNext()) {
@@ -84,21 +87,24 @@ public class HintComputation implements ConsistencyRule {
 		return new Result(removedHints);
 	}
 
+	/**
+	 * Computes hints for new (i.e., not yet implemented) features or potential pair-wise feature interactions after every execution of the vave operation internalizeDomain.
+	 */
 	@Override
 	public ConsistencyResult internalizeDomainPost(SystemRevision newSystemRevision, FeatureModel previousFeatureModel, FeatureModel currentFeatureModel) {
-		Collection<FeatureOption> enabledFOs = newSystemRevision.getEnablesFeatureOptions();
-		List<Feature> enabledFs = enabledFOs.stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).collect(Collectors.toList());
+		Collection<FeatureOption> enabledFeatureOptions = newSystemRevision.getEnablesFeatureOptions();
+		List<Feature> enabledFeatures = enabledFeatureOptions.stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).collect(Collectors.toList());
 
 		// assign integer values to each feature. feature revisions get the same value as the respective feature.
 		int currentInt = 0;
 		Map<FeatureOption, Integer> optionToIntMap = new HashMap<>();
-		for (FeatureOption fo : enabledFOs) {
-			if (fo instanceof Feature) {
-				optionToIntMap.put(fo, ++currentInt);
-				System.out.println("ASSIGN VALUE " + optionToIntMap.get(fo) + " TO FEATURE " + fo);
+		for (FeatureOption featureOption : enabledFeatureOptions) {
+			if (featureOption instanceof Feature) {
+				optionToIntMap.put(featureOption, ++currentInt);
+				System.out.println("ASSIGN VALUE " + optionToIntMap.get(featureOption) + " TO FEATURE " + featureOption);
 			}
 		}
-		for (FeatureOption fo : enabledFOs) {
+		for (FeatureOption fo : enabledFeatureOptions) {
 			if (fo instanceof FeatureRevision) {
 				Feature feature = (Feature) ((FeatureRevision) fo).eContainer();
 				if (optionToIntMap.get(feature) == null) {
@@ -111,30 +117,10 @@ public class HintComputation implements ConsistencyRule {
 		}
 
 		// compute clauses for old feature model
-//		Set<Option> notInOldFM = new HashSet<>();
 		Collection<int[]> previousFeatureModelClauses = null;
 		if (previousFeatureModel == null) {
 			previousFeatureModelClauses = new ArrayList<>();
-//			notInOldFM.addAll(enabledFOs);
 		} else {
-////			Map<FeatureOption, Integer> oldfmOptionToIntMap = new HashMap<>();
-//			for (Entry<FeatureOption, Integer> entry : optionToIntMap.entrySet()) {
-//				if (entry.getKey() instanceof Feature) {
-//					Optional<Feature> fmFeature = previousFeatureModel.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) entry.getKey()).getName())).findAny();
-//					if (fmFeature.isPresent())
-//						oldfmOptionToIntMap.put(fmFeature.get(), entry.getValue());
-//					else
-//						notInOldFM.add(entry.getKey());
-//				} else if (entry.getKey() instanceof FeatureRevision) {
-//					Optional<FeatureRevision> fmFeatureRevision = previousFeatureModel.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) entry.getKey()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) entry.getKey()).getRevisionID())
-//							.findAny();
-//					if (fmFeatureRevision.isPresent())
-//						oldfmOptionToIntMap.put(fmFeatureRevision.get(), entry.getValue());
-//					else
-//						notInOldFM.add(entry.getKey());
-//				}
-//			}
-////			oldClauses = FeatureModelUtil.computeClauses(currentFeatureModel, oldfmOptionToIntMap);
 			previousFeatureModelClauses = FeatureModelUtil.computeClauses(previousFeatureModel, optionToIntMap);
 			// add clauses for negations of features that are not contained in feature model but enabled in new system revision
 			Set<FeatureOption> featureOptionsNotInPreviousFeatureModel = new HashSet<>(optionToIntMap.keySet());
@@ -144,40 +130,25 @@ public class HintComputation implements ConsistencyRule {
 		}
 
 		// compute clauses for current feature model
-//		Map<FeatureOption, Integer> newfmOptionToIntMap = new HashMap<>();
-//		for (Entry<Option, Integer> entry : optionToIntMap.entrySet()) {
-//			if (entry.getKey() instanceof Feature) {
-//				Feature fmFeature = currentFeatureModel.getFeatureOptions().stream().filter(fo -> fo instanceof Feature).map(f -> (Feature) f).filter(f -> f.getName().equals(((Feature) entry.getKey()).getName())).findAny().get();
-//				newfmOptionToIntMap.put(fmFeature, entry.getValue());
-//			} else if (entry.getKey() instanceof FeatureRevision) {
-//				FeatureRevision fmFeatureRevision = currentFeatureModel.getFeatureOptions().stream().filter(fo -> fo instanceof FeatureRevision).map(fr -> (FeatureRevision) fr).filter(fr -> ((Feature) fr.eContainer()).getName().equals(((Feature) ((FeatureRevision) entry.getKey()).eContainer()).getName()) && fr.getRevisionID() == ((FeatureRevision) entry.getKey()).getRevisionID()).findAny().get();
-//				newfmOptionToIntMap.put(fmFeatureRevision, entry.getValue());
-//			}
-//		}
-//		Collection<int[]> newClauses = FeatureModelUtil.computeClauses(currentFeatureModel, newfmOptionToIntMap);
 		Collection<int[]> currentFeatureModelClauses = FeatureModelUtil.computeClauses(currentFeatureModel, optionToIntMap);
 
 		// compute (new) hints
 		Collection<Feature[]> newHints = new ArrayList<>();
-		for (int i = 0; i < enabledFs.size(); i++) { // for (Feature f1 : enabledFs) {
-			Feature f1 = enabledFs.get(i);
-			for (int j = i; j < enabledFs.size(); j++) { // for (Feature f2 : enabledFs) {
-				Feature f2 = enabledFs.get(j);
+		for (int i = 0; i < enabledFeatures.size(); i++) { // for (Feature f1 : enabledFs) {
+			Feature f1 = enabledFeatures.get(i);
+			for (int j = i; j < enabledFeatures.size(); j++) { // for (Feature f2 : enabledFs) {
+				Feature f2 = enabledFeatures.get(j);
 				ISolver previousFeatureModelSolver = SolverFactory.newDefault();
 				ISolver currentFeatureModelSolver = SolverFactory.newDefault();
 				boolean oldSat = false;
 				boolean newSat = false;
 
 				try {
-//					if (notInOldFM.contains(f1) || notInOldFM.contains(f2)) {
-//						oldSat = false;
-//					} else {
 					for (int[] clause : previousFeatureModelClauses)
 						previousFeatureModelSolver.addClause(new VecInt(clause));
 					previousFeatureModelSolver.addClause(new VecInt(new int[] { optionToIntMap.get(f1) }));
 					previousFeatureModelSolver.addClause(new VecInt(new int[] { optionToIntMap.get(f2) }));
 					oldSat = previousFeatureModelSolver.isSatisfiable();
-//					}
 				} catch (ContradictionException e) {
 					oldSat = false;
 				} catch (TimeoutException e) {
