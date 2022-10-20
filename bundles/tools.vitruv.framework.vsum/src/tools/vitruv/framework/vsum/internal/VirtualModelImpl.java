@@ -34,7 +34,10 @@ public class VirtualModelImpl implements InternalVirtualModel {
 	private final ViewTypeProvider viewTypeRepository;
 	private final VsumFileSystemLayout fileSystemLayout;
 	private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
-	private final ChangePropagator changePropagator;
+
+	private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
+	private final InternalUserInteractor userInteractor;
+	private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
 
 	public VirtualModelImpl(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 			ViewTypeRepository viewTypeRepository,
@@ -42,8 +45,9 @@ public class VirtualModelImpl implements InternalVirtualModel {
 		this.fileSystemLayout = fileSystemLayout;
 		this.viewTypeRepository = viewTypeRepository;
 		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout);
-		changePropagator = new ChangePropagator(resourceRepository, changePropagationSpecificationProvider,
-				userInteractor);
+
+		this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
+		this.userInteractor = userInteractor;
 	}
 
 	public void loadExistingModels() {
@@ -74,6 +78,8 @@ public class VirtualModelImpl implements InternalVirtualModel {
 		LOGGER.info("Starting change propagation");
 		startChangePropagation(unresolvedChange);
 
+		ChangePropagator changePropagator = new ChangePropagator(resourceRepository,
+				changePropagationSpecificationProvider, userInteractor, changePropagationMode);
 		List<PropagatedChange> result = changePropagator.propagateChange(unresolvedChange);
 		save();
 
@@ -166,6 +172,6 @@ public class VirtualModelImpl implements InternalVirtualModel {
 
 	@Override
 	public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
-		changePropagator.setChangePropagationMode(changePropagationMode);
+		this.changePropagationMode = changePropagationMode;
 	}
 }
