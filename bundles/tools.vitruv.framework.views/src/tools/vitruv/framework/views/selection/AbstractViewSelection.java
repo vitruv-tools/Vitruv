@@ -3,9 +3,11 @@ package tools.vitruv.framework.views.selection;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
@@ -26,6 +28,10 @@ public abstract class AbstractViewSelection implements ModifiableViewSelection {
 			setSelected(selectableElement, sourceViewSelection.isSelected(selectableElement));
 		}
 	}
+	
+	private String idForEObject(EObject eObject) {
+		return EcoreUtil.getURI(eObject).toString();
+	}
 
 	private void checkIsSelectable(EObject eObject) {
 		checkState(isSelectable(eObject), "given object %s must be contained in the selector elements", eObject);
@@ -33,7 +39,11 @@ public abstract class AbstractViewSelection implements ModifiableViewSelection {
 
 	@Override
 	public boolean isSelected(EObject eObject) {
-		return elementsSelection.getOrDefault(eObject, false);
+		if (elementsSelection.getOrDefault(eObject, false)) {
+			return true;
+		}
+		List<String> selectedIds = elementsSelection.entrySet().stream().filter(it -> it.getValue().booleanValue()).map(it -> idForEObject(it.getKey())).toList();
+		return selectedIds.contains(idForEObject(eObject));
 	}
 
 	@Override

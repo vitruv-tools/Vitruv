@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -31,6 +32,8 @@ public class VirtualModelImpl implements InternalVirtualModel {
 	private static final Logger LOGGER = Logger.getLogger(VirtualModelImpl.class);
 
 	private final ModelRepository resourceRepository;
+	private final VersionedResourceRepositoryImpl versionedResourceRepository;
+	private ModelResourcesInstance latestInstance;
 	private final ViewTypeProvider viewTypeRepository;
 	private final VsumFileSystemLayout fileSystemLayout;
 	private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
@@ -45,10 +48,14 @@ public class VirtualModelImpl implements InternalVirtualModel {
 		this.fileSystemLayout = fileSystemLayout;
 		this.viewTypeRepository = viewTypeRepository;
 		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout);
+		versionedResourceRepository = new VersionedResourceRepositoryImpl(fileSystemLayout);
+		latestInstance = versionedResourceRepository.getLatestModelResourcesInstance();
 
 		this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
 		this.userInteractor = userInteractor;
 	}
+	
+	private static final boolean useVersions = true;
 
 	public void loadExistingModels() {
 		resourceRepository.loadExistingModels();
@@ -56,16 +63,18 @@ public class VirtualModelImpl implements InternalVirtualModel {
 
 	@Override
 	public synchronized EditableCorrespondenceModelView<Correspondence> getCorrespondenceModel() {
+		if (useVersions) {
+			return latestInstance.getCorrespondenceModel();
+		}
 		return resourceRepository.getCorrespondenceModel();
 	}
 
 	@Override
 	public synchronized ModelInstance getModelInstance(URI modelUri) {
+		if (useVersions) {
+			return latestInstance.getModel(modelUri);
+		}
 		return resourceRepository.getModel(modelUri);
-	}
-
-	private synchronized void save() {
-		resourceRepository.saveOrDeleteModels();
 	}
 
 	@Override
@@ -78,10 +87,34 @@ public class VirtualModelImpl implements InternalVirtualModel {
 		LOGGER.info("Starting change propagation");
 		startChangePropagation(unresolvedChange);
 
+		if (useVersions) {
+			List<String> versionIdentifiers = versionedResourceRepository.getVersionIdentifiers();
+			String versionIdentifier = versionIdentifiers.isEmpty() ? null : versionIdentifiers.get(versionIdentifiers.size() - 1);
+			ModelResourcesInstance resourcesInstance = versionedResourceRepository.getModelResourcesInstance(versionIdentifier);
+			resourcesInstance.loadExistingModels();
+			ChangePropagator changePropagator = new ChangePropagator(resourcesInstance,
+					changePropagationSpecificationProvider, userInteractor, changePropagationMode);
+			List<PropagatedChange> result = changePropagator.propagateChange(unresolvedChange);
+			versionedResourceRepository.commitChanges(result, resourcesInstance.getCorrespondenceModelInternal());
+			resourcesInstance.saveOrDeleteModels();
+			if (latestInstance != null) {
+				latestInstance.close();
+			}
+			latestInstance = resourcesInstance;
+			
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.trace("Propagated changes: " + result);
+			}
+
+			finishChangePropagation(unresolvedChange, result);
+			LOGGER.info("Finished change propagation");
+			return result;
+		}
+		
 		ChangePropagator changePropagator = new ChangePropagator(resourceRepository,
 				changePropagationSpecificationProvider, userInteractor, changePropagationMode);
 		List<PropagatedChange> result = changePropagator.propagateChange(unresolvedChange);
-		save();
+		resourceRepository.saveOrDeleteModels();
 
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("Propagated changes: " + result);
@@ -142,6 +175,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
 	public void dispose() {
 		try {
 			resourceRepository.close();
+			latestInstance.close();
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -150,6 +184,9 @@ public class VirtualModelImpl implements InternalVirtualModel {
 
 	@Override
 	public Collection<Resource> getViewSourceModels() {
+		if (useVersions) {
+			return latestInstance.getModelResources();
+		}
 		return resourceRepository.getModelResources();
 	}
 
@@ -173,5 +210,17 @@ public class VirtualModelImpl implements InternalVirtualModel {
 	@Override
 	public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
 		this.changePropagationMode = changePropagationMode;
+	}
+	
+	@Override
+	public void validate(Consumer<ModelRepository> validator) {
+		if (useVersions) {
+			try (ModelResourcesInstance instance = versionedResourceRepository.getLatestModelResourcesInstance()) {
+				validator.accept(instance);
+			}
+		}
+		else {
+			validator.accept(resourceRepository);
+		}
 	}
 }
