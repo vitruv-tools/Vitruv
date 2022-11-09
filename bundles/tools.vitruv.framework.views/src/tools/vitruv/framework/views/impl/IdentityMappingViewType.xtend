@@ -37,13 +37,14 @@ class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector
 	}
 
 	override updateView(ModifiableView view) {
-		view.modifyContents [ viewResourceSet |
+		view.modifyContents [ viewResourceSet, uuidResolver |
 			viewResourceSet.resources.forEach[unload]
 			viewResourceSet.resources.clear
 			val viewSources = view.viewSource.viewSourceModels
 			val selection = view.selection
 			val resourcesWithSelectedElements = viewSources.filter[contents.exists[selection.isViewObjectSelected(it)]]
-			ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet) [selection.isViewObjectSelected(it)]
+			val mapping = ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet) [selection.isViewObjectSelected(it)]
+			view.viewSource.uuidResolver?.resolveResources(mapping, uuidResolver)
 		]
 	}
 }

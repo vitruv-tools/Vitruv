@@ -53,6 +53,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 
     override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver uuidResolver) {
         checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
+        checkArgument(uuidResolver !== null, "uuid resolver must not be null!")
         newState.checkNoProxies("new state")
         oldState.checkNoProxies("old state")
         val monitoredResourceSet = new ResourceSetImpl()
@@ -82,6 +83,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 
     override getChangeSequenceForDeleted(Resource oldState, UuidResolver uuidResolver) {
         checkArgument(oldState !== null, "old state must not be null!")
+        checkArgument(uuidResolver !== null, "uuid resolver must not be null!")
         oldState.checkNoProxies("old state")
         // Setup resolver and copy state:
         val monitoredResourceSet = new ResourceSetImpl()

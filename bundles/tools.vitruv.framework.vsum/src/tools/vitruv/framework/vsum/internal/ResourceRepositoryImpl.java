@@ -113,7 +113,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 			for (URI uri : modelUris) {
 				loadOrCreateResource(modelsResourceSet, uri);
 			}
-			uuidResolver.loadFromUri(fileSystemLayout.getUuidResolverURI());
+			uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
 			for (URI uri : modelUris) {
 				createOrLoadModel(uri);
 			}
@@ -203,7 +203,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		correspondenceModel.save();
 		try {
 			writeModelsFile();
-			uuidResolver.storeAtUri(fileSystemLayout.getUuidResolverURI());
+			uuidResolver.storeAtUri(fileSystemLayout.getUuidsURI());
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
