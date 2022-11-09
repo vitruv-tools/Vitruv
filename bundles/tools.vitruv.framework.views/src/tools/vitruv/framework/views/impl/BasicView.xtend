@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkState
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
@@ -29,8 +30,10 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
     var ViewCreatingViewType<? extends ViewSelector> viewType
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
     var ChangeableViewSource viewSource
-    @Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+    @Accessors(PROTECTED_GETTER)
     var ResourceSet viewResourceSet
+    @Accessors(PROTECTED_GETTER)
+    val UuidResolver uuidResolver
     boolean modelChanged
     @Accessors(PROTECTED_SETTER)
     boolean viewChanged
@@ -46,6 +49,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
         this.selection = selection
         viewSource.addChangePropagationListener(this)
         viewResourceSet = new ResourceSetImpl().withGlobalFactories
+        uuidResolver = UuidResolver.create(viewResourceSet)
         update
     }
 
@@ -133,8 +137,8 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
         ]
     }
 
-    override modifyContents((ResourceSet)=>void modificationFunction) {
-        modificationFunction.apply(viewResourceSet)
+    override modifyContents((ResourceSet, UuidResolver)=>void modificationFunction) {
+        modificationFunction.apply(viewResourceSet, uuidResolver)
     }
 
     override withChangeRecordingTrait() {

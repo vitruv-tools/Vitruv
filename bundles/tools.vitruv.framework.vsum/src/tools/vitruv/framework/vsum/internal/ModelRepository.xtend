@@ -4,6 +4,7 @@ import org.eclipse.emf.common.util.URI
 import java.util.Collection
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.change.propagation.ChangeRecordingModelRepository
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 package interface ModelRepository extends ChangeRecordingModelRepository {
 	/**
@@ -17,4 +18,9 @@ package interface ModelRepository extends ChangeRecordingModelRepository {
 	def void saveOrDeleteModels()
 
 	def Collection<Resource> getModelResources()
+	
+	/**
+	 * Returns the {@link UuidResolver} associated with all resources in this repository.
+	 */
+	def UuidResolver getUuidResolver()
 }

@@ -21,6 +21,7 @@ import allElementTypes.AllElementTypesPackage
 import tools.vitruv.change.composite.MetamodelDescriptor
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
 import tools.vitruv.change.correspondence.Correspondence
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 /**
  * Utility methods for the VSUM and view test cases.
@@ -31,8 +32,8 @@ class VirtualModelTestUtil {
     /**
      * Create a recorder, start recording a resource set, apply changes, stop and return the recorded changes.
      */
-    def static VitruviusChange recordChanges(ResourceSet resourceSet, Runnable changesToPerform) {
-        val recorder = new ChangeRecorder(resourceSet)
+    def static VitruviusChange recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
+        val recorder = new ChangeRecorder(resourceSet, uuidResolver)
         recorder.addToRecording(resourceSet)
         recorder.beginRecording
         changesToPerform.run()

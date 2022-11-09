@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
@@ -41,6 +43,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
 	private final FileExtensionRecorderMapping fileExtensionRecorderMapping = new FileExtensionRecorderMapping();
 	private final PersistableCorrespondenceModel correspondenceModel;
+	private final UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
 
 	private final VsumFileSystemLayout fileSystemLayout;
 
@@ -70,12 +73,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 			return fileExtensionsToRecorder.get(fileExtensionToExtensionsSet.get(fileExtension));
 		}
 
-		void registerRecorder(Set<String> fileExtensions, ResourceSet recorderResourceSet) {
+		void registerRecorder(Set<String> fileExtensions, ResourceSet recorderResourceSet, UuidResolver uuidResolver) {
 			fileExtensionToExtensionsSet.keySet().forEach(
 					it -> checkState(!fileExtensions.contains(it), "there already is a recorder for metamodel " + it));
 			Set<String> fileExtensionsSet = new HashSet<>(fileExtensions);
 			fileExtensions.forEach(it -> fileExtensionToExtensionsSet.put(it, fileExtensionsSet));
-			ChangeRecorder recorder = new ChangeRecorder(recorderResourceSet);
+			ChangeRecorder recorder = new ChangeRecorder(recorderResourceSet, uuidResolver);
 			fileExtensionsToRecorder.put(fileExtensionsSet, recorder);
 		}
 	}
@@ -106,9 +109,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	private void readModelsFile() throws IOException {
 		try {
-			for (String modelPath : Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath())) {
-				URI uri = URI.createURI(modelPath);
+			List<URI> modelUris = Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream().map(URI::createURI).collect(Collectors.toList());
+			for (URI uri : modelUris) {
 				loadOrCreateResource(modelsResourceSet, uri);
+			}
+			uuidResolver.loadFromUri(fileSystemLayout.getUuidResolverURI());
+			for (URI uri : modelUris) {
 				createOrLoadModel(uri);
 			}
 		} catch (NoSuchFileException e) {
@@ -124,6 +130,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	@Override
 	public ModelInstance getModel(URI modelUri) {
 		return modelInstances.get(modelUri);
+	}
+	
+	@Override
+	public UuidResolver getUuidResolver() {
+		return uuidResolver;
 	}
 
 	private ModelInstance getCreateOrLoadModelUnlessLoading(URI modelUri) {
@@ -159,7 +170,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
 			String fileExtension = modelInstance.getURI().fileExtension();
 			if (!fileExtensionRecorderMapping.hasRecorder(fileExtension)) {
-				fileExtensionRecorderMapping.registerRecorder(Set.of(fileExtension), modelsResourceSet);
+				fileExtensionRecorderMapping.registerRecorder(Set.of(fileExtension), modelsResourceSet, uuidResolver);
 			}
 			ChangeRecorder recorder = fileExtensionRecorderMapping.getRecorder(fileExtension);
 			recorder.addToRecording(modelInstance.getResource());
@@ -192,6 +203,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		correspondenceModel.save();
 		try {
 			writeModelsFile();
+			uuidResolver.storeAtUri(fileSystemLayout.getUuidResolverURI());
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
@@ -212,7 +224,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	@Override
 	public VitruviusChange applyChange(VitruviusChange change) {
-		return change.resolveAndApply(modelsResourceSet);
+		return change.resolveAndApply(uuidResolver);
 	}
 	
 	@Override

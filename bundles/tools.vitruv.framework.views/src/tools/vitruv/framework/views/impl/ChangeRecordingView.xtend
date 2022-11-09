@@ -32,7 +32,7 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
     }
 
     private def setupChangeRecorder() {
-        changeRecorder = new ChangeRecorder(view.viewResourceSet)
+        changeRecorder = new ChangeRecorder(view.viewResourceSet, view.uuidResolver)
         changeRecorder.addToRecording(view.viewResourceSet)
         changeRecorder.beginRecording()
     }

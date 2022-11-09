@@ -79,9 +79,9 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         if (referenceState === null) {
             return changeResolutionStrategy.getChangeSequenceForCreated(newState)
         } else if (newState === null) {
-            return changeResolutionStrategy.getChangeSequenceForDeleted(referenceState)
+            return changeResolutionStrategy.getChangeSequenceForDeleted(referenceState, view.uuidResolver)
         } else {
-            return changeResolutionStrategy.getChangeSequenceBetween(newState, referenceState)
+            return changeResolutionStrategy.getChangeSequenceBetween(newState, referenceState, view.uuidResolver)
         }
     }
 

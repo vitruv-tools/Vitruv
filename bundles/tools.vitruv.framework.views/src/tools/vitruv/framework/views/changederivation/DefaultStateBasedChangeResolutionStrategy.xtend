@@ -18,6 +18,7 @@ import tools.vitruv.framework.views.util.ResourceCopier
 import static com.google.common.base.Preconditions.checkArgument
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -50,13 +51,15 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
             resource.URI, String.join(", ", proxies.map[toString]))
     }
 
-    override getChangeSequenceBetween(Resource newState, Resource oldState) {
+    override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver uuidResolver) {
         checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
         newState.checkNoProxies("new state")
         oldState.checkNoProxies("old state")
         val monitoredResourceSet = new ResourceSetImpl()
         val currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet)
-        return currentStateCopy.record [
+        val resolver = UuidResolver.create(monitoredResourceSet)
+        uuidResolver.resolveResource(oldState, currentStateCopy, resolver)
+        return currentStateCopy.record(resolver) [
             if (oldState.URI != newState.URI) {
                 currentStateCopy.URI = newState.URI
             }
@@ -72,24 +75,26 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         val monitoredResourceSet = new ResourceSetImpl()
         val newResource = monitoredResourceSet.createResource(newState.URI)
         newResource.contents.clear()
-        return newResource.record [
+        return newResource.record(UuidResolver.create(monitoredResourceSet)) [
             newResource.contents += EcoreUtil.copyAll(newState.contents)
         ]
     }
 
-    override getChangeSequenceForDeleted(Resource oldState) {
+    override getChangeSequenceForDeleted(Resource oldState, UuidResolver uuidResolver) {
         checkArgument(oldState !== null, "old state must not be null!")
         oldState.checkNoProxies("old state")
         // Setup resolver and copy state:
         val monitoredResourceSet = new ResourceSetImpl()
         val currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet)
-        return currentStateCopy.record [
+        val resolver = UuidResolver.create(monitoredResourceSet)
+    	uuidResolver.resolveResource(oldState, currentStateCopy, resolver)
+        return currentStateCopy.record(resolver) [
             currentStateCopy.contents.clear()
         ]
     }
 
-    private def <T extends Notifier> record(Resource resource, ()=>void function) {
-        try (val changeRecorder = new ChangeRecorder(resource.resourceSet)) {
+    private def <T extends Notifier> record(Resource resource, UuidResolver uuidResolver, ()=>void function) {
+    	try (val changeRecorder = new ChangeRecorder(resource.resourceSet, uuidResolver)) {
             changeRecorder.beginRecording
             changeRecorder.addToRecording(resource)
             function.apply()
