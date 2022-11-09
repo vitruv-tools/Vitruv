@@ -152,7 +152,7 @@ public class ChangeDerivingViewTest {
 		public void withPreviousModification() throws Exception {
 			try (ChangeDerivingView view = new ChangeDerivingView(new BasicView(mockViewType, mockChangeableViewSource,
 					mockViewSelection), new DefaultStateBasedChangeResolutionStrategy())) {
-				view.modifyContents((resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
+				view.modifyContents((resourceSet, uuidResolver) -> resourceSet.createResource(URI.createURI("test://test.aet")));
 				assertThrows(IllegalStateException.class, () -> view.update());
 			}
 		}

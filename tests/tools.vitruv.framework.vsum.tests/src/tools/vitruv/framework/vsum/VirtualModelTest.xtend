@@ -33,6 +33,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.clai
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
 import static extension tools.vitruv.framework.vsum.VirtualModelTestUtil.*
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
@@ -51,7 +52,8 @@ class VirtualModelTest {
 	def void propagateIntoVirtualModel() {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
@@ -70,7 +72,8 @@ class VirtualModelTest {
 	def void propagateIntoVirtualModelWithConsistency() {
 		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
@@ -93,7 +96,8 @@ class VirtualModelTest {
 	def void singleChangeForRootElementInMultipleResource() {
 		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val containedRoot = aet.Root
@@ -123,7 +127,8 @@ class VirtualModelTest {
 	def void singleChangeForElementContainedInRootElementInMultipleResource() {
 		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val containedRoot = aet.Root
@@ -160,7 +165,8 @@ class VirtualModelTest {
 	def void savedVirtualModel() {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
@@ -180,7 +186,8 @@ class VirtualModelTest {
 	def void reloadVirtualModel() {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val root = aet.Root
@@ -209,7 +216,8 @@ class VirtualModelTest {
 	def void reloadVirtualModelWithConsistency() {
 		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val root = aet.Root
@@ -238,7 +246,8 @@ class VirtualModelTest {
 	def void moveCorrespondingToOtherResourceAndBack() {
 		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		val changeRecorder = new ChangeRecorder(resourceSet)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		val changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val root = aet.Root
@@ -275,7 +284,8 @@ class VirtualModelTest {
 	def void createView() {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		virtualModel.createAndPropagateRoot(resourceSet, uuidResolver, ROOT_ID)
 		val testView = virtualModel.createTestView
 		// Check initial state:
 		assertThat(new HashSet(testView.rootObjects), not(is(emptySet())))
@@ -290,11 +300,12 @@ class VirtualModelTest {
 	def void updateView() {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		virtualModel.createAndPropagateRoot(resourceSet, uuidResolver, ROOT_ID)
 		val testView = virtualModel.createTestView
 
 		// Modify model
-		virtualModel.propagateChange(resourceSet.recordChanges [
+		virtualModel.propagateChange(resourceSet.recordChanges(uuidResolver) [
 			val resource = resourceSet.resources.claimOne
 			resource.firstRootEObject as Root => [
 				multiValuedContainmentEReference += aet.NonRoot => [
@@ -321,7 +332,8 @@ class VirtualModelTest {
 	def void commitView() {
 		val virtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
-		virtualModel.createAndPropagateRoot(resourceSet, ROOT_ID)
+		val uuidResolver = UuidResolver.create(resourceSet)
+		virtualModel.createAndPropagateRoot(resourceSet, uuidResolver, ROOT_ID)
 		val testView = virtualModel.createTestView.withChangeRecordingTrait
 
 		// Modify view:
@@ -358,8 +370,8 @@ class VirtualModelTest {
 		projectFolder.resolve("vsum")
 	}
 
-	def private createAndPropagateRoot(VirtualModel virtualModel, ResourceSet resourceSet, String rootId) {
-		virtualModel.propagateChange(resourceSet.recordChanges [
+	def private createAndPropagateRoot(VirtualModel virtualModel, ResourceSet resourceSet, UuidResolver uuidResolver, String rootId) {
+		virtualModel.propagateChange(resourceSet.recordChanges(uuidResolver) [
 			resourceSet.createResource(projectFolder.createTestModelResourceUri("")) => [
 				contents += aet.Root => [
 					id = rootId

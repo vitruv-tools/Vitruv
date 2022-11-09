@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
 import static org.junit.jupiter.api.Assertions.assertThrows
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 
@@ -33,7 +34,20 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	@MethodSource("strategiesToTest")
 	def void testNullResources(StateBasedChangeResolutionStrategy strategyToTest) {
 		val Resource nullResource = null
-		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceBetween(nullResource, nullResource)]
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceForCreated(nullResource)]
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceBetween(nullResource, nullResource, uuidResolver)]
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceForDeleted(nullResource, uuidResolver)]
+	}
+	
+	/**
+	 * Tests invalid input: null instead of uuid resolver.
+	 */
+	@ParameterizedTest()
+	@MethodSource("strategiesToTest")
+	def void testNullUuidResolver(StateBasedChangeResolutionStrategy strategyToTest) {
+		val UuidResolver nullUuidResolver = null
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceBetween(umlModel, umlCheckpoint, nullUuidResolver)]
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceForDeleted(umlModel, nullUuidResolver)]
 	}
 
 }

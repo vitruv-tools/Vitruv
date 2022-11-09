@@ -149,7 +149,7 @@ public class ChangeRecordingViewTest {
 		@DisplayName("with previous modification")
 		public void withPreviousModification() throws Exception {
 			try (ChangeRecordingView view = new ChangeRecordingView(new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
-				view.modifyContents((resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
+				view.modifyContents((resourceSet, uuidResolver) -> resourceSet.createResource(URI.createURI("test://test.aet")));
 				assertThrows(IllegalStateException.class, () -> view.update());
 			}
 		}

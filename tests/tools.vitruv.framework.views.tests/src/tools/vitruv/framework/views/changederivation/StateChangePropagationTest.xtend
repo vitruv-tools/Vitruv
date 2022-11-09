@@ -29,6 +29,7 @@ import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import tools.vitruv.change.atomic.uuid.UuidResolver
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -50,7 +51,10 @@ abstract class StateChangePropagationTest {
 	var ChangeRecorder changeRecorder
 	@Accessors(PROTECTED_GETTER)
 	var ResourceSet resourceSet
+	@Accessors(PROTECTED_GETTER)
+	var UuidResolver uuidResolver
 	var ResourceSet checkpointResourceSet
+	var UuidResolver checkpointUuidResolver
 
 	/**
 	 * Creates the strategy, sets up the test model and prepares everything for determining changes.
@@ -60,8 +64,10 @@ abstract class StateChangePropagationTest {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
 		resourceSet = new ResourceSetImpl().withGlobalFactories()
+		uuidResolver = UuidResolver.create(resourceSet)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories()
-		changeRecorder = new ChangeRecorder(resourceSet)
+		checkpointUuidResolver = UuidResolver.create(checkpointResourceSet)
+		changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
 		// Create mockup models:
 		resourceSet.record [
 			createPcmMockupModel()
@@ -97,7 +103,7 @@ abstract class StateChangePropagationTest {
 	protected def compareChanges(Resource model, Resource checkpoint, StateBasedChangeResolutionStrategy strategyToTest) {
 		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
-		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
+		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint, checkpointUuidResolver)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
@@ -163,7 +169,9 @@ abstract class StateChangePropagationTest {
 	}
 
 	private def Resource createCheckpoint(Resource original) {
-		return checkpointResourceSet.getResource(original.URI, true)
+		val resource = checkpointResourceSet.getResource(original.URI, true)
+		uuidResolver.resolveResource(original, resource, checkpointUuidResolver)
+		return resource
 	}
 
 	protected def URI getModelURI(String modelFileName) {
