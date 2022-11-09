@@ -108,18 +108,17 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private void readModelsFile() throws IOException {
+		List<URI> modelUris;
 		try {
-			List<URI> modelUris = Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream().map(URI::createURI).collect(Collectors.toList());
-			for (URI uri : modelUris) {
-				loadOrCreateResource(modelsResourceSet, uri);
-			}
-			uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
-			for (URI uri : modelUris) {
-				createOrLoadModel(uri);
-			}
+			modelUris = Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream().map(URI::createURI).collect(Collectors.toList());
+			
 		} catch (NoSuchFileException e) {
 			// There are no existing models, so don't do anything
+			return;
 		}
+		modelUris.forEach(uri -> loadOrCreateResource(modelsResourceSet, uri));
+		uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
+		modelUris.forEach(this::createOrLoadModel);
 	}
 
 	@Override
