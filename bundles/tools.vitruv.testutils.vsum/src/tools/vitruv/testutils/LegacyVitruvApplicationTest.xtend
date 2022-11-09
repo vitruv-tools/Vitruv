@@ -24,7 +24,8 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	NonTransactionalTestView testView
 
 	override generateTestView(Path testProjectPath, Path vsumPath) {
-		val testView = new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath, changePropagationSpecifications, uriMode)
+		val testView = new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath, changePropagationSpecifications,
+			uriMode)
 		testView.disposeViewResourcesAfterPropagation = false
 		this.testView = testView
 		return testView
@@ -39,7 +40,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, tag).filter(type)
 		}
 	}
-	
+
 	private def getInternalVirtualModel() {
 		return virtualModel as InternalVirtualModel
 	}
@@ -49,8 +50,10 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	}
 
 	private def dispatch EObject resolveInVirtualModel(EObject object) {
+		// TODO: JW as soon as this class becomes not needed anymore, we should hide the tools.vitruv.change.atomic.id package in tools.vitruv.change.atomic (of Vitruv-Change repository).
 		if (object.eResource !== null) {
-			internalVirtualModel.getModelInstance(object.eResource.URI).resource.getEObject(object.hierarchicUriFragment)
+			internalVirtualModel.getModelInstance(object.eResource.URI).resource.getEObject(
+				object.hierarchicUriFragment)
 		}
 	}
 
