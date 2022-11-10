@@ -40,10 +40,14 @@ class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector
 		view.modifyContents [ viewResourceSet, uuidResolver |
 			viewResourceSet.resources.forEach[unload]
 			viewResourceSet.resources.clear
+			uuidResolver.endTransaction
+
 			val viewSources = view.viewSource.viewSourceModels
 			val selection = view.selection
 			val resourcesWithSelectedElements = viewSources.filter[contents.exists[selection.isViewObjectSelected(it)]]
-			val mapping = ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet) [selection.isViewObjectSelected(it)]
+			val mapping = ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet) [
+				selection.isViewObjectSelected(it)
+			]
 			view.viewSource.uuidResolver?.resolveResources(mapping, uuidResolver)
 		]
 	}
