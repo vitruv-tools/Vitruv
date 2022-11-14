@@ -15,6 +15,7 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.c
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.testutils.views.UriMode
+import tools.vitruv.change.propagation.ChangePropagationMode
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
@@ -27,6 +28,14 @@ abstract class ViewBasedVitruvApplicationTest {
 	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
 	 */
 	def protected abstract Iterable<? extends ChangePropagationSpecification> getChangePropagationSpecifications()
+	
+	/**
+	 * Determines the {@link ChangePropagationMode} to use in this test.
+	 * If <code>true</code> is returned, {@link ChangePropagationMode#TRANSITIVE_CYCLIC} is used.
+	 * If <code>false</code> is returned, {@link ChangePropagationMode#SINGLE_STEP} is used.
+	 * Defaults to <code>true</code>.
+	 */
+	def protected enableTransitiveCyclicChangePropagation() { true }
 
 	/**
 	 * Determines which {@link UriMode} should be used for this test.
@@ -37,11 +46,13 @@ abstract class ViewBasedVitruvApplicationTest {
 	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject Path testProjectPath,
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
+		val changePropagationMode = enableTransitiveCyclicChangePropagation ? ChangePropagationMode.TRANSITIVE_CYCLIC : ChangePropagationMode.SINGLE_STEP
 		userInteraction = new TestUserInteraction
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
+		virtualModel.changePropagationMode = changePropagationMode
 		this.testProjectPath = testProjectPath
 	}
 
