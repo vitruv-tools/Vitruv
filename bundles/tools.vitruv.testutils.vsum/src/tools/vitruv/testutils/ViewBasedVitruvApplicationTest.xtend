@@ -15,6 +15,7 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.c
 import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.testutils.views.UriMode
+import tools.vitruv.change.propagation.ChangePropagationMode
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
@@ -27,6 +28,12 @@ abstract class ViewBasedVitruvApplicationTest {
 	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
 	 */
 	def protected abstract Iterable<? extends ChangePropagationSpecification> getChangePropagationSpecifications()
+	
+	/**
+	 * Determines the {@link ChangePropagationMode} to be used in this test.
+	 * If <code>null</code> is returned, the default change propagation mode of the virtual model is used.
+	 */
+	abstract def protected ChangePropagationMode getChangePropagationMode()
 
 	/**
 	 * Determines which {@link UriMode} should be used for this test.
@@ -42,6 +49,10 @@ abstract class ViewBasedVitruvApplicationTest {
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
+		val propagationMode = changePropagationMode
+		if (propagationMode !== null) {
+			virtualModel.changePropagationMode = propagationMode
+		}
 		this.testProjectPath = testProjectPath
 	}
 
