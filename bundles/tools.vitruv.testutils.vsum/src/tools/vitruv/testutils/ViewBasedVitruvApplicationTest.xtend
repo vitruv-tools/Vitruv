@@ -30,10 +30,12 @@ abstract class ViewBasedVitruvApplicationTest {
 	def protected abstract Iterable<? extends ChangePropagationSpecification> getChangePropagationSpecifications()
 	
 	/**
-	 * Determines the {@link ChangePropagationMode} to be used in this test.
-	 * If <code>null</code> is returned, the default change propagation mode of the virtual model is used.
+	 * Determines the {@link ChangePropagationMode} to use in this test.
+	 * If <code>true</code> is returned, {@link ChangePropagationMode#TRANSITIVE_CYCLIC} is used.
+	 * If <code>false</code> is returned, {@link ChangePropagationMode#SINGLE_STEP} is used.
+	 * Defaults to <code>true</code>.
 	 */
-	abstract def protected ChangePropagationMode getChangePropagationMode()
+	def protected enableTransitiveCyclicChangePropagation() { true }
 
 	/**
 	 * Determines which {@link UriMode} should be used for this test.
@@ -44,15 +46,13 @@ abstract class ViewBasedVitruvApplicationTest {
 	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject Path testProjectPath,
 		@TestProject(variant="vsum") Path vsumPath) {
 		val changePropagationSpecifications = this.changePropagationSpecifications
+		val changePropagationMode = enableTransitiveCyclicChangePropagation ? ChangePropagationMode.TRANSITIVE_CYCLIC : ChangePropagationMode.SINGLE_STEP
 		userInteraction = new TestUserInteraction
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
-		val propagationMode = changePropagationMode
-		if (propagationMode !== null) {
-			virtualModel.changePropagationMode = propagationMode
-		}
+		virtualModel.changePropagationMode = changePropagationMode
 		this.testProjectPath = testProjectPath
 	}
 
