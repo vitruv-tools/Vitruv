@@ -30,6 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.google.common.collect.FluentIterable;
 
 import allElementTypes.Root;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewType;
@@ -124,6 +125,7 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("with empty source")
 		public void withNoElements() throws Exception {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
@@ -147,6 +149,7 @@ public class IdentityMappingViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
@@ -162,6 +165,7 @@ public class IdentityMappingViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(rootElement, true);
 			try (View view = basicViewType.createView(selector)) {
@@ -183,6 +187,7 @@ public class IdentityMappingViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
@@ -204,6 +209,7 @@ public class IdentityMappingViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
@@ -237,6 +243,7 @@ public class IdentityMappingViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
@@ -267,6 +274,7 @@ public class IdentityMappingViewTypeTest {
 			this.testResourceSet = withGlobalFactories(new ResourceSetImpl());
 			this.viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(testResourceSet.getResources());
+			when(viewSource.getUuidResolver()).thenReturn(UuidResolver.create(testResourceSet));
 		}
 
 		private Root createResourceWithSingleRoot(URI uri) {
