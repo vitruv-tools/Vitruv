@@ -1,13 +1,13 @@
 package tools.vitruv.testutils
 
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel
-import org.eclipse.xtend.lib.annotations.Delegate
 import java.nio.file.Path
-import tools.vitruv.framework.vsum.VirtualModelBuilder
+import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.change.propagation.ChangePropagationSpecification
-import tools.vitruv.testutils.views.UriMode
+import tools.vitruv.framework.vsum.VirtualModelBuilder
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.testutils.views.ChangePublishingTestView
 import tools.vitruv.testutils.views.NonTransactionalTestView
+import tools.vitruv.testutils.views.UriMode
 
 class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, NonTransactionalTestView {
 	InternalVirtualModel virtualModel
@@ -38,7 +38,8 @@ class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, Non
 	}
 
 	private def NonTransactionalTestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
-		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
+		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel,
+			virtualModel.uuidResolver)[virtualModel.getModelInstance(it).resource]
 	}
 
 	override getVirtualModel() {
