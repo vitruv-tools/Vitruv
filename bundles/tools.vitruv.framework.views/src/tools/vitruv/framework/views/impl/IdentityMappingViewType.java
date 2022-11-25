@@ -55,7 +55,7 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 			List<Resource> resourcesWithSelectedElements = viewSources.stream()
 					.filter(resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
 					.collect(Collectors.toList());
-			Map<Resource, Resource> mapping = ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements,
+			Map<Resource, Resource> mapping = new ResourceCopier().copyViewSourceResources(resourcesWithSelectedElements,
 					viewResourceSet, selection::isViewObjectSelected);
 			view.getViewSource().getUuidResolver().resolveResources(mapping, viewUuidResolver);
 		});

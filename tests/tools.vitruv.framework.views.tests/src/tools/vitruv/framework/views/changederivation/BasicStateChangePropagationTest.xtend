@@ -6,15 +6,17 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import tools.vitruv.change.atomic.EChangeIdManager
 import tools.vitruv.change.atomic.eobject.CreateEObject
 import tools.vitruv.change.atomic.eobject.DeleteEObject
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.change.atomic.root.RemoveRootEObject
+import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.testutils.Capture
 
-import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.CoreMatchers.instanceOf
+import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
@@ -22,7 +24,6 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.testutils.Capture.operator_doubleGreaterThan
-import tools.vitruv.change.atomic.uuid.UuidResolver
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
     private def getTestUri() {
@@ -39,16 +40,18 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
             ]
         ]
 
+        // Create empty resource to apply generated changes to
+        val validationResourceSet = new ResourceSetImpl()
+        val validationUuidResolver = UuidResolver.create(validationResourceSet)
+
         val changes = strategyToTest.getChangeSequenceForCreated(modelResource)
+        EChangeIdManager.setOrGenerateIds(changes.EChanges, uuidResolver)
+        changes.unresolve().resolveAndApply(validationUuidResolver)
+
         assertEquals(3, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
         assertEquals(1, changes.EChanges.filter(CreateEObject).size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
-
-        // Create empty resource to apply generated changes to
-        val validationResourceSet = new ResourceSetImpl()
-        val validationUuidResolver = UuidResolver.create(validationResourceSet)
-        changes.unresolve().resolveAndApply(validationUuidResolver)
 
         modelResource.save(null)
         assertEquals(1, validationResourceSet.resources.size)
@@ -60,7 +63,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     @MethodSource("strategiesToTest")
     def void deleteResource(StateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += aet.Root => [
                     id = "Root"
@@ -74,12 +77,13 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationUuidResolver = UuidResolver.create(validationResourceSet)
         uuidResolver.resolveResource(-modelResource, oldResource, validationUuidResolver)
 
-        val changes = strategyToTest.getChangeSequenceForDeleted(-modelResource, uuidResolver)
+        val changes = strategyToTest.getChangeSequenceForDeleted(-modelResource)
+        EChangeIdManager.setOrGenerateIds(changes.EChanges, uuidResolver)
+        changes.unresolve().resolveAndApply(validationUuidResolver)
+
         assertEquals(2, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
         assertEquals(1, changes.EChanges.filter(DeleteEObject).size)
-
-        changes.unresolve().resolveAndApply(validationUuidResolver)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertTrue(validationResourceSet.resources.get(0).contents.empty)
@@ -90,7 +94,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     @MethodSource("strategiesToTest")
     def void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += aet.Root => [
                     id = "Root"
@@ -104,15 +108,14 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationUuidResolver = UuidResolver.create(validationResourceSet)
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
-        (-modelResource).record [
+        (-modelResource).record(uuidResolver) [
             contents.clear()
             contents += aet.Root => [
                 id = "Root2"
             ]
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
-        changes.unresolve().resolveAndApply(validationUuidResolver)
+        strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -124,7 +127,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     def void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += root => [
                     id = "Root"
@@ -138,15 +141,14 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationUuidResolver = UuidResolver.create(validationResourceSet)
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             root.singleValuedEAttribute = 2
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
+        val changes = strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
+        EChangeIdManager.setOrGenerateIds(changes.EChanges, validationUuidResolver)
         assertEquals(1, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
-
-        changes.unresolve().resolveAndApply(validationUuidResolver)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -158,7 +160,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     def void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += root => [
                     id = "Root"
@@ -172,11 +174,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationUuidResolver = UuidResolver.create(validationResourceSet)
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             root.id = "Root2"
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
+        var changes = strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
@@ -196,8 +198,6 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
             }
         }
 
-        changes.unresolve().resolveAndApply(validationUuidResolver)
-
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
     }
@@ -209,7 +209,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val modelResource = new Capture<Resource>
         val root = aet.Root
         val containedRoot = aet.Root
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += root => [
                     id = "Root"
@@ -227,15 +227,13 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationUuidResolver = UuidResolver.create(validationResourceSet)
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             containedRoot.singleValuedEAttribute = 1
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
+        val changes = strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
         assertEquals(1, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
-
-        changes.unresolve().resolveAndApply(validationUuidResolver)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -248,7 +246,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val modelResource = new Capture<Resource>
         val root = aet.Root
         val containedRoot = aet.Root
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += root => [
                     id = "Root"
@@ -266,11 +264,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationUuidResolver = UuidResolver.create(validationResourceSet)
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             containedRoot.id = "ContainedRoot2"
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
+        val changes = strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
@@ -290,8 +288,6 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
             }
         }
 
-        changes.unresolve().resolveAndApply(validationUuidResolver)
-
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
     }
@@ -302,7 +298,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     def void moveResource(StateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += root => [
                     id = "Root"
@@ -317,18 +313,16 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
         val movedResourceUri = getModelURI("moved.allElementTypes")
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(movedResourceUri) => [
                 contents += root
             ] >> modelResource
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
+        val changes = strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
         assertEquals(2, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
         assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
-
-        changes.unresolve().resolveAndApply(validationUuidResolver)
 
         (-modelResource).save(null)
         assertEquals(2, validationResourceSet.resources.size)
@@ -341,7 +335,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     def void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest) {
         val modelResource = new Capture<Resource>
         val root = aet.Root
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             createResource(testUri) => [
                 contents += root => [
                     id = "Root"
@@ -356,7 +350,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         uuidResolver.resolveResource(-modelResource, oldState, validationUuidResolver)
 
         val movedResourceUri = getModelURI("moved.allElementTypes")
-        resourceSet.record [
+        resourceSet.record(uuidResolver) [
             (-modelResource).contents -= root
             root.singleValuedEAttribute = 2
             createResource(movedResourceUri) => [
@@ -364,13 +358,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
             ] >> modelResource
         ]
 
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationUuidResolver)
+        val changes = strategyToTest.getChangeSequenceBetweenAndApply(-modelResource, oldState, validationUuidResolver)
         assertEquals(3, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
         assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
-
-        changes.unresolve().resolveAndApply(validationUuidResolver)
 
         (-modelResource).save(null)
         assertEquals(2, validationResourceSet.resources.size)

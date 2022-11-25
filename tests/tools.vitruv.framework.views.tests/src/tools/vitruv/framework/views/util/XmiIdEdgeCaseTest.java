@@ -45,7 +45,7 @@ public class XmiIdEdgeCaseTest {
 	public void testSingleResourceCopy() {
 		Pair<XMLResource, Map<String, EObject>> umlResourcePair = createPopulatedUmlResourceAndIdMapping("my");
 		ResourceSet copyResourceSet = new ResourceSetImpl();
-		XMLResource copiedModel = (XMLResource) ResourceCopier.copyViewResource(umlResourcePair.get0(),
+		XMLResource copiedModel = (XMLResource) new ResourceCopier().copyViewResource(umlResourcePair.get0(),
 				copyResourceSet);
 		validateIds(copiedModel, umlResourcePair.get1());
 	}
@@ -57,7 +57,7 @@ public class XmiIdEdgeCaseTest {
 		Pair<XMLResource, Map<String, EObject>> umlResourcePair3 = createPopulatedUmlResourceAndIdMapping("my3");
 
 		ResourceSet copyResourceSet = new ResourceSetImpl();
-		Map<Resource, Resource> copiedModels = ResourceCopier.copyViewResources(
+		Map<Resource, Resource> copiedModels = new ResourceCopier().copyViewResources(
 				List.of(umlResourcePair.get0(), umlResourcePair2.get0(), umlResourcePair3.get0()), copyResourceSet);
 		XMLResource copiedModel = (XMLResource) copiedModels.get(umlResourcePair.get0());
 		XMLResource copiedModel2 = (XMLResource) copiedModels.get(umlResourcePair2.get0());

@@ -104,7 +104,7 @@ abstract class StateChangePropagationTest {
 	protected def compareChanges(Resource model, Resource checkpoint, StateBasedChangeResolutionStrategy strategyToTest) {
 		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
-		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint, checkpointUuidResolver)
+		val stateBasedChange = strategyToTest.getChangeSequenceBetweenAndApply(model, checkpoint, checkpointUuidResolver)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
@@ -180,4 +180,10 @@ abstract class StateChangePropagationTest {
 	protected def URI getModelURI(String modelFileName) {
 		return testProjectFolder.resolve("model").resolve(modelFileName).toFile().createFileURI()
 	}
+	
+	protected def getChangeSequenceBetweenAndApply(StateBasedChangeResolutionStrategy strategy, Resource newState, Resource oldState, UuidResolver oldStateUuidResolver) {
+    	val changes = strategy.getChangeSequenceBetween(newState, oldState)
+        EChangeIdManager.setOrGenerateIds(changes.EChanges, oldStateUuidResolver)
+        return changes.unresolve.resolveAndApply(oldStateUuidResolver)
+    }
 }

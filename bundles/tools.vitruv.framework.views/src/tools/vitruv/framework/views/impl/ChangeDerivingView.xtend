@@ -49,7 +49,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
 
     private def setupReferenceState() {
         originalStateViewResourceSet = new ResourceSetImpl
-        ResourceCopier.copyViewResources(view.viewResourceSet.resources, originalStateViewResourceSet)
+        new ResourceCopier().copyViewResources(view.viewResourceSet.resources, originalStateViewResourceSet)
         originalStateResourceMapping = new HashMap
         view.viewResourceSet.resources.forEach[resource | originalStateResourceMapping.put(resource, originalStateViewResourceSet.resources.findFirst[URI === resource.URI])]
     }
