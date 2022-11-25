@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import tools.vitruv.change.atomic.EChangeIdManager;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
@@ -40,7 +41,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
 	private final PersistableCorrespondenceModel correspondenceModel;
 	private final UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
-	private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet, uuidResolver);
+	private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
 
 	private final VsumFileSystemLayout fileSystemLayout;
 
@@ -178,6 +179,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		isRecording = false;
 		changeRecorder.endRecording();
 		TransactionalChange change = changeRecorder.getChange();
+		EChangeIdManager.setOrGenerateIds(change.getEChanges(), uuidResolver);
 		return change.containsConcreteChange() ? List.of(change) : List.of();
 	}
 
@@ -206,5 +208,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		changeRecorder.close();
 		modelsResourceSet.getResources().forEach(Resource::unload);
 		modelsResourceSet.getResources().clear();
+		uuidResolver.endTransaction();
 	}
 }

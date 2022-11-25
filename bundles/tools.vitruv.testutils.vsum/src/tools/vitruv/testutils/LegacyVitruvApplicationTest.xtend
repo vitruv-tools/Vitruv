@@ -1,15 +1,16 @@
 package tools.vitruv.testutils
 
-import tools.vitruv.testutils.VitruvApplicationTest
-import java.nio.file.Path
 import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
-import org.eclipse.emf.ecore.EObject
+import java.nio.file.Path
 import org.eclipse.emf.ecore.EClass
-import static com.google.common.base.Preconditions.checkArgument
-import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
+import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.testutils.views.NonTransactionalTestView
 import tools.vitruv.testutils.views.TestView
+
+import static com.google.common.base.Preconditions.checkArgument
+
+import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Named
 import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.Repository
+import tools.vitruv.change.atomic.EChangeIdManager
+import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
@@ -29,7 +31,6 @@ import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import tools.vitruv.change.atomic.uuid.UuidResolver
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -67,9 +68,9 @@ abstract class StateChangePropagationTest {
 		uuidResolver = UuidResolver.create(resourceSet)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories()
 		checkpointUuidResolver = UuidResolver.create(checkpointResourceSet)
-		changeRecorder = new ChangeRecorder(resourceSet, uuidResolver)
+		changeRecorder = new ChangeRecorder(resourceSet)
 		// Create mockup models:
-		resourceSet.record [
+		resourceSet.record(uuidResolver) [
 			createPcmMockupModel()
 			createUmlMockupModel()
 		]
@@ -162,10 +163,12 @@ abstract class StateChangePropagationTest {
 		}
 	}
 	
-	protected def <T extends Notifier> record(T notifier, (T) => void function) {
+	protected def <T extends Notifier> record(T notifier, UuidResolver uuidResolver, (T) => void function) {
 		notifier.startRecording
 		function.apply(notifier)
-		return notifier.endRecording
+		val result = notifier.endRecording
+		EChangeIdManager.setOrGenerateIds(result.EChanges, uuidResolver)
+		return result
 	}
 
 	private def Resource createCheckpoint(Resource original) {

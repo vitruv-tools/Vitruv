@@ -2,7 +2,6 @@ package tools.vitruv.framework.views.changederivation
 
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.change.composite.description.VitruviusChange
-import tools.vitruv.change.atomic.uuid.UuidResolver
 
 /** 
  * Strategy for resolving state-based changes to individual change sequences.
@@ -14,10 +13,9 @@ interface StateBasedChangeResolutionStrategy {
 	 * Resolves the state-based delta of two resources and returns the correlating change sequences.
 	 * @param newState is the new state of the resource, must not be <code>null</code> and must not contain proxies.
 	 * @param oldState is the current or old state of the resource, must not be <code>null</code> and must not contain proxies.
-	 * @param uuidResolver contains the UUIDs for the objects in <code>oldState</code>.
 	 * @return a {@link VitruviusChange} that contains the individual change sequence.
 	 */
-	def VitruviusChange getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver uuidResolver)
+	def VitruviusChange getChangeSequenceBetween(Resource newState, Resource oldState)
 	
 	/**
 	 * Resolves the state-based delta for creating the given resource and returns the correlating change sequences.
@@ -29,8 +27,7 @@ interface StateBasedChangeResolutionStrategy {
 	/**
 	 * Resolves the state-based delta for deleting the given resource and returns the correlating change sequences.
 	 * @param oldState is the new state of the resource, must not be <code>null</code> and must not contain proxies.
-	 * @param uuidResolver contains the UUIDs for the objects in <code>oldState</code>.
 	 * @return a {@link VitruviusChange} that contains the individual change sequence.
 	 */
-	def VitruviusChange getChangeSequenceForDeleted(Resource oldState, UuidResolver uuidResolver)
+	def VitruviusChange getChangeSequenceForDeleted(Resource oldState)
 }

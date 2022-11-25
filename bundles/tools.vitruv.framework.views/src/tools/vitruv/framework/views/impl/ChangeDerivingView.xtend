@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.change.atomic.EChangeIdManager
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
@@ -60,6 +61,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         allResources.addAll(view.viewResourceSet.resources) // consider newly added resources
         for (changedResource : allResources.filter[!URI.isPathmap]) {
             val change = generateChange(changedResource, originalStateResourceMapping.get(changedResource))
+            EChangeIdManager.setOrGenerateIds(change.EChanges, view.uuidResolver)
             if (change.containsConcreteChange) {
                 propagatedChanges += viewSource.propagateChange(change)
             }
@@ -79,9 +81,9 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         if (referenceState === null) {
             return changeResolutionStrategy.getChangeSequenceForCreated(newState)
         } else if (newState === null) {
-            return changeResolutionStrategy.getChangeSequenceForDeleted(referenceState, view.uuidResolver)
+            return changeResolutionStrategy.getChangeSequenceForDeleted(referenceState)
         } else {
-            return changeResolutionStrategy.getChangeSequenceBetween(newState, referenceState, view.uuidResolver)
+            return changeResolutionStrategy.getChangeSequenceBetween(newState, referenceState)
         }
     }
 
