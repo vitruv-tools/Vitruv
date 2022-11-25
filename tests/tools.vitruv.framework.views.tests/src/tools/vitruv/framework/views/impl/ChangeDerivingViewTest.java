@@ -27,11 +27,14 @@ import org.mockito.MockitoAnnotations;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
+import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.eobject.EobjectPackage;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
+import tools.vitruv.change.atomic.resolve.EChangeResolverAndApplicator;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
@@ -47,6 +50,8 @@ public class ChangeDerivingViewTest {
 	ChangeableViewSource mockChangeableViewSource;
 	@Mock
 	ModifiableViewSelection mockViewSelection;
+	@Mock
+	UuidResolver uuidResolver;
 
 	@BeforeEach
 	public void initializeMocks() {
@@ -209,6 +214,10 @@ public class ChangeDerivingViewTest {
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(testResourceUriString);
+				// validation expects the change to represent the new state, thus apply it
+				for (EChange change : argument.getValue().getEChanges()) {
+					EChangeResolverAndApplicator.applyForward(change, uuidResolver);
+				}
 				assertThat(argument.getValue().getEChanges().size(), is(3)); // Create, Insert, ReplaceId
 				assertThat(argument.getValue().getEChanges().get(1),
 						equalsDeeply(expectedChange,
