@@ -4,7 +4,7 @@ Bundle-Name: Vitruv Framework Views
 Bundle-SymbolicName: tools.vitruv.framework.views;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.views
 Bundle-Version: 3.0.1.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.apache.log4j,
  tools.vitruv.change.composite,
  org.eclipse.emf.compare,

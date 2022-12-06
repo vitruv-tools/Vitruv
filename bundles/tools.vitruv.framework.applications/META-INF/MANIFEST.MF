@@ -5,7 +5,7 @@ Bundle-Vendor: vitruv.tools
 Bundle-SymbolicName: tools.vitruv.framework.applications;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.applications
 Bundle-Version: 3.0.1.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: tools.vitruv.change.propagation;visibility:=reexport,
  com.google.guava,
  org.apache.log4j,
