@@ -5,7 +5,7 @@ Bundle-SymbolicName: tools.vitruv.testutils.vsum
 Bundle-Version: 3.0.1.qualifier
 Bundle-Vendor: tools.vitruv
 Automatic-Module-Name: tools.vitruv.testutils.vsum
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

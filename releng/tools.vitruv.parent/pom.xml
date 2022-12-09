@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>tools.vitruv</groupId>
 		<artifactId>parent</artifactId>
-		<version>2.0.2</version>
+		<version>2.1.1</version>
 	</parent>
 	<artifactId>framework-parent</artifactId>
 	<version>3.0.1-SNAPSHOT</version>
@@ -27,17 +27,17 @@
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/metamodels/demo/latest/</url>
+			<url>https://kit-sdq.github.io/updatesite/release/metamodels/demo/${sdq.demometamodels.version}</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/commons/latest/</url>
+			<url>https://kit-sdq.github.io/updatesite/release/commons/${sdq.commons.version}</url>
 		</repository>
 		<repository>
 			<id>XAnnotations</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/xannotations/latest/</url>
+			<url>https://kit-sdq.github.io/updatesite/release/xannotations/${sdq.xannotations.version}</url>
 		</repository>
 	</repositories>
 
