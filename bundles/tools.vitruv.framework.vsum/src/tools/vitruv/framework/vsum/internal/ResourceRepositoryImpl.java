@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -102,7 +101,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	private void writeModelsFile() throws IOException {
 		Files.write(fileSystemLayout.getModelsNamesFilesPath(),
-				modelsResourceSet.getResources().stream().map(Resource::getURI).map(URI::toString).collect(Collectors.toList()));
+				modelsResourceSet.getResources().stream().map(Resource::getURI).map(URI::toString).toList());
 	}
 
 	private void readModelsFile() throws IOException {
@@ -208,7 +207,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		isRecording = false;
 		fileExtensionRecorderMapping.getRecorders().forEach(ChangeRecorder::endRecording);
 		return fileExtensionRecorderMapping.getRecorders().stream().map(ChangeRecorder::getChange)
-				.filter(TransactionalChange::containsConcreteChange).collect(Collectors.toList());
+				.filter(TransactionalChange::containsConcreteChange).toList();
 	}
 
 	@Override
