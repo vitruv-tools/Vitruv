@@ -1,9 +1,5 @@
 package tools.vitruv.framework.views;
 
-import java.util.List;
-
-import tools.vitruv.change.composite.description.PropagatedChange;
-
 /**
  * A {@link View} that allows to commit its changes back to the underlying {@link ChangeableViewSource}.
  */
@@ -20,12 +16,11 @@ public interface CommittableView extends View {
 	 * commit, consider using {@link #commitChangesAndUpdate()} instead to perform
 	 * an update of the view afterwards.
 	 * 
-	 * @return the changes resulting from propagating the recorded changes
 	 * @throws IllegalStateException if called on a closed view
 	 * @see #isClosed()
 	 * @see #commitChangesAndUpdate()
 	 */
-	List<PropagatedChange> commitChanges();
+	void commitChanges();
 
 	/**
 	 * Convenience method for subsequent execution of {@link #commitChanges()} and
@@ -34,15 +29,13 @@ public interface CommittableView extends View {
 	 * elements from the {@link ChangeableViewSource} afterwards to reflect
 	 * potential further changes made during commit.
 	 * 
-	 * @return the changes resulting from propagating the recorded changes
 	 * @throws IllegalStateException if called on a closed view
 	 * @see #commitChanges()
 	 * @see #update()
 	 * @see #isClosed()
 	 */
-	default List<PropagatedChange> commitChangesAndUpdate() {
-		List<PropagatedChange> changes = commitChanges();
+	default void commitChangesAndUpdate() {
+		commitChanges();
 		update();
-		return changes;
 	}
 }
