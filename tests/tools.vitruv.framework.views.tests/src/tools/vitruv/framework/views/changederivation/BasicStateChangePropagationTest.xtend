@@ -163,7 +163,8 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
         val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
         val oldState = validationResourceSet.getResource(testUri, true)
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+        val unresolvedChanges = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+        val changes = unresolvedChanges.resolveAndApply(validationResourceSet)
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
@@ -251,7 +252,8 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
         val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
         val oldState = validationResourceSet.getResource(testUri, true)
-        val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+        val unresolvedChanges = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
+        val changes = unresolvedChanges.resolveAndApply(validationResourceSet)
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {

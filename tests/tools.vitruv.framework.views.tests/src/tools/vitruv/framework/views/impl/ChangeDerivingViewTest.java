@@ -206,15 +206,16 @@ public class ChangeDerivingViewTest {
 				ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 				view.commitChanges();
 				verify(mockChangeableViewSource).propagateChange(argument.capture());
+				VitruviusChange change = argument.getValue().resolveAndApply(root.eResource().getResourceSet());
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(testResourceUriString);
-				assertThat(argument.getValue().getEChanges().size(), is(3)); // Create, Insert, ReplaceId
-				assertThat(argument.getValue().getEChanges().get(1),
+				assertThat(change.getEChanges().size(), is(3)); // Create, Insert, ReplaceId
+				assertThat(change.getEChanges().get(1),
 						equalsDeeply(expectedChange,
 								ignoringFeatures(EobjectPackage.eINSTANCE.getEObjectAddedEChange_NewValueID(),
 										RootPackage.eINSTANCE.getRootEChange_Resource())));
-				assertThat(argument.getValue().getEChanges().get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
+				assertThat(change.getEChanges().get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
 			}
 		}
 	}

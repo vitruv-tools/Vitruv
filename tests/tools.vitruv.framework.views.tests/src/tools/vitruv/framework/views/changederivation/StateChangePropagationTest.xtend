@@ -97,8 +97,9 @@ abstract class StateChangePropagationTest {
 	protected def compareChanges(Resource model, Resource checkpoint, StateBasedChangeResolutionStrategy strategyToTest) {
 		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
-		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
-		assertNotNull(stateBasedChange)
+		val unresolvedStateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
+		assertNotNull(unresolvedStateBasedChange)
+		val stateBasedChange = unresolvedStateBasedChange.resolveAndApply(checkpoint.resourceSet)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
 		val deltaBasedChangedObjects = deltaBasedChange.affectedAndReferencedEObjects

@@ -93,7 +93,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
             changeRecorder.beginRecording
             changeRecorder.addToRecording(resource)
             function.apply()
-            return changeRecorder.endRecording
+            return changeRecorder.endRecording.unresolve
         }
     }
 
