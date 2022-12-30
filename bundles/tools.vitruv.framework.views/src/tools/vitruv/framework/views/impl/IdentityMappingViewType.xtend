@@ -2,7 +2,6 @@ package tools.vitruv.framework.views.impl
 
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.framework.views.ChangeableViewSource
-import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.ViewSource
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector
@@ -49,7 +48,7 @@ class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector
 		]
 	}
 	
-	override <V extends ModifiableView & CommittableView> commitViewChanges(V view, VitruviusChange viewChange) {
+	override commitViewChanges(ModifiableView view, VitruviusChange viewChange) {
 		view.viewSource.propagateChange(viewChange)
 	}
 	

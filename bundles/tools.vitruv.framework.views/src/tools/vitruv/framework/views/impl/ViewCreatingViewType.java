@@ -2,7 +2,6 @@ package tools.vitruv.framework.views.impl;
 
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ChangeableViewSource;
-import tools.vitruv.framework.views.CommittableView;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 
@@ -41,5 +40,5 @@ public interface ViewCreatingViewType<S extends ViewSelector> extends ViewType<S
 	 * @param view       is the modified view.
 	 * @param viewChange are the changes performed to the view.
 	 */
-	<V extends ModifiableView & CommittableView> void commitViewChanges(V view, VitruviusChange viewChange);
+	void commitViewChanges(ModifiableView view, VitruviusChange viewChange);
 }
