@@ -35,7 +35,8 @@ public interface ViewCreatingViewType<S extends ViewSelector> extends ViewType<S
 	 * underlying {@link ChangeableViewSource}. Since view elements do not
 	 * necessarily correspond to elements of the underlying view source, the view
 	 * type is responsible for transforming the given {@link VitruviusChange} such
-	 * that the underlying view source can process it.
+	 * that the underlying view source can process it. The given changes must use
+	 * hierarchical IDs and may be unresolved.
 	 * 
 	 * @param view       is the modified view.
 	 * @param viewChange are the changes performed to the view.
