@@ -333,19 +333,19 @@ public class ChangeRecordingViewTest {
 			ArgumentCaptor<VitruviusChange> argument = ArgumentCaptor.forClass(VitruviusChange.class);
 			verify(mockChangeableViewSource).propagateChange(argument.capture());
 			List<EChange> capturedEChanges = argument.getValue().getEChanges();
-			assertThat(capturedEChanges.size(), is(4)); // Create, Insert, Delete, ReplaceValue
+			assertThat(capturedEChanges.size(), is(4)); // Create, Insert, ReplaceValue, Delete
 			assertThat(capturedEChanges.get(0), instanceOf(CreateEObject.class));
 			assertThat(capturedEChanges.get(1), instanceOf(ReplaceSingleValuedEReference.class));
-			assertThat(capturedEChanges.get(2), instanceOf(DeleteEObject.class));
 			ReplaceSingleValuedEAttribute<EObject, Object> replaceIdChange = AttributeFactory.eINSTANCE
 					.createReplaceSingleValuedEAttribute();
 			replaceIdChange.setAffectedEObject(secondNonRoot);
 			replaceIdChange.setAffectedFeature(AllElementTypesPackage.eINSTANCE.getIdentified_Id());
 			replaceIdChange.setNewValue("second");
-			assertThat(capturedEChanges.get(3),
+			assertThat(capturedEChanges.get(2),
 					equalsDeeply(replaceIdChange,
 							ignoringFeatures(AttributePackage.eINSTANCE.getSubtractiveAttributeEChange_OldValue(),
 									FeaturePackage.eINSTANCE.getFeatureEChange_AffectedEObjectID())));
+			assertThat(capturedEChanges.get(3), instanceOf(DeleteEObject.class));
 		}
 
 		@Test
