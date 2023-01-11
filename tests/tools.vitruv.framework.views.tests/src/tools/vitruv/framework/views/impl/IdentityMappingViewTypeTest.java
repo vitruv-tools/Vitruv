@@ -8,13 +8,17 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -26,10 +30,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 
 import com.google.common.collect.FluentIterable;
 
 import allElementTypes.Root;
+import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeFactory;
+import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewType;
@@ -336,6 +347,84 @@ public class IdentityMappingViewTypeTest {
 				basicViewType.updateView(view);
 				assertThat(view.getRootObjects().size(), is(1));
 				assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRoot)));
+			}
+		}
+	}
+	
+	@Nested
+	@DisplayName("commit view changes")
+	class CommitViewChanges {
+		private IdentityMappingViewType basicViewType;
+		private ResourceSet testResourceSet;
+		private ModifiableView view;
+		private ChangeableViewSource viewSource;
+
+		@BeforeEach
+		void initializeViewTypeAndResourceSetAndViewSource() {
+			this.basicViewType = new IdentityMappingViewType("name");
+			this.testResourceSet = withGlobalFactories(new ResourceSetImpl());
+			this.view = mock(ModifiableView.class);
+			this.viewSource = mock(ChangeableViewSource.class);
+			when(view.getViewSource()).thenReturn(viewSource);
+			when(viewSource.getViewSourceModels()).thenReturn(testResourceSet.getResources());
+		}
+		
+		private Root createResourceWithSingleRoot(URI uri) {
+			Resource resource = testResourceSet.createResource(uri);
+			Root rootElement = aet.Root();
+			rootElement.setId("testid");
+			resource.getContents().add(rootElement);
+			return rootElement;
+		}
+		
+		@Test
+		@DisplayName("with null changes")
+		void withNull() {
+			assertThrows(NullPointerException.class, () -> basicViewType.commitViewChanges(view, null));
+		}
+		
+		@Test
+		@DisplayName("with null view")
+		void withNullView() {
+			VitruviusChange someChange = VitruviusChangeFactory.getInstance().createTransactionalChange(Set.of());
+			assertThrows(NullPointerException.class, () -> basicViewType.commitViewChanges(null, someChange));
+		}
+		
+		@ParameterizedTest
+		@MethodSource("testEmptyChanges")
+		@DisplayName("with empty changes")
+		void withEmptyChanges(VitruviusChange change) {
+			ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+			basicViewType.commitViewChanges(view, change);
+			verify(viewSource).propagateChange(changeArgument.capture());
+			assertEquals(changeArgument.getValue(), change);
+		}
+		
+		private static Stream<VitruviusChange> testEmptyChanges() {
+			VitruviusChangeFactory factory = VitruviusChangeFactory.getInstance();
+			return Stream.of(
+					factory.createTransactionalChange(Set.of()),
+					factory.createCompositeChange(Set.of())
+			);
+		}
+		
+		@Test
+		@DisplayName("with non-empty change")
+		void withNonEmptyChange() {
+			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
+			try (ChangeRecorder changeRecorder = new ChangeRecorder(testResourceSet)) {
+				changeRecorder.addToRecording(root);
+				changeRecorder.beginRecording();
+				root.setId("testid2");
+				changeRecorder.endRecording();
+				VitruviusChange change = changeRecorder.getChange().unresolve();
+				
+				ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+				basicViewType.commitViewChanges(view, change);
+				verify(viewSource).propagateChange(changeArgument.capture());
+				List<EChange> eChanges = changeArgument.getValue().unresolve().getEChanges();
+				assertThat(eChanges.size(), is(1));
+				assertThat(eChanges.get(0), equalsDeeply(change.getEChanges().get(0)));
 			}
 		}
 	}
