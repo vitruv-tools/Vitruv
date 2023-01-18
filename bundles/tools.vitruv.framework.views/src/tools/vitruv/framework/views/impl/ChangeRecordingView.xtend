@@ -40,10 +40,9 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
     override commitChanges() {
         view.checkNotClosed()
         changeRecorder.endRecording()
-        val propagatedChanges = viewSource.propagateChange(changeRecorder.change)
+        view.viewType.commitViewChanges(this, changeRecorder.change)
         view.viewChanged = false
         changeRecorder.beginRecording()
-        return propagatedChanges
     }
 
     override close() throws Exception {

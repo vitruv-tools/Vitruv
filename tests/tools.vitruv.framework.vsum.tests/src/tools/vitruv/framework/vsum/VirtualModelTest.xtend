@@ -337,8 +337,7 @@ class VirtualModelTest {
 		assertThat("view must have been modified", testView.isModified)
 
 		// Commit changes and assert VSUM was updated correctly
-		val changes = testView.commitChanges()
-		assertThat(new HashSet(changes), not(emptySet()))
+		testView.commitChanges()
 		assertThat("view source must have been changed", testView.outdated)
 		assertThat("view must not have been modified", !testView.isModified)
 

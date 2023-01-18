@@ -1,5 +1,6 @@
 package tools.vitruv.framework.views.impl
 
+import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.ViewSource
@@ -7,6 +8,7 @@ import tools.vitruv.framework.views.selectors.DirectViewElementSelector
 import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
+import static com.google.common.base.Preconditions.checkNotNull
 
 import static extension tools.vitruv.framework.views.util.ResourceCopier.requiresFullCopy
 
@@ -46,4 +48,11 @@ class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector
 			ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet) [selection.isViewObjectSelected(it)]
 		]
 	}
+	
+	override commitViewChanges(ModifiableView view, VitruviusChange viewChange) {
+		checkNotNull(view, "view must not be null")
+		checkNotNull(viewChange, "view change must not be null");
+		view.viewSource.propagateChange(viewChange)
+	}
+	
 }
