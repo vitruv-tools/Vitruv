@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.change.atomic.EChangeIdManager
+import tools.vitruv.change.atomic.EChangeUuidManager
 import tools.vitruv.change.atomic.eobject.CreateEObject
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference
@@ -372,7 +372,7 @@ class VirtualModelTest {
 	
 	private def endRecording(ChangeRecorder changeRecorder, UuidResolver uuidResolver) {
 		val change = changeRecorder.endRecording
-		EChangeIdManager.setOrGenerateIds(change.EChanges, uuidResolver)
+		EChangeUuidManager.setOrGenerateIds(change.EChanges, uuidResolver)
 		return change
 	}
 

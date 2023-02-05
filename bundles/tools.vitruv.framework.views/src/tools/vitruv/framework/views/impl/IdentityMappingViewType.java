@@ -1,6 +1,7 @@
 package tools.vitruv.framework.views.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,16 +9,24 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import tools.vitruv.change.atomic.EChangeUuidManager;
+import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ChangeableViewSource;
+import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
+import tools.vitruv.framework.views.ViewSource;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
 import tools.vitruv.framework.views.util.ResourceCopier;
 
 /**
- * A view type that allows creating views based on a basic element-wise selection mechanism
- * and providing a one-to-one (identity) mapping of elements within the {@link ViewSource}
- * to a created {@link View}.
+ * A view type that allows creating views based on a basic element-wise
+ * selection mechanism and providing a one-to-one (identity) mapping of elements
+ * within the {@link ViewSource} to a created {@link View}.
  */
 public class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector> {
 	public IdentityMappingViewType(String name) {
@@ -45,19 +54,33 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 
 	@Override
 	public void updateView(ModifiableView view) {
-		view.modifyContents((viewResourceSet, viewUuidResolver) -> {
+		view.modifyContents((viewResourceSet) -> {
 			viewResourceSet.getResources().forEach(Resource::unload);
 			viewResourceSet.getResources().clear();
-			viewUuidResolver.endTransaction();
-
-			Collection<Resource> viewSources = view.getViewSource().getViewSourceModels();
-			ViewSelection selection = view.getSelection();
-			List<Resource> resourcesWithSelectedElements = viewSources.stream()
-					.filter(resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
-					.collect(Collectors.toList());
-			Map<Resource, Resource> mapping = new ResourceCopier().copyViewSourceResources(resourcesWithSelectedElements,
-					viewResourceSet, selection::isViewObjectSelected);
-			view.getViewSource().getUuidResolver().resolveResources(mapping, viewUuidResolver);
+			createViewResources(view, viewResourceSet);
 		});
+	}
+
+	@Override
+	public void commitViewChanges(ModifiableView view, VitruviusChange viewChange) {
+		ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
+		IdResolver viewSourceCopyIdResolver = IdResolver.create(viewSourceCopyResourceSet);
+		UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
+		Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
+		view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
+
+		VitruviusChange resolvedChange = viewChange.unresolve().resolveAndApply(viewSourceCopyIdResolver);
+		EChangeUuidManager.setOrGenerateIds(resolvedChange.getEChanges(), viewSourceCopyUuidResolver);
+		view.getViewSource().propagateChange(resolvedChange.unresolve());
+	}
+
+	private Map<Resource, Resource> createViewResources(ModifiableView view, ResourceSet viewResourceSet) {
+		Collection<Resource> viewSources = view.getViewSource().getViewSourceModels();
+		ViewSelection selection = view.getSelection();
+		List<Resource> resourcesWithSelectedElements = viewSources.stream()
+				.filter(resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
+				.collect(Collectors.toList());
+		return ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet,
+				selection::isViewObjectSelected);
 	}
 }

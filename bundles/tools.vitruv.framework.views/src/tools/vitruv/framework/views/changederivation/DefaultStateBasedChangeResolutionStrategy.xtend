@@ -1,10 +1,7 @@
 package tools.vitruv.framework.views.changederivation
 
-import java.util.HashMap
-import java.util.Map
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.BasicMonitor
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.compare.EMFCompare
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl
@@ -12,24 +9,21 @@ import org.eclipse.emf.compare.merge.BatchMerger
 import org.eclipse.emf.compare.merge.IMerger
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.compare.utils.UseIdentifiers
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.change.atomic.eobject.CreateEObject
-import tools.vitruv.change.atomic.eobject.EObjectAddedEChange
-import tools.vitruv.change.atomic.eobject.EObjectExistenceEChange
-import tools.vitruv.change.atomic.eobject.EObjectSubtractedEChange
-import tools.vitruv.change.atomic.feature.FeatureEChange
-import tools.vitruv.change.composite.description.TransactionalChange
+import tools.vitruv.change.atomic.EChangeIdManager
+import tools.vitruv.change.atomic.id.IdResolver
+import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
-import static com.google.common.base.Preconditions.checkState
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
+import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward
+import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -66,15 +60,13 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         newState.checkNoProxies("new state")
         oldState.checkNoProxies("old state")
         val monitoredResourceSet = new ResourceSetImpl()
-        val resourceCopier = new ResourceCopier()
-        val currentStateCopy = resourceCopier.copyViewResource(oldState, monitoredResourceSet)
-        val change = currentStateCopy.record [
+        val currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet)
+        return currentStateCopy.record [
             if (oldState.URI != newState.URI) {
                 currentStateCopy.URI = newState.URI
             }
             compareStatesAndReplayChanges(newState, currentStateCopy)
         ]
-        return transformChangeToOriginalResourceSet(change, resourceCopier)
     }
 
     override getChangeSequenceForCreated(Resource newState) {
@@ -85,10 +77,9 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         val monitoredResourceSet = new ResourceSetImpl()
         val newResource = monitoredResourceSet.createResource(newState.URI)
         newResource.contents.clear()
-        val change = newResource.record [
+        return newResource.record [
             newResource.contents += EcoreUtil.copyAll(newState.contents)
         ]
-        return transformChangeToOriginalResourceSet(change, new ResourceCopier());
     }
 
     override getChangeSequenceForDeleted(Resource oldState) {
@@ -96,21 +87,32 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         oldState.checkNoProxies("old state")
         // Setup resolver and copy state:
         val monitoredResourceSet = new ResourceSetImpl()
-        val resourceCopier = new ResourceCopier()
-        val currentStateCopy = resourceCopier.copyViewResource(oldState, monitoredResourceSet)
-        val change = currentStateCopy.record [
+        val currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet)
+        return currentStateCopy.record [
             currentStateCopy.contents.clear()
         ]
-        return transformChangeToOriginalResourceSet(change, resourceCopier)
     }
 
     private def <T extends Notifier> record(Resource resource, ()=>void function) {
-    	try (val changeRecorder = new ChangeRecorder(resource.resourceSet)) {
+        try (val changeRecorder = new ChangeRecorder(resource.resourceSet)) {
             changeRecorder.beginRecording
             changeRecorder.addToRecording(resource)
             function.apply()
-            return changeRecorder.endRecording.unresolve
+            val recordedChanges = changeRecorder.endRecording
+            assignIds(recordedChanges, resource.resourceSet)
+            return recordedChanges.unresolve
         }
+    }
+    
+    private def void assignIds(VitruviusChange recordedChange, ResourceSet resourceSet) {
+    	val changes = recordedChange.EChanges
+    	val idResolver = IdResolver.create(resourceSet)
+    	val eChangeIdManager = new EChangeIdManager(idResolver)
+    	changes.toList.reverseView.forEach[applyBackward]
+		changes.forEach[ change |
+			eChangeIdManager.setOrGenerateIds(change)
+			change.applyForward(idResolver)
+		]
     }
 
     /**
@@ -129,61 +131,4 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
         val merger = new BatchMerger(mergerRegistry)
         merger.copyAllLeftToRight(differences, new BasicMonitor)
     }
-
-	/**
-	 * Replaces all elements in the change, which are in the {@code monitoredResourceSet},
-	 * with their counterparts in the originally provided resource set.
-	 */
-    private def TransactionalChange transformChangeToOriginalResourceSet(TransactionalChange change, ResourceCopier copier) {
-    	var Map<EObject, EObject> createdObjects = new HashMap()
-    	for (eChange : change.EChanges) {
-			switch eChange {
-				CreateEObject<EObject>:
-					eChange.affectedEObject = getOriginalForCopy(copier, eChange.affectedEObject, createdObjects, true)
-				EObjectExistenceEChange<EObject>:
-					eChange.affectedEObject = getOriginalForCopy(copier, eChange.affectedEObject, createdObjects, false)
-				FeatureEChange<EObject,?>:
-					eChange.affectedEObject = getOriginalForCopy(copier, eChange.affectedEObject, createdObjects, false)
-			}
-			switch eChange {
-				EObjectSubtractedEChange<EObject>:
-					if (eChange.oldValue !== null) {
-						eChange.oldValue = getOriginalForCopy(copier, eChange.oldValue, createdObjects, false)
-					}
-			}
-			switch eChange {
-				EObjectAddedEChange<EObject>:
-					if (eChange.newValue !== null) {
-						eChange.newValue = getOriginalForCopy(copier, eChange.newValue, createdObjects, true)
-					}
-			}
-		}
-    	return change
-    }
-
-    private def <T extends EObject> T getOriginalForCopy(ResourceCopier copier, T copy, Map<EObject, EObject> createdObjects, boolean isCreateChange) {
-    	if (isReadOnlyEObject(copy)) {
-    		return copy
-    	}
-    	var original = copier.getOriginalForCopy(copy)
-    	if (original === null) {
-    		original = createdObjects.get(copy)
-    		if (original === null && isCreateChange) {
-    			original = EcoreUtil.create(copy.eClass) as T
-    			createdObjects.put(copy, original)
-    		}
-    	}
-    	checkState(original !== null, "could not find original for %s", copy)
-    	checkState(original.eClass == copy.eClass, "mismatching classes for original %s and copy %s", original, copy)
-    	return original as T
-    }
-
-    private def isReadOnlyEObject(EObject eObject) {
-		return eObject.eResource() !== null && eObject.eResource().getURI() !== null
-				&& isReadOnlyUri(eObject.eResource().getURI());
-	}
-	
-	private def isReadOnlyUri(URI uri) {
-		return isPathmap(uri) || uri.isArchive();
-	}
 }

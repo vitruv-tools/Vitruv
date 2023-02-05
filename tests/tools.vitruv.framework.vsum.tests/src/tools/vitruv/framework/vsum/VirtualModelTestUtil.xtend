@@ -7,7 +7,7 @@ import java.nio.file.Path
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.change.atomic.EChange
-import tools.vitruv.change.atomic.EChangeIdManager
+import tools.vitruv.change.atomic.EChangeUuidManager
 import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.change.composite.MetamodelDescriptor
@@ -37,7 +37,7 @@ class VirtualModelTestUtil {
         recorder.beginRecording
         changesToPerform.run()
         val result = recorder.endRecording
-        EChangeIdManager.setOrGenerateIds(result.EChanges, uuidResolver)
+        EChangeUuidManager.setOrGenerateIds(result.EChanges, uuidResolver)
         recorder.close
         return result
     }
