@@ -8,7 +8,6 @@ import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionS
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.change.atomic.EChangeIdManager
 
 /**
  * A {@link View} that records changes to its resources and allows to propagate them 
@@ -41,12 +40,9 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
     override commitChanges() {
         view.checkNotClosed()
         changeRecorder.endRecording()
-        val recordedChange = changeRecorder.change
-        EChangeIdManager.setOrGenerateIds(recordedChange.EChanges, view.uuidResolver)
-        val propagatedChanges = viewSource.propagateChange(recordedChange)
+        view.viewType.commitViewChanges(this, changeRecorder.change)
         view.viewChanged = false
         changeRecorder.beginRecording()
-        return propagatedChanges
     }
 
     override close() throws Exception {

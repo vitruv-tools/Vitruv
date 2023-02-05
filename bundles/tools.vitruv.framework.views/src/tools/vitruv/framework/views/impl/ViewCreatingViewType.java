@@ -1,7 +1,9 @@
 package tools.vitruv.framework.views.impl;
 
-import tools.vitruv.framework.views.ViewType;
+import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelector;
+import tools.vitruv.framework.views.ViewType;
 
 /**
  * A specific view type that is able to create and update views. This is not its
@@ -27,4 +29,17 @@ public interface ViewCreatingViewType<S extends ViewSelector> extends ViewType<S
 	 * @param view is the view to be updated.
 	 */
 	void updateView(ModifiableView view);
+
+	/**
+	 * Commits the changes made to the view and its containing elements to the
+	 * underlying {@link ChangeableViewSource}. Since view elements do not
+	 * necessarily correspond to elements of the underlying view source, the view
+	 * type is responsible for transforming the given {@link VitruviusChange} such
+	 * that the underlying view source can process it. The given changes must use
+	 * hierarchical IDs and may be unresolved.
+	 * 
+	 * @param view       is the modified view.
+	 * @param viewChange are the changes performed to the view.
+	 */
+	void commitViewChanges(ModifiableView view, VitruviusChange viewChange);
 }

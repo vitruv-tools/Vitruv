@@ -15,8 +15,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Named
 import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.Repository
-import tools.vitruv.change.atomic.EChangeIdManager
-import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
@@ -52,10 +50,7 @@ abstract class StateChangePropagationTest {
 	var ChangeRecorder changeRecorder
 	@Accessors(PROTECTED_GETTER)
 	var ResourceSet resourceSet
-	@Accessors(PROTECTED_GETTER)
-	var UuidResolver uuidResolver
 	var ResourceSet checkpointResourceSet
-	var UuidResolver checkpointUuidResolver
 
 	/**
 	 * Creates the strategy, sets up the test model and prepares everything for determining changes.
@@ -65,12 +60,10 @@ abstract class StateChangePropagationTest {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
 		resourceSet = new ResourceSetImpl().withGlobalFactories()
-		uuidResolver = UuidResolver.create(resourceSet)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories()
-		checkpointUuidResolver = UuidResolver.create(checkpointResourceSet)
 		changeRecorder = new ChangeRecorder(resourceSet)
 		// Create mockup models:
-		resourceSet.record(uuidResolver) [
+		resourceSet.record [
 			createPcmMockupModel()
 			createUmlMockupModel()
 		]
@@ -104,8 +97,9 @@ abstract class StateChangePropagationTest {
 	protected def compareChanges(Resource model, Resource checkpoint, StateBasedChangeResolutionStrategy strategyToTest) {
 		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
-		val stateBasedChange = strategyToTest.getChangeSequenceBetweenAndApply(model, checkpoint, checkpointUuidResolver)
-		assertNotNull(stateBasedChange)
+		val unresolvedStateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
+		assertNotNull(unresolvedStateBasedChange)
+		val stateBasedChange = unresolvedStateBasedChange.resolveAndApply(checkpoint.resourceSet)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
 		val deltaBasedChangedObjects = deltaBasedChange.affectedAndReferencedEObjects
@@ -163,27 +157,17 @@ abstract class StateChangePropagationTest {
 		}
 	}
 	
-	protected def <T extends Notifier> record(T notifier, UuidResolver uuidResolver, (T) => void function) {
+	protected def <T extends Notifier> record(T notifier, (T) => void function) {
 		notifier.startRecording
 		function.apply(notifier)
-		val result = notifier.endRecording
-		EChangeIdManager.setOrGenerateIds(result.EChanges, uuidResolver)
-		return result
+		return notifier.endRecording
 	}
 
 	private def Resource createCheckpoint(Resource original) {
-		val resource = checkpointResourceSet.getResource(original.URI, true)
-		uuidResolver.resolveResource(original, resource, checkpointUuidResolver)
-		return resource
+		return checkpointResourceSet.getResource(original.URI, true)
 	}
 
 	protected def URI getModelURI(String modelFileName) {
 		return testProjectFolder.resolve("model").resolve(modelFileName).toFile().createFileURI()
 	}
-	
-	protected def getChangeSequenceBetweenAndApply(StateBasedChangeResolutionStrategy strategy, Resource newState, Resource oldState, UuidResolver oldStateUuidResolver) {
-    	val changes = strategy.getChangeSequenceBetween(newState, oldState)
-        EChangeIdManager.setOrGenerateIds(changes.EChanges, oldStateUuidResolver)
-        return changes.unresolve.resolveAndApply(oldStateUuidResolver)
-    }
 }

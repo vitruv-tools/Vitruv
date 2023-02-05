@@ -7,8 +7,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.change.atomic.EChangeIdManager
 import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChangeFactory
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
@@ -49,25 +49,23 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
 
     private def setupReferenceState() {
         originalStateViewResourceSet = new ResourceSetImpl
-        new ResourceCopier().copyViewResources(view.viewResourceSet.resources, originalStateViewResourceSet)
+        ResourceCopier.copyViewResources(view.viewResourceSet.resources, originalStateViewResourceSet)
         originalStateResourceMapping = new HashMap
         view.viewResourceSet.resources.forEach[resource | originalStateResourceMapping.put(resource, originalStateViewResourceSet.resources.findFirst[URI === resource.URI])]
     }
 
     override commitChanges() {
         view.checkNotClosed()
-        val propagatedChanges = new ArrayList()
+        val changes = new ArrayList()
         val allResources = new HashSet(originalStateResourceMapping.keySet)
         allResources.addAll(view.viewResourceSet.resources) // consider newly added resources
         for (changedResource : allResources.filter[!URI.isPathmap]) {
             val change = generateChange(changedResource, originalStateResourceMapping.get(changedResource))
-            EChangeIdManager.setOrGenerateIds(change.EChanges, view.uuidResolver)
-            if (change.containsConcreteChange) {
-                propagatedChanges += viewSource.propagateChange(change)
-            }
+            changes += change
         }
+        val change = VitruviusChangeFactory.instance.createCompositeChange(changes)
+        view.viewType.commitViewChanges(this, change)
         view.viewChanged = false
-        return propagatedChanges
     }
 
     override close() throws Exception {
