@@ -51,7 +51,6 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	}
 
 	private def dispatch EObject resolveInVirtualModel(EObject object) {
-		// TODO: JW as soon as this class becomes not needed anymore, we should hide the tools.vitruv.change.atomic.id package in tools.vitruv.change.atomic (of Vitruv-Change repository).
 		if (object.eResource !== null) {
 			internalVirtualModel.getModelInstance(object.eResource.URI).resource.getEObject(
 				object.hierarchicUriFragment)
