@@ -6,7 +6,8 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.Resour
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -40,10 +41,10 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 					if (!resource.getContents().isEmpty() && ResourceCopier.requiresFullCopy(resource)) {
 						// We can only copy writable UML resources as a whole, so no option to select
 						// specific root elements
-						return List.of(resource.getContents().get(0));
+						return Stream.of(resource.getContents().get(0));
 					}
-					return resource.getContents();
-				}).flatMap(List::stream).filter(it -> it != null).collect(Collectors.toList()));
+					return resource.getContents().stream();
+				}).flatMap(Function.identity()).filter(it -> it != null).toList());
 	}
 
 	@Override
@@ -78,8 +79,7 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 		Collection<Resource> viewSources = view.getViewSource().getViewSourceModels();
 		ViewSelection selection = view.getSelection();
 		List<Resource> resourcesWithSelectedElements = viewSources.stream()
-				.filter(resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
-				.collect(Collectors.toList());
+				.filter(resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected)).toList();
 		return ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet,
 				selection::isViewObjectSelected);
 	}
