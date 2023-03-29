@@ -9,9 +9,9 @@ import tools.vitruv.framework.views.View;
  */
 public class ViewCache {
 	
-	private ViewCache() {
-		throw new IllegalAccessError();
-	}
+	private ViewCache() throws InstantiationException {
+        throw new InstantiationException("Cannot be instantiated");
+    }
 	
 	private static final HashMap<String, View> cache = new HashMap<>();
 	

@@ -24,9 +24,10 @@ import tools.vitruv.framework.remote.common.serializer.VitruviusChangeSerializer
  */
 public class JsonMapper {
 
-    private JsonMapper() {
-        throw new IllegalAccessError();
+    private JsonMapper() throws InstantiationException {
+        throw new InstantiationException("Cannot be instantiated");
     }
+
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
