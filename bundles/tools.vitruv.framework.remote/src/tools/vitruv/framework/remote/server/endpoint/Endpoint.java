@@ -1,8 +1,8 @@
-package tools.vitruv.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.endpoint;
 
 import spark.Request;
 import spark.Response;
-import tools.vitruv.remote.server.exception.ServerHaltingException;
+import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 
 /**
  * Represents an endpoint of a REST interface.

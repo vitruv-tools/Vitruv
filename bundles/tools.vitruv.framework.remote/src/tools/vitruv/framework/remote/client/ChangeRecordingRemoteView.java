@@ -1,4 +1,4 @@
-package tools.vitruv.remote.client;
+package tools.vitruv.framework.remote.client;
 
 import java.util.Collection;
 

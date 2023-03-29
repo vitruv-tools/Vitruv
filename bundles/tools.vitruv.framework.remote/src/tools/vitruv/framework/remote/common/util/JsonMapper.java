@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.util;
+package tools.vitruv.framework.remote.common.util;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.remote.common.deserializer.ResourceDeserializer;
-import tools.vitruv.remote.common.deserializer.ResourceSetDeserializer;
-import tools.vitruv.remote.common.deserializer.VitruviusChangeDeserializer;
-import tools.vitruv.remote.common.serializer.ResourceSerializer;
-import tools.vitruv.remote.common.serializer.ResourceSetSerializer;
-import tools.vitruv.remote.common.serializer.VitruviusChangeSerializer;
+import tools.vitruv.framework.remote.common.deserializer.ResourceDeserializer;
+import tools.vitruv.framework.remote.common.deserializer.ResourceSetDeserializer;
+import tools.vitruv.framework.remote.common.deserializer.VitruviusChangeDeserializer;
+import tools.vitruv.framework.remote.common.serializer.ResourceSerializer;
+import tools.vitruv.framework.remote.common.serializer.ResourceSetSerializer;
+import tools.vitruv.framework.remote.common.serializer.VitruviusChangeSerializer;
 
 /**
  * This mapper can be used to serialize objects and deserialize json in the context of vitruv.

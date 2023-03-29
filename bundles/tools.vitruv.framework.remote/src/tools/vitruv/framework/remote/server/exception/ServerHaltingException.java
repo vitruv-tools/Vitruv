@@ -1,9 +1,9 @@
-package tools.vitruv.remote.server.exception;
+package tools.vitruv.framework.remote.server.exception;
 
 /**
  * Represents an exception which should be thrown when the processing of a REST-request is halted due to an error.
  * An HTTP-status code must be provided, since this exception is caught by the
- * {@link tools.vitruv.remote.server.VitruvServer Server} in order to create error response messages.
+ * {@link tools.vitruv.framework.remote.server.VitruvServer Server} in order to create error response messages.
  */
 public class ServerHaltingException extends RuntimeException {
 

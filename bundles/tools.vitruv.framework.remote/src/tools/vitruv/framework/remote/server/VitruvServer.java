@@ -1,13 +1,13 @@
-package tools.vitruv.remote.server;
+package tools.vitruv.framework.remote.server;
 
 import java.util.HashSet;
 
 import spark.Spark;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.remote.common.util.ContentTypes;
-import tools.vitruv.remote.server.endpoint.Endpoint;
-import tools.vitruv.remote.server.endpoint.impl.*;
-import tools.vitruv.remote.server.exception.ServerHaltingException;
+import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.server.endpoint.Endpoint;
+import tools.vitruv.framework.remote.server.endpoint.impl.*;
+import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 
 /**
  * A vitruv server wraps a REST based API around a {@link tools.vitruv.framework.vsum.VirtualModel VSUM}. Therefore,

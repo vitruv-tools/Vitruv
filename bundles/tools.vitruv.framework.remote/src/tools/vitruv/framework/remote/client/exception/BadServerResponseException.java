@@ -1,4 +1,4 @@
-package tools.vitruv.remote.client.exception;
+package tools.vitruv.framework.remote.client.exception;
 
 public class BadServerResponseException extends RuntimeException {
 	private static final long serialVersionUID = -3664330903873102942L;

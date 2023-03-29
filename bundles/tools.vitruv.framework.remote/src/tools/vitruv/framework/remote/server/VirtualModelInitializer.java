@@ -1,4 +1,4 @@
-package tools.vitruv.remote.server;
+package tools.vitruv.framework.remote.server;
 
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 

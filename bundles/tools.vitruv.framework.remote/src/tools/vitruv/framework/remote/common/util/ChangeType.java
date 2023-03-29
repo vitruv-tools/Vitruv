@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.util;
+package tools.vitruv.framework.remote.common.util;
 
 import tools.vitruv.change.composite.description.CompositeChange;
 import tools.vitruv.change.composite.description.TransactionalChange;

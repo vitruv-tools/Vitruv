@@ -1,4 +1,4 @@
-package tools.vitruv.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,8 +7,8 @@ import spark.Request;
 import spark.Response;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.remote.common.util.JsonMapper;
-import tools.vitruv.remote.server.endpoint.GetEndpoint;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
 /**
  * This endpoint returns a list of names of all registered {@link ViewType}s in the VSUM.

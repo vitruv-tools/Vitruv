@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.deserializer;
+package tools.vitruv.framework.remote.common.deserializer;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-import tools.vitruv.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.common.util.ResourceUtils;
 
 public class ResourceDeserializer extends JsonDeserializer<Resource> {
 

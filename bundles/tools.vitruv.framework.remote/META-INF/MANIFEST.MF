@@ -5,13 +5,9 @@ Bundle-SymbolicName: tools.vitruv.framework.remote;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.remote
 Bundle-Version: 3.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Require-Bundle: org.apache.log4j,
+Require-Bundle: tools.vitruv.framework.views,
  tools.vitruv.change.composite,
- org.eclipse.emf.compare,
- org.eclipse.emf.ecore.xmi,
- org.eclipse.xtend.lib,
- edu.kit.ipd.sdq.activextendannotations,
- edu.kit.ipd.sdq.commons.util.emf
+ tools.vitruv.framework.vsum
 Export-Package: tools.vitruv.framework.remote.client,
  tools.vitruv.framework.remote.server
 Bundle-Vendor: vitruv.tools

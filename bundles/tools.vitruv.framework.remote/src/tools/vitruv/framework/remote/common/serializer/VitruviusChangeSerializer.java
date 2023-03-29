@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.serializer;
+package tools.vitruv.framework.remote.common.serializer;
 
 import java.io.IOException;
 
@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import tools.vitruv.change.composite.description.CompositeChange;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.remote.common.util.ChangeType;
-import tools.vitruv.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.common.util.ChangeType;
+import tools.vitruv.framework.remote.common.util.ResourceUtils;
 
 public class VitruviusChangeSerializer extends JsonSerializer<VitruviusChange> {
 	

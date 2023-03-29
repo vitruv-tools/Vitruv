@@ -1,11 +1,11 @@
-package tools.vitruv.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import spark.Request;
 import spark.Response;
-import tools.vitruv.remote.common.util.ContentTypes;
-import tools.vitruv.remote.common.util.Headers;
-import tools.vitruv.remote.server.ViewCache;
-import tools.vitruv.remote.server.endpoint.GetEndpoint;
+import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.Headers;
+import tools.vitruv.framework.remote.server.ViewCache;
+import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
 /**
  * This view returns whether a {@link tools.vitruv.framework.views.View View} is outdated.

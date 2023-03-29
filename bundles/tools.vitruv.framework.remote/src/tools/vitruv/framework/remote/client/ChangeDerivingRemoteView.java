@@ -1,4 +1,4 @@
-package tools.vitruv.remote.client;
+package tools.vitruv.framework.remote.client;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
-import tools.vitruv.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.common.util.ResourceUtils;
 
 /**
  * A {@link RemoteView} that derives changes based on the changed state of its resources and allows to propagate them

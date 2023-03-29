@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.serializer;
+package tools.vitruv.framework.remote.common.serializer;
 
 import java.io.IOException;
 
