@@ -7,7 +7,8 @@ Bundle-Version: 3.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: tools.vitruv.framework.views,
  tools.vitruv.change.composite,
- tools.vitruv.framework.vsum
+ tools.vitruv.framework.vsum,
+ org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.framework.remote.client,
  tools.vitruv.framework.remote.server
 Bundle-Vendor: vitruv.tools
