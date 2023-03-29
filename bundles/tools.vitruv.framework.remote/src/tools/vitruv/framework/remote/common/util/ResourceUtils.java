@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
  */
 public class ResourceUtils {
 
-    private ResourceUtils() {
-        throw new IllegalAccessError();
+    private ResourceUtils() throws InstantiationException {
+        throw new InstantiationException("Cannot be instantiated");
     }
 
     /**

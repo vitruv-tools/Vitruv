@@ -5,7 +5,8 @@ public final class Headers {
 	public static final String VIEW_UUID = "View-UUID";
 	public static final String VIEW_TYPE = "View-Type";
 	
-	private Headers() {
-		throw new IllegalAccessError();
-	}
+	private Headers() throws InstantiationException {
+        throw new InstantiationException("Cannot be instantiated");
+    }
+
 }
