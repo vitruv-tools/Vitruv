@@ -10,5 +10,6 @@ Require-Bundle: tools.vitruv.framework.views,
  tools.vitruv.framework.vsum,
  org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.framework.remote.client,
+ tools.vitruv.framework.remote.client.exception,
  tools.vitruv.framework.remote.server
 Bundle-Vendor: vitruv.tools
