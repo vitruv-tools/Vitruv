@@ -1,4 +1,4 @@
-package tools.vitruv.remote.client;
+package tools.vitruv.framework.remote.client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,10 +11,10 @@ import java.util.List;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.remote.client.exception.BadServerResponseException;
-import tools.vitruv.remote.common.util.ContentTypes;
-import tools.vitruv.remote.common.util.Headers;
-import tools.vitruv.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.client.exception.BadServerResponseException;
+import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.Headers;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
 
 /**
  * A {@link VitruvRemoteConnection} acts as a {@link HttpClient} to forward requests to a vitruvius server, where a vitruvius instance is hosted.

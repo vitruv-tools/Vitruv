@@ -1,4 +1,4 @@
-package tools.vitruv.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import java.util.UUID;
 
@@ -8,12 +8,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import spark.Request;
 import spark.Response;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.remote.common.util.ContentTypes;
-import tools.vitruv.remote.common.util.Headers;
-import tools.vitruv.remote.common.util.JsonMapper;
-import tools.vitruv.remote.common.util.ResourceUtils;
-import tools.vitruv.remote.server.ViewCache;
-import tools.vitruv.remote.server.endpoint.GetEndpoint;
+import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.Headers;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.server.ViewCache;
+import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
 /**
  * This endpoint returns a serialized {@link tools.vitruv.framework.views.View View} for the given

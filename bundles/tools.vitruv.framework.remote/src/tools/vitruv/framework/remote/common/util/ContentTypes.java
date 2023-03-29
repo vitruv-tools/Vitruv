@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.util;
+package tools.vitruv.framework.remote.common.util;
 
 public final class ContentTypes {
 	public static final String APPLICATION_JSON = "application/json";

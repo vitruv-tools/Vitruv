@@ -1,14 +1,14 @@
-package tools.vitruv.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import spark.Request;
 import spark.Response;
 
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.remote.common.util.ContentTypes;
-import tools.vitruv.remote.common.util.JsonMapper;
-import tools.vitruv.remote.common.util.Nothing;
-import tools.vitruv.remote.server.endpoint.PostEndpoint;
+import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.Nothing;
+import tools.vitruv.framework.remote.server.endpoint.PostEndpoint;
 
 /**
  * This endpoint applies given {@link VitruviusChange}s to the VSUM.

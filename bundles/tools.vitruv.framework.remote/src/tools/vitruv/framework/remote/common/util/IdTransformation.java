@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.util;
+package tools.vitruv.framework.remote.common.util;
 
 import java.nio.file.Path;
 import java.util.List;

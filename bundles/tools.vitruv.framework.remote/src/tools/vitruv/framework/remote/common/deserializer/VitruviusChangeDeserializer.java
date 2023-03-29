@@ -1,4 +1,4 @@
-package tools.vitruv.remote.common.deserializer;
+package tools.vitruv.framework.remote.common.deserializer;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -15,9 +15,9 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
-import tools.vitruv.remote.common.util.ChangeType;
-import tools.vitruv.remote.common.util.IdTransformation;
-import tools.vitruv.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.common.util.ChangeType;
+import tools.vitruv.framework.remote.common.util.IdTransformation;
+import tools.vitruv.framework.remote.common.util.ResourceUtils;
 
 public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChange> {
 

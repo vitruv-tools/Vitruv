@@ -1,8 +1,8 @@
-package tools.vitruv.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import spark.Request;
 import spark.Response;
-import tools.vitruv.remote.server.endpoint.GetEndpoint;
+import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
 /**
  * This endpoint can be used to check, if the server is running.

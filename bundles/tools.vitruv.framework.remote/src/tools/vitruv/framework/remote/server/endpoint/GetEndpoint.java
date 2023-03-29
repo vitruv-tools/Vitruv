@@ -1,4 +1,4 @@
-package tools.vitruv.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.endpoint;
 
 import spark.Spark;
 
