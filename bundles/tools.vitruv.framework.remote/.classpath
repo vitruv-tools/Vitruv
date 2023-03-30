@@ -6,14 +6,10 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="target/dependency/jackson-annotations.jar"/>
 	<classpathentry kind="lib" path="target/dependency/jackson-core.jar"/>
 	<classpathentry kind="lib" path="target/dependency/jackson-databind.jar"/>
-	<classpathentry kind="lib" path="target/dependency/spark-core.jar"/>
+	<classpathentry kind="lib" path="lib/spark-core-2.9.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
