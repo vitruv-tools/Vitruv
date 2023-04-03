@@ -39,7 +39,7 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 		return new DirectViewElementSelector(this, viewSource,
 				viewSource.getViewSourceModels().stream().map(resource -> {
 					if (!resource.getContents().isEmpty() && ResourceCopier.requiresFullCopy(resource)) {
-						// We can only copy writable UML resources as a whole, so no option to select
+						// Some resources (like UML) can only be copied as a whole, so no option to select
 						// specific root elements
 						return Stream.of(resource.getContents().get(0));
 					}
