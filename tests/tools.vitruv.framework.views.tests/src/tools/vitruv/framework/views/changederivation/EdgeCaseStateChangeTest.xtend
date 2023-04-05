@@ -33,7 +33,9 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	@MethodSource("strategiesToTest")
 	def void testNullResources(StateBasedChangeResolutionStrategy strategyToTest) {
 		val Resource nullResource = null
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceForCreated(nullResource)]
 		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceBetween(nullResource, nullResource)]
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceForDeleted(nullResource)]
 	}
 
 }
