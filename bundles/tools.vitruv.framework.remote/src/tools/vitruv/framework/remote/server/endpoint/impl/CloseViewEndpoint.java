@@ -3,7 +3,6 @@ package tools.vitruv.framework.remote.server.endpoint.impl;
 import spark.Request;
 import spark.Response;
 import tools.vitruv.framework.remote.common.util.Headers;
-import tools.vitruv.framework.remote.common.util.Nothing;
 import tools.vitruv.framework.remote.server.ViewCache;
 import tools.vitruv.framework.remote.server.endpoint.PostEndpoint;
 
@@ -17,7 +16,7 @@ public class CloseViewEndpoint extends PostEndpoint {
     }
 
     @Override
-    public Nothing handleRequest(Request request, Response response) {
+    public Void handleRequest(Request request, Response response) {
         var view = ViewCache.removeView(request.headers(Headers.VIEW_UUID));
         if (view == null) {
             notFound("View with given id not found!");
@@ -27,6 +26,6 @@ public class CloseViewEndpoint extends PostEndpoint {
         } catch (Exception e) {
             internalServerError(e.getMessage());
         }
-        return new Nothing();
+        return null;
     }
 }

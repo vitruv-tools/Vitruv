@@ -7,7 +7,6 @@ import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.remote.common.util.ContentTypes;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.common.util.Nothing;
 import tools.vitruv.framework.remote.server.endpoint.PostEndpoint;
 
 /**
@@ -23,9 +22,9 @@ public class ChangePropagationEndpoint extends PostEndpoint {
 	}
 
 	@Override
-	public Nothing handleRequest(Request request, Response response) {
+	public Void handleRequest(Request request, Response response) {
 		var change = JsonMapper.deserialize(request.body(), VitruviusChange.class);
 		model.propagateChange(change);
-		return new Nothing();
+		return null;
 	}
 }
