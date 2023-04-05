@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum.internal;
 
-import static com.google.common.base.Preconditions.checkState;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
@@ -11,11 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -24,6 +22,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import tools.vitruv.change.atomic.EChangeUuidManager;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
@@ -39,46 +39,14 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
-	private final FileExtensionRecorderMapping fileExtensionRecorderMapping = new FileExtensionRecorderMapping();
 	private final PersistableCorrespondenceModel correspondenceModel;
+	private final UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
+	private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
 
 	private final VsumFileSystemLayout fileSystemLayout;
 
 	private boolean isRecording = false;
 	private boolean isLoading = false;
-
-	/**
-	 * Manages change recorders for file extensions. Ensures that only one change
-	 * recorder per file extension exists. A recorder is assigned to a set of file
-	 * extensions (for the case that multiple file extensions belong to the same
-	 * domain of models and should be recorder together) and recorders can be
-	 * retrieved for a given file extension.
-	 */
-	private static class FileExtensionRecorderMapping {
-		private final Map<Set<String>, ChangeRecorder> fileExtensionsToRecorder = new HashMap<>();
-		private final Map<String, Set<String>> fileExtensionToExtensionsSet = new HashMap<>();
-
-		Set<ChangeRecorder> getRecorders() {
-			return new HashSet<>(fileExtensionsToRecorder.values());
-		}
-
-		boolean hasRecorder(String fileExtension) {
-			return fileExtensionsToRecorder.containsKey(fileExtensionToExtensionsSet.get(fileExtension));
-		}
-
-		ChangeRecorder getRecorder(String fileExtension) {
-			return fileExtensionsToRecorder.get(fileExtensionToExtensionsSet.get(fileExtension));
-		}
-
-		void registerRecorder(Set<String> fileExtensions, ResourceSet recorderResourceSet) {
-			fileExtensionToExtensionsSet.keySet().forEach(
-					it -> checkState(!fileExtensions.contains(it), "there already is a recorder for metamodel " + it));
-			Set<String> fileExtensionsSet = new HashSet<>(fileExtensions);
-			fileExtensions.forEach(it -> fileExtensionToExtensionsSet.put(it, fileExtensionsSet));
-			ChangeRecorder recorder = new ChangeRecorder(recorderResourceSet);
-			fileExtensionsToRecorder.put(fileExtensionsSet, recorder);
-		}
-	}
 
 	ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout) {
 		this.fileSystemLayout = fileSystemLayout;
@@ -100,20 +68,23 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private void writeModelsFile() throws IOException {
-		Files.write(fileSystemLayout.getModelsNamesFilesPath(),
-				modelsResourceSet.getResources().stream().map(Resource::getURI).map(URI::toString).toList());
+		Files.write(fileSystemLayout.getModelsNamesFilesPath(), modelsResourceSet.getResources().stream()
+				.map(Resource::getURI).map(URI::toString).toList());
 	}
 
 	private void readModelsFile() throws IOException {
+		List<URI> modelUris;
 		try {
-			for (String modelPath : Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath())) {
-				URI uri = URI.createURI(modelPath);
-				loadOrCreateResource(modelsResourceSet, uri);
-				createOrLoadModel(uri);
-			}
+			modelUris = Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream().map(URI::createURI)
+					.toList();
+
 		} catch (NoSuchFileException e) {
 			// There are no existing models, so don't do anything
+			return;
 		}
+		modelUris.forEach(uri -> loadOrCreateResource(modelsResourceSet, uri));
+		uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
+		modelUris.forEach(this::createOrLoadModel);
 	}
 
 	@Override
@@ -124,6 +95,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	@Override
 	public ModelInstance getModel(URI modelUri) {
 		return modelInstances.get(modelUri);
+	}
+
+	@Override
+	public UuidResolver getUuidResolver() {
+		return uuidResolver;
 	}
 
 	private ModelInstance getCreateOrLoadModelUnlessLoading(URI modelUri) {
@@ -157,14 +133,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 	private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
-			String fileExtension = modelInstance.getURI().fileExtension();
-			if (!fileExtensionRecorderMapping.hasRecorder(fileExtension)) {
-				fileExtensionRecorderMapping.registerRecorder(Set.of(fileExtension), modelsResourceSet);
-			}
-			ChangeRecorder recorder = fileExtensionRecorderMapping.getRecorder(fileExtension);
-			recorder.addToRecording(modelInstance.getResource());
-			if (isRecording && !recorder.isRecording()) {
-				recorder.beginRecording();
+			changeRecorder.addToRecording(modelInstance.getResource());
+			if (isRecording && !changeRecorder.isRecording()) {
+				changeRecorder.beginRecording();
 			}
 		}
 	}
@@ -192,6 +163,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		correspondenceModel.save();
 		try {
 			writeModelsFile();
+			uuidResolver.storeAtUri(fileSystemLayout.getUuidsURI());
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
@@ -199,27 +171,28 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	@Override
 	public Iterable<TransactionalChange> recordChanges(Runnable changeApplicator) {
-		fileExtensionRecorderMapping.getRecorders().forEach(ChangeRecorder::beginRecording);
+		changeRecorder.beginRecording();
 		isRecording = true;
 		LOGGER.debug("Start recording virtual model");
 		changeApplicator.run();
 		LOGGER.debug("End recording virtual model");
 		isRecording = false;
-		fileExtensionRecorderMapping.getRecorders().forEach(ChangeRecorder::endRecording);
-		return fileExtensionRecorderMapping.getRecorders().stream().map(ChangeRecorder::getChange)
-				.filter(TransactionalChange::containsConcreteChange).toList();
+		changeRecorder.endRecording();
+		TransactionalChange change = changeRecorder.getChange();
+		EChangeUuidManager.setOrGenerateIds(change.getEChanges(), uuidResolver);
+		return change.containsConcreteChange() ? List.of(change) : List.of();
 	}
 
 	@Override
 	public VitruviusChange applyChange(VitruviusChange change) {
-		return change.resolveAndApply(modelsResourceSet);
+		return change.resolveAndApply(uuidResolver);
 	}
-	
+
 	@Override
 	public URI getMetadataModelURI(String... metadataKey) {
 		return fileSystemLayout.getConsistencyMetadataModelURI(metadataKey);
 	}
-	
+
 	@Override
 	public Resource getModelResource(URI uri) {
 		return getCreateOrLoadModel(uri).getResource();
@@ -232,8 +205,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	@Override
 	public void close() {
-		fileExtensionRecorderMapping.fileExtensionsToRecorder.values().forEach(ChangeRecorder::close);
+		changeRecorder.close();
 		modelsResourceSet.getResources().forEach(Resource::unload);
 		modelsResourceSet.getResources().clear();
+		uuidResolver.endTransaction();
 	}
 }

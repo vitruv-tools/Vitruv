@@ -1,15 +1,16 @@
 package tools.vitruv.testutils
 
-import tools.vitruv.testutils.VitruvApplicationTest
-import java.nio.file.Path
 import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
-import org.eclipse.emf.ecore.EObject
+import java.nio.file.Path
 import org.eclipse.emf.ecore.EClass
-import static com.google.common.base.Preconditions.checkArgument
-import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
+import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.testutils.views.NonTransactionalTestView
 import tools.vitruv.testutils.views.TestView
+
+import static com.google.common.base.Preconditions.checkArgument
+
+import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.
@@ -24,7 +25,8 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	NonTransactionalTestView testView
 
 	override generateTestView(Path testProjectPath, Path vsumPath) {
-		val testView = new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath, changePropagationSpecifications, uriMode)
+		val testView = new DefaultVirtualModelBasedTestView(testProjectPath, vsumPath, changePropagationSpecifications,
+			uriMode)
 		testView.disposeViewResourcesAfterPropagation = false
 		this.testView = testView
 		return testView
@@ -39,7 +41,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, tag).filter(type)
 		}
 	}
-	
+
 	private def getInternalVirtualModel() {
 		return virtualModel as InternalVirtualModel
 	}
@@ -50,7 +52,8 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 
 	private def dispatch EObject resolveInVirtualModel(EObject object) {
 		if (object.eResource !== null) {
-			internalVirtualModel.getModelInstance(object.eResource.URI).resource.getEObject(object.hierarchicUriFragment)
+			internalVirtualModel.getModelInstance(object.eResource.URI).resource.getEObject(
+				object.hierarchicUriFragment)
 		}
 	}
 

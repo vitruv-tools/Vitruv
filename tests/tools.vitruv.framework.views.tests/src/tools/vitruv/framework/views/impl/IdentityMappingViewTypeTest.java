@@ -5,14 +5,18 @@ import static java.util.Collections.emptySet;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward;
+import static tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward;
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 
@@ -21,6 +25,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -38,11 +43,16 @@ import com.google.common.collect.FluentIterable;
 
 import allElementTypes.Root;
 import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.atomic.EChangeIdManager;
+import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
+import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
+import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
@@ -355,26 +365,40 @@ public class IdentityMappingViewTypeTest {
 	@DisplayName("commit view changes")
 	class CommitViewChanges {
 		private IdentityMappingViewType basicViewType;
-		private ResourceSet testResourceSet;
+		private ResourceSet viewSourceResourceSet;
+		private ResourceSet viewResourceSet;
 		private ModifiableView view;
+		private ViewSelection viewSelection;
 		private ChangeableViewSource viewSource;
+		private UuidResolver uuidResolver;
 
 		@BeforeEach
 		void initializeViewTypeAndResourceSetAndViewSource() {
 			this.basicViewType = new IdentityMappingViewType("name");
-			this.testResourceSet = withGlobalFactories(new ResourceSetImpl());
+			this.viewSourceResourceSet = withGlobalFactories(new ResourceSetImpl());
+			this.viewResourceSet = withGlobalFactories(new ResourceSetImpl());
 			this.view = mock(ModifiableView.class);
 			this.viewSource = mock(ChangeableViewSource.class);
+			this.viewSelection = mock(ViewSelection.class);
+			this.uuidResolver = UuidResolver.create(viewSourceResourceSet);
 			when(view.getViewSource()).thenReturn(viewSource);
-			when(viewSource.getViewSourceModels()).thenReturn(testResourceSet.getResources());
+			when(view.getSelection()).thenReturn(viewSelection);
+			when(viewSource.getViewSourceModels()).thenReturn(viewSourceResourceSet.getResources());
+			when(viewSource.getUuidResolver()).thenReturn(uuidResolver);
+			when(viewSelection.isViewObjectSelected(any(EObject.class))).thenReturn(true);
 		}
 		
 		private Root createResourceWithSingleRoot(URI uri) {
-			Resource resource = testResourceSet.createResource(uri);
+			Resource resource = viewSourceResourceSet.createResource(uri);
 			Root rootElement = aet.Root();
+			uuidResolver.registerEObject(rootElement);
 			rootElement.setId("testid");
 			resource.getContents().add(rootElement);
-			return rootElement;
+			
+			Resource viewResource = viewResourceSet.createResource(uri);
+			Root viewRootElement = EcoreUtil.copy(rootElement);
+			viewResource.getContents().add(viewRootElement);
+			return viewRootElement;
 		}
 		
 		@Test
@@ -412,20 +436,36 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("with non-empty change")
 		void withNonEmptyChange() {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			try (ChangeRecorder changeRecorder = new ChangeRecorder(testResourceSet)) {
+			try (ChangeRecorder changeRecorder = new ChangeRecorder(viewResourceSet)) {
 				changeRecorder.addToRecording(root);
 				changeRecorder.beginRecording();
 				root.setId("testid2");
 				changeRecorder.endRecording();
-				VitruviusChange change = changeRecorder.getChange().unresolve();
+				VitruviusChange change = changeRecorder.getChange();
+				assignIds(change);
 				
 				ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 				basicViewType.commitViewChanges(view, change);
 				verify(viewSource).propagateChange(changeArgument.capture());
 				List<EChange> eChanges = changeArgument.getValue().unresolve().getEChanges();
 				assertThat(eChanges.size(), is(1));
-				assertThat(eChanges.get(0), equalsDeeply(change.getEChanges().get(0)));
+				assertThat(eChanges.get(0), instanceOf(ReplaceSingleValuedEAttribute.class));
+				var attributeChange = (ReplaceSingleValuedEAttribute<?, ?>)eChanges.get(0);
+				assertThat(attributeChange.getOldValue(), is("testid"));
+				assertThat(attributeChange.getNewValue(), is("testid2"));
 			}
+		}
+		
+		private void assignIds(VitruviusChange change) {
+			IdResolver idResolver = IdResolver.create(viewResourceSet);
+			EChangeIdManager idManager = new EChangeIdManager(idResolver);
+			for (int i = change.getEChanges().size() - 1; i >= 0; i--) {
+				applyBackward(change.getEChanges().get(i));
+			}
+			change.getEChanges().forEach(eChange -> {
+				idManager.setOrGenerateIds(eChange);
+				applyForward(eChange, idResolver);
+			});
 		}
 	}
 }
