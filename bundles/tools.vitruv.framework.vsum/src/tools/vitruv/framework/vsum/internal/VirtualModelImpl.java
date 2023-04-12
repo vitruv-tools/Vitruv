@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.propagation.ChangePropagationListener;
@@ -62,6 +63,11 @@ public class VirtualModelImpl implements InternalVirtualModel {
 	@Override
 	public synchronized ModelInstance getModelInstance(URI modelUri) {
 		return resourceRepository.getModel(modelUri);
+	}
+	
+	@Override
+	public UuidResolver getUuidResolver() {
+		return resourceRepository.getUuidResolver();
 	}
 
 	private synchronized void save() {

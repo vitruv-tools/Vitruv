@@ -1,26 +1,26 @@
 package tools.vitruv.framework.vsum
 
+import allElementTypes.AllElementTypesPackage
 import allElementTypes.Root
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.nio.file.Path
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.atomic.EChange
+import tools.vitruv.change.atomic.EChangeUuidManager
 import tools.vitruv.change.atomic.root.InsertRootEObject
+import tools.vitruv.change.atomic.uuid.UuidResolver
+import tools.vitruv.change.composite.MetamodelDescriptor
+import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.recording.ChangeRecorder
+import tools.vitruv.change.correspondence.Correspondence
+import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
+import tools.vitruv.change.interaction.UserInteractionFactory
 import tools.vitruv.change.propagation.ResourceAccess
 import tools.vitruv.change.propagation.impl.AbstractChangePropagationSpecification
-import tools.vitruv.change.interaction.UserInteractionFactory
-import tools.vitruv.framework.vsum.VirtualModelBuilder
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
-
-import allElementTypes.AllElementTypesPackage
-import tools.vitruv.change.composite.MetamodelDescriptor
-import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
-import tools.vitruv.change.correspondence.Correspondence
 
 /**
  * Utility methods for the VSUM and view test cases.
@@ -31,12 +31,13 @@ class VirtualModelTestUtil {
     /**
      * Create a recorder, start recording a resource set, apply changes, stop and return the recorded changes.
      */
-    def static VitruviusChange recordChanges(ResourceSet resourceSet, Runnable changesToPerform) {
+    def static VitruviusChange recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
         val recorder = new ChangeRecorder(resourceSet)
         recorder.addToRecording(resourceSet)
         recorder.beginRecording
         changesToPerform.run()
         val result = recorder.endRecording
+        EChangeUuidManager.setOrGenerateIds(result.EChanges, uuidResolver)
         recorder.close
         return result
     }
