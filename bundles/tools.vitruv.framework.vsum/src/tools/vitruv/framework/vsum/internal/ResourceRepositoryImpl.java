@@ -23,9 +23,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.change.atomic.EChangeUuidManager;
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel;
@@ -170,7 +172,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	@Override
-	public Iterable<TransactionalChange> recordChanges(Runnable changeApplicator) {
+	public Iterable<TransactionalChange<EObject>> recordChanges(Runnable changeApplicator) {
 		changeRecorder.beginRecording();
 		isRecording = true;
 		LOGGER.debug("Start recording virtual model");
@@ -178,14 +180,14 @@ class ResourceRepositoryImpl implements ModelRepository {
 		LOGGER.debug("End recording virtual model");
 		isRecording = false;
 		changeRecorder.endRecording();
-		TransactionalChange change = changeRecorder.getChange();
+		TransactionalChange<EObject> change = changeRecorder.getChange();
 		EChangeUuidManager.setOrGenerateIds(change.getEChanges(), uuidResolver);
 		return change.containsConcreteChange() ? List.of(change) : List.of();
 	}
 
 	@Override
-	public VitruviusChange applyChange(VitruviusChange change) {
-		return change.resolveAndApply(uuidResolver);
+	public VitruviusChange<EObject> applyChange(VitruviusChange<Uuid> change) {
+		return VitruviusChangeResolver.resolveAndApply(change, uuidResolver);
 	}
 
 	@Override

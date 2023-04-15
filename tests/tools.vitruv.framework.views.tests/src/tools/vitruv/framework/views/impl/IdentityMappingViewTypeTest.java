@@ -45,10 +45,13 @@ import allElementTypes.Root;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.EChangeIdManager;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
+import tools.vitruv.change.atomic.id.Id;
 import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
@@ -410,21 +413,21 @@ public class IdentityMappingViewTypeTest {
 		@Test
 		@DisplayName("with null view")
 		void withNullView() {
-			VitruviusChange someChange = VitruviusChangeFactory.getInstance().createTransactionalChange(Set.of());
+			VitruviusChange<Id> someChange = VitruviusChangeFactory.getInstance().createTransactionalChange(Set.of());
 			assertThrows(NullPointerException.class, () -> basicViewType.commitViewChanges(null, someChange));
 		}
 		
 		@ParameterizedTest
 		@MethodSource("testEmptyChanges")
 		@DisplayName("with empty changes")
-		void withEmptyChanges(VitruviusChange change) {
-			ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+		void withEmptyChanges(VitruviusChange<Id> change) {
+			ArgumentCaptor<VitruviusChange<Uuid>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 			basicViewType.commitViewChanges(view, change);
 			verify(viewSource).propagateChange(changeArgument.capture());
 			assertEquals(changeArgument.getValue(), change);
 		}
 		
-		private static Stream<VitruviusChange> testEmptyChanges() {
+		private static Stream<VitruviusChange<Id>> testEmptyChanges() {
 			VitruviusChangeFactory factory = VitruviusChangeFactory.getInstance();
 			return Stream.of(
 					factory.createTransactionalChange(Set.of()),
@@ -441,13 +444,13 @@ public class IdentityMappingViewTypeTest {
 				changeRecorder.beginRecording();
 				root.setId("testid2");
 				changeRecorder.endRecording();
-				VitruviusChange change = changeRecorder.getChange();
-				assignIds(change);
+				VitruviusChange<EObject> change = changeRecorder.getChange();
+				VitruviusChange<Id> idAssignedChange = assignIds(change);
 				
-				ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
-				basicViewType.commitViewChanges(view, change);
+				ArgumentCaptor<VitruviusChange<Uuid>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+				basicViewType.commitViewChanges(view, idAssignedChange);
 				verify(viewSource).propagateChange(changeArgument.capture());
-				List<EChange> eChanges = changeArgument.getValue().unresolve().getEChanges();
+				List<EChange> eChanges = changeArgument.getValue().getEChanges();
 				assertThat(eChanges.size(), is(1));
 				assertThat(eChanges.get(0), instanceOf(ReplaceSingleValuedEAttribute.class));
 				var attributeChange = (ReplaceSingleValuedEAttribute<?, ?>)eChanges.get(0);
@@ -456,7 +459,7 @@ public class IdentityMappingViewTypeTest {
 			}
 		}
 		
-		private void assignIds(VitruviusChange change) {
+		private VitruviusChange<Id> assignIds(VitruviusChange<EObject> change) {
 			IdResolver idResolver = IdResolver.create(viewResourceSet);
 			EChangeIdManager idManager = new EChangeIdManager(idResolver);
 			for (int i = change.getEChanges().size() - 1; i >= 0; i--) {
@@ -466,6 +469,7 @@ public class IdentityMappingViewTypeTest {
 				idManager.setOrGenerateIds(eChange);
 				applyForward(eChange, idResolver);
 			});
+			return VitruviusChangeResolver.unresolve(change,  idResolver);
 		}
 	}
 }

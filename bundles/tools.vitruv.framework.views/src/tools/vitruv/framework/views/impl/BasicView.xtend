@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.change.atomic.uuid.Uuid
 import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.propagation.ChangePropagationListener
@@ -89,7 +90,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
         modelChanged = true
     }
 
-    override startedChangePropagation(VitruviusChange changeToPropagate) {
+    override startedChangePropagation(VitruviusChange<Uuid> changeToPropagate) {
         // do nothing
     }
 

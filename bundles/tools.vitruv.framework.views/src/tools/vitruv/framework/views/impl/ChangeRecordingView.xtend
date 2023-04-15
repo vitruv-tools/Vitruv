@@ -1,10 +1,11 @@
 package tools.vitruv.framework.views.impl
 
-import java.util.List
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.change.atomic.EChange
 import tools.vitruv.change.atomic.EChangeIdManager
 import tools.vitruv.change.atomic.id.IdResolver
+import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
@@ -43,7 +44,8 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
         changeRecorder.addToRecording(view.viewResourceSet)
         changeRecorder.beginRecording()
     }
-	def private void assignIds(List<EChange> changes) {
+	def private assignIds(VitruviusChange<EObject> recordedChange) {
+		val changes = recordedChange.EChanges
 		val idResolver = IdResolver.create(view.viewResourceSet)
 		val idManager = new EChangeIdManager(idResolver)
 		changes.toList.reverseView.forEach[applyBackward]
@@ -51,13 +53,14 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
 			idManager.setOrGenerateIds(it)
 			it.applyForward(idResolver)
 		]
+		return VitruviusChangeResolver.unresolve(recordedChange, idResolver)
 	}
 
     override commitChanges() {
         view.checkNotClosed()
         val recordedChange = changeRecorder.endRecording()
-        assignIds(recordedChange.EChanges)
-        view.viewType.commitViewChanges(this, recordedChange)
+        val unresolvedChanges = assignIds(recordedChange)
+        view.viewType.commitViewChanges(this, unresolvedChanges)
         view.viewChanged = false
         changeRecorder.beginRecording()
     }

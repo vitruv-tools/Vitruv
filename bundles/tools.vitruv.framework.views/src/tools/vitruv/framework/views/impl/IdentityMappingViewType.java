@@ -9,14 +9,18 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.change.atomic.EChangeUuidManager;
+import tools.vitruv.change.atomic.id.Id;
 import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
@@ -63,16 +67,17 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 	}
 
 	@Override
-	public void commitViewChanges(ModifiableView view, VitruviusChange viewChange) {
+	public void commitViewChanges(ModifiableView view, VitruviusChange<Id> viewChange) {
 		ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
 		IdResolver viewSourceCopyIdResolver = IdResolver.create(viewSourceCopyResourceSet);
 		UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
 		Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
 		view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
-		VitruviusChange resolvedChange = viewChange.unresolve().resolveAndApply(viewSourceCopyIdResolver);
+		VitruviusChange<EObject> resolvedChange = VitruviusChangeResolver.resolveAndApply(viewChange, viewSourceCopyIdResolver);
 		EChangeUuidManager.setOrGenerateIds(resolvedChange.getEChanges(), viewSourceCopyUuidResolver);
-		view.getViewSource().propagateChange(resolvedChange.unresolve());
+		VitruviusChange<Uuid> unresolvedChanges = VitruviusChangeResolver.unresolve(resolvedChange, viewSourceCopyUuidResolver);
+		view.getViewSource().propagateChange(unresolvedChanges);
 	}
 
 	private Map<Resource, Resource> createViewResources(ModifiableView view, ResourceSet viewResourceSet) {

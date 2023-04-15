@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.change.atomic.id.Id
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.description.VitruviusChangeFactory
 import tools.vitruv.framework.views.CommittableView
@@ -75,7 +76,7 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         view.close
     }
 
-    private def VitruviusChange generateChange(Resource newState, Resource referenceState) {
+    private def VitruviusChange<Id> generateChange(Resource newState, Resource referenceState) {
         if (referenceState === null) {
             return changeResolutionStrategy.getChangeSequenceForCreated(newState)
         } else if (newState === null) {

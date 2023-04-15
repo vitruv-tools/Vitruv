@@ -2,6 +2,7 @@ package tools.vitruv.framework.views.changederivation;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
+import tools.vitruv.change.atomic.id.Id;
 import tools.vitruv.change.composite.description.VitruviusChange;
 
 /**
@@ -24,7 +25,7 @@ public interface StateBasedChangeResolutionStrategy {
 	 * @return a unresolved {@link VitruviusChange} that contains the individual
 	 *         change sequence.
 	 */
-	VitruviusChange getChangeSequenceBetween(Resource newState, Resource oldState);
+	VitruviusChange<Id> getChangeSequenceBetween(Resource newState, Resource oldState);
 
 	/**
 	 * Resolves the state-based delta for creating the given resource and returns
@@ -36,7 +37,7 @@ public interface StateBasedChangeResolutionStrategy {
 	 * @return a unresolved {@link VitruviusChange} that contains the individual
 	 *         change sequence.
 	 */
-	VitruviusChange getChangeSequenceForCreated(Resource newState);
+	VitruviusChange<Id> getChangeSequenceForCreated(Resource newState);
 
 	/**
 	 * Resolves the state-based delta for deleting the given resource and returns
@@ -49,5 +50,5 @@ public interface StateBasedChangeResolutionStrategy {
 	 * @return a unresolved {@link VitruviusChange} that contains the individual
 	 *         change sequence.
 	 */
-	VitruviusChange getChangeSequenceForDeleted(Resource oldState);
+	VitruviusChange<Id> getChangeSequenceForDeleted(Resource oldState);
 }

@@ -9,9 +9,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.change.atomic.EChange
 import tools.vitruv.change.atomic.EChangeUuidManager
 import tools.vitruv.change.atomic.root.InsertRootEObject
+import tools.vitruv.change.atomic.uuid.Uuid
 import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.change.composite.MetamodelDescriptor
 import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.Correspondence
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
@@ -31,7 +33,7 @@ class VirtualModelTestUtil {
     /**
      * Create a recorder, start recording a resource set, apply changes, stop and return the recorded changes.
      */
-    def static VitruviusChange recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
+    def static VitruviusChange<Uuid> recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
         val recorder = new ChangeRecorder(resourceSet)
         recorder.addToRecording(resourceSet)
         recorder.beginRecording
@@ -39,7 +41,7 @@ class VirtualModelTestUtil {
         val result = recorder.endRecording
         EChangeUuidManager.setOrGenerateIds(result.EChanges, uuidResolver)
         recorder.close
-        return result
+        return VitruviusChangeResolver.unresolve(result, uuidResolver)
     }
 
     /**
