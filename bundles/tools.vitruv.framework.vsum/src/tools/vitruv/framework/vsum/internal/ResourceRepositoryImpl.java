@@ -51,6 +51,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout) {
 		this.fileSystemLayout = fileSystemLayout;
 		this.correspondenceModel = createPersistableCorrespondenceModel(fileSystemLayout.getCorrespondencesURI());
+		modelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new ModelInstanceFactory());
 		modelsResourceSet.eAdapters()
 				.add(new ResourceRegistrationAdapter(resource -> getCreateOrLoadModelUnlessLoading(resource.getURI())));
 	}
@@ -71,13 +72,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 		Files.write(fileSystemLayout.getModelsNamesFilesPath(), modelsResourceSet.getResources().stream()
 				.map(Resource::getURI).map(URI::toString).toList());
 	}
-
+	
 	private void readModelsFile() throws IOException {
 		List<URI> modelUris;
 		try {
 			modelUris = Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream().map(URI::createURI)
 					.toList();
-
 		} catch (NoSuchFileException e) {
 			// There are no existing models, so don't do anything
 			return;
@@ -118,13 +118,13 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private ModelInstance createOrLoadModel(URI modelUri) {
-		Resource resource;
+		ModelInstance modelInstance;
 		if (modelUri.isFile() || modelUri.isPlatform()) {
-			resource = getOrCreateResource(modelsResourceSet, modelUri);
+			modelInstance = (ModelInstance) getOrCreateResource(modelsResourceSet, modelUri);
 		} else {
-			resource = loadOrCreateResource(modelsResourceSet, modelUri);
+			modelInstance = (ModelInstance) loadOrCreateResource(modelsResourceSet, modelUri);
 		}
-		ModelInstance modelInstance = new ModelInstance(resource);
+
 		modelInstances.put(modelUri, modelInstance);
 		registerRecorder(modelInstance);
 		return modelInstance;
@@ -133,7 +133,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
-			changeRecorder.addToRecording(modelInstance.getResource());
+			changeRecorder.addToRecording(modelInstance);
 			if (isRecording && !changeRecorder.isRecording()) {
 				changeRecorder.beginRecording();
 			}
@@ -154,10 +154,20 @@ class ResourceRepositoryImpl implements ModelRepository {
 		while (modelInstancesIterator.hasNext()) {
 			ModelInstance modelInstance = modelInstancesIterator.next().getValue();
 			if (modelInstance.isEmpty()) {
-				modelInstance.delete();
+				try {
+					modelInstance.delete(null);
+				} catch (IOException e) {
+					LOGGER.error("Model could not be deleted: " + modelInstance.getURI(), e);
+					throw new IllegalStateException("Could not delete URI " + modelInstance.getURI(), e);
+				}
 				modelInstancesIterator.remove();
 			} else {
-				modelInstance.save();
+				try {
+					modelInstance.save(null);
+				} catch (IOException e) {
+					LOGGER.error("Model could not be saved: "+ modelInstance.getURI(), e);
+					throw new IllegalStateException("Could not save URI " + modelInstance.getURI(), e);
+				}
 			}
 		}
 		correspondenceModel.save();
@@ -168,7 +178,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 			throw new IllegalStateException(e);
 		}
 	}
-
+	
 	@Override
 	public Iterable<TransactionalChange> recordChanges(Runnable changeApplicator) {
 		changeRecorder.beginRecording();
@@ -187,22 +197,22 @@ class ResourceRepositoryImpl implements ModelRepository {
 	public VitruviusChange applyChange(VitruviusChange change) {
 		return change.resolveAndApply(uuidResolver);
 	}
-
+	
 	@Override
 	public URI getMetadataModelURI(String... metadataKey) {
 		return fileSystemLayout.getConsistencyMetadataModelURI(metadataKey);
 	}
-
+	
 	@Override
 	public Resource getModelResource(URI uri) {
-		return getCreateOrLoadModel(uri).getResource();
+		return getCreateOrLoadModel(uri);
 	}
 
 	@Override
 	public Collection<Resource> getModelResources() {
 		return modelsResourceSet.getResources();
 	}
-
+	
 	@Override
 	public void close() {
 		changeRecorder.close();

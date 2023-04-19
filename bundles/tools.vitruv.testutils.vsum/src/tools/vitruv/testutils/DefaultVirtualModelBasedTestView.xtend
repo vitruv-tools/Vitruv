@@ -39,7 +39,7 @@ class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, Non
 
 	private def NonTransactionalTestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
 		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel,
-			virtualModel.uuidResolver)[virtualModel.getModelInstance(it)?.resource]
+			virtualModel.uuidResolver)[virtualModel.getModelInstance(it)]
 	}
 
 	override getVirtualModel() {

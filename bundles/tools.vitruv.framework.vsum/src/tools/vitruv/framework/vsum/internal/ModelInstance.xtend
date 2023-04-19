@@ -1,65 +1,68 @@
 package tools.vitruv.framework.vsum.internal
 
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+import java.util.Collections
+import java.util.List
+import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.change.atomic.EChange
+import tools.vitruv.change.atomic.id.IdResolver
+import tools.vitruv.change.composite.description.VitruviusChangeFactory
+import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy
 
-import static com.google.common.base.Preconditions.checkArgument
-
-class ModelInstance {
+class ModelInstance extends ResourceImpl {
 	static val LOGGER = Logger.getLogger(ModelInstance)
-	@Accessors(PUBLIC_GETTER)
-	Resource resource
 
-	new(Resource resource) {
-		checkArgument(resource !== null, "cannot create a model instance for a null resource")
-		this.resource = resource
-		LOGGER.debug('''Create model instance for resource with URI: «URI»''')
-	}
-
-	def URI getURI() {
-		return resource.URI
+	new(URI uri) {
+		this.URI = uri
+		LOGGER.debug('''Create model instance for resource with URI: «uri»''')
 	}
 
 	def void addRoot(EObject root) {
-		resource.contents += root
-		resource.modified = true
-		LOGGER.debug('''Add root to resource: «resource»''')
+		this.contents += root
+		this.modified = true
+		LOGGER.debug('''Add root to model instance: «this»''')
 	}
-
-	def void markModified() {
-		resource.modified = true
-	}
-
+	
 	def boolean isEmpty() {
-		resource.contents.isEmpty
+		this.contents.isEmpty
 	}
-
-	def void save() {
-		if (!resource.modified) {
+	
+	private static def List<EChange> loadDeltas(URI modelUri) {
+        val resSet = new ResourceSetImpl();
+        val resource = resSet.getResource(modelUri, true);
+        return resource.getContents().map[it as EChange].toList
+	}
+	
+	override doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+		val deltas = loadDeltas(this.URI)
+		VitruviusChangeFactory.getInstance().createTransactionalChange(deltas).resolveAndApply(IdResolver.create(this.resourceSet))
+	}
+	
+	override doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
+		if (!this.modified) {
 			return
 		}
-		LOGGER.debug('''Save resource: «resource»''')
-		try {
-			resource.save(null)
-			resource.modified = false
-		} catch (IOException e) {
-			LOGGER.error('''Model could not be saved: «URI»''', e)
-			throw new IllegalStateException('''Could not save URI «URI»''', e)
+		
+		val deltaChanges = new DefaultStateBasedChangeResolutionStrategy().getChangeSequenceForCreated(this).EChanges;
+		val resSet = new ResourceSetImpl();
+		val resource = resSet.createResource(this.URI);
+		resource.getContents().addAll(deltaChanges)
+		try (val out = outputStream){
+			resource.save(out, Collections.EMPTY_MAP)
 		}
+		
+		resource.modified = false
 	}
-
-	def void delete() {
-		LOGGER.debug('''Delete resource: «resource»''')
-		try {
-			resource.delete(null)
-		} catch (IOException e) {
-			LOGGER.error('''Deletion of resource «resource» did not work.''', e)
-			throw new IllegalStateException('''Could not delete URI «URI»''', e)
-		}
+	
+	override delete(Map<?, ?> options) throws IOException {
+		LOGGER.debug('''Delete model instance: «this»''')
+		super.delete(null)
 	}
-
 }
