@@ -17,13 +17,13 @@ import tools.vitruv.change.atomic.EChangeIdManager
 import tools.vitruv.change.atomic.id.IdResolver
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.recording.ChangeRecorder
-import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
 import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward
 import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 

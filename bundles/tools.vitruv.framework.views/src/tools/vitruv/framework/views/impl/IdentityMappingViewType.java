@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
 import tools.vitruv.change.atomic.EChangeUuidManager;
 import tools.vitruv.change.atomic.id.IdResolver;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
@@ -22,7 +23,6 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSource;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
-import tools.vitruv.framework.views.util.ResourceCopier;
 
 /**
  * A view type that allows creating views based on a basic element-wise
