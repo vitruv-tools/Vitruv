@@ -15,6 +15,7 @@ import tools.vitruv.framework.views.ViewTypeRepository
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl
+import tools.vitruv.change.propagation.ProjectMarker
 
 import static com.google.common.base.Preconditions.checkState
 
@@ -96,6 +97,11 @@ class VirtualModelBuilder {
 		fileSystemLayout.prepare()
 		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, viewTypeRepository, changeSpecificationRepository)
 		vsum.loadExistingModels()
+		try {
+			ProjectMarker.getProjectRootFolder(storageFolder)
+		} catch (IllegalStateException exception) {
+			ProjectMarker.markAsProjectRootFolder(storageFolder)
+		}
 		return vsum
 	}
 }
