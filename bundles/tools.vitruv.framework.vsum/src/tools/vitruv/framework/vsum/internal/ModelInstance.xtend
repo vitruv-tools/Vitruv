@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.change.atomic.EChange
 import tools.vitruv.change.atomic.id.IdResolver
 import tools.vitruv.change.composite.description.VitruviusChangeFactory
-import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.DefaultStateBasedChangeResolutionStrategy
 
 class ModelInstance extends ResourceImpl {
 	static val LOGGER = Logger.getLogger(ModelInstance)

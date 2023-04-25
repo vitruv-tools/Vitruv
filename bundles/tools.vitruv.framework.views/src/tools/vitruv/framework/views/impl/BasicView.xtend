@@ -15,7 +15,7 @@ import tools.vitruv.change.composite.propagation.ChangePropagationListener
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.ViewSelection
 import tools.vitruv.framework.views.ViewSelector
-import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState

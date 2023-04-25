@@ -35,10 +35,10 @@ import tools.vitruv.change.atomic.id.IdResolver;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;
+import tools.vitruv.change.changederivation.DefaultStateBasedChangeResolutionStrategy;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
-import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
 
