@@ -1,6 +1,10 @@
 package tools.vitruv.framework.views.impl
 
+import java.util.List
 import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.change.atomic.EChange
+import tools.vitruv.change.atomic.EChangeIdManager
+import tools.vitruv.change.atomic.id.IdResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
@@ -8,6 +12,9 @@ import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionS
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
+
+import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward
+import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward
 
 /**
  * A {@link View} that records changes to its resources and allows to propagate them 
@@ -36,11 +43,21 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
         changeRecorder.addToRecording(view.viewResourceSet)
         changeRecorder.beginRecording()
     }
+	def private void assignIds(List<EChange> changes) {
+		val idResolver = IdResolver.create(view.viewResourceSet)
+		val idManager = new EChangeIdManager(idResolver)
+		changes.toList.reverseView.forEach[applyBackward]
+		changes.forEach[
+			idManager.setOrGenerateIds(it)
+			it.applyForward(idResolver)
+		]
+	}
 
     override commitChanges() {
         view.checkNotClosed()
-        changeRecorder.endRecording()
-        view.viewType.commitViewChanges(this, changeRecorder.change)
+        val recordedChange = changeRecorder.endRecording()
+        assignIds(recordedChange.EChanges)
+        view.viewType.commitViewChanges(this, recordedChange)
         view.viewChanged = false
         changeRecorder.beginRecording()
     }

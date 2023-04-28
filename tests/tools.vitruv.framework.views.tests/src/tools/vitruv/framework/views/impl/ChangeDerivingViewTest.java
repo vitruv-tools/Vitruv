@@ -31,6 +31,7 @@ import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import tools.vitruv.change.atomic.eobject.EobjectPackage;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
+import tools.vitruv.change.atomic.id.IdResolver;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;
@@ -210,7 +211,7 @@ public class ChangeDerivingViewTest {
 				view.commitChanges();
 				verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 				assertThat(viewArgument.getValue(), is(view));
-				VitruviusChange change = changeArgument.getValue().resolveAndApply(root.eResource().getResourceSet());
+				VitruviusChange change = changeArgument.getValue().resolveAndApply(IdResolver.create(root.eResource().getResourceSet()));
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(testResourceUriString);

@@ -9,6 +9,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.change.composite.description.PropagatedChange
+import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.propagation.ChangePropagationListener
 import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.ViewSelection
@@ -19,8 +21,6 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import tools.vitruv.change.composite.description.PropagatedChange
-import tools.vitruv.change.composite.description.VitruviusChange
 
 package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
@@ -29,7 +29,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
     var ViewCreatingViewType<? extends ViewSelector> viewType
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
     var ChangeableViewSource viewSource
-    @Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+    @Accessors(PROTECTED_GETTER)
     var ResourceSet viewResourceSet
     boolean modelChanged
     @Accessors(PROTECTED_SETTER)
