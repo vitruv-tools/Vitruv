@@ -35,7 +35,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: Build DSLs
-        uses: GabrielBB/xvfb-action@v1
+        uses: coactions/setup-xvfb@v1
         with:
           working-directory: ./dsls
           run: >
@@ -94,7 +94,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: Build and Verify Case Studies
-        uses: GabrielBB/xvfb-action@v1
+        uses: coactions/setup-xvfb@v1
         with:
           working-directory: ./casestudies
           run: >
@@ -144,7 +144,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: Build and Verify Tools Adapters
-        uses: GabrielBB/xvfb-action@v1
+        uses: coactions/setup-xvfb@v1
         with: 
           working-directory: ./tool_adapters
           run: >
