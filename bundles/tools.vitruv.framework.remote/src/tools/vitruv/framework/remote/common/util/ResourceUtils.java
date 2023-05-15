@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Contains utility functions to work with {@link Resource}s.
  */
@@ -40,20 +42,17 @@ public class ResourceUtils {
     /**
      * Deserializes a {@link Resource}.
      *
-     * @param uri       the uri of the resource
-     * @param res       the string representation of the resource
-     * @param parentSet the parent {@link ResourceSet} of the resource
+     * @param uri            the uri of the resource
+     * @param resourceString the string representation of the resource
+     * @param parentSet      the parent {@link ResourceSet} of the resource
      * @return the deserialized {@link Resource}.
      */
-    public static Resource deserialize(URI uri, String res, ResourceSet parentSet) throws IOException {
-        if (res == null) {
-            throw new IllegalArgumentException("The xmi string must not be null!");
-        }
-        if (parentSet == null) {
-            throw new IllegalArgumentException("The resource set must not be null!");
-        }
+    public static Resource deserialize(URI uri, String resourceString, ResourceSet parentSet) throws IOException {
+        checkArgument(resourceString != null, "xmi resource string must not be null");
+        checkArgument(parentSet != null, "parent resource set must not be null");
+
         var resource = parentSet.createResource(uri);
-        var inputStream = new ByteArrayInputStream(res.getBytes(StandardCharsets.UTF_8));
+        var inputStream = new ByteArrayInputStream(resourceString.getBytes(StandardCharsets.UTF_8));
         resource.load(inputStream, Collections.EMPTY_MAP);
         return resource;
     }

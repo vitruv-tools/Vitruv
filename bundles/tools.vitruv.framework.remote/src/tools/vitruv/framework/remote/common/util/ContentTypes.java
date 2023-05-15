@@ -7,5 +7,4 @@ public final class ContentTypes {
 	private ContentTypes() throws InstantiationException {
         throw new InstantiationException("Cannot be instantiated");
     }
-
 }

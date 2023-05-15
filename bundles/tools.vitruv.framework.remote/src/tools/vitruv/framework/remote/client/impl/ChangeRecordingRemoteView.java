@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.client;
+package tools.vitruv.framework.remote.client.impl;
 
 import java.util.Collection;
 
@@ -12,6 +12,10 @@ import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
+
 /**
  * A {@link RemoteView} that records changes to its resources and allows to propagate them
  * back to the vitruv server using the {@link #commitChanges} method.
@@ -22,6 +26,8 @@ public class ChangeRecordingRemoteView implements CommittableView {
     private ChangeRecorder changeRecorder;
 
     public ChangeRecordingRemoteView(RemoteView base) {
+        checkArgument(base != null, "base must not be null");
+        checkState(!base.isModified(), "view must not be modified");
         this.base = base;
         setupChangeRecorder();
     }

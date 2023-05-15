@@ -2,16 +2,14 @@ package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import spark.Request;
 import spark.Response;
+import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.framework.remote.common.util.ContentTypes;
-import tools.vitruv.framework.remote.common.util.Headers;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.common.util.ResourceUtils;
 import tools.vitruv.framework.remote.server.ViewCache;
 import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
@@ -24,7 +22,7 @@ public class ViewEndpoint extends GetEndpoint {
     private final InternalVirtualModel model;
 
     public ViewEndpoint(InternalVirtualModel model) {
-        super("/vsum/view");
+        super(EndpointPaths.VIEW);
         this.model = model;
     }
 
@@ -35,7 +33,7 @@ public class ViewEndpoint extends GetEndpoint {
 
         //Check if view type exists
         if (types.stream().noneMatch(it -> it.getName().equals(viewTypeName))) {
-            notFound("View Type with name " + viewTypeName + " not found!");
+            throw notFound("View Type with name " + viewTypeName + " not found!");
         }
 
         //Get selector and select every element
@@ -54,6 +52,10 @@ public class ViewEndpoint extends GetEndpoint {
 
         response.type(ContentTypes.APPLICATION_JSON);
         response.header(Headers.VIEW_UUID, uuid);
-        return JsonMapper.serialize(rSet);
+        try {
+            return JsonMapper.serialize(rSet);
+        } catch (JsonProcessingException e) {
+            throw internalServerError(e.getMessage());
+        }
     }
 }

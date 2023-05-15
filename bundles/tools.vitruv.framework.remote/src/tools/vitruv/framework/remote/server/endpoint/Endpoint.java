@@ -47,8 +47,8 @@ public abstract class Endpoint {
 	 * 
 	 * @param msg A message containing the reason of halting the execution.
 	 */
-	protected void notFound(String msg) {
-		throw new ServerHaltingException(404, msg);
+	protected ServerHaltingException notFound(String msg) {
+		return new ServerHaltingException(404, msg);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public abstract class Endpoint {
 	 * 
 	 * @param msg A message containing the reason of halting the execution.
 	 */
-	protected void internalServerError(String msg) {
-		throw new ServerHaltingException(500, msg);
+	protected ServerHaltingException internalServerError(String msg) {
+		return new ServerHaltingException(500, msg);
 	}
 }

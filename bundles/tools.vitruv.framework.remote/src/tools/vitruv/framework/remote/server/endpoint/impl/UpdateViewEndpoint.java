@@ -1,30 +1,32 @@
 package tools.vitruv.framework.remote.server.endpoint.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import spark.Request;
 import spark.Response;
 import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.EndpointPaths;
 import tools.vitruv.framework.remote.common.util.Headers;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.ViewCache;
-import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
+import tools.vitruv.framework.remote.server.endpoint.PatchEndpoint;
 
 /**
  * This endpoint updates a {@link tools.vitruv.framework.views.View View} and returns the
  * updated {@link org.eclipse.emf.ecore.resource.Resource Resources}.
  */
-public class UpdateViewEndpoint extends GetEndpoint {
+public class UpdateViewEndpoint extends PatchEndpoint {
 
     public UpdateViewEndpoint() {
-        super("/vsum/view/update");
+        super(EndpointPaths.VIEW);
     }
 
     @Override
     public Object handleRequest(Request request, Response response) {
         var view = ViewCache.getView(request.headers(Headers.VIEW_UUID));
         if (view == null) {
-            notFound("View with given id not found!");
+            throw notFound("View with given id not found!");
         }
 
         view.update();
@@ -35,6 +37,11 @@ public class UpdateViewEndpoint extends GetEndpoint {
         rSet.getResources().addAll(resources);
 
         response.type(ContentTypes.APPLICATION_JSON);
-        return JsonMapper.serialize(rSet);
+
+        try {
+            return JsonMapper.serialize(rSet);
+        } catch (JsonProcessingException e) {
+            throw internalServerError(e.getMessage());
+        }
     }
 }

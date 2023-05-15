@@ -24,6 +24,11 @@ xtend-gen/
 target/
 .polyglot.build.properties
 .mvn/wrapper/maven-wrapper.jar
+*.polyglot*
 
 # Custom
 EvaluationData
+
+#IntelliJ
+.idea/
+*.iml

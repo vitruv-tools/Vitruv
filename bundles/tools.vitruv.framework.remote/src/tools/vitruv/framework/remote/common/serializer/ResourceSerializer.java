@@ -10,14 +10,15 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import tools.vitruv.framework.remote.common.util.IdTransformation;
 import tools.vitruv.framework.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.common.util.SerializationConstants;
 
-public class ResourceSerializer extends JsonSerializer<Resource>{
+public class ResourceSerializer extends JsonSerializer<Resource> {
 
-	@Override
-	public void serialize(Resource r, JsonGenerator g, SerializerProvider p) throws IOException {
-		g.writeStartObject();
-		g.writeStringField("uri", IdTransformation.toLocal(r.getURI().toString()));
-		g.writeStringField("content", ResourceUtils.serialize(r));
-		g.writeEndObject();
-	}
+    @Override
+    public void serialize(Resource resource, JsonGenerator generator, SerializerProvider provider) throws IOException {
+        generator.writeStartObject();
+        generator.writeStringField(SerializationConstants.URI, IdTransformation.toLocal(resource.getURI().toString()));
+        generator.writeStringField(SerializationConstants.CONTENT, ResourceUtils.serialize(resource));
+        generator.writeEndObject();
+    }
 }
