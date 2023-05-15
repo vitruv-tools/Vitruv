@@ -169,7 +169,7 @@ class ResourceCopier {
     }
 
     private static def boolean isWritableUmlResource(Resource resource) {
-        resource.URI.fileExtension == "uml" && !resource.URI.isPathmap
+        (resource.URI.fileExtension == "uml" && !resource.URI.isPathmap) || resource.URI.fileExtension == "c4cRoot"
     }
 
     /**
