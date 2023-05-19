@@ -15,7 +15,7 @@ public class ViewCache {
 	
 	private static final HashMap<String, View> cache = new HashMap<>();
 	
-	public static void  addView(String uuid, View view) {
+	public static void addView(String uuid, View view) {
 		cache.put(uuid, view);
 	}
 	

@@ -3,6 +3,7 @@ package tools.vitruv.framework.remote.server.endpoint.impl;
 import spark.Request;
 import spark.Response;
 import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.EndpointPaths;
 import tools.vitruv.framework.remote.common.util.Headers;
 import tools.vitruv.framework.remote.server.ViewCache;
 import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
@@ -13,7 +14,7 @@ import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 public class IsViewClosedEndpoint extends GetEndpoint {
 
     public IsViewClosedEndpoint() {
-        super("/vsum/view/closed");
+        super(EndpointPaths.IS_VIEW_CLOSED);
     }
 
     @Override

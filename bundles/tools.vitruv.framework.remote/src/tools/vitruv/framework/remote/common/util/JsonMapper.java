@@ -49,47 +49,35 @@ public class JsonMapper {
     }
 
     /**
-     * Serialize the given object.
+     * Serializes the given object.
      *
      * @param obj the object to serialize
      * @return the json or {@code null}, if an {@link JsonProcessingException} occurred.
      */
-    public static String serialize(Object obj) {
-        try {
-            return mapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            return null;
-        }
+    public static String serialize(Object obj) throws JsonProcessingException {
+        return mapper.writeValueAsString(obj);
     }
 
     /**
-     * Deserializes the given json.
+     * Deserializes the given json string.
      *
      * @param json  the json to deserialize
      * @param clazz the class of the jsons type.
      * @return the object or {@code null}, if an {@link JsonProcessingException} occurred.
      */
-    public static <T> T deserialize(String json, Class<T> clazz) {
-        try {
-            return mapper.readValue(json, clazz);
-        } catch (JsonProcessingException e) {
-            return null;
-        }
+    public static <T> T deserialize(String json, Class<T> clazz) throws JsonProcessingException {
+        return mapper.readValue(json, clazz);
     }
 
     /**
-     * Deserializes the given json array.
+     * Deserializes the given json array to a list.
      *
      * @param json  the json array to deserialize
-     * @param clazz the class of the json type of the objects in the array
+     * @param clazz the class representing the json type of the objects in the json array
      * @return the list of objects or {@code null}, if an {@link JsonProcessingException} occurred.
      */
-    public static <T> List<T> deserializeListOf(String json, Class<T> clazz) {
-        try {
+    public static <T> List<T> deserializeArrayOf(String json, Class<T> clazz) throws JsonProcessingException {
             var javaType = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
             return mapper.readValue(json, javaType);
-        } catch (JsonProcessingException e) {
-            return null;
-        }
     }
 }

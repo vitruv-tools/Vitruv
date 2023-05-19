@@ -10,13 +10,13 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 public class ResourceSetSerializer extends JsonSerializer<ResourceSet> {
 
-	@Override
-	public void serialize(ResourceSet rs, JsonGenerator g, SerializerProvider p) throws IOException {
-		g.writeStartArray();
-		var resources = rs.getResources();
-		for (var r : resources) {
-			g.writeObject(r);
-		}
-		g.writeEndArray();
-	}
+    @Override
+    public void serialize(ResourceSet resourceSet, JsonGenerator generator, SerializerProvider provider) throws IOException {
+        generator.writeStartArray();
+        var resources = resourceSet.getResources();
+        for (var r : resources) {
+            generator.writeObject(r);
+        }
+        generator.writeEndArray();
+    }
 }

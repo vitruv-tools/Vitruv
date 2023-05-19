@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.client;
+package tools.vitruv.framework.remote.client.impl;
 
 import java.util.Collection;
 
@@ -17,6 +17,9 @@ import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * A {@link View} which is a copy of a {@link View} from the VSUM of a vitruv server.
  * <p>
@@ -32,6 +35,9 @@ public class RemoteView implements View {
     protected boolean modified = false;
 
     RemoteView(String uuid, ResourceSet viewSource, VitruvRemoteConnection remoteConnection) {
+        checkArgument(uuid != null, "uuid must not be null");
+        checkArgument(viewSource != null, "view source must not be null");
+        checkArgument(remoteConnection != null, "remote connection must not be null");
         this.uuid = uuid;
         this.remoteConnection = remoteConnection;
         this.viewSource = viewSource;
@@ -126,7 +132,7 @@ public class RemoteView implements View {
     public void moveRoot(EObject object, URI newLocation) {
         checkNotClosed();
         checkArgument(object != null, "object to move must not be null");
-        checkState(getRootObjects().contains(object), "view must contain element to move");
+        checkState(getRootObjects().contains(object), "view must contain element %s to move", object);
         checkArgument(newLocation != null, "URI for new location of root must not be null");
         viewSource.getResources().stream().filter(it -> it.getContents().contains(object)).findFirst().get().setURI(newLocation);
     }
@@ -185,19 +191,7 @@ public class RemoteView implements View {
     }
 
     void checkNotClosed() {
-        checkState(!isClosed(), "View is already closed");
-    }
-
-    void checkState(boolean state, String msg) {
-        if (!state) {
-            throw new IllegalStateException(msg);
-        }
-    }
-
-    void checkArgument(boolean arg, String msg) {
-        if (!arg) {
-            throw new IllegalArgumentException(msg);
-        }
+        checkState(!isClosed(), "view is already closed");
     }
 
     private void addChangeListeners(Notifier notifier) {
@@ -208,12 +202,12 @@ public class RemoteView implements View {
             }
         });
 
-        if (notifier instanceof ResourceSet n) {
-            n.getResources().forEach(this::addChangeListeners);
-        } else if (notifier instanceof Resource n) {
-            n.getContents().forEach(this::addChangeListeners);
-        } else if (notifier instanceof EObject n) {
-            n.eContents().forEach(this::addChangeListeners);
+        if (notifier instanceof ResourceSet resourceSet) {
+            resourceSet.getResources().forEach(this::addChangeListeners);
+        } else if (notifier instanceof Resource resource) {
+            resource.getContents().forEach(this::addChangeListeners);
+        } else if (notifier instanceof EObject eObject) {
+            eObject.eContents().forEach(this::addChangeListeners);
         }
     }
 

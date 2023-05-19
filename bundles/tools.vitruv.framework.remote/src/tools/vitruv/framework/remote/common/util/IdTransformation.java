@@ -60,20 +60,20 @@ public final class IdTransformation {
      */
     public static void allToGlobal(List<EChange> changes) {
         for (var eChange : changes) {
-            if (eChange instanceof EObjectExistenceEChange<?> c) {
-                c.setAffectedEObjectID(toGlobal(c.getAffectedEObjectID()));
+            if (eChange instanceof EObjectExistenceEChange<?> change) {
+                change.setAffectedEObjectID(toGlobal(change.getAffectedEObjectID()));
             }
-            if (eChange instanceof EObjectAddedEChange<?> c) {
-                c.setNewValueID(toGlobal(c.getNewValueID()));
+            if (eChange instanceof EObjectAddedEChange<?> change) {
+                change.setNewValueID(toGlobal(change.getNewValueID()));
             }
-            if (eChange instanceof EObjectSubtractedEChange<?> c) {
-                c.setOldValueID(toGlobal(c.getOldValueID()));
+            if (eChange instanceof EObjectSubtractedEChange<?> change) {
+                change.setOldValueID(toGlobal(change.getOldValueID()));
             }
-            if (eChange instanceof FeatureEChange<?, ?> c) {
-                c.setAffectedEObjectID(toGlobal(c.getAffectedEObjectID()));
+            if (eChange instanceof FeatureEChange<?, ?> change) {
+                change.setAffectedEObjectID(toGlobal(change.getAffectedEObjectID()));
             }
-            if (eChange instanceof RootEChange c) {
-                c.setUri(toGlobal(c.getUri()));
+            if (eChange instanceof RootEChange change) {
+                change.setUri(toGlobal(change.getUri()));
             }
         }
     }

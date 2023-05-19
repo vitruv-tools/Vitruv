@@ -2,6 +2,7 @@ package tools.vitruv.framework.remote.server.endpoint.impl;
 
 import spark.Request;
 import spark.Response;
+import tools.vitruv.framework.remote.common.util.EndpointPaths;
 import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
 /**
@@ -9,12 +10,12 @@ import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
  */
 public class HealthEndpoint extends GetEndpoint {
 
-	public HealthEndpoint() {
-		super("/health");
-	}
+    public HealthEndpoint() {
+        super(EndpointPaths.HEALTH);
+    }
 
-	@Override
-	public Object handleRequest(Request request, Response response) {
-		return "Vitruv Server is up and running!";
-	}
+    @Override
+    public Object handleRequest(Request request, Response response) {
+        return "Vitruv Server is up and running!";
+    }
 }
