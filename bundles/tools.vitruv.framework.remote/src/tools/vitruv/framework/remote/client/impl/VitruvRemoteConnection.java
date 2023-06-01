@@ -1,6 +1,7 @@
 package tools.vitruv.framework.remote.client.impl;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -49,9 +50,9 @@ public class VitruvRemoteConnection implements VitruvClient {
         var request = HttpRequest.newBuilder()
                 .uri(createURIFrom(url, port, EndpointPaths.VIEW_TYPES)).GET().build();
         try {
-            var response = client.send(request, BodyHandlers.ofString());
-            return JsonMapper.deserializeArrayOf(response.body(), String.class);
-        } catch (IOException | InterruptedException e) {
+            var response = sendRequest(request);
+            return JsonMapper.deserializeArrayOf(response, String.class);
+        } catch (IOException e) {
             throw new BadServerResponseException(e);
         }
     }
@@ -67,8 +68,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .build();
         try {
             var response = client.send(request, BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
+            if (response.statusCode() != HttpURLConnection.HTTP_OK) {
                 throw new BadServerResponseException(response.body());
             }
 
@@ -95,9 +95,8 @@ public class VitruvRemoteConnection implements VitruvClient {
                     .header(Headers.VIEW_UUID, uuid)
                     .POST(BodyPublishers.ofString(jsonBody))
                     .build();
-
-            client.send(request, BodyHandlers.discarding());
-        } catch (IOException | InterruptedException e) {
+            sendRequest(request);
+        } catch (IOException e) {
             throw new BadServerResponseException(e);
         }
     }
@@ -114,11 +113,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .header(Headers.VIEW_UUID, uuid)
                 .DELETE()
                 .build();
-        try {
-            client.send(request, BodyHandlers.discarding());
-        } catch (IOException | InterruptedException e) {
-            throw new BadServerResponseException(e);
-        }
+        sendRequest(request);
     }
 
     /**
@@ -134,7 +129,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .header(Headers.VIEW_UUID, uuid)
                 .GET()
                 .build();
-        return sendRequestAndCheckResult(request);
+        return sendRequestAndCheckTFResult(request);
     }
 
     /**
@@ -149,20 +144,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .header(Headers.VIEW_UUID, uuid)
                 .GET()
                 .build();
-        return sendRequestAndCheckResult(request);
-    }
-
-    private boolean sendRequestAndCheckResult(HttpRequest request) {
-        try {
-            var response = client.send(request, BodyHandlers.ofString());
-            var value = response.body();
-            if (!Objects.equals(value, Boolean.TRUE.toString()) && !Objects.equals(value, Boolean.FALSE.toString())) {
-                throw new BadServerResponseException("Expected response to be true or false! Actual: " + value);
-            }
-            return value.equals(Boolean.TRUE.toString());
-        } catch (IOException | InterruptedException e) {
-            throw new BadServerResponseException(e);
-        }
+        return sendRequestAndCheckTFResult(request);
     }
 
     /**
@@ -179,11 +161,28 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .method("PATCH", HttpRequest.BodyPublishers.noBody())
                 .build();
         try {
+            var response = sendRequest(request);
+            return JsonMapper.deserialize(response, ResourceSet.class);
+        } catch (IOException e) {
+            throw new BadServerResponseException(e);
+        }
+    }
+
+    private boolean sendRequestAndCheckTFResult(HttpRequest request) {
+        var response = sendRequest(request);
+        if (!Objects.equals(response, Boolean.TRUE.toString()) && !Objects.equals(response, Boolean.FALSE.toString())) {
+            throw new BadServerResponseException("Expected response to be true or false! Actual: " + response);
+        }
+        return response.equals(Boolean.TRUE.toString());
+    }
+
+    private String sendRequest(HttpRequest request) {
+        try {
             var response = client.send(request, BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
+            if (response.statusCode() != HttpURLConnection.HTTP_OK) {
                 throw new BadServerResponseException(response.body());
             }
-            return JsonMapper.deserialize(response.body(), ResourceSet.class);
+            return response.body();
         } catch (IOException | InterruptedException e) {
             throw new BadServerResponseException(e);
         }

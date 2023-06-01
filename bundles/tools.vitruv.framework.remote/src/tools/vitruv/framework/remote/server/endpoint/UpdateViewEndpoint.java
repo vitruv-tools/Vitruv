@@ -1,30 +1,20 @@
-package tools.vitruv.framework.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import spark.Request;
-import spark.Response;
-import tools.vitruv.framework.remote.common.util.ContentTypes;
-import tools.vitruv.framework.remote.common.util.EndpointPaths;
-import tools.vitruv.framework.remote.common.util.Headers;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.remote.server.ViewCache;
-import tools.vitruv.framework.remote.server.endpoint.PatchEndpoint;
 
 /**
  * This endpoint updates a {@link tools.vitruv.framework.views.View View} and returns the
  * updated {@link org.eclipse.emf.ecore.resource.Resource Resources}.
  */
-public class UpdateViewEndpoint extends PatchEndpoint {
-
-    public UpdateViewEndpoint() {
-        super(EndpointPaths.VIEW);
-    }
+public class UpdateViewEndpoint implements Endpoint.Patch {
 
     @Override
-    public Object handleRequest(Request request, Response response) {
-        var view = ViewCache.getView(request.headers(Headers.VIEW_UUID));
+    public String process(HttpExchangeWrapper wrapper) {
+        var view = ViewCache.getView(wrapper.getRequestHeader(Headers.VIEW_UUID));
         if (view == null) {
             throw notFound("View with given id not found!");
         }
@@ -36,7 +26,7 @@ public class UpdateViewEndpoint extends PatchEndpoint {
         var rSet = new ResourceSetImpl();
         rSet.getResources().addAll(resources);
 
-        response.type(ContentTypes.APPLICATION_JSON);
+        wrapper.setContentType(ContentTypes.APPLICATION_JSON);
 
         try {
             return JsonMapper.serialize(rSet);

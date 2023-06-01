@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.server.endpoint.impl;
+package tools.vitruv.framework.remote.server.endpoint;
 
 import java.util.UUID;
 
@@ -6,29 +6,25 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import spark.Request;
-import spark.Response;
 import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.remote.server.ViewCache;
-import tools.vitruv.framework.remote.server.endpoint.GetEndpoint;
 
 /**
  * This endpoint returns a serialized {@link tools.vitruv.framework.views.View View} for the given
  * {@link tools.vitruv.framework.views.ViewType ViewType}.
  */
-public class ViewEndpoint extends GetEndpoint {
+public class ViewEndpoint implements Endpoint.Get {
 
     private final InternalVirtualModel model;
 
     public ViewEndpoint(InternalVirtualModel model) {
-        super(EndpointPaths.VIEW);
         this.model = model;
     }
 
     @Override
-    public String handleRequest(Request request, Response response) {
-        String viewTypeName = request.headers(Headers.VIEW_TYPE);
+    public String process(HttpExchangeWrapper wrapper) {
+        String viewTypeName = wrapper.getRequestHeader(Headers.VIEW_TYPE);
         var types = model.getViewTypes();
 
         //Check if view type exists
@@ -50,8 +46,8 @@ public class ViewEndpoint extends GetEndpoint {
         var rSet = new ResourceSetImpl();
         rSet.getResources().addAll(resources.stream().map(r -> ResourceUtils.copyResource(r, rSet)).toList());
 
-        response.type(ContentTypes.APPLICATION_JSON);
-        response.header(Headers.VIEW_UUID, uuid);
+        wrapper.setContentType(ContentTypes.APPLICATION_JSON);
+        wrapper.addResponseHeader(Headers.VIEW_UUID, uuid);
         try {
             return JsonMapper.serialize(rSet);
         } catch (JsonProcessingException e) {
