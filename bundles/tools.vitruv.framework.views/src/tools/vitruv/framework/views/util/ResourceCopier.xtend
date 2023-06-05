@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource
 import static extension com.google.common.base.Preconditions.checkNotNull
 import static extension com.google.common.base.Preconditions.checkState
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
+import java.util.List
 
 /**
  * A utility class to create copies of resources.
@@ -138,16 +139,22 @@ class ResourceCopier {
         }
         copier.copyReferences()
         for (originalResource : originalResources) {
-            val copiedResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.
+        	if (newResourceSet.getResource(originalResource.URI, false) !== null) {
+        		newResourceSet.getResource(originalResource.URI, false).unload
+        		newResourceSet.resources.remove(newResourceSet.getResource(originalResource.URI, false))
+        	}
+        	
+        	val copiedResource = newResourceSet.resourceFactoryRegistry?.getFactory(originalResource.URI)?.
                 createResource(originalResource.URI).checkNotNull("Cannot create resource copy: %s",
                     originalResource.URI)
-            val selectedRootElements = originalResource.contents.filter[rootElementPredicate.apply(it)]
-            val mappedRootElements = selectedRootElements.map [
-                checkNotNull(copier.get(it), "corresponding object for %s is null", it)
-            ]
-            copiedResource.contents.addAll(mappedRootElements)
-            newResourceSet.resources += copiedResource
-            resourceMapping.put(originalResource, copiedResource)
+	            val selectedRootElements = originalResource.contents.filter[rootElementPredicate.apply(it)]
+	            val mappedRootElements = selectedRootElements.map [
+	                checkNotNull(copier.get(it), "corresponding object for %s is null", it)
+	            ]
+	            copiedResource.contents.addAll(mappedRootElements)
+	            newResourceSet.resources += copiedResource
+	            resourceMapping.put(originalResource, copiedResource)
+            
         }
 
         if (copyXmlIds) {
@@ -169,7 +176,7 @@ class ResourceCopier {
     }
 
     private static def boolean isWritableUmlResource(Resource resource) {
-        (resource.URI.fileExtension == "uml" && !resource.URI.isPathmap) || resource.URI.fileExtension == "c4cRoot"
+        (resource.URI.fileExtension == "uml" && !resource.URI.isPathmap) || List.of("c4cRoot").contains(resource.URI.fileExtension)
     }
 
     /**
