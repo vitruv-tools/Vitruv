@@ -31,8 +31,9 @@ public final class IdTransformation {
             return null;
         }
         // dont change cache ids
-        return id.contains("cache") ? id : Path.of("").toAbsolutePath().relativize(Path.of(prepareId(id)))
-                .toString().replace("\\", "/");
+        return id.contains("cache") || id.equals(SerializationConstants.TEMP) ? id :
+                Path.of("").toAbsolutePath().relativize(Path.of(prepareId(id)))
+                        .toString().replace("\\", "/");
     }
 
     /**
@@ -45,8 +46,9 @@ public final class IdTransformation {
         if (id == null) {
             return null;
         }
-        return id.contains("cache") ? id : "file:/" + Path.of("").toAbsolutePath().resolve(Path.of(id))
-                .toString().replace("\\", "/");
+        return id.contains("cache") || id.equals(SerializationConstants.TEMP) ? id :
+                "file:/" + Path.of("").toAbsolutePath().resolve(Path.of(id))
+                        .toString().replace("\\", "/");
     }
 
     private static String prepareId(String id) {

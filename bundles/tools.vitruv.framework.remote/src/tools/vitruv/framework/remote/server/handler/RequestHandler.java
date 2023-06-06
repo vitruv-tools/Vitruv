@@ -23,9 +23,11 @@ public abstract class RequestHandler implements HttpHandler {
     private final String path;
 
     protected Endpoint.Get getEndpoint;
+    protected Endpoint.Put putEndpoint;
     protected Endpoint.Post postEndpoint;
     protected Endpoint.Patch patchEndpoint;
     protected Endpoint.Delete deleteEndpoint;
+
 
     public RequestHandler(String path) {
         this.path = path;
@@ -53,6 +55,12 @@ public abstract class RequestHandler implements HttpHandler {
                 throw notFound("Delete mapping for this request path not found!");
             }
         };
+        this.putEndpoint = new Endpoint.Put() {
+            @Override
+            public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+                throw notFound("Put mapping for this request path not found!");
+            }
+        };
     }
 
     public String getPath() {
@@ -75,6 +83,7 @@ public abstract class RequestHandler implements HttpHandler {
         try {
             var response = switch (method) {
                 case "GET" -> getEndpoint.process(wrapper);
+                case "PUT" -> putEndpoint.process(wrapper);
                 case "POST" -> postEndpoint.process(wrapper);
                 case "PATCH" -> patchEndpoint.process(wrapper);
                 case "DELETE" -> deleteEndpoint.process(wrapper);

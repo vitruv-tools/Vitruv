@@ -14,9 +14,9 @@ public class ViewHandler extends RequestHandler {
 
     @Override
     public void init(InternalVirtualModel model) {
-        this.getEndpoint = new ViewEndpoint(model);
-        this.patchEndpoint = new UpdateViewEndpoint();
+        this.getEndpoint = new UpdateViewEndpoint();
+        this.patchEndpoint = new ChangePropagationEndpoint();
         this.deleteEndpoint = new CloseViewEndpoint();
-        this.postEndpoint = new ChangePropagationEndpoint();
+        this.postEndpoint = new ViewEndpoint() ;
     }
 }

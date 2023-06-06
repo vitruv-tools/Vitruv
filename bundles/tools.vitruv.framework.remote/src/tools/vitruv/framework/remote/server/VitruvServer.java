@@ -32,7 +32,7 @@ public class VitruvServer {
 
         var model = modelInitializer.init();
         var handlers = Set.of(new HealthHandler(), new IsViewClosedHandler(), new IsViewOutdatedHandler(),
-                new ViewHandler(), new ViewTypesHandler());
+                new ViewHandler(), new ViewTypesHandler(), new ViewSelectorHandler());
         handlers.forEach(it -> {
             it.init(model);
             server.createContext(it.getPath(), it);

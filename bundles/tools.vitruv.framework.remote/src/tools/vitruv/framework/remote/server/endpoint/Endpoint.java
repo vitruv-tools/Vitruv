@@ -48,4 +48,6 @@ public interface Endpoint {
     interface Patch extends Endpoint {
     }
 
+    interface Put extends Endpoint {
+    }
 }
