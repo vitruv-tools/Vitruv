@@ -16,11 +16,10 @@ import tools.vitruv.framework.views.ChangeableViewSource
 import tools.vitruv.framework.views.ViewSelection
 import tools.vitruv.framework.views.ViewSelector
 import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.DeltaBasedResourceUtil
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
@@ -45,7 +44,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
         this.viewSource = viewSource
         this.selection = selection
         viewSource.addChangePropagationListener(this)
-        viewResourceSet = new ResourceSetImpl().withGlobalFactories
+        viewResourceSet = DeltaBasedResourceUtil.withDeltaFactory(new ResourceSetImpl())
         update
     }
 

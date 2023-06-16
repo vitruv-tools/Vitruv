@@ -31,6 +31,8 @@ class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, Non
 
 	private def InternalVirtualModel generateVirtualModel(Path testProjectPath, Path vsumPath,
 		TestUserInteraction userInteraction) {
+		TestDeltaMigrator.makeVsumModelsDeltaBased(vsumPath.resolve("models.models"))	
+			
 		new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //

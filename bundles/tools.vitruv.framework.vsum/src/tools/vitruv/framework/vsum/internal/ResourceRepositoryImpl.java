@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum.internal;
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel;
 
 import java.io.IOException;
@@ -21,7 +20,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
 import tools.vitruv.change.atomic.EChangeUuidManager;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
@@ -36,8 +37,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 class ResourceRepositoryImpl implements ModelRepository {
 	private static final Logger LOGGER = Logger.getLogger(ResourceRepositoryImpl.class);
-
-	private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
+	
+	private final ResourceSet modelsResourceSet = new ResourceSetImpl();
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
 	private final PersistableCorrespondenceModel correspondenceModel;
 	private final UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
@@ -51,9 +52,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout) {
 		this.fileSystemLayout = fileSystemLayout;
 		this.correspondenceModel = createPersistableCorrespondenceModel(fileSystemLayout.getCorrespondencesURI());
-		modelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new ModelInstanceFactory());
-		modelsResourceSet.eAdapters()
-				.add(new ResourceRegistrationAdapter(resource -> getCreateOrLoadModelUnlessLoading(resource.getURI())));
+		modelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+				new PathmapAwareModelInstanceFactory());
+		modelsResourceSet.eAdapters().add(new ResourceRegistrationAdapter(resource -> {
+			getCreateOrLoadModelUnlessLoading(resource.getURI());
+		}));
 	}
 
 	@Override
@@ -69,8 +72,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private void writeModelsFile() throws IOException {
-		Files.write(fileSystemLayout.getModelsNamesFilesPath(), modelsResourceSet.getResources().stream()
-				.map(Resource::getURI).map(URI::toString).toList());
+		Files.write(fileSystemLayout.getModelsNamesFilesPath(),
+				modelsResourceSet.getResources().stream().map(Resource::getURI).map(URI::toString).toList());
 	}
 	
 	private void readModelsFile() throws IOException {
@@ -119,7 +122,18 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	private ModelInstance createOrLoadModel(URI modelUri) {
 		ModelInstance modelInstance;
-		if (modelUri.isFile() || modelUri.isPlatform()) {
+		if (modelUri.toString().contains("pathmap")) {
+			// loadOrCreateResource
+			if(modelsResourceSet.getResources().stream().anyMatch(resource -> resource.getURI().equals(modelUri))) {
+				modelInstance = (ModelInstance) modelsResourceSet.getResource(modelUri, false);
+			} else {
+				ResourceSet stdResourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
+				Resource pathMapResource = getOrCreateResource(stdResourceSet, modelUri);
+				modelInstance = new ModelInstance(modelUri);
+				modelInstance.getContents().addAll(EcoreUtil.copyAll(pathMapResource.getContents()));
+				modelsResourceSet.getResources().add(modelInstance);
+			}
+		} else if (modelUri.isFile() || modelUri.isPlatform()) {
 			modelInstance = (ModelInstance) getOrCreateResource(modelsResourceSet, modelUri);
 		} else {
 			modelInstance = (ModelInstance) loadOrCreateResource(modelsResourceSet, modelUri);
@@ -127,6 +141,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 		modelInstances.put(modelUri, modelInstance);
 		registerRecorder(modelInstance);
+		modelInstance.setModified(false);
 		return modelInstance;
 	}
 
@@ -163,9 +178,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 				modelInstancesIterator.remove();
 			} else {
 				try {
-					modelInstance.save(null);
+					// move to modelInstance?
+					if(modelInstance.isModified()) { 
+						modelInstance.save(null);
+					}
 				} catch (IOException e) {
-					LOGGER.error("Model could not be saved: "+ modelInstance.getURI(), e);
+					LOGGER.error("Model could not be saved: " + modelInstance.getURI(), e);
 					throw new IllegalStateException("Could not save URI " + modelInstance.getURI(), e);
 				}
 			}

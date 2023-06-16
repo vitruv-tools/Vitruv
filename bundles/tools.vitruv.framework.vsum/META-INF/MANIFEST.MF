@@ -16,5 +16,6 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.commons.util.java,
  tools.vitruv.change.changederivation
 Export-Package: tools.vitruv.framework.vsum,
+ tools.vitruv.framework.vsum.helper,
  tools.vitruv.framework.vsum.internal;x-internal:=true
 Bundle-Vendor: vitruv.tools
