@@ -7,7 +7,7 @@ import static com.google.common.base.Preconditions.checkArgument
 
 abstract package class AbstractViewType<S extends ViewSelector> implements ViewCreatingViewType<S> {
 	@Accessors(PUBLIC_GETTER)
-	val String name
+	protected var String name
 
 	new(String name) {
 		checkArgument(name !== null, "view type name must not be null")

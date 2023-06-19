@@ -7,18 +7,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import tools.vitruv.framework.remote.client.VitruvClient;
+import tools.vitruv.framework.remote.client.VitruvClientFactory;
 import tools.vitruv.framework.views.CommittableView;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewProvider;
-import tools.vitruv.framework.views.ViewSelector;
-import tools.vitruv.framework.views.ViewTypeFactory;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 public class TestViewFactory {
 	private final ViewProvider viewProvider;
+	private final VitruvClient client;
 
 	public TestViewFactory(ViewProvider viewProvider) {
 		this.viewProvider = viewProvider;
+		this.client = VitruvClientFactory.create("localhost");
 	}
 
 	/**
@@ -26,7 +29,12 @@ public class TestViewFactory {
 	 * its descendants).
 	 */
 	public View createViewOfElements(String viewName, Collection<Class<?>> rootTypes) {
-		ViewSelector selector = viewProvider.createSelector(ViewTypeFactory.createIdentityMappingViewType(viewName));
+		var model = (InternalVirtualModel) viewProvider;
+		var type = (TestViewType) model.getViewTypes().stream().findFirst().get();
+		type.setName(viewName);
+		var remoteType = client.getViewTypes().stream().findFirst().get();
+		var selector = client.createSelector(remoteType);
+		//var selector = viewProvider.createSelector(ViewTypeFactory.createIdentityMappingViewType(viewName));
 		selector.getSelectableElements().stream()
 				.filter(element -> rootTypes.stream().anyMatch(it -> it.isInstance(element)))
 				.forEach(element -> selector.setSelected(element, true));

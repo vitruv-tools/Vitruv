@@ -16,6 +16,7 @@ import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.testutils.views.UriMode
 import tools.vitruv.change.propagation.ChangePropagationMode
+import tools.vitruv.framework.remote.server.VitruvServer
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class ViewBasedVitruvApplicationTest {
@@ -23,6 +24,7 @@ abstract class ViewBasedVitruvApplicationTest {
 	Path testProjectPath
 	@Accessors(PROTECTED_GETTER)
 	TestUserInteraction userInteraction
+	VitruvServer server
 
 	/**
 	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
@@ -50,14 +52,18 @@ abstract class ViewBasedVitruvApplicationTest {
 		userInteraction = new TestUserInteraction
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
+		.withViewType(new TestViewType())
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
 		virtualModel.changePropagationMode = changePropagationMode
 		this.testProjectPath = testProjectPath
+		server = new VitruvServer([virtualModel])
+		server.start()
 	}
 
 	@AfterEach
 	def final package void closeAfterTest() {
+		server.stop()
 		virtualModel?.dispose()
 	}
 
