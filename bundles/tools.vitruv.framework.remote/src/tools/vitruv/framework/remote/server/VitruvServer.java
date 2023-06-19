@@ -60,6 +60,6 @@ public class VitruvServer {
      * Stops the vitruv server.
      */
     public void stop() {
-        server.stop(5);
+        server.stop(0);
     }
 }

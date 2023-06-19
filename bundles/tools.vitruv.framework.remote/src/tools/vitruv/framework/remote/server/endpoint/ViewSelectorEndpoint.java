@@ -9,7 +9,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edapt.internal.common.EcoreUtils;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.server.Cache;
+import tools.vitruv.framework.remote.common.util.Cache;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.Headers;
+import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 

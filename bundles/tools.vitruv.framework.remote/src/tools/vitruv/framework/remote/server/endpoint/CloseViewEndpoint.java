@@ -1,8 +1,8 @@
 package tools.vitruv.framework.remote.server.endpoint;
 
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
-import tools.vitruv.framework.remote.common.util.Headers;
-import tools.vitruv.framework.remote.server.Cache;
+import tools.vitruv.framework.remote.common.util.constants.Headers;
+import tools.vitruv.framework.remote.common.util.Cache;
 
 /**
  * This endpoint closes a {@link tools.vitruv.framework.views.View View}.

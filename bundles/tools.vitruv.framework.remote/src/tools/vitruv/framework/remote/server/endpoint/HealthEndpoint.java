@@ -1,6 +1,6 @@
 package tools.vitruv.framework.remote.server.endpoint;
 
-import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
 
 /**

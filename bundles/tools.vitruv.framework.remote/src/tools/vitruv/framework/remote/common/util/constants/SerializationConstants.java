@@ -1,6 +1,6 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.common.util.constants;
 
-public class SerializationConstants {
+public final class SerializationConstants {
     public static final String CHANGE_TYPE = "changeType";
     public static final String E_CHANGES = "eChanges";
     public static final String V_CHANGES = "vChanges";

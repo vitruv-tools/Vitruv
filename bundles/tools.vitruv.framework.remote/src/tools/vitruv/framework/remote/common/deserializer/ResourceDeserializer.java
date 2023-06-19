@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import tools.vitruv.framework.remote.common.util.ResourceUtils;
-import tools.vitruv.framework.remote.common.util.SerializationConstants;
+import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
 
 public class ResourceDeserializer extends JsonDeserializer<Resource> {
 

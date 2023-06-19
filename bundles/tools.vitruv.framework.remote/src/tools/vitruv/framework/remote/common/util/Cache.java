@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.server;
+package tools.vitruv.framework.remote.common.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelector;
 
 /**
- * A Cache used to hold {@link View}s as long as the corresponding remote view has not yet been closed.
+ * A global Cache holding {@link View}s, {@link ViewSelector}s and mappings of the form UUID <-> {@link EObject}.
  */
 public class Cache {
 
@@ -42,15 +42,15 @@ public class Cache {
         return selectorCache.get(selectorUuid);
     }
 
-    public static EObject getEObjectFor(String selectorUuid, String objectUuid) {
+    public static EObject getEObjectFromMapping(String selectorUuid, String objectUuid) {
         return perSelectorUuidToEObjectMapping.get(selectorUuid).get(objectUuid);
     }
 
-    public static String getUuidFor(String selectorUuid, EObject eObject) {
+    public static String getUuidFromMapping(String selectorUuid, EObject eObject) {
         return perSelectorUuidToEObjectMapping.get(selectorUuid).inverse().get(eObject);
     }
 
-    public static void removeMappingFor(String selectorUuid) {
+    public static void removeSelectorAndMapping(String selectorUuid) {
         perSelectorUuidToEObjectMapping.remove(selectorUuid);
         selectorCache.remove(selectorUuid);
     }

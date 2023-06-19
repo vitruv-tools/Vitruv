@@ -1,9 +1,9 @@
 package tools.vitruv.framework.remote.server.endpoint;
 
-import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
-import tools.vitruv.framework.remote.common.util.Headers;
-import tools.vitruv.framework.remote.server.Cache;
+import tools.vitruv.framework.remote.common.util.constants.Headers;
+import tools.vitruv.framework.remote.common.util.Cache;
 
 /**
  * This endpoint returns whether a {@link tools.vitruv.framework.views.View View} is closed.

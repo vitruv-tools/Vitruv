@@ -1,12 +1,13 @@
 package tools.vitruv.framework.remote.common.util;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -14,7 +15,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.XMLResource;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -35,11 +35,12 @@ public class ResourceUtils {
      */
     public static String serialize(Resource resource) throws IOException {
         var outputStream = new ByteArrayOutputStream();
-        resource.save(outputStream, Map.of(XMLResource.OPTION_PROCESS_DANGLING_HREF, XMLResource.OPTION_PROCESS_DANGLING_HREF_DISCARD));
+        resource.save(outputStream, Collections.EMPTY_MAP);
         return outputStream.toString(StandardCharsets.UTF_8);
     }
 
     /**
+
      * Deserializes a {@link Resource}.
      *
      * @param uri            the uri of the resource
@@ -65,7 +66,7 @@ public class ResourceUtils {
      * @return the deserialized {@link Resource}.
      */
     public static Resource deserialize(URI uri, String res) throws IOException {
-        return deserialize(uri, res, new ResourceSetImpl());
+        return deserialize(uri, res, ResourceSetUtil.withGlobalFactories(new ResourceSetImpl()));
     }
 
     /**
@@ -91,7 +92,7 @@ public class ResourceUtils {
      * @return the created {@link Resource}.
      */
     public static Resource createResourceWith(URI uri, Collection<? extends EObject> content) {
-        return createResourceWith(uri, content, new ResourceSetImpl());
+        return createResourceWith(uri, content, ResourceSetUtil.withGlobalFactories(new ResourceSetImpl()));
     }
 
     /**
@@ -114,6 +115,6 @@ public class ResourceUtils {
      * @return a copy of the given {@link Resource}.
      */
     public static Resource copyResource(Resource original) {
-        return copyResource(original, new ResourceSetImpl());
+        return copyResource(original, ResourceSetUtil.withGlobalFactories(new ResourceSetImpl()));
     }
 }

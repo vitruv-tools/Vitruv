@@ -2,7 +2,7 @@ package tools.vitruv.framework.remote.server.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.server.endpoint.*;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;

@@ -13,7 +13,10 @@ Require-Bundle: tools.vitruv.framework.views,
  com.google.guava,
  com.fasterxml.jackson.core.jackson-annotations,
  com.fasterxml.jackson.core.jackson-core,
- com.fasterxml.jackson.core.jackson-databind
+ com.fasterxml.jackson.core.jackson-databind,
+ org.eclipse.emf.edapt.common,
+ edu.kit.ipd.sdq.commons.util.emf,
+ org.eclipse.emf.ecore
 Export-Package: tools.vitruv.framework.remote.client,
  tools.vitruv.framework.remote.client.exception,
  tools.vitruv.framework.remote.server

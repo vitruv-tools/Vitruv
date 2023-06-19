@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import tools.vitruv.framework.remote.common.util.IdTransformation;
 import tools.vitruv.framework.remote.common.util.ResourceUtils;
-import tools.vitruv.framework.remote.common.util.SerializationConstants;
+import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
 
 public class ResourceSerializer extends JsonSerializer<Resource> {
 

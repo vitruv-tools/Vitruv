@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import tools.vitruv.framework.remote.common.util.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;

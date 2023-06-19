@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
-import tools.vitruv.framework.remote.common.util.SerializationConstants;
+import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
 import tools.vitruv.framework.remote.common.util.ChangeType;
 import tools.vitruv.framework.remote.common.util.IdTransformation;
 import tools.vitruv.framework.remote.common.util.ResourceUtils;

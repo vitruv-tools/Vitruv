@@ -9,19 +9,20 @@ import tools.vitruv.change.atomic.eobject.EObjectExistenceEChange;
 import tools.vitruv.change.atomic.eobject.EObjectSubtractedEChange;
 import tools.vitruv.change.atomic.feature.FeatureEChange;
 import tools.vitruv.change.atomic.root.RootEChange;
+import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
 
 /**
  * Contains functions to transform ids used by the vitruv framework to identify
  * {@link org.eclipse.emf.ecore.EObject EObjects}.
  */
-public final class IdTransformation {
+public class IdTransformation {
 
     private IdTransformation() {
         throw new UnsupportedOperationException("Utility Class Constructor!");
     }
 
     /**
-     * Transforms the given global id to a local id.
+     * Transforms the given global (absolute path) id to a local id (relative path).
      *
      * @param id the id to transform
      * @return the local id
@@ -37,7 +38,7 @@ public final class IdTransformation {
     }
 
     /**
-     * Transforms the given local id to a global id.
+     * Transforms the given local id (relative path) to a global id (absolute path).
      *
      * @param id the id to transform
      * @return the global id
@@ -56,7 +57,7 @@ public final class IdTransformation {
     }
 
     /**
-     * Transforms all local ids of the given changes to global ids.
+     * Transforms all local ids (relative paths) of the given changes to global ids (absolute paths).
      *
      * @param changes the changes which ids should be transformed
      */

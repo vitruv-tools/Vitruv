@@ -1,6 +1,6 @@
 package tools.vitruv.framework.remote.server.handler;
 
-import tools.vitruv.framework.remote.common.util.EndpointPaths;
+import tools.vitruv.framework.remote.common.util.constants.EndpointPaths;
 import tools.vitruv.framework.remote.server.endpoint.ViewSelectorEndpoint;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 

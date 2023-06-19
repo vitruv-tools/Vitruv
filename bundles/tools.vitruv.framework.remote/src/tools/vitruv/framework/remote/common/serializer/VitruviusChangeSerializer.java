@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import tools.vitruv.change.composite.description.CompositeChange;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.framework.remote.common.util.SerializationConstants;
+import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
 import tools.vitruv.framework.remote.common.util.ChangeType;
 import tools.vitruv.framework.remote.common.util.ResourceUtils;
 

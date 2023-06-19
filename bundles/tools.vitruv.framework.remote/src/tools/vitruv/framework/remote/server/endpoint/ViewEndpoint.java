@@ -6,9 +6,10 @@ import java.util.UUID;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.edapt.internal.common.EcoreUtils;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.server.Cache;
+import tools.vitruv.framework.remote.common.util.Cache;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.Headers;
 
 /**
  * This endpoint returns a serialized {@link tools.vitruv.framework.views.View View} for the given
@@ -30,7 +31,7 @@ public class ViewEndpoint implements Endpoint.Post {
             var body = wrapper.getRequestBodyAsString();
             var selection = JsonMapper.deserializeArrayOf(body, String.class);
             selection.forEach(it -> {
-                var object = Cache.getEObjectFor(selectorUuid, it);
+                var object = Cache.getEObjectFromMapping(selectorUuid, it);
                 if (object != null) {
                     selector.setSelected(object, true);
                 }
@@ -40,7 +41,7 @@ public class ViewEndpoint implements Endpoint.Post {
             var uuid = UUID.randomUUID().toString();
             var view = selector.createView();
             Cache.addView(uuid, view);
-            Cache.removeMappingFor(selectorUuid);
+            Cache.removeSelectorAndMapping(selectorUuid);
 
             //Get Resources
             var resources = view.getRootObjects().stream().map(EObject::eResource).distinct().toList();

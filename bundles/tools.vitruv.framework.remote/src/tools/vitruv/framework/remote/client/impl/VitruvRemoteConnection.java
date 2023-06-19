@@ -13,12 +13,13 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
+import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.remote.client.VitruvClient;
 import tools.vitruv.framework.remote.client.exception.BadServerResponseException;
-import tools.vitruv.framework.remote.common.util.ContentTypes;
-import tools.vitruv.framework.remote.common.util.EndpointPaths;
-import tools.vitruv.framework.remote.common.util.Headers;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.EndpointPaths;
+import tools.vitruv.framework.remote.common.util.constants.Headers;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelector;
@@ -117,6 +118,11 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     void propagateChanges(String uuid, VitruviusChange change) throws BadServerResponseException {
         try {
+        	change.getEChanges().forEach(it -> {
+        		if(it instanceof InsertRootEObject<?>) {
+        			((InsertRootEObject<?>) it).setResource(null);
+        		}
+        	});
             var jsonBody = JsonMapper.serialize(change);
             var request = HttpRequest.newBuilder()
                     .uri(createURIFrom(url, port, EndpointPaths.VIEW))

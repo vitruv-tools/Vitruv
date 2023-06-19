@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.server.Cache;
+import tools.vitruv.framework.remote.common.util.Cache;
+import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.Headers;
 
 /**
  * This endpoint updates a {@link tools.vitruv.framework.views.View View} and returns the

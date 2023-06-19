@@ -1,6 +1,6 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.common.util.constants;
 
-public class EndpointPaths {
+public final class EndpointPaths {
     public static final String HEALTH = "/health";
     public static final String VIEW_TYPES = "/vsum/view/types";
     public static final String VIEW_SELECTOR = "/vsum/view/selector";
