@@ -7,7 +7,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -21,8 +22,8 @@ import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
 import tools.vitruv.framework.remote.common.util.constants.EndpointPaths;
 import tools.vitruv.framework.remote.common.util.constants.Headers;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelector;
+import tools.vitruv.framework.views.ViewType;
 
 /**
  * A {@link VitruvRemoteConnection} acts as a {@link HttpClient} to forward requests to a vitruvius server.
@@ -47,24 +48,47 @@ public class VitruvRemoteConnection implements VitruvClient {
     }
 
     /**
-     * @inheritDoc
+     * Returns a list of remote representations of {@link ViewType}s available at the vitruvius server.
      */
-    public List<String> queryViewTypes() throws BadServerResponseException {
+    @Override
+    public Collection<ViewType<?>> getViewTypes() {
         var request = HttpRequest.newBuilder()
                 .uri(createURIFrom(url, port, EndpointPaths.VIEW_TYPES)).GET().build();
         try {
             var response = sendRequest(request);
-            return JsonMapper.deserializeArrayOf(response, String.class);
+            var typeNames = JsonMapper.deserializeArrayOf(response, String.class);
+            var list = new LinkedList<ViewType<?>>();
+            typeNames.forEach(it -> list.add(new RemoteViewType(it, this)));
+            return list;
         } catch (IOException e) {
             throw new BadServerResponseException(e);
         }
     }
 
     /**
-     * @inheritDoc
+     * Returns a view selector for the given {@link ViewType} by querying the selector from the vitruvius server.
+     * The view type must be of type {@link RemoteViewType} as these represent the actual view types available at the server side.
+     *
+     * @param viewType the {@link ViewType} to create a selector for
+     * @return a {@link ViewSelector} for the given view type
+     * @throws IllegalArgumentException if view type is no {@link RemoteViewType}
      */
     @Override
-    public ViewSelector querySelector(String typeName) throws BadServerResponseException {
+    public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
+        if (!(viewType instanceof RemoteViewType)) {
+            throw new IllegalArgumentException("This vitruv client can only process RemoteViewType!");
+        }
+        return viewType.createSelector(null);
+    }
+
+    /**
+     * Queries the vitruvius server to obtain a view selector from the view type with the given name.
+     *
+     * @param typeName the name of the view type
+     * @return The selector generated with the view type of the given name.
+     * @throws BadServerResponseException if the server answered with a bad response or a connection error occurred.
+     */
+    RemoteViewSelector getSelector(String typeName) throws BadServerResponseException {
         var request = HttpRequest.newBuilder()
                 .uri(createURIFrom(url, port, EndpointPaths.VIEW_SELECTOR))
                 .header(Headers.VIEW_TYPE, typeName)
@@ -89,7 +113,7 @@ public class VitruvRemoteConnection implements VitruvClient {
      * @return The view generated with the given view selector.
      * @throws BadServerResponseException if the server answered with a bad response or a connection error occurred.
      */
-    View getView(RemoteViewSelector selector) throws BadServerResponseException {
+    RemoteView getView(RemoteViewSelector selector) throws BadServerResponseException {
         try {
             var request = HttpRequest.newBuilder()
                     .uri(createURIFrom(url, port, EndpointPaths.VIEW))
@@ -118,11 +142,11 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     void propagateChanges(String uuid, VitruviusChange change) throws BadServerResponseException {
         try {
-        	change.getEChanges().forEach(it -> {
-        		if(it instanceof InsertRootEObject<?>) {
-        			((InsertRootEObject<?>) it).setResource(null);
-        		}
-        	});
+            change.getEChanges().forEach(it -> {
+                if (it instanceof InsertRootEObject<?>) {
+                    ((InsertRootEObject<?>) it).setResource(null);
+                }
+            });
             var jsonBody = JsonMapper.serialize(change);
             var request = HttpRequest.newBuilder()
                     .uri(createURIFrom(url, port, EndpointPaths.VIEW))

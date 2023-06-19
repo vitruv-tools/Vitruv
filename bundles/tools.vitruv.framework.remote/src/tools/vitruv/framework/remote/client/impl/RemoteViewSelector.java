@@ -14,6 +14,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A selector for selecting the elements to be represented in a view, but on the vitruv client itself.
+ * It is capable of acting as a builder for a view by providing an appropriate creation method, handling the remote connection.
+ */
 public class RemoteViewSelector implements ViewSelector {
 
     private final String uuid;
@@ -26,6 +30,11 @@ public class RemoteViewSelector implements ViewSelector {
         this.viewSelection = new ElementViewSelection(selection.getContents());
     }
 
+    /**
+     * Creates a view by delegating the request to the vitruvius server, performing the selection done by this selector.
+     *
+     * @return the created view
+     */
     @Override
     public View createView() {
         return remoteConnection.getView(this);
