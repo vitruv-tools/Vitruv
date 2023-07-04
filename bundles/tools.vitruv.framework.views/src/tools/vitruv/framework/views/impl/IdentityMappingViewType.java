@@ -14,9 +14,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import tools.vitruv.change.atomic.EChangeUuidManager;
-import tools.vitruv.change.atomic.id.Id;
-import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.id.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
@@ -67,16 +65,16 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 	}
 
 	@Override
-	public void commitViewChanges(ModifiableView view, VitruviusChange<Id> viewChange) {
+	public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
 		ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
-		IdResolver viewSourceCopyIdResolver = IdResolver.create(viewSourceCopyResourceSet);
+		VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolver.forHierarchicalIds(viewSourceCopyResourceSet);
 		UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
+		VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolver.forUuids(viewSourceCopyUuidResolver);
 		Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
 		view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
-		VitruviusChange<EObject> resolvedChange = VitruviusChangeResolver.resolveAndApply(viewChange, viewSourceCopyIdResolver);
-		EChangeUuidManager.setOrGenerateIds(resolvedChange.getEChanges(), viewSourceCopyUuidResolver);
-		VitruviusChange<Uuid> unresolvedChanges = VitruviusChangeResolver.unresolve(resolvedChange, viewSourceCopyUuidResolver);
+		VitruviusChange<EObject> resolvedChange = idChangeResolver.resolveAndApply(viewChange);
+		VitruviusChange<Uuid> unresolvedChanges = uuidChangeResolver.assignIds(resolvedChange);
 		view.getViewSource().propagateChange(unresolvedChanges);
 	}
 

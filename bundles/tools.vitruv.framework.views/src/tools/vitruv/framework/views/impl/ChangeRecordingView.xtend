@@ -1,10 +1,6 @@
 package tools.vitruv.framework.views.impl
 
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.change.atomic.EChangeIdManager
-import tools.vitruv.change.atomic.id.IdResolver
-import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.CommittableView
@@ -13,9 +9,6 @@ import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionS
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-
-import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward
-import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward
 
 /**
  * A {@link View} that records changes to its resources and allows to propagate them 
@@ -44,22 +37,12 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
         changeRecorder.addToRecording(view.viewResourceSet)
         changeRecorder.beginRecording()
     }
-	def private assignIds(VitruviusChange<EObject> recordedChange) {
-		val changes = recordedChange.EChanges
-		val idResolver = IdResolver.create(view.viewResourceSet)
-		val idManager = new EChangeIdManager(idResolver)
-		changes.toList.reverseView.forEach[applyBackward]
-		changes.forEach[
-			idManager.setOrGenerateIds(it)
-			it.applyForward(idResolver)
-		]
-		return VitruviusChangeResolver.unresolve(recordedChange, idResolver)
-	}
 
     override commitChanges() {
         view.checkNotClosed()
         val recordedChange = changeRecorder.endRecording()
-        val unresolvedChanges = assignIds(recordedChange)
+        val changeResolver = VitruviusChangeResolver.forHierarchicalIds(view.viewResourceSet)
+        val unresolvedChanges = changeResolver.assignIds(recordedChange)
         view.viewType.commitViewChanges(this, unresolvedChanges)
         view.viewChanged = false
         changeRecorder.beginRecording()
