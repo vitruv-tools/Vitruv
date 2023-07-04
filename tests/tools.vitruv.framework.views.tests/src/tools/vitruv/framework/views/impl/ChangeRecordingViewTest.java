@@ -40,7 +40,7 @@ import tools.vitruv.change.atomic.feature.attribute.AttributeFactory;
 import tools.vitruv.change.atomic.feature.attribute.AttributePackage;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference;
-import tools.vitruv.change.atomic.id.HierarchicalId;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;

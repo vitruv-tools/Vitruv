@@ -42,7 +42,7 @@ import com.google.common.collect.FluentIterable;
 import allElementTypes.Root;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
-import tools.vitruv.change.atomic.id.HierarchicalId;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;

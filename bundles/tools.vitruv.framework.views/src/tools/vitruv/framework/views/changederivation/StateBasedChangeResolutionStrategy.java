@@ -2,7 +2,7 @@ package tools.vitruv.framework.views.changederivation;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import tools.vitruv.change.atomic.id.HierarchicalId;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.composite.description.VitruviusChange;
 
 /**

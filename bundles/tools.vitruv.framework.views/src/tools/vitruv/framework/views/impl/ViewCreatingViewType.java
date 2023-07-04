@@ -1,6 +1,6 @@
 package tools.vitruv.framework.views.impl;
 
-import tools.vitruv.change.atomic.id.HierarchicalId;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelector;
