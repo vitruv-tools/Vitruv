@@ -31,14 +31,14 @@ import tools.vitruv.framework.views.util.ResourceCopier;
  * selection mechanism and providing a one-to-one (identity) mapping of elements
  * within the {@link ViewSource} to a created {@link View}.
  */
-public class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector> {
+public class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector<HierarchicalId>, HierarchicalId> {
 	public IdentityMappingViewType(String name) {
 		super(name);
 	}
 
 	@Override
-	public DirectViewElementSelector createSelector(ChangeableViewSource viewSource) {
-		return new DirectViewElementSelector(this, viewSource,
+	public DirectViewElementSelector<HierarchicalId> createSelector(ChangeableViewSource viewSource) {
+		return new DirectViewElementSelector<>(this, viewSource,
 				viewSource.getViewSourceModels().stream().map(resource -> {
 					if (!resource.getContents().isEmpty() && ResourceCopier.requiresFullCopy(resource)) {
 						// Some resources (like UML) can only be copied as a whole, so no option to select
@@ -50,7 +50,7 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 	}
 
 	@Override
-	public ModifiableView createView(DirectViewElementSelector selector) {
+	public ModifiableView createView(DirectViewElementSelector<HierarchicalId> selector) {
 		checkArgument(selector.getViewType() == this, "cannot create view with selector for different view type");
 		return new BasicView(selector.getViewType(), selector.getViewSource(), selector.getSelection());
 	}

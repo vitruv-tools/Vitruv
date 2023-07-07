@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import allElementTypes.Root;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.impl.ModifiableView;
@@ -32,7 +33,7 @@ import tools.vitruv.testutils.TestLogging;
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class DirectViewElementSelectorTest {
 	@Mock
-	ViewCreatingViewType<DirectViewElementSelector> mockViewType;
+	ViewCreatingViewType<DirectViewElementSelector<HierarchicalId>, HierarchicalId> mockViewType;
 
 	@Mock
 	ChangeableViewSource mockViewSource;
@@ -52,28 +53,28 @@ public class DirectViewElementSelectorTest {
 			@DisplayName("with null view type")
 			public void nullViewType() {
 				assertThrows(IllegalArgumentException.class,
-						() -> new DirectViewElementSelector(null, mockViewSource, emptySet()));
+						() -> new DirectViewElementSelector<>(null, mockViewSource, emptySet()));
 			}
 
 			@Test
 			@DisplayName("with null view source")
 			public void nullViewSource() {
 				assertThrows(IllegalArgumentException.class,
-						() -> new DirectViewElementSelector(mockViewType, null, emptySet()));
+						() -> new DirectViewElementSelector<>(mockViewType, null, emptySet()));
 			}
 
 			@Test
 			@DisplayName("with null selectable elements")
 			public void nullElements() {
 				assertThrows(IllegalArgumentException.class,
-						() -> new DirectViewElementSelector(mockViewType, mockViewSource, null));
+						() -> new DirectViewElementSelector<>(mockViewType, mockViewSource, null));
 			}
 		}
 
 		@Test
 		@DisplayName("with no selectable elements")
 		public void empty() {
-			ViewSelector selector = new DirectViewElementSelector(mockViewType, mockViewSource, emptySet());
+			ViewSelector selector = new DirectViewElementSelector<>(mockViewType, mockViewSource, emptySet());
 			assertThat(selector.getSelectableElements(), is(emptySet()));
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
 		}
@@ -82,7 +83,7 @@ public class DirectViewElementSelectorTest {
 		@DisplayName("with single selectable element")
 		public void withSingleSelectableElement() {
 			Root root = aet.Root();
-			ViewSelector selector = new DirectViewElementSelector(mockViewType, mockViewSource, Set.of(root));
+			ViewSelector selector = new DirectViewElementSelector<>(mockViewType, mockViewSource, Set.of(root));
 			assertThat(selector.getSelectableElements(), is(Set.of(root)));
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
 		}
@@ -92,7 +93,7 @@ public class DirectViewElementSelectorTest {
 		public void withMultipleSelectableElements() {
 			Root firstRoot = aet.Root();
 			Root secondRoot = aet.Root();
-			ViewSelector selector = new DirectViewElementSelector(mockViewType, mockViewSource,
+			ViewSelector selector = new DirectViewElementSelector<>(mockViewType, mockViewSource,
 					Set.of(firstRoot, secondRoot));
 			assertThat(selector.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
@@ -111,7 +112,7 @@ public class DirectViewElementSelectorTest {
 			selectableElements = new ArrayList<>();
 			selectableElements.add(aet.Root());
 			selectableElements.add(aet.Root());
-			selector = new DirectViewElementSelector(mockViewType, mockViewSource, selectableElements);
+			selector = new DirectViewElementSelector<>(mockViewType, mockViewSource, selectableElements);
 			selector.setSelected(selectableElements.get(0), true);
 			assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
 		}
@@ -144,7 +145,8 @@ public class DirectViewElementSelectorTest {
 		@Test
 		@DisplayName("view created from view type")
 		public void createView() {
-			DirectViewElementSelector selector = new DirectViewElementSelector(mockViewType, mockViewSource, emptySet());
+			DirectViewElementSelector<HierarchicalId> selector = new DirectViewElementSelector<>(mockViewType,
+					mockViewSource, emptySet());
 			ModifiableView view = mock(ModifiableView.class);
 			when(mockViewType.createView(selector)).thenReturn(view);
 			assertThat(selector.createView(), is(view));
@@ -153,7 +155,8 @@ public class DirectViewElementSelectorTest {
 		@Test
 		@DisplayName("view source")
 		public void getViewSource() {
-			DirectViewElementSelector selector = new DirectViewElementSelector(mockViewType, mockViewSource, emptySet());
+			DirectViewElementSelector<HierarchicalId> selector = new DirectViewElementSelector<>(mockViewType,
+					mockViewSource, emptySet());
 			assertThat(selector.getViewSource(), is(mockViewSource));
 		}
 

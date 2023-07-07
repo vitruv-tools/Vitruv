@@ -45,7 +45,7 @@ import tools.vitruv.testutils.TestLogging;
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ChangeDerivingViewTest {
 	@Mock
-	ViewCreatingViewType<?> mockViewType;
+	ViewCreatingViewType<?, HierarchicalId> mockViewType;
 	@Mock
 	ChangeableViewSource mockChangeableViewSource;
 	@Mock

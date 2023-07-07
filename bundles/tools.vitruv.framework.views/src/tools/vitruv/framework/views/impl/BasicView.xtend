@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.change.atomic.hid.HierarchicalId
 import tools.vitruv.change.atomic.uuid.Uuid
 import tools.vitruv.change.composite.description.PropagatedChange
 import tools.vitruv.change.composite.description.VitruviusChange
@@ -27,7 +28,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
     var ViewSelection selection
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
-    var ViewCreatingViewType<? extends ViewSelector> viewType
+    var ViewCreatingViewType<? extends ViewSelector, HierarchicalId> viewType
     @Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
     var ChangeableViewSource viewSource
     @Accessors(PROTECTED_GETTER)
@@ -37,7 +38,7 @@ package class BasicView implements ModifiableView, ChangePropagationListener {
     boolean viewChanged
     boolean closed
 
-    protected new(ViewCreatingViewType<? extends ViewSelector> viewType, ChangeableViewSource viewSource,
+    protected new(ViewCreatingViewType<? extends ViewSelector, HierarchicalId> viewType, ChangeableViewSource viewSource,
         ViewSelection selection) {
         checkArgument(viewType !== null, "view type must not be null")
         checkArgument(viewSource !== null, "view selection must not be null")
