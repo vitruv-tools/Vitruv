@@ -5,7 +5,7 @@ import tools.vitruv.framework.views.ViewSelector
 
 import static com.google.common.base.Preconditions.checkArgument
 
-abstract package class AbstractViewType<S extends ViewSelector> implements ViewCreatingViewType<S> {
+abstract package class AbstractViewType<S extends ViewSelector, Id> implements ViewCreatingViewType<S, Id> {
 	@Accessors(PUBLIC_GETTER)
 	protected var String name
 

@@ -5,13 +5,15 @@ import allElementTypes.Root
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.nio.file.Path
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.change.atomic.EChange
-import tools.vitruv.change.atomic.EChangeUuidManager
 import tools.vitruv.change.atomic.root.InsertRootEObject
+import tools.vitruv.change.atomic.uuid.Uuid
 import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.change.composite.MetamodelDescriptor
 import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.Correspondence
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
@@ -31,15 +33,16 @@ class VirtualModelTestUtil {
     /**
      * Create a recorder, start recording a resource set, apply changes, stop and return the recorded changes.
      */
-    def static VitruviusChange recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
+    def static VitruviusChange<Uuid> recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
         val recorder = new ChangeRecorder(resourceSet)
+        val changeResolver = VitruviusChangeResolver.forUuids(uuidResolver)
         recorder.addToRecording(resourceSet)
         recorder.beginRecording
         changesToPerform.run()
         val result = recorder.endRecording
-        EChangeUuidManager.setOrGenerateIds(result.EChanges, uuidResolver)
+        val resolvedChange = changeResolver.assignIds(result)
         recorder.close
-        return result
+        return resolvedChange
     }
 
     /**
@@ -86,20 +89,20 @@ class VirtualModelTestUtil {
             super(sourceMetamodelDescriptor, targetMetamodelDescriptor)
         }
 
-        override doesHandleChange(EChange change, EditableCorrespondenceModelView<Correspondence> correspondenceModel) {
+        override doesHandleChange(EChange<EObject> change, EditableCorrespondenceModelView<Correspondence> correspondenceModel) {
             if(change instanceof InsertRootEObject) {
                 return change.newValue instanceof Root
             }
             return false
         }
 
-        override propagateChange(EChange change, EditableCorrespondenceModelView<Correspondence> correspondenceModel,
+        override propagateChange(EChange<EObject> change, EditableCorrespondenceModelView<Correspondence> correspondenceModel,
             extension ResourceAccess resourceAccess) {
             if(!doesHandleChange(change, correspondenceModel)) {
                 return
             }
-            val typedChange = change as InsertRootEObject<Root>
-            val insertedRoot = typedChange.newValue
+            val typedChange = change as InsertRootEObject<EObject>
+            val insertedRoot = typedChange.newValue as Root
             // If there is a corresponding element, reuse it, otherwise create one
             val correspondingRoots = correspondenceModel.getCorrespondingEObjects(insertedRoot).filter(Root)
             val correspondingRoot = if(correspondingRoots.size == 1) {

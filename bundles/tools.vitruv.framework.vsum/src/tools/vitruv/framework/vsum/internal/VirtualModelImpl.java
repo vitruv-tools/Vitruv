@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
@@ -75,37 +76,36 @@ public class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	@Override
-	public synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
+	public synchronized List<PropagatedChange> propagateChange(VitruviusChange<Uuid> change) {
 		checkNotNull(change, "change to propagate");
 		checkArgument(change.containsConcreteChange(), "This change contains no concrete change:%s%s",
 				System.lineSeparator(), change);
-		VitruviusChange unresolvedChange = change.unresolve();
 
 		LOGGER.info("Starting change propagation");
-		startChangePropagation(unresolvedChange);
+		startChangePropagation(change);
 
 		ChangePropagator changePropagator = new ChangePropagator(resourceRepository,
 				changePropagationSpecificationProvider, userInteractor, changePropagationMode);
-		List<PropagatedChange> result = changePropagator.propagateChange(unresolvedChange);
+		List<PropagatedChange> result = changePropagator.propagateChange(change);
 		save();
 
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("Propagated changes: " + result);
 		}
 
-		finishChangePropagation(unresolvedChange, result);
+		finishChangePropagation(change, result);
 		LOGGER.info("Finished change propagation");
 		return result;
 	}
 
-	private void startChangePropagation(VitruviusChange change) {
+	private void startChangePropagation(VitruviusChange<Uuid> change) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Started synchronizing change: " + change);
 		}
 		changePropagationListeners.stream().forEach(it -> it.startedChangePropagation(change));
 	}
 
-	private void finishChangePropagation(VitruviusChange inputChange, Iterable<PropagatedChange> generatedChanges) {
+	private void finishChangePropagation(VitruviusChange<Uuid> inputChange, Iterable<PropagatedChange> generatedChanges) {
 		changePropagationListeners.stream().forEach(it -> it.finishedChangePropagation(generatedChanges));
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Finished synchronizing change: " + inputChange);

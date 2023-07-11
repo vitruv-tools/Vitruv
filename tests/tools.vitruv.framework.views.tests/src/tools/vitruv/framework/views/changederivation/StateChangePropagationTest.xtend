@@ -5,6 +5,7 @@ import java.util.stream.Stream
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.compare.utils.UseIdentifiers
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -15,8 +16,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Named
 import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.Repository
-import tools.vitruv.change.atomic.id.IdResolver
 import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.testutils.TestLogging
@@ -100,7 +101,7 @@ abstract class StateChangePropagationTest {
 		val deltaBasedChange = resourceSet.endRecording
 		val unresolvedStateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
 		assertNotNull(unresolvedStateBasedChange)
-		val stateBasedChange = unresolvedStateBasedChange.resolveAndApply(IdResolver.create(checkpoint.resourceSet))
+		val stateBasedChange = VitruviusChangeResolver.forHierarchicalIds(checkpoint.resourceSet).resolveAndApply(unresolvedStateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
 		val deltaBasedChangedObjects = deltaBasedChange.affectedAndReferencedEObjects
@@ -119,12 +120,12 @@ abstract class StateChangePropagationTest {
 	/**
 	 * Returns the recorded change sequences (the "original" changes) for a specific model instance.
 	 */
-	private def VitruviusChange endRecording(Notifier notifier) {
+	private def VitruviusChange<EObject> endRecording(Notifier notifier) {
 		changeRecorder.removeFromRecording(notifier)
 		return changeRecorder.endRecording
 	}
 
-	private def String getTextualRepresentation(VitruviusChange stateBasedChange, VitruviusChange deltaBasedChange) '''
+	private def String getTextualRepresentation(VitruviusChange<EObject> stateBasedChange, VitruviusChange<EObject> deltaBasedChange) '''
 		State-based «stateBasedChange»
 		Delta-based «deltaBasedChange»
 	'''
