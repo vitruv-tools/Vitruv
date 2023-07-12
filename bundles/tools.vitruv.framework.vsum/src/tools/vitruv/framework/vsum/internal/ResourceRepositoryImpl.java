@@ -41,7 +41,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
 	private final PersistableCorrespondenceModel correspondenceModel;
-	private final UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
+	private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
 	private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
 	private final VitruviusChangeResolver<Uuid> changeResolver = VitruviusChangeResolver.forUuids(uuidResolver);
 
@@ -210,6 +210,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		changeRecorder.close();
 		modelsResourceSet.getResources().forEach(Resource::unload);
 		modelsResourceSet.getResources().clear();
-		uuidResolver.endTransaction();
+		uuidResolver = null;
 	}
 }
