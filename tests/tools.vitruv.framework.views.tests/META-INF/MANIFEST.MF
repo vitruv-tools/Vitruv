@@ -19,6 +19,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.uml2.uml,
  org.hamcrest.core,
  edu.kit.ipd.sdq.commons.util.java
-Bundle-ClassPath: ., lib/byte-buddy-1.12.4.jar, lib/mockito-core-4.2.0.jar, lib/objenesis-3.2.jar
+Bundle-ClassPath: .,
+ target/dependency/mockito-core.jar
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools

@@ -13,12 +13,12 @@ import tools.vitruv.change.composite.description.VitruviusChangeFactory
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
-import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.isPathmap
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier
 
 /**
  * A {@link View} that derives changes based on the changed state of its resources and allows to propagate them 
