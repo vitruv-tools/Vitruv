@@ -12,6 +12,7 @@ import tools.vitruv.framework.remote.client.VitruvClientFactory;
 import tools.vitruv.framework.views.CommittableView;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewProvider;
+import tools.vitruv.framework.views.ViewTypeFactory;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 

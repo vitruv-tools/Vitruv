@@ -14,28 +14,28 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
-import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
+import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.common.util.ChangeType;
 import tools.vitruv.framework.remote.common.util.IdTransformation;
-import tools.vitruv.framework.remote.common.util.ResourceUtils;
+import tools.vitruv.framework.remote.common.util.ResourceUtil;
 
-public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChange> {
+public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChange<?>> {
 
     @Override
-    public VitruviusChange deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+    public VitruviusChange<?> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         var rootNode = parser.getCodec().readTree(parser);
-        var type = context.readTreeAsValue((TextNode) rootNode.get(SerializationConstants.CHANGE_TYPE), ChangeType.class);
+        var type = context.readTreeAsValue((TextNode) rootNode.get(JsonFieldName.CHANGE_TYPE), ChangeType.class);
 
-        VitruviusChange change;
+        VitruviusChange<?> change;
         if (type == ChangeType.TRANSACTIONAL) {
-            var jsonString = ((TextNode) rootNode.get(SerializationConstants.E_CHANGES)).asText();
-            var changesResource = ResourceUtils.deserialize(URI.createURI(SerializationConstants.TEMP), jsonString);
-            var eChanges = changesResource.getContents().stream().map(e -> (EChange) e).toList();
+            var jsonString = ((TextNode) rootNode.get(JsonFieldName.E_CHANGES)).asText();
+            var changesResource = ResourceUtil.deserialize(URI.createURI(JsonFieldName.TEMP), jsonString);
+            var eChanges = changesResource.getContents().stream().map(e -> (EChange<?>) e).toList();
             IdTransformation.allToGlobal(eChanges);
             change = VitruviusChangeFactory.getInstance().createTransactionalChange(eChanges);
         } else if (type == ChangeType.COMPOSITE) {
-            var changesNode = (ArrayNode) rootNode.get(SerializationConstants.V_CHANGES);
-            var changes = new LinkedList<VitruviusChange>();
+            var changesNode = (ArrayNode) rootNode.get(JsonFieldName.V_CHANGES);
+            var changes = new LinkedList<VitruviusChange<?>>();
             for (var e : changesNode) {
                 changes.add(context.readTreeAsValue(e, VitruviusChange.class));
             }

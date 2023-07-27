@@ -5,8 +5,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.remote.common.util.Cache;
-import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
-import tools.vitruv.framework.remote.common.util.constants.Headers;
+import tools.vitruv.framework.remote.common.util.constants.ContentType;
+import tools.vitruv.framework.remote.common.util.constants.Header;
 
 /**
  * This endpoint updates a {@link tools.vitruv.framework.views.View View} and returns the
@@ -16,7 +16,7 @@ public class UpdateViewEndpoint implements Endpoint.Get {
 
     @Override
     public String process(HttpExchangeWrapper wrapper) {
-        var view = Cache.getView(wrapper.getRequestHeader(Headers.VIEW_UUID));
+        var view = Cache.getView(wrapper.getRequestHeader(Header.VIEW_UUID));
         if (view == null) {
             throw notFound("View with given id not found!");
         }
@@ -28,7 +28,7 @@ public class UpdateViewEndpoint implements Endpoint.Get {
         var rSet = new ResourceSetImpl();
         rSet.getResources().addAll(resources);
 
-        wrapper.setContentType(ContentTypes.APPLICATION_JSON);
+        wrapper.setContentType(ContentType.APPLICATION_JSON);
 
         try {
             return JsonMapper.serialize(rSet);

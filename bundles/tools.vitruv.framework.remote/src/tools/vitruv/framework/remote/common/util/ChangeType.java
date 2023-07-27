@@ -19,11 +19,11 @@ public enum ChangeType {
      * @param change the change to obtain the type from
      * @return the type of the change
      */
-    public static ChangeType getChangeTypeOf(VitruviusChange change) {
+    public static ChangeType getChangeTypeOf(VitruviusChange<?> change) {
         if (change instanceof TransactionalChange) {
             return TRANSACTIONAL;
         }
-        if (change instanceof CompositeChange<?>) {
+        if (change instanceof CompositeChange<?, ?>) {
             return COMPOSITE;
         }
         return UNKNOWN;

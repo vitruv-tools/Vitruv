@@ -4,12 +4,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 import tools.vitruv.change.atomic.EChange;
-import tools.vitruv.change.atomic.eobject.EObjectAddedEChange;
-import tools.vitruv.change.atomic.eobject.EObjectExistenceEChange;
-import tools.vitruv.change.atomic.eobject.EObjectSubtractedEChange;
-import tools.vitruv.change.atomic.feature.FeatureEChange;
 import tools.vitruv.change.atomic.root.RootEChange;
-import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
+import tools.vitruv.change.propagation.ProjectMarker;
+import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 
 /**
  * Contains functions to transform ids used by the vitruv framework to identify
@@ -28,13 +25,13 @@ public class IdTransformation {
      * @return the local id
      */
     public static String toLocal(String id) {
-        if (id == null) {
-            return null;
-        }
-        // dont change cache ids
-        return id.contains("cache") || id.equals(SerializationConstants.TEMP) ? id :
-                Path.of("").toAbsolutePath().relativize(Path.of(prepareId(id)))
-                        .toString().replace("\\", "/");
+    	return id;
+//        if (id == null || id.contains("cache") || id.equals(JsonFieldName.TEMP)) {
+//            return id;
+//        }
+//        
+//        var root = ProjectMarker.getProjectRootFolder(Path.of(removeFilePrefix(id)));
+//        return root.toAbsolutePath().relativize(Path.of(removeFilePrefix(id))).toString().replace("\\", "/");
     }
 
     /**
@@ -44,38 +41,22 @@ public class IdTransformation {
      * @return the global id
      */
     public static String toGlobal(String id) {
-        if (id == null) {
-            return null;
-        }
-        return id.contains("cache") || id.equals(SerializationConstants.TEMP) ? id :
-                "file:/" + Path.of("").toAbsolutePath().resolve(Path.of(id))
-                        .toString().replace("\\", "/");
+    	return id;
+//        if (id == null || id.contains("cache") || id.equals(JsonFieldName.TEMP)) {
+//            return null;
+//        }
+//        
+//        var root = ProjectMarker.getProjectRootFolder(Path.of(id));
+//        return "file:/" + root.toAbsolutePath().resolve(Path.of(id)).toString().replace("\\", "/");
     }
 
-    private static String prepareId(String id) {
-        return id.replace("file:/", "");
+    private static String removeFilePrefix(String id) {
+        return id.replace("file://", "");
     }
 
-    /**
-     * Transforms all local ids (relative paths) of the given changes to global ids (absolute paths).
-     *
-     * @param changes the changes which ids should be transformed
-     */
-    public static void allToGlobal(List<EChange> changes) {
-        for (var eChange : changes) {
-            if (eChange instanceof EObjectExistenceEChange<?> change) {
-                change.setAffectedEObjectID(toGlobal(change.getAffectedEObjectID()));
-            }
-            if (eChange instanceof EObjectAddedEChange<?> change) {
-                change.setNewValueID(toGlobal(change.getNewValueID()));
-            }
-            if (eChange instanceof EObjectSubtractedEChange<?> change) {
-                change.setOldValueID(toGlobal(change.getOldValueID()));
-            }
-            if (eChange instanceof FeatureEChange<?, ?> change) {
-                change.setAffectedEObjectID(toGlobal(change.getAffectedEObjectID()));
-            }
-            if (eChange instanceof RootEChange change) {
+    public static void allToGlobal(List<? extends EChange<?>> eChanges) {
+        for (var eChange : eChanges) {
+            if (eChange instanceof RootEChange<?> change) {
                 change.setUri(toGlobal(change.getUri()));
             }
         }

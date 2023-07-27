@@ -2,7 +2,7 @@ package tools.vitruv.framework.remote.server.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
+import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.server.endpoint.*;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
@@ -99,7 +99,7 @@ public abstract class RequestHandler implements HttpHandler {
             if (exception instanceof ServerHaltingException haltingException) {
                 statusCode = haltingException.getStatusCode();
             }
-            wrapper.setContentType(ContentTypes.TEXT_PLAIN);
+            wrapper.setContentType(ContentType.TEXT_PLAIN);
             wrapper.sendResponseWithBody(statusCode, exception.getMessage().getBytes(StandardCharsets.UTF_8));
         }
     }

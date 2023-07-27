@@ -1,7 +1,7 @@
 package tools.vitruv.framework.remote.common.util;
 
 import com.sun.net.httpserver.HttpExchange;
-import tools.vitruv.framework.remote.common.util.constants.Headers;
+import tools.vitruv.framework.remote.common.util.constants.Header;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +20,7 @@ public class HttpExchangeWrapper {
     }
 
     public void setContentType(String type) {
-        exchange.getResponseHeaders().replace(Headers.CONTENT_TYPE, List.of(type));
+        exchange.getResponseHeaders().replace(Header.CONTENT_TYPE, List.of(type));
     }
 
     public String getRequestHeader(String header) {

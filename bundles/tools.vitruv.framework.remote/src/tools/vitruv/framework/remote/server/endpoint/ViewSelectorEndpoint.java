@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edapt.internal.common.EcoreUtils;
 import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.remote.common.util.Cache;
-import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
-import tools.vitruv.framework.remote.common.util.constants.Headers;
-import tools.vitruv.framework.remote.common.util.constants.SerializationConstants;
+import tools.vitruv.framework.remote.common.util.constants.ContentType;
+import tools.vitruv.framework.remote.common.util.constants.Header;
+import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
@@ -28,7 +28,7 @@ public class ViewSelectorEndpoint implements Endpoint.Get {
 
     @Override
     public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
-        var viewTypeName = wrapper.getRequestHeader(Headers.VIEW_TYPE);
+        var viewTypeName = wrapper.getRequestHeader(Header.VIEW_TYPE);
         var types = model.getViewTypes();
         var viewType = types.stream().filter(it -> it.getName().equals(viewTypeName)).findFirst().orElse(null);
 
@@ -45,8 +45,8 @@ public class ViewSelectorEndpoint implements Endpoint.Get {
         var copiedSelection = EcoreUtil.copyAll(originalSelection).stream().toList();
 
         //Wrap selection in resource
-        var set = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-        var resource = set.createResource(URI.createURI(SerializationConstants.TEMP));
+        var set = ResourceSetUtil.withGlobalFactories(new XMIResourceSetImpl());
+        var resource = set.createResource(URI.createURI(JsonFieldName.TEMP));
         resource.getContents().addAll(copiedSelection);
 
         //Create EObject to UUID mapping
@@ -58,8 +58,8 @@ public class ViewSelectorEndpoint implements Endpoint.Get {
         }
         Cache.addSelectorWithMapping(selectorUuid, selector, mapping);
 
-        wrapper.setContentType(ContentTypes.APPLICATION_JSON);
-        wrapper.addResponseHeader(Headers.SELECTOR_UUID, selectorUuid);
+        wrapper.setContentType(ContentType.APPLICATION_JSON);
+        wrapper.addResponseHeader(Header.SELECTOR_UUID, selectorUuid);
 
         try {
             return JsonMapper.serialize(resource);

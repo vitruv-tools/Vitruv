@@ -1,6 +1,6 @@
 package tools.vitruv.framework.remote.common.util.constants;
 
-public final class SerializationConstants {
+public final class JsonFieldName {
     public static final String CHANGE_TYPE = "changeType";
     public static final String E_CHANGES = "eChanges";
     public static final String V_CHANGES = "vChanges";
@@ -8,7 +8,7 @@ public final class SerializationConstants {
     public static final String CONTENT = "content";
     public static final String URI = "uri";
 
-    private SerializationConstants() throws InstantiationException {
+    private JsonFieldName() throws InstantiationException {
         throw new InstantiationException("Cannot be instantiated");
     }
 }

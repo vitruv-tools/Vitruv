@@ -18,9 +18,9 @@ import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.remote.client.VitruvClient;
 import tools.vitruv.framework.remote.client.exception.BadServerResponseException;
-import tools.vitruv.framework.remote.common.util.constants.ContentTypes;
-import tools.vitruv.framework.remote.common.util.constants.EndpointPaths;
-import tools.vitruv.framework.remote.common.util.constants.Headers;
+import tools.vitruv.framework.remote.common.util.constants.ContentType;
+import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
+import tools.vitruv.framework.remote.common.util.constants.Header;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
@@ -53,7 +53,7 @@ public class VitruvRemoteConnection implements VitruvClient {
     @Override
     public Collection<ViewType<?>> getViewTypes() {
         var request = HttpRequest.newBuilder()
-                .uri(createURIFrom(url, port, EndpointPaths.VIEW_TYPES)).GET().build();
+                .uri(createURIFrom(url, port, EndpointPath.VIEW_TYPES)).GET().build();
         try {
             var response = sendRequest(request);
             var typeNames = JsonMapper.deserializeArrayOf(response, String.class);
@@ -90,8 +90,8 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     RemoteViewSelector getSelector(String typeName) throws BadServerResponseException {
         var request = HttpRequest.newBuilder()
-                .uri(createURIFrom(url, port, EndpointPaths.VIEW_SELECTOR))
-                .header(Headers.VIEW_TYPE, typeName)
+                .uri(createURIFrom(url, port, EndpointPath.VIEW_SELECTOR))
+                .header(Header.VIEW_TYPE, typeName)
                 .GET()
                 .build();
         try {
@@ -100,7 +100,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 throw new BadServerResponseException(response.body());
             }
             var resource = JsonMapper.deserialize(response.body(), Resource.class);
-            return new RemoteViewSelector(response.headers().firstValue(Headers.SELECTOR_UUID).get(), resource, this);
+            return new RemoteViewSelector(response.headers().firstValue(Header.SELECTOR_UUID).get(), resource, this);
         } catch (IOException | InterruptedException e) {
             throw new BadServerResponseException(e);
         }
@@ -116,8 +116,8 @@ public class VitruvRemoteConnection implements VitruvClient {
     RemoteView getView(RemoteViewSelector selector) throws BadServerResponseException {
         try {
             var request = HttpRequest.newBuilder()
-                    .uri(createURIFrom(url, port, EndpointPaths.VIEW))
-                    .header(Headers.SELECTOR_UUID, selector.getUUID())
+                    .uri(createURIFrom(url, port, EndpointPath.VIEW))
+                    .header(Header.SELECTOR_UUID, selector.getUUID())
                     .POST(BodyPublishers.ofString(JsonMapper.serialize(selector.getSelectionIds())))
                     .build();
             var response = client.send(request, BodyHandlers.ofString());
@@ -126,7 +126,7 @@ public class VitruvRemoteConnection implements VitruvClient {
             }
 
             var rSet = JsonMapper.deserialize(response.body(), ResourceSet.class);
-            return new RemoteView(response.headers().firstValue(Headers.VIEW_UUID).get(),
+            return new RemoteView(response.headers().firstValue(Header.VIEW_UUID).get(),
                     rSet, selector, this);
         } catch (IOException | InterruptedException e) {
             throw new BadServerResponseException(e);
@@ -140,7 +140,7 @@ public class VitruvRemoteConnection implements VitruvClient {
      * @param change the changes performed on the affected view
      * @throws BadServerResponseException if the server answered with a bad response or a connection error occurred.
      */
-    void propagateChanges(String uuid, VitruviusChange change) throws BadServerResponseException {
+    void propagateChanges(String uuid, VitruviusChange<?> change) throws BadServerResponseException {
         try {
             change.getEChanges().forEach(it -> {
                 if (it instanceof InsertRootEObject<?>) {
@@ -149,9 +149,9 @@ public class VitruvRemoteConnection implements VitruvClient {
             });
             var jsonBody = JsonMapper.serialize(change);
             var request = HttpRequest.newBuilder()
-                    .uri(createURIFrom(url, port, EndpointPaths.VIEW))
-                    .header(Headers.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
-                    .header(Headers.VIEW_UUID, uuid)
+                    .uri(createURIFrom(url, port, EndpointPath.VIEW))
+                    .header(Header.CONTENT_TYPE, ContentType.APPLICATION_JSON)
+                    .header(Header.VIEW_UUID, uuid)
                     .method("PATCH", BodyPublishers.ofString(jsonBody))
                     .build();
             sendRequest(request);
@@ -168,8 +168,8 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     void closeView(String uuid) throws BadServerResponseException {
         var request = HttpRequest.newBuilder()
-                .uri(createURIFrom(url, port, EndpointPaths.VIEW))
-                .header(Headers.VIEW_UUID, uuid)
+                .uri(createURIFrom(url, port, EndpointPath.VIEW))
+                .header(Header.VIEW_UUID, uuid)
                 .DELETE()
                 .build();
         sendRequest(request);
@@ -184,8 +184,8 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     boolean isViewClosed(String uuid) throws BadServerResponseException {
         var request = HttpRequest.newBuilder()
-                .uri(createURIFrom(url, port, EndpointPaths.IS_VIEW_CLOSED))
-                .header(Headers.VIEW_UUID, uuid)
+                .uri(createURIFrom(url, port, EndpointPath.IS_VIEW_CLOSED))
+                .header(Header.VIEW_UUID, uuid)
                 .GET()
                 .build();
         return sendRequestAndCheckTFResult(request);
@@ -199,8 +199,8 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     boolean isViewOutdated(String uuid) {
         var request = HttpRequest.newBuilder()
-                .uri(createURIFrom(url, port, EndpointPaths.IS_VIEW_OUTDATED))
-                .header(Headers.VIEW_UUID, uuid)
+                .uri(createURIFrom(url, port, EndpointPath.IS_VIEW_OUTDATED))
+                .header(Header.VIEW_UUID, uuid)
                 .GET()
                 .build();
         return sendRequestAndCheckTFResult(request);
@@ -215,8 +215,8 @@ public class VitruvRemoteConnection implements VitruvClient {
      */
     ResourceSet updateView(String uuid) throws BadServerResponseException {
         var request = HttpRequest.newBuilder()
-                .uri(createURIFrom(url, port, EndpointPaths.VIEW))
-                .header(Headers.VIEW_UUID, uuid)
+                .uri(createURIFrom(url, port, EndpointPath.VIEW))
+                .header(Header.VIEW_UUID, uuid)
                 .GET()
                 .build();
         try {

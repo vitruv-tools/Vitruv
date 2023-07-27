@@ -1,17 +1,11 @@
 package tools.vitruv.framework.remote.client.impl;
 
 import java.util.Collection;
-import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.change.atomic.EChange;
-import tools.vitruv.change.atomic.EChangeIdManager;
-import tools.vitruv.change.atomic.id.IdResolver;
-import tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.framework.views.CommittableView;
 import tools.vitruv.framework.views.ViewSelection;
@@ -127,19 +121,12 @@ public class ChangeRecordingRemoteView implements CommittableView {
     public void commitChanges() {
         base.checkNotClosed();
         var recordedChange = changeRecorder.endRecording();
-        assignIds(recordedChange.getEChanges());
-        base.remoteConnection.propagateChanges(base.uuid, recordedChange);
+        var changeResolver = VitruviusChangeResolver.forHierarchicalIds(base.viewSource);
+        var unresolvedChanges = changeResolver.assignIds(recordedChange);
+        base.remoteConnection.propagateChanges(base.uuid, unresolvedChanges);
         base.modified = false;
         changeRecorder.beginRecording();
     }
 
-    private void assignIds(List<EChange> changes) {
-        var idResolver = IdResolver.create(base.viewSource);
-        var idManager = new EChangeIdManager(idResolver);
-        Lists.reverse(changes).forEach(EChangeIdResolverAndApplicator::applyBackward);
-        changes.forEach(it -> {
-            idManager.setOrGenerateIds(it);
-            EChangeIdResolverAndApplicator.applyForward(it, idResolver);
-        });
-    }
+ 
 }
