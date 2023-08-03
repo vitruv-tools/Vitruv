@@ -5,12 +5,15 @@ import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+
+import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.ResourceUtil;
+import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 
 public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
 
@@ -20,10 +23,10 @@ public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
 		var resources = new LinkedList<Resource>();
 		
 		for (var e : rootNode) {
-			resources.add(context.readTreeAsValue(e, Resource.class));
+			resources.add(JsonMapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), e.get(JsonFieldName.URI).asText()));
 		}
 		
-		var resourceSet = new ResourceSetImpl();
+		var resourceSet = ResourceUtil.createJsonResourceSet();
 		resourceSet.getResources().addAll(resources);
 		
 		return resourceSet;

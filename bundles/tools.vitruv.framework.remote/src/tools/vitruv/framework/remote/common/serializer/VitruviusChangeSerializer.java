@@ -15,6 +15,7 @@ import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.common.util.ChangeType;
 import tools.vitruv.framework.remote.common.util.ResourceUtil;
 
+@SuppressWarnings("rawtypes")
 public class VitruviusChangeSerializer extends JsonSerializer<VitruviusChange> {
 
     @Override
@@ -22,9 +23,9 @@ public class VitruviusChangeSerializer extends JsonSerializer<VitruviusChange> {
         generator.writeStartObject();
         generator.writeStringField(JsonFieldName.CHANGE_TYPE, ChangeType.getChangeTypeOf(vitruviusChange).toString());
         if (vitruviusChange instanceof TransactionalChange<?> tc) {
-            var changesResource = ResourceUtil.createResourceWith(URI.createURI(JsonFieldName.TEMP), tc.getEChanges());
+            var changesResource = ResourceUtil.createResourceWith(URI.createURI(JsonFieldName.TEMP_VALUE), tc.getEChanges());
             generator.writeFieldName(JsonFieldName.E_CHANGES);
-            generator.writeObject(ResourceUtil.serialize(changesResource));
+            generator.writeObject(changesResource);
         } else if (vitruviusChange instanceof CompositeChange<?, ?> cc) {
             var changes = cc.getChanges();
             generator.writeArrayFieldStart(JsonFieldName.V_CHANGES);

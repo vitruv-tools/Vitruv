@@ -3,14 +3,14 @@ package tools.vitruv.framework.remote.server.endpoint;
 import java.io.IOException;
 import java.util.UUID;
 
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.constants.Header;
-import tools.vitruv.framework.views.util.ResourceCopier;
 
 /**
  * This endpoint returns a serialized {@link tools.vitruv.framework.views.View View} for the given
@@ -31,6 +31,8 @@ public class ViewEndpoint implements Endpoint.Post {
         try {
             var body = wrapper.getRequestBodyAsString();
             var selection = JsonMapper.deserializeArrayOf(body, String.class);
+            
+            //Select elements using IDs sent from client
             selection.forEach(it -> {
                 var object = Cache.getEObjectFromMapping(selectorUuid, it);
                 if (object != null) {
@@ -46,7 +48,7 @@ public class ViewEndpoint implements Endpoint.Post {
 
             //Get Resources
             var resources = view.getRootObjects().stream().map(EObject::eResource).distinct().toList();
-            var set = ResourceSetUtil.withGlobalFactories(new XMIResourceSetImpl());
+            var set = new ResourceSetImpl();
             ResourceCopier.copyViewResources(resources, set);
 
             wrapper.setContentType(ContentType.APPLICATION_JSON);

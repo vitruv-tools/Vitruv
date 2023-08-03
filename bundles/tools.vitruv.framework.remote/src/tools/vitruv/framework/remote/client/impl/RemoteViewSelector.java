@@ -3,7 +3,8 @@ package tools.vitruv.framework.remote.client.impl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edapt.internal.common.EcoreUtils;
+import org.eclipse.emfcloud.jackson.resource.JsonResource;
+
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
@@ -84,7 +85,8 @@ public class RemoteViewSelector implements ViewSelector {
         var ids = new LinkedList<String>();
         viewSelection.getSelectableElements().forEach(it -> {
             if (viewSelection.isSelected(it)) {
-                ids.add(EcoreUtils.getUUID(it));
+            	var resource = (JsonResource) it.eResource();
+                ids.add(resource.getID(it));
             }
         });
         return ids;

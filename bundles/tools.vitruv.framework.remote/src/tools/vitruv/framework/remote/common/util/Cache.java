@@ -16,7 +16,7 @@ public class Cache {
     private Cache() throws InstantiationException {
         throw new InstantiationException("Cannot be instantiated");
     }
-
+    
     private static final Map<String, View> viewCache = new HashMap<>();
     private static final Map<String, ViewSelector> selectorCache = new HashMap<>();
     private static final Map<String, BiMap<String, EObject>> perSelectorUuidToEObjectMapping = new HashMap<>();
