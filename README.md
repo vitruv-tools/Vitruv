@@ -1,4 +1,4 @@
-# Vitruv V-SUM
+# Vitruv
 [![GitHub Action CI](https://github.com/vitruv-tools/Vitruv/actions/workflows/ci.yml/badge.svg)](https://github.com/vitruv-tools/Vitruv/actions/workflows/ci.yml)
 [![Latest Release](https://img.shields.io/github/release/vitruv-tools/Vitruv.svg)](https://github.com/vitruv-tools/Vitruv/releases/latest)
 [![Issues](https://img.shields.io/github/issues/vitruv-tools/Vitruv.svg)](https://github.com/vitruv-tools/Vitruv/issues)
@@ -17,11 +17,7 @@ The `VirtualModel` then provides functionality to derive and modify views and to
 
 Vitruvius can be installed in Eclipse via the [nightly update site](https://vitruv.tools/updatesite/nightly). A wiki page provides [detailed instructions for using or extending Vitruvius or parts of it](https://github.com/vitruv-tools/.github/wiki/Getting-Started).
 
-## Project Development
+## Framework-internal Dependencies
 
-Vitruvius is realized as Eclipse plug-ins and depends on the following Eclipse tools:
-- Eclipse Modeling Framework (EMF) _as the modelling environment_
-- Xtend _for code_
-
-This project depends on the following other Vitruvius projects:
+This project depends on the following other projects from the Vitruvius framework:
 - [Vitruv-Change](https://github.com/vitruv-tools/Vitruv-Change)
