@@ -4,8 +4,8 @@
 [![Issues](https://img.shields.io/github/issues/vitruv-tools/Vitruv.svg)](https://github.com/vitruv-tools/Vitruv/issues)
 [![License](https://img.shields.io/github/license/vitruv-tools/Vitruv.svg)](https://raw.githubusercontent.com/vitruv-tools/Vitruv/main/LICENSE)
 
-[Vitruvius](https://vitruv.tools) is a framework for view-based software development.
-It assumes different models to be used for describing a software system, which are automatically kept consistent by the framework executing (semi-)automated rules that preserve consistency.
+[Vitruvius](https://vitruv.tools) is a framework for view-based (software) development.
+It assumes different models to be used for describing a system, which are automatically kept consistent by the framework executing (semi-)automated rules that preserve consistency.
 These models are modified only via views, which are projections from the underlying models.
 For general information on Vitruvius, see our [GitHub Organisation](https://github.com/vitruv-tools) and our [Wiki](https://github.com/vitruv-tools/.github/wiki).
 
