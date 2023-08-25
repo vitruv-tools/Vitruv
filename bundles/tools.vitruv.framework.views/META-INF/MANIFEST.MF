@@ -14,7 +14,7 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.commons.util.emf
 Export-Package: tools.vitruv.framework.views,
  tools.vitruv.framework.views.changederivation,
- tools.vitruv.framework.views.impl;x-internal:=true,
- tools.vitruv.framework.views.selection;x-internal:=true,
- tools.vitruv.framework.views.selectors;x-internal:=true
+ tools.vitruv.framework.views.impl;x-friends:="tools.vitruv.framework.remote",
+ tools.vitruv.framework.views.selection;x-friends:="tools.vitruv.framework.remote",
+ tools.vitruv.framework.views.selectors;x-friends:="tools.vitruv.framework.remote"
 Bundle-Vendor: vitruv.tools
