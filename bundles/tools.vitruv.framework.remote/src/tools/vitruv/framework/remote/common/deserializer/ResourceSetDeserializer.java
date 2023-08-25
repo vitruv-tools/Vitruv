@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import tools.vitruv.framework.remote.common.util.IdTransformation;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.common.util.ResourceUtil;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
@@ -23,7 +24,8 @@ public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
 		var resources = new LinkedList<Resource>();
 		
 		for (var e : rootNode) {
-			resources.add(JsonMapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), e.get(JsonFieldName.URI).asText()));
+			resources.add(JsonMapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), 
+					IdTransformation.toGlobal(e.get(JsonFieldName.URI).asText())));
 		}
 		
 		var resourceSet = ResourceUtil.createJsonResourceSet();

@@ -26,6 +26,7 @@ public class VitruviusChangeSerializer extends JsonSerializer<VitruviusChange> {
             var changesResource = ResourceUtil.createResourceWith(URI.createURI(JsonFieldName.TEMP_VALUE), tc.getEChanges());
             generator.writeFieldName(JsonFieldName.E_CHANGES);
             generator.writeObject(changesResource);
+            generator.writeObjectField(JsonFieldName.U_INTERACTIONS,tc.getUserInteractions());
         } else if (vitruviusChange instanceof CompositeChange<?, ?> cc) {
             var changes = cc.getChanges();
             generator.writeArrayFieldStart(JsonFieldName.V_CHANGES);

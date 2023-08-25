@@ -10,8 +10,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
+import tools.vitruv.change.interaction.UserInteractionBase;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.common.util.ChangeType;
 import tools.vitruv.framework.remote.common.util.IdTransformation;
@@ -31,6 +33,8 @@ public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChang
             var changes = changesResource.getContents().stream().map(e -> (EChange<?>) e).toList();
             IdTransformation.allToGlobal(changes);
             change = VitruviusChangeFactory.getInstance().createTransactionalChange(changes);
+            var interactions = JsonMapper.deserializeArrayOf(rootNode.get(JsonFieldName.U_INTERACTIONS).toString(), UserInteractionBase.class);
+            ((TransactionalChange<?>) change).setUserInteractions(interactions);
         } else if (type == ChangeType.COMPOSITE) {
             var changesNode = (ArrayNode) rootNode.get(JsonFieldName.V_CHANGES);
             var changes = new LinkedList<VitruviusChange<?>>();

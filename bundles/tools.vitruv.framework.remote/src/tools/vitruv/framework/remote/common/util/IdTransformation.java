@@ -1,6 +1,7 @@
 package tools.vitruv.framework.remote.common.util;
 
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 
 import tools.vitruv.change.atomic.EChange;
@@ -17,41 +18,42 @@ public class IdTransformation {
     private IdTransformation() {
         throw new UnsupportedOperationException("Utility Class Constructor!");
     }
+    
+    private static HashMap<String, String> localToGlobalMapping = new HashMap<String, String>();
 
     /**
      * Transforms the given global (absolute path) id to a local id (relative path).
      *
-     * @param id the id to transform
+     * @param global the id to transform
      * @return the local id
      */
-    public static String toLocal(String id) {
-    	return id;
-//        if (id == null || id.contains("cache") || id.equals(JsonFieldName.TEMP)) {
-//            return id;
-//        }
-//        
-//        var root = ProjectMarker.getProjectRootFolder(Path.of(removeFilePrefix(id)));
-//        return root.toAbsolutePath().relativize(Path.of(removeFilePrefix(id))).toString().replace("\\", "/");
+    public static String toLocal(String global) {
+        if (global == null || global.contains("cache") || global.equals(JsonFieldName.TEMP_VALUE)) {
+            return global;
+        }
+        
+        var root = ProjectMarker.getProjectRootFolder(Path.of(removeFilePrefix(global)));
+        var local = root.toAbsolutePath().relativize(Path.of(removeFilePrefix(global))).toString().replace("\\", "/");
+        localToGlobalMapping.put(local, global);
+        return local;
     }
 
     /**
      * Transforms the given local id (relative path) to a global id (absolute path).
      *
-     * @param id the id to transform
+     * @param local the id to transform
      * @return the global id
      */
-    public static String toGlobal(String id) {
-    	return id;
-//        if (id == null || id.contains("cache") || id.equals(JsonFieldName.TEMP)) {
-//            return null;
-//        }
-//        
-//        var root = ProjectMarker.getProjectRootFolder(Path.of(id));
-//        return "file:/" + root.toAbsolutePath().resolve(Path.of(id)).toString().replace("\\", "/");
+    public static String toGlobal(String local) {
+        if (local == null || local.contains("cache") || local.equals(JsonFieldName.TEMP_VALUE)) {
+            return local;
+        }
+        
+        return localToGlobalMapping.getOrDefault(local, local);
     }
 
     private static String removeFilePrefix(String id) {
-        return id.replace("file://", "");
+        return id.replace("file:/", "");
     }
 
     public static void allToGlobal(List<? extends EChange<?>> eChanges) {

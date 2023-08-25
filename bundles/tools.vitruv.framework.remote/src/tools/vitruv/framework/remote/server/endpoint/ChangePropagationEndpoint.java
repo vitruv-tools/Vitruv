@@ -3,6 +3,7 @@ package tools.vitruv.framework.remote.server.endpoint;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.remote.common.util.constants.Header;
+import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.views.impl.ModifiableView;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+
+import static java.net.HttpURLConnection.*;
 
 /**
  * This endpoint applies given {@link VitruviusChange}s to the VSUM.
@@ -39,6 +42,8 @@ public class ChangePropagationEndpoint implements Endpoint.Patch {
             return null;
         } catch (IOException e) {
             throw internalServerError(e.getMessage());
-        }
+        } catch (AssertionError e) {
+			throw new ServerHaltingException(HTTP_CONFLICT, "User interactions are required to commit these changes!");
+		}
     }
 }

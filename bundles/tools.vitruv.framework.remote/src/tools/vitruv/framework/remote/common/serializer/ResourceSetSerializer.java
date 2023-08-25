@@ -19,7 +19,7 @@ public class ResourceSetSerializer extends JsonSerializer<ResourceSet> {
         var resources = resourceSet.getResources();
         for (var r : resources) {
         	generator.writeStartObject();
-        	generator.writeObjectField(JsonFieldName.URI, IdTransformation.toLocal(r.getURI().toString()));
+        	generator.writeObjectField(JsonFieldName.URI, IdTransformation.toLocal(r.getURI().toFileString()));
             generator.writeObjectField(JsonFieldName.CONTENT, r);
             generator.writeEndObject();
         }
