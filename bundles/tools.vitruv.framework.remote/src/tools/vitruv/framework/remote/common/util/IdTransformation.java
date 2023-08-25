@@ -1,8 +1,10 @@
 package tools.vitruv.framework.remote.common.util;
 
+import java.net.URLDecoder;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
+
+import com.google.common.base.Charsets;
 
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.root.RootEChange;
@@ -19,7 +21,20 @@ public class IdTransformation {
         throw new UnsupportedOperationException("Utility Class Constructor!");
     }
     
-    private static HashMap<String, String> localToGlobalMapping = new HashMap<String, String>();
+    private static Path root;
+    
+    public static void initializeRootFolder(Path vsumPath) {
+    	root = ProjectMarker.getProjectRootFolder(vsumPath);
+    	
+    	var nextToCheck = vsumPath;
+    	while ((nextToCheck = nextToCheck.getParent()) != null) {
+			try {
+				root = ProjectMarker.getProjectRootFolder(nextToCheck);
+			} catch (IllegalStateException e) {
+				break;
+			}
+		}
+    }
 
     /**
      * Transforms the given global (absolute path) id to a local id (relative path).
@@ -31,11 +46,9 @@ public class IdTransformation {
         if (global == null || global.contains("cache") || global.equals(JsonFieldName.TEMP_VALUE)) {
             return global;
         }
-        
-        var root = ProjectMarker.getProjectRootFolder(Path.of(removeFilePrefix(global)));
-        var local = root.toAbsolutePath().relativize(Path.of(removeFilePrefix(global))).toString().replace("\\", "/");
-        localToGlobalMapping.put(local, global);
-        return local;
+
+        return root.toAbsolutePath().relativize(
+        		Path.of(removeFilePrefix(URLDecoder.decode(global, Charsets.UTF_8)))).toString().replace("\\", "/");
     }
 
     /**
@@ -48,8 +61,13 @@ public class IdTransformation {
         if (local == null || local.contains("cache") || local.equals(JsonFieldName.TEMP_VALUE)) {
             return local;
         }
+        var path = Path.of(removeFilePrefix(URLDecoder.decode(local, Charsets.UTF_8)));
         
-        return localToGlobalMapping.getOrDefault(local, local);
+        if (path.isAbsolute()) {
+			return local;
+		}
+        
+        return root.resolve(path).toUri().toString().replaceAll("file:/+", "file:/");
     }
 
     private static String removeFilePrefix(String id) {
