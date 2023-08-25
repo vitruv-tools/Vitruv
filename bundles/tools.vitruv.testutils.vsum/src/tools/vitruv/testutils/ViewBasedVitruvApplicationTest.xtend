@@ -57,13 +57,17 @@ abstract class ViewBasedVitruvApplicationTest {
 		.withChangePropagationSpecifications(changePropagationSpecifications).buildAndInitialize()
 		virtualModel.changePropagationMode = changePropagationMode
 		this.testProjectPath = testProjectPath
-		server = new VitruvServer([virtualModel])
-		server.start()
+		if(RemoteUsageUtil.shouldUseRemote) {
+			server = new VitruvServer([virtualModel])
+			server.start()
+		}
 	}
 
 	@AfterEach
 	def final package void closeAfterTest() {
-		server.stop()
+		if(RemoteUsageUtil.shouldUseRemote) {
+			server.stop()
+		}
 		virtualModel?.dispose()
 	}
 
