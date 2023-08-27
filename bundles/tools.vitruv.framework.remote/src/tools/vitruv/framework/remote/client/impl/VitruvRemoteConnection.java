@@ -22,6 +22,7 @@ import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
 import tools.vitruv.framework.remote.common.util.constants.Header;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.ResourceUtil;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 
@@ -99,7 +100,7 @@ public class VitruvRemoteConnection implements VitruvClient {
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
                 throw new BadServerResponseException(response.body());
             }
-            var resource = JsonMapper.deserializeResource(response.body(), JsonFieldName.TEMP_VALUE);
+            var resource = JsonMapper.deserializeResource(response.body(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
             return new RemoteViewSelector(response.headers().firstValue(Header.SELECTOR_UUID).get(), resource, this);
         } catch (IOException | InterruptedException e) {
             throw new BadServerResponseException(e);

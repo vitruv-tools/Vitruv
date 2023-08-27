@@ -1,9 +1,8 @@
 package tools.vitruv.framework.remote.common.deserializer;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -21,17 +20,13 @@ public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
 	@Override
 	public ResourceSet deserialize(JsonParser parser, DeserializationContext context) throws IOException {
 		var rootNode = (ArrayNode) parser.getCodec().readTree(parser);
-		var resources = new LinkedList<Resource>();
-		
-		for (var e : rootNode) {
-			resources.add(JsonMapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), 
-					IdTransformation.toGlobal(e.get(JsonFieldName.URI).asText())));
-		}
 		
 		var resourceSet = ResourceUtil.createJsonResourceSet();
-		resourceSet.getResources().addAll(resources);
-		
+		for (var e : rootNode) {
+			JsonMapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), 
+					IdTransformation.toGlobal(URI.createURI(e.get(JsonFieldName.URI).asText())).toString(), resourceSet);
+		}
+
 		return resourceSet;
 	}
-
 }

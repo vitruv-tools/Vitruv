@@ -18,6 +18,7 @@ import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.common.util.ChangeType;
 import tools.vitruv.framework.remote.common.util.IdTransformation;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.ResourceUtil;
 
 public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChange<?>> {
 
@@ -29,7 +30,7 @@ public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChang
         VitruviusChange<?> change;
         if (type == ChangeType.TRANSACTIONAL) {
             var resourceNode = rootNode.get(JsonFieldName.E_CHANGES);
-            var changesResource = JsonMapper.deserializeResource(resourceNode.toString(), JsonFieldName.TEMP_VALUE);
+            var changesResource = JsonMapper.deserializeResource(resourceNode.toString(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
             var changes = changesResource.getContents().stream().map(e -> (EChange<?>) e).toList();
             IdTransformation.allToGlobal(changes);
             change = VitruviusChangeFactory.getInstance().createTransactionalChange(changes);

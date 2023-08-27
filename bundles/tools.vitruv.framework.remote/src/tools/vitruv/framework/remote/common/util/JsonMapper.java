@@ -79,10 +79,11 @@ public class JsonMapper {
         return mapper.reader().forType(clazz).readValue(json);
     }
     
-    public static Resource deserializeResource(String json, String uri) throws JsonProcessingException {
-    	return mapper.reader().forType(Resource.class)
-    			.withAttribute(EMFContext.Attributes.RESOURCE, ResourceUtil.createEmptyResource(URI.createURI(uri)))
-    			.withAttribute(EMFContext.Attributes.RESOURCE_URI, uri)
+    public static Resource deserializeResource(String json, String uri, ResourceSet parentSet) throws JsonProcessingException {
+    	return mapper.reader()
+    			.withAttribute(EMFContext.Attributes.RESOURCE_SET, parentSet)
+    			.withAttribute(EMFContext.Attributes.RESOURCE_URI, URI.createURI(uri))
+    			.forType(Resource.class)
     			.readValue(json);
     }
 

@@ -1,10 +1,9 @@
 package tools.vitruv.framework.remote.common.util;
 
-import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.List;
 
-import com.google.common.base.Charsets;
+import org.eclipse.emf.common.util.URI;
 
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.root.RootEChange;
@@ -21,15 +20,20 @@ public class IdTransformation {
         throw new UnsupportedOperationException("Utility Class Constructor!");
     }
     
-    private static Path root;
+    private static URI root;
     
+    /**
+     * Searches the top project marker of the given VSUM path and sets it as root URI.
+     * 
+     * @param vsumPath the VSUM path
+     */
     public static void initializeRootFolder(Path vsumPath) {
-    	root = ProjectMarker.getProjectRootFolder(vsumPath);
+    	root = URI.createFileURI(ProjectMarker.getProjectRootFolder(vsumPath).toString());
     	
     	var nextToCheck = vsumPath;
     	while ((nextToCheck = nextToCheck.getParent()) != null) {
 			try {
-				root = ProjectMarker.getProjectRootFolder(nextToCheck);
+				root = URI.createFileURI(ProjectMarker.getProjectRootFolder(nextToCheck).toString());
 			} catch (IllegalStateException e) {
 				break;
 			}
@@ -42,13 +46,12 @@ public class IdTransformation {
      * @param global the id to transform
      * @return the local id
      */
-    public static String toLocal(String global) {
-        if (global == null || global.contains("cache") || global.equals(JsonFieldName.TEMP_VALUE)) {
+    public static URI toLocal(URI global) {
+        if (global == null || global.toString().contains("cache") || global.toString().equals(JsonFieldName.TEMP_VALUE)) {
             return global;
         }
-
-        return root.toAbsolutePath().relativize(
-        		Path.of(removeFilePrefix(URLDecoder.decode(global, Charsets.UTF_8)))).toString().replace("\\", "/");
+        
+        return global.deresolve(root);
     }
 
     /**
@@ -57,27 +60,22 @@ public class IdTransformation {
      * @param local the id to transform
      * @return the global id
      */
-    public static String toGlobal(String local) {
-        if (local == null || local.contains("cache") || local.equals(JsonFieldName.TEMP_VALUE)) {
+    public static URI toGlobal(URI local) {
+        if (local == null || local.toString().contains("cache") || local.toString().equals(JsonFieldName.TEMP_VALUE)) {
             return local;
         }
-        var path = Path.of(removeFilePrefix(URLDecoder.decode(local, Charsets.UTF_8)));
         
-        if (path.isAbsolute()) {
+        if (!local.isRelative()) {
 			return local;
 		}
         
-        return root.resolve(path).toUri().toString().replaceAll("file:/+", "file:/");
-    }
-
-    private static String removeFilePrefix(String id) {
-        return id.replace("file:/", "");
+        return local.resolve(root);
     }
 
     public static void allToGlobal(List<? extends EChange<?>> eChanges) {
         for (var eChange : eChanges) {
             if (eChange instanceof RootEChange<?> change) {
-                change.setUri(toGlobal(change.getUri()));
+                change.setUri(toGlobal(URI.createURI(change.getUri())).toString());
             }
         }
     }
