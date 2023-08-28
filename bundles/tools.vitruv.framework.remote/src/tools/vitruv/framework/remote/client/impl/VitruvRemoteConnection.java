@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.remote.client.VitruvClient;
+import tools.vitruv.framework.remote.client.exception.BadClientResponseException;
 import tools.vitruv.framework.remote.client.exception.BadServerResponseException;
 import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
@@ -59,12 +61,12 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .uri(createURIFrom(url, port, EndpointPath.VIEW_TYPES)).GET().build();
         try {
             var response = sendRequest(request);
-            var typeNames = mapper.deserializeArrayOf(response, String.class);
+            var typeNames = mapper.deserializeArrayOf(response.body(), String.class);
             var list = new LinkedList<ViewType<?>>();
             typeNames.forEach(it -> list.add(new RemoteViewType(it, this)));
             return list;
         } catch (IOException e) {
-            throw new BadServerResponseException(e);
+            throw new BadClientResponseException(e);
         }
     }
 
@@ -98,14 +100,11 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .GET()
                 .build();
         try {
-            var response = client.send(request, BodyHandlers.ofString());
-            if (response.statusCode() != HttpURLConnection.HTTP_OK) {
-                throw new BadServerResponseException(response.body());
-            }
+            var response = sendRequest(request);
             var resource = mapper.deserializeResource(response.body(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
             return new RemoteViewSelector(response.headers().firstValue(Header.SELECTOR_UUID).get(), resource, this);
-        } catch (IOException | InterruptedException e) {
-            throw new BadServerResponseException(e);
+        } catch (IOException e) {
+            throw new BadClientResponseException(e);
         }
     }
 
@@ -123,16 +122,12 @@ public class VitruvRemoteConnection implements VitruvClient {
                     .header(Header.SELECTOR_UUID, selector.getUUID())
                     .POST(BodyPublishers.ofString(mapper.serialize(selector.getSelectionIds())))
                     .build();
-            var response = client.send(request, BodyHandlers.ofString());
-            if (response.statusCode() != HttpURLConnection.HTTP_OK) {
-                throw new BadServerResponseException(response.body());
-            }
-
+            var response = sendRequest(request);
             var rSet = mapper.deserialize(response.body(), ResourceSet.class);
             return new RemoteView(response.headers().firstValue(Header.VIEW_UUID).get(),
                     rSet, selector, this);
-        } catch (IOException | InterruptedException e) {
-            throw new BadServerResponseException(e);
+        } catch (IOException e) {
+            throw new BadClientResponseException(e);
         }
     }
 
@@ -159,7 +154,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                     .build();
             sendRequest(request);
         } catch (IOException e) {
-            throw new BadServerResponseException(e);
+            throw new BadClientResponseException(e);
         }
     }
 
@@ -224,7 +219,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .build();
         try {
             var response = sendRequest(request);
-            return mapper.deserialize(response, ResourceSet.class);
+            return mapper.deserialize(response.body(), ResourceSet.class);
         } catch (IOException e) {
             throw new BadServerResponseException(e);
         }
@@ -232,19 +227,19 @@ public class VitruvRemoteConnection implements VitruvClient {
 
     private boolean sendRequestAndCheckTFResult(HttpRequest request) {
         var response = sendRequest(request);
-        if (!Objects.equals(response, Boolean.TRUE.toString()) && !Objects.equals(response, Boolean.FALSE.toString())) {
+        if (!Objects.equals(response.body(), Boolean.TRUE.toString()) && !Objects.equals(response.body(), Boolean.FALSE.toString())) {
             throw new BadServerResponseException("Expected response to be true or false! Actual: " + response);
         }
-        return response.equals(Boolean.TRUE.toString());
+        return response.body().equals(Boolean.TRUE.toString());
     }
 
-    private String sendRequest(HttpRequest request) {
+    private HttpResponse<String> sendRequest(HttpRequest request) {
         try {
             var response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
                 throw new BadServerResponseException(response.body());
             }
-            return response.body();
+            return response;
         } catch (IOException | InterruptedException e) {
             throw new BadServerResponseException(e);
         }
