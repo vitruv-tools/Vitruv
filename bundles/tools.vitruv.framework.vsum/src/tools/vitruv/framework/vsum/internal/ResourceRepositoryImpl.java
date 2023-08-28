@@ -211,6 +211,5 @@ class ResourceRepositoryImpl implements ModelRepository {
 		modelsResourceSet.getResources().forEach(Resource::unload);
 		modelsResourceSet.getResources().clear();
 		uuidResolver = null;
-		System.out.println();
 	}
 }
