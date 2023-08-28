@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.endpoint.*;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
@@ -70,7 +71,7 @@ public abstract class RequestHandler implements HttpHandler {
     /**
      * Initializes the supported endpoints of this request handler.
      */
-    public abstract void init(InternalVirtualModel model);
+    public abstract void init(InternalVirtualModel model, JsonMapper mapper);
 
     /**
      * Handles the request, when this end point is called.

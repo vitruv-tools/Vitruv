@@ -1,5 +1,6 @@
 package tools.vitruv.framework.remote.server.handler;
 
+import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
 import tools.vitruv.framework.remote.server.endpoint.ChangePropagationEndpoint;
 import tools.vitruv.framework.remote.server.endpoint.CloseViewEndpoint;
@@ -13,10 +14,10 @@ public class ViewHandler extends RequestHandler {
     }
 
     @Override
-    public void init(InternalVirtualModel model) {
-        this.getEndpoint = new UpdateViewEndpoint();
-        this.patchEndpoint = new ChangePropagationEndpoint();
+    public void init(InternalVirtualModel model, JsonMapper mapper) {
+        this.getEndpoint = new UpdateViewEndpoint(mapper);
+        this.patchEndpoint = new ChangePropagationEndpoint(mapper);
         this.deleteEndpoint = new CloseViewEndpoint();
-        this.postEndpoint = new ViewEndpoint() ;
+        this.postEndpoint = new ViewEndpoint(mapper) ;
     }
 }

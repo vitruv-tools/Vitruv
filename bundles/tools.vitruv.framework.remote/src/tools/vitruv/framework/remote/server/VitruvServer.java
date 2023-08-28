@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.sun.net.httpserver.HttpServer;
 
-import tools.vitruv.framework.remote.common.util.IdTransformation;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.handler.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
@@ -33,11 +33,11 @@ public class VitruvServer {
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
 
         var model = modelInitializer.init();
-        IdTransformation.initializeRootFolder(model.getFolder());
+        var mapper = new JsonMapper(model.getFolder());
         var handlers = Set.of(new HealthHandler(), new IsViewClosedHandler(), new IsViewOutdatedHandler(),
                 new ViewHandler(), new ViewTypesHandler(), new ViewSelectorHandler());
         handlers.forEach(it -> {
-            it.init(model);
+            it.init(model, mapper);
             server.createContext(it.getPath(), it);
         });
     }

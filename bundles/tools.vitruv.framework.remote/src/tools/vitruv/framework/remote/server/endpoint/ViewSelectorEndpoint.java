@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emfcloud.jackson.resource.JsonResource;
 
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.constants.Header;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
@@ -20,9 +19,11 @@ import java.util.UUID;
 public class ViewSelectorEndpoint implements Endpoint.Get {
 
     private final InternalVirtualModel model;
+    private final JsonMapper mapper;
 
-    public ViewSelectorEndpoint(InternalVirtualModel model) {
+    public ViewSelectorEndpoint(InternalVirtualModel model, JsonMapper mapper) {
         this.model = model;
+        this.mapper = mapper;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ViewSelectorEndpoint implements Endpoint.Get {
         wrapper.addResponseHeader(Header.SELECTOR_UUID, selectorUuid);
 
         try {
-            return JsonMapper.serialize(resource);
+            return mapper.serialize(resource);
         } catch (JsonProcessingException e) {
             throw internalServerError(e.getMessage());
         }

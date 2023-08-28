@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.constants.Header;
 
@@ -17,8 +16,14 @@ import tools.vitruv.framework.remote.common.util.constants.Header;
  * {@link tools.vitruv.framework.views.ViewType ViewType}.
  */
 public class ViewEndpoint implements Endpoint.Post {
+	
+	private final JsonMapper mapper;
+	
+    public ViewEndpoint(JsonMapper mapper) {
+		this.mapper = mapper;
+	}
 
-    @Override
+	@Override
     public String process(HttpExchangeWrapper wrapper) {
         var selectorUuid = wrapper.getRequestHeader(Header.SELECTOR_UUID);
         var selector = Cache.getSelector(selectorUuid);
@@ -30,7 +35,7 @@ public class ViewEndpoint implements Endpoint.Post {
 
         try {
             var body = wrapper.getRequestBodyAsString();
-            var selection = JsonMapper.deserializeArrayOf(body, String.class);
+            var selection = mapper.deserializeArrayOf(body, String.class);
             
             //Select elements using IDs sent from client
             selection.forEach(it -> {
@@ -54,7 +59,7 @@ public class ViewEndpoint implements Endpoint.Post {
             wrapper.setContentType(ContentType.APPLICATION_JSON);
             wrapper.addResponseHeader(Header.VIEW_UUID, uuid);
 
-            return JsonMapper.serialize(set);
+            return mapper.serialize(set);
         } catch (IOException e) {
             throw internalServerError(e.getMessage());
         }

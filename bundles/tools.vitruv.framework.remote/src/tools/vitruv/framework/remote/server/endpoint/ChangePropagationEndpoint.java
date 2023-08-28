@@ -21,6 +21,15 @@ import static java.net.HttpURLConnection.*;
  * This endpoint applies given {@link VitruviusChange}s to the VSUM.
  */
 public class ChangePropagationEndpoint implements Endpoint.Patch {
+	
+	private final JsonMapper mapper;
+	
+	
+	public ChangePropagationEndpoint(JsonMapper mapper) {
+
+		this.mapper = mapper;
+	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -31,7 +40,7 @@ public class ChangePropagationEndpoint implements Endpoint.Patch {
         }
         try {
             var body = wrapper.getRequestBodyAsString();
-            var change = JsonMapper.deserialize(body, VitruviusChange.class);
+            var change = mapper.deserialize(body, VitruviusChange.class);
             change.getEChanges().forEach(it -> {
             	if (it instanceof InsertRootEObject<?> echange) {
             		echange.setResource(new ResourceImpl(URI.createURI(echange.getUri())));

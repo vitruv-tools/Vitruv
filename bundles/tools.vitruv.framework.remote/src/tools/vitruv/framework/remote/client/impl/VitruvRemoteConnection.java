@@ -35,6 +35,7 @@ public class VitruvRemoteConnection implements VitruvClient {
     private final int port;
     private final String url;
     private final HttpClient client;
+    private final JsonMapper mapper;
 
     /**
      * Creates a new {@link VitruvRemoteConnection} using the given URL and port to connect to the vitruvius server.
@@ -46,6 +47,7 @@ public class VitruvRemoteConnection implements VitruvClient {
         this.client = HttpClient.newHttpClient();
         this.url = url;
         this.port = port;
+        this.mapper = new JsonMapper();
     }
 
     /**
@@ -57,7 +59,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .uri(createURIFrom(url, port, EndpointPath.VIEW_TYPES)).GET().build();
         try {
             var response = sendRequest(request);
-            var typeNames = JsonMapper.deserializeArrayOf(response, String.class);
+            var typeNames = mapper.deserializeArrayOf(response, String.class);
             var list = new LinkedList<ViewType<?>>();
             typeNames.forEach(it -> list.add(new RemoteViewType(it, this)));
             return list;
@@ -100,7 +102,7 @@ public class VitruvRemoteConnection implements VitruvClient {
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
                 throw new BadServerResponseException(response.body());
             }
-            var resource = JsonMapper.deserializeResource(response.body(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
+            var resource = mapper.deserializeResource(response.body(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
             return new RemoteViewSelector(response.headers().firstValue(Header.SELECTOR_UUID).get(), resource, this);
         } catch (IOException | InterruptedException e) {
             throw new BadServerResponseException(e);
@@ -119,14 +121,14 @@ public class VitruvRemoteConnection implements VitruvClient {
             var request = HttpRequest.newBuilder()
                     .uri(createURIFrom(url, port, EndpointPath.VIEW))
                     .header(Header.SELECTOR_UUID, selector.getUUID())
-                    .POST(BodyPublishers.ofString(JsonMapper.serialize(selector.getSelectionIds())))
+                    .POST(BodyPublishers.ofString(mapper.serialize(selector.getSelectionIds())))
                     .build();
             var response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
                 throw new BadServerResponseException(response.body());
             }
 
-            var rSet = JsonMapper.deserialize(response.body(), ResourceSet.class);
+            var rSet = mapper.deserialize(response.body(), ResourceSet.class);
             return new RemoteView(response.headers().firstValue(Header.VIEW_UUID).get(),
                     rSet, selector, this);
         } catch (IOException | InterruptedException e) {
@@ -148,7 +150,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                     ((InsertRootEObject<?>) it).setResource(null);
                 }
             });
-            var jsonBody = JsonMapper.serialize(change);
+            var jsonBody = mapper.serialize(change);
             var request = HttpRequest.newBuilder()
                     .uri(createURIFrom(url, port, EndpointPath.VIEW))
                     .header(Header.CONTENT_TYPE, ContentType.APPLICATION_JSON)
@@ -222,7 +224,7 @@ public class VitruvRemoteConnection implements VitruvClient {
                 .build();
         try {
             var response = sendRequest(request);
-            return JsonMapper.deserialize(response, ResourceSet.class);
+            return mapper.deserialize(response, ResourceSet.class);
         } catch (IOException e) {
             throw new BadServerResponseException(e);
         }

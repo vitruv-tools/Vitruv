@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 
 import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.root.RootEChange;
 import tools.vitruv.change.propagation.ProjectMarker;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
@@ -16,18 +17,16 @@ import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
  */
 public class IdTransformation {
 
-    private IdTransformation() {
-        throw new UnsupportedOperationException("Utility Class Constructor!");
-    }
+    private URI root;
+    private boolean isClient = false;
     
-    private static URI root;
-    
-    /**
-     * Searches the top project marker of the given VSUM path and sets it as root URI.
-     * 
-     * @param vsumPath the VSUM path
-     */
-    public static void initializeRootFolder(Path vsumPath) {
+    IdTransformation(Path vsumPath) {
+    	//Client does not need to transform IDs
+    	if (vsumPath == null) {
+			isClient = true;
+			return;
+		}
+    	
     	root = URI.createFileURI(ProjectMarker.getProjectRootFolder(vsumPath).toString());
     	
     	var nextToCheck = vsumPath;
@@ -46,8 +45,8 @@ public class IdTransformation {
      * @param global the id to transform
      * @return the local id
      */
-    public static URI toLocal(URI global) {
-        if (global == null || global.toString().contains("cache") || global.toString().equals(JsonFieldName.TEMP_VALUE)) {
+    public URI toLocal(URI global) {
+        if (global == null || global.toString().contains("cache") || global.toString().equals(JsonFieldName.TEMP_VALUE) || isClient) {
             return global;
         }
         
@@ -60,8 +59,8 @@ public class IdTransformation {
      * @param local the id to transform
      * @return the global id
      */
-    public static URI toGlobal(URI local) {
-        if (local == null || local.toString().contains("cache") || local.toString().equals(JsonFieldName.TEMP_VALUE)) {
+    public URI toGlobal(URI local) {
+        if (local == null || local.toString().contains("cache") || local.toString().equals(JsonFieldName.TEMP_VALUE) || isClient) {
             return local;
         }
         
@@ -72,11 +71,11 @@ public class IdTransformation {
         return local.resolve(root);
     }
 
-    public static void allToGlobal(List<? extends EChange<?>> eChanges) {
+    public void allToGlobal(List<? extends EChange<HierarchicalId>> eChanges) {
         for (var eChange : eChanges) {
             if (eChange instanceof RootEChange<?> change) {
                 change.setUri(toGlobal(URI.createURI(change.getUri())).toString());
             }
-        }
-    }
+        } 
+    } 
 }

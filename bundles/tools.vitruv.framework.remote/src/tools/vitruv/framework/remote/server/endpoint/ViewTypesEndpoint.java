@@ -16,9 +16,11 @@ import tools.vitruv.framework.remote.common.util.JsonMapper;
 public class ViewTypesEndpoint implements Endpoint.Get {
 
     private final InternalVirtualModel model;
+    private final JsonMapper mapper;
 
-    public ViewTypesEndpoint(InternalVirtualModel model) {
+    public ViewTypesEndpoint(InternalVirtualModel model, JsonMapper mapper) {
         this.model = model;
+        this.mapper = mapper;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class ViewTypesEndpoint implements Endpoint.Get {
 
         wrapper.setContentType(ContentType.APPLICATION_JSON);
         try {
-            return JsonMapper.serialize(names);
+            return mapper.serialize(names);
         } catch (JsonProcessingException e) {
             throw internalServerError(e.getMessage());
         }

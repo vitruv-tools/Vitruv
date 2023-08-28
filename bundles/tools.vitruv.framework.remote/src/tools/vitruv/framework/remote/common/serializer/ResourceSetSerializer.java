@@ -12,6 +12,12 @@ import tools.vitruv.framework.remote.common.util.IdTransformation;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 
 public class ResourceSetSerializer extends JsonSerializer<ResourceSet> {
+	
+	private final IdTransformation transformation;
+	
+	public ResourceSetSerializer(IdTransformation transformation) {
+		this.transformation = transformation;
+	}
 
     @Override
     public void serialize(ResourceSet resourceSet, JsonGenerator generator, SerializerProvider provider) throws IOException {
@@ -19,7 +25,7 @@ public class ResourceSetSerializer extends JsonSerializer<ResourceSet> {
         var resources = resourceSet.getResources();
         for (var r : resources) {
         	generator.writeStartObject();
-        	generator.writeObjectField(JsonFieldName.URI, IdTransformation.toLocal(r.getURI()).toString());
+        	generator.writeObjectField(JsonFieldName.URI, transformation.toLocal(r.getURI()).toString());
             generator.writeObjectField(JsonFieldName.CONTENT, r);
             generator.writeEndObject();
         }

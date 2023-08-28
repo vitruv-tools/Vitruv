@@ -8,14 +8,22 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 
+import tools.vitruv.framework.remote.common.util.IdTransformation;
+
 
 public class ReferenceDeserializerModifier extends BeanDeserializerModifier {
+	
+	private final IdTransformation transformation;
+	
+	public ReferenceDeserializerModifier(IdTransformation transformation) {
+		this.transformation = transformation;
+	}
 
 	@Override
 	public JsonDeserializer<?> modifyReferenceDeserializer(DeserializationConfig config, ReferenceType type,
 			BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
 		if (deserializer instanceof EcoreReferenceDeserializer referenceDeserializer) {
-			return new HierarichalIdDeserializer(referenceDeserializer);
+			return new HierarichalIdDeserializer(referenceDeserializer, transformation);
 		}
 		return deserializer;	
 	}

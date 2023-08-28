@@ -1,5 +1,6 @@
 package tools.vitruv.framework.remote.common.util;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -28,28 +29,29 @@ import tools.vitruv.framework.remote.common.serializer.VitruviusChangeSerializer
  */
 public class JsonMapper {
 
-    private JsonMapper() throws InstantiationException {
-        throw new InstantiationException("Cannot be instantiated");
+    private final ObjectMapper mapper = new ObjectMapper();
+    
+    public JsonMapper() {
+    	this(null);
     }
 
-
-    private static final ObjectMapper mapper = new ObjectMapper();
-
-    static {
-        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    public JsonMapper(Path vsumPath) {
+    	final var transformation = new IdTransformation(vsumPath);
+    	
+    	mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         var module = new EMFModule();
         
         //Register serializer
-        module.addSerializer(ResourceSet.class, new ResourceSetSerializer());
+        module.addSerializer(ResourceSet.class, new ResourceSetSerializer(transformation));
         module.addSerializer(VitruviusChange.class, new VitruviusChangeSerializer());
 
         //Register deserializer
-        module.addDeserializer(ResourceSet.class, new ResourceSetDeserializer());
-        module.addDeserializer(VitruviusChange.class, new VitruviusChangeDeserializer());
+        module.addDeserializer(ResourceSet.class, new ResourceSetDeserializer(this, transformation));
+        module.addDeserializer(VitruviusChange.class, new VitruviusChangeDeserializer(this, transformation));
         
         //Register modifiers for references to handle HierarichalId
         module.setSerializerModifier(new ReferenceSerializerModifier());
-        module.setDeserializerModifier(new ReferenceDeserializerModifier());
+        module.setDeserializerModifier(new ReferenceDeserializerModifier(transformation));
         
 	    //Use IDs to identify eObjects on client and server
 	    module.configure(Feature.OPTION_USE_ID, true);
@@ -64,7 +66,7 @@ public class JsonMapper {
      * @param obj the object to serialize
      * @return the json or {@code null}, if an {@link JsonProcessingException} occurred.
      */
-    public static String serialize(Object obj) throws JsonProcessingException {
+    public String serialize(Object obj) throws JsonProcessingException {
         return mapper.writeValueAsString(obj);
     }
 
@@ -75,11 +77,11 @@ public class JsonMapper {
      * @param clazz the class of the jsons type.
      * @return the object or {@code null}, if an {@link JsonProcessingException} occurred.
      */
-    public static <T> T deserialize(String json, Class<T> clazz) throws JsonProcessingException {
+    public <T> T deserialize(String json, Class<T> clazz) throws JsonProcessingException {
         return mapper.reader().forType(clazz).readValue(json);
     }
     
-    public static Resource deserializeResource(String json, String uri, ResourceSet parentSet) throws JsonProcessingException {
+    public Resource deserializeResource(String json, String uri, ResourceSet parentSet) throws JsonProcessingException {
     	return mapper.reader()
     			.withAttribute(EMFContext.Attributes.RESOURCE_SET, parentSet)
     			.withAttribute(EMFContext.Attributes.RESOURCE_URI, URI.createURI(uri))
@@ -94,8 +96,8 @@ public class JsonMapper {
      * @param clazz the class representing the json type of the objects in the json array
      * @return the list of objects or {@code null}, if an {@link JsonProcessingException} occurred.
      */
-    public static <T> List<T> deserializeArrayOf(String json, Class<T> clazz) throws JsonProcessingException {
-            var javaType = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
-            return mapper.readValue(json, javaType);
+    public <T> List<T> deserializeArrayOf(String json, Class<T> clazz) throws JsonProcessingException {
+        var javaType = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
+        return mapper.readValue(json, javaType);
     }
 }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
@@ -21,8 +22,16 @@ import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.common.util.ResourceUtil;
 
 public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChange<?>> {
+	
+	private final IdTransformation transformation;
+	private final JsonMapper mapper;
+	
+    public VitruviusChangeDeserializer(JsonMapper mapper, IdTransformation transformation) {
+		this.mapper = mapper;
+		this.transformation = transformation;
+	}
 
-    @Override
+	@Override
     public VitruviusChange<?> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         var rootNode = parser.getCodec().readTree(parser);
         var type = ChangeType.valueOf(((TextNode)rootNode.get(JsonFieldName.CHANGE_TYPE)).asText());
@@ -30,17 +39,18 @@ public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChang
         VitruviusChange<?> change;
         if (type == ChangeType.TRANSACTIONAL) {
             var resourceNode = rootNode.get(JsonFieldName.E_CHANGES);
-            var changesResource = JsonMapper.deserializeResource(resourceNode.toString(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
-            var changes = changesResource.getContents().stream().map(e -> (EChange<?>) e).toList();
-            IdTransformation.allToGlobal(changes);
+            var changesResource = mapper.deserializeResource(resourceNode.toString(), JsonFieldName.TEMP_VALUE, ResourceUtil.createJsonResourceSet());
+            @SuppressWarnings("unchecked")
+			var changes = changesResource.getContents().stream().map(e -> (EChange<HierarchicalId>) e).toList();
+            transformation.allToGlobal(changes);
             change = VitruviusChangeFactory.getInstance().createTransactionalChange(changes);
-            var interactions = JsonMapper.deserializeArrayOf(rootNode.get(JsonFieldName.U_INTERACTIONS).toString(), UserInteractionBase.class);
+            var interactions = mapper.deserializeArrayOf(rootNode.get(JsonFieldName.U_INTERACTIONS).toString(), UserInteractionBase.class);
             ((TransactionalChange<?>) change).setUserInteractions(interactions);
         } else if (type == ChangeType.COMPOSITE) {
             var changesNode = (ArrayNode) rootNode.get(JsonFieldName.V_CHANGES);
             var changes = new LinkedList<VitruviusChange<?>>();
             for (var e : changesNode) {
-                changes.add(JsonMapper.deserialize(e.asText(), VitruviusChange.class));
+                changes.add(mapper.deserialize(e.asText(), VitruviusChange.class));
             }
             change = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         } else {

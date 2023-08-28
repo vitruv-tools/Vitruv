@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.remote.common.util.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.constants.Header;
 
@@ -13,8 +12,15 @@ import tools.vitruv.framework.remote.common.util.constants.Header;
  * updated {@link org.eclipse.emf.ecore.resource.Resource Resources}.
  */
 public class UpdateViewEndpoint implements Endpoint.Get {
+	
+	private final JsonMapper mapper;
+	
+    public UpdateViewEndpoint(JsonMapper mapper) {
+	
+		this.mapper = mapper;
+	}
 
-    @Override
+	@Override
     public String process(HttpExchangeWrapper wrapper) {
         var view = Cache.getView(wrapper.getRequestHeader(Header.VIEW_UUID));
         if (view == null) {
@@ -31,7 +37,7 @@ public class UpdateViewEndpoint implements Endpoint.Get {
         wrapper.setContentType(ContentType.APPLICATION_JSON);
 
         try {
-            return JsonMapper.serialize(rSet);
+            return mapper.serialize(rSet);
         } catch (JsonProcessingException e) {
             throw internalServerError(e.getMessage());
         }
