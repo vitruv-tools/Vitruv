@@ -1,6 +1,9 @@
 package tools.vitruv.framework.remote.server.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.util.*;
@@ -31,13 +34,13 @@ public class UpdateViewEndpoint implements Endpoint.Get {
 
         //Get Resources
         var resources = view.getRootObjects().stream().map(EObject::eResource).distinct().toList();
-        var rSet = new ResourceSetImpl();
-        rSet.getResources().addAll(resources);
+        var set = new ResourceSetImpl();
+        ResourceCopier.copyViewResources(resources, set);
 
         wrapper.setContentType(ContentType.APPLICATION_JSON);
 
         try {
-            return mapper.serialize(rSet);
+            return mapper.serialize(set);
         } catch (JsonProcessingException e) {
             throw internalServerError(e.getMessage());
         }
