@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout DSLs
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: dsls
           repository: vitruv-tools/Vitruv-DSLs
@@ -72,7 +72,7 @@ jobs:
           name: dsls
           path: dsls
       - name: Checkout Case Studies
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: casestudies
           repository: vitruv-tools/Vitruv-CaseStudies
