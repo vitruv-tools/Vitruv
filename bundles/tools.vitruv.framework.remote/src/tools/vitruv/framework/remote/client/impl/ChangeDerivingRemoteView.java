@@ -1,7 +1,6 @@
 package tools.vitruv.framework.remote.client.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -9,7 +8,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.framework.views.CommittableView;
@@ -17,7 +20,6 @@ import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
-import tools.vitruv.framework.remote.common.util.ResourceUtils;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -45,8 +47,8 @@ public class ChangeDerivingRemoteView implements CommittableView {
     }
 
     private void initializeResourceMapping(ResourceSet source) {
-        originalResourceMapping = new HashMap<>();
-        source.getResources().forEach(it -> originalResourceMapping.put(it, ResourceUtils.copyResource(it)));
+        originalResourceMapping = ResourceCopier.copyViewResources(source.getResources(), 
+        		ResourceSetUtil.withGlobalFactories(new ResourceSetImpl()));
     }
 
     @Override
@@ -120,7 +122,7 @@ public class ChangeDerivingRemoteView implements CommittableView {
     @Override
     public void commitChanges() {
         base.checkNotClosed();
-        var allChanges = new LinkedList<VitruviusChange>();
+        var allChanges = new LinkedList<VitruviusChange<?>>();
         base.viewSource.getResources().forEach(it -> {
             var changes = findChanges(originalResourceMapping.get(it), it);
             if (changes.getEChanges().size() > 0) {
@@ -131,7 +133,7 @@ public class ChangeDerivingRemoteView implements CommittableView {
         base.modified = false;
     }
 
-    private VitruviusChange findChanges(Resource oldState, Resource newState) {
+    private VitruviusChange<HierarchicalId> findChanges(Resource oldState, Resource newState) {
         if (oldState == null) {
             return resolutionStrategy.getChangeSequenceForCreated(newState);
         } else if (newState == null) {

@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkState
  * and view elements (such as selecting types but providing instances in the view), 
  * but a selection is performed on the view elements themselves.
  */
-class DirectViewElementSelector implements ViewSelector {
+class DirectViewElementSelector<Id> implements ViewSelector {
 	@Delegate
 	val ModifiableViewSelection viewSelection
 
@@ -28,7 +28,7 @@ class DirectViewElementSelector implements ViewSelector {
 	val ChangeableViewSource viewSource
 
 	@Accessors(PUBLIC_GETTER)
-	val ViewCreatingViewType<DirectViewElementSelector> viewType
+	val ViewCreatingViewType<DirectViewElementSelector<Id>, Id> viewType
 
 	/**
 	 * Creates a new selector based on the given collection of selectable elements
@@ -43,7 +43,7 @@ class DirectViewElementSelector implements ViewSelector {
 	 * @param selectableElements -	the elements to select from to be used by the 
 	 * 								{@link ViewType} when creating a view
 	 */
-	new(ViewCreatingViewType<DirectViewElementSelector> viewType, ChangeableViewSource viewSource,
+	new(ViewCreatingViewType<DirectViewElementSelector<Id>, Id> viewType, ChangeableViewSource viewSource,
 		Collection<EObject> selectableElements) {
 		checkArgument(selectableElements !== null, "selectable elements must not be null")
 		checkArgument(viewType !== null, "view type must not be null")

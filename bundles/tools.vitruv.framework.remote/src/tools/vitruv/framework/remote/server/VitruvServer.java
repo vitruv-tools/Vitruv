@@ -1,13 +1,14 @@
 package tools.vitruv.framework.remote.server;
 
-import java.util.HashSet;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.Set;
 
-import spark.Spark;
+import com.sun.net.httpserver.HttpServer;
+
+import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.server.handler.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.framework.remote.common.util.ContentTypes;
-import tools.vitruv.framework.remote.server.endpoint.Endpoint;
-import tools.vitruv.framework.remote.server.endpoint.impl.*;
-import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 
 /**
  * A vitruv server wraps a REST based API around a {@link tools.vitruv.framework.vsum.VirtualModel VSUM}. Therefore,
@@ -17,9 +18,9 @@ import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
  */
 public class VitruvServer {
 
-    private int port = 8080;
+    public static int STD_PORT = 8080;
 
-    private final HashSet<Endpoint> endpoints;
+    private final HttpServer server;
 
     /**
      * Creates a new {@link VitruvServer} using the given {@link VirtualModelInitializer}.
@@ -28,9 +29,17 @@ public class VitruvServer {
      * @param modelInitializer the initializer which creates a {@link InternalVirtualModel}
      * @param port             the port to open to server on
      */
-    public VitruvServer(VirtualModelInitializer modelInitializer, int port) {
-        this(modelInitializer);
-        this.port = port;
+    public VitruvServer(VirtualModelInitializer modelInitializer, int port) throws IOException {
+        this.server = HttpServer.create(new InetSocketAddress(port), 0);
+
+        var model = modelInitializer.init();
+        var mapper = new JsonMapper(model.getFolder());
+        var handlers = Set.of(new HealthHandler(), new IsViewClosedHandler(), new IsViewOutdatedHandler(),
+                new ViewHandler(), new ViewTypesHandler(), new ViewSelectorHandler());
+        handlers.forEach(it -> {
+            it.init(model, mapper);
+            server.createContext(it.getPath(), it);
+        });
     }
 
     /**
@@ -39,48 +48,21 @@ public class VitruvServer {
      *
      * @param modelInitializer the initializer which creates a {@link InternalVirtualModel}
      */
-    public VitruvServer(VirtualModelInitializer modelInitializer) {
-        InternalVirtualModel model = modelInitializer.init();
-
-        endpoints = new HashSet<>();
-        endpoints.add(new HealthEndpoint());
-        endpoints.add(new ViewTypesEndpoint(model));
-        endpoints.add(new ViewEndpoint(model));
-        endpoints.add(new ChangePropagationEndpoint(model));
-        endpoints.add(new CloseViewEndpoint());
-        endpoints.add(new IsViewClosedEndpoint());
-        endpoints.add(new IsViewOutdatedEndpoint());
-        endpoints.add(new UpdateViewEndpoint());
+    public VitruvServer(VirtualModelInitializer modelInitializer) throws IOException {
+        this(modelInitializer, STD_PORT);
     }
 
     /**
      * Starts the vitruv server.
      */
     public void start() {
-        Spark.port(port);
-        Spark.exception(Exception.class, (ex, req, res) -> {
-            int statusCode = 500;
-            if (ex instanceof ServerHaltingException s) {
-                statusCode = s.getStatusCode();
-            }
-            res.status(statusCode);
-            res.type(ContentTypes.TEXT_PLAIN);
-            res.body(ex.getMessage());
-        });
-        endpoints.forEach(Endpoint::init);
+        server.start();
     }
 
     /**
      * Stops the vitruv server.
      */
     public void stop() {
-        Spark.stop();
-    }
-
-    /**
-     * Blocks until the server is initialized.
-     */
-    public void awaitInit() {
-        Spark.awaitInitialization();
+        server.stop(0);
     }
 }

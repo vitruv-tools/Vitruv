@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
@@ -29,7 +30,7 @@ import tools.vitruv.testutils.TestLogging;
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class BasicViewTest {
 	@Mock
-	ViewCreatingViewType<?> mockViewType;
+	ViewCreatingViewType<?, HierarchicalId> mockViewType;
 	@Mock
 	ChangeableViewSource mockChangeableViewSource;
 	@Mock

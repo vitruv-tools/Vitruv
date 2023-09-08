@@ -1,62 +1,53 @@
 package tools.vitruv.framework.remote.server.endpoint;
 
-import spark.Request;
-import spark.Response;
+import com.sun.net.httpserver.HttpExchange;
+import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 
+import static java.net.HttpURLConnection.*;
+
 /**
- * Represents an endpoint of a REST interface.
+ * Represents an REST endpoint.
  */
-public abstract class Endpoint {
-	
-	/**
-	 * The path name of this endpoint
-	 */
-	protected String path;
-	
-	/**
-	 * The accept-type of this endpoint
-	 */
-	protected String acceptType;
-	
-	public Endpoint(String path, String acceptType) {
-		this.path = path;
-		this.acceptType = acceptType;
-	}
-	
-	public Endpoint(String path) {
-		this(path, "*/*");
-	}
-	
-	/**
-	 * Initializes this endpoint.
-	 */
-	public abstract void init();
-	
-	/**
-	 * Handles the request, when this end point is called.
-	 * 
-	 * @param request the request object
-	 * @param response the response object
-	 * @return the response of this end point.
-	 */
-	public abstract Object handleRequest(Request request, Response response);
-	
-	/**
-	 * Halts the execution of the requested endpoint and returns the status code NOT FOUND with the given message.
-	 * 
-	 * @param msg A message containing the reason of halting the execution.
-	 */
-	protected ServerHaltingException notFound(String msg) {
-		return new ServerHaltingException(404, msg);
-	}
-	
-	/**
-	 * Halts the execution of the requested endpoint and returns the status code INTERNAL SERVER ERROR with the given message.
-	 * 
-	 * @param msg A message containing the reason of halting the execution.
-	 */
-	protected ServerHaltingException internalServerError(String msg) {
-		return new ServerHaltingException(500, msg);
-	}
+public interface Endpoint {
+    /**
+     * Processes the given HTTP request
+     *
+     * @param wrapper An object containing utility functions for a specific {@link HttpExchange}
+     * @throws ServerHaltingException if an internal error occurred
+     */
+    String process(HttpExchangeWrapper wrapper) throws ServerHaltingException;
+
+    /**
+     * Halts the execution of the requested endpoint and returns the status code NOT FOUND with the given message.
+     *
+     * @param msg A message containing the reason of halting the execution.
+     */
+    default ServerHaltingException notFound(String msg) {
+        return new ServerHaltingException(HTTP_NOT_FOUND, msg);
+    }
+
+    /**
+     * Halts the execution of the requested endpoint and returns the status code INTERNAL SERVER ERROR with the given message.
+     *
+     * @param msg A message containing the reason of halting the execution.
+     */
+    default ServerHaltingException internalServerError(String msg) {
+        return new ServerHaltingException(HTTP_INTERNAL_ERROR, msg);
+    }
+
+    interface Get extends Endpoint {
+    }
+
+    interface Delete extends Endpoint {
+    }
+
+    interface Post extends Endpoint {
+    }
+
+    interface Patch extends Endpoint {
+    }
+
+    interface Put extends Endpoint {
+    }
 }

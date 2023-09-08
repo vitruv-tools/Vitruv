@@ -3,78 +3,82 @@ package tools.vitruv.framework.remote.common.util;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
+
 import tools.vitruv.change.atomic.EChange;
-import tools.vitruv.change.atomic.eobject.EObjectAddedEChange;
-import tools.vitruv.change.atomic.eobject.EObjectExistenceEChange;
-import tools.vitruv.change.atomic.eobject.EObjectSubtractedEChange;
-import tools.vitruv.change.atomic.feature.FeatureEChange;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.root.RootEChange;
+import tools.vitruv.change.propagation.ProjectMarker;
+import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 
 /**
  * Contains functions to transform ids used by the vitruv framework to identify
  * {@link org.eclipse.emf.ecore.EObject EObjects}.
  */
-public final class IdTransformation {
+public class IdTransformation {
 
-    private IdTransformation() {
-        throw new UnsupportedOperationException("Utility Class Constructor!");
+    private URI root;
+    
+    IdTransformation(Path vsumPath) {
+    	root = URI.createFileURI(ProjectMarker.getProjectRootFolder(vsumPath).toString());
+    	
+    	var nextToCheck = vsumPath;
+    	while ((nextToCheck = nextToCheck.getParent()) != null) {
+			try {
+				root = URI.createFileURI(ProjectMarker.getProjectRootFolder(nextToCheck).toString());
+			} catch (IllegalStateException e) {
+				break;
+			}
+		}
     }
 
     /**
-     * Transforms the given global id to a local id.
+     * Transforms the given global (absolute path) id to a local id (relative path).
      *
-     * @param id the id to transform
+     * @param global the id to transform
      * @return the local id
      */
-    public static String toLocal(String id) {
-        if (id == null) {
-            return null;
+    public URI toLocal(URI global) {
+        if (global == null || global.toString().contains("cache") || 
+        		global.toString().equals(JsonFieldName.TEMP_VALUE) || !global.isFile()) {
+            return global;
         }
-        // dont change cache ids
-        return id.contains("cache") ? id : Path.of("").toAbsolutePath().relativize(Path.of(prepareId(id)))
-                .toString().replace("\\", "/");
+        
+        return URI.createURI(global.toString().replace(root.toString(), ""));
     }
 
     /**
-     * Transforms the given local id to a global id.
+     * Transforms the given local id (relative path) to a global id (absolute path).
      *
-     * @param id the id to transform
+     * @param local the id to transform
      * @return the global id
      */
-    public static String toGlobal(String id) {
-        if (id == null) {
-            return null;
+    public URI toGlobal(URI local) {
+        if (local == null || local.toString().contains("cache") || 
+        		local.toString().equals(JsonFieldName.TEMP_VALUE)) {
+            return local;
         }
-        return id.contains("cache") ? id : "file:/" + Path.of("").toAbsolutePath().resolve(Path.of(id))
-                .toString().replace("\\", "/");
+        
+        if (!local.isRelative()) {
+			return local;
+		}
+        
+        return URI.createURI(root.toString() + local.toString());
     }
 
-    private static String prepareId(String id) {
-        return id.replace("file:/", "");
+    public void allToGlobal(List<? extends EChange<HierarchicalId>> eChanges) {
+        for (var eChange : eChanges) {
+            if (eChange instanceof RootEChange<?> change) {
+                change.setUri(toGlobal(URI.createURI(change.getUri())).toString());
+            }
+        } 
     }
-
-    /**
-     * Transforms all local ids of the given changes to global ids.
-     *
-     * @param changes the changes which ids should be transformed
-     */
-    public static void allToGlobal(List<EChange> changes) {
-        for (var eChange : changes) {
-            if (eChange instanceof EObjectExistenceEChange<?> change) {
-                change.setAffectedEObjectID(toGlobal(change.getAffectedEObjectID()));
+    
+    public void allToLocal(List<? extends EChange<HierarchicalId>> eChanges) {
+        for (var eChange : eChanges) {
+            if (eChange instanceof RootEChange<?> change) {
+                change.setUri(toLocal(URI.createURI(change.getUri())).toString());
             }
-            if (eChange instanceof EObjectAddedEChange<?> change) {
-                change.setNewValueID(toGlobal(change.getNewValueID()));
-            }
-            if (eChange instanceof EObjectSubtractedEChange<?> change) {
-                change.setOldValueID(toGlobal(change.getOldValueID()));
-            }
-            if (eChange instanceof FeatureEChange<?, ?> change) {
-                change.setAffectedEObjectID(toGlobal(change.getAffectedEObjectID()));
-            }
-            if (eChange instanceof RootEChange change) {
-                change.setUri(toGlobal(change.getUri()));
-            }
-        }
+        } 
     }
 }

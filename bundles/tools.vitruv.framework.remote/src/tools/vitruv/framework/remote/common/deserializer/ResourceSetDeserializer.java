@@ -1,32 +1,44 @@
 package tools.vitruv.framework.remote.common.deserializer;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.Map;
 
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import tools.vitruv.framework.remote.common.util.IdTransformation;
+import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.util.ResourceUtil;
+import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
+
 public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
+	
+	private final IdTransformation transformation;
+	private final JsonMapper mapper;
+	
+	public ResourceSetDeserializer(JsonMapper mapper, IdTransformation transformation) {
+		this.transformation = transformation;
+		this.mapper = mapper;
+	}
 
 	@Override
 	public ResourceSet deserialize(JsonParser parser, DeserializationContext context) throws IOException {
 		var rootNode = (ArrayNode) parser.getCodec().readTree(parser);
-		var resources = new LinkedList<Resource>();
 		
+		var resourceSet = ResourceUtil.createJsonResourceSet();
 		for (var e : rootNode) {
-			resources.add(context.readTreeAsValue(e, Resource.class));
+			var resource = mapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), 
+					transformation.toGlobal(URI.createURI(e.get(JsonFieldName.URI).asText())).toString(), resourceSet);
+			if (!resource.getURI().toString().equals(JsonFieldName.TEMP_VALUE)) {
+				resource.save(Map.of());
+			}
 		}
-		
-		var resourceSet = new ResourceSetImpl();
-		resourceSet.getResources().addAll(resources);
-		
+	
 		return resourceSet;
 	}
-
 }

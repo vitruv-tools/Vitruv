@@ -10,7 +10,7 @@ import tools.vitruv.testutils.views.TestView
 
 import static com.google.common.base.Preconditions.checkArgument
 
-import static extension tools.vitruv.change.atomic.id.ObjectResolutionUtil.getHierarchicUriFragment
+import static extension tools.vitruv.change.atomic.hid.ObjectResolutionUtil.getHierarchicUriFragment
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.
