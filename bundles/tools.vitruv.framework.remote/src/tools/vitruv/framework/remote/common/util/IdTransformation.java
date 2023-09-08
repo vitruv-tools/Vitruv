@@ -18,15 +18,8 @@ import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 public class IdTransformation {
 
     private URI root;
-    private boolean isClient = false;
     
     IdTransformation(Path vsumPath) {
-    	//Client does not need to transform IDs
-    	if (vsumPath == null) {
-			isClient = true;
-			return;
-		}
-    	
     	root = URI.createFileURI(ProjectMarker.getProjectRootFolder(vsumPath).toString());
     	
     	var nextToCheck = vsumPath;
@@ -46,11 +39,12 @@ public class IdTransformation {
      * @return the local id
      */
     public URI toLocal(URI global) {
-        if (global == null || global.toString().contains("cache") || global.toString().equals(JsonFieldName.TEMP_VALUE) || isClient) {
+        if (global == null || global.toString().contains("cache") || 
+        		global.toString().equals(JsonFieldName.TEMP_VALUE) || !global.isFile()) {
             return global;
         }
         
-        return global.deresolve(root);
+        return URI.createURI(global.toString().replace(root.toString(), ""));
     }
 
     /**
@@ -60,7 +54,8 @@ public class IdTransformation {
      * @return the global id
      */
     public URI toGlobal(URI local) {
-        if (local == null || local.toString().contains("cache") || local.toString().equals(JsonFieldName.TEMP_VALUE) || isClient) {
+        if (local == null || local.toString().contains("cache") || 
+        		local.toString().equals(JsonFieldName.TEMP_VALUE)) {
             return local;
         }
         
@@ -68,7 +63,7 @@ public class IdTransformation {
 			return local;
 		}
         
-        return local.resolve(root);
+        return URI.createURI(root.toString() + local.toString());
     }
 
     public void allToGlobal(List<? extends EChange<HierarchicalId>> eChanges) {
@@ -77,5 +72,13 @@ public class IdTransformation {
                 change.setUri(toGlobal(URI.createURI(change.getUri())).toString());
             }
         } 
-    } 
+    }
+    
+    public void allToLocal(List<? extends EChange<HierarchicalId>> eChanges) {
+        for (var eChange : eChanges) {
+            if (eChange instanceof RootEChange<?> change) {
+                change.setUri(toLocal(URI.createURI(change.getUri())).toString());
+            }
+        } 
+    }
 }

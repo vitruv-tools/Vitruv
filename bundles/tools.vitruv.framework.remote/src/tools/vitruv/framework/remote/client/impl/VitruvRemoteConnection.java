@@ -1,5 +1,6 @@
 package tools.vitruv.framework.remote.client.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -8,6 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -16,6 +18,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.propagation.ProjectMarker;
 import tools.vitruv.framework.remote.client.VitruvClient;
 import tools.vitruv.framework.remote.client.exception.BadClientResponseException;
 import tools.vitruv.framework.remote.client.exception.BadServerResponseException;
@@ -45,11 +48,22 @@ public class VitruvRemoteConnection implements VitruvClient {
      * @param url  of the vitruvius server
      * @param port of the vitruvius server
      */
-    public VitruvRemoteConnection(String url, int port) {
+    public VitruvRemoteConnection(String url, int port, Path temp) {
         this.client = HttpClient.newHttpClient();
         this.url = url;
         this.port = port;
-        this.mapper = new JsonMapper();
+        
+        try {
+        	var file = new File(temp.toString());
+        	if (!file.exists()) {
+        		file.mkdirs();
+        		ProjectMarker.markAsProjectRootFolder(temp);
+        	}
+		} catch (IOException e) {
+			throw new IllegalArgumentException("Given temporary directory for models could not be created!", e);
+		}
+        
+        this.mapper = new JsonMapper(temp);
     }
 
     /**
@@ -221,7 +235,7 @@ public class VitruvRemoteConnection implements VitruvClient {
             var response = sendRequest(request);
             return mapper.deserialize(response.body(), ResourceSet.class);
         } catch (IOException e) {
-            throw new BadServerResponseException(e);
+            throw new BadClientResponseException(e);
         }
     }
 

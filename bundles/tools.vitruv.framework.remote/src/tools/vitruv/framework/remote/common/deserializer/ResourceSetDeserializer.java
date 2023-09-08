@@ -1,6 +1,7 @@
 package tools.vitruv.framework.remote.common.deserializer;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -31,8 +32,11 @@ public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
 		
 		var resourceSet = ResourceUtil.createJsonResourceSet();
 		for (var e : rootNode) {
-			mapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), 
+			var resource = mapper.deserializeResource(e.get(JsonFieldName.CONTENT).toString(), 
 					transformation.toGlobal(URI.createURI(e.get(JsonFieldName.URI).asText())).toString(), resourceSet);
+			if (!resource.getURI().toString().equals(JsonFieldName.TEMP_VALUE)) {
+				resource.save(Map.of());
+			}
 		}
 	
 		return resourceSet;

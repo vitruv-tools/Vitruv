@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.function.Consumer;
 
@@ -19,11 +20,15 @@ import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 public class TestViewFactory {
 	private final ViewProvider viewProvider;
-	private final VitruvClient client;
+	private VitruvClient client;
 
 	public TestViewFactory(ViewProvider viewProvider) {
 		this.viewProvider = viewProvider;
-		this.client = VitruvClientFactory.create("localhost");
+		if (RemoteUsageUtil.shouldUseRemote()) {
+			var vsumPath = ((InternalVirtualModel) viewProvider).getFolder();
+			var clientPath = Path.of(vsumPath.getParent().getParent().toString(), "client");
+			this.client = VitruvClientFactory.create("localhost", clientPath);
+		}	
 	}
 
 	/**

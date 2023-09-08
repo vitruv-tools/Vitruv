@@ -30,10 +30,6 @@ import tools.vitruv.framework.remote.common.serializer.VitruviusChangeSerializer
 public class JsonMapper {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    
-    public JsonMapper() {
-    	this(null);
-    }
 
     public JsonMapper(Path vsumPath) {
     	final var transformation = new IdTransformation(vsumPath);
@@ -50,7 +46,7 @@ public class JsonMapper {
         module.addDeserializer(VitruviusChange.class, new VitruviusChangeDeserializer(this, transformation));
         
         //Register modifiers for references to handle HierarichalId
-        module.setSerializerModifier(new ReferenceSerializerModifier());
+        module.setSerializerModifier(new ReferenceSerializerModifier(transformation));
         module.setDeserializerModifier(new ReferenceDeserializerModifier(transformation));
         
 	    //Use IDs to identify eObjects on client and server

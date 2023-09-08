@@ -4,6 +4,8 @@ import tools.vitruv.framework.remote.client.impl.VitruvRemoteConnection;
 
 import static tools.vitruv.framework.remote.server.VitruvServer.STD_PORT;
 
+import java.nio.file.Path;
+
 public class VitruvClientFactory {
 
 	 /**
@@ -12,8 +14,8 @@ public class VitruvClientFactory {
      * @param url of the vitruv server
      * @return a {@link VitruvClient}
      */
-    public static VitruvClient create(String url) {
-        return create(url, STD_PORT);
+    public static VitruvClient create(String url, Path temp) {
+        return create(url, STD_PORT, temp);
     }
 
     /**
@@ -23,8 +25,8 @@ public class VitruvClientFactory {
      * @param port of the vitruv server
      * @return a {@link VitruvClient}
      */
-    public static VitruvClient create(String url, int port) {
-        return new VitruvRemoteConnection(url, port);
+    public static VitruvClient create(String url, int port, Path temp) {
+        return new VitruvRemoteConnection(url, port, temp);
     }
 
 }
