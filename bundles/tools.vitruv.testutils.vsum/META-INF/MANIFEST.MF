@@ -18,6 +18,5 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.activextendannotations,
  edu.kit.ipd.sdq.commons.util.emf,
  edu.kit.ipd.sdq.commons.util.java,
- tools.vitruv.framework.remote,
- tools.vitruv.adapters.eclipse.vsum
+ tools.vitruv.framework.remote
 Export-Package: tools.vitruv.testutils
