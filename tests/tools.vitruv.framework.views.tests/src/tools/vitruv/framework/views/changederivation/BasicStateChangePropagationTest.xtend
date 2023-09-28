@@ -9,9 +9,9 @@ import org.junit.jupiter.params.provider.MethodSource
 import tools.vitruv.change.atomic.eobject.CreateEObject
 import tools.vitruv.change.atomic.eobject.DeleteEObject
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.change.atomic.id.IdResolver
 import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.change.atomic.root.RemoveRootEObject
+import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.testutils.Capture
 
 import static org.hamcrest.CoreMatchers.instanceOf
@@ -49,7 +49,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
         // Create empty resource to apply generated changes to
         val validationResourceSet = new ResourceSetImpl()
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         modelResource.save(null)
         assertEquals(1, validationResourceSet.resources.size)
@@ -77,7 +77,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         // Load resource to apply generated changes to
         val validationResourceSet = new ResourceSetImpl()
         validationResourceSet.getResource(testUri, true)
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertTrue(validationResourceSet.resources.get(0).contents.empty)
@@ -108,7 +108,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val oldState = validationResourceSet.getResource(testUri, true)
         val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -139,7 +139,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         assertEquals(1, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -167,19 +167,19 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
         val oldState = validationResourceSet.getResource(testUri, true)
         val unresolvedChanges = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
-        val changes = unresolvedChanges.resolveAndApply(IdResolver.create(validationResourceSet))
+        val changes = VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(unresolvedChanges)
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
                 val Iterable<DeleteEObject<?>> deleteChanges = newArrayList(changes.EChanges.filter(DeleteEObject))
                 assertEquals(1, deleteChanges.size)
-                assertThat(deleteChanges.head.affectedEObject, instanceOf(Root))
-                assertEquals("Root", (deleteChanges.head.affectedEObject as Root).id)
+                assertThat(deleteChanges.head.affectedElement, instanceOf(Root))
+                assertEquals("Root", (deleteChanges.head.affectedElement as Root).id)
 
                 val Iterable<CreateEObject<?>> createChanges = newArrayList(changes.EChanges.filter(CreateEObject))
                 assertEquals(1, createChanges.size)
-                assertThat(createChanges.head.affectedEObject, instanceOf(Root))
-                assertEquals("Root2", (createChanges.head.affectedEObject as Root).id)
+                assertThat(createChanges.head.affectedElement, instanceOf(Root))
+                assertEquals("Root2", (createChanges.head.affectedElement as Root).id)
             }
             case NEVER: {
                 assertEquals(1, changes.EChanges.size)
@@ -221,7 +221,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         assertEquals(1, changes.EChanges.size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         assertEquals(1, validationResourceSet.resources.size)
         assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -254,19 +254,19 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
         val oldState = validationResourceSet.getResource(testUri, true)
         val unresolvedChanges = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
-        val changes = unresolvedChanges.resolveAndApply(IdResolver.create(validationResourceSet))
+        val changes = VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(unresolvedChanges)
         switch (strategyToTest.useIdentifiers) {
             case ONLY,
             case WHEN_AVAILABLE: {
                 val Iterable<DeleteEObject<?>> deleteChanges = newArrayList(changes.EChanges.filter(DeleteEObject))
                 assertEquals(1, deleteChanges.size)
-                assertThat(deleteChanges.head.affectedEObject, instanceOf(Root))
-                assertEquals("ContainedRoot", (deleteChanges.head.affectedEObject as Root).id)
+                assertThat(deleteChanges.head.affectedElement, instanceOf(Root))
+                assertEquals("ContainedRoot", (deleteChanges.head.affectedElement as Root).id)
 
                 val Iterable<CreateEObject<?>> createChanges = newArrayList(changes.EChanges.filter(CreateEObject))
                 assertEquals(1, createChanges.size)
-                assertThat(createChanges.head.affectedEObject, instanceOf(Root))
-                assertEquals("ContainedRoot2", (createChanges.head.affectedEObject as Root).id)
+                assertThat(createChanges.head.affectedElement, instanceOf(Root))
+                assertEquals("ContainedRoot2", (createChanges.head.affectedElement as Root).id)
             }
             case NEVER: {
                 assertEquals(1, changes.EChanges.size)
@@ -308,7 +308,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
         assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
 
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         (-modelResource).save(null)
         assertEquals(2, validationResourceSet.resources.size)
@@ -348,7 +348,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
         assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
         assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
-        changes.resolveAndApply(IdResolver.create(validationResourceSet))
+        VitruviusChangeResolver.forHierarchicalIds(validationResourceSet).resolveAndApply(changes)
 
         (-modelResource).save(null)
         assertEquals(2, validationResourceSet.resources.size)
