@@ -24,7 +24,7 @@ jobs:
           cd dsls
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
@@ -83,7 +83,7 @@ jobs:
           cd casestudies
           git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
