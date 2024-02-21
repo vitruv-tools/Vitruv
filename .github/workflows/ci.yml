@@ -44,7 +44,7 @@ jobs:
           MAVEN_OPTS: -Djansi.force=true
       - name: Store Framework Artifact
         if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: framework
           path: releng/tools.vitruv.updatesite/target/repository

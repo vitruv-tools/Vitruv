@@ -50,7 +50,7 @@ jobs:
         env: 
           MAVEN_OPTS: -Djansi.force=true
       - name: Store DSLs Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dsls
           path: dsls/releng/tools.vitruv.dsls.updatesite/target/repository
