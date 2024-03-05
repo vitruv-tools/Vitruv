@@ -10,7 +10,8 @@ Import-Package: org.junit.jupiter.api,
  org.junit.jupiter.api.extension,
  org.junit.jupiter.api.function,
  org.junit.jupiter.params,
- org.junit.jupiter.params.provider
+ org.junit.jupiter.params.provider,
+ tools.vitruv.change.changederivation
 Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils.vsum,
  tools.vitruv.testutils.metamodels,

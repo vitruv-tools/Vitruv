@@ -7,12 +7,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy;
 import tools.vitruv.framework.views.CommittableView;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewProvider;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewTypeFactory;
-import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 public class TestViewFactory {
 	private final ViewProvider viewProvider;

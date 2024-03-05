@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum.internal;
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel;
 
 import java.io.IOException;
@@ -21,7 +20,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
@@ -37,8 +38,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 class ResourceRepositoryImpl implements ModelRepository {
 	private static final Logger LOGGER = Logger.getLogger(ResourceRepositoryImpl.class);
-
-	private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
+	
+	private final ResourceSet modelsResourceSet = new ResourceSetImpl();
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
 	private final PersistableCorrespondenceModel correspondenceModel;
 	private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
@@ -53,8 +54,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout) {
 		this.fileSystemLayout = fileSystemLayout;
 		this.correspondenceModel = createPersistableCorrespondenceModel(fileSystemLayout.getCorrespondencesURI());
-		modelsResourceSet.eAdapters()
-				.add(new ResourceRegistrationAdapter(resource -> getCreateOrLoadModelUnlessLoading(resource.getURI())));
+		modelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+				new PathmapAwareModelInstanceFactory());
+		modelsResourceSet.eAdapters().add(new ResourceRegistrationAdapter(resource -> {
+			getCreateOrLoadModelUnlessLoading(resource.getURI());
+		}));
 	}
 
 	@Override
@@ -70,16 +74,15 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private void writeModelsFile() throws IOException {
-		Files.write(fileSystemLayout.getModelsNamesFilesPath(), modelsResourceSet.getResources().stream()
-				.map(Resource::getURI).map(URI::toString).toList());
+		Files.write(fileSystemLayout.getModelsNamesFilesPath(),
+				modelsResourceSet.getResources().stream().map(Resource::getURI).map(URI::toString).toList());
 	}
-
+	
 	private void readModelsFile() throws IOException {
 		List<URI> modelUris;
 		try {
 			modelUris = Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream().map(URI::createURI)
 					.toList();
-
 		} catch (NoSuchFileException e) {
 			// There are no existing models, so don't do anything
 			return;
@@ -120,22 +123,34 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	private ModelInstance createOrLoadModel(URI modelUri) {
-		Resource resource;
-		if (modelUri.isFile() || modelUri.isPlatform()) {
-			resource = getOrCreateResource(modelsResourceSet, modelUri);
+		ModelInstance modelInstance;
+		if (modelUri.toString().contains("pathmap")) {
+			// loadOrCreateResource
+			if(modelsResourceSet.getResources().stream().anyMatch(resource -> resource.getURI().equals(modelUri))) {
+				modelInstance = (ModelInstance) modelsResourceSet.getResource(modelUri, false);
+			} else {
+				ResourceSet stdResourceSet = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
+				Resource pathMapResource = getOrCreateResource(stdResourceSet, modelUri);
+				modelInstance = new ModelInstance(modelUri);
+				modelInstance.getContents().addAll(EcoreUtil.copyAll(pathMapResource.getContents()));
+				modelsResourceSet.getResources().add(modelInstance);
+			}
+		} else if (modelUri.isFile() || modelUri.isPlatform()) {
+			modelInstance = (ModelInstance) getOrCreateResource(modelsResourceSet, modelUri);
 		} else {
-			resource = loadOrCreateResource(modelsResourceSet, modelUri);
+			modelInstance = (ModelInstance) loadOrCreateResource(modelsResourceSet, modelUri);
 		}
-		ModelInstance modelInstance = new ModelInstance(resource);
+
 		modelInstances.put(modelUri, modelInstance);
 		registerRecorder(modelInstance);
+		modelInstance.setModified(false);
 		return modelInstance;
 	}
 
 	private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
-			changeRecorder.addToRecording(modelInstance.getResource());
+			changeRecorder.addToRecording(modelInstance);
 			if (isRecording && !changeRecorder.isRecording()) {
 				changeRecorder.beginRecording();
 			}
@@ -156,10 +171,23 @@ class ResourceRepositoryImpl implements ModelRepository {
 		while (modelInstancesIterator.hasNext()) {
 			ModelInstance modelInstance = modelInstancesIterator.next().getValue();
 			if (modelInstance.isEmpty()) {
-				modelInstance.delete();
+				try {
+					modelInstance.delete(null);
+				} catch (IOException e) {
+					LOGGER.error("Model could not be deleted: " + modelInstance.getURI(), e);
+					throw new IllegalStateException("Could not delete URI " + modelInstance.getURI(), e);
+				}
 				modelInstancesIterator.remove();
 			} else {
-				modelInstance.save();
+				try {
+					// move to modelInstance?
+					if(modelInstance.isModified()) { 
+						modelInstance.save(null);
+					}
+				} catch (IOException e) {
+					LOGGER.error("Model could not be saved: " + modelInstance.getURI(), e);
+					throw new IllegalStateException("Could not save URI " + modelInstance.getURI(), e);
+				}
 			}
 		}
 		correspondenceModel.save();
@@ -170,7 +198,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 			throw new IllegalStateException(e);
 		}
 	}
-
+	
 	@Override
 	public Iterable<TransactionalChange<EObject>> recordChanges(Runnable changeApplicator) {
 		changeRecorder.beginRecording();
@@ -189,22 +217,22 @@ class ResourceRepositoryImpl implements ModelRepository {
 	public VitruviusChange<EObject> applyChange(VitruviusChange<Uuid> change) {
 		return changeResolver.resolveAndApply(change);
 	}
-
+	
 	@Override
 	public URI getMetadataModelURI(String... metadataKey) {
 		return fileSystemLayout.getConsistencyMetadataModelURI(metadataKey);
 	}
-
+	
 	@Override
 	public Resource getModelResource(URI uri) {
-		return getCreateOrLoadModel(uri).getResource();
+		return getCreateOrLoadModel(uri);
 	}
 
 	@Override
 	public Collection<Resource> getModelResources() {
 		return modelsResourceSet.getResources();
 	}
-
+	
 	@Override
 	public void close() {
 		changeRecorder.close();

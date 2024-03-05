@@ -31,6 +31,8 @@ import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import tools.vitruv.change.changederivation.DefaultStateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {

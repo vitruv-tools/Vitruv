@@ -65,7 +65,7 @@ class VirtualModelTest {
 		val recordedChange = changeRecorder.endRecording(uuidResolver)
 		virtualModel.propagateChange(recordedChange)
 		val vsumModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
-		assertThat(vsumModel.resource, containsModelOf(monitoredResource))
+		assertThat(vsumModel, containsModelOf(monitoredResource))
 	}
 
 	@Test
@@ -87,9 +87,9 @@ class VirtualModelTest {
 		val sorceModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val targetModel = virtualModel.getModelInstance(
 			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
-		assertThat(targetModel.resource, containsModelOf(monitoredResource))
+		assertThat(targetModel, containsModelOf(monitoredResource))
 		assertEquals(1,
-			virtualModel.correspondenceModel.getCorrespondingEObjects(sorceModel.resource.contents.get(0)).size)
+			virtualModel.correspondenceModel.getCorrespondingEObjects(sorceModel.contents.get(0)).size)
 	}
 
 	@Test
@@ -177,8 +177,7 @@ class VirtualModelTest {
 		]
 		val recordedChange = changeRecorder.endRecording(uuidResolver)
 		virtualModel.propagateChange(recordedChange)
-		val reloadedResource = new ResourceSetImpl().withGlobalFactories.getResource(createTestModelResourceUri(""),
-			true)
+		val reloadedResource = createAndLoadTestVirtualModelWithConsistencyPreservation(pathToVirtualModelProjectFolder).getModelInstance(createTestModelResourceUri(""))
 		assertThat(reloadedResource, containsModelOf(monitoredResource))
 	}
 
@@ -202,7 +201,7 @@ class VirtualModelTest {
 		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val reloadedVirtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
-		assertThat(reloadedModel.resource, containsModelOf(monitoredResource))
+		assertThat(reloadedModel, containsModelOf(monitoredResource))
 		assertNotEquals(originalModel, reloadedModel)
 		// Propagate another change to reloaded virtual model to ensure that everything is loaded correctly
 		changeRecorder.beginRecording
@@ -232,13 +231,13 @@ class VirtualModelTest {
 		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val reloadedVirtualModel = createAndLoadTestVirtualModel(pathToVirtualModelProjectFolder)
 		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
-		assertThat(reloadedModel.resource, containsModelOf(monitoredResource))
+		assertThat(reloadedModel, containsModelOf(monitoredResource))
 		assertNotEquals(originalModel, reloadedModel)
 		val reloadedTargetModel = reloadedVirtualModel.getModelInstance(
 			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
-		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
+		assertThat(reloadedTargetModel, containsModelOf(monitoredResource))
 		assertEquals(1,
-			reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).
+			reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.contents.get(0)).
 				size)
 	}
 

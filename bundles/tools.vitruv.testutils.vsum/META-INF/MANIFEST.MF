@@ -7,7 +7,8 @@ Bundle-Vendor: tools.vitruv
 Automatic-Module-Name: tools.vitruv.testutils.vsum
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Import-Package: org.junit.jupiter.api,
- org.junit.jupiter.api.extension
+ org.junit.jupiter.api.extension,
+ tools.vitruv.change.changederivation
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
