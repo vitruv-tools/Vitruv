@@ -10,20 +10,15 @@ import org.eclipse.emf.compare.merge.IMerger
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.change.atomic.EChangeIdManager
-import tools.vitruv.change.atomic.id.IdResolver
-import tools.vitruv.change.composite.description.VitruviusChange
+import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
-import tools.vitruv.framework.views.util.ResourceCopier
 
 import static com.google.common.base.Preconditions.checkArgument
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
-import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward
-import static extension tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -99,20 +94,9 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
             changeRecorder.addToRecording(resource)
             function.apply()
             val recordedChanges = changeRecorder.endRecording
-            assignIds(recordedChanges, resource.resourceSet)
-            return recordedChanges.unresolve
+            val changeResolver = VitruviusChangeResolver.forHierarchicalIds(resource.resourceSet)
+            return changeResolver.assignIds(recordedChanges)
         }
-    }
-    
-    private def void assignIds(VitruviusChange recordedChange, ResourceSet resourceSet) {
-    	val changes = recordedChange.EChanges
-    	val idResolver = IdResolver.create(resourceSet)
-    	val eChangeIdManager = new EChangeIdManager(idResolver)
-    	changes.toList.reverseView.forEach[applyBackward]
-		changes.forEach[ change |
-			eChangeIdManager.setOrGenerateIds(change)
-			change.applyForward(idResolver)
-		]
     }
 
     /**

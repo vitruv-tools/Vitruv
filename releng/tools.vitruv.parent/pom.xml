@@ -39,6 +39,11 @@
 			<layout>p2</layout>
 			<url>https://kit-sdq.github.io/updatesite/release/xannotations/${sdq.xannotations.version}</url>
 		</repository>
+		<repository>
+			<id>EMF Cloud</id>
+			<layout>p2</layout>
+			<url>https://download.eclipse.org/emfcloud/emfjson-jackson/p2/nightly/</url>
+		</repository>
 	</repositories>
 
 	<build>
@@ -52,6 +57,22 @@
 							<vitruv.workspace>${project.build.directory}/work/data</vitruv.workspace>
 						</systemPropertyVariables>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.6.0</version>
+					<executions>
+						<execution>
+							<id>copy-dependencies</id>
+							<goals>
+								<goal>copy-dependencies</goal>
+							</goals>
+							<configuration>
+								<stripVersion>true</stripVersion>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

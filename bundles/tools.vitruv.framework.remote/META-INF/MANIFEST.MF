@@ -3,38 +3,23 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Remote
 Bundle-SymbolicName: tools.vitruv.framework.remote;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.remote
-Bundle-ClassPath: .,
- target/dependency/jackson-annotations.jar,
- target/dependency/jackson-core.jar,
- target/dependency/jackson-databind.jar,
- target/dependency/javax.servlet-api.jar,
- target/dependency/jetty-client.jar,
- target/dependency/jetty-http.jar,
- target/dependency/jetty-io.jar,
- target/dependency/jetty-security.jar,
- target/dependency/jetty-server.jar,
- target/dependency/jetty-servlet.jar,
- target/dependency/jetty-util.jar,
- target/dependency/jetty-util-ajax.jar,
- target/dependency/jetty-webapp.jar,
- target/dependency/jetty-xml.jar,
- target/dependency/spark-core.jar,
- target/dependency/websocket-api.jar,
- target/dependency/websocket-client.jar,
- target/dependency/websocket-common.jar,
- target/dependency/websocket-server.jar,
- target/dependency/websocket-servlet.jar,
- target/dependency/slf4j-api.jar,
- target/dependency/log4j.jar,
- target/dependency/slf4j-log4j12.jar
+Bundle-ClassPath: .
 Bundle-Version: 3.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: tools.vitruv.framework.views,
  tools.vitruv.change.composite,
  tools.vitruv.framework.vsum,
  org.eclipse.emf.ecore.xmi,
- com.google.guava
+ com.google.guava,
+ com.fasterxml.jackson.core.jackson-annotations,
+ com.fasterxml.jackson.core.jackson-core,
+ com.fasterxml.jackson.core.jackson-databind,
+ org.eclipse.emf.edapt.common,
+ edu.kit.ipd.sdq.commons.util.emf,
+ org.eclipse.emf.ecore,
+ org.eclipse.emfcloud.emfjson-jackson
 Export-Package: tools.vitruv.framework.remote.client,
  tools.vitruv.framework.remote.client.exception,
+ tools.vitruv.framework.remote.client.impl;x-friends:="Test",
  tools.vitruv.framework.remote.server
 Bundle-Vendor: vitruv.tools

@@ -15,8 +15,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyBackward;
-import static tools.vitruv.change.atomic.resolve.EChangeIdResolverAndApplicator.applyForward;
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
 
@@ -43,12 +41,13 @@ import com.google.common.collect.FluentIterable;
 
 import allElementTypes.Root;
 import tools.vitruv.change.atomic.EChange;
-import tools.vitruv.change.atomic.EChangeIdManager;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
-import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
@@ -97,7 +96,8 @@ public class IdentityMappingViewTypeTest {
 		@Test
 		@DisplayName("for empty source")
 		public void forEmptySource() {
-			DirectViewElementSelector selector = basicViewType.createSelector(mock(ChangeableViewSource.class));
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType
+					.createSelector(mock(ChangeableViewSource.class));
 			assertThat(selector.getSelectableElements(), is(emptySet()));
 		}
 
@@ -110,7 +110,7 @@ public class IdentityMappingViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			assertThat(selector.getSelectableElements(), is(Set.of(rootElement)));
 		}
 
@@ -124,7 +124,7 @@ public class IdentityMappingViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			assertThat(selector.getSelectableElements(), is(Set.of(rootElement)));
 		}
 	}
@@ -145,7 +145,7 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("with empty source")
 		public void withNoElements() throws Exception {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
 			}
@@ -155,7 +155,8 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("with selector from other view type")
 		public void withSelectorFromOtherViewtype() {
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
-			DirectViewElementSelector selector = new IdentityMappingViewType("other").createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = new IdentityMappingViewType("other")
+					.createSelector(viewSource);
 			assertThrows(IllegalArgumentException.class, () -> basicViewType.createView(selector));
 		}
 
@@ -168,7 +169,7 @@ public class IdentityMappingViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects(), not(hasItem(anything())));
 			}
@@ -183,7 +184,7 @@ public class IdentityMappingViewTypeTest {
 			resource.getContents().add(rootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(rootElement, true);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects().size(), is(1));
@@ -204,7 +205,7 @@ public class IdentityMappingViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
 				assertThat(view.getRootObjects().size(), is(1));
@@ -225,7 +226,7 @@ public class IdentityMappingViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
@@ -258,7 +259,7 @@ public class IdentityMappingViewTypeTest {
 			secondResource.getContents().add(secondRootElement);
 			ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
 			when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRootElement, true);
 			selector.setSelected(secondRootElement, true);
 			try (View view = basicViewType.createView(selector)) {
@@ -302,7 +303,7 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("adding a non-root element")
 		public void addingANonRootElement() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				root.setSingleValuedContainmentEReference(aet.NonRoot());
@@ -319,7 +320,7 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("adding a root element")
 		public void addingARootElement() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				root.setId("secondId");
@@ -334,7 +335,7 @@ public class IdentityMappingViewTypeTest {
 		@DisplayName("removing a selected root element")
 		public void removingSelectedRoot() throws Exception {
 			Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				EcoreUtil.delete(root);
@@ -349,7 +350,7 @@ public class IdentityMappingViewTypeTest {
 		public void removingUnselectedRoot() throws Exception {
 			Root firstRoot = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
 			Root secondRoot = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
-			DirectViewElementSelector selector = basicViewType.createSelector(viewSource);
+			DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
 			selector.setSelected(firstRoot, true);
 			try (ModifiableView view = basicViewType.createView(selector)) {
 				EcoreUtil.delete(secondRoot);
@@ -360,7 +361,7 @@ public class IdentityMappingViewTypeTest {
 			}
 		}
 	}
-	
+
 	@Nested
 	@DisplayName("commit view changes")
 	class CommitViewChanges {
@@ -387,51 +388,49 @@ public class IdentityMappingViewTypeTest {
 			when(viewSource.getUuidResolver()).thenReturn(uuidResolver);
 			when(viewSelection.isViewObjectSelected(any(EObject.class))).thenReturn(true);
 		}
-		
+
 		private Root createResourceWithSingleRoot(URI uri) {
 			Resource resource = viewSourceResourceSet.createResource(uri);
 			Root rootElement = aet.Root();
 			uuidResolver.registerEObject(rootElement);
 			rootElement.setId("testid");
 			resource.getContents().add(rootElement);
-			
+
 			Resource viewResource = viewResourceSet.createResource(uri);
 			Root viewRootElement = EcoreUtil.copy(rootElement);
 			viewResource.getContents().add(viewRootElement);
 			return viewRootElement;
 		}
-		
+
 		@Test
 		@DisplayName("with null changes")
 		void withNull() {
 			assertThrows(NullPointerException.class, () -> basicViewType.commitViewChanges(view, null));
 		}
-		
+
 		@Test
 		@DisplayName("with null view")
 		void withNullView() {
-			VitruviusChange someChange = VitruviusChangeFactory.getInstance().createTransactionalChange(Set.of());
+			VitruviusChange<HierarchicalId> someChange = VitruviusChangeFactory.getInstance()
+					.createTransactionalChange(Set.of());
 			assertThrows(NullPointerException.class, () -> basicViewType.commitViewChanges(null, someChange));
 		}
-		
+
 		@ParameterizedTest
 		@MethodSource("testEmptyChanges")
 		@DisplayName("with empty changes")
-		void withEmptyChanges(VitruviusChange change) {
-			ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+		void withEmptyChanges(VitruviusChange<HierarchicalId> change) {
+			ArgumentCaptor<VitruviusChange<Uuid>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 			basicViewType.commitViewChanges(view, change);
 			verify(viewSource).propagateChange(changeArgument.capture());
 			assertEquals(changeArgument.getValue(), change);
 		}
-		
-		private static Stream<VitruviusChange> testEmptyChanges() {
+
+		private static Stream<VitruviusChange<HierarchicalId>> testEmptyChanges() {
 			VitruviusChangeFactory factory = VitruviusChangeFactory.getInstance();
-			return Stream.of(
-					factory.createTransactionalChange(Set.of()),
-					factory.createCompositeChange(Set.of())
-			);
+			return Stream.of(factory.createTransactionalChange(Set.of()), factory.createCompositeChange(Set.of()));
 		}
-		
+
 		@Test
 		@DisplayName("with non-empty change")
 		void withNonEmptyChange() {
@@ -441,31 +440,25 @@ public class IdentityMappingViewTypeTest {
 				changeRecorder.beginRecording();
 				root.setId("testid2");
 				changeRecorder.endRecording();
-				VitruviusChange change = changeRecorder.getChange();
-				assignIds(change);
-				
-				ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
-				basicViewType.commitViewChanges(view, change);
+				VitruviusChange<EObject> change = changeRecorder.getChange();
+				VitruviusChange<HierarchicalId> idAssignedChange = assignIds(change);
+
+				ArgumentCaptor<VitruviusChange<Uuid>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+				basicViewType.commitViewChanges(view, idAssignedChange);
 				verify(viewSource).propagateChange(changeArgument.capture());
-				List<EChange> eChanges = changeArgument.getValue().unresolve().getEChanges();
+				List<EChange<Uuid>> eChanges = changeArgument.getValue().getEChanges();
 				assertThat(eChanges.size(), is(1));
 				assertThat(eChanges.get(0), instanceOf(ReplaceSingleValuedEAttribute.class));
-				var attributeChange = (ReplaceSingleValuedEAttribute<?, ?>)eChanges.get(0);
+				var attributeChange = (ReplaceSingleValuedEAttribute<?, ?>) eChanges.get(0);
 				assertThat(attributeChange.getOldValue(), is("testid"));
 				assertThat(attributeChange.getNewValue(), is("testid2"));
 			}
 		}
-		
-		private void assignIds(VitruviusChange change) {
-			IdResolver idResolver = IdResolver.create(viewResourceSet);
-			EChangeIdManager idManager = new EChangeIdManager(idResolver);
-			for (int i = change.getEChanges().size() - 1; i >= 0; i--) {
-				applyBackward(change.getEChanges().get(i));
-			}
-			change.getEChanges().forEach(eChange -> {
-				idManager.setOrGenerateIds(eChange);
-				applyForward(eChange, idResolver);
-			});
+
+		private VitruviusChange<HierarchicalId> assignIds(VitruviusChange<EObject> change) {
+			VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolver
+					.forHierarchicalIds(viewResourceSet);
+			return idChangeResolver.assignIds(change);
 		}
 	}
 }

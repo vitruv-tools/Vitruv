@@ -9,34 +9,36 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import tools.vitruv.change.atomic.EChangeUuidManager;
-import tools.vitruv.change.atomic.id.IdResolver;
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSource;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
-import tools.vitruv.framework.views.util.ResourceCopier;
 
 /**
  * A view type that allows creating views based on a basic element-wise
  * selection mechanism and providing a one-to-one (identity) mapping of elements
  * within the {@link ViewSource} to a created {@link View}.
  */
-public class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector> {
+public class IdentityMappingViewType extends AbstractViewType<DirectViewElementSelector<HierarchicalId>, HierarchicalId> {
 	public IdentityMappingViewType(String name) {
 		super(name);
 	}
 
 	@Override
-	public DirectViewElementSelector createSelector(ChangeableViewSource viewSource) {
-		return new DirectViewElementSelector(this, viewSource,
+	public DirectViewElementSelector<HierarchicalId> createSelector(ChangeableViewSource viewSource) {
+		return new DirectViewElementSelector<>(this, viewSource,
 				viewSource.getViewSourceModels().stream().map(resource -> {
 					if (!resource.getContents().isEmpty() && ResourceCopier.requiresFullCopy(resource)) {
 						// Some resources (like UML) can only be copied as a whole, so no option to select
@@ -48,7 +50,7 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 	}
 
 	@Override
-	public ModifiableView createView(DirectViewElementSelector selector) {
+	public ModifiableView createView(DirectViewElementSelector<HierarchicalId> selector) {
 		checkArgument(selector.getViewType() == this, "cannot create view with selector for different view type");
 		return new BasicView(selector.getViewType(), selector.getViewSource(), selector.getSelection());
 	}
@@ -63,16 +65,17 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 	}
 
 	@Override
-	public void commitViewChanges(ModifiableView view, VitruviusChange viewChange) {
+	public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
 		ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
-		IdResolver viewSourceCopyIdResolver = IdResolver.create(viewSourceCopyResourceSet);
+		VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolver.forHierarchicalIds(viewSourceCopyResourceSet);
 		UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
+		VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolver.forUuids(viewSourceCopyUuidResolver);
 		Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
 		view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
-		VitruviusChange resolvedChange = viewChange.unresolve().resolveAndApply(viewSourceCopyIdResolver);
-		EChangeUuidManager.setOrGenerateIds(resolvedChange.getEChanges(), viewSourceCopyUuidResolver);
-		view.getViewSource().propagateChange(resolvedChange.unresolve());
+		VitruviusChange<EObject> resolvedChange = idChangeResolver.resolveAndApply(viewChange);
+		VitruviusChange<Uuid> unresolvedChanges = uuidChangeResolver.assignIds(resolvedChange);
+		view.getViewSource().propagateChange(unresolvedChanges);
 	}
 
 	private Map<Resource, Resource> createViewResources(ModifiableView view, ResourceSet viewResourceSet) {

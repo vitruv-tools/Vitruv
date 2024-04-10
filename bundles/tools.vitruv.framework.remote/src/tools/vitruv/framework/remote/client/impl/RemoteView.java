@@ -28,19 +28,23 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class RemoteView implements View {
 
+    private final ViewSelector selector;
+
     protected final String uuid;
     protected final VitruvRemoteConnection remoteConnection;
 
     protected ResourceSet viewSource;
     protected boolean modified = false;
 
-    RemoteView(String uuid, ResourceSet viewSource, VitruvRemoteConnection remoteConnection) {
+    RemoteView(String uuid, ResourceSet viewSource, ViewSelector selector, VitruvRemoteConnection remoteConnection) {
         checkArgument(uuid != null, "uuid must not be null");
         checkArgument(viewSource != null, "view source must not be null");
         checkArgument(remoteConnection != null, "remote connection must not be null");
+        checkArgument(selector != null, "selector must not be null");
         this.uuid = uuid;
         this.remoteConnection = remoteConnection;
         this.viewSource = viewSource;
+        this.selector = selector;
 
         addChangeListeners(viewSource);
     }
@@ -142,11 +146,7 @@ public class RemoteView implements View {
      */
     @Override
     public ViewSelection getSelection() {
-        return eObject -> {
-            //Currently, the server selects all elements.
-            //Therefore, we can just check if the given object is in our resource set
-            return viewSource.getResources().stream().anyMatch(it -> it.getContents().stream().anyMatch(eObject::equals));
-        };
+        return selector;
     }
 
     /**

@@ -29,13 +29,13 @@ import org.mockito.MockitoAnnotations;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
-import tools.vitruv.change.atomic.eobject.EobjectPackage;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
-import tools.vitruv.change.atomic.id.IdResolver;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;
 import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
@@ -45,7 +45,7 @@ import tools.vitruv.testutils.TestLogging;
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ChangeDerivingViewTest {
 	@Mock
-	ViewCreatingViewType<?> mockViewType;
+	ViewCreatingViewType<?, HierarchicalId> mockViewType;
 	@Mock
 	ChangeableViewSource mockChangeableViewSource;
 	@Mock
@@ -207,19 +207,18 @@ public class ChangeDerivingViewTest {
 				view.registerRoot(root, URI.createURI(testResourceUriString));
 				assertThat(view.getRootObjects(), hasItem(root));
 				ArgumentCaptor<ChangeDerivingView> viewArgument = ArgumentCaptor.forClass(ChangeDerivingView.class);
-				ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+				ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 				view.commitChanges();
 				verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 				assertThat(viewArgument.getValue(), is(view));
-				VitruviusChange change = changeArgument.getValue().resolveAndApply(IdResolver.create(root.eResource().getResourceSet()));
+				VitruviusChange<EObject> change = VitruviusChangeResolver.forHierarchicalIds(root.eResource().getResourceSet()).resolveAndApply(changeArgument.getValue());
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(testResourceUriString);
 				assertThat(change.getEChanges().size(), is(3)); // Create, Insert, ReplaceId
 				assertThat(change.getEChanges().get(1),
 						equalsDeeply(expectedChange,
-								ignoringFeatures(EobjectPackage.eINSTANCE.getEObjectAddedEChange_NewValueID(),
-										RootPackage.eINSTANCE.getRootEChange_Resource())));
+								ignoringFeatures(RootPackage.eINSTANCE.getRootEChange_Resource())));
 				assertThat(change.getEChanges().get(2), instanceOf(ReplaceSingleValuedEAttribute.class));
 			}
 		}
@@ -285,7 +284,7 @@ public class ChangeDerivingViewTest {
 				view.moveRoot(root, URI.createURI(movedResourceUriString));
 				assertThat(view.getRootObjects(), hasItem(root));
 				ArgumentCaptor<ChangeDerivingView> viewArgument = ArgumentCaptor.forClass(ChangeDerivingView.class);
-				ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+				ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 				view.commitChangesAndUpdate();
 				verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 				assertThat(viewArgument.getValue(), is(view));
@@ -325,7 +324,7 @@ public class ChangeDerivingViewTest {
 			nonRoot.setId("nonRoot");
 			root.setSingleValuedContainmentEReference(nonRoot);
 			ArgumentCaptor<ChangeDerivingView> viewArgument = ArgumentCaptor.forClass(ChangeDerivingView.class);
-			ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+			ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 			view.commitChangesAndUpdate();
 			verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 			assertThat(viewArgument.getValue(), is(view));
@@ -348,7 +347,7 @@ public class ChangeDerivingViewTest {
 			secondNonRoot.setId("second");
 			root.setSingleValuedContainmentEReference(secondNonRoot);
 			ArgumentCaptor<ChangeDerivingView> viewArgument = ArgumentCaptor.forClass(ChangeDerivingView.class);
-			ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+			ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 			view.commitChangesAndUpdate();
 			verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 			assertThat(viewArgument.getValue(), is(view));
@@ -363,7 +362,7 @@ public class ChangeDerivingViewTest {
 		@DisplayName("without changes")
 		public void withoutChanges() {
 			ArgumentCaptor<ChangeDerivingView> viewArgument = ArgumentCaptor.forClass(ChangeDerivingView.class);
-			ArgumentCaptor<VitruviusChange> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
+			ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
 			view.commitChangesAndUpdate();
 			verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 			assertThat(viewArgument.getValue(), is(view));

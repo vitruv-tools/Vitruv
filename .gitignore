@@ -32,3 +32,4 @@ EvaluationData
 #IntelliJ
 .idea/
 *.iml
+out/

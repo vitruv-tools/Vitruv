@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="res"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/log4j.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/slf4j-log4j12.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/slf4j-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jackson-annotations.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jackson-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jackson-databind.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/javax.servlet-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-client.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-http.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-io.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-security.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-server.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-servlet.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-util.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-util-ajax.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-webapp.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jetty-xml.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/spark-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/websocket-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/websocket-client.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/websocket-common.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/websocket-server.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/websocket-servlet.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -33,6 +9,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
 		<accessrules>
 			<accessrule kind="accessible" pattern="tools/vitruv/framework/vsum/internal/InternalVirtualModel"/>
+			<accessrule kind="accessible" pattern="org/eclipse/emf/edapt/internal/common/EcoreUtils"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
