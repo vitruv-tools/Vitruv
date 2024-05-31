@@ -39,6 +39,11 @@
 			<layout>p2</layout>
 			<url>https://kit-sdq.github.io/updatesite/release/xannotations/${sdq.xannotations.version}</url>
 		</repository>
+		<repository>
+			<id>EMF Cloud</id>
+			<layout>p2</layout>
+			<url>https://download.eclipse.org/emfcloud/emfjson-jackson/p2/nightly/</url>
+		</repository>
 	</repositories>
 
 	<build>
