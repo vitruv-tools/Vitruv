@@ -67,6 +67,9 @@ public interface View extends AutoCloseable {
 
 	/**
 	 * Persists the given object at the given {@link URI} and adds it as view root.
+         * The newly registered root will not be present in the view, you have to commit
+	 * the view and checkout a new one (you probably also have to adapt the selection)
+         * in order to be able to see and modify the new root. 
 	 *
 	 * This method is in beta state, as it is still under evaluation whether it is
 	 * sufficient and appropriate for registering root objects in views.
