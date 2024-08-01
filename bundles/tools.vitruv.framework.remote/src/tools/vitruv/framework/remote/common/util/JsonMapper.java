@@ -1,5 +1,6 @@
 package tools.vitruv.framework.remote.common.util;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.eclipse.emfcloud.jackson.module.EMFModule;
 import org.eclipse.emfcloud.jackson.module.EMFModule.Feature;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -75,6 +77,10 @@ public class JsonMapper {
      */
     public <T> T deserialize(String json, Class<T> clazz) throws JsonProcessingException {
         return mapper.reader().forType(clazz).readValue(json);
+    }
+    
+    public <T> T deserialize(JsonNode json, Class<T> clazz) throws JsonProcessingException, IOException {
+    	return mapper.reader().forType(clazz).readValue(json);
     }
     
     public Resource deserializeResource(String json, String uri, ResourceSet parentSet) throws JsonProcessingException {

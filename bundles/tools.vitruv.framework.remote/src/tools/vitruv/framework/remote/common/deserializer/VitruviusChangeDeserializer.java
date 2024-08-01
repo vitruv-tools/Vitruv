@@ -50,7 +50,7 @@ public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChang
             var changesNode = (ArrayNode) rootNode.get(JsonFieldName.V_CHANGES);
             var changes = new LinkedList<VitruviusChange<?>>();
             for (var e : changesNode) {
-                changes.add(mapper.deserialize(e.asText(), VitruviusChange.class));
+                changes.add(mapper.deserialize(e, VitruviusChange.class));
             }
             change = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         } else {
