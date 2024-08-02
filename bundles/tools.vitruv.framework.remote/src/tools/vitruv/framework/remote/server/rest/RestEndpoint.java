@@ -1,7 +1,7 @@
-package tools.vitruv.framework.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.rest;
 
 import com.sun.net.httpserver.HttpExchange;
-import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
+
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 
 import static java.net.HttpURLConnection.*;
@@ -9,12 +9,12 @@ import static java.net.HttpURLConnection.*;
 /**
  * Represents an REST endpoint.
  */
-public interface Endpoint {
+public interface RestEndpoint {
     /**
-     * Processes the given HTTP request
+     * Processes the given HTTP request.
      *
-     * @param wrapper An object containing utility functions for a specific {@link HttpExchange}
-     * @throws ServerHaltingException if an internal error occurred
+     * @param wrapper An object containing utility functions for a specific {@link HttpExchange}.
+     * @throws ServerHaltingException if an internal error occurred.
      */
     String process(HttpExchangeWrapper wrapper) throws ServerHaltingException;
 
@@ -34,20 +34,5 @@ public interface Endpoint {
      */
     default ServerHaltingException internalServerError(String msg) {
         return new ServerHaltingException(HTTP_INTERNAL_ERROR, msg);
-    }
-
-    interface Get extends Endpoint {
-    }
-
-    interface Delete extends Endpoint {
-    }
-
-    interface Post extends Endpoint {
-    }
-
-    interface Patch extends Endpoint {
-    }
-
-    interface Put extends Endpoint {
     }
 }

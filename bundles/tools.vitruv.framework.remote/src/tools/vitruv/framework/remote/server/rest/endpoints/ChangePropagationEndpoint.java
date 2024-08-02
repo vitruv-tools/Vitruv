@@ -1,10 +1,11 @@
-package tools.vitruv.framework.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.rest.endpoints;
 
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.framework.remote.common.util.constants.Header;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
-import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
+import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.views.impl.ModifiableView;
 import tools.vitruv.framework.views.impl.ViewCreatingViewType;
@@ -20,8 +21,7 @@ import static java.net.HttpURLConnection.*;
 /**
  * This endpoint applies given {@link VitruviusChange}s to the VSUM.
  */
-public class ChangePropagationEndpoint implements Endpoint.Patch {
-	
+public class ChangePropagationEndpoint implements PatchEndpoint {
 	private final JsonMapper mapper;
 	
 	

@@ -1,8 +1,8 @@
-package tools.vitruv.framework.remote.server.handler;
+package tools.vitruv.framework.remote.server.http.java;
 
+import tools.vitruv.framework.remote.common.rest.constants.EndpointPath;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
-import tools.vitruv.framework.remote.server.endpoint.IsViewClosedEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.IsViewClosedEndpoint;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 public class IsViewClosedHandler extends RequestHandler {

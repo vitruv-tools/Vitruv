@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.rest.endpoints;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -7,16 +7,17 @@ import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopie
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import tools.vitruv.framework.remote.common.rest.constants.ContentType;
+import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.common.util.constants.ContentType;
-import tools.vitruv.framework.remote.common.util.constants.Header;
+import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.server.rest.PostEndpoint;
 
 /**
  * This endpoint returns a serialized {@link tools.vitruv.framework.views.View View} for the given
  * {@link tools.vitruv.framework.views.ViewType ViewType}.
  */
-public class ViewEndpoint implements Endpoint.Post {
-	
+public class ViewEndpoint implements PostEndpoint {
 	private final JsonMapper mapper;
 	
     public ViewEndpoint(JsonMapper mapper) {

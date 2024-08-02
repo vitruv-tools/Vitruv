@@ -1,14 +1,14 @@
-package tools.vitruv.framework.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.rest.endpoints;
 
-import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
-import tools.vitruv.framework.remote.common.util.constants.Header;
+import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
+import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.Cache;
 
 /**
  * This endpoint closes a {@link tools.vitruv.framework.views.View View}.
  */
-public class CloseViewEndpoint implements Endpoint.Delete {
-
+public class CloseViewEndpoint implements DeleteEndpoint {
     @Override
     public String process(HttpExchangeWrapper wrapper) {
         var view = Cache.removeView(wrapper.getRequestHeader(Header.VIEW_UUID));

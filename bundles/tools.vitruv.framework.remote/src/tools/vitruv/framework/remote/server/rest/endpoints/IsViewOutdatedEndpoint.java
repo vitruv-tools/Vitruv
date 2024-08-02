@@ -1,15 +1,15 @@
-package tools.vitruv.framework.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.rest.endpoints;
 
-import tools.vitruv.framework.remote.common.util.constants.ContentType;
-import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
-import tools.vitruv.framework.remote.common.util.constants.Header;
+import tools.vitruv.framework.remote.server.rest.GetEndpoint;
+import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.common.rest.constants.ContentType;
+import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.Cache;
 
 /**
  * This view returns whether a {@link tools.vitruv.framework.views.View View} is outdated.
  */
-public class IsViewOutdatedEndpoint implements Endpoint.Get {
-
+public class IsViewOutdatedEndpoint implements GetEndpoint {
     @Override
     public String process(HttpExchangeWrapper wrapper) {
         var view = Cache.getView(wrapper.getRequestHeader(Header.VIEW_UUID));

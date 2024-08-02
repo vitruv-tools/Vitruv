@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util.constants;
+package tools.vitruv.framework.remote.common.rest.constants;
 
 public final class ContentType {
 	public static final String APPLICATION_JSON = "application/json";

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util.constants;
+package tools.vitruv.framework.remote.common.rest.constants;
 
 public final class Header {
     public static final String CONTENT_TYPE = "Content-Type";

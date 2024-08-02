@@ -1,7 +1,8 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.server.rest;
 
 import com.sun.net.httpserver.HttpExchange;
-import tools.vitruv.framework.remote.common.util.constants.Header;
+
+import tools.vitruv.framework.remote.common.rest.constants.Header;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

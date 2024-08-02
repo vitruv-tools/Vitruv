@@ -11,7 +11,7 @@ public interface VirtualModelInitializer {
 	/**
 	 * Initializes the virtual model and returns it.
 	 * 
-	 * @return the initialized model
+	 * @return the initialized model.
 	 */
 	InternalVirtualModel init();
 }

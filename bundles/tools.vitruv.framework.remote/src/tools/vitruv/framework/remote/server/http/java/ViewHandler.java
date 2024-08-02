@@ -1,11 +1,11 @@
-package tools.vitruv.framework.remote.server.handler;
+package tools.vitruv.framework.remote.server.http.java;
 
+import tools.vitruv.framework.remote.common.rest.constants.EndpointPath;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
-import tools.vitruv.framework.remote.server.endpoint.ChangePropagationEndpoint;
-import tools.vitruv.framework.remote.server.endpoint.CloseViewEndpoint;
-import tools.vitruv.framework.remote.server.endpoint.UpdateViewEndpoint;
-import tools.vitruv.framework.remote.server.endpoint.ViewEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.ChangePropagationEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.CloseViewEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.UpdateViewEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.ViewEndpoint;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 public class ViewHandler extends RequestHandler {

@@ -1,11 +1,13 @@
-package tools.vitruv.framework.remote.server.endpoint;
+package tools.vitruv.framework.remote.server.rest.endpoints;
 
 import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import tools.vitruv.framework.remote.common.util.constants.ContentType;
-import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
+
+import tools.vitruv.framework.remote.server.rest.GetEndpoint;
+import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
@@ -13,8 +15,7 @@ import tools.vitruv.framework.remote.common.util.JsonMapper;
 /**
  * This endpoint returns a list of names of all registered {@link ViewType}s in the VSUM.
  */
-public class ViewTypesEndpoint implements Endpoint.Get {
-
+public class ViewTypesEndpoint implements GetEndpoint {
     private final InternalVirtualModel model;
     private final JsonMapper mapper;
 

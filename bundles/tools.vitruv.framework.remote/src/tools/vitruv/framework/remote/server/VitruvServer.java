@@ -7,7 +7,7 @@ import java.util.Set;
 import com.sun.net.httpserver.HttpServer;
 
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.server.handler.*;
+import tools.vitruv.framework.remote.server.http.java.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 /**

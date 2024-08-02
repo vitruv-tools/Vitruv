@@ -1,12 +1,19 @@
-package tools.vitruv.framework.remote.server.handler;
+package tools.vitruv.framework.remote.server.http.java;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import tools.vitruv.framework.remote.common.util.constants.ContentType;
-import tools.vitruv.framework.remote.common.util.HttpExchangeWrapper;
+
+import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.server.endpoint.*;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
+import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
+import tools.vitruv.framework.remote.server.rest.GetEndpoint;
+import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
+import tools.vitruv.framework.remote.server.rest.PostEndpoint;
+import tools.vitruv.framework.remote.server.rest.PutEndpoint;
+import tools.vitruv.framework.remote.server.rest.RestEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 import java.nio.charset.StandardCharsets;
@@ -23,40 +30,40 @@ public abstract class RequestHandler implements HttpHandler {
      */
     private final String path;
 
-    protected Endpoint.Get getEndpoint;
-    protected Endpoint.Put putEndpoint;
-    protected Endpoint.Post postEndpoint;
-    protected Endpoint.Patch patchEndpoint;
-    protected Endpoint.Delete deleteEndpoint;
+    protected GetEndpoint getEndpoint;
+    protected PutEndpoint putEndpoint;
+    protected PostEndpoint postEndpoint;
+    protected PatchEndpoint patchEndpoint;
+    protected DeleteEndpoint deleteEndpoint;
 
 
     public RequestHandler(String path) {
         this.path = path;
-        this.getEndpoint = new Endpoint.Get() {
+        this.getEndpoint = new GetEndpoint() {
             @Override
             public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Get mapping for this request path not found!");
             }
         };
-        this.postEndpoint = new Endpoint.Post() {
+        this.postEndpoint = new PostEndpoint() {
             @Override
             public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Post mapping for this request path not found!");
             }
         };
-        this.patchEndpoint = new Endpoint.Patch() {
+        this.patchEndpoint = new PatchEndpoint() {
             @Override
             public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Patch mapping for this request path not found!");
             }
         };
-        this.deleteEndpoint = new Endpoint.Delete() {
+        this.deleteEndpoint = new DeleteEndpoint() {
             @Override
             public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Delete mapping for this request path not found!");
             }
         };
-        this.putEndpoint = new Endpoint.Put() {
+        this.putEndpoint = new PutEndpoint() {
             @Override
             public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Put mapping for this request path not found!");

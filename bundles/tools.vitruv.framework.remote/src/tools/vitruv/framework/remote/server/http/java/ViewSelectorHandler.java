@@ -1,8 +1,8 @@
-package tools.vitruv.framework.remote.server.handler;
+package tools.vitruv.framework.remote.server.http.java;
 
+import tools.vitruv.framework.remote.common.rest.constants.EndpointPath;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
-import tools.vitruv.framework.remote.common.util.constants.EndpointPath;
-import tools.vitruv.framework.remote.server.endpoint.ViewSelectorEndpoint;
+import tools.vitruv.framework.remote.server.rest.endpoints.ViewSelectorEndpoint;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 public class ViewSelectorHandler extends RequestHandler{

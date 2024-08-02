@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util.constants;
+package tools.vitruv.framework.remote.common.rest.constants;
 
 public final class EndpointPath {
     public static final String HEALTH = "/health";
