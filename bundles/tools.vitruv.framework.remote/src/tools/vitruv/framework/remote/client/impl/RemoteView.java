@@ -21,13 +21,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * A {@link View} which is a copy of a {@link View} from the VSUM of a vitruv server.
+ * A {@link View} which is a copy of a {@link View} from the VSUM of a Vitruvius server.
  * <p>
  * Actions performed on this remote view or to the original view can be synchronized via the network. This view uses
  * a {@link VitruvRemoteConnection} to do so.
  */
 public class RemoteView implements View {
-
     private final ViewSelector selector;
 
     protected final String uuid;
@@ -52,7 +51,7 @@ public class RemoteView implements View {
     /**
      * Provides the root model elements of this view.
      *
-     * @throws IllegalStateException if called on a closed view.
+     * @throws IllegalStateException If called on a closed view.
      * @see View#isClosed()
      */
     @Override
@@ -91,8 +90,8 @@ public class RemoteView implements View {
      * Updates the view via the {@link VitruvRemoteConnection}, thus invalidating its previous state and now providing
      * an updated view. This can only be done for an unmodified view.
      *
-     * @throws UnsupportedOperationException if called on a modified view
-     * @throws IllegalStateException         if called on a closed view
+     * @throws UnsupportedOperationException If called on a modified view.
+     * @throws IllegalStateException         If called on a closed view.
      * @see #isClosed()
      * @see #isModified()
      */
@@ -163,8 +162,8 @@ public class RemoteView implements View {
      * Returns a {@link CommittableView} based on the view's configuration.
      * Changes to commit are identified by recording any changes made to the view.
      *
-     * @throws UnsupportedOperationException if called on a modified view
-     * @throws IllegalStateException         if called on a closed view
+     * @throws UnsupportedOperationException If called on a modified view.
+     * @throws IllegalStateException         If called on a closed view.
      * @see #isClosed()
      * @see #isModified()
      */
@@ -179,8 +178,8 @@ public class RemoteView implements View {
      * Changes to commit are identified by comparing the current view state with its state from the last update.
      *
      * @param changeResolutionStrategy The change resolution strategy to use for view state comparison. Must not be <code>null</code>.
-     * @throws UnsupportedOperationException if called on a modified view
-     * @throws IllegalStateException         if called on a closed view
+     * @throws UnsupportedOperationException If called on a modified view.
+     * @throws IllegalStateException         If called on a closed view.
      * @see #isClosed()
      * @see #isModified()
      */

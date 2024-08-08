@@ -16,11 +16,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A selector for selecting the elements to be represented in a view, but on the vitruv client itself.
+ * A selector for selecting the elements to be represented in a view, but on the Vitruvius client itself.
  * It is capable of acting as a builder for a view by providing an appropriate creation method, handling the remote connection.
  */
 public class RemoteViewSelector implements ViewSelector {
-
     private final String uuid;
     private final VitruvRemoteConnection remoteConnection;
     private final ModifiableViewSelection viewSelection;
@@ -32,9 +31,9 @@ public class RemoteViewSelector implements ViewSelector {
     }
 
     /**
-     * Creates a view by delegating the request to the vitruvius server, performing the selection done by this selector.
+     * Creates a view by delegating the request to the Vitruvius server, performing the selection done by this selector.
      *
-     * @return the created view
+     * @return The created view.
      */
     @Override
     public View createView() {

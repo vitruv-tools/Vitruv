@@ -26,10 +26,9 @@ import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A {@link RemoteView} that derives changes based on the changed state of its resources and allows to propagate them
- * back to the vitruv server using the {@link #commitChanges} method.
+ * back to the Vitruvius server using the {@link #commitChanges} method.
  */
 public class ChangeDerivingRemoteView implements CommittableView {
-
     private final RemoteView base;
     private final StateBasedChangeResolutionStrategy resolutionStrategy;
 

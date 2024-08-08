@@ -2,6 +2,7 @@ package tools.vitruv.framework.remote.server;
 
 import java.io.IOException;
 
+import tools.vitruv.framework.remote.common.DefaultConnectionSettings;
 import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.server.http.java.*;
 import tools.vitruv.framework.remote.server.rest.endpoints.EndpointsProvider;
@@ -14,8 +15,6 @@ import tools.vitruv.framework.vsum.VirtualModel;
  * vitruv client to perform remote actions on the VSUM.
  */
 public class VitruvServer {
-    public static int STD_PORT = 8080;
-
     private final VitruvJavaHttpServer server;
 
     /**
@@ -40,7 +39,7 @@ public class VitruvServer {
      * @param modelInitializer The initializer which creates an {@link InternalVirtualModel}.
      */
     public VitruvServer(VirtualModelInitializer modelInitializer) throws IOException {
-        this(modelInitializer, STD_PORT);
+        this(modelInitializer, DefaultConnectionSettings.STD_PORT);
     }
 
     /**

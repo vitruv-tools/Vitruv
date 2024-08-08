@@ -1,7 +1,6 @@
 package tools.vitruv.framework.remote.client.exception;
 
 public class BadServerResponseException extends RuntimeException {
-
 	public BadServerResponseException() {
 		super();
 	}

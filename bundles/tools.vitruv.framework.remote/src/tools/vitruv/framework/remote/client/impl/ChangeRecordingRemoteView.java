@@ -18,13 +18,11 @@ import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionS
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
-
 /**
  * A {@link RemoteView} that records changes to its resources and allows to propagate them
- * back to the vitruv server using the {@link #commitChanges} method.
+ * back to the Vitruvius server using the {@link #commitChanges} method.
  */
 public class ChangeRecordingRemoteView implements CommittableView {
-
     private final RemoteView base;
     private ChangeRecorder changeRecorder;
 
@@ -140,5 +138,4 @@ public class ChangeRecordingRemoteView implements CommittableView {
          base.modified = false;
          changeRecorder.beginRecording();
     }
-
 }
