@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.VirtualModel;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
 
 /**
  * This end point returns a list of names of all registered {@link ViewType}s in the VSUM.

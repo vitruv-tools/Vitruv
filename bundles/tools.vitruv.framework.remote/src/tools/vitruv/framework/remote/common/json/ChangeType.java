@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.common.json;
 
 import tools.vitruv.change.composite.description.CompositeChange;
 import tools.vitruv.change.composite.description.TransactionalChange;
@@ -16,8 +16,8 @@ public enum ChangeType {
     /**
      * Returns the type of the given {@link VitruviusChange}.
      *
-     * @param change the change to obtain the type from
-     * @return the type of the change
+     * @param change The change to obtain the type from.
+     * @return The type of the change.
      */
     public static ChangeType getChangeTypeOf(VitruviusChange<?> change) {
         if (change instanceof TransactionalChange) {

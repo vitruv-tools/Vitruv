@@ -4,7 +4,6 @@ import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
-import tools.vitruv.framework.remote.common.util.Cache;
 
 /**
  * This view returns whether a {@link tools.vitruv.framework.views.View View} is outdated.

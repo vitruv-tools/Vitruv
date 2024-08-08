@@ -7,10 +7,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emfcloud.jackson.resource.JsonResource;
 
+import tools.vitruv.framework.remote.common.json.JsonFieldName;
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;

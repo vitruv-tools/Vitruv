@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.server.rest.endpoints;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +9,9 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelector;
 
 /**
- * A global Cache holding {@link View}s, {@link ViewSelector}s and mappings of the form UUID <-> {@link EObject}.
+ * A global cache holding {@link View}s, {@link ViewSelector}s and mappings of the form UUID <-> {@link EObject}.
  */
 public class Cache {
-
     private Cache() throws InstantiationException {
         throw new InstantiationException("Cannot be instantiated");
     }

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.common.json;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -9,14 +9,12 @@ import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.root.RootEChange;
 import tools.vitruv.change.propagation.ProjectMarker;
-import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 
 /**
- * Contains functions to transform ids used by the vitruv framework to identify
+ * Contains functions to transform IDs used by the Vitruvius framework to identify
  * {@link org.eclipse.emf.ecore.EObject EObjects}.
  */
 public class IdTransformation {
-
     private URI root;
     
     IdTransformation(Path vsumPath) {
@@ -33,10 +31,10 @@ public class IdTransformation {
     }
 
     /**
-     * Transforms the given global (absolute path) id to a local id (relative path).
+     * Transforms the given global (absolute path) ID to a local ID (relative path).
      *
-     * @param global the id to transform
-     * @return the local id
+     * @param global The ID to transform.
+     * @return The local ID.
      */
     public URI toLocal(URI global) {
         if (global == null || global.toString().contains("cache") || 
@@ -48,10 +46,10 @@ public class IdTransformation {
     }
 
     /**
-     * Transforms the given local id (relative path) to a global id (absolute path).
+     * Transforms the given local ID (relative path) to a global ID (absolute path).
      *
-     * @param local the id to transform
-     * @return the global id
+     * @param local The ID to transform.
+     * @return The global ID.
      */
     public URI toGlobal(URI local) {
         if (local == null || local.toString().contains("cache") || 

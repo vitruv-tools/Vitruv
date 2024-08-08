@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.deserializer;
+package tools.vitruv.framework.remote.common.json.deserializer;
 
 import java.io.IOException;
 import java.util.Map;
@@ -11,13 +11,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import tools.vitruv.framework.remote.common.util.IdTransformation;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.json.IdTransformation;
+import tools.vitruv.framework.remote.common.json.JsonFieldName;
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.util.ResourceUtil;
-import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 
 public class ResourceSetDeserializer extends JsonDeserializer<ResourceSet> {
-	
 	private final IdTransformation transformation;
 	private final JsonMapper mapper;
 	

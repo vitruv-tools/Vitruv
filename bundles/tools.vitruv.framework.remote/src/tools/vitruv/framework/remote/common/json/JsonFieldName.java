@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util.constants;
+package tools.vitruv.framework.remote.common.json;
 
 public final class JsonFieldName {
     public static final String CHANGE_TYPE = "changeType";

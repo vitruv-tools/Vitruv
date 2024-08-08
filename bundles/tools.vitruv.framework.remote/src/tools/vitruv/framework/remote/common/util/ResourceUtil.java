@@ -14,7 +14,6 @@ import org.eclipse.emfcloud.jackson.resource.JsonResourceFactory;
  * Contains utility functions to work with {@link Resource}s.
  */
 public class ResourceUtil {
-
     private ResourceUtil() throws InstantiationException {
         throw new InstantiationException("Cannot be instantiated");
     }
@@ -22,10 +21,10 @@ public class ResourceUtil {
     /**
      * Creates a {@link Resource} with the given {@link URI} and given content.
      *
-     * @param uri       the uri of the resource
-     * @param content   the content of the resource
-     * @param parentSet the parent {@link ResourceSet} of the resource
-     * @return the created {@link Resource}.
+     * @param uri       The URI of the resource.
+     * @param content   The content of the resource.
+     * @param parentSet The parent {@link ResourceSet} of the resource.
+     * @return The created {@link Resource}.
      */
     public static Resource createResourceWith(URI uri, Collection<? extends EObject> content, ResourceSet parentSet) {
         var resource = parentSet.createResource(uri);
@@ -37,9 +36,9 @@ public class ResourceUtil {
      * Creates a {@link Resource} with the given {@link URI} and given content.
      * Uses a new {@link ResourceSet} as parent set.
      *
-     * @param uri     the uri of the resource
-     * @param content the content of the resource
-     * @return the created {@link Resource}.
+     * @param uri     The URI of the resource.
+     * @param content The content of the resource.
+     * @return The created {@link Resource}.
      */
     public static Resource createResourceWith(URI uri, Collection<? extends EObject> content) {
         return createResourceWith(uri, content, createJsonResourceSet());
@@ -50,9 +49,9 @@ public class ResourceUtil {
 	}
     
     /**
-     * Returns a {@link ResourceSet} and register a {@link JsonResourceFactory} as default factory.
+     * Returns a {@link ResourceSet} and registers a {@link JsonResourceFactory} as default factory.
      * 
-     * @return the created {@link ResourceSet}.
+     * @return The created {@link ResourceSet}.
      */
     public static ResourceSet createJsonResourceSet() {
     	var set = new ResourceSetImpl();

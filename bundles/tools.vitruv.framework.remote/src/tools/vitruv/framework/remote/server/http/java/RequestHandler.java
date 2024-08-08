@@ -4,16 +4,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
-import tools.vitruv.framework.remote.server.http.HttpWrapper;
-import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
-import tools.vitruv.framework.remote.server.rest.GetEndpoint;
-import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
 import tools.vitruv.framework.remote.server.rest.PathEndointCollector;
-import tools.vitruv.framework.remote.server.rest.PostEndpoint;
-import tools.vitruv.framework.remote.server.rest.PutEndpoint;
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 import java.nio.charset.StandardCharsets;
 

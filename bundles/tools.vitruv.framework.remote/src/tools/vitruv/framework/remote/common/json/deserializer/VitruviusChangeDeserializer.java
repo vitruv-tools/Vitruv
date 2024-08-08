@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.deserializer;
+package tools.vitruv.framework.remote.common.json.deserializer;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -15,14 +15,13 @@ import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.change.interaction.UserInteractionBase;
-import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
-import tools.vitruv.framework.remote.common.util.ChangeType;
-import tools.vitruv.framework.remote.common.util.IdTransformation;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
+import tools.vitruv.framework.remote.common.json.ChangeType;
+import tools.vitruv.framework.remote.common.json.IdTransformation;
+import tools.vitruv.framework.remote.common.json.JsonFieldName;
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.util.ResourceUtil;
 
 public class VitruviusChangeDeserializer extends JsonDeserializer<VitruviusChange<?>> {
-	
 	private final IdTransformation transformation;
 	private final JsonMapper mapper;
 	

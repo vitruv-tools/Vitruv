@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.common.json.deserializer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.DatabindContext;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 
 public class HidReferenceEntry implements ReferenceEntry {
-	
 	private final EObject owner;
     private final EReference reference;
 	private final String hid;
@@ -26,5 +25,4 @@ public class HidReferenceEntry implements ReferenceEntry {
 	public void resolve(DatabindContext context, URIHandler handler) {
 		EObjects.setOrAdd(owner, reference, new HierarchicalId(hid));
 	}
-
 }

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.serializer;
+package tools.vitruv.framework.remote.common.json.serializer;
 
 import java.io.IOException;
 
@@ -11,13 +11,12 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import tools.vitruv.change.composite.description.CompositeChange;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
-import tools.vitruv.framework.remote.common.util.ChangeType;
+import tools.vitruv.framework.remote.common.json.ChangeType;
+import tools.vitruv.framework.remote.common.json.JsonFieldName;
 import tools.vitruv.framework.remote.common.util.ResourceUtil;
 
 @SuppressWarnings("rawtypes")
 public class VitruviusChangeSerializer extends JsonSerializer<VitruviusChange> {
-
     @Override
     public void serialize(VitruviusChange vitruviusChange, JsonGenerator generator, SerializerProvider provider) throws IOException {
         generator.writeStartObject();

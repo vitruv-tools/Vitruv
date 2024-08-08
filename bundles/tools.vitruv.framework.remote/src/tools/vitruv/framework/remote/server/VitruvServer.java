@@ -1,7 +1,8 @@
 package tools.vitruv.framework.remote.server;
 
 import java.io.IOException;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
+
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.server.http.java.*;
 import tools.vitruv.framework.remote.server.rest.endpoints.EndpointsProvider;
 import tools.vitruv.framework.vsum.VirtualModel;

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.deserializer;
+package tools.vitruv.framework.remote.common.json.deserializer;
 
 import java.io.IOException;
 
@@ -13,11 +13,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
-import tools.vitruv.framework.remote.common.util.HidReferenceEntry;
-import tools.vitruv.framework.remote.common.util.IdTransformation;
+import tools.vitruv.framework.remote.common.json.IdTransformation;
 
 public class HierarichalIdDeserializer extends JsonDeserializer<ReferenceEntry> {
-	
 	private final EcoreReferenceDeserializer standardDeserializer;
 	private final IdTransformation transformation;
 	
@@ -32,7 +30,6 @@ public class HierarichalIdDeserializer extends JsonDeserializer<ReferenceEntry> 
 			var node = context.readTree(parser);
 			return new HidReferenceEntry(EMFContext.getParent(context), EMFContext.getReference(context), 
 					transformation.toGlobal(URI.createURI(node.asText())).toString());
-
 		}
 		return standardDeserializer.deserialize(parser, context);
 	}

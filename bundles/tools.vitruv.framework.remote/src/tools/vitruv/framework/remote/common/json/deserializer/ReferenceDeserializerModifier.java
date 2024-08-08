@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.deserializer;
+package tools.vitruv.framework.remote.common.json.deserializer;
 
 import org.eclipse.emfcloud.jackson.databind.deser.EcoreReferenceDeserializer;
 
@@ -8,11 +8,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 
-import tools.vitruv.framework.remote.common.util.IdTransformation;
-
+import tools.vitruv.framework.remote.common.json.IdTransformation;
 
 public class ReferenceDeserializerModifier extends BeanDeserializerModifier {
-	
 	private final IdTransformation transformation;
 	
 	public ReferenceDeserializerModifier(IdTransformation transformation) {
@@ -27,6 +25,4 @@ public class ReferenceDeserializerModifier extends BeanDeserializerModifier {
 		}
 		return deserializer;	
 	}
-	
-	
 }

@@ -5,11 +5,10 @@ import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
-import tools.vitruv.framework.remote.common.util.Cache;
 import tools.vitruv.framework.views.impl.ModifiableView;
 import tools.vitruv.framework.views.impl.ViewCreatingViewType;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
 
 import java.io.IOException;
 

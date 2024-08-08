@@ -3,7 +3,6 @@ package tools.vitruv.framework.remote.server.rest.endpoints;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
-import tools.vitruv.framework.remote.common.util.Cache;
 
 /**
  * This endpoint closes a {@link tools.vitruv.framework.views.View View}.

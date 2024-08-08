@@ -2,8 +2,9 @@ package tools.vitruv.framework.remote.server.rest.endpoints;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.rest.constants.EndpointPath;
-import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;

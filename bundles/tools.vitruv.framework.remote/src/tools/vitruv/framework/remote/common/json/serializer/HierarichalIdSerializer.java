@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.serializer;
+package tools.vitruv.framework.remote.common.json.serializer;
 
 import java.io.IOException;
 
@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import tools.vitruv.change.atomic.hid.HierarchicalId;
-import tools.vitruv.framework.remote.common.util.IdTransformation;
+import tools.vitruv.framework.remote.common.json.IdTransformation;
 
 public class HierarichalIdSerializer extends JsonSerializer<EObject>{
-	
 	private final EcoreReferenceSerializer standardSerializer;
 	private final IdTransformation transformation;
 	

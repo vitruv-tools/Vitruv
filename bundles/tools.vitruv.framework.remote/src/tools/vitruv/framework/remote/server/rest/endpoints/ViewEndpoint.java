@@ -7,6 +7,7 @@ import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopie
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.*;

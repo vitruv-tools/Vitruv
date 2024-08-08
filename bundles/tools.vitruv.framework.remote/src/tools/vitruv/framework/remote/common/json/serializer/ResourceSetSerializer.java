@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.serializer;
+package tools.vitruv.framework.remote.common.json.serializer;
 
 import java.io.IOException;
 
@@ -8,11 +8,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import tools.vitruv.framework.remote.common.util.IdTransformation;
-import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
+import tools.vitruv.framework.remote.common.json.IdTransformation;
+import tools.vitruv.framework.remote.common.json.JsonFieldName;
 
 public class ResourceSetSerializer extends JsonSerializer<ResourceSet> {
-	
 	private final IdTransformation transformation;
 	
 	public ResourceSetSerializer(IdTransformation transformation) {

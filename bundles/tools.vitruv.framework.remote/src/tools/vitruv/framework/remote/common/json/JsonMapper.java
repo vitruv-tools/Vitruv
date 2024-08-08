@@ -1,4 +1,4 @@
-package tools.vitruv.framework.remote.common.util;
+package tools.vitruv.framework.remote.common.json;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,19 +18,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.framework.remote.common.deserializer.ReferenceDeserializerModifier;
-import tools.vitruv.framework.remote.common.deserializer.ResourceSetDeserializer;
-import tools.vitruv.framework.remote.common.deserializer.VitruviusChangeDeserializer;
-import tools.vitruv.framework.remote.common.serializer.ReferenceSerializerModifier;
-import tools.vitruv.framework.remote.common.serializer.ResourceSetSerializer;
-import tools.vitruv.framework.remote.common.serializer.VitruviusChangeSerializer;
+import tools.vitruv.framework.remote.common.json.deserializer.ReferenceDeserializerModifier;
+import tools.vitruv.framework.remote.common.json.deserializer.ResourceSetDeserializer;
+import tools.vitruv.framework.remote.common.json.deserializer.VitruviusChangeDeserializer;
+import tools.vitruv.framework.remote.common.json.serializer.ReferenceSerializerModifier;
+import tools.vitruv.framework.remote.common.json.serializer.ResourceSetSerializer;
+import tools.vitruv.framework.remote.common.json.serializer.VitruviusChangeSerializer;
 
 /**
- * This mapper can be used to serialize objects and deserialize json in the context of vitruv.
+ * This mapper can be used to serialize objects and deserialize JSON in the context of Vitruvius.
  * It has custom De-/Serializers for {@link ResourceSet}s, {@link Resource}s and {@link VitruviusChange}s.
  */
 public class JsonMapper {
-
     private final ObjectMapper mapper = new ObjectMapper();
 
     public JsonMapper(Path vsumPath) {
@@ -61,24 +60,35 @@ public class JsonMapper {
     /**
      * Serializes the given object.
      *
-     * @param obj the object to serialize
-     * @return the json or {@code null}, if an {@link JsonProcessingException} occurred.
+     * @param obj The object to serialize.
+     * @return The JSON or {@code null} if an {@link JsonProcessingException} occurred.
      */
     public String serialize(Object obj) throws JsonProcessingException {
         return mapper.writeValueAsString(obj);
     }
 
     /**
-     * Deserializes the given json string.
+     * Deserializes the given JSON string.
      *
-     * @param json  the json to deserialize
-     * @param clazz the class of the jsons type.
-     * @return the object or {@code null}, if an {@link JsonProcessingException} occurred.
+     * @param <T> The type of the returned object.
+     * @param json The JSON to deserialize.
+     * @param clazz The class of the JSON type.
+     * @return The object or {@code null} if an {@link JsonProcessingException} occurred.
      */
     public <T> T deserialize(String json, Class<T> clazz) throws JsonProcessingException {
         return mapper.reader().forType(clazz).readValue(json);
     }
     
+    /**
+     * Deserializes the given JSON node.
+     * 
+     * @param <T> The type of the returned object.
+     * @param json The JSON node to deserialize.
+     * @param clazz The class of the JSON type.
+     * @return The object.
+     * @throws JsonProcessingException If the JSON node cannot be processed.
+     * @throws IOException If there is an IO exception during deserialization.
+     */
     public <T> T deserialize(JsonNode json, Class<T> clazz) throws JsonProcessingException, IOException {
     	return mapper.reader().forType(clazz).readValue(json);
     }
@@ -92,11 +102,11 @@ public class JsonMapper {
     }
 
     /**
-     * Deserializes the given json array to a list.
+     * Deserializes the given JSON array to a list.
      *
-     * @param json  the json array to deserialize
-     * @param clazz the class representing the json type of the objects in the json array
-     * @return the list of objects or {@code null}, if an {@link JsonProcessingException} occurred.
+     * @param json The JSON array to deserialize.
+     * @param clazz The class representing the JSON type of the objects in the JSON array.
+     * @return The list of objects or {@code null} if an {@link JsonProcessingException} occurred.
      */
     public <T> List<T> deserializeArrayOf(String json, Class<T> clazz) throws JsonProcessingException {
         var javaType = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
