@@ -10,6 +10,7 @@ import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
 import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
+import tools.vitruv.framework.remote.server.rest.PathEndointCollector;
 import tools.vitruv.framework.remote.server.rest.PostEndpoint;
 import tools.vitruv.framework.remote.server.rest.PutEndpoint;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
@@ -21,80 +22,31 @@ import static java.net.HttpURLConnection.*;
 import java.io.IOException;
 
 /**
- * Represents a {@link HttpHandler}.
+ * Represents an {@link HttpHandler}.
  */
-public abstract class RequestHandler implements HttpHandler {
+class RequestHandler implements HttpHandler {
+    private PathEndointCollector endpoints;
 
-    /**
-     * The path name of this handler
-     */
-    private final String path;
-
-    protected GetEndpoint getEndpoint;
-    protected PutEndpoint putEndpoint;
-    protected PostEndpoint postEndpoint;
-    protected PatchEndpoint patchEndpoint;
-    protected DeleteEndpoint deleteEndpoint;
-
-
-    public RequestHandler(String path) {
-        this.path = path;
-        this.getEndpoint = new GetEndpoint() {
-            @Override
-            public String process(HttpWrapper wrapper) throws ServerHaltingException {
-                throw notFound("Get mapping for this request path not found!");
-            }
-        };
-        this.postEndpoint = new PostEndpoint() {
-            @Override
-            public String process(HttpWrapper wrapper) throws ServerHaltingException {
-                throw notFound("Post mapping for this request path not found!");
-            }
-        };
-        this.patchEndpoint = new PatchEndpoint() {
-            @Override
-            public String process(HttpWrapper wrapper) throws ServerHaltingException {
-                throw notFound("Patch mapping for this request path not found!");
-            }
-        };
-        this.deleteEndpoint = new DeleteEndpoint() {
-            @Override
-            public String process(HttpWrapper wrapper) throws ServerHaltingException {
-                throw notFound("Delete mapping for this request path not found!");
-            }
-        };
-        this.putEndpoint = new PutEndpoint() {
-            @Override
-            public String process(HttpWrapper wrapper) throws ServerHaltingException {
-                throw notFound("Put mapping for this request path not found!");
-            }
-        };
-    }
-
-    public String getPath() {
-        return path;
+    RequestHandler(PathEndointCollector endpoints) {
+    	this.endpoints = endpoints;
     }
 
     /**
-     * Initializes the supported endpoints of this request handler.
-     */
-    public abstract void init(InternalVirtualModel model, JsonMapper mapper);
-
-    /**
-     * Handles the request, when this end point is called.
+     * Handles the request when this end point is called.
      *
-     * @param exchange an object encapsulating the HTTP request
+     * @param exchange An object encapsulating the HTTP request and response.
      */
+    @Override
     public void handle(HttpExchange exchange) {
         var method = exchange.getRequestMethod();
         var wrapper = new HttpExchangeWrapper(exchange);
         try {
             var response = switch (method) {
-                case "GET" -> getEndpoint.process(wrapper);
-                case "PUT" -> putEndpoint.process(wrapper);
-                case "POST" -> postEndpoint.process(wrapper);
-                case "PATCH" -> patchEndpoint.process(wrapper);
-                case "DELETE" -> deleteEndpoint.process(wrapper);
+                case "GET" -> endpoints.getEndpoint().process(wrapper);
+                case "PUT" -> endpoints.putEndpoint().process(wrapper);
+                case "POST" -> endpoints.postEndpoint().process(wrapper);
+                case "PATCH" -> endpoints.patchEndpoint().process(wrapper);
+                case "DELETE" -> endpoints.deleteEndpoint().process(wrapper);
                 default -> throw new ServerHaltingException(HTTP_NOT_FOUND, "Request method not supported!");
             };
             if (response != null) {

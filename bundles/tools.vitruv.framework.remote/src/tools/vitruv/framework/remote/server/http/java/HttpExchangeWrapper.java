@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * This is an implementation of the {@link HttpWrapper} for the Java built-in HTTP server.
  */
-public class HttpExchangeWrapper implements HttpWrapper {
+class HttpExchangeWrapper implements HttpWrapper {
     private final HttpExchange exchange;
 
-    public HttpExchangeWrapper(HttpExchange exchange) {
+    HttpExchangeWrapper(HttpExchange exchange) {
         this.exchange = exchange;
     }
 

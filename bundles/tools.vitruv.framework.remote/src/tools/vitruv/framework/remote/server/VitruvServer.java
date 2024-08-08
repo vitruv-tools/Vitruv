@@ -1,13 +1,9 @@
 package tools.vitruv.framework.remote.server;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.Set;
-
-import com.sun.net.httpserver.HttpServer;
-
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.http.java.*;
+import tools.vitruv.framework.remote.server.rest.endpoints.EndpointsProvider;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 /**
@@ -17,52 +13,46 @@ import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
  * vitruv client to perform remote actions on the VSUM.
  */
 public class VitruvServer {
-
     public static int STD_PORT = 8080;
 
-    private final HttpServer server;
+    private final VitruvJavaHttpServer server;
 
     /**
      * Creates a new {@link VitruvServer} using the given {@link VirtualModelInitializer}.
      * Sets the port which is used to open the server on to the given one.
      *
-     * @param modelInitializer the initializer which creates a {@link InternalVirtualModel}
-     * @param port             the port to open to server on
+     * @param modelInitializer The initializer which creates an {@link InternalVirtualModel}.
+     * @param port             The port to open to server on.
      */
     public VitruvServer(VirtualModelInitializer modelInitializer, int port) throws IOException {
-        this.server = HttpServer.create(new InetSocketAddress(port), 0);
-
-        var model = modelInitializer.init();
+    	var model = modelInitializer.init();
         var mapper = new JsonMapper(model.getFolder());
-        var handlers = Set.of(new HealthHandler(), new IsViewClosedHandler(), new IsViewOutdatedHandler(),
-                new ViewHandler(), new ViewTypesHandler(), new ViewSelectorHandler());
-        handlers.forEach(it -> {
-            it.init(model, mapper);
-            server.createContext(it.getPath(), it);
-        });
+        var endpoints = EndpointsProvider.getAllEndpoints(model, mapper);
+        
+        this.server = new VitruvJavaHttpServer(null, port, endpoints);
     }
 
     /**
      * Creates a new {@link VitruvServer} using the given {@link VirtualModelInitializer}.
      * Sets the port which is used to open the server on to 8080.
      *
-     * @param modelInitializer the initializer which creates a {@link InternalVirtualModel}
+     * @param modelInitializer The initializer which creates an {@link InternalVirtualModel}.
      */
     public VitruvServer(VirtualModelInitializer modelInitializer) throws IOException {
         this(modelInitializer, STD_PORT);
     }
 
     /**
-     * Starts the vitruv server.
+     * Starts the Vitruvius server.
      */
     public void start() {
         server.start();
     }
 
     /**
-     * Stops the vitruv server.
+     * Stops the Vitruvius server.
      */
     public void stop() {
-        server.stop(0);
+        server.stop();
     }
 }
