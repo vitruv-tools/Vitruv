@@ -1,7 +1,7 @@
 package tools.vitruv.framework.remote.server.rest.endpoints;
 
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
-import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.Cache;
 
@@ -10,7 +10,7 @@ import tools.vitruv.framework.remote.common.util.Cache;
  */
 public class CloseViewEndpoint implements DeleteEndpoint {
     @Override
-    public String process(HttpExchangeWrapper wrapper) {
+    public String process(HttpWrapper wrapper) {
         var view = Cache.removeView(wrapper.getRequestHeader(Header.VIEW_UUID));
         if (view == null) {
             throw notFound("View with given id not found!");

@@ -1,8 +1,7 @@
 package tools.vitruv.framework.remote.server.rest;
 
-import com.sun.net.httpserver.HttpExchange;
-
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 
 import static java.net.HttpURLConnection.*;
 
@@ -11,12 +10,12 @@ import static java.net.HttpURLConnection.*;
  */
 public interface RestEndpoint {
     /**
-     * Processes the given HTTP request.
+     * Processes a given HTTP request.
      *
-     * @param wrapper An object containing utility functions for a specific {@link HttpExchange}.
-     * @throws ServerHaltingException if an internal error occurred.
+     * @param wrapper An object wrapping an HTTP request/response.
+     * @throws ServerHaltingException If an internal error occurred.
      */
-    String process(HttpExchangeWrapper wrapper) throws ServerHaltingException;
+    String process(HttpWrapper wrapper) throws ServerHaltingException;
 
     /**
      * Halts the execution of the requested endpoint and returns the status code NOT FOUND with the given message.

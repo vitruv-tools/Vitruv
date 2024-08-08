@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
-import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
@@ -25,7 +25,7 @@ public class ViewTypesEndpoint implements GetEndpoint {
     }
 
     @Override
-    public String process(HttpExchangeWrapper wrapper) {
+    public String process(HttpWrapper wrapper) {
         Collection<ViewType<?>> types = model.getViewTypes();
         List<String> names = types.stream().map(ViewType::getName).toList();
 

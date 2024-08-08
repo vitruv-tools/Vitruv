@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.*;
-import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.PostEndpoint;
 
 /**
@@ -25,7 +25,7 @@ public class ViewEndpoint implements PostEndpoint {
 	}
 
 	@Override
-    public String process(HttpExchangeWrapper wrapper) {
+    public String process(HttpWrapper wrapper) {
         var selectorUuid = wrapper.getRequestHeader(Header.SELECTOR_UUID);
         var selector = Cache.getSelector(selectorUuid);
 

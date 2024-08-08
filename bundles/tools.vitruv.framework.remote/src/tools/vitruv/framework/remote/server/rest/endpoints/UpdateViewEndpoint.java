@@ -10,8 +10,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.*;
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
-import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
 
 /**
  * This endpoint updates a {@link tools.vitruv.framework.views.View View} and returns the
@@ -26,7 +26,7 @@ public class UpdateViewEndpoint implements GetEndpoint {
 	}
 
 	@Override
-    public String process(HttpExchangeWrapper wrapper) {
+    public String process(HttpWrapper wrapper) {
         var view = Cache.getView(wrapper.getRequestHeader(Header.VIEW_UUID));
         if (view == null) {
             throw notFound("View with given id not found!");

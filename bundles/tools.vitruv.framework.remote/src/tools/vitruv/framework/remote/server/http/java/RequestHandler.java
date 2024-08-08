@@ -6,19 +6,19 @@ import com.sun.net.httpserver.HttpHandler;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.DeleteEndpoint;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
-import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
 import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
 import tools.vitruv.framework.remote.server.rest.PostEndpoint;
 import tools.vitruv.framework.remote.server.rest.PutEndpoint;
-import tools.vitruv.framework.remote.server.rest.RestEndpoint;
-import tools.vitruv.framework.remote.server.rest.endpoints.*;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 import java.nio.charset.StandardCharsets;
 
 import static java.net.HttpURLConnection.*;
+
+import java.io.IOException;
 
 /**
  * Represents a {@link HttpHandler}.
@@ -41,31 +41,31 @@ public abstract class RequestHandler implements HttpHandler {
         this.path = path;
         this.getEndpoint = new GetEndpoint() {
             @Override
-            public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+            public String process(HttpWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Get mapping for this request path not found!");
             }
         };
         this.postEndpoint = new PostEndpoint() {
             @Override
-            public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+            public String process(HttpWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Post mapping for this request path not found!");
             }
         };
         this.patchEndpoint = new PatchEndpoint() {
             @Override
-            public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+            public String process(HttpWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Patch mapping for this request path not found!");
             }
         };
         this.deleteEndpoint = new DeleteEndpoint() {
             @Override
-            public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+            public String process(HttpWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Delete mapping for this request path not found!");
             }
         };
         this.putEndpoint = new PutEndpoint() {
             @Override
-            public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+            public String process(HttpWrapper wrapper) throws ServerHaltingException {
                 throw notFound("Put mapping for this request path not found!");
             }
         };
@@ -98,7 +98,7 @@ public abstract class RequestHandler implements HttpHandler {
                 default -> throw new ServerHaltingException(HTTP_NOT_FOUND, "Request method not supported!");
             };
             if (response != null) {
-                wrapper.sendResponseWithBody(HTTP_OK, response.getBytes(StandardCharsets.UTF_8));
+                wrapper.sendResponse(HTTP_OK, response.getBytes(StandardCharsets.UTF_8));
             } else {
                 wrapper.sendResponse(HTTP_OK);
             }
@@ -108,7 +108,11 @@ public abstract class RequestHandler implements HttpHandler {
                 statusCode = haltingException.getStatusCode();
             }
             wrapper.setContentType(ContentType.TEXT_PLAIN);
-            wrapper.sendResponseWithBody(statusCode, exception.getMessage().getBytes(StandardCharsets.UTF_8));
+            try {
+            	wrapper.sendResponse(statusCode, exception.getMessage().getBytes(StandardCharsets.UTF_8));
+            } catch (IOException e) {
+            	throw new IllegalStateException("Sending a response (" + statusCode + " " + exception.getMessage() + ") failed.", e);
+            }
         }
     }
 }

@@ -12,8 +12,8 @@ import tools.vitruv.framework.remote.common.rest.constants.Header;
 import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
+import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
-import tools.vitruv.framework.remote.server.rest.HttpExchangeWrapper;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class ViewSelectorEndpoint implements GetEndpoint {
     }
 
     @Override
-    public String process(HttpExchangeWrapper wrapper) throws ServerHaltingException {
+    public String process(HttpWrapper wrapper) throws ServerHaltingException {
         var viewTypeName = wrapper.getRequestHeader(Header.VIEW_TYPE);
         var types = model.getViewTypes();
         var viewType = types.stream().filter(it -> it.getName().equals(viewTypeName)).findFirst().orElse(null);
