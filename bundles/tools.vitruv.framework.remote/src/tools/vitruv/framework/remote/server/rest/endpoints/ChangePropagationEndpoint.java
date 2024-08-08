@@ -24,12 +24,9 @@ import static java.net.HttpURLConnection.*;
 public class ChangePropagationEndpoint implements PatchEndpoint {
 	private final JsonMapper mapper;
 	
-	
 	public ChangePropagationEndpoint(JsonMapper mapper) {
-
 		this.mapper = mapper;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -46,7 +43,7 @@ public class ChangePropagationEndpoint implements PatchEndpoint {
             		echange.setResource(new ResourceImpl(URI.createURI(echange.getUri())));
 				}
             });
-            var type = (ViewCreatingViewType<? , ?>) view.getViewType();
+            var type = (ViewCreatingViewType<?, ?>) view.getViewType();
             type.commitViewChanges((ModifiableView) view, change);
             return null;
         } catch (IOException e) {

@@ -4,12 +4,12 @@ import java.io.IOException;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.http.java.*;
 import tools.vitruv.framework.remote.server.rest.endpoints.EndpointsProvider;
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
- * A vitruv server wraps a REST based API around a {@link tools.vitruv.framework.vsum.VirtualModel VSUM}. Therefore,
+ * A vitruv server wraps a REST based API around a {@link VirtualModel VSUM}. Therefore,
  * it takes a {@link VirtualModelInitializer} which is responsible to create an instance
- * of a {@link InternalVirtualModel virtual model}. Once the serve is started, the API can be used by the
+ * of a {@link VirtualModel virtual model}. Once the serve is started, the API can be used by the
  * vitruv client to perform remote actions on the VSUM.
  */
 public class VitruvServer {
@@ -21,7 +21,7 @@ public class VitruvServer {
      * Creates a new {@link VitruvServer} using the given {@link VirtualModelInitializer}.
      * Sets the port which is used to open the server on to the given one.
      *
-     * @param modelInitializer The initializer which creates an {@link InternalVirtualModel}.
+     * @param modelInitializer The initializer which creates an {@link VirtualModel}.
      * @param port             The port to open to server on.
      */
     public VitruvServer(VirtualModelInitializer modelInitializer, int port) throws IOException {

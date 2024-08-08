@@ -1,6 +1,6 @@
 package tools.vitruv.framework.remote.server;
 
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * Interface for virtual model initialization.
@@ -13,5 +13,5 @@ public interface VirtualModelInitializer {
 	 * 
 	 * @return the initialized model.
 	 */
-	InternalVirtualModel init();
+	VirtualModel init();
 }

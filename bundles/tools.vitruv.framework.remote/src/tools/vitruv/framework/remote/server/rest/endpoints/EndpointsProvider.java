@@ -2,7 +2,6 @@ package tools.vitruv.framework.remote.server.rest.endpoints;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import tools.vitruv.framework.remote.common.rest.constants.EndpointPath;
 import tools.vitruv.framework.remote.common.util.JsonMapper;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
@@ -13,10 +12,10 @@ import tools.vitruv.framework.remote.server.rest.PatchEndpoint;
 import tools.vitruv.framework.remote.server.rest.PathEndointCollector;
 import tools.vitruv.framework.remote.server.rest.PostEndpoint;
 import tools.vitruv.framework.remote.server.rest.PutEndpoint;
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 public class EndpointsProvider {
-	public static List<PathEndointCollector> getAllEndpoints(InternalVirtualModel virtualModel, JsonMapper mapper) {
+	public static List<PathEndointCollector> getAllEndpoints(VirtualModel virtualModel, JsonMapper mapper) {
 		var defaultEndpoints = getDefaultEndpoints();
 		
 		List<PathEndointCollector> result = new ArrayList<>();

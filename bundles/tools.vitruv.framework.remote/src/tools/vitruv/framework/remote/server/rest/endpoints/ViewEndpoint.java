@@ -29,7 +29,7 @@ public class ViewEndpoint implements PostEndpoint {
         var selectorUuid = wrapper.getRequestHeader(Header.SELECTOR_UUID);
         var selector = Cache.getSelector(selectorUuid);
 
-        //Check if view type exists
+        // Check if view type exists.
         if (selector == null) {
             throw notFound("Selector with UUID " + selectorUuid + " not found!");
         }
@@ -38,7 +38,7 @@ public class ViewEndpoint implements PostEndpoint {
             var body = wrapper.getRequestBodyAsString();
             var selection = mapper.deserializeArrayOf(body, String.class);
             
-            //Select elements using IDs sent from client
+            // Select elements using IDs sent from client.
             selection.forEach(it -> {
                 var object = Cache.getEObjectFromMapping(selectorUuid, it);
                 if (object != null) {
@@ -46,13 +46,13 @@ public class ViewEndpoint implements PostEndpoint {
                 }
             });
 
-            //Create and cache view
+            // Create and cache view.
             var uuid = UUID.randomUUID().toString();
             var view = selector.createView();
             Cache.addView(uuid, view);
             Cache.removeSelectorAndMapping(selectorUuid);
 
-            //Get Resources
+            // Get resources.
             var resources = view.getRootObjects().stream().map(EObject::eResource).distinct().toList();
             var set = new ResourceSetImpl();
             ResourceCopier.copyViewResources(resources, set);

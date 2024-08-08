@@ -21,7 +21,6 @@ public class UpdateViewEndpoint implements GetEndpoint {
 	private final JsonMapper mapper;
 	
     public UpdateViewEndpoint(JsonMapper mapper) {
-	
 		this.mapper = mapper;
 	}
 
@@ -34,7 +33,7 @@ public class UpdateViewEndpoint implements GetEndpoint {
 
         view.update();
 
-        //Get Resources
+        // Get resources.
         var resources = view.getRootObjects().stream().map(EObject::eResource).distinct().toList();
         var set = new ResourceSetImpl();
         ResourceCopier.copyViewResources(resources, set);

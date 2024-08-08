@@ -14,15 +14,15 @@ import tools.vitruv.framework.remote.common.util.constants.JsonFieldName;
 import tools.vitruv.framework.remote.server.exception.ServerHaltingException;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.GetEndpoint;
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 import java.util.UUID;
 
 public class ViewSelectorEndpoint implements GetEndpoint {
-    private final InternalVirtualModel model;
+    private final VirtualModel model;
     private final JsonMapper mapper;
 
-    public ViewSelectorEndpoint(InternalVirtualModel model, JsonMapper mapper) {
+    public ViewSelectorEndpoint(VirtualModel model, JsonMapper mapper) {
         this.model = model;
         this.mapper = mapper;
     }
@@ -33,22 +33,22 @@ public class ViewSelectorEndpoint implements GetEndpoint {
         var types = model.getViewTypes();
         var viewType = types.stream().filter(it -> it.getName().equals(viewTypeName)).findFirst().orElse(null);
 
-        //Check if view type exists
+        // Check if view type exists.
         if (viewType == null) {
             throw notFound("View Type with name " + viewTypeName + " not found!");
         }
 
-        //Generate selector UUID
+        // Generate selector UUID.
         var selectorUuid = UUID.randomUUID().toString();
 
         var selector = model.createSelector(viewType);
         var originalSelection = selector.getSelectableElements().stream().toList();
         var copiedSelection = EcoreUtil.copyAll(originalSelection).stream().toList();
 
-        //Wrap selection in resource for serialization
+        // Wrap selection in resource for serialization.
         var resource = (JsonResource) ResourceUtil.createResourceWith(URI.createURI(JsonFieldName.TEMP_VALUE), copiedSelection);
 
-        //Create EObject to UUID mapping
+        // Create EObject to UUID mapping.
         HashBiMap<String, EObject> mapping = HashBiMap.create();
         for (int i = 0; i < originalSelection.size(); i++) {
             var objectUuid = UUID.randomUUID().toString();
