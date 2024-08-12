@@ -60,9 +60,9 @@ public class ChangePropagationEndpoint implements PatchEndpoint {
         var type = (ViewCreatingViewType<?, ?>) view.getViewType();
         try {
         	type.commitViewChanges((ModifiableView) view, change);
-        } catch (AssertionError e) {
-			throw new ServerHaltingException(HTTP_CONFLICT, "User interactions are required to commit these changes!");
-		}
+        } catch (RuntimeException e) {
+        	throw new ServerHaltingException(HTTP_CONFLICT, "Changes rejected: " + e.getMessage());
+        }
         return null;
     }
 }
