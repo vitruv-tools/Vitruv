@@ -20,6 +20,6 @@ Require-Bundle: tools.vitruv.framework.views,
  org.eclipse.emfcloud.emfjson-jackson
 Export-Package: tools.vitruv.framework.remote.client,
  tools.vitruv.framework.remote.client.exception,
- tools.vitruv.framework.remote.client.impl;x-friends:="Test",
+ tools.vitruv.framework.remote.client.impl;x-friends:="tools.vitruv.applications.remote.tests",
  tools.vitruv.framework.remote.server
 Bundle-Vendor: vitruv.tools
