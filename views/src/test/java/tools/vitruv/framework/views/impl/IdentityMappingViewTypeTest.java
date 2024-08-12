@@ -15,8 +15,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
+import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 
 import java.util.List;
 import java.util.Set;
@@ -54,8 +54,8 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
-import tools.vitruv.testutils.TestLogging;
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.change.testutils.TestLogging;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class IdentityMappingViewTypeTest {

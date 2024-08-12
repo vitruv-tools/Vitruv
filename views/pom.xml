@@ -37,7 +37,7 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.changederivation</artifactId>
+      <artifactId>tools.vitruv.change.atomic</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -55,39 +55,7 @@
       <scope>test</scope>
     </dependency>
 
-
-    <!-- <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>tools.vitruv.change.testutils</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
-      </dependency> -->
-
     <!-- external compile dependencies -->
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>org.eclipse.emf.common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>org.eclipse.emf.ecore</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>org.eclipse.emf.edit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtext</groupId>
-      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-    </dependency>
     <dependency>
       <groupId>sdq-commons</groupId>
       <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
@@ -96,12 +64,32 @@
       <groupId>xannotations</groupId>
       <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
     </dependency>
+    <dependency>
+      <groupId>emf-compare</groupId>
+        <artifactId>org.eclipse.emf.compare</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.xtext</groupId>
+        <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.common</artifactId>
+    </dependency>
 
     <!-- external test dependencies -->
     <dependency>
       <groupId>org.eclipse.xtend</groupId>
       <artifactId>org.eclipse.xtend.lib</artifactId>
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -128,5 +116,11 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+         <dependency>
+      <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+        <scope>test</scope>
+    </dependency>
+    
   </dependencies>
 </project>

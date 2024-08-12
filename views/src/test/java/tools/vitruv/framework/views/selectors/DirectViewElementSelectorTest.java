@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.impl.ModifiableView;
 import tools.vitruv.framework.views.impl.ViewCreatingViewType;
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
-import tools.vitruv.testutils.TestLogging;
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.change.testutils.TestLogging;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class DirectViewElementSelectorTest {

@@ -3,7 +3,7 @@ package tools.vitruv.framework.views.changederivation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
+import static tools.vitruv.change.testutils.metamodels.PcmMockupCreators.pcm
 
 class PcmStateChangeTest extends StateChangePropagationTest {
 	@ParameterizedTest()

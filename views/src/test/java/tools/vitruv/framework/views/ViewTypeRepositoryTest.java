@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
-import tools.vitruv.testutils.TestLogging;
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.change.testutils.TestLogging;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ViewTypeRepositoryTest {

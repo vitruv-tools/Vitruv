@@ -19,15 +19,15 @@ import pcm_mockup.Repository
 import tools.vitruv.change.composite.description.VitruviusChange
 import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import tools.vitruv.testutils.TestLogging
-import tools.vitruv.testutils.TestProject
-import tools.vitruv.testutils.TestProjectManager
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone
+import tools.vitruv.change.testutils.TestLogging
+import tools.vitruv.change.testutils.TestProject
+import tools.vitruv.change.testutils.TestProjectManager
 import uml_mockup.UPackage
 
 import static org.junit.jupiter.api.Assertions.*
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
+import static tools.vitruv.change.testutils.metamodels.PcmMockupCreators.pcm
+import static tools.vitruv.change.testutils.metamodels.UmlMockupCreators.uml
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories

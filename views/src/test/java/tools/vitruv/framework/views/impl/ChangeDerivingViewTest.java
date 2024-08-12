@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply;
-import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures;
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
+import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
+import static tools.vitruv.change.testutils.matchers.ModelMatchers.ignoringFeatures;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -39,8 +39,8 @@ import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
-import tools.vitruv.testutils.TestLogging;
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.change.testutils.TestLogging;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ChangeDerivingViewTest {

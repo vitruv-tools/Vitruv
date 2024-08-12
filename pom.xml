@@ -27,8 +27,10 @@
 
   <!-- Modules -->
   <modules>
-    <module>testutils</module>
     <module>views</module>
+    <module>vsum</module>
+    <module>testutils</module>
+    <module>applications</module>
   </modules>
 
   <!-- Additional Repositories -->
@@ -109,6 +111,21 @@
         <artifactId>tools.vitruv.change.changederivation</artifactId>
         <version>3.0.1-SNAPSHOT</version>
       </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.testutils.core</artifactId>
+        <version>3.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.testutils.integration</artifactId>
+        <version>3.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.testutils</artifactId>
+        <version>3.0.1-SNAPSHOT</version>
+      </dependency>
       <!-- External dependencies -->
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -174,6 +191,11 @@
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.equinox.common</artifactId>
         <version>3.18.100</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.equinox.registry</artifactId>
+        <version>3.12.100</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.platform</groupId>

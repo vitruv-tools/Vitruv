@@ -4,7 +4,7 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.c
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml;
+import static tools.vitruv.change.testutils.metamodels.UmlMockupCreators.uml;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -23,10 +23,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import edu.kit.ipd.sdq.commons.util.java.Pair;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
-import tools.vitruv.testutils.TestLogging;
-import tools.vitruv.testutils.TestProject;
-import tools.vitruv.testutils.TestProjectManager;
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.change.testutils.TestLogging;
+import tools.vitruv.change.testutils.TestProject;
+import tools.vitruv.change.testutils.TestProjectManager;
 import uml_mockup.Identified;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;

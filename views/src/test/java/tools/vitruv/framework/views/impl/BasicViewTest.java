@@ -8,7 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +24,8 @@ import allElementTypes.Root;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
-import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
-import tools.vitruv.testutils.TestLogging;
+import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
+import tools.vitruv.change.testutils.TestLogging;
 
 @ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class BasicViewTest {
