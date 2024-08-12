@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.framework.remote.common.json.JsonMapper;
 import tools.vitruv.framework.remote.common.rest.constants.ContentType;
 import tools.vitruv.framework.remote.common.rest.constants.Header;
-import tools.vitruv.framework.remote.common.util.*;
 import tools.vitruv.framework.remote.server.http.HttpWrapper;
 import tools.vitruv.framework.remote.server.rest.PostEndpoint;
 

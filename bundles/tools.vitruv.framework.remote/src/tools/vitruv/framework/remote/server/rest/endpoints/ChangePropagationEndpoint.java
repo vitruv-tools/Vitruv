@@ -15,6 +15,8 @@ import java.io.IOException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import static java.net.HttpURLConnection.*;
 
 /**
@@ -34,21 +36,33 @@ public class ChangePropagationEndpoint implements PatchEndpoint {
         if (view == null) {
             throw notFound("View with given id not found!");
         }
+        
+        String body;
         try {
-            var body = wrapper.getRequestBodyAsString();
-            var change = mapper.deserialize(body, VitruviusChange.class);
-            change.getEChanges().forEach(it -> {
-            	if (it instanceof InsertRootEObject<?> echange) {
-            		echange.setResource(new ResourceImpl(URI.createURI(echange.getUri())));
-				}
-            });
-            var type = (ViewCreatingViewType<?, ?>) view.getViewType();
-            type.commitViewChanges((ModifiableView) view, change);
-            return null;
+            body = wrapper.getRequestBodyAsString();
         } catch (IOException e) {
             throw internalServerError(e.getMessage());
+        }
+        
+        @SuppressWarnings("rawtypes")
+		VitruviusChange change;
+        try {
+            change = mapper.deserialize(body, VitruviusChange.class);
+        } catch (JsonProcessingException e) {
+        	throw new ServerHaltingException(HTTP_BAD_REQUEST, e.getMessage());
+        }
+        change.getEChanges().forEach(it -> {
+        	if (it instanceof InsertRootEObject<?> echange) {
+        		echange.setResource(new ResourceImpl(URI.createURI(echange.getUri())));
+			}
+        });
+        
+        var type = (ViewCreatingViewType<?, ?>) view.getViewType();
+        try {
+        	type.commitViewChanges((ModifiableView) view, change);
         } catch (AssertionError e) {
 			throw new ServerHaltingException(HTTP_CONFLICT, "User interactions are required to commit these changes!");
 		}
+        return null;
     }
 }
