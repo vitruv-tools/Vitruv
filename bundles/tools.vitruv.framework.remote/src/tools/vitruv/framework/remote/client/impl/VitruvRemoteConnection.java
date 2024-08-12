@@ -252,7 +252,7 @@ public class VitruvRemoteConnection implements VitruvClient {
         try {
             var response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
-                throw new BadServerResponseException(response.body());
+                throw new BadServerResponseException(response.body(), response.statusCode());
             }
             return response;
         } catch (IOException | InterruptedException e) {
