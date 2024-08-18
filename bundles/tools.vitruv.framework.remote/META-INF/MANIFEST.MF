@@ -24,5 +24,6 @@ Require-Bundle: tools.vitruv.framework.views,
 Export-Package: tools.vitruv.framework.remote.client,
  tools.vitruv.framework.remote.client.exception,
  tools.vitruv.framework.remote.client.impl;x-friends:="tools.vitruv.applications.remote.tests",
+ tools.vitruv.framework.remote.common.apm,
  tools.vitruv.framework.remote.server
 Bundle-Vendor: vitruv.tools
