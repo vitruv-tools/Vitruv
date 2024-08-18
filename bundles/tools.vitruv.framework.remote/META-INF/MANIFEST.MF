@@ -3,7 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Remote
 Bundle-SymbolicName: tools.vitruv.framework.remote;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.remote
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ target/dependency/micrometer-commons.jar,
+ target/dependency/micrometer-core.jar,
+ target/dependency/micrometer-observation.jar
 Bundle-Version: 3.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: tools.vitruv.framework.views,
