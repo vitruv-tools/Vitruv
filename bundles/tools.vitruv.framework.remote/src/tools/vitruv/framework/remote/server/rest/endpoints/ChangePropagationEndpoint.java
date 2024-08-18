@@ -17,12 +17,16 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Timer;
+
 import static java.net.HttpURLConnection.*;
 
 /**
  * This endpoint applies given {@link VitruviusChange}s to the VSUM.
  */
 public class ChangePropagationEndpoint implements PatchEndpoint {
+	private static final String ENDPOINT_METRIC_NAME = "vitruv.server.rest.propagation";
 	private final JsonMapper mapper;
 	
 	public ChangePropagationEndpoint(JsonMapper mapper) {
@@ -46,9 +50,12 @@ public class ChangePropagationEndpoint implements PatchEndpoint {
         
         @SuppressWarnings("rawtypes")
 		VitruviusChange change;
+        var desTimer = Timer.start(Metrics.globalRegistry);
         try {
             change = mapper.deserialize(body, VitruviusChange.class);
+            desTimer.stop(Metrics.timer(ENDPOINT_METRIC_NAME, "deserialization", "success"));
         } catch (JsonProcessingException e) {
+        	desTimer.stop(Metrics.timer(ENDPOINT_METRIC_NAME, "deserialization", "failure"));
         	throw new ServerHaltingException(HTTP_BAD_REQUEST, e.getMessage());
         }
         change.getEChanges().forEach(it -> {
@@ -58,9 +65,12 @@ public class ChangePropagationEndpoint implements PatchEndpoint {
         });
         
         var type = (ViewCreatingViewType<?, ?>) view.getViewType();
+        var propTimer = Timer.start(Metrics.globalRegistry);
         try {
         	type.commitViewChanges((ModifiableView) view, change);
+        	propTimer.stop(Metrics.timer(ENDPOINT_METRIC_NAME, "propagation", "success"));
         } catch (RuntimeException e) {
+        	propTimer.stop(Metrics.timer(ENDPOINT_METRIC_NAME, "propagation", "failure"));
         	throw new ServerHaltingException(HTTP_CONFLICT, "Changes rejected: " + e.getMessage());
         }
         return null;

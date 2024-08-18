@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import tools.vitruv.framework.remote.common.DefaultConnectionSettings;
 import tools.vitruv.framework.remote.common.json.JsonMapper;
-import tools.vitruv.framework.remote.server.http.java.*;
+import tools.vitruv.framework.remote.server.http.java.VitruvJavaHttpServer;
 import tools.vitruv.framework.remote.server.rest.endpoints.EndpointsProvider;
 import tools.vitruv.framework.vsum.VirtualModel;
 
@@ -29,7 +29,7 @@ public class VitruvServer {
     	var model = modelInitializer.init();
         var mapper = new JsonMapper(model.getFolder());
         var endpoints = EndpointsProvider.getAllEndpoints(model, mapper);
-        
+
         this.server = new VitruvJavaHttpServer(hostOrIp, port, endpoints);
     }
     

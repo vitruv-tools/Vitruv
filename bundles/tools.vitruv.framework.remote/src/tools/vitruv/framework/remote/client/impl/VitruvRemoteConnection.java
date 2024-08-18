@@ -16,6 +16,8 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Timer;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.propagation.ProjectMarker;
@@ -36,6 +38,7 @@ import tools.vitruv.framework.views.ViewType;
  * This enables the ability to perform actions on this remote Vitruvius instance.
  */
 public class VitruvRemoteConnection implements VitruvClient {
+	private static final String METRIC_CLIENT_NAME = "vitruv.client.rest.client";
     private final int port;
     private final String hostOrIp;
     private final String protocol;
@@ -249,13 +252,17 @@ public class VitruvRemoteConnection implements VitruvClient {
     }
 
     private HttpResponse<String> sendRequest(HttpRequest request) {
+    	var timer = Timer.start(Metrics.globalRegistry);
         try {
             var response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
+            	timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.method(), "result", "" + response.statusCode()));
                 throw new BadServerResponseException(response.body(), response.statusCode());
             }
+            timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.method(), "result", "success"));
             return response;
         } catch (IOException | InterruptedException e) {
+        	timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.method(), "result", "exception"));
             throw new BadServerResponseException(e);
         }
     }
