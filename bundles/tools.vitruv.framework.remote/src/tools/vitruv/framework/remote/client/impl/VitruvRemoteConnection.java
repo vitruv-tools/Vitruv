@@ -256,13 +256,13 @@ public class VitruvRemoteConnection implements VitruvClient {
         try {
             var response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() != HttpURLConnection.HTTP_OK) {
-            	timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.method(), "result", "" + response.statusCode()));
+            	timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.uri().getPath(), "method", request.method(), "result", "" + response.statusCode()));
                 throw new BadServerResponseException(response.body(), response.statusCode());
             }
-            timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.method(), "result", "success"));
+            timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.uri().getPath(), "method", request.method(), "result", "success"));
             return response;
         } catch (IOException | InterruptedException e) {
-        	timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.method(), "result", "exception"));
+        	timer.stop(Metrics.timer(METRIC_CLIENT_NAME, "endpoint", request.uri().getPath(), "method", request.method(), "result", "exception"));
             throw new BadServerResponseException(e);
         }
     }

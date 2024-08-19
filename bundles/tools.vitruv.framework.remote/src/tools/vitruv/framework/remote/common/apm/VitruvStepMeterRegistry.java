@@ -33,12 +33,12 @@ class VitruvStepMeterRegistry extends StepMeterRegistry {
 			for (var meter : getMeters()) {
 				if (meter instanceof SingleMeasureRecordingTimer timer) {
 					for (var record : timer.getRecordings()) {
-						writer.append(meter.getId().toString() + ", " + record.unit().toMillis(record.amount()) + "\n");
+						writer.append(meter.getId().toString() + "," + record.unit().toMillis(record.amount()) + "\n");
 					}
 					timer.clear();
 				} else {
 					for (var measurement : meter.measure()) {
-						writer.append(meter.getId().toString() + ", " + measurement.getValue() + "\n");
+						writer.append(meter.getId().toString() + "," + measurement.getValue() + "\n");
 					}
 				}
 			}
