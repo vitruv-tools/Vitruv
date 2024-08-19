@@ -8,17 +8,22 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.TimeUnit;
 
 import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
+import io.micrometer.core.instrument.distribution.pause.PauseDetector;
 import io.micrometer.core.instrument.step.StepMeterRegistry;
 import io.micrometer.core.instrument.step.StepRegistryConfig;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
 
 class VitruvStepMeterRegistry extends StepMeterRegistry {
 	private Path output;
+	private StepRegistryConfig config;
 	
 	VitruvStepMeterRegistry(StepRegistryConfig config, Clock clock, Path output) {
 		super(config, clock);
 		this.output = output.toAbsolutePath();
+		this.config = config;
 		this.start(new NamedThreadFactory("vitruv-tf"));
 	}
 
@@ -26,8 +31,15 @@ class VitruvStepMeterRegistry extends StepMeterRegistry {
 	protected void publish() {
 		try (BufferedWriter writer = Files.newBufferedWriter(output, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
 			for (var meter : getMeters()) {
-				for (var measurement : meter.measure()) {
-					writer.append(meter.getId().toString() + ", " + measurement.getValue() + "\n");
+				if (meter instanceof SingleMeasureRecordingTimer timer) {
+					for (var record : timer.getRecordings()) {
+						writer.append(meter.getId().toString() + ", " + record.unit().toMillis(record.amount()) + "\n");
+					}
+					timer.clear();
+				} else {
+					for (var measurement : meter.measure()) {
+						writer.append(meter.getId().toString() + ", " + measurement.getValue() + "\n");
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -38,5 +50,11 @@ class VitruvStepMeterRegistry extends StepMeterRegistry {
 	@Override
 	protected TimeUnit getBaseTimeUnit() {
 		return TimeUnit.MILLISECONDS;
+	}
+
+	@Override
+	protected Timer newTimer(Id id, DistributionStatisticConfig config, PauseDetector detector) {
+		return new SingleMeasureRecordingTimer(id, this.clock, config, detector,
+				getBaseTimeUnit(), this.config.step().toMillis(), false);
 	}
 }
