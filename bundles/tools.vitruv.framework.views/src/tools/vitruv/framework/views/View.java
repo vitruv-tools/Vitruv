@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.EObject;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.FluentIterable;
 
-import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
-import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
+import tools.vitruv.change.changederivation.DefaultStateBasedChangeResolutionStrategy;
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy;
 
 /**
  * A Vitruv view on an underlying {@link ChangeableViewSource}.

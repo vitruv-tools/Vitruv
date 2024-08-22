@@ -6,6 +6,8 @@ import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
 
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.DefaultStateBasedChangeResolutionStrategy
 
 class UmlStateChangeTest extends StateChangePropagationTest {
 	@ParameterizedTest()

@@ -15,3 +15,4 @@ Require-Bundle: org.apache.log4j,
 Export-Package: tools.vitruv.framework.views,
  tools.vitruv.framework.views.changederivation
 Bundle-Vendor: vitruv.tools
+Import-Package: tools.vitruv.change.changederivation

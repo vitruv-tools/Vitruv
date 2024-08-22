@@ -31,6 +31,8 @@ class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, Non
 
 	private def InternalVirtualModel generateVirtualModel(Path testProjectPath, Path vsumPath,
 		TestUserInteraction userInteraction) {
+		TestDeltaMigrator.makeVsumModelsDeltaBased(vsumPath.resolve("models.models"))	
+			
 		new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //
@@ -39,7 +41,7 @@ class DefaultVirtualModelBasedTestView implements VirtualModelBasedTestView, Non
 
 	private def NonTransactionalTestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
 		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel,
-			virtualModel.uuidResolver)[virtualModel.getModelInstance(it)?.resource]
+			virtualModel.uuidResolver)[virtualModel.getModelInstance(it)]
 	}
 
 	override getVirtualModel() {

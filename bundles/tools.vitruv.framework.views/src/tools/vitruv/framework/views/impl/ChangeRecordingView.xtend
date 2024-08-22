@@ -5,7 +5,7 @@ import tools.vitruv.change.composite.description.VitruviusChangeResolver
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
-import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState

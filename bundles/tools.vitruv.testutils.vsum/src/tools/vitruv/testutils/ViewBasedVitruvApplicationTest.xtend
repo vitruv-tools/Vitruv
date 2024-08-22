@@ -40,7 +40,9 @@ abstract class ViewBasedVitruvApplicationTest {
 	/**
 	 * Determines which {@link UriMode} should be used for this test.
 	 */
-	def protected UriMode getUriMode() { UriMode.FILE_URIS }
+	def protected UriMode getUriMode() { 
+		UriMode.FILE_URIS
+	}
 
 	@BeforeEach
 	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject Path testProjectPath,
@@ -48,6 +50,9 @@ abstract class ViewBasedVitruvApplicationTest {
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val changePropagationMode = enableTransitiveCyclicChangePropagation ? ChangePropagationMode.TRANSITIVE_CYCLIC : ChangePropagationMode.SINGLE_STEP
 		userInteraction = new TestUserInteraction
+		
+		TestDeltaMigrator.makeVsumModelsDeltaBased(vsumPath.resolve("models.models"))
+		
 		virtualModel = new VirtualModelBuilder() //
 		.withStorageFolder(vsumPath) //
 		.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction)) //

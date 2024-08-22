@@ -23,6 +23,8 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.testutils.Capture.operator_doubleGreaterThan
+import tools.vitruv.change.changederivation.StateBasedChangeResolutionStrategy
+import tools.vitruv.change.changederivation.DefaultStateBasedChangeResolutionStrategy
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
     private def getTestUri() {

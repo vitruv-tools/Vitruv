@@ -18,6 +18,7 @@ import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopie
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.changederivation.DeltaBasedResourceUtil;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.framework.views.ChangeableViewSource;
@@ -66,8 +67,9 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 
 	@Override
 	public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
-		ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
+		ResourceSet viewSourceCopyResourceSet = DeltaBasedResourceUtil.withDeltaFactory(new ResourceSetImpl());
 		VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolver.forHierarchicalIds(viewSourceCopyResourceSet);
+
 		UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
 		VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolver.forUuids(viewSourceCopyUuidResolver);
 		Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
