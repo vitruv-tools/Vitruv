@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -66,23 +67,23 @@
     </dependency>
     <dependency>
       <groupId>emf-compare</groupId>
-        <artifactId>org.eclipse.emf.compare</artifactId>
+      <artifactId>org.eclipse.emf.compare</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.ecore</artifactId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.xtext</groupId>
-        <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
+      <artifactId>guava</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.common</artifactId>
+      <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
 
     <!-- external test dependencies -->
@@ -116,11 +117,11 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
-         <dependency>
+    <dependency>
       <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-        <scope>test</scope>
+      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+      <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
 </project>
