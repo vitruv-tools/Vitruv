@@ -16,15 +16,23 @@
   <version>3.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <!-- Organizational Information -->
   <name>Vitruv Framework</name>
   <description>The Vitruv framework providing the definition of views and v-sums.</description>
+  <url>https://github.com/vitruv-tools/Vitruv</url>
 
+  <!-- Organizational Information -->
   <licenses>
     <license>
       <name>Eclipse Public License - v 1.0</name>
+      <url>https://www.eclipse.org/org/documents/epl-v10.php</url>
     </license>
   </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/vitruv-tools/Vitruv.git</connection>
+    <developerConnection>scm:git:https://github.com/vitruv-tools/Vitruv.git</developerConnection>
+    <url>https://github.com/vitruv-tools/Vitruv/tree/main</url>
+  </scm>
 
   <!-- Modules -->
   <modules>
