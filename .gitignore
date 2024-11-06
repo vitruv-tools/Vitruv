@@ -4,6 +4,7 @@
 # Maven
 target/
 *.log
+.mvn/wrapper/*.jar
 
 # Eclipse
 META-INF
