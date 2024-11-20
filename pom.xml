@@ -1,22 +1,251 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>tools.vitruv</groupId>
-		<artifactId>framework-parent</artifactId>
-		<version>3.0.1-SNAPSHOT</version>
-		<relativePath>releng/tools.vitruv.parent</relativePath>
-	</parent>
-	<artifactId>tools.vitruv</artifactId>
-	<packaging>pom</packaging>
+  <!-- Build Parent -->
+  <parent>
+    <groupId>tools.vitruv</groupId>
+    <artifactId>parent</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+  </parent>
 
-	<modules>
-		<module>bundles</module>
-		<module>tests</module>
-		<module>features</module>
-		<module>releng/tools.vitruv.updatesite</module>
-	</modules>
+  <!-- Project Information -->
+  <artifactId>tools.vitruv.framework</artifactId>
+  <version>3.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Vitruv Framework</name>
+  <description>The Vitruv framework providing the definition of views and v-sums.</description>
+  <url>https://github.com/vitruv-tools/Vitruv</url>
+
+  <!-- Organizational Information -->
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>https://www.eclipse.org/org/documents/epl-v10.php</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/vitruv-tools/Vitruv.git</connection>
+    <developerConnection>scm:git:https://github.com/vitruv-tools/Vitruv.git</developerConnection>
+    <url>https://github.com/vitruv-tools/Vitruv/tree/main</url>
+  </scm>
+
+  <!-- Modules -->
+  <modules>
+    <module>views</module>
+    <module>vsum</module>
+    <module>testutils</module>
+    <module>applications</module>
+  </modules>
+
+  <!-- Additional Repositories -->
+  <properties>
+    <repo.emf-compare.version>3.3</repo.emf-compare.version>
+    <repo.sdq-commons.version>2.2.0</repo.sdq-commons.version>
+    <repo.xannotations.version>1.6.0</repo.xannotations.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.openntf.maven</groupId>
+        <artifactId>p2-layout-resolver</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <!-- Maven Central should have priority -->
+    <repository>
+      <id>central</id>
+      <name>Maven Central</name>
+      <url>https://repo1.maven.org/maven2/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <!-- allow snapshots -->
+    <repository>
+      <id>ossrh-snapshots</id>
+      <name>OSSRH Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+
+    <!-- for p2 dependencies, `groupId` specifies the repository -->
+    <repository>
+      <id>emf-compare</id>
+      <name>EMF Compare</name>
+      <layout>p2</layout>
+      <url>https://download.eclipse.org/modeling/emf/compare/updates/releases/${repo.emf-compare.version}</url>
+    </repository>
+    <repository>
+      <id>sdq-commons</id>
+      <name>SDQ Commons</name>
+      <url>https://kit-sdq.github.io/updatesite/release/commons/${repo.sdq-commons.version}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>xannotations</id>
+      <name>XAnnotations</name>
+      <layout>p2</layout>
+      <url>https://kit-sdq.github.io/updatesite/release/xannotations/${repo.xannotations.version}</url>
+    </repository>
+  </repositories>
+
+  <!-- Dependency Management -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Vitruvius dependencies -->
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.correspondence</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.composite</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.interaction</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.propagation</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.testutils.core</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.testutils.integration</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+      </dependency>
+
+      <!-- External dependencies -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>30.1-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>emf-compare</groupId>
+        <artifactId>org.eclipse.emf.compare</artifactId>
+        <version>3.5.3.202212280858</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.17</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.common</artifactId>
+        <version>2.31.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>2.37.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+        <version>2.38.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.core.runtime</artifactId>
+        <version>3.31.100</version>
+      </dependency>
+      <!-- required to mitigate Eclipse dependency signing problems -->
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.equinox.common</artifactId>
+        <version>3.19.100</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.equinox.registry</artifactId>
+        <version>3.12.100</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.xtend</groupId>
+        <artifactId>org.eclipse.xtend.lib</artifactId>
+        <version>2.36.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.xtext</groupId>
+        <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+        <version>2.36.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>5.10.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>5.10.1</version>
+      </dependency>
+      <dependency>
+        <groupId>sdq-commons</groupId>
+        <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
+        <version>2.3.0.202304271319</version>
+        <exclusions>
+          <!-- exclude unnecessary transitive dependencies from sdq-commons p2 repository -->
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>sdq-commons</groupId>
+        <artifactId>edu.kit.ipd.sdq.commons.util.java</artifactId>
+        <version>2.3.0.202304271319</version>
+        <exclusions>
+          <!-- exclude unnecessary transitive dependencies from sdq-commons p2 repository -->
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>xannotations</groupId>
+        <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
+        <version>1.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.14.2</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 </project>

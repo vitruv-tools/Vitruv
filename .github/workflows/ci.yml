@@ -1,73 +1,87 @@
 name: CI
 
+# workflow triggers
 on:
-  push:
-    branches: [main]
-  release:
-    types: [created]
+  # manually
+  workflow_dispatch:
+  # PRs on `main`
+  pull_request:
+    branches:
+    - main
+  # nightly
   schedule:
-    - cron: '5 3 * * *' # run nightly at 3:05 am
-  workflow_call:
+  - cron: "0 3 * * *"
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-      fail-fast: false
+  verify:
+    name: Verify build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 17
-      - name: Build and Verify
-        run: >
-          ./mvnw -B -U clean verify 
-          '-Dstyle.color=always'
-          '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-          '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn'
-          '-Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn'
-          '-Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn'
-          '-Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn'
-          '-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog'
-        env: 
-          MAVEN_OPTS: -Djansi.force=true
-      - name: Store Framework Artifact
-        if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: framework
-          path: releng/tools.vitruv.updatesite/target/repository
-          retention-days: 1
-      - name: Publish Nightly Update Site
-        if: github.event_name != 'release' && github.ref == 'refs/heads/main' && github.repository_owner == 'vitruv-tools' && matrix.os == 'ubuntu-latest'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
-          external_repository: vitruv-tools/updatesite
-          destination_dir: nightly/framework
-          publish_dir: releng/tools.vitruv.updatesite/target/repository
-          publish_branch: main
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-      - name: Publish Release Update Site
-        if: github.event_name == 'release' && github.repository_owner == 'vitruv-tools' && matrix.os == 'ubuntu-latest'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
-          external_repository: vitruv-tools/updatesite
-          destination_dir: release/framework/${{ github.event.release.tag_name }}
-          publish_dir: releng/tools.vitruv.updatesite/target/repository
-          publish_branch: main
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.1
+
+    - name: Setup Java and Maven cache
+      uses: actions/setup-java@v3.13.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        check-latest: true
+        cache: 'maven'
+
+    - name: Verify build
+      run: >
+        ./mvnw clean verify
+        --batch-mode
+        --update-snapshots
+        --no-transfer-progress
+
+    - name: Stage build results
+      run: mkdir staging-${{ matrix.os }} && cp **/target/*.jar staging-${{ matrix.os }}/
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: Build Results
+        path: staging-*/
+  
+  deploy-snapshot:
+    name: Deploy snapshot
+    runs-on: ubuntu-latest
+    needs: [verify]
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'vitruv-tools'
+    strategy:
+      fail-fast: true
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.1
+
+    - name: Setup Java and Maven cache
+      uses: actions/setup-java@v3.13.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        check-latest: true
+        cache: 'maven'
+        server-id: ossrh
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
+        gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+        gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+    - name: Deploy snapshot
+      run: >
+        ./mvnw clean deploy -P snapshot
+        -DskipTests
+        --batch-mode
+        --update-snapshots
+        --no-transfer-progress
+      env:
+        MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
