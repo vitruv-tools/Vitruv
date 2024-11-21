@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Build Parent -->
@@ -38,6 +37,7 @@
   <modules>
     <module>views</module>
     <module>vsum</module>
+    <module>remote</module>
     <module>testutils</module>
     <module>applications</module>
   </modules>
@@ -143,6 +143,11 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>33.3.1-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-core</artifactId>
+        <version>1.13.3</version>
       </dependency>
       <dependency>
         <groupId>emf-compare</groupId>
@@ -254,6 +259,28 @@
         <artifactId>mockito-core</artifactId>
         <version>5.14.2</version>
         <scope>test</scope>
+      </dependency>
+
+      <!-- Dependencies Vitruv Remote -->
+      <dependency>
+        <groupId>org.eclipse.emfcloud</groupId>
+        <artifactId>emfjson-jackson</artifactId>
+        <version>2.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.18.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.18.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.18.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
