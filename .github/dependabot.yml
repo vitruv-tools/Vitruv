@@ -1,12 +1,18 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "11:00"
-      timezone: "Europe/Berlin"
-    commit-message:
-      prefix: "GitHub Actions"
-      include: "scope"
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  ignore:
+    - dependency-name: tools.vitruv:*
+  commit-message:
+    prefix: "Maven"
+    include: "scope"
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "daily"
+  commit-message:
+    prefix: "GitHub Actions"
+    include: "scope"
