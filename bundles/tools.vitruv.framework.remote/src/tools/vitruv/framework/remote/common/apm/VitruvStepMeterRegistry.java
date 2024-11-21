@@ -16,6 +16,9 @@ import io.micrometer.core.instrument.step.StepMeterRegistry;
 import io.micrometer.core.instrument.step.StepRegistryConfig;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
 
+/**
+ * Provides a specialized {@link StepMeterRegistry} for Vitruvius, which stores measurements in a file.
+ */
 class VitruvStepMeterRegistry extends StepMeterRegistry {
 	private Path output;
 	private StepRegistryConfig config;

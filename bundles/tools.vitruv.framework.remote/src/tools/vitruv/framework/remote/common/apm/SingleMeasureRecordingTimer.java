@@ -9,6 +9,9 @@ import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
 import io.micrometer.core.instrument.distribution.pause.PauseDetector;
 import io.micrometer.core.instrument.step.StepTimer;
 
+/**
+ * Provides a specialized {@link StepTimer}, which records every single measurement.
+ */
 public class SingleMeasureRecordingTimer extends StepTimer {
 	public static record SingleRecordedMeasure(long amount, TimeUnit unit) {}
 	
