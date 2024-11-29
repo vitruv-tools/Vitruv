@@ -43,11 +43,15 @@
     <module>applications</module>
   </modules>
 
-  <!-- Additional Repositories -->
   <properties>
+    <!-- Additional Repositories -->
     <repo.emf-compare.version>3.3</repo.emf-compare.version>
     <repo.sdq-commons.version>2.2.0</repo.sdq-commons.version>
     <repo.xannotations.version>1.6.0</repo.xannotations.version>
+    <!-- SonarQube configuration -->
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.organization>vitruv-tools</sonar.organization>
+    <sonar.projectKey>vitruv-tools_Vitruv</sonar.projectKey>
   </properties>
 
   <build>
