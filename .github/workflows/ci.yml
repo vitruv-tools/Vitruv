@@ -51,8 +51,13 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    - name: Stage build results
-      run: mkdir staging-${{ matrix.os }} && cp **/target/*.jar staging-${{ matrix.os }}/
+    - name: Stage build results (Unix)
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+      run: mkdir staging-${{ matrix.os }} && find . -path '*/target/*.jar' -exec cp {} staging-${{ matrix.os }}/ \;
+
+    - name: Stage build results (Windows)
+      if: matrix.os == 'windows-latest'
+      run: mkdir staging-${{ matrix.os }} && gci -Path . -Recurse -Include *.jar |? { $_.FullName -like '*\target\*.jar' } |% { cp $_.FullName staging-${{ matrix.os }} }
 
     - name: Upload build results
       uses: actions/upload-artifact@v3.1.3
