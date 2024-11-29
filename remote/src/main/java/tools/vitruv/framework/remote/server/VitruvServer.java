@@ -48,7 +48,7 @@ public class VitruvServer {
      * Creates a new {@link VitruvServer} using the given {@link VirtualModelInitializer}.
      * Sets the port which is used to open the server on to 8080.
      *
-     * @param modelInitializer The initializer which creates an {@link InternalVirtualModel}.
+     * @param modelInitializer The initializer which creates an {@link tools.vitruv.framework.vsum.internal.InternalVirtualModel}.
      */
     public VitruvServer(VirtualModelInitializer modelInitializer) throws IOException {
         this(modelInitializer, DefaultConnectionSettings.STD_PORT);

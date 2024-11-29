@@ -9,7 +9,7 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelector;
 
 /**
- * A global cache holding {@link View}s, {@link ViewSelector}s and mappings of the form UUID <-> {@link EObject}.
+ * A global cache holding {@link View}s, {@link ViewSelector}s and mappings of the form UUID {@literal <->} {@link EObject}.
  */
 public class Cache {
     private Cache() throws InstantiationException {
