@@ -18,7 +18,7 @@ public interface ViewType<S extends ViewSelector> {
 	 * 
 	 * @param viewSource the {@link ChangeableViewSource} from which views shall be
 	 *                   derived.
-	 * @returns a {@link ViewSelector} for this view type
+	 * @return a {@link ViewSelector} for this view type
 	 */
 	S createSelector(ChangeableViewSource viewSource);
 }

@@ -54,7 +54,7 @@ class VsumFileSystemLayout {
 
 	/** 
 	 * Gets the {@link URI} of a model that stores metadata.
-	 * @param metadataKeyThe key uniquely identifying the metadata model. The different parts of the key
+	 * @param metadataKey The key uniquely identifying the metadata model. The different parts of the key
 	 * can be used to convey some sort of hierarchy in the metadata. The key may contain
 	 * arbitrary characters. The last key part contains the metadata model's file name
 	 * and extension.

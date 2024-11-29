@@ -11,7 +11,7 @@ public interface ViewProvider {
 	 * models covered by this object.
 	 * 
 	 * @param viewType the {@link ViewType} to create a selector for
-	 * @returns a {@link ViewSelector} for given view type and the source models
+	 * @return a {@link ViewSelector} for given view type and the source models
 	 *          covered by this object
 	 */
 	<S extends ViewSelector> S createSelector(ViewType<S> viewType);
