@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [ $# -lt 2 ];
+then
+    echo "usage: $0 <release-version> <new-snapshot-version>" >&2
+    echo "" >&2
+    echo "release-version     : Version of the next release, e.g., 3.1.0" >&2
+    echo "new-snapshot-version: Version of the upcoming nightly releases without the -SNAPSHOT suffix, e.g., 3.2.0" >&2
+    return 1
+fi
+
+git switch -C prepare-release/$1 || exit 1
+
+set_version_and_commit() {
+    ./mvnw versions:set -DnewVersion=$1 -DgenerateBackupPoms=false || return 1
+
+    git add pom.xml || return 1
+    git add "**/pom.xml" 2> /dev/null
+
+    git commit -m "$2" || return 1
+}
+
+set_version_and_commit "$1" "[Release] Version $1"
+set_version_and_commit "$2-SNAPSHOT" "[Release] Update version to $2-SNAPSHOT"
