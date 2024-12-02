@@ -74,19 +74,6 @@
       </snapshots>
     </repository>
 
-    <!-- allow snapshots -->
-    <repository>
-      <id>ossrh-snapshots</id>
-      <name>OSSRH Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-
     <!-- for p2 dependencies, `groupId` specifies the repository -->
     <repository>
       <id>emf-compare</id>
@@ -115,32 +102,32 @@
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.correspondence</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.composite</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.interaction</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.propagation</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.core</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.integration</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
 
       <!-- External dependencies -->
