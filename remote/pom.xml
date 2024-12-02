@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -30,17 +31,7 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.propagation</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.correspondence</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.interaction</artifactId>
+      <artifactId>tools.vitruv.change.interaction.model</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -59,20 +50,6 @@
       <version>${project.version}</version>
     </dependency>
 
-    <!-- project test depencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.testutils.core</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-
     <!-- external dependencies -->
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -87,20 +64,8 @@
       <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.xtend</groupId>
-      <artifactId>org.eclipse.xtend.lib</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>
-    <dependency>
       <groupId>sdq-commons</groupId>
       <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtext</groupId>
-      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -111,30 +76,15 @@
       <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.emfcloud</groupId>
       <artifactId>emfjson-jackson</artifactId>
     </dependency>
     <dependency>
-		    <groupId>io.micrometer</groupId>
-		    <artifactId>micrometer-core</artifactId>
-		</dependency>
-
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+    </dependency>
 
     <!-- external test dependencies -->
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>xannotations</groupId>
-      <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -153,11 +103,6 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-launcher</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.java</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
