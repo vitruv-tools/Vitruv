@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.applications</artifactId>
@@ -30,14 +30,12 @@
   </build>
 
   <dependencies>
-    <!-- project dependencies -->
+    <!-- Vitruvius dependencies -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>tools.vitruv</groupId>
       <artifactId>tools.vitruv.change.propagation</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
-    <!-- project test depencies -->
     <!-- external dependencies -->
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -46,30 +44,22 @@
     <dependency>
       <groupId>org.eclipse.xtend</groupId>
       <artifactId>org.eclipse.xtend.lib</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.xtext</groupId>
       <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.equinox.registry</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.platform</groupId>
       <artifactId>org.eclipse.core.runtime</artifactId>
-      <scope>compile</scope>
     </dependency>
-
-    <!-- external test dependencies -->
-
   </dependencies>
 </project>

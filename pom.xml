@@ -13,7 +13,7 @@
 
   <!-- Project Information -->
   <artifactId>tools.vitruv.framework</artifactId>
-  <version>3.1.0-SNAPSHOT</version>
+  <version>3.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Vitruv Framework</name>
@@ -74,19 +74,6 @@
       </snapshots>
     </repository>
 
-    <!-- allow snapshots -->
-    <repository>
-      <id>ossrh-snapshots</id>
-      <name>OSSRH Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-
     <!-- for p2 dependencies, `groupId` specifies the repository -->
     <repository>
       <id>emf-compare</id>
@@ -114,36 +101,66 @@
       <!-- Vitruvius dependencies -->
       <dependency>
         <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.atomic</artifactId>
+        <version>3.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.correspondence</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.composite</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.interaction</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.interaction.model</artifactId>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.propagation</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.core</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.integration</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
+        <version>3.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.utils</artifactId>
+        <version>3.1.0</version>
       </dependency>
 
       <!-- External dependencies -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.18.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.18.2</version>
+      </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
@@ -178,6 +195,11 @@
         <groupId>org.eclipse.emf</groupId>
         <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
         <version>2.38.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emfcloud</groupId>
+        <artifactId>emfjson-jackson</artifactId>
+        <version>2.2.0</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.platform</groupId>
@@ -263,29 +285,6 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>5.14.2</version>
-        <scope>test</scope>
-      </dependency>
-
-      <!-- Dependencies Vitruv Remote -->
-      <dependency>
-        <groupId>org.eclipse.emfcloud</groupId>
-        <artifactId>emfjson-jackson</artifactId>
-        <version>2.2.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>2.18.2</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.18.2</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>2.18.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
