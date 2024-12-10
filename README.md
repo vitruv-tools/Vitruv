@@ -13,11 +13,17 @@ This project contains the central Vitruvius framework, providing the definition 
 In the implementation, a V-SUM is called `VirtualModel`, which is instantiated with a set of `ChangePropagationSpecifications` (no matter whether they are developed with the [Vitruv-DSLs](https://github.com/vitruv-tools/Vitruv-DSLs) or just as an implementation of the interface defined in the [Vitruv-Change](https://github.com/vitruv-tools/Vitruv-Change) repository).
 The `VirtualModel` then provides functionality to derive and modify views and to propagate the changes in these views back to the `VirtualModel`, which then executes the `ChangePropagationSpecifications` to preserve consistency.
 
-## Installation
-
-Vitruvius can be installed in Eclipse via the [nightly update site](https://vitruv.tools/updatesite/nightly). A wiki page provides [detailed instructions for using or extending Vitruvius or parts of it](https://github.com/vitruv-tools/.github/wiki/Getting-Started).
-
 ## Framework-internal Dependencies
 
 This project depends on the following other projects from the Vitruvius framework:
 - [Vitruv-Change](https://github.com/vitruv-tools/Vitruv-Change)
+
+## Module Overview
+
+| Name         | Description                                                                                  |
+|--------------|----------------------------------------------------------------------------------------------|
+| views        | Definition of view types on the underlying models.                                           |
+| vsum         | Definition of V-SUMs with consistency preservation rules between meta-models and view types. |
+| remote       | Client-server infrastructure for working with V-SUMs.                                        |
+| applications | Definition of and registry for V-SUMs.                                                       |
+| *testutils*  | *Utilities for testing in Vitruvius or V-SUM projects.*                                      |
