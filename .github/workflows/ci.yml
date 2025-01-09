@@ -84,6 +84,7 @@ jobs:
   sonar:
     name: SonarQube analysis
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]'}}
     needs: [verify]
     strategy:
       fail-fast: true
