@@ -164,12 +164,12 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>33.3.1-jre</version>
+        <version>33.4.0-jre</version>
       </dependency>
       <dependency>
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-core</artifactId>
-        <version>1.14.1</version>
+        <version>1.14.2</version>
       </dependency>
       <dependency>
         <groupId>emf-compare</groupId>
@@ -235,22 +235,22 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>5.11.3</version>
+        <version>5.11.4</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
-        <version>5.11.3</version>
+        <version>5.11.4</version>
       </dependency>
       <dependency>
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-commons</artifactId>
-        <version>1.11.3</version>
+        <version>1.11.4</version>
       </dependency>
       <dependency>
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-launcher</artifactId>
-        <version>1.11.3</version>
+        <version>1.11.4</version>
       </dependency>
       <dependency>
         <groupId>sdq-commons</groupId>
@@ -284,7 +284,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>5.14.2</version>
+        <version>5.15.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
