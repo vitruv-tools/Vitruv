@@ -164,7 +164,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>33.3.1-jre</version>
+        <version>33.4.0-jre</version>
       </dependency>
       <dependency>
         <groupId>io.micrometer</groupId>
@@ -176,11 +176,11 @@
         <artifactId>org.eclipse.emf.compare</artifactId>
         <version>3.5.3.202212280858</version>
       </dependency>
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.17</version>
-      </dependency>
+ <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.24.3</version>
+</dependency>
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>org.eclipse.emf.common</artifactId>
@@ -235,12 +235,12 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>5.11.3</version>
+        <version>5.11.4</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
-        <version>5.11.3</version>
+        <version>5.11.4</version>
       </dependency>
       <dependency>
         <groupId>org.junit.platform</groupId>
@@ -250,7 +250,7 @@
       <dependency>
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-launcher</artifactId>
-        <version>1.11.3</version>
+        <version>1.11.4</version>
       </dependency>
       <dependency>
         <groupId>sdq-commons</groupId>
@@ -284,7 +284,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>5.14.2</version>
+        <version>5.15.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
