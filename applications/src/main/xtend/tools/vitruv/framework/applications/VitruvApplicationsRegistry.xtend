@@ -6,11 +6,12 @@ import java.util.HashSet
 import java.util.Collections
 import java.util.List
 import org.eclipse.core.runtime.Platform
-import org.apache.log4j.Logger
+import org.apache.logging.log4j.Logger
+import org.apache.logging.log4j.LogManager
 
 class VitruvApplicationsRegistry {
 	public static String EXTENSION_POINT_ID = "tools.vitruv.framework.applications.application"
-	static Logger LOGGER = Logger.getLogger(VitruvApplicationsRegistry)
+	static Logger LOGGER = LogManager.getLogger(VitruvApplicationsRegistry)
 	
 	@Accessors(PUBLIC_GETTER)
 	static VitruvApplicationsRegistry instance = new VitruvApplicationsRegistry
