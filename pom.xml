@@ -44,6 +44,7 @@
   </modules>
 
   <properties>
+    <vitruv-change.version>3.1.0</vitruv-change.version>
     <!-- Additional Repositories -->
     <repo.emf-compare.version>3.3</repo.emf-compare.version>
     <repo.sdq-commons.version>2.2.0</repo.sdq-commons.version>
@@ -102,52 +103,52 @@
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.atomic</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.correspondence</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.composite</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.interaction</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.interaction.model</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.propagation</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.core</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.integration</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.utils</artifactId>
-        <version>3.1.0</version>
+        <version>${vitruv-change.version}</version>
       </dependency>
 
       <!-- External dependencies -->
