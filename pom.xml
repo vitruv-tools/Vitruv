@@ -41,60 +41,16 @@
     <module>remote</module>
     <module>testutils</module>
     <module>applications</module>
+    <module>p2wrappers</module>
   </modules>
 
   <properties>
     <vitruv-change.version>3.1.0</vitruv-change.version>
-    <!-- Additional Repositories -->
-    <repo.emf-compare.version>3.3</repo.emf-compare.version>
-    <repo.sdq-commons.version>2.2.0</repo.sdq-commons.version>
-    <repo.xannotations.version>1.6.0</repo.xannotations.version>
     <!-- SonarQube configuration -->
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.organization>vitruv-tools</sonar.organization>
     <sonar.projectKey>vitruv-tools_Vitruv</sonar.projectKey>
   </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.openntf.maven</groupId>
-        <artifactId>p2-layout-resolver</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
-  <repositories>
-    <!-- Maven Central should have priority -->
-    <repository>
-      <id>central</id>
-      <name>Maven Central</name>
-      <url>https://repo1.maven.org/maven2/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-    <!-- for p2 dependencies, `groupId` specifies the repository -->
-    <repository>
-      <id>emf-compare</id>
-      <name>EMF Compare</name>
-      <layout>p2</layout>
-      <url>https://download.eclipse.org/modeling/emf/compare/updates/releases/${repo.emf-compare.version}</url>
-    </repository>
-    <repository>
-      <id>sdq-commons</id>
-      <name>SDQ Commons</name>
-      <url>https://kit-sdq.github.io/updatesite/release/commons/${repo.sdq-commons.version}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>xannotations</id>
-      <name>XAnnotations</name>
-      <layout>p2</layout>
-      <url>https://kit-sdq.github.io/updatesite/release/xannotations/${repo.xannotations.version}</url>
-    </repository>
-  </repositories>
 
   <!-- Dependency Management -->
   <dependencyManagement>
@@ -172,11 +128,6 @@
         <artifactId>micrometer-core</artifactId>
         <version>1.14.3</version>
       </dependency>
-      <dependency>
-        <groupId>emf-compare</groupId>
-        <artifactId>org.eclipse.emf.compare</artifactId>
-        <version>3.5.3.202212280858</version>
-      </dependency>
  <dependency>
     <groupId>org.apache.logging.log4j</groupId>
     <artifactId>log4j-core</artifactId>
@@ -252,35 +203,6 @@
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-launcher</artifactId>
         <version>1.11.4</version>
-      </dependency>
-      <dependency>
-        <groupId>sdq-commons</groupId>
-        <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
-        <version>2.3.0.202304271319</version>
-        <exclusions>
-          <!-- exclude unnecessary transitive dependencies from sdq-commons p2 repository -->
-          <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>sdq-commons</groupId>
-        <artifactId>edu.kit.ipd.sdq.commons.util.java</artifactId>
-        <version>2.3.0.202304271319</version>
-        <exclusions>
-          <!-- exclude unnecessary transitive dependencies from sdq-commons p2 repository -->
-          <exclusion>
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>xannotations</groupId>
-        <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
-        <version>1.6.0</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
