@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -30,7 +31,7 @@ import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 public class VirtualModelImpl implements InternalVirtualModel {
-	private static final Logger LOGGER = Logger.getLogger(VirtualModelImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
 
 	private final ModelRepository resourceRepository;
 	private final ViewTypeProvider viewTypeRepository;
