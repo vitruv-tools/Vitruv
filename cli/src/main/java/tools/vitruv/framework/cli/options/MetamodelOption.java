@@ -1,7 +1,9 @@
 package tools.vitruv.framework.cli.options;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
@@ -22,18 +24,30 @@ public class MetamodelOption extends VitruvCLIOption {
     for (String metamodel : cmd.getOptionValue(getOpt()).split(";")) {
       String metamodelPath = metamodel.split(",")[0];
       String genmodelPath = metamodel.split(",")[1];
-      System.out.println(metamodelPath + " " + genmodelPath);
-      copyFile(metamodelPath);
-      copyFile(genmodelPath);
+      copyFile(metamodelPath, getPath(cmd, builder));
+      copyFile(genmodelPath, getPath(cmd, builder));
       // TODO modify genmodel paths
     }
     return builder;
   }
 
-  private void copyFile(String filePath) {
+  private void copyFile(String filePath, Path folderPath) {
     try {
-      Files.copy(Paths.get(filePath), Paths.get(Paths.get("").toAbsolutePath().toString()
-          + "/cli/internal/src/main/ecore/" + Paths.get(filePath).getFileName()), StandardCopyOption.REPLACE_EXISTING);
+      Path source;
+      Path target;
+      if (new File(filePath).isAbsolute()) {
+        source = Path.of(filePath);
+      } else {
+        source = Path.of(new File("").getAbsolutePath() + "/" +  filePath);
+      }
+      if (folderPath.isAbsolute()) {
+        System.out.println(folderPath.isAbsolute());
+        target = folderPath;
+      } else {
+        target = Path.of(new File("").getAbsolutePath() + "/" +  folderPath.toString());
+      }
+      System.out.println("Copy " + source.toString() + " to " + Path.of(target.toAbsolutePath() + "/models/src/main/ecore/" + Paths.get(filePath).getFileName()).toString());      
+      Files.copy(source, Path.of(target.toAbsolutePath() + "/models/src/main/ecore/" + Paths.get(filePath).getFileName()), StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       e.printStackTrace();
     }
