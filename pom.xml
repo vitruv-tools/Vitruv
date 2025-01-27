@@ -36,6 +36,7 @@
 
   <!-- Modules -->
   <modules>
+    <module>cli</module>
     <module>views</module>
     <module>vsum</module>
     <module>remote</module>
