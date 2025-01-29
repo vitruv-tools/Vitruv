@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import org.apache.commons.cli.CommandLine;
@@ -19,37 +18,44 @@ public class MetamodelOption extends VitruvCLIOption {
 
   @Override
   public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder) {
-    System.out.println(getPath(cmd, builder));
-    System.out.println(cmd.getOptionValue(getOpt()));
-    for (String metamodel : cmd.getOptionValue(getOpt()).split(";")) {
-      String metamodelPath = metamodel.split(",")[0];
-      String genmodelPath = metamodel.split(",")[1];
-      copyFile(metamodelPath, getPath(cmd, builder));
-      copyFile(genmodelPath, getPath(cmd, builder));
-      // TODO modify genmodel paths
+    for (String modelPaths : cmd.getOptionValue(getOpt()).split(";")) {
+      String metamodelPath = modelPaths.split(",")[0];
+      String genmodelPath = modelPaths.split(",")[1];
+      File metamodel = modifyAndCopyFile(metamodelPath, getPath(cmd, builder));
+      File genmodel = modifyAndCopyFile(genmodelPath, getPath(cmd, builder));
+      modifyPathsInsideGenmodel(metamodel, genmodel);
     }
     return builder;
   }
 
-  private void copyFile(String filePath, Path folderPath) {
+  private File modifyAndCopyFile(String filePath, Path folderPath) {
+    File source;
+    File target;
+    if (new File(filePath).isAbsolute()) {
+      source = Path.of(filePath).toFile();
+    } else {
+      source = Path.of(new File("").getAbsolutePath() + "/" + filePath).toFile();
+    }
+    if (folderPath.isAbsolute()) {
+      target = folderPath.toFile();
+    } else {
+      target = Path.of(
+          new File("").getAbsolutePath() + "/" + folderPath.toString() + "/models/src/main/ecore/" + source.getName())
+          .toFile();
+    }
+    // Files.copy throws a misleading Exception if the target File and/or the
+    // folders of the target file are not existing.
+    target.getParentFile().mkdirs();
     try {
-      Path source;
-      Path target;
-      if (new File(filePath).isAbsolute()) {
-        source = Path.of(filePath);
-      } else {
-        source = Path.of(new File("").getAbsolutePath() + "/" +  filePath);
-      }
-      if (folderPath.isAbsolute()) {
-        System.out.println(folderPath.isAbsolute());
-        target = folderPath;
-      } else {
-        target = Path.of(new File("").getAbsolutePath() + "/" +  folderPath.toString());
-      }
-      System.out.println("Copy " + source.toString() + " to " + Path.of(target.toAbsolutePath() + "/models/src/main/ecore/" + Paths.get(filePath).getFileName()).toString());      
-      Files.copy(source, Path.of(target.toAbsolutePath() + "/models/src/main/ecore/" + Paths.get(filePath).getFileName()), StandardCopyOption.REPLACE_EXISTING);
+      target.createNewFile();
+      Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       e.printStackTrace();
     }
+    return target;
+  }
+
+  private void modifyPathsInsideGenmodel(File metamodel, File genmodel) {
+// TODO
   }
 }

@@ -45,6 +45,10 @@
       <groupId>tools.vitruv</groupId>
       <artifactId>tools.vitruv.change.atomic</artifactId>
     </dependency>
+    <dependency>
+      <groupId>tools.vitruv</groupId>
+      <artifactId>tools.vitruv.change.testutils.integration</artifactId>
+    </dependency>
 
     <!-- external dependencies -->
     <dependency>

@@ -6,7 +6,10 @@ public class CLITest {
 
   @Test
   public void test() {
-    CLI.parseCLI(new String[]{"-m", "src/test/resources/model/model.ecore,src/test/resources/model/model.genmodel;src/test/resources/model/model2.ecore,src/test/resources/model/model2.genmodel", "-f", "internal/"});
+    CLI.parseCLI(new String[] { "-m",
+        "src/test/resources/model/model.ecore,src/test/resources/model/model.genmodel;src/test/resources/model/model2.ecore,src/test/resources/model/model2.genmodel",
+        "-f", "target/internal/",
+        "-u", "default" });
   }
-  
+
 }
