@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
 
   <name>p2 Dependency Wrapper Active Xtend Annotations</name>
-  <description />
+  <description>wrapper for the p2 dependency xannotations:edu.kit.ipd.sdq.activextendannotations</description>
 
   <build>
     <plugins>
