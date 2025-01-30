@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework.p2wrappers</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.1.2</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
