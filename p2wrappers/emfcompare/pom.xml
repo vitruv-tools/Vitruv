@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.p2wrappers.emfcompare</artifactId>
 
   <name>p2 Dependency Wrapper EMF Compare</name>
-  <description />
+  <description>wrapper for the p2 dependency emf-compare:org.eclipse.emf.compare</description>
 
   <build>
     <plugins>

@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
 
   <name>p2 Dependency Wrapper Java Utils</name>
-  <description />
+  <description>wrapper for the p2 dependency sdq-commons:edu.kit.ipd.sdq.commons.util.java</description>
 
   <build>
     <plugins>
