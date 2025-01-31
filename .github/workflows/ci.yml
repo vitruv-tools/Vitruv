@@ -49,9 +49,9 @@ jobs:
       run: mkdir staging-${{ matrix.os }} && gci -Path . -Recurse -Include *.jar |? { $_.FullName -like '*\target\*.jar' } |% { cp $_.FullName staging-${{ matrix.os }} }
 
     - name: Upload build results
-      uses: actions/upload-artifact@v3.2.1
+      uses: actions/upload-artifact@v4
       with:
-        name: Build Results
+        name: build-results-${{ matrix.os }}
         path: staging-*/
 
   verify-javadoc:
