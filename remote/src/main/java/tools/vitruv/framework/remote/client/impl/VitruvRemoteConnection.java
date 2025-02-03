@@ -75,7 +75,7 @@ public class VitruvRemoteConnection implements VitruvClient {
 
     private boolean isDirectoryEmpty(Path directory) throws IOException {
         try (Stream<Path> entries = Files.list(directory)) {
-            return !entries.findAny().isPresent();
+            return entries.findAny().isEmpty();
         }
     }
 
