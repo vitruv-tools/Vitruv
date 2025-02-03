@@ -21,9 +21,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * A {@link View} which is a copy of a {@link View} from the VSUM of a Vitruvius server.
+ * A {@link View} which is a copy of a {@link View} from the VSUM of a Vitruvius
+ * server.
  * <p>
- * Actions performed on this remote view or to the original view can be synchronized via the network. This view uses
+ * Actions performed on this remote view or to the original view can be
+ * synchronized via the network. This view uses
  * a {@link VitruvRemoteConnection} to do so.
  */
 public class RemoteView implements View {
@@ -87,7 +89,8 @@ public class RemoteView implements View {
     }
 
     /**
-     * Updates the view via the {@link VitruvRemoteConnection}, thus invalidating its previous state and now providing
+     * Updates the view via the {@link VitruvRemoteConnection}, thus invalidating
+     * its previous state and now providing
      * an updated view. This can only be done for an unmodified view.
      *
      * @throws UnsupportedOperationException If called on a modified view.
@@ -137,7 +140,10 @@ public class RemoteView implements View {
         checkArgument(object != null, "object to move must not be null");
         checkState(getRootObjects().contains(object), "view must contain element %s to move", object);
         checkArgument(newLocation != null, "URI for new location of root must not be null");
-        viewSource.getResources().stream().filter(it -> it.getContents().contains(object)).findFirst().get().setURI(newLocation);
+        viewSource.getResources().stream()
+                .filter(it -> it.getContents().contains(object))
+                .findFirst()
+                .ifPresent(resource -> resource.setURI(newLocation));
     }
 
     /**
@@ -153,8 +159,9 @@ public class RemoteView implements View {
      */
     @Override
     public ViewType<? extends ViewSelector> getViewType() {
-        //The client has no knowledge which view type was used to create the remote view.
-        //Additionally, the client is not able to create views.
+        // The client has no knowledge which view type was used to create the remote
+        // view.
+        // Additionally, the client is not able to create views.
         throw new UnsupportedOperationException();
     }
 
@@ -175,9 +182,12 @@ public class RemoteView implements View {
 
     /**
      * Returns a {@link CommittableView} based on the view's configuration.
-     * Changes to commit are identified by comparing the current view state with its state from the last update.
+     * Changes to commit are identified by comparing the current view state with its
+     * state from the last update.
      *
-     * @param changeResolutionStrategy The change resolution strategy to use for view state comparison. Must not be <code>null</code>.
+     * @param changeResolutionStrategy The change resolution strategy to use for
+     *                                 view state comparison. Must not be
+     *                                 <code>null</code>.
      * @throws UnsupportedOperationException If called on a modified view.
      * @throws IllegalStateException         If called on a closed view.
      * @see #isClosed()
