@@ -75,7 +75,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- external dependencies -->
+    <!-- external compile dependencies -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -96,11 +96,6 @@
     <groupId>org.apache.logging.log4j</groupId>
     <artifactId>log4j-core</artifactId>
 </dependency>
-
-    <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.xtext</groupId>
       <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
@@ -110,11 +105,6 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>xannotations</groupId>
-      <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -137,9 +127,25 @@
       <artifactId>junit-platform-launcher</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- p2 compile dependencies -->
     <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.java</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- p2 test dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
