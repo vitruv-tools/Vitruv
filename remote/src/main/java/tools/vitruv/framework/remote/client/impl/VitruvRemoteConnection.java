@@ -164,8 +164,13 @@ public class VitruvRemoteConnection implements VitruvClient {
                     .build();
             var response = sendRequest(request);
             var rSet = mapper.deserialize(response.body(), ResourceSet.class);
-            return new RemoteView(response.headers().firstValue(Header.VIEW_UUID).get(), rSet,
-                    selector, this);
+            Optional<String> viewUuid = response.headers().firstValue(Header.VIEW_UUID);
+            if (viewUuid.isPresent()) {
+                return new RemoteView(viewUuid.get(), rSet, selector, this);
+            } else {
+                // Handle the case where the value is not present
+                throw new NoSuchElementException("Header.VIEW_UUID not found in response headers");
+            }
         } catch (IOException e) {
             throw new BadClientResponseException(e);
         }
