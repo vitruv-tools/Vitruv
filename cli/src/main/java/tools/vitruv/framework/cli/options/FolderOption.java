@@ -12,12 +12,12 @@ public class FolderOption extends VitruvCLIOption {
   }
 
   @Override
-  protected Path getPath(CommandLine cmd, VirtualModelBuilder builder) {
+  public Path getPath(CommandLine cmd, VirtualModelBuilder builder) {
     return Path.of(cmd.getOptionValue(getOpt()));
   }
 
   @Override
   public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder) {
-    return builder.withStorageFolder(Path.of(cmd.getOptionValue(getOpt())));
+    return builder.withStorageFolder(Path.of(cmd.getOptionValue(getOpt()) + "data/"));
   }
 }

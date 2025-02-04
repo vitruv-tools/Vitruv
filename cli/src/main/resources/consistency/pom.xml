@@ -7,11 +7,11 @@
 
     <parent>
         <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.methodologisttemplate</artifactId>
+        <artifactId>tools.vitruv.framework.cli</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>tools.vitruv.methodologisttemplate.consistency</artifactId>
+    <artifactId>tools.vitruv.framework.cli.consistency</artifactId>
 
     <name>Consistency</name>
     <description />
@@ -20,7 +20,7 @@
         <!-- project dependencies-->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>tools.vitruv.methodologisttemplate.model</artifactId>
+            <artifactId>tools.vitruv.framework.cli.model</artifactId>
             <version>${project.version}</version>
         </dependency>
 
