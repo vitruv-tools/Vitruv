@@ -54,18 +54,6 @@
 
     <!-- external compile dependencies -->
     <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xannotations</groupId>
-      <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>emf-compare</groupId>
-      <artifactId>org.eclipse.emf.compare</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
@@ -113,11 +101,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.java</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
@@ -128,5 +111,29 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- p2 compile dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.emfcompare</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- p2 test dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
