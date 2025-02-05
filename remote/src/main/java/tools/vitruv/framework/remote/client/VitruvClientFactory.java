@@ -6,6 +6,16 @@ import tools.vitruv.framework.remote.common.DefaultConnectionSettings;
 import java.nio.file.Path;
 
 public class VitruvClientFactory {
+
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     * 
+     * @throws UnsupportedOperationException if an appempt is made to instantiate this class.
+     */
+    private VitruvClientFactory() {
+        throw new UnsupportedOperationException("VitruvClientFactory is a utility class and cannot be instantiated.");
+    }
+
 	 /**
      * Creates a new {@link VitruvClient} using the given host name or IP address and the standard port of 8080.
      *
