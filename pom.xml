@@ -38,7 +38,6 @@
   <modules>
     <module>views</module>
     <module>vsum</module>
-    <module>remote</module>
     <module>testutils</module>
     <module>applications</module>
     <module>p2wrappers</module>
