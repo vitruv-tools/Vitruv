@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated model -->
+      <package
+            uri="http://vitruv.tools/methodologisttemplate/model"
+            class="tools.vitruv.methodologisttemplate.model.model.ModelPackage"
+            genModel="src/main/ecore/model.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated model2 -->
+      <package
+            uri="http://vitruv.tools/methodologisttemplate/model2"
+            class="tools.vitruv.methodologisttemplate.model.model2.Model2Package"
+            genModel="src/main/ecore/model2.genmodel"/>
+   </extension>
+
+</plugin>
