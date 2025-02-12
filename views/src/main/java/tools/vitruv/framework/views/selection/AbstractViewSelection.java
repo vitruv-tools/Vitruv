@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class AbstractViewSelection implements ModifiableViewSelection {
 	final Map<EObject, Boolean> elementsSelection = new HashMap<>();
 
-	public AbstractViewSelection(Collection<EObject> selectableElements) {
+	protected AbstractViewSelection(Collection<EObject> selectableElements) {
 		selectableElements.forEach(object -> this.elementsSelection
 				.put(checkNotNull(object, "element to select must not be null"), false));
 	}
