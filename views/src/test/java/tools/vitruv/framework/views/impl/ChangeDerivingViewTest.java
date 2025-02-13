@@ -156,7 +156,7 @@ public class ChangeDerivingViewTest {
 			try (ChangeDerivingView view = new ChangeDerivingView(new BasicView(mockViewType, mockChangeableViewSource,
 					mockViewSelection), new DefaultStateBasedChangeResolutionStrategy())) {
 				view.modifyContents((resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
-				assertThrows(IllegalStateException.class, () -> view.update());
+				assertThrows(IllegalStateException.class, view::update);
 			}
 		}
 	}
@@ -399,10 +399,10 @@ public class ChangeDerivingViewTest {
 			ChangeDerivingView view = new ChangeDerivingView(new BasicView(mockViewType, mockChangeableViewSource,
 					mockViewSelection), new DefaultStateBasedChangeResolutionStrategy());
 			view.close();
-			assertThrows(IllegalStateException.class, () -> view.getRootObjects());
+			assertThrows(IllegalStateException.class, view::getRootObjects);
 			assertThrows(IllegalStateException.class, () -> view.getRootObjects(Root.class));
-			assertThrows(IllegalStateException.class, () -> view.update());
-			assertThrows(IllegalStateException.class, () -> view.commitChanges());
+			assertThrows(IllegalStateException.class, view::update);
+			assertThrows(IllegalStateException.class, view::commitChanges);
 			assertThrows(IllegalStateException.class, () -> view.registerRoot(null, null));
 			assertThrows(IllegalStateException.class, () -> view.moveRoot(null, null));
 		}
