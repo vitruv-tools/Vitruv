@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework.testutils</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.testutils.deprecated</artifactId>
@@ -33,31 +33,6 @@
     <!-- project dependencies -->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.propagation</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.composite</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.correspondence</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.atomic</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.change.testutils.integration</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.vsum</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -65,6 +40,28 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.testutils.integration</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <!-- Vitruvius dependencies -->
+    <dependency>
+      <groupId>tools.vitruv</groupId>
+      <artifactId>tools.vitruv.change.propagation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tools.vitruv</groupId>
+      <artifactId>tools.vitruv.change.composite</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tools.vitruv</groupId>
+      <artifactId>tools.vitruv.change.correspondence</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tools.vitruv</groupId>
+      <artifactId>tools.vitruv.change.atomic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tools.vitruv</groupId>
+      <artifactId>tools.vitruv.change.testutils.integration</artifactId>
     </dependency>
 
     <!-- external dependencies -->
@@ -81,12 +78,15 @@
       <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
-      <groupId>xannotations</groupId>
-      <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.xtext</groupId>
       <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+    </dependency>
+
+    <!-- p2 dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

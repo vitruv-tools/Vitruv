@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.views</artifactId>
@@ -30,45 +30,29 @@
   </build>
 
   <dependencies>
-    <!-- project dependencies -->
+    <!-- Vitruvius dependencies -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>tools.vitruv</groupId>
       <artifactId>tools.vitruv.change.composite</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>tools.vitruv</groupId>
       <artifactId>tools.vitruv.change.atomic</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
-    <!-- project test dependencies -->
+    <!-- Vitruvius test dependencies -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>tools.vitruv</groupId>
       <artifactId>tools.vitruv.change.testutils.core</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>tools.vitruv</groupId>
       <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
     <!-- external compile dependencies -->
-    <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.emf</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xannotations</groupId>
-      <artifactId>edu.kit.ipd.sdq.activextendannotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>emf-compare</groupId>
-      <artifactId>org.eclipse.emf.compare</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.ecore</artifactId>
@@ -85,13 +69,12 @@
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
-
-    <!-- external test dependencies -->
     <dependency>
       <groupId>org.eclipse.xtend</groupId>
       <artifactId>org.eclipse.xtend.lib</artifactId>
-      <scope>compile</scope>
     </dependency>
+
+    <!-- external test dependencies -->
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
@@ -118,11 +101,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>sdq-commons</groupId>
-      <artifactId>edu.kit.ipd.sdq.commons.util.java</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
@@ -133,5 +111,29 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- p2 compile dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.emfcompare</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- p2 test dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,7 +37,7 @@ import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 class ResourceRepositoryImpl implements ModelRepository {
-	private static final Logger LOGGER = Logger.getLogger(ResourceRepositoryImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
 
 	private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
 	private final Map<URI, ModelInstance> modelInstances = new HashMap<>();

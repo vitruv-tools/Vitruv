@@ -4,8 +4,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  ignore:
-    - dependency-name: tools.vitruv:*
   commit-message:
     prefix: "Maven"
     include: "scope"
