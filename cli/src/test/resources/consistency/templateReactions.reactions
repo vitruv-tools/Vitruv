@@ -1,0 +1,8 @@
+
+import "http://vitruv.tools/methodologisttemplate/model" as model
+import "http://vitruv.tools/methodologisttemplate/model2" as model2
+
+reactions: model2Model2
+in reaction to changes in model
+execute actions in model2
+
