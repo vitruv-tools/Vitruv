@@ -12,16 +12,6 @@ Workflow {
         platformUri = workspaceRoot
     }
 
-    component = EcoreGenerator {
-        genModel = "platform:/resource/tools.vitruv.methodologisttemplate.model/src/main/ecore/model.genmodel"
-        srcPath = "platform:/resource/tools.vitruv.methodologisttemplate.model/target/generated-sources/ecore"
-        generateCustomClasses = false
-    }
-
-    component = EcoreGenerator {
-        genModel = "platform:/resource/tools.vitruv.methodologisttemplate.model/src/main/ecore/model2.genmodel"
-        srcPath = "platform:/resource/tools.vitruv.methodologisttemplate.model/target/generated-sources/ecore"
-        generateCustomClasses = false
-    }
+    #
 
 }

@@ -3,6 +3,7 @@ package tools.vitruv.framework.cli.options;
 import java.io.File;
 import org.apache.commons.cli.CommandLine;
 
+import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 
 public class ReactionOption extends VitruvCLIOption {
@@ -15,16 +16,21 @@ public class ReactionOption extends VitruvCLIOption {
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder) {
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
     String reactionsPath = cmd.getOptionValue(getOpt());
     reactionsFile = FileUtils.copyFile(reactionsPath, getPath(cmd, builder), "/consistency/src/main/reactions/");
     return builder;
   }
 
   @Override
-  public VirtualModelBuilder postBuild(CommandLine cmd, VirtualModelBuilder builder) {
+  public VirtualModelBuilder postBuild(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
     // TODO extract the name of the generated reaction, find that, load that, and add that to the classpath as well as the builder
     return builder.withChangePropagationSpecification(null);
+  }
+
+  @Override
+  public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
+    
   }
   
 

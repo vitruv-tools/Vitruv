@@ -6,6 +6,7 @@ import tools.vitruv.change.testutils.TestUserInteraction;
 import org.apache.commons.cli.CommandLine;
 
 import tools.vitruv.change.interaction.UserInteractionFactory;
+import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 
 public class UserInteractorOption extends VitruvCLIOption {
@@ -18,12 +19,17 @@ public class UserInteractorOption extends VitruvCLIOption {
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder) {
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
     String userInteractorPath = cmd.getOptionValue(getOpt());
     if (userInteractorPath.equals(DEFAULT)) {
       return builder
           .withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(new TestUserInteraction()));
     }
     return builder;
+  }
+
+  @Override
+  public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
+    
   }
 }

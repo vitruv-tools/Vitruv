@@ -2,6 +2,7 @@ package tools.vitruv.framework.cli.options;
 
 import org.apache.commons.cli.CommandLine;
 
+import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 
 public class ReactionsOption extends VitruvCLIOption {
@@ -12,8 +13,13 @@ public class ReactionsOption extends VitruvCLIOption {
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder) {
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
     throw new UnsupportedOperationException("Functionality not implemented yet!");
+  }
+
+  @Override
+  public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
+    
   }
 
 }

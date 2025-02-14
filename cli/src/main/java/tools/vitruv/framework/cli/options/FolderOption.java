@@ -3,6 +3,7 @@ package tools.vitruv.framework.cli.options;
 import java.nio.file.Path;
 import org.apache.commons.cli.CommandLine;
 
+import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 
 public class FolderOption extends VitruvCLIOption {
@@ -17,7 +18,12 @@ public class FolderOption extends VitruvCLIOption {
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder) {
-    return builder.withStorageFolder(Path.of(cmd.getOptionValue(getOpt()) + "data/"));
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
+    return builder.withStorageFolder(Path.of(configuration.getLocalPath() + "data/"));
+  }
+
+  @Override
+  public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
+    configuration.setLocalPath(Path.of(cmd.getOptionValue(getOpt())));
   }
 }
