@@ -20,7 +20,7 @@ public abstract class AbstractViewSelection implements ModifiableViewSelection {
 				.put(checkNotNull(object, "element to select must not be null"), false));
 	}
 
-	public AbstractViewSelection(ModifiableViewSelection sourceViewSelection) {
+	protected AbstractViewSelection(ModifiableViewSelection sourceViewSelection) {
 		this(sourceViewSelection.getSelectableElements());
 		for (EObject selectableElement : sourceViewSelection.getSelectableElements()) {
 			setSelected(selectableElement, sourceViewSelection.isSelected(selectableElement));
