@@ -22,21 +22,23 @@ public class MetamodelOption extends VitruvCLIOption {
   // resource/tools.vitruv.methodologisttemplate.model/src/main/ecore/model.genmodel
   public static final String SUBFOLDER = "/model/src/main/ecore/";
   public static final String WORKFLOW_CONFIGURATION_STRING = """
-      component = EcoreGenerator {
-        genModel = \"platform:/resource/%s\"
-        srcPath = \"platform:/resource/%s/target/generated-sources/ecore\"
-        generateCustomClasses = false
-    }
-      """;
+        component = EcoreGenerator {
+          genModel = \"platform:/resource/%s\"
+          srcPath = \"platform:/resource/%s/target/generated-sources/ecore\"
+          generateCustomClasses = false
+      }
+        """;
 
 
   public MetamodelOption() {
     super("m", "metamodel", true,
         "A semicolon separated list of pairs of paths to the metamodels and their genmodels that are used in the reactions, e.g., MyMetamodel.ecore,MyGenmodel.genmodel;MyMetamodel1.ecore,MyGenmodel1.genmodel");
+    this.setValueSeparator(';');
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder,
+      VitruvConfiguration configuration) {
     template(cmd.getOptionValue(getOpt()).split(";").length, configuration);
     for (String modelPaths : cmd.getOptionValue(getOpt()).split(";")) {
       String metamodelPath = modelPaths.split(",")[0];
@@ -44,7 +46,7 @@ public class MetamodelOption extends VitruvCLIOption {
       File metamodel = FileUtils.copyFile(metamodelPath, getPath(cmd, builder), SUBFOLDER);
       File genmodel = FileUtils.copyFile(genmodelPath, getPath(cmd, builder), SUBFOLDER);
       configuration.addMetamodelLocations(new MetamodelLocation(metamodel, genmodel));
-      modifyPathsInsideGenmodel(metamodel, genmodel, configuration);
+      // modifyPathsInsideGenmodel(metamodel, genmodel, configuration);
     }
     return builder;
   }
@@ -54,12 +56,13 @@ public class MetamodelOption extends VitruvCLIOption {
       List<String> alines = Files.readAllLines(configuration.getWorkflow().toPath());
       List<String> lines = new ArrayList<>(alines);
       System.out.println(configuration.getWorkflow().toPath());
-      for (int i = 0; i<lines.size();i++) {
-        if(lines.get(i).contains("#")) {
+      for (int i = 0; i < lines.size(); i++) {
+        if (lines.get(i).contains("#")) {
           System.out.println(lines);
           lines.set(i, lines.get(i).replace("#", createSpecialString(count, "#")));
           System.out.println(lines);
-          Files.write(configuration.getWorkflow().toPath(), lines, StandardOpenOption.TRUNCATE_EXISTING);
+          Files.write(configuration.getWorkflow().toPath(), lines,
+              StandardOpenOption.TRUNCATE_EXISTING);
           return;
         }
       }
@@ -74,25 +77,38 @@ public class MetamodelOption extends VitruvCLIOption {
     return joiner.toString();
   }
 
-  private void modifyPathsInsideGenmodel(File metamodel, File genmodel, VitruvConfiguration configuration) {
-    System.out.println(String.format(WORKFLOW_CONFIGURATION_STRING, Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()), configuration.getLocalPath()).replace("\\", "/"));
+  private void modifyPathsInsideGenmodel(File metamodel, File genmodel,
+      VitruvConfiguration configuration) {
+    System.out.println(String.format(WORKFLOW_CONFIGURATION_STRING,
+        Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()),
+        configuration.getLocalPath()).replace("\\", "/"));
     try {
       List<String> alines = Files.readAllLines(configuration.getWorkflow().toPath());
       List<String> lines = new ArrayList<>(alines);
-      for (int i = 0; i<lines.size();i++) {
-        if(lines.get(i).contains("#")) {
-          lines.set(i, lines.get(i).replaceFirst("#", String.format(WORKFLOW_CONFIGURATION_STRING, Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()), configuration.getLocalPath()).replace("\\", "/")));
+      for (int i = 0; i < lines.size(); i++) {
+        if (lines.get(i).contains("#")) {
+          lines
+              .set(i,
+                  lines.get(i)
+                      .replaceFirst("#",
+                          String
+                              .format(WORKFLOW_CONFIGURATION_STRING,
+                                  Path.of(new File("").getAbsolutePath())
+                                      .relativize(genmodel.toPath()),
+                                  configuration.getLocalPath())
+                              .replace("\\", "/")));
         }
-        Files.write(configuration.getWorkflow().toPath(), lines, StandardOpenOption.TRUNCATE_EXISTING);
+        Files.write(configuration.getWorkflow().toPath(), lines,
+            StandardOpenOption.TRUNCATE_EXISTING);
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
-// TODO
+    // TODO
   }
 
   @Override
   public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
-   
+    configuration.setMetaModelLocations(cmd.getOptionValue(getOpt()));
   }
 }

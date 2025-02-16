@@ -14,16 +14,17 @@ public class FolderOption extends VitruvCLIOption {
 
   @Override
   public Path getPath(CommandLine cmd, VirtualModelBuilder builder) {
-    return Path.of(cmd.getOptionValue(getOpt()));
+    return Path.of(cmd.getOptionValue(getOpt().replaceAll("\\s", "")));
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder,
+      VitruvConfiguration configuration) {
     return builder.withStorageFolder(Path.of(configuration.getLocalPath() + "data/"));
   }
 
   @Override
   public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
-    configuration.setLocalPath(Path.of(cmd.getOptionValue(getOpt())));
+    configuration.setLocalPath(Path.of(cmd.getOptionValue(getOpt().replaceAll("\\s", ""))));
   }
 }

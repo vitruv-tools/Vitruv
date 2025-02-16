@@ -38,34 +38,47 @@ public class CLI {
     options.addOption(new ReactionOption());
     CommandLineParser parser = new DefaultParser();
     VitruvConfiguration configuration = new VitruvConfiguration();
-    
+
     try {
       CommandLine line = parser.parse(options, args);
       VirtualModelBuilder builder = new VirtualModelBuilder();
       for (Option option : line.getOptions()) {
-        System.out.println("Preparing option " + option.getLongOpt() + " with value " + option.getValuesList());
+        System.out.println(
+            "Preparing option " + option.getLongOpt() + " with value " + option.getValuesList());
         ((VitruvCLIOption) option).prepare(line, configuration);
       }
       copyFiles(configuration);
       for (Option option : line.getOptions()) {
-        System.out.println("Preprocessing option " + option.getLongOpt() + " with value " + option.getValuesList());
+        System.out.println("Preprocessing option " + option.getLongOpt() + " with value "
+            + option.getValuesList());
         ((VitruvCLIOption) option).preBuild(line, builder, configuration);
       }
+      ProcessBuilder pbuilder;
       String command = "mvn clean verify";
-      ProcessBuilder pbuilder = new ProcessBuilder("cmd.exe", "/c", command);
-      pbuilder.directory(configuration.getLocalPath().toFile());
+      if (System.getProperty("os.name").toLowerCase().contains("win")) {
+        pbuilder = new ProcessBuilder("cmd.exe", "/c", command);
+      } else {
+        pbuilder = new ProcessBuilder("bash", "-c", command);
+      }
+      pbuilder.directory(new File(configuration.getLocalPath().toFile().getAbsoluteFile().toString()
+          .replaceAll("\\s", "")));
       Process process = pbuilder.start();
+
+
       BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
       String oline;
       while ((oline = reader.readLine()) != null) {
         System.out.println(oline);
       }
       process.waitFor();
-      if (process.exitValue() != 0){
-        throw new Error("Error occurred during maven build! Please fix your setup accordingly! Exit code: " + process.exitValue());
+      if (process.exitValue() != 0) {
+        throw new Error(
+            "Error occurred during maven build! Please fix your setup accordingly! Exit code: "
+                + process.exitValue());
       }
       for (Option option : line.getOptions()) {
-        System.out.println("Postprocessing option " + option.getLongOpt() + " with value " + option.getValuesList());
+        System.out.println("Postprocessing option " + option.getLongOpt() + " with value "
+            + option.getValuesList());
         ((VitruvCLIOption) option).postBuild(line, builder, configuration);
       }
       System.out.println(builder.buildAndInitialize());
@@ -73,17 +86,28 @@ public class CLI {
       System.out.println("Parsing failed.  Reason: " + exp.getMessage());
     } catch (IOException | InterruptedException e) {
       System.out.println("Invoking maven to build the project failed.  Reason: " + e.getMessage());
-    } 
+    }
   }
 
-  private Path copyFiles(VitruvConfiguration configuration) {
-    File target = FileUtils.copyFile("src/main/resources/pom.xml", configuration.getLocalPath(), "");
-    FileUtils.copyFile("src/main/resources/consistency/pom.xml", configuration.getLocalPath(), "consistency/");
+  private Path copyFiles(VitruvConfiguration configuration) throws IOException {
+    File target =
+        FileUtils.copyFile("src/main/resources/pom.xml", configuration.getLocalPath(), "");
+    FileUtils.copyFile("src/main/resources/consistency/pom.xml", configuration.getLocalPath(),
+        "consistency/");
     FileUtils.copyFile("src/main/resources/model/pom.xml", configuration.getLocalPath(), "model/");
-    FileUtils.copyFile("src/main/resources/model/plugin.xml", configuration.getLocalPath(), "model/");
+    FileUtils.copyFile("src/main/resources/model/plugin.xml", configuration.getLocalPath(),
+        "model/");
     FileUtils.copyFile("src/main/resources/model/.project", configuration.getLocalPath(), "model/");
-    File workflow = FileUtils.copyFile("src/main/resources/model/generate.mwe2", configuration.getLocalPath(), "model/workflow/");
+
+    File workflow = new File(
+        (configuration.getLocalPath() + "/model/workflow/generate.mwe2").replaceAll("\\s", ""));
     configuration.setWorkflow(workflow);
+    /*
+     * configuration.getLocalPath(), "model/workflow/"); configuration.setWorkflow(workflow);
+     */
+    GenerateMwe2Generator.generate(workflow, configuration.getMetaModelLocations(), configuration);
+
+
     return Path.of(target.getParent());
   }
 }
