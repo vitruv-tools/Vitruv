@@ -5,16 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.emf.ecore.plugin.EcorePlugin.ExtensionProcessor;
-
 import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.cli.options.FileUtils;
 import tools.vitruv.framework.cli.options.FolderOption;

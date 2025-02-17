@@ -19,17 +19,18 @@ public class UserInteractorOption extends VitruvCLIOption {
   }
 
   @Override
-  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder, VitruvConfiguration configuration) {
+  public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder,
+      VitruvConfiguration configuration) {
     String userInteractorPath = cmd.getOptionValue(getOpt());
     if (userInteractorPath.equals(DEFAULT)) {
-      return builder
-          .withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(new TestUserInteraction()));
+      return builder.withUserInteractorForResultProvider(
+          new TestUserInteraction.ResultProvider(new TestUserInteraction()));
     }
     return builder;
   }
 
   @Override
   public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
-    
+
   }
 }
