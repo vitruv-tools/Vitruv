@@ -13,7 +13,7 @@ import tools.vitruv.change.atomic.uuid.Uuid
 import tools.vitruv.change.atomic.uuid.UuidResolver
 import tools.vitruv.change.composite.MetamodelDescriptor
 import tools.vitruv.change.composite.description.VitruviusChange
-import tools.vitruv.change.composite.description.VitruviusChangeResolver
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.correspondence.Correspondence
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView
@@ -35,7 +35,7 @@ class VirtualModelTestUtil {
      */
     def static VitruviusChange<Uuid> recordChanges(ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
         val recorder = new ChangeRecorder(resourceSet)
-        val changeResolver = VitruviusChangeResolver.forUuids(uuidResolver)
+        val changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver)
         recorder.addToRecording(resourceSet)
         recorder.beginRecording
         changesToPerform.run()

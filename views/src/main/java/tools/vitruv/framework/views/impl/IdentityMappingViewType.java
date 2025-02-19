@@ -20,6 +20,7 @@ import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
@@ -67,9 +68,9 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 	@Override
 	public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
 		ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
-		VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolver.forHierarchicalIds(viewSourceCopyResourceSet);
+		VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);
 		UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
-		VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolver.forUuids(viewSourceCopyUuidResolver);
+		VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolverFactory.forUuids(viewSourceCopyUuidResolver);
 		Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
 		view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 

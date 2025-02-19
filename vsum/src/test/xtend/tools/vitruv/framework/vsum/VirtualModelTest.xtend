@@ -14,7 +14,7 @@ import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribut
 import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.change.atomic.root.InsertRootEObject
 import tools.vitruv.change.atomic.uuid.UuidResolver
-import tools.vitruv.change.composite.description.VitruviusChangeResolver
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.View
 import tools.vitruv.framework.views.ViewTypeFactory
@@ -372,7 +372,7 @@ class VirtualModelTest {
 	
 	private def endRecording(ChangeRecorder changeRecorder, UuidResolver uuidResolver) {
 		val change = changeRecorder.endRecording
-		val changeResolver = VitruviusChangeResolver.forUuids(uuidResolver)
+		val changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver)
 		return changeResolver.assignIds(change)
 	}
 
