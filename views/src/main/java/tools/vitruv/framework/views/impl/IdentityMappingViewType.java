@@ -6,6 +6,7 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.Resour
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -46,7 +47,7 @@ public class IdentityMappingViewType extends AbstractViewType<DirectViewElementS
 						return Stream.of(resource.getContents().get(0));
 					}
 					return resource.getContents().stream();
-				}).flatMap(Function.identity()).filter(it -> it != null).toList());
+				}).flatMap(Function.identity()).filter(Objects::nonNull).toList());
 	}
 
 	@Override
