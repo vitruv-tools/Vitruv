@@ -45,7 +45,7 @@ import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.change.composite.description.VitruviusChangeResolver;
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
@@ -216,7 +216,7 @@ public class ChangeRecordingViewTest {
 
 				assertThat(viewArgument.getValue(), is(view));
 				ResourceSet resolveInResourceSet = new ResourceSetImpl();
-				VitruviusChange<EObject> resolvedChange = VitruviusChangeResolver
+				VitruviusChange<EObject> resolvedChange = VitruviusChangeResolverFactory
 						.forHierarchicalIds(resolveInResourceSet).resolveAndApply(changeArgument.getValue());
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
@@ -300,7 +300,7 @@ public class ChangeRecordingViewTest {
 				view.commitChanges();
 				verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 				assertThat(viewArgument.getValue(), is(view));
-				VitruviusChange<EObject> resolvedChange = VitruviusChangeResolver
+				VitruviusChange<EObject> resolvedChange = VitruviusChangeResolverFactory
 						.forHierarchicalIds(resolveInResourceSet).resolveAndApply(changeArgument.getValue());
 				List<EChange<EObject>> capturedEChanges = resolvedChange.getEChanges();
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
@@ -374,7 +374,7 @@ public class ChangeRecordingViewTest {
 			view.commitChanges();
 			verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 
-			VitruviusChange<EObject> resolvedChange = VitruviusChangeResolver.forHierarchicalIds(resolveInResourceSet)
+			VitruviusChange<EObject> resolvedChange = VitruviusChangeResolverFactory.forHierarchicalIds(resolveInResourceSet)
 					.resolveAndApply(changeArgument.getValue());
 			List<EChange<EObject>> capturedEChanges = resolvedChange.getEChanges();
 			assertThat(capturedEChanges.size(), is(4)); // Create, Insert, ReplaceValue, Delete
