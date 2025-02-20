@@ -48,6 +48,7 @@ import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
@@ -456,7 +457,7 @@ public class IdentityMappingViewTypeTest {
 		}
 
 		private VitruviusChange<HierarchicalId> assignIds(VitruviusChange<EObject> change) {
-			VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolver
+			VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolverFactory
 					.forHierarchicalIds(viewResourceSet);
 			return idChangeResolver.assignIds(change);
 		}

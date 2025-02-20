@@ -1,7 +1,7 @@
 package tools.vitruv.framework.views.impl
 
 import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.change.composite.description.VitruviusChangeResolver
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.framework.views.CommittableView
 import tools.vitruv.framework.views.View
@@ -41,7 +41,7 @@ class ChangeRecordingView implements ModifiableView, CommittableView {
     override commitChanges() {
         view.checkNotClosed()
         val recordedChange = changeRecorder.endRecording()
-        val changeResolver = VitruviusChangeResolver.forHierarchicalIds(view.viewResourceSet)
+        val changeResolver = VitruviusChangeResolverFactory.forHierarchicalIds(view.viewResourceSet)
         val unresolvedChanges = changeResolver.assignIds(recordedChange)
         view.viewType.commitViewChanges(this, unresolvedChanges)
         view.viewChanged = false

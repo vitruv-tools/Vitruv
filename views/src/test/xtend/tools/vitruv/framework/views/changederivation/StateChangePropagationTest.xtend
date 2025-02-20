@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Named
 import org.junit.jupiter.api.^extension.ExtendWith
 import pcm_mockup.Repository
 import tools.vitruv.change.composite.description.VitruviusChange
-import tools.vitruv.change.composite.description.VitruviusChangeResolver
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory
 import tools.vitruv.change.composite.recording.ChangeRecorder
 import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.change.testutils.TestLogging
@@ -101,7 +101,7 @@ abstract class StateChangePropagationTest {
 		val deltaBasedChange = resourceSet.endRecording
 		val unresolvedStateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
 		assertNotNull(unresolvedStateBasedChange)
-		val stateBasedChange = VitruviusChangeResolver.forHierarchicalIds(checkpoint.resourceSet).resolveAndApply(unresolvedStateBasedChange)
+		val stateBasedChange = VitruviusChangeResolverFactory.forHierarchicalIds(checkpoint.resourceSet).resolveAndApply(unresolvedStateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
 		val deltaBasedChangedObjects = deltaBasedChange.affectedAndReferencedEObjects
