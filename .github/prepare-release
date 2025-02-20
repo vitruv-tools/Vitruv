@@ -9,13 +9,16 @@ then
     return 1
 fi
 
+vitruv_property_name="vitruv-change.version"
+
 git switch -C prepare-release/$1 || exit 1
 
 set_version_and_commit() {
     ./mvnw versions:set -DnewVersion=$1 -DgenerateBackupPoms=false || return 1
+    ./mvnw versions:set-property -Dproperty=$vitruv_property_name -DnewVersion=$1 -DgenerateBackupPoms=false || return 1
 
     git add pom.xml || return 1
-    git add "**/pom.xml" 2> /dev/null
+    git add "**/pom.xml" 2> /dev/null || return 1
 
     git commit -m "$2" || return 1
 }
