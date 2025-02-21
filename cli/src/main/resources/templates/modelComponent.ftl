@@ -3,3 +3,4 @@
         srcPath = "platform:/resource/target/internal/target/generated-sources/ecore"
         generateCustomClasses = false   
     }
+    
