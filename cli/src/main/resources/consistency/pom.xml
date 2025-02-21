@@ -109,7 +109,7 @@
                     </dependency>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>tools.vitruv.methodologisttemplate.model</artifactId>
+                        <artifactId>tools.vitruv.cli.model</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
