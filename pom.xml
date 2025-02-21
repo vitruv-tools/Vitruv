@@ -44,7 +44,7 @@
   </modules>
 
   <properties>
-    <vitruv-change.version>3.1.2</vitruv-change.version>
+    <vitruv-change.version>3.2.0-SNAPSHOT</vitruv-change.version>
     <!-- SonarQube configuration -->
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.organization>vitruv-tools</sonar.organization>
@@ -191,4 +191,18 @@
     </dependencies>
   </dependencyManagement>
 
+  <repositories>
+    <!-- allow snapshots -->
+    <repository>
+      <id>ossrh-snapshots</id>
+      <name>OSSRH Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>

@@ -28,6 +28,7 @@ import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel;
@@ -44,7 +45,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	private final PersistableCorrespondenceModel correspondenceModel;
 	private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
 	private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
-	private final VitruviusChangeResolver<Uuid> changeResolver = VitruviusChangeResolver.forUuids(uuidResolver);
+	private final VitruviusChangeResolver<Uuid> changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver);
 
 	private final VsumFileSystemLayout fileSystemLayout;
 

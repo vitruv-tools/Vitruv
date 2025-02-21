@@ -12,7 +12,7 @@ import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.change.composite.description.VitruviusChangeResolver
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory
 import tools.vitruv.change.composite.recording.ChangeRecorder
 
 import static com.google.common.base.Preconditions.checkArgument
@@ -94,7 +94,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
             changeRecorder.addToRecording(resource)
             function.apply()
             val recordedChanges = changeRecorder.endRecording
-            val changeResolver = VitruviusChangeResolver.forHierarchicalIds(resource.resourceSet)
+            val changeResolver = VitruviusChangeResolverFactory.forHierarchicalIds(resource.resourceSet)
             return changeResolver.assignIds(recordedChanges)
         }
     }

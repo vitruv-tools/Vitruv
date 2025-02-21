@@ -35,7 +35,7 @@ import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.root.RootFactory;
 import tools.vitruv.change.atomic.root.RootPackage;
 import tools.vitruv.change.composite.description.VitruviusChange;
-import tools.vitruv.change.composite.description.VitruviusChangeResolver;
+import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
@@ -211,7 +211,7 @@ public class ChangeDerivingViewTest {
 				view.commitChanges();
 				verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 				assertThat(viewArgument.getValue(), is(view));
-				VitruviusChange<EObject> change = VitruviusChangeResolver.forHierarchicalIds(root.eResource().getResourceSet()).resolveAndApply(changeArgument.getValue());
+				VitruviusChange<EObject> change = VitruviusChangeResolverFactory.forHierarchicalIds(root.eResource().getResourceSet()).resolveAndApply(changeArgument.getValue());
 				InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
 				expectedChange.setNewValue(root);
 				expectedChange.setUri(testResourceUriString);
