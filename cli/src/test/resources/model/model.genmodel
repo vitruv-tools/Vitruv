@@ -7,7 +7,7 @@
   creationIcons="false"
   modelPluginID="tools.vitruv.methodologisttemplate.model" modelName="Model"
   rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-  codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="17.0"
+  codeFormatting="true" importerID="org.eclipse.emf.importer.ecore"
   copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>model.ecore</foreignModel>
   <testsDirectory xsi:nil="true" />

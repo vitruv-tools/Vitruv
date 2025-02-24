@@ -65,6 +65,10 @@
       <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
       <version>${project.version}</version>

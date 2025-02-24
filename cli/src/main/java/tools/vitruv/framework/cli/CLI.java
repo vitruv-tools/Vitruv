@@ -4,16 +4,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+
 import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.cli.options.FolderOption;
 import tools.vitruv.framework.cli.options.MetamodelOption;
-import tools.vitruv.framework.cli.options.PackageOption;
 import tools.vitruv.framework.cli.options.ReactionOption;
 import tools.vitruv.framework.cli.options.UserInteractorOption;
 import tools.vitruv.framework.cli.options.VitruvCLIOption;
@@ -31,7 +32,6 @@ public class CLI {
     options.addOption(new FolderOption());
     options.addOption(new UserInteractorOption());
     options.addOption(new ReactionOption());
-    options.addOption(new PackageOption());
     CommandLineParser parser = new DefaultParser();
     VitruvConfiguration configuration = new VitruvConfiguration();
 
@@ -107,11 +107,10 @@ public class CLI {
         new File((configuration.getLocalPath() + "/model/pom.xml").replaceAll("\\s", "")),
         configuration.getPackageName());
     GenerateFromTemplate.generateProjectFile(
-        new File((configuration.getLocalPath() + "/.project").replaceAll("\\s", "")),
+        new File((configuration.getLocalPath() + "/model/.project").replaceAll("\\s", "")),
         configuration.getPackageName());
-    File workflow =
-        new File(
-            (configuration.getLocalPath() + "/model/workflow/generate.mwe2").replaceAll("\\s", ""));
+    File workflow = new File(
+        (configuration.getLocalPath() + "/model/workflow/generate.mwe2").replaceAll("\\s", ""));
     configuration.setWorkflow(workflow);
     GenerateFromTemplate.generateMwe2(
         workflow, configuration.getMetaModelLocations(), configuration);
@@ -120,4 +119,5 @@ public class CLI {
         configuration,
         configuration.getMetaModelLocations());
   }
+
 }

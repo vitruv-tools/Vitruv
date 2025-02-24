@@ -1,9 +1,5 @@
 package tools.vitruv.framework.cli;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,12 +8,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
 import tools.vitruv.framework.cli.configuration.MetamodelLocation;
 import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.cli.options.FileUtils;
 
 public final class GenerateFromTemplate {
-  private GenerateFromTemplate() {}
+  private GenerateFromTemplate() {
+  }
 
   private static Configuration getConfiguration() throws IOException {
     Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
@@ -46,7 +48,7 @@ public final class GenerateFromTemplate {
     Configuration cfg = getConfiguration();
 
     Map<String, Object> data = new HashMap<>();
-    data.put("packageName", packageName);
+    data.put("packageName", packageName.replaceAll("\\s", ""));
 
     Template template = null;
     try {
@@ -61,7 +63,7 @@ public final class GenerateFromTemplate {
     Configuration cfg = getConfiguration();
 
     Map<String, Object> data = new HashMap<>();
-    data.put("packageName", packageName);
+    data.put("packageName", packageName.replaceAll("\\s", ""));
 
     Template template = null;
     try {
@@ -114,7 +116,8 @@ public final class GenerateFromTemplate {
               "targetDir",
               config.getLocalPath().toString().replaceAll("\\s", ""),
               "modelName",
-              model.genmodel().getName()));
+              model.genmodel().getName(),
+              "packageName", config.getPackageName().replaceAll("\\s", "").concat(".model")));
     }
     // Load template
     Template template = null;
@@ -140,7 +143,7 @@ public final class GenerateFromTemplate {
               "packageName",
               config.getPackageName(),
               "modelUri",
-              model.genmodel().toURI().toString(),
+              model.genmodelUri(),
               "modelNameCap",
               model.genmodel().getName().substring(0, 1).toUpperCase()
                   + model

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.IntStream;
+
 import org.apache.commons.cli.CommandLine;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -16,6 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+
 import tools.vitruv.framework.cli.configuration.MetamodelLocation;
 import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
@@ -23,8 +25,7 @@ import tools.vitruv.framework.vsum.VirtualModelBuilder;
 public class MetamodelOption extends VitruvCLIOption {
   // resource/tools.vitruv.methodologisttemplate.model/src/main/ecore/model.genmodel
   public static final String SUBFOLDER = "/model/src/main/ecore/";
-  public static final String WORKFLOW_CONFIGURATION_STRING =
-      """
+  public static final String WORKFLOW_CONFIGURATION_STRING = """
         component = EcoreGenerator {
           genModel = \"platform:/resource/%s\"
           srcPath = \"platform:/resource/%s/target/generated-sources/ecore\"
@@ -52,8 +53,7 @@ public class MetamodelOption extends VitruvCLIOption {
       String genmodelPath = modelPaths.split(",")[1];
       File metamodel = FileUtils.copyFile(metamodelPath, getPath(cmd, builder), SUBFOLDER);
       File genmodel = FileUtils.copyFile(genmodelPath, getPath(cmd, builder), SUBFOLDER);
-
-      // getting the URI from the  genmodels
+      // getting the URI from the genmodels
       Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
       reg.getExtensionToFactoryMap().put("ecore", new XMIResourceFactoryImpl());
       ResourceSet resourceSet = new ResourceSetImpl();
@@ -98,9 +98,9 @@ public class MetamodelOption extends VitruvCLIOption {
       File metamodel, File genmodel, VitruvConfiguration configuration) {
     System.out.println(
         String.format(
-                WORKFLOW_CONFIGURATION_STRING,
-                Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()),
-                configuration.getLocalPath())
+            WORKFLOW_CONFIGURATION_STRING,
+            Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()),
+            configuration.getLocalPath())
             .replace("\\", "/"));
     try {
       List<String> alines = Files.readAllLines(configuration.getWorkflow().toPath());
@@ -114,9 +114,9 @@ public class MetamodelOption extends VitruvCLIOption {
                   .replaceFirst(
                       "#",
                       String.format(
-                              WORKFLOW_CONFIGURATION_STRING,
-                              Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()),
-                              configuration.getLocalPath())
+                          WORKFLOW_CONFIGURATION_STRING,
+                          Path.of(new File("").getAbsolutePath()).relativize(genmodel.toPath()),
+                          configuration.getLocalPath())
                           .replace("\\", "/")));
         }
         Files.write(
@@ -132,4 +132,5 @@ public class MetamodelOption extends VitruvCLIOption {
   public void prepare(CommandLine cmd, VitruvConfiguration configuration) {
     configuration.setMetaModelLocations(cmd.getOptionValue(getOpt()));
   }
+
 }

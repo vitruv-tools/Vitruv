@@ -6,7 +6,7 @@
   modelDirectory="/tools.vitruv.methodologisttemplate.model/target/generated-sources/ecore"
   modelPluginID="tools.vitruv.methodologisttemplate.model" modelName="Model2"
   rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-  importerID="org.eclipse.emf.importer.ecore" complianceLevel="17.0" copyrightFields="false"
+  importerID="org.eclipse.emf.importer.ecore" copyrightFields="false"
   operationReflection="true" importOrganizing="true">
   <foreignModel>model2.ecore</foreignModel>
   <genPackages prefix="Model2" basePackage="tools.vitruv.methodologisttemplate.model"
