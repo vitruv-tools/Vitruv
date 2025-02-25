@@ -47,6 +47,7 @@
 
   <properties>
     <vitruv-change.version>3.1.2</vitruv-change.version>
+    <vitruv-dsls.version>3.1.2</vitruv-dsls.version>
     <!-- SonarQube configuration -->
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.organization>vitruv-tools</sonar.organization>
@@ -106,6 +107,11 @@
         <groupId>tools.vitruv</groupId>
         <artifactId>tools.vitruv.change.utils</artifactId>
         <version>${vitruv-change.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.dsls.reactions.runtime</artifactId>
+        <version>${vitruv-dsls.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.vitruv</groupId>
