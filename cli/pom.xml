@@ -28,6 +28,11 @@
       <artifactId>tools.vitruv.framework.vsum</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.framework.remote</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <!-- Vitruvius dependencies -->
     <dependency>

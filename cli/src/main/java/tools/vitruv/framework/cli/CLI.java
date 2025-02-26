@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -16,9 +17,18 @@ import tools.vitruv.framework.cli.configuration.VitruvConfiguration;
 import tools.vitruv.framework.cli.options.FolderOption;
 import tools.vitruv.framework.cli.options.MetamodelOption;
 import tools.vitruv.framework.cli.options.ReactionOption;
+import tools.vitruv.framework.cli.options.ServerOption;
 import tools.vitruv.framework.cli.options.UserInteractorOption;
 import tools.vitruv.framework.cli.options.VitruvCLIOption;
+import tools.vitruv.framework.views.ViewType;
+import tools.vitruv.framework.views.ViewTypeFactory;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.views.View;
+import tools.vitruv.framework.views.CommittableView;
+import tools.vitruv.framework.views.ViewSelector;
+import tools.vitruv.framework.remote.server.VitruvServer;
 
 public class CLI {
 
@@ -32,6 +42,7 @@ public class CLI {
     options.addOption(new FolderOption());
     options.addOption(new UserInteractorOption());
     options.addOption(new ReactionOption());
+    options.addOption(new ServerOption());
     CommandLineParser parser = new DefaultParser();
     VitruvConfiguration configuration = new VitruvConfiguration();
 
@@ -88,7 +99,25 @@ public class CLI {
                 + option.getValuesList());
         ((VitruvCLIOption) option).postBuild(line, builder, configuration);
       }
-      System.out.println(builder.buildAndInitialize());
+
+      if(configuration.isServer()) {
+        VitruvServer server = new VitruvServer(() ->{
+          builder.withViewType(ViewTypeFactory.createIdentityMappingViewType("test"));
+          InternalVirtualModel model = builder.buildAndInitialize();
+          return model;
+        }, configuration.getPort());
+        server.start();
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
+        while((input = scanner.nextLine()) != "quit") {}
+        server.stop();
+      } else {
+        VirtualModel model = builder.buildAndInitialize();
+        ViewSelector selector = model.createSelector(ViewTypeFactory.createIdentityMappingViewType("test"));
+        View view = selector.createView();
+      }
+      
+      
     } catch (ParseException exp) {
       System.out.println("Parsing failed.  Reason: " + exp.getMessage());
     } catch (IOException | InterruptedException e) {

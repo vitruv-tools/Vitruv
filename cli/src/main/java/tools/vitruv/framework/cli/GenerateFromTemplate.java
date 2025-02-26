@@ -38,7 +38,6 @@ public final class GenerateFromTemplate {
     try (Writer fileWriter = new FileWriter(filePath.getAbsolutePath(), false)) {
       template.process(data, fileWriter);
       fileWriter.flush();
-      System.out.println("writing to " + filePath.getAbsolutePath());
     } catch (TemplateException e) {
       e.printStackTrace();
     }

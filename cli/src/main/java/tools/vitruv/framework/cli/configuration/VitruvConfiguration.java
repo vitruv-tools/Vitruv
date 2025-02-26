@@ -17,6 +17,24 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 public class VitruvConfiguration {
   private Path localPath;
   private String packageName;
+  private boolean server;
+  private int port;
+
+  public int getPort() {
+    return port;
+  }
+
+  public void setPort(int port) {
+    this.port = port;
+  }
+
+  public boolean isServer() {
+    return server;
+  }
+
+  public void setServer(boolean server) {
+    this.server = server;
+  }
 
   public Path getLocalPath() {
     return localPath;

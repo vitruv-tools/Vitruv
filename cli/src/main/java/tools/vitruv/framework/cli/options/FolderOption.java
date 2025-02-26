@@ -20,7 +20,7 @@ public class FolderOption extends VitruvCLIOption {
   @Override
   public VirtualModelBuilder applyInternal(CommandLine cmd, VirtualModelBuilder builder,
       VitruvConfiguration configuration) {
-    return builder.withStorageFolder(Path.of(configuration.getLocalPath() + "data/"));
+    return builder.withStorageFolder(Path.of(configuration.getLocalPath() + "/virtualmodel/"));
   }
 
   @Override

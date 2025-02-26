@@ -2,25 +2,17 @@ package tools.vitruv.framework.cli.options;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
-
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.Enumeration;
-
-import tools.vitruv.framework.cli.CLI;
 import tools.vitruv.framework.cli.configuration.CustomClassLoader;
 
 public final class FileUtils {
 
-  public static final CustomClassLoader CLASS_LOADER = new CustomClassLoader(new URL[]{}, FileUtils.class.getClassLoader().getSystemClassLoader());
+  public static final CustomClassLoader CLASS_LOADER = new CustomClassLoader(new URL[] {},
+      ClassLoader.getSystemClassLoader());
 
   public static File copyFile(String filePath, Path folderPath, String relativeSubfolder) {
     File source;
@@ -63,17 +55,11 @@ public final class FileUtils {
   public static void createFile(String filePath) {
     File file = new File(filePath);
     try {
-      // Ensure the directory exists
       File parentDir = file.getParentFile();
       if (parentDir != null && !parentDir.exists()) {
         parentDir.mkdirs();
       }
-      // Create the file
-      if (file.createNewFile()) {
-        System.out.println("File created: " + file.getAbsolutePath());
-      } else {
-        System.out.println("File already exists: " + file.getAbsolutePath());
-      }
+      file.createNewFile();
     } catch (IOException e) {
       System.out.println("An error occurred while creating the file: " + e.getMessage());
       e.printStackTrace();
@@ -82,12 +68,7 @@ public final class FileUtils {
 
   public static Path createNewFolder(Path path, String folder) {
     Path folderPath = Path.of(path.toString() + "/" + folder);
-    File file = folderPath.toFile();
-    if (file.mkdirs()) {
-      System.out.println("Directory created: " + file.getAbsolutePath());
-    } else {
-      System.out.println("Directory already exists: " + file.getAbsolutePath());
-    }
+    folderPath.toFile().mkdirs();
     return folderPath;
   }
 
@@ -106,36 +87,10 @@ public final class FileUtils {
 
   public static void addJarToClassPath(String jarPath) {
     try {
-      URL jarUrl = new URL("file:///"+jarPath);
+      URL jarUrl = new URL("file:///" + jarPath);
       CLASS_LOADER.addJar(jarUrl);
     } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    try {
-      // Open the JAR file
-      JarFile jarFile = new JarFile(new File(jarPath));
-      
-      // Get the entries in the JAR file
-      Enumeration<JarEntry> entries = jarFile.entries();
-      
-      // Iterate through the entries
-      while (entries.hasMoreElements()) {
-          JarEntry entry = entries.nextElement();
-          
-          // Check if the entry is a class file
-          if (entry.getName().endsWith(".class")) {
-              // Print the class name
-              String className = entry.getName().replace("/", ".").replace(".class", "");
-              System.out.println(className);
-          }
-      }
-      
-      // Close the JAR file
-      jarFile.close();
-  } catch (IOException e) {
       e.printStackTrace();
+    }
   }
-
-}
 }
