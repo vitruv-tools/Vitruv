@@ -110,6 +110,21 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  run-checkstyle:
+    name: checkstyle check
+    runs-on: ubuntu-latest
+    needs: [verify]
+    if: (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]')
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dbelyaev/action-checkstyle@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          checkstyle_config: checkstyle.xml
+
   deploy-snapshot:
     name: Deploy snapshot
     runs-on: ubuntu-latest
