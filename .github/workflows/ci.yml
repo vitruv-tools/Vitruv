@@ -118,13 +118,15 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - uses: actions/checkout@v4
-      - uses: dbelyaev/action-checkstyle@master
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run checkstyle
+        uses: dbelyaev/action-checkstyle@v1.17.5
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           checkstyle_config: checkstyle.xml
-          level: warning
+          checkstyle_version: "10.21.4"
 
   deploy-snapshot:
     name: Deploy snapshot
