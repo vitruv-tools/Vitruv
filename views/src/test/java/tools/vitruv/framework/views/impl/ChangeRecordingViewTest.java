@@ -49,17 +49,20 @@ import tools.vitruv.change.testutils.TestLogging;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
+/** Tests for the {@link ChangeRecordingView} class. */
 @ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class ChangeRecordingViewTest {
   @Mock ViewCreatingViewType<?, HierarchicalId> mockViewType;
   @Mock ChangeableViewSource mockChangeableViewSource;
   @Mock ModifiableViewSelection mockViewSelection;
 
+  /** Initialize the mocks before each test. */
   @BeforeEach
   public void initializeMocks() {
     MockitoAnnotations.openMocks(this);
   }
 
+  /** Tests for the constructor of the {@link ChangeRecordingView} class. */
   @Nested
   @DisplayName("initialize")
   public class Initialize {
@@ -81,6 +84,7 @@ public class ChangeRecordingViewTest {
     }
   }
 
+  /** Tests for the {@link ChangeRecordingView#modifyContents(Consumer)} method. */
   @Nested
   @DisplayName("retrieve roots")
   public class RetrieveRootElements {
@@ -139,7 +143,7 @@ public class ChangeRecordingViewTest {
     }
   }
 
-  /** */
+  /** Tests for the {@link ChangeRecordingView#modifyContents(Consumer)} method. */
   @Nested
   @DisplayName("update")
   public class Update {
