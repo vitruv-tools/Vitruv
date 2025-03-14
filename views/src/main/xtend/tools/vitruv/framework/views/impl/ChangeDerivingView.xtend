@@ -62,7 +62,11 @@ class ChangeDerivingView implements ModifiableView, CommittableView {
         allResources.addAll(view.viewResourceSet.resources) // consider newly added resources
         for (changedResource : allResources.filter[!URI.isPathmap]) {
             val change = generateChange(changedResource, originalStateResourceMapping.get(changedResource))
-            changes += change
+            if(change.containsConcreteChange) {
+                // only add changes that can be propagated, i.e., that are not empty 
+                // (see https://github.com/vitruv-tools/Vitruv/issues/717)
+                changes += change
+            }
         }
         val change = VitruviusChangeFactory.instance.createCompositeChange(changes)
         view.viewType.commitViewChanges(this, change)
