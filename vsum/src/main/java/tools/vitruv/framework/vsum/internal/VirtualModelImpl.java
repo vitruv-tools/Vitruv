@@ -7,12 +7,10 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.PropagatedChange;
@@ -30,155 +28,179 @@ import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
+/** The implementation of the {@link InternalVirtualModel} interface. */
 public class VirtualModelImpl implements InternalVirtualModel {
-	private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
 
-	private final ModelRepository resourceRepository;
-	private final ViewTypeProvider viewTypeRepository;
-	private final VsumFileSystemLayout fileSystemLayout;
-	private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
+  private final ModelRepository resourceRepository;
+  private final ViewTypeProvider viewTypeRepository;
+  private final VsumFileSystemLayout fileSystemLayout;
+  private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
 
-	private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
-	private final InternalUserInteractor userInteractor;
-	private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
+  private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
+  private final InternalUserInteractor userInteractor;
+  private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
 
-	public VirtualModelImpl(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
-			ViewTypeRepository viewTypeRepository,
-			ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
-		this.fileSystemLayout = fileSystemLayout;
-		this.viewTypeRepository = viewTypeRepository;
-		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout);
+  /**
+   * Creates a new instance of the {@link VirtualModelImpl} class.
+   *
+   * @param fileSystemLayout The file system layout of the virtual model.
+   * @param userInteractor The user interactor.
+   * @param viewTypeRepository The view type repository.
+   * @param changePropagationSpecificationProvider The change propagation specification provider.
+   */
+  public VirtualModelImpl(
+      VsumFileSystemLayout fileSystemLayout,
+      InternalUserInteractor userInteractor,
+      ViewTypeRepository viewTypeRepository,
+      ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
+    this.fileSystemLayout = fileSystemLayout;
+    this.viewTypeRepository = viewTypeRepository;
+    resourceRepository = new ResourceRepositoryImpl(fileSystemLayout);
 
-		this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
-		this.userInteractor = userInteractor;
-	}
+    this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
+    this.userInteractor = userInteractor;
+  }
 
-	public void loadExistingModels() {
-		resourceRepository.loadExistingModels();
-	}
+  /** Loads the existing models of the virtual model. */
+  public void loadExistingModels() {
+    resourceRepository.loadExistingModels();
+  }
 
-	@Override
-	public synchronized EditableCorrespondenceModelView<Correspondence> getCorrespondenceModel() {
-		return resourceRepository.getCorrespondenceModel();
-	}
+  @Override
+  public synchronized EditableCorrespondenceModelView<Correspondence> getCorrespondenceModel() {
+    return resourceRepository.getCorrespondenceModel();
+  }
 
-	@Override
-	public synchronized ModelInstance getModelInstance(URI modelUri) {
-		return resourceRepository.getModel(modelUri);
-	}
-	
-	@Override
-	public UuidResolver getUuidResolver() {
-		return resourceRepository.getUuidResolver();
-	}
+  @Override
+  public synchronized ModelInstance getModelInstance(URI modelUri) {
+    return resourceRepository.getModel(modelUri);
+  }
 
-	private synchronized void save() {
-		resourceRepository.saveOrDeleteModels();
-	}
+  @Override
+  public UuidResolver getUuidResolver() {
+    return resourceRepository.getUuidResolver();
+  }
 
-	@Override
-	public synchronized List<PropagatedChange> propagateChange(VitruviusChange<Uuid> change) {
-		checkNotNull(change, "change to propagate");
-		checkArgument(change.containsConcreteChange(), "This change contains no concrete change:%s%s",
-				System.lineSeparator(), change);
+  private synchronized void save() {
+    resourceRepository.saveOrDeleteModels();
+  }
 
-		LOGGER.info("Starting change propagation");
-		startChangePropagation(change);
+  @Override
+  public synchronized List<PropagatedChange> propagateChange(VitruviusChange<Uuid> change) {
+    checkNotNull(change, "change to propagate");
+    checkArgument(
+        change.containsConcreteChange(),
+        "This change contains no concrete change:%s%s",
+        System.lineSeparator(),
+        change);
 
-		ChangePropagator changePropagator = new ChangePropagator(resourceRepository,
-				changePropagationSpecificationProvider, userInteractor, changePropagationMode);
-		List<PropagatedChange> result = changePropagator.propagateChange(change);
-		save();
+    LOGGER.info("Starting change propagation");
+    startChangePropagation(change);
 
-		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("Propagated changes: " + result);
-		}
+    ChangePropagator changePropagator =
+        new ChangePropagator(
+            resourceRepository,
+            changePropagationSpecificationProvider,
+            userInteractor,
+            changePropagationMode);
+    List<PropagatedChange> result = changePropagator.propagateChange(change);
+    save();
 
-		finishChangePropagation(change, result);
-		LOGGER.info("Finished change propagation");
-		return result;
-	}
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace("Propagated changes: " + result);
+    }
 
-	private void startChangePropagation(VitruviusChange<Uuid> change) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Started synchronizing change: " + change);
-		}
-		changePropagationListeners.stream().forEach(it -> it.startedChangePropagation(change));
-	}
+    finishChangePropagation(change, result);
+    LOGGER.info("Finished change propagation");
+    return result;
+  }
 
-	private void finishChangePropagation(VitruviusChange<Uuid> inputChange, Iterable<PropagatedChange> generatedChanges) {
-		changePropagationListeners.stream().forEach(it -> it.finishedChangePropagation(generatedChanges));
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Finished synchronizing change: " + inputChange);
-		}
-	}
+  private void startChangePropagation(VitruviusChange<Uuid> change) {
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Started synchronizing change: " + change);
+    }
+    changePropagationListeners.stream().forEach(it -> it.startedChangePropagation(change));
+  }
 
-	@Override
-	public Path getFolder() {
-		return fileSystemLayout.getVsumProjectFolder();
-	}
+  private void finishChangePropagation(
+      VitruviusChange<Uuid> inputChange, Iterable<PropagatedChange> generatedChanges) {
+    changePropagationListeners.stream()
+        .forEach(it -> it.finishedChangePropagation(generatedChanges));
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Finished synchronizing change: " + inputChange);
+    }
+  }
 
-	/**
-	 * Registers the given {@link ChangePropagationListener}. The listener must not
-	 * be <code>null</code>.
-	 */
-	@Override
-	public synchronized void addChangePropagationListener(ChangePropagationListener propagationListener) {
-		this.changePropagationListeners.add(checkNotNull(propagationListener, "propagationListener"));
-	}
+  @Override
+  public Path getFolder() {
+    return fileSystemLayout.getVsumProjectFolder();
+  }
 
-	/**
-	 * Unregisters the given {@link ChangePropagationListener}. The listener must
-	 * not be <code>null</code>.
-	 */
-	@Override
-	public synchronized void removeChangePropagationListener(ChangePropagationListener propagationListener) {
-		this.changePropagationListeners.remove(checkNotNull(propagationListener, "propagationListener"));
-	}
+  /**
+   * Registers the given {@link ChangePropagationListener}. The listener must not be <code>null
+   * </code>.
+   */
+  @Override
+  public synchronized void addChangePropagationListener(
+      ChangePropagationListener propagationListener) {
+    this.changePropagationListeners.add(checkNotNull(propagationListener, "propagationListener"));
+  }
 
-	/**
-	 * Returns the name of the virtual model.
-	 * 
-	 * @return The name of the virtual model
-	 */
-	public String getName() {
-		return getFolder().getFileName().toString();
-	}
+  /**
+   * Unregisters the given {@link ChangePropagationListener}. The listener must not be <code>null
+   * </code>.
+   */
+  @Override
+  public synchronized void removeChangePropagationListener(
+      ChangePropagationListener propagationListener) {
+    this.changePropagationListeners.remove(
+        checkNotNull(propagationListener, "propagationListener"));
+  }
 
-	@Override
-	public void dispose() {
-		try {
-			resourceRepository.close();
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-		VirtualModelRegistry.getInstance().deregisterVirtualModel(this);
-	}
+  /**
+   * Returns the name of the virtual model.
+   *
+   * @return The name of the virtual model
+   */
+  public String getName() {
+    return getFolder().getFileName().toString();
+  }
 
-	@Override
-	public Collection<Resource> getViewSourceModels() {
-		return resourceRepository.getModelResources();
-	}
+  @Override
+  public void dispose() {
+    try {
+      resourceRepository.close();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+    VirtualModelRegistry.getInstance().deregisterVirtualModel(this);
+  }
 
-	@Override
-	public Collection<ViewType<?>> getViewTypes() {
-		return viewTypeRepository.getViewTypes();
-	}
+  @Override
+  public Collection<Resource> getViewSourceModels() {
+    return resourceRepository.getModelResources();
+  }
 
-	@Override
-	public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
-		/*
-		 * Note that ViewType.createSelector() accepts a ChangeableViewSource, which
-		 * VirtualModelImpl implements but not its publicly used interface VitualModel.
-		 * Thus calling viewType.createSelector(virtualModel) with virtualModel having
-		 * the static type VirtualModel is not possible, i.e., this method hides
-		 * implementation details and is not a convenience method.
-		 */
-		return viewType.createSelector(this);
-	}
+  @Override
+  public Collection<ViewType<?>> getViewTypes() {
+    return viewTypeRepository.getViewTypes();
+  }
 
-	@Override
-	public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
-		this.changePropagationMode = changePropagationMode;
-	}
+  @Override
+  public <S extends ViewSelector> S createSelector(ViewType<S> viewType) {
+    /*
+     * Note that ViewType.createSelector() accepts a ChangeableViewSource, which
+     * VirtualModelImpl implements but not its publicly used interface VitualModel.
+     * Thus calling viewType.createSelector(virtualModel) with virtualModel having
+     * the static type VirtualModel is not possible, i.e., this method hides
+     * implementation details and is not a convenience method.
+     */
+    return viewType.createSelector(this);
+  }
+
+  @Override
+  public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
+    this.changePropagationMode = changePropagationMode;
+  }
 }
