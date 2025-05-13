@@ -42,6 +42,7 @@ import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribut
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.atomic.uuid.UuidResolverFactory;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
@@ -395,7 +396,7 @@ public class IdentityMappingViewTypeTest {
       this.view = mock(ModifiableView.class);
       this.viewSource = mock(ChangeableViewSource.class);
       this.viewSelection = mock(ViewSelection.class);
-      this.uuidResolver = UuidResolver.create(viewSourceResourceSet);
+      this.uuidResolver = UuidResolverFactory.create(viewSourceResourceSet);
       when(view.getViewSource()).thenReturn(viewSource);
       when(view.getSelection()).thenReturn(viewSelection);
       when(viewSource.getViewSourceModels()).thenReturn(viewSourceResourceSet.getResources());
