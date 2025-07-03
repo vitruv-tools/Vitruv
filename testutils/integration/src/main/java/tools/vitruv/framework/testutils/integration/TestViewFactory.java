@@ -1,4 +1,4 @@
-package tools.vitruv.framework.testutils.view;
+package tools.vitruv.framework.testutils.integration;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
