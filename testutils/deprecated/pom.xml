@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.testutils.deprecated</artifactId>
 
   <name>DEPRECATED Vitruv Framework Test Utilities</name>
-  <description />
+  <description>Deprecated test utilities</description>
 
   <build>
     <plugins>
