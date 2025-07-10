@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.vsum</artifactId>
 
   <name>Vitruv V-SUM definition</name>
-  <description>vsum creation</description>
+  <description>Vsum creation</description>
 
   <build>
     <plugins>
