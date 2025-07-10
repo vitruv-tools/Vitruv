@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.applications</artifactId>
 
   <name>Vitruv Framework Applications Specification</name>
-  <description />
+  <description>Model integration, and change propagation</description>
 
   <build>
     <plugins>
