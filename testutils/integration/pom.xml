@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.testutils.integration</artifactId>
 
   <name>Vitruv Framework Integration Test Utilities for Views and V-SUMs</name>
-  <description />
+  <description>Test utilities integration for the whole project</description>
 
   <build>
     <plugins>

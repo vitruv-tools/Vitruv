@@ -14,7 +14,7 @@
   <artifactId>tools.vitruv.framework.views</artifactId>
 
   <name>Vitruv View Definition</name>
-  <description />
+  <description>view definition package</description>
 
   <build>
     <plugins>

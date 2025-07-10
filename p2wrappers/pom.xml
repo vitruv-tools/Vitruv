@@ -15,7 +15,7 @@
   <packaging>pom</packaging>
 
   <name>p2 Dependency Wrappers</name>
-  <description />
+  <description>pw wrapper dependencies</description>
 
   <modules>
     <module>activextendannotations</module>
