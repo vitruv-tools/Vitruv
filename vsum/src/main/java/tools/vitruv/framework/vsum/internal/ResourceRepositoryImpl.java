@@ -162,7 +162,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   @Override
   public void saveOrDeleteModels() {
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Saving all models of model repository for VSUM " + fileSystemLayout);
+      LOGGER.debug("Saving all models of model repository for VSUM {}", fileSystemLayout);
     }
     Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
         modelInstances.entrySet().iterator();
