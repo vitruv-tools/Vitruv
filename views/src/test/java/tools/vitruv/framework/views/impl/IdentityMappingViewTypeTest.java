@@ -63,21 +63,21 @@ public class IdentityMappingViewTypeTest {
   class Initialize {
     @Test
     @DisplayName("with proper name")
-    public void withName() {
+    void withName() {
       ViewType<?> viewType = new IdentityMappingViewType("name");
       assertThat(viewType.getName(), is("name"));
     }
 
     @Test
     @DisplayName("with empty name")
-    public void withEmptyName() {
+    void withEmptyName() {
       ViewType<?> viewType = new IdentityMappingViewType("");
       assertThat(viewType.getName(), is(""));
     }
 
     @Test
     @DisplayName("with null name")
-    public void withNullName() {
+    void withNullName() {
       assertThrows(IllegalArgumentException.class, () -> new IdentityMappingViewType(null));
     }
   }
@@ -94,7 +94,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("for empty source")
-    public void forEmptySource() {
+    void forEmptySource() {
       DirectViewElementSelector<HierarchicalId> selector =
           basicViewType.createSelector(mock(ChangeableViewSource.class));
       assertThat(selector.getSelectableElements(), is(emptySet()));
@@ -102,7 +102,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("for source containing single element")
-    public void forSourceContainingElement() {
+    void forSourceContainingElement() {
       Resource resource =
           withGlobalFactories(new ResourceSetImpl())
               .createResource(URI.createURI("test:///test.aet"));
@@ -116,7 +116,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("for source containing non-root elements")
-    public void forSourceContainingNonRootElements() {
+    void forSourceContainingNonRootElements() {
       Resource resource =
           withGlobalFactories(new ResourceSetImpl())
               .createResource(URI.createURI("test:///test.aet"));
@@ -149,7 +149,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("with empty source")
-    public void withNoElements() throws Exception {
+    void withNoElements() throws Exception {
       ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       try (View view = basicViewType.createView(selector)) {
@@ -159,7 +159,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("with selector from other view type")
-    public void withSelectorFromOtherViewtype() {
+    void withSelectorFromOtherViewtype() {
       ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
       DirectViewElementSelector<HierarchicalId> selector =
           new IdentityMappingViewType("other").createSelector(viewSource);
@@ -168,7 +168,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("with no selected element")
-    public void withNoSelectedElement() throws Exception {
+    void withNoSelectedElement() throws Exception {
       Resource resource = testResourceSet.createResource(URI.createURI("test://test.aet"));
       Root rootElement = aet.Root();
       rootElement.setId("testid");
@@ -183,7 +183,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("with single selected element")
-    public void withSingleSelectedElement() throws Exception {
+    void withSingleSelectedElement() throws Exception {
       Resource resource = testResourceSet.createResource(URI.createURI("test://test.aet"));
       Root rootElement = aet.Root();
       rootElement.setId("testid");
@@ -200,7 +200,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("with one of two elements selected")
-    public void withOneOfTwoElementsSelected() throws Exception {
+    void withOneOfTwoElementsSelected() throws Exception {
       Resource firstResource = testResourceSet.createResource(URI.createURI("test://test.aet"));
       Root firstRootElement = aet.Root();
       firstRootElement.setId("firstElementId");
@@ -221,7 +221,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("with both of two elements selected")
-    public void withBothOfTwoElementsSelected() throws Exception {
+    void withBothOfTwoElementsSelected() throws Exception {
       Root firstRootElement = aet.Root();
       firstRootElement.setId("firstElementId");
       Root secondRootElement = aet.Root();
@@ -252,7 +252,7 @@ public class IdentityMappingViewTypeTest {
      */
     @Test
     @DisplayName("for two resources with containment in between")
-    public void forTwoResourcesWithContainmentInBetween() throws Exception {
+    void forTwoResourcesWithContainmentInBetween() throws Exception {
       Root firstRootElement = aet.Root();
       firstRootElement.setId("firstElementId");
       Root secondRootElement = aet.Root();
@@ -311,7 +311,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("adding a non-root element")
-    public void addingANonRootElement() throws Exception {
+    void addingANonRootElement() throws Exception {
       Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
@@ -332,7 +332,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("adding a root element")
-    public void addingARootElement() throws Exception {
+    void addingARootElement() throws Exception {
       Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
@@ -347,7 +347,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("removing a selected root element")
-    public void removingSelectedRoot() throws Exception {
+    void removingSelectedRoot() throws Exception {
       Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
@@ -361,7 +361,7 @@ public class IdentityMappingViewTypeTest {
 
     @Test
     @DisplayName("removing an unselected root element")
-    public void removingUnselectedRoot() throws Exception {
+    void removingUnselectedRoot() throws Exception {
       Root firstRoot = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       Root secondRoot = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
