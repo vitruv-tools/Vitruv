@@ -314,7 +314,7 @@ public class IdentityMappingViewTypeTest {
     void addingANonRootElement() throws Exception {
       Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
-      selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
+      selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
       try (ModifiableView view = basicViewType.createView(selector)) {
         root.setSingleValuedContainmentEReference(aet.NonRoot());
         assertThat(
@@ -335,7 +335,7 @@ public class IdentityMappingViewTypeTest {
     void addingARootElement() throws Exception {
       Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
-      selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
+      selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
       try (ModifiableView view = basicViewType.createView(selector)) {
         root.setId("secondId");
         Root secondRoot = createResourceWithSingleRoot(URI.createURI("test://test2.aet"));
@@ -350,7 +350,7 @@ public class IdentityMappingViewTypeTest {
     void removingSelectedRoot() throws Exception {
       Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
-      selector.getSelectableElements().forEach((element) -> selector.setSelected(element, true));
+      selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
       try (ModifiableView view = basicViewType.createView(selector)) {
         EcoreUtil.delete(root);
         assertThat(view.getRootObjects().size(), is(1));
