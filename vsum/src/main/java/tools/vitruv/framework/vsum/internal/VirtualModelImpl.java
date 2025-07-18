@@ -108,7 +108,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
     save();
 
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Propagated changes: " + result);
+      LOGGER.trace("Propagated changes: {}", result);
     }
 
     finishChangePropagation(change, result);
@@ -118,7 +118,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
 
   private void startChangePropagation(VitruviusChange<Uuid> change) {
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Started synchronizing change: " + change);
+      LOGGER.debug("Started synchronizing change: {}", change);
     }
     changePropagationListeners.stream().forEach(it -> it.startedChangePropagation(change));
   }
@@ -128,7 +128,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
     changePropagationListeners.stream()
         .forEach(it -> it.finishedChangePropagation(generatedChanges));
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Finished synchronizing change: " + inputChange);
+      LOGGER.debug("Finished synchronizing change: {}", inputChange);
     }
   }
 
