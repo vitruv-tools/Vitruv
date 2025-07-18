@@ -273,12 +273,12 @@ public class IdentityMappingViewTypeTest {
         assertThat(view.getRootObjects(), hasItem(equalsDeeply(secondRootElement)));
         Root rootWithContainment =
             FluentIterable.from(view.getRootObjects(Root.class))
-                .filter((root) -> root.getRecursiveRoot() != null)
+                .filter(root -> root.getRecursiveRoot() != null)
                 .first()
                 .get();
         Root rootWithoutContainment =
             FluentIterable.from(view.getRootObjects(Root.class))
-                .filter((root) -> root.getRecursiveRoot() == null)
+                .filter(root -> root.getRecursiveRoot() == null)
                 .first()
                 .get();
         assertThat(rootWithContainment.getRecursiveRoot(), is(rootWithoutContainment));
