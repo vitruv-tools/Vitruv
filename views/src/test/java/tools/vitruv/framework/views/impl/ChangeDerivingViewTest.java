@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -170,7 +171,7 @@ public class ChangeDerivingViewTest {
       try (ChangeDerivingView view = new ChangeDerivingView(
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
           new DefaultStateBasedChangeResolutionStrategy())) {
-        view.update();
+        assertDoesNotThrow(view::update);
       }
     }
 
