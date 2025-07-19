@@ -167,7 +167,7 @@ public class ChangeRecordingViewTest {
       try (ChangeRecordingView view = new ChangeRecordingView(
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         view.modifyContents(
-            (resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
+            resourceSet -> resourceSet.createResource(URI.createURI("test://test.aet")));
         assertThrows(IllegalStateException.class, view :: update);
       }
     }
