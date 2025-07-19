@@ -406,9 +406,9 @@ public class ChangeDerivingViewTest {
           changeArgument.getValue().containsConcreteChange(),
           "change must contain some concrete change");
       assertThat(view.getRootObjects().size(), is(1));
-      Root root = (Root) view.getRootObjects().iterator().next();
-      assertThat(root.eContents().size(), is(1));
-      assertThat(root.eContents(), hasItem(nonRoot));
+      Root localRoot = (Root) view.getRootObjects().iterator().next();
+      assertThat(localRoot.eContents().size(), is(1));
+      assertThat(localRoot.eContents(), hasItem(nonRoot));
     }
 
     @Test
