@@ -40,6 +40,7 @@ import tools.vitruv.change.testutils.TestLogging;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 import tools.vitruv.framework.views.changederivation.DefaultStateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 /** Tests for the {@link ChangeDerivingView} class. */
 @ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
@@ -432,9 +433,9 @@ public class ChangeDerivingViewTest {
           changeArgument.getValue().containsConcreteChange(),
           "change must contain some concrete change");
       assertThat(view.getRootObjects().size(), is(1));
-      Root root = (Root) view.getRootObjects().iterator().next();
-      assertThat(root.eContents().size(), is(1));
-      assertThat(root.eContents(), hasItem(secondNonRoot));
+      Root localRoot = (Root) view.getRootObjects().iterator().next();
+      assertThat(localRoot.eContents().size(), is(1));
+      assertThat(localRoot.eContents(), hasItem(secondNonRoot));
     }
 
     @Test
