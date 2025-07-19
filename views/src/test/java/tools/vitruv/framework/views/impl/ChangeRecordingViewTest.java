@@ -182,9 +182,10 @@ public class ChangeRecordingViewTest {
     void nullElement() throws Exception {
       try (ChangeRecordingView view = new ChangeRecordingView(
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+        URI testUri = URI.createURI("test://test.aet");
         assertThrows(
             IllegalArgumentException.class,
-            () -> view.registerRoot(null, URI.createURI("test://test.aet")));
+            () -> view.registerRoot(null, testUri));
       }
     }
 
@@ -253,9 +254,10 @@ public class ChangeRecordingViewTest {
     void nullElement() throws Exception {
       try (ChangeRecordingView view = new ChangeRecordingView(
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+        URI testUri = URI.createURI("test://test.aet");
         assertThrows(
             IllegalArgumentException.class,
-            () -> view.moveRoot(null, URI.createURI("test://test.aet")));
+            () -> view.moveRoot(null, testUri));
       }
     }
 
@@ -276,9 +278,10 @@ public class ChangeRecordingViewTest {
       try (ChangeRecordingView view = new ChangeRecordingView(
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
+        URI testUri = URI.createURI("test://test.aet");
         assertThrows(
             IllegalStateException.class,
-            () -> view.moveRoot(root, URI.createURI("test://test.aet")));
+            () -> view.moveRoot(root, testUri));
       }
     }
 
