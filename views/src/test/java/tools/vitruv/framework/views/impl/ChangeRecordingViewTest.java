@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -157,7 +158,7 @@ public class ChangeRecordingViewTest {
     void withoutPreviousModification() throws Exception {
       try (ChangeRecordingView view = new ChangeRecordingView(
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
-        view.update();
+        assertDoesNotThrow(view::update);     
       }
     }
 
