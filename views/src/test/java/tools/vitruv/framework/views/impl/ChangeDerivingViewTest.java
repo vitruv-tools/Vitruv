@@ -181,7 +181,7 @@ public class ChangeDerivingViewTest {
           new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
           new DefaultStateBasedChangeResolutionStrategy())) {
         view.modifyContents(
-            (resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
+            resourceSet -> resourceSet.createResource(URI.createURI("test://test.aet")));
         assertThrows(IllegalStateException.class, view::update);
       }
     }
