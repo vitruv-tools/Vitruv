@@ -52,11 +52,14 @@ import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
 /** Tests for the {@link ChangeRecordingView} class. */
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ChangeRecordingViewTest {
-  @Mock ViewCreatingViewType<?, HierarchicalId> mockViewType;
-  @Mock ChangeableViewSource mockChangeableViewSource;
-  @Mock ModifiableViewSelection mockViewSelection;
+  @Mock
+  ViewCreatingViewType<?, HierarchicalId> mockViewType;
+  @Mock
+  ChangeableViewSource mockChangeableViewSource;
+  @Mock
+  ModifiableViewSelection mockViewSelection;
 
   /** Initialize the mocks before each test. */
   @BeforeEach
@@ -67,35 +70,35 @@ public class ChangeRecordingViewTest {
   /** Tests for the constructor of the {@link ChangeRecordingView} class. */
   @Nested
   @DisplayName("initialize")
-  public class Initialize {
+  class Initialize {
     @Test
     @DisplayName("with null view")
-    public void withNullViewType() {
+    void withNullViewType() {
       assertThrows(IllegalArgumentException.class, () -> new ChangeRecordingView(null));
     }
 
     @Test
     @DisplayName("with proper arguments")
-    public void withEmptySource() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void withEmptySource() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         assertThat(view.isClosed(), is(false));
         assertThat(view.getRootObjects(), not(hasItem(anything())));
       }
     }
   }
 
-  /** Tests for the {@link ChangeRecordingView#modifyContents(Consumer)} method. */
+  /**
+   * Tests for the {@link ChangeRecordingView#modifyContents(Consumer)} method.
+   */
   @Nested
   @DisplayName("retrieve roots")
-  public class RetrieveRootElements {
+  class RetrieveRootElements {
     @Test
     @DisplayName("all of same type")
-    public void allOfSameType() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void allOfSameType() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         Root root2 = aet.Root();
@@ -111,10 +114,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("all of one out of two types")
-    public void containingAllOfOneType() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void containingAllOfOneType() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         NonRoot otherRoot = aet.NonRoot();
@@ -129,10 +131,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("containing none of a type")
-    public void containingNoneOfType() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void containingNoneOfType() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         Root otherRoot = aet.Root();
@@ -145,26 +146,26 @@ public class ChangeRecordingViewTest {
     }
   }
 
-  /** Tests for the {@link ChangeRecordingView#modifyContents(Consumer)} method. */
+  /**
+   * Tests for the {@link ChangeRecordingView#modifyContents(Consumer)} method.
+   */
   @Nested
   @DisplayName("update")
-  public class Update {
+  class Update {
     @Test
     @DisplayName("without previous modification")
-    public void withoutPreviousModification() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void withoutPreviousModification() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         view.update();
       }
     }
 
     @Test
     @DisplayName("with previous modification")
-    public void withPreviousModification() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void withPreviousModification() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         view.modifyContents(
             (resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
         assertThrows(IllegalStateException.class, () -> view.update());
@@ -175,13 +176,12 @@ public class ChangeRecordingViewTest {
   /** Tests for the {@link ChangeRecordingView#registerRoot(Root, URI)} method. */
   @Nested
   @DisplayName("add root")
-  public class AddRoot {
+  class AddRoot {
     @Test
     @DisplayName("being null")
-    public void nullElement() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void nullElement() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         assertThrows(
             IllegalArgumentException.class,
             () -> view.registerRoot(null, URI.createURI("test://test.aet")));
@@ -190,10 +190,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("with null URI")
-    public void nullUri() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void nullUri() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         assertThrows(IllegalArgumentException.class, () -> view.registerRoot(root, null));
       }
@@ -201,10 +200,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void properArguments() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void properArguments() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         String testResourceUriString = "test://test.aet";
         view.registerRoot(root, URI.createURI(testResourceUriString));
@@ -214,27 +212,24 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("committing changes")
-    public void commitChanges() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void commitChanges() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         root.setId("root");
         String testResourceUriString = "test://test.aet";
         view.registerRoot(root, URI.createURI(testResourceUriString));
         assertThat(view.getRootObjects(), hasItem(root));
-        ArgumentCaptor<ChangeRecordingView> viewArgument =
-            ArgumentCaptor.forClass(ChangeRecordingView.class);
-        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
-            ArgumentCaptor.forClass(VitruviusChange.class);
+        ArgumentCaptor<ChangeRecordingView> viewArgument = ArgumentCaptor.forClass(ChangeRecordingView.class);
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
         view.commitChanges();
         verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 
         assertThat(viewArgument.getValue(), is(view));
         ResourceSet resolveInResourceSet = new ResourceSetImpl();
-        VitruviusChange<EObject> resolvedChange =
-            VitruviusChangeResolverFactory.forHierarchicalIds(resolveInResourceSet)
-                .resolveAndApply(changeArgument.getValue());
+        VitruviusChange<EObject> resolvedChange = VitruviusChangeResolverFactory
+            .forHierarchicalIds(resolveInResourceSet)
+            .resolveAndApply(changeArgument.getValue());
         InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
         expectedChange.setNewValue(root);
         expectedChange.setUri(testResourceUriString);
@@ -252,13 +247,12 @@ public class ChangeRecordingViewTest {
   /** Tests for the {@link ChangeRecordingView#moveRoot(Root, URI)} method. */
   @Nested
   @DisplayName("move root")
-  public class MoveRoot {
+  class MoveRoot {
     @Test
     @DisplayName("being null")
-    public void nullElement() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void nullElement() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         assertThrows(
             IllegalArgumentException.class,
             () -> view.moveRoot(null, URI.createURI("test://test.aet")));
@@ -267,10 +261,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("with null URI")
-    public void nullUri() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void nullUri() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         assertThrows(IllegalArgumentException.class, () -> view.moveRoot(root, null));
@@ -279,10 +272,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("with element not beeing root")
-    public void notBeingRoot() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void notBeingRoot() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         assertThrows(
             IllegalStateException.class,
@@ -292,10 +284,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void properArguments() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void properArguments() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         view.moveRoot(root, URI.createURI("test://test2.aet"));
@@ -306,10 +297,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("committing changes")
-    public void commitChanges() throws Exception {
-      try (ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+    void commitChanges() throws Exception {
+      try (ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         view.commitChanges();
@@ -325,16 +315,14 @@ public class ChangeRecordingViewTest {
         String movedResourceUriString = "test://test2.aet";
         view.moveRoot(root, URI.createURI(movedResourceUriString));
         assertThat(view.getRootObjects(), hasItem(root));
-        ArgumentCaptor<ChangeRecordingView> viewArgument =
-            ArgumentCaptor.forClass(ChangeRecordingView.class);
-        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
-            ArgumentCaptor.forClass(VitruviusChange.class);
+        ArgumentCaptor<ChangeRecordingView> viewArgument = ArgumentCaptor.forClass(ChangeRecordingView.class);
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
         view.commitChanges();
         verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
         assertThat(viewArgument.getValue(), is(view));
-        VitruviusChange<EObject> resolvedChange =
-            VitruviusChangeResolverFactory.forHierarchicalIds(resolveInResourceSet)
-                .resolveAndApply(changeArgument.getValue());
+        VitruviusChange<EObject> resolvedChange = VitruviusChangeResolverFactory
+            .forHierarchicalIds(resolveInResourceSet)
+            .resolveAndApply(changeArgument.getValue());
         List<EChange<EObject>> capturedEChanges = resolvedChange.getEChanges();
         InsertRootEObject<EObject> expectedChange = RootFactory.eINSTANCE.createInsertRootEObject();
         expectedChange.setNewValue(root);
@@ -351,16 +339,15 @@ public class ChangeRecordingViewTest {
   /** Tests for the {@link ChangeRecordingView#commitChanges()} method. */
   @Nested
   @DisplayName("commit")
-  public class Commit {
+  class Commit {
     ChangeRecordingView view;
     Root root;
 
     /** Prepare the view with a root element. */
     @BeforeEach
     public void prepareViewWithRootElement() {
-      view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
+      view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
       root = aet.Root();
       view.registerRoot(root, URI.createURI("test://test.aet"));
       view.commitChanges();
@@ -379,14 +366,12 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("once")
-    public void once() {
+    void once() {
       NonRoot nonRoot = aet.NonRoot();
       nonRoot.setId("nonRoot");
       root.setSingleValuedContainmentEReference(nonRoot);
-      ArgumentCaptor<ChangeRecordingView> viewArgument =
-          ArgumentCaptor.forClass(ChangeRecordingView.class);
-      ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
-          ArgumentCaptor.forClass(VitruviusChange.class);
+      ArgumentCaptor<ChangeRecordingView> viewArgument = ArgumentCaptor.forClass(ChangeRecordingView.class);
+      ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
       view.commitChanges();
       verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
       assertThat(viewArgument.getValue(), is(view));
@@ -399,7 +384,7 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("twice")
-    public void twice() {
+    void twice() {
       NonRoot firstNonRoot = aet.NonRoot();
       firstNonRoot.setId("first");
       root.setSingleValuedContainmentEReference(firstNonRoot);
@@ -416,22 +401,19 @@ public class ChangeRecordingViewTest {
       NonRoot secondNonRoot = aet.NonRoot();
       secondNonRoot.setId("second");
       root.setSingleValuedContainmentEReference(secondNonRoot);
-      ArgumentCaptor<ChangeRecordingView> viewArgument =
-          ArgumentCaptor.forClass(ChangeRecordingView.class);
-      ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
-          ArgumentCaptor.forClass(VitruviusChange.class);
+      ArgumentCaptor<ChangeRecordingView> viewArgument = ArgumentCaptor.forClass(ChangeRecordingView.class);
+      ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
       view.commitChanges();
       verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
 
-      VitruviusChange<EObject> resolvedChange =
-          VitruviusChangeResolverFactory.forHierarchicalIds(resolveInResourceSet)
-              .resolveAndApply(changeArgument.getValue());
+      VitruviusChange<EObject> resolvedChange = VitruviusChangeResolverFactory.forHierarchicalIds(resolveInResourceSet)
+          .resolveAndApply(changeArgument.getValue());
       List<EChange<EObject>> capturedEChanges = resolvedChange.getEChanges();
       assertThat(capturedEChanges.size(), is(4)); // Create, Insert, ReplaceValue, Delete
       assertThat(capturedEChanges.get(0), instanceOf(CreateEObject.class));
       assertThat(capturedEChanges.get(1), instanceOf(ReplaceSingleValuedEReference.class));
-      ReplaceSingleValuedEAttribute<EObject, Object> replaceIdChange =
-          AttributeFactory.eINSTANCE.createReplaceSingleValuedEAttribute();
+      ReplaceSingleValuedEAttribute<EObject, Object> replaceIdChange = AttributeFactory.eINSTANCE
+          .createReplaceSingleValuedEAttribute();
       replaceIdChange.setAffectedElement(secondNonRoot);
       replaceIdChange.setAffectedFeature(AllElementTypesPackage.eINSTANCE.getIdentified_Id());
       replaceIdChange.setNewValue("second");
@@ -446,11 +428,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("without changes")
-    public void withoutChanges() {
-      ArgumentCaptor<ChangeRecordingView> viewArgument =
-          ArgumentCaptor.forClass(ChangeRecordingView.class);
-      ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
-          ArgumentCaptor.forClass(VitruviusChange.class);
+    void withoutChanges() {
+      ArgumentCaptor<ChangeRecordingView> viewArgument = ArgumentCaptor.forClass(ChangeRecordingView.class);
+      ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument = ArgumentCaptor.forClass(VitruviusChange.class);
       view.commitChanges();
       verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
       assertThat(viewArgument.getValue(), is(view));
@@ -461,23 +441,21 @@ public class ChangeRecordingViewTest {
   /** Tests for the {@link ChangeRecordingView#close()} method. */
   @Nested
   @DisplayName("close")
-  public class Close {
+  class Close {
     @Test
     @DisplayName("and is closed afterwards")
-    public void isClosed() throws Exception {
-      ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
+    void isClosed() throws Exception {
+      ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
       view.close();
       assertThat("view should be closed", view.isClosed());
     }
 
     @Test
     @DisplayName("can be called multiple times")
-    public void callMultipleTimes() throws Exception {
-      ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
+    void callMultipleTimes() throws Exception {
+      ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
       view.close();
       view.close();
       assertThat("view should be closed", view.isClosed());
@@ -485,10 +463,9 @@ public class ChangeRecordingViewTest {
 
     @Test
     @DisplayName("and does not allow further operations")
-    public void noOperations() throws Exception {
-      ChangeRecordingView view =
-          new ChangeRecordingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
+    void noOperations() throws Exception {
+      ChangeRecordingView view = new ChangeRecordingView(
+          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
       view.close();
       assertThrows(IllegalStateException.class, view::getRootObjects);
       assertThrows(IllegalStateException.class, () -> view.getRootObjects(Root.class));
