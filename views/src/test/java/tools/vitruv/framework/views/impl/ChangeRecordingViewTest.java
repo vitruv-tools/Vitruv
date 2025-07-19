@@ -17,6 +17,8 @@ import allElementTypes.AllElementTypesPackage;
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import java.util.List;
+import java.util.function.Consumer;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -488,10 +490,10 @@ public class ChangeRecordingViewTest {
           new ChangeRecordingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection));
       view.close();
-      assertThrows(IllegalStateException.class, () -> view.getRootObjects());
+      assertThrows(IllegalStateException.class, view::getRootObjects);
       assertThrows(IllegalStateException.class, () -> view.getRootObjects(Root.class));
-      assertThrows(IllegalStateException.class, () -> view.update());
-      assertThrows(IllegalStateException.class, () -> view.commitChanges());
+      assertThrows(IllegalStateException.class, view::update);
+      assertThrows(IllegalStateException.class, view::commitChanges);
       assertThrows(IllegalStateException.class, () -> view.registerRoot(null, null));
       assertThrows(IllegalStateException.class, () -> view.moveRoot(null, null));
     }
