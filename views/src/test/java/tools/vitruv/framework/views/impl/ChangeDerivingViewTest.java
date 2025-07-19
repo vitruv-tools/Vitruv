@@ -60,10 +60,10 @@ public class ChangeDerivingViewTest {
    */
   @Nested
   @DisplayName("initialize")
-  public class Initialize {
+  class Initialize {
     @Test
     @DisplayName("with null view type")
-    public void withNullViewType() {
+    void withNullViewType() {
       assertThrows(
           IllegalArgumentException.class,
           () -> new ChangeDerivingView(null, new DefaultStateBasedChangeResolutionStrategy()));
@@ -71,7 +71,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with null change resolution strategy")
-    public void withNullChangeResolutionStrategy() {
+    void withNullChangeResolutionStrategy() {
       assertThrows(
           IllegalArgumentException.class,
           () ->
@@ -81,7 +81,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void withEmptySource() throws Exception {
+    void withEmptySource() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -98,10 +98,10 @@ public class ChangeDerivingViewTest {
    */
   @Nested
   @DisplayName("retrieve roots")
-  public class RetrieveRootElements {
+  class RetrieveRootElements {
     @Test
     @DisplayName("all of same type")
-    public void allOfSameType() throws Exception {
+    void allOfSameType() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -121,7 +121,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("all of one out of two types")
-    public void containingAllOfOneType() throws Exception {
+    void containingAllOfOneType() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -140,7 +140,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("containing none of a type")
-    public void containingNoneOfType() throws Exception {
+    void containingNoneOfType() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -162,10 +162,10 @@ public class ChangeDerivingViewTest {
    */
   @Nested
   @DisplayName("update")
-  public class Update {
+  class Update {
     @Test
     @DisplayName("without previous modification")
-    public void withoutPreviousModification() throws Exception {
+    void withoutPreviousModification() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -176,7 +176,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with previous modification")
-    public void withPreviousModification() throws Exception {
+    void withPreviousModification() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -191,10 +191,10 @@ public class ChangeDerivingViewTest {
   /** Tests for the {@link ChangeDerivingView#registerRoot(EObject, URI)} method. */
   @Nested
   @DisplayName("add root")
-  public class AddRoot {
+  class AddRoot {
     @Test
     @DisplayName("being null")
-    public void nullElement() throws Exception {
+    void nullElement() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -207,7 +207,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with null URI")
-    public void nullUri() throws Exception {
+    void nullUri() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -219,7 +219,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void properArguments() throws Exception {
+    void properArguments() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -233,7 +233,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("committing changes")
-    public void commitChanges() throws Exception {
+    void commitChanges() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -271,10 +271,10 @@ public class ChangeDerivingViewTest {
    */
   @Nested
   @DisplayName("move root")
-  public class MoveRoot {
+  class MoveRoot {
     @Test
     @DisplayName("being null")
-    public void nullElement() throws Exception {
+    void nullElement() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -287,7 +287,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with null URI")
-    public void nullUri() throws Exception {
+    void nullUri() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -300,7 +300,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with element not beeing root")
-    public void notBeingRoot() throws Exception {
+    void notBeingRoot() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -314,7 +314,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void properArguments() throws Exception {
+    void properArguments() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -329,7 +329,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("committing changes")
-    public void commitChanges() throws Exception {
+    void commitChanges() throws Exception {
       try (ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -361,7 +361,7 @@ public class ChangeDerivingViewTest {
   /** Tests for the {@link ChangeDerivingView#commitChanges()} method. */
   @Nested
   @DisplayName("commit")
-  public class Commit {
+  class Commit {
     ChangeDerivingView view;
     Root root;
 
@@ -390,7 +390,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("once")
-    public void once() {
+    void once() {
       NonRoot nonRoot = aet.NonRoot();
       nonRoot.setId("nonRoot");
       root.setSingleValuedContainmentEReference(nonRoot);
@@ -412,7 +412,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("twice")
-    public void twice() {
+    void twice() {
       NonRoot firstNonRoot = aet.NonRoot();
       firstNonRoot.setId("first");
       root.setSingleValuedContainmentEReference(firstNonRoot);
@@ -439,7 +439,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("without changes")
-    public void withoutChanges() {
+    void withoutChanges() {
       ArgumentCaptor<ChangeDerivingView> viewArgument =
           ArgumentCaptor.forClass(ChangeDerivingView.class);
       ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
@@ -455,10 +455,10 @@ public class ChangeDerivingViewTest {
   /** Tests for the {@link ChangeDerivingView#close()} method. */
   @Nested
   @DisplayName("close")
-  public class Close {
+  class Close {
     @Test
     @DisplayName("and is closed afterwards")
-    public void isClosed() throws Exception {
+    void isClosed() throws Exception {
       ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -469,7 +469,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("can be called multiple times")
-    public void callMultipleTimes() throws Exception {
+    void callMultipleTimes() throws Exception {
       ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
@@ -481,7 +481,7 @@ public class ChangeDerivingViewTest {
 
     @Test
     @DisplayName("and does not allow further operations")
-    public void noOperations() throws Exception {
+    void noOperations() throws Exception {
       ChangeDerivingView view =
           new ChangeDerivingView(
               new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
