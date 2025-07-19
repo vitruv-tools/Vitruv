@@ -69,18 +69,19 @@ public class ChangeDerivingViewTest {
     @Test
     @DisplayName("with null view type")
     void withNullViewType() {
+      DefaultStateBasedChangeResolutionStrategy strategy = new DefaultStateBasedChangeResolutionStrategy();
       assertThrows(
           IllegalArgumentException.class,
-          () -> new ChangeDerivingView(null, new DefaultStateBasedChangeResolutionStrategy()));
+          () -> new ChangeDerivingView(null, strategy));
     }
 
     @Test
     @DisplayName("with null change resolution strategy")
     void withNullChangeResolutionStrategy() {
+      BasicView basicView = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection);
       assertThrows(
           IllegalArgumentException.class,
-          () -> new ChangeDerivingView(
-              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection), null));
+          () -> new ChangeDerivingView(basicView, null));
     }
 
     @Test
