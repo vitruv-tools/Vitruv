@@ -283,9 +283,9 @@ public class BasicViewTest {
     public void noOperations() throws Exception {
       BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection);
       view.close();
-      assertThrows(IllegalStateException.class, () -> view.getRootObjects());
+      assertThrows(IllegalStateException.class, view :: getRootObjects);
       assertThrows(IllegalStateException.class, () -> view.getRootObjects(Root.class));
-      assertThrows(IllegalStateException.class, () -> view.update());
+      assertThrows(IllegalStateException.class, view :: update);
       assertThrows(IllegalStateException.class, () -> view.registerRoot(null, null));
       assertThrows(IllegalStateException.class, () -> view.moveRoot(null, null));
     }
