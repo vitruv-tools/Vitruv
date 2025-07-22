@@ -8,13 +8,13 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework.testutils</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.testutils.deprecated</artifactId>
 
   <name>DEPRECATED Vitruv Framework Test Utilities</name>
-  <description />
+  <description>Deprecated test utilities</description>
 
   <build>
     <plugins>
