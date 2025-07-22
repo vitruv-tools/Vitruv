@@ -74,7 +74,7 @@ public class IdentityMappingViewType
   @Override
   public void updateView(ModifiableView view) {
     view.modifyContents(
-        (viewResourceSet) -> {
+        viewResourceSet -> {
           viewResourceSet.getResources().forEach(Resource::unload);
           viewResourceSet.getResources().clear();
           createViewResources(view, viewResourceSet);
