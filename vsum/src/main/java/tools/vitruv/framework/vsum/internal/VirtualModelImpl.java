@@ -27,6 +27,9 @@ import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
+import  tools.vitruv.framework.vsum.internal.InfoMessages;
+import  tools.vitruv.framework.vsum.internal.ErrorMessages;
+
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
 public class VirtualModelImpl implements InternalVirtualModel {
@@ -88,14 +91,14 @@ public class VirtualModelImpl implements InternalVirtualModel {
 
   @Override
   public synchronized List<PropagatedChange> propagateChange(VitruviusChange<Uuid> change) {
-    checkNotNull(change, "change to propagate");
+    checkNotNull(change, ErrorMessages.CHANGE_NULL);
     checkArgument(
         change.containsConcreteChange(),
-        "This change contains no concrete change:%s%s",
+        ErrorMessages.CHANGE_HAS_NO_CONCRETE_CHANGE,
         System.lineSeparator(),
         change);
 
-    LOGGER.info("Starting change propagation");
+    LOGGER.info(InfoMessages.START_PROPAGATION);
     startChangePropagation(change);
 
     ChangePropagator changePropagator =
@@ -108,17 +111,17 @@ public class VirtualModelImpl implements InternalVirtualModel {
     save();
 
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Propagated changes: {}", result);
+      LOGGER.trace(InfoMessages.TRACE_PROPAGATED_CHANGES, result);
     }
 
     finishChangePropagation(change, result);
-    LOGGER.info("Finished change propagation");
+    LOGGER.info(InfoMessages.FINISH_PROPAGATION);
     return result;
   }
 
   private void startChangePropagation(VitruviusChange<Uuid> change) {
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Started synchronizing change: {}", change);
+      LOGGER.debug(InfoMessages.DEBUG_STARTED_SYNC, change);
     }
     changePropagationListeners.stream().forEach(it -> it.startedChangePropagation(change));
   }
@@ -128,7 +131,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
     changePropagationListeners.stream()
         .forEach(it -> it.finishedChangePropagation(generatedChanges));
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Finished synchronizing change: {}", inputChange);
+      LOGGER.debug(InfoMessages.DEBUG_FINISHED_SYNC, inputChange);
     }
   }
 
@@ -144,7 +147,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
   @Override
   public synchronized void addChangePropagationListener(
       ChangePropagationListener propagationListener) {
-    this.changePropagationListeners.add(checkNotNull(propagationListener, "propagationListener"));
+    this.changePropagationListeners.add(checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
 
   /**
@@ -155,7 +158,7 @@ public class VirtualModelImpl implements InternalVirtualModel {
   public synchronized void removeChangePropagationListener(
       ChangePropagationListener propagationListener) {
     this.changePropagationListeners.remove(
-        checkNotNull(propagationListener, "propagationListener"));
+        checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
 
   /**
