@@ -21,21 +21,21 @@ import tools.vitruv.change.testutils.TestLogging;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
 /** Tests for the {@link ElementViewSelection} class. */
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
 public class ElementViewSelectionTest {
   @Nested
   @DisplayName("inialize")
   class Initialize {
     @Test
     @DisplayName("empty")
-    public void empty() {
+    void empty() {
       ModifiableViewSelection selection = new ElementViewSelection(emptySet());
       assertThat(selection.getSelectableElements(), is(emptySet()));
     }
 
     @Test
     @DisplayName("with single element")
-    public void withSingleElement() {
+    void withSingleElement() {
       Root root = aet.Root();
       ModifiableViewSelection selection = new ElementViewSelection(Set.of(root));
       assertThat(selection.getSelectableElements(), is(Set.of(root)));
@@ -43,7 +43,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("with multiple elements")
-    public void withMultipleElements() {
+    void withMultipleElements() {
       Root firstRoot = aet.Root();
       Root secondRoot = aet.Root();
       ModifiableViewSelection selection = new ElementViewSelection(Set.of(firstRoot, secondRoot));
@@ -58,7 +58,7 @@ public class ElementViewSelectionTest {
     List<EObject> selectableElements;
 
     @BeforeEach
-    public void setupSelectionWithTwoElements() {
+    void setupSelectionWithTwoElements() {
       selectableElements = new ArrayList<>();
       selectableElements.add(aet.Root());
       selectableElements.add(aet.Root());
@@ -67,7 +67,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("element in selection")
-    public void elementInSelection() {
+    void elementInSelection() {
       assertThat(
           "all added elements must be selectable",
           selectableElements.stream().allMatch(element -> selection.isSelectable(element)));
@@ -75,7 +75,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("element not in selection")
-    public void elementNotInSelection() {
+    void elementNotInSelection() {
       assertThat(
           "elements not added to selection must not be selectable",
           !selection.isSelectable(aet.Root()));
@@ -83,7 +83,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("null element")
-    public void nullElement() {
+    void nullElement() {
       assertThat("null elements must not be selectable", !selection.isSelectable(null));
     }
   }
@@ -95,7 +95,7 @@ public class ElementViewSelectionTest {
     List<EObject> selectableElements;
 
     @BeforeEach
-    public void setupSelectionWithTwoElements() {
+    void setupSelectionWithTwoElements() {
       selectableElements = new ArrayList<>();
       selectableElements.add(aet.Root());
       selectableElements.add(aet.Root());
@@ -104,7 +104,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("no element")
-    public void noElement() {
+    void noElement() {
       assertThat(
           "unselected elements must not be selected by default",
           !selection.isSelected(selectableElements.get(0)));
@@ -115,7 +115,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("first element")
-    public void firstElement() {
+    void firstElement() {
       selection.setSelected(selectableElements.get(0), true);
       assertThat(
           "element must be selected after selection",
@@ -127,7 +127,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("second element")
-    public void secondElement() {
+    void secondElement() {
       selection.setSelected(selectableElements.get(1), true);
       assertThat(
           "unselected elements must not be selected by default",
@@ -139,7 +139,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("all elements")
-    public void allElements() {
+    void allElements() {
       selection.setSelected(selectableElements.get(0), true);
       selection.setSelected(selectableElements.get(1), true);
       assertThat(
@@ -152,8 +152,12 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("element that is not selectable")
-    public void unselectableElement() {
-      assertThrows(IllegalStateException.class, () -> selection.setSelected(aet.Root(), true));
+    void unselectableElement() {
+      assertThrows(IllegalStateException.class, this::selectUnselectableElement);
+    }
+
+    private void selectUnselectableElement() {
+      selection.setSelected(aet.Root(), true);
     }
   }
 
@@ -164,7 +168,7 @@ public class ElementViewSelectionTest {
     List<EObject> selectableElements;
 
     @BeforeEach
-    public void setupSelectionWithTwoSelectedElements() {
+    void setupSelectionWithTwoSelectedElements() {
       selectableElements = new ArrayList<>();
       selectableElements.add(aet.Root());
       selectableElements.add(aet.Root());
@@ -174,7 +178,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("first element")
-    public void firstElement() {
+    void firstElement() {
       selection.setSelected(selectableElements.get(0), false);
       assertThat(
           "element must be unselected after deselection",
@@ -186,7 +190,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("second element")
-    public void secondElement() {
+    void secondElement() {
       selection.setSelected(selectableElements.get(1), false);
       assertThat(
           "element must be selected without deselection",
@@ -198,7 +202,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("all elements")
-    public void allElements() {
+    void allElements() {
       selection.setSelected(selectableElements.get(0), false);
       selection.setSelected(selectableElements.get(1), false);
       assertThat(
@@ -211,8 +215,12 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("element that is not selectable")
-    public void unselectableElement() {
-      assertThrows(IllegalStateException.class, () -> selection.setSelected(aet.Root(), false));
+    void unselectableElement() {
+      assertThrows(IllegalStateException.class, this::setUnselectableElement);
+    }
+
+    private void setUnselectableElement() {
+      selection.setSelected(aet.Root(), false);
     }
   }
 
@@ -223,7 +231,7 @@ public class ElementViewSelectionTest {
     List<EObject> selectableElements;
 
     @BeforeEach
-    public void setupSelectionWithFirstOfTwoElementsSelected() {
+    void setupSelectionWithFirstOfTwoElementsSelected() {
       selectableElements = new ArrayList<>();
       selectableElements.add(aet.Root());
       selectableElements.add(aet.Root());
@@ -233,7 +241,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("matching selected element")
-    public void matchingSelectedElement() {
+    void matchingSelectedElement() {
       assertThat(
           "view element must be validated as selected after selecting it",
           selection.isViewObjectSelected(selectableElements.get(0)));
@@ -241,7 +249,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("matching unselected element")
-    public void matchingUnselectedElement() {
+    void matchingUnselectedElement() {
       assertThat(
           "view element must be validated as unselected when not selecting it",
           !selection.isViewObjectSelected(selectableElements.get(1)));
@@ -249,7 +257,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("matching no element")
-    public void matchingNoElement() {
+    void matchingNoElement() {
       assertThat(
           "view element must be validated as unselected when it cannot be selected",
           !selection.isViewObjectSelected(aet.Root()));
@@ -262,7 +270,7 @@ public class ElementViewSelectionTest {
     List<EObject> selectableElements;
 
     @BeforeEach
-    public void setupSelectionWithFirstOfTwoElementsSelected() {
+    void setupSelectionWithFirstOfTwoElementsSelected() {
       selectableElements = new ArrayList<>();
       selectableElements.add(aet.Root());
       selectableElements.add(aet.Root());
@@ -270,7 +278,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("empty")
-    public void empty() {
+    void empty() {
       ModifiableViewSelection originalSelection = new ElementViewSelection(emptySet());
       ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
       assertThat(copy.getSelectableElements(), is(emptySet()));
@@ -278,7 +286,7 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("with single element")
-    public void withSingleElement() {
+    void withSingleElement() {
       Root root = aet.Root();
       ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(root));
       ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
@@ -287,11 +295,10 @@ public class ElementViewSelectionTest {
 
     @Test
     @DisplayName("with multiple elements")
-    public void withMultipleElements() {
+    void withMultipleElements() {
       Root firstRoot = aet.Root();
       Root secondRoot = aet.Root();
-      ModifiableViewSelection originalSelection =
-          new ElementViewSelection(Set.of(firstRoot, secondRoot));
+      ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(firstRoot, secondRoot));
       ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
       assertThat(copy.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
     }
