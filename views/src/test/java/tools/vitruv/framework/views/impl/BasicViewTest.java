@@ -27,28 +27,32 @@ import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
 /** Test class for the BasicView class. */
-@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
-public class BasicViewTest {
-  @Mock ViewCreatingViewType<?, HierarchicalId> mockViewType;
-  @Mock ChangeableViewSource mockChangeableViewSource;
-  @Mock ModifiableViewSelection mockViewSelection;
+@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
+class BasicViewTest {
+  @Mock
+  ViewCreatingViewType<?, HierarchicalId> mockViewType;
+  @Mock
+  ChangeableViewSource mockChangeableViewSource;
+  @Mock
+  ModifiableViewSelection mockViewSelection;
 
   /** Initializes the mocks before each test. */
   @BeforeEach
-  public void initializeMocks() {
+  void initializeMocks() {
     MockitoAnnotations.openMocks(this);
   }
 
   /**
-   * Nested class for testing the constructor of the BasicView class. This class is tested in the
+   * Nested class for testing the constructor of the BasicView class. This class
+   * is tested in the
    * nested classes Initialize.
    */
   @Nested
   @DisplayName("initialize")
-  public class Initialize {
+  class Initialize {
     @Test
     @DisplayName("with null view type")
-    public void withNullViewType() {
+    void withNullViewType() {
       assertThrows(
           IllegalArgumentException.class,
           () -> new BasicView(null, mockChangeableViewSource, mockViewSelection));
@@ -56,7 +60,7 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("with null view source")
-    public void withNullViewSource() {
+    void withNullViewSource() {
       assertThrows(
           IllegalArgumentException.class,
           () -> new BasicView(mockViewType, null, mockViewSelection));
@@ -64,7 +68,7 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("with null view selection")
-    public void withNullViewSelection() {
+    void withNullViewSelection() {
       assertThrows(
           IllegalArgumentException.class,
           () -> new BasicView(mockViewType, mockChangeableViewSource, null));
@@ -72,9 +76,8 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void withEmptySource() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void withEmptySource() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         verify(mockViewType).updateView(view);
         assertThat(view.isClosed(), is(false));
         assertThat(view.getRootObjects(), not(hasItem(anything())));
@@ -83,17 +86,17 @@ public class BasicViewTest {
   }
 
   /**
-   * Nested class for testing the retrieveRootObjects method. This method is tested in the nested
+   * Nested class for testing the retrieveRootObjects method. This method is
+   * tested in the nested
    * classes RetrieveRootElements and RetrieveRootElementsOfType.
    */
   @Nested
   @DisplayName("retrieve roots")
-  public class RetrieveRootElements {
+  class RetrieveRootElements {
     @Test
     @DisplayName("all of same type")
-    public void allOfSameType() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void allOfSameType() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         Root root2 = aet.Root();
@@ -109,9 +112,8 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("all of one out of two types")
-    public void containingAllOfOneType() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void containingAllOfOneType() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         NonRoot otherRoot = aet.NonRoot();
@@ -126,9 +128,8 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("containing none of a type")
-    public void containingNoneOfType() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void containingNoneOfType() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         Root otherRoot = aet.Root();
@@ -144,12 +145,11 @@ public class BasicViewTest {
   /** Nested class for testing the modifyContents method. */
   @Nested
   @DisplayName("update")
-  public class Update {
+  class Update {
     @Test
     @DisplayName("without previous modification")
-    public void withoutPreviousModification() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void withoutPreviousModification() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         view.update();
         verify(mockViewType, times(2)).updateView(view);
       }
@@ -157,12 +157,11 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("with previous modification")
-    public void withPreviousModification() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void withPreviousModification() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         view.modifyContents(
-            (resourceSet) -> resourceSet.createResource(URI.createURI("test://test.aet")));
-        assertThrows(IllegalStateException.class, () -> view.update());
+            resourceSet -> resourceSet.createResource(URI.createURI("test://test.aet")));
+        assertThrows(IllegalStateException.class, view :: update);
       }
     }
   }
@@ -170,23 +169,22 @@ public class BasicViewTest {
   /** Nested class for testing the registerRoot method. */
   @Nested
   @DisplayName("add root")
-  public class AddRoot {
+  class AddRoot {
     @Test
     @DisplayName("being null")
-    public void nullElement() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void nullElement() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+        URI uri = URI.createURI("test://test.aet");
         assertThrows(
             IllegalArgumentException.class,
-            () -> view.registerRoot(null, URI.createURI("test://test.aet")));
+            () -> view.registerRoot(null, uri));
       }
     }
 
     @Test
     @DisplayName("with null URI")
-    public void nullUri() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void nullUri() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         assertThrows(IllegalArgumentException.class, () -> view.registerRoot(root, null));
       }
@@ -194,9 +192,8 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("with proper arguments")
-    public void properArguments() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void properArguments() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         String testResourceUriString = "test://test.aet";
         view.registerRoot(root, URI.createURI(testResourceUriString));
@@ -208,23 +205,22 @@ public class BasicViewTest {
   /** Nested class for testing the moveRoot method. */
   @Nested
   @DisplayName("move root")
-  public class MoveRoot {
+  class MoveRoot {
     @Test
     @DisplayName("being null")
-    public void nullElement() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void nullElement() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+        URI uri = URI.createURI("test://test.aet");
         assertThrows(
             IllegalArgumentException.class,
-            () -> view.moveRoot(null, URI.createURI("test://test.aet")));
+            () -> view.moveRoot(null, uri));
       }
     }
 
     @Test
     @DisplayName("with null URI")
-    public void nullUri() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void nullUri() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         assertThrows(IllegalArgumentException.class, () -> view.moveRoot(root, null));
@@ -233,21 +229,20 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("with element not beeing root")
-    public void notBeingRoot() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void notBeingRoot() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
+        URI uri = URI.createURI("test://test.aet");
         assertThrows(
             IllegalStateException.class,
-            () -> view.moveRoot(root, URI.createURI("test://test.aet")));
+            () -> view.moveRoot(root, uri));
       }
     }
 
     @Test
     @DisplayName("with proper arguments")
-    public void properArguments() throws Exception {
-      try (BasicView view =
-          new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
+    void properArguments() throws Exception {
+      try (BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection)) {
         Root root = aet.Root();
         view.registerRoot(root, URI.createURI("test://test.aet"));
         view.moveRoot(root, URI.createURI("test://test2.aet"));
@@ -260,10 +255,10 @@ public class BasicViewTest {
   /** Nested class for testing the close method. */
   @Nested
   @DisplayName("close")
-  public class Close {
+  class Close {
     @Test
     @DisplayName("and is closed afterwards")
-    public void isClosed() throws Exception {
+    void isClosed() throws Exception {
       BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection);
       view.close();
       assertThat("view should be closed", view.isClosed());
@@ -271,7 +266,7 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("can be called multiple times")
-    public void callMultipleTimes() throws Exception {
+    void callMultipleTimes() throws Exception {
       BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection);
       view.close();
       view.close();
@@ -280,12 +275,12 @@ public class BasicViewTest {
 
     @Test
     @DisplayName("and does not allow further operations")
-    public void noOperations() throws Exception {
+    void noOperations() throws Exception {
       BasicView view = new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection);
       view.close();
-      assertThrows(IllegalStateException.class, () -> view.getRootObjects());
+      assertThrows(IllegalStateException.class, view::getRootObjects);
       assertThrows(IllegalStateException.class, () -> view.getRootObjects(Root.class));
-      assertThrows(IllegalStateException.class, () -> view.update());
+      assertThrows(IllegalStateException.class, view::update);
       assertThrows(IllegalStateException.class, () -> view.registerRoot(null, null));
       assertThrows(IllegalStateException.class, () -> view.moveRoot(null, null));
     }

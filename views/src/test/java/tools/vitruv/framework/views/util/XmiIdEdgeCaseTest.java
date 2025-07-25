@@ -31,7 +31,7 @@ import uml_mockup.UPackage;
 
 /** Tests for the {@link ResourceCopier} class. */
 @ExtendWith({TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class})
-public class XmiIdEdgeCaseTest {
+class XmiIdEdgeCaseTest {
   private ResourceSet resourceSet;
   private Path testProjectFolder;
 
@@ -42,7 +42,7 @@ public class XmiIdEdgeCaseTest {
   }
 
   @Test
-  public void testSingleResourceCopy() {
+  void testSingleResourceCopy() {
     Pair<XMLResource, Map<String, EObject>> umlResourcePair =
         createPopulatedUmlResourceAndIdMapping("my");
     ResourceSet copyResourceSet = new ResourceSetImpl();
@@ -52,7 +52,7 @@ public class XmiIdEdgeCaseTest {
   }
 
   @Test
-  public void testMultiResourceCopy() {
+  void testMultiResourceCopy() {
     Pair<XMLResource, Map<String, EObject>> umlResourcePair =
         createPopulatedUmlResourceAndIdMapping("my1");
     Pair<XMLResource, Map<String, EObject>> umlResourcePair2 =

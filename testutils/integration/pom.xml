@@ -8,13 +8,13 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework.testutils</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.testutils.integration</artifactId>
 
   <name>Vitruv Framework Integration Test Utilities for Views and V-SUMs</name>
-  <description />
+  <description>Test utilities integration for the whole project</description>
 
   <build>
     <plugins>
