@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.internal;
+package tools.vitruv.framework.vsum.internal.messages;
 
 public class InfoMessages {
     public static final String START_PROPAGATION = "Starting change propagation";

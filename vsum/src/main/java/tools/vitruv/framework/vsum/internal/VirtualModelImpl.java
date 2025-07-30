@@ -27,8 +27,8 @@ import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
-import  tools.vitruv.framework.vsum.internal.InfoMessages;
-import  tools.vitruv.framework.vsum.internal.ErrorMessages;
+import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
+import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
