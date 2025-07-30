@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.internal;
+package tools.vitruv.framework.vsum.internal.messages;
 
 public class ErrorMessages {
     public static final String CHANGE_NULL = "change to propagate";

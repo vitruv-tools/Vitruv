@@ -34,6 +34,7 @@ import tools.vitruv.change.correspondence.view.CorrespondenceModelViewFactory;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
+import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
 class ResourceRepositoryImpl implements ModelRepository {
   private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
