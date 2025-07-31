@@ -23,10 +23,10 @@ public class ViewTypeRepositoryTest {
   /** Creates a view type with the given name that maps elements of the given type to themselves. */
   @Nested
   @DisplayName("register")
-  public class Register {
+  class Register {
     @Test
     @DisplayName("proper view type")
-    public void properViewType() {
+    void properViewType() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> viewType = createIdentityMappingViewType("type");
       repository.register(viewType);
@@ -36,14 +36,14 @@ public class ViewTypeRepositoryTest {
 
     @Test
     @DisplayName("null view type")
-    public void nullViewType() {
+    void nullViewType() {
       ViewTypeRepository repository = new ViewTypeRepository();
       assertThrows(IllegalArgumentException.class, () -> repository.register(null));
     }
 
     @Test
     @DisplayName("same view type twice")
-    public void sameViewTypeTwice() {
+    void sameViewTypeTwice() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> viewType = createIdentityMappingViewType("type");
       repository.register(viewType);
@@ -52,7 +52,7 @@ public class ViewTypeRepositoryTest {
 
     @Test
     @DisplayName("another view type with same name")
-    public void viewTypeWithSameName() {
+    void viewTypeWithSameName() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> firstViewType = createIdentityMappingViewType("type");
       ViewType<?> secondViewType = createIdentityMappingViewType("type");
@@ -64,10 +64,10 @@ public class ViewTypeRepositoryTest {
   /** Tests for the {@link ViewTypeRepository#getViewTypes()} method. */
   @Nested
   @DisplayName("retrieve")
-  public class Retrieve {
+  class Retrieve {
     @Test
     @DisplayName("provides only a copy of view type list")
-    public void providesOnlyCopy() {
+    void providesOnlyCopy() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> viewType = createIdentityMappingViewType("type");
       repository.getViewTypes().add(viewType);
@@ -78,10 +78,10 @@ public class ViewTypeRepositoryTest {
   /** Tests for the {@link ViewTypeRepository#findViewType(String)} method. */
   @Nested
   @DisplayName("find")
-  public class Find {
+  class Find {
     @Test
     @DisplayName("registered view type by name")
-    public void registeredViewType() {
+    void registeredViewType() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> viewType = createIdentityMappingViewType("type");
       repository.register(viewType);
@@ -90,7 +90,7 @@ public class ViewTypeRepositoryTest {
 
     @Test
     @DisplayName("non-registered view type by name")
-    public void nonRegisteredViewType() {
+    void nonRegisteredViewType() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> viewType = createIdentityMappingViewType("type");
       repository.register(viewType);
@@ -99,7 +99,7 @@ public class ViewTypeRepositoryTest {
 
     @Test
     @DisplayName("null name")
-    public void nullName() {
+    void nullName() {
       ViewTypeRepository repository = new ViewTypeRepository();
       ViewType<?> viewType = createIdentityMappingViewType("type");
       repository.register(viewType);
