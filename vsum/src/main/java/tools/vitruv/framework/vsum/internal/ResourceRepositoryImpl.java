@@ -34,6 +34,7 @@ import tools.vitruv.change.correspondence.view.CorrespondenceModelViewFactory;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
+import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
 class ResourceRepositoryImpl implements ModelRepository {
   private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
@@ -162,7 +163,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   @Override
   public void saveOrDeleteModels() {
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Saving all models of model repository for VSUM " + fileSystemLayout);
+      LOGGER.debug(InfoMessages.DEBUG_SAVING_ALL_MODELS , fileSystemLayout);
     }
     Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
         modelInstances.entrySet().iterator();
@@ -188,9 +189,9 @@ class ResourceRepositoryImpl implements ModelRepository {
   public Iterable<TransactionalChange<EObject>> recordChanges(Runnable changeApplicator) {
     changeRecorder.beginRecording();
     isRecording = true;
-    LOGGER.debug("Start recording virtual model");
+    LOGGER.debug(InfoMessages.DEBUG_START_RECORDING_VIRTUAL_MODEL);
     changeApplicator.run();
-    LOGGER.debug("End recording virtual model");
+    LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
     isRecording = false;
     changeRecorder.endRecording();
     TransactionalChange<EObject> change = changeRecorder.getChange();
