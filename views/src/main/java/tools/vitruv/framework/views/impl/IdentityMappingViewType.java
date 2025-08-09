@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.atomic.uuid.UuidResolverFactory;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
 import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
@@ -86,7 +87,7 @@ public class IdentityMappingViewType
     ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
     VitruviusChangeResolver<HierarchicalId> idChangeResolver =
         VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);
-    UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
+    UuidResolver viewSourceCopyUuidResolver = UuidResolverFactory.create(viewSourceCopyResourceSet);
     VitruviusChangeResolver<Uuid> uuidChangeResolver =
         VitruviusChangeResolverFactory.forUuids(viewSourceCopyUuidResolver);
     Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
