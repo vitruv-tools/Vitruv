@@ -121,7 +121,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
       - name: Run checkstyle
-        uses: dbelyaev/action-checkstyle@v2.0.0
+        uses: dbelyaev/action-checkstyle@v2.0.1
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
