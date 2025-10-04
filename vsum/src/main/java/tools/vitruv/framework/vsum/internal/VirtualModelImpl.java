@@ -111,7 +111,8 @@ public class VirtualModelImpl implements InternalVirtualModel,
             changePropagationSpecificationProvider,
             userInteractor,
             changePropagationMode);
-    List<PropagatedChange> result = changePropagator.propagateChange(change, changePropagationObservers);
+    List<PropagatedChange> result = changePropagator.propagateChange(
+        change, changePropagationObservers);
     save();
 
     if (LOGGER.isTraceEnabled()) {
@@ -151,7 +152,8 @@ public class VirtualModelImpl implements InternalVirtualModel,
   @Override
   public synchronized void addChangePropagationListener(
       ChangePropagationListener propagationListener) {
-    this.changePropagationListeners.add(checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
+    this.changePropagationListeners.add(
+        checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
 
   /**
@@ -165,14 +167,16 @@ public class VirtualModelImpl implements InternalVirtualModel,
         checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
 
-   @Override
+  @Override
   public void deregisterObserver(ChangePropagationObserver observer) {
-    this.changePropagationObservers.remove(checkNotNull(observer, ErrorMessages.PROPAGATION_OBSERVER_NULL));
+    this.changePropagationObservers.remove(
+        checkNotNull(observer, ErrorMessages.PROPAGATION_OBSERVER_NULL));
   }
 
   @Override
   public void registerObserver(ChangePropagationObserver observer) {
-    this.changePropagationObservers.add(checkNotNull(observer, ErrorMessages.PROPAGATION_OBSERVER_NULL));
+    this.changePropagationObservers.add(
+        checkNotNull(observer, ErrorMessages.PROPAGATION_OBSERVER_NULL));
   }
 
   /**
