@@ -20,6 +20,8 @@ import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.interaction.InternalUserInteractor;
 import tools.vitruv.change.propagation.ChangePropagationMode;
+import tools.vitruv.change.propagation.ChangePropagationObservableRegistry;
+import tools.vitruv.change.propagation.ChangePropagationObserver;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider;
 import tools.vitruv.change.propagation.impl.ChangePropagator;
 import tools.vitruv.framework.views.ViewSelector;
@@ -32,13 +34,15 @@ import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
-public class VirtualModelImpl implements InternalVirtualModel {
+public class VirtualModelImpl implements InternalVirtualModel,
+    ChangePropagationObservableRegistry {
   private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
 
   private final ModelRepository resourceRepository;
   private final ViewTypeProvider viewTypeRepository;
   private final VsumFileSystemLayout fileSystemLayout;
   private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
+  private final List<ChangePropagationObserver> changePropagationObservers = new LinkedList<>();
 
   private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
   private final InternalUserInteractor userInteractor;
@@ -107,7 +111,8 @@ public class VirtualModelImpl implements InternalVirtualModel {
             changePropagationSpecificationProvider,
             userInteractor,
             changePropagationMode);
-    List<PropagatedChange> result = changePropagator.propagateChange(change);
+    List<PropagatedChange> result = changePropagator.propagateChange(
+        change, changePropagationObservers);
     save();
 
     if (LOGGER.isTraceEnabled()) {
@@ -147,7 +152,8 @@ public class VirtualModelImpl implements InternalVirtualModel {
   @Override
   public synchronized void addChangePropagationListener(
       ChangePropagationListener propagationListener) {
-    this.changePropagationListeners.add(checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
+    this.changePropagationListeners.add(
+        checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
 
   /**
@@ -159,6 +165,18 @@ public class VirtualModelImpl implements InternalVirtualModel {
       ChangePropagationListener propagationListener) {
     this.changePropagationListeners.remove(
         checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
+  }
+
+  @Override
+  public void deregisterObserver(ChangePropagationObserver observer) {
+    this.changePropagationObservers.remove(
+        checkNotNull(observer, ErrorMessages.PROPAGATION_OBSERVER_NULL));
+  }
+
+  @Override
+  public void registerObserver(ChangePropagationObserver observer) {
+    this.changePropagationObservers.add(
+        checkNotNull(observer, ErrorMessages.PROPAGATION_OBSERVER_NULL));
   }
 
   /**
