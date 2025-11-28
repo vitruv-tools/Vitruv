@@ -8,12 +8,12 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>parent</artifactId>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
   </parent>
 
   <!-- Project Information -->
   <artifactId>tools.vitruv.framework</artifactId>
-  <version>3.2.3-SNAPSHOT</version>
+  <version>3.2.3</version>
   <packaging>pom</packaging>
 
   <name>Vitruv Framework</name>
@@ -44,7 +44,7 @@
   </modules>
 
   <properties>
-    <vitruv-change.version>3.2.3-SNAPSHOT</vitruv-change.version>
+    <vitruv-change.version>3.2.3</vitruv-change.version>
     <!-- SonarQube configuration -->
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.organization>vitruv-tools</sonar.organization>
