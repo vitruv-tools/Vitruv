@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.atomic.uuid.UuidResolverFactory;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
@@ -42,7 +43,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
   private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
   private final PersistableCorrespondenceModel correspondenceModel;
-  private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
+  private UuidResolver uuidResolver = UuidResolverFactory.create(modelsResourceSet);
   private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
   private final VitruviusChangeResolver<Uuid> changeResolver =
       VitruviusChangeResolverFactory.forUuids(uuidResolver);
