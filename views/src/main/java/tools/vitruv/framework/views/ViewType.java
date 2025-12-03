@@ -1,11 +1,17 @@
 package tools.vitruv.framework.views;
 
+import org.eclipse.emf.ecore.EPackage;
+
 /**
  * A Vitruv view type on the virtual model, providing a view selector and allows creating views.
  *
  * @param <S> the type of view selector this view type uses
  */
 public interface ViewType<S extends ViewSelector> {
+
+  /** Returns the EPackage of the underlying metamodel of the view type or null, if no explicit metamodel exists. */
+  EPackage getMetamodel();
+
   /** Returns the name of the view type. */
   String getName();
 

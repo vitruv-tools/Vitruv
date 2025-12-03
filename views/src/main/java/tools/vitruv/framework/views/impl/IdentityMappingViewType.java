@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -40,6 +41,15 @@ public class IdentityMappingViewType
    */
   public IdentityMappingViewType(String name) {
     super(name);
+  }
+
+  /**
+   * Creates a new {@link IdentityMappingViewType} with the given name and metamodel EPackage.
+   *
+   * @param name the name of the view type
+   */
+  public IdentityMappingViewType(String name, EPackage metamodel) {
+    super(name, metamodel);
   }
 
   @Override
