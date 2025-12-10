@@ -50,8 +50,9 @@ public class IdentityMappingViewType
   /**
    * Creates a new {@link IdentityMappingViewType} with the given name and
    * metamodel EPackage.
-   *
-   * @param name the name of the view type
+   * 
+   * @param name      the name of the view type
+   * @param metamodel the metamodel of the view type
    */
   public IdentityMappingViewType(String name, EPackage metamodel) {
     super(name, metamodel);

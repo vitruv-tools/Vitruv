@@ -148,6 +148,11 @@ public class DefaultStateBasedChangeResolutionStrategy implements StateBasedChan
         merger.copyAllLeftToRight(comparison.getDifferences(), new BasicMonitor());
     }
 
+    /**
+     * Returns the identifier matching behavior used by this strategy.
+     * 
+     * @return The identifier matching behavior.
+     */
     public UseIdentifiers getUseIdentifiers() {
         return useIdentifiers;
     }

@@ -40,8 +40,13 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
     /**
      * Creates a new instance with the given underlying view and change resolution
      * 
-     * @param view
-     * @param changeResolutionStrategy
+     * @param view                     the underlying view
+     * @param changeResolutionStrategy the strategy to derive changes between two
+     * 
+     * @throws IllegalArgumentException if view or change resolution strategy are
+     * @throws IllegalStateException    if the view is modified or outdated
+     * 
+     * @see #commitChanges()
      */
     public ChangeDerivingView(BasicView view, StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         checkArgument(view != null, "view must not be null");

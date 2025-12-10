@@ -31,6 +31,7 @@ public interface View extends AutoCloseable {
    * Provides all root model elements of this view that conform to a certain type.
    *
    * @param clazz is requested root element type.
+   * @param <T>   is the requested root element type.
    * @throws IllegalStateException if called on a closed view.
    * @see View#isClosed()
    * 
@@ -69,7 +70,6 @@ public interface View extends AutoCloseable {
    * @see #isClosed()
    * @see #isModified()
    * 
-   * @return void
    */
   void update();
 
@@ -113,7 +113,8 @@ public interface View extends AutoCloseable {
    * sufficient and
    * appropriate for registering root objects in views.
    * 
-   * @param object the object to move
+   * @param object      the object to move
+   * @param newLocation the new location where the root object is to be moved
    */
   @Beta
   void moveRoot(EObject object, URI newLocation);

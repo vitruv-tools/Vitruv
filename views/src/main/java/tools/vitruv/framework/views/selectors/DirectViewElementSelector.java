@@ -74,10 +74,20 @@ public class DirectViewElementSelector<Id> implements ViewSelector {
         return new ElementViewSelection(viewSelection);
     }
 
+    /**
+     * Returns the changeable view source associated with this selector.
+     * 
+     * @return The changeable view source.
+     */
     public ChangeableViewSource getViewSource() {
         return viewSource;
     }
 
+    /**
+     * Returns the view type associated with this selector.
+     * 
+     * @return The view type.
+     */
     public ViewCreatingViewType<DirectViewElementSelector<Id>, Id> getViewType() {
         return viewType;
     }
