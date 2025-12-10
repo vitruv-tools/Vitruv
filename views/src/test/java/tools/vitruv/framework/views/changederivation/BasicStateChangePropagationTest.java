@@ -33,6 +33,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     return getModelURI("Test.allElementTypes");
   }
 
+  /**
+   * creates a new resource and calculates the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName("create new resource and calculate state-based difference")
   @MethodSource("strategiesToTest")
@@ -66,6 +72,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource));
   }
 
+  /**
+   * deletes an existing resource and calculates the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName("delete existing resource and calculate state-based difference")
   @MethodSource("strategiesToTest")
@@ -98,6 +110,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     assertTrue(validationResourceSet.getResources().get(0).getContents().isEmpty());
   }
 
+  /**
+   * replaces the root element in an existing resource and calculates the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName("replace root element and calculate state-based difference")
   @MethodSource("strategiesToTest")
@@ -136,6 +154,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
   }
 
+  /**
+   * change a root element property and calculate the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName("change a root element property and calculate state-based difference")
   @MethodSource("strategiesToTest")
@@ -178,6 +202,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
   }
 
+  /**
+   * change a root element's id and calculate the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @SuppressWarnings("null")
   @ParameterizedTest
   @DisplayName("change a root element's id and calculate state-based difference")
@@ -244,12 +274,20 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
                   .count());
           break;
         }
+      default:
+        break;
     }
 
     assertEquals(1, validationResourceSet.getResources().size());
     assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
   }
 
+  /**
+   * change a non-root element property and calculate the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName("change a non-root element property and calculate state-based difference")
   @MethodSource("strategiesToTest")
@@ -296,6 +334,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
   }
 
+  /**
+   * change a non-root element's id and calculate the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @SuppressWarnings("null")
   @ParameterizedTest
   @DisplayName("change a non-root element's id and calculate state-based difference")
@@ -367,12 +411,20 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
                   .count());
           break;
         }
+      default:
+        break;
     }
 
     assertEquals(1, validationResourceSet.getResources().size());
     assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
   }
 
+  /**
+   * move a resource to new location and calculate the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName("move a resource to new location and calculate state-based difference")
   @MethodSource("strategiesToTest")
@@ -420,6 +472,12 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
         containsModelOf(modelResource.get()));
   }
 
+  /**
+   * move a resource to new location changing root feature and calculate the state-based difference.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @DisplayName(
       "move a resource to new location changing root feature and calculate state-based difference")

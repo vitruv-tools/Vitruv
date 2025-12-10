@@ -1,5 +1,6 @@
 package tools.vitruv.framework.vsum.internal.messages;
 
+/** Holds info messages used in the VSUM framework. */
 public class InfoMessages {
   public static final String START_PROPAGATION = "Starting change propagation";
   public static final String FINISH_PROPAGATION = "Finished change propagation";
