@@ -83,6 +83,11 @@ public abstract class StateChangePropagationTest {
     startRecording(pcmModel);
   }
 
+  /**
+   * Provides the different strategies to test.
+   *
+   * @return the strategies to test
+   */
   public static Stream<Named<StateBasedChangeResolutionStrategy>> strategiesToTest() {
     return Stream.of(
         Named.of(
@@ -146,11 +151,19 @@ public abstract class StateChangePropagationTest {
     return changeRecorder.endRecording();
   }
 
+  /**
+   * Gets a textual representation of the two changes for easier debugging.
+   *
+   * @param stateBasedChange the state-based change
+   * @param deltaBasedChange the delta-based change
+   * @return a textual representation of the two changes
+   */
   protected String getTextualRepresentation(
       VitruviusChange<?> stateBasedChange, VitruviusChange<?> deltaBasedChange) {
     return "State-based " + stateBasedChange + "\n" + "Delta-based " + deltaBasedChange;
   }
 
+  /** Creates and records changes in a resource set. */
   protected void createPcmMockupModel() throws IOException {
     pcmModel = resourceSet.createResource(getModelURI("My.pcm_mockup"));
     pcmRoot = pcm.Repository();
@@ -161,6 +174,11 @@ public abstract class StateChangePropagationTest {
     pcmModel.save(null);
   }
 
+  /**
+   * Creates and records changes in a resource set.
+   *
+   * @throws IOException if an I/O error occurs
+   */
   protected void createUmlMockupModel() throws IOException {
     umlModel = resourceSet.createResource(getModelURI("My.uml_mockup"));
     umlRoot = uml.Package();
@@ -171,6 +189,11 @@ public abstract class StateChangePropagationTest {
     umlModel.save(null);
   }
 
+  /**
+   * Starts recording changes on the given notifier.
+   *
+   * @param notifier the notifier to start recording on
+   */
   protected void startRecording(Notifier notifier) {
     changeRecorder.addToRecording(notifier);
     if (!changeRecorder.isRecording()) {
@@ -178,6 +201,14 @@ public abstract class StateChangePropagationTest {
     }
   }
 
+  /**
+   * Records changes performed by the given function on the given notifier.
+   *
+   * @param <T> the type of the notifier
+   * @param notifier the notifier to record changes on
+   * @param function the function that performs changes on the notifier
+   * @return the recorded changes
+   */
   protected <T extends Notifier> VitruviusChange<EObject> record(
       T notifier, java.util.function.Consumer<T> function) {
     startRecording(notifier);
@@ -185,38 +216,85 @@ public abstract class StateChangePropagationTest {
     return endRecording(notifier);
   }
 
+  /**
+   * Creates a checkpoint resource for the given original resource.
+   *
+   * @param original the original resource
+   * @return the checkpoint resource
+   */
   protected Resource createCheckpoint(Resource original) {
     return checkpointResourceSet.getResource(original.getURI(), true);
   }
 
+  /**
+   * gets the model URI for the given model file name.
+   *
+   * @param modelFileName the model file name
+   * @return the model URI
+   */
   protected URI getModelURI(String modelFileName) {
     return createFileURI(testProjectFolder.resolve("model").resolve(modelFileName).toFile());
   }
 
+  /**
+   * Gets the UML checkpoint resource.
+   *
+   * @return the UML checkpoint resource
+   */
   protected Resource getUmlCheckpoint() {
     return umlCheckpoint;
   }
 
+  /**
+   * Gets the PCM checkpoint resource.
+   *
+   * @return the PCM checkpoint resource
+   */
   protected Resource getPcmCheckpoint() {
     return pcmCheckpoint;
   }
 
+  /**
+   * Gets the UML model resource.
+   *
+   * @return the UML model resource
+   */
   protected Resource getUmlModel() {
     return umlModel;
   }
 
+  /**
+   * Gets the PCM model resource.
+   *
+   * @return the PCM model resource
+   */
   protected Resource getPcmModel() {
     return pcmModel;
   }
 
+  /**
+   * Gets the PCM root repository.
+   *
+   * @return the PCM root repository
+   */
   protected Repository getPcmRoot() {
     return pcmRoot;
   }
 
+  /**
+   * Gets the UML root package.
+   *
+   * @return the UML root package
+   */
   protected UPackage getUmlRoot() {
     return umlRoot;
   }
 
+  /**
+   * Gets the resource set used in the test.
+   *
+   * @return the resource set
+   */
   protected ResourceSet getResourceSet() {
     return resourceSet;
   }

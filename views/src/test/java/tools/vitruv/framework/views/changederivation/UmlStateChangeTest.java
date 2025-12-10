@@ -90,12 +90,12 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
       names = {"NEVER"},
       mode = EnumSource.Mode.EXCLUDE)
   public void testReplaceClass(UseIdentifiers useIdentifiers) throws IOException {
-    DefaultStateBasedChangeResolutionStrategy strategyToTest =
-        new DefaultStateBasedChangeResolutionStrategy(useIdentifiers);
     umlRoot.getClasses().remove(0);
     var newClass = UmlMockupCreators.uml.Class();
     newClass.setName("NewlyAddedClass");
     umlRoot.getClasses().add(newClass);
+    DefaultStateBasedChangeResolutionStrategy strategyToTest =
+        new DefaultStateBasedChangeResolutionStrategy(useIdentifiers);
     compareChanges(umlModel, umlCheckpoint, strategyToTest);
   }
 

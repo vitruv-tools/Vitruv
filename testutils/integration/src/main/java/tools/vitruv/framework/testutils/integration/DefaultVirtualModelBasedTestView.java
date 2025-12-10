@@ -31,6 +31,7 @@ public class DefaultVirtualModelBasedTestView
   private Iterable<ChangePropagationSpecification> changePropagationSpecifications;
   private UriMode uriMode;
 
+  /** Creates a new {@link DefaultVirtualModelBasedTestView} with the given parameters. */
   public DefaultVirtualModelBasedTestView(
       Path testProjectPath,
       Path vsumPath,

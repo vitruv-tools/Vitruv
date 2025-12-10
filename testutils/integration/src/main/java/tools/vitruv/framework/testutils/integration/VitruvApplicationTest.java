@@ -57,6 +57,11 @@ public abstract class VitruvApplicationTest implements VirtualModelBasedTestView
         testProjectPath, vsumPath, getChangePropagationSpecifications(), getUriMode());
   }
 
+  /**
+   * Closes the test view after each test.
+   *
+   * @throws Exception if closing the test view fails
+   */
   @AfterEach
   public final void closeAfterTest() throws Exception {
     if (this.testView != null) {

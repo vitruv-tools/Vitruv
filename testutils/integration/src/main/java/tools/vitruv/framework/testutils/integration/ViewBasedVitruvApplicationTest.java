@@ -19,6 +19,7 @@ import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
+/** Abstract base class for Vitruv application tests using a {@link VirtualModelBasedTestView}. */
 @ExtendWith({TestLogging.class, TestProjectManager.class})
 public abstract class ViewBasedVitruvApplicationTest {
   private InternalVirtualModel virtualModel;
@@ -78,6 +79,12 @@ public abstract class ViewBasedVitruvApplicationTest {
     }
   }
 
+  /**
+   * Gets the URI for a model element in the test project based on the given path relative to the.
+   *
+   * @param viewRelativePath the path relative to the test project
+   * @return the URI for the model element
+   */
   public URI getUri(Path viewRelativePath) {
     Preconditions.checkArgument(viewRelativePath != null, "The viewRelativePath must not be null!");
     Preconditions.checkArgument(
