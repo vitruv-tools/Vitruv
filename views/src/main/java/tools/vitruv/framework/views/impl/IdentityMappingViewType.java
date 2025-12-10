@@ -1,20 +1,22 @@
 package tools.vitruv.framework.views.impl;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
-
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
+import static com.google.common.base.Preconditions.checkArgument;
+
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
@@ -28,8 +30,10 @@ import tools.vitruv.framework.views.ViewSource;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
 
 /**
- * A view type that allows creating views based on a basic element-wise selection mechanism and
- * providing a one-to-one (identity) mapping of elements within the {@link ViewSource} to a created
+ * A view type that allows creating views based on a basic element-wise
+ * selection mechanism and
+ * providing a one-to-one (identity) mapping of elements within the
+ * {@link ViewSource} to a created
  * {@link View}.
  */
 public class IdentityMappingViewType
@@ -44,7 +48,8 @@ public class IdentityMappingViewType
   }
 
   /**
-   * Creates a new {@link IdentityMappingViewType} with the given name and metamodel EPackage.
+   * Creates a new {@link IdentityMappingViewType} with the given name and
+   * metamodel EPackage.
    *
    * @param name the name of the view type
    */
@@ -94,11 +99,11 @@ public class IdentityMappingViewType
   @Override
   public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
     ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
-    VitruviusChangeResolver<HierarchicalId> idChangeResolver =
-        VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);
+    VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolverFactory
+        .forHierarchicalIds(viewSourceCopyResourceSet);
     UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
-    VitruviusChangeResolver<Uuid> uuidChangeResolver =
-        VitruviusChangeResolverFactory.forUuids(viewSourceCopyUuidResolver);
+    VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolverFactory
+        .forUuids(viewSourceCopyUuidResolver);
     Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
     view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
@@ -111,12 +116,10 @@ public class IdentityMappingViewType
       ModifiableView view, ResourceSet viewResourceSet) {
     Collection<Resource> viewSources = view.getViewSource().getViewSourceModels();
     ViewSelection selection = view.getSelection();
-    List<Resource> resourcesWithSelectedElements =
-        viewSources.stream()
-            .filter(
-                resource ->
-                    resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
-            .toList();
+    List<Resource> resourcesWithSelectedElements = viewSources.stream()
+        .filter(
+            resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
+        .toList();
     return ResourceCopier.copyViewSourceResources(
         resourcesWithSelectedElements, viewResourceSet, selection::isViewObjectSelected);
   }
