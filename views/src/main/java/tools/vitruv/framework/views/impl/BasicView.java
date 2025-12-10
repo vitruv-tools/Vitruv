@@ -52,8 +52,7 @@ class BasicView implements ModifiableView, ChangePropagationListener {
     public List<EObject> getRootObjects() {
         checkNotClosed();
         return viewResourceSet.getResources().stream()
-                .flatMap(resource -> resource.getContents().stream())
-                .collect(Collectors.toList());
+                .flatMap(resource -> resource.getContents().stream()).collect(Collectors.toList());
     }
 
     @Override
@@ -121,11 +120,11 @@ class BasicView implements ModifiableView, ChangePropagationListener {
     public void moveRoot(EObject object, URI newLocation) {
         checkNotClosed();
         checkArgument(object != null, "object to move must not be null");
-        checkState(getRootObjects().contains(object), "view must contain element %s to move", object);
+        checkState(getRootObjects().contains(object), "view must contain element %s to move",
+                object);
         checkArgument(newLocation != null, "URI for new location of root must not be null");
         viewResourceSet.getResources().stream()
-                .filter(resource -> resource.getContents().contains(object))
-                .findFirst()
+                .filter(resource -> resource.getContents().contains(object)).findFirst()
                 .ifPresent(resource -> resource.setURI(newLocation));
     }
 
@@ -168,7 +167,8 @@ class BasicView implements ModifiableView, ChangePropagationListener {
     }
 
     @Override
-    public ChangeDerivingView withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+    public ChangeDerivingView withChangeDerivingTrait(
+            StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         checkNotClosed();
         return new ChangeDerivingView(this, changeResolutionStrategy);
     }
@@ -185,7 +185,8 @@ class BasicView implements ModifiableView, ChangePropagationListener {
         return viewType;
     }
 
-    protected void setViewType(ViewCreatingViewType<? extends ViewSelector, HierarchicalId> viewType) {
+    protected void setViewType(
+            ViewCreatingViewType<? extends ViewSelector, HierarchicalId> viewType) {
         this.viewType = viewType;
     }
 

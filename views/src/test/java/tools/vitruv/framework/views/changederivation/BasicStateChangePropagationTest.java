@@ -36,7 +36,8 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     @ParameterizedTest
     @DisplayName("create new resource and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void createNewResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void createNewResource(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         Root root = aet.Root();
         root.setId("Root");
@@ -46,13 +47,17 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
         var changes = strategyToTest.getChangeSequenceForCreated(modelResource);
         assertEquals(3, changes.getEChanges().size());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof CreateEObject).count());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof CreateEObject).count());
+        assertEquals(1, changes.getEChanges().stream()
+                .filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
 
         // Create empty resource to apply generated changes to
         ResourceSetImpl validationResourceSet = new ResourceSetImpl();
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         modelResource.save(null);
         assertEquals(1, validationResourceSet.getResources().size());
@@ -62,7 +67,8 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     @ParameterizedTest
     @DisplayName("delete existing resource and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void deleteResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void deleteResource(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         record(resourceSet, rs -> {
             Root root = aet.Root();
@@ -75,13 +81,16 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
         modelResource.get().save(null);
         var changes = strategyToTest.getChangeSequenceForDeleted(modelResource.get());
         assertEquals(2, changes.getEChanges().size());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof DeleteEObject).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof DeleteEObject).count());
 
         // Load resource to apply generated changes to
         ResourceSetImpl validationResourceSet = new ResourceSetImpl();
         validationResourceSet.getResource(getTestUri(), true);
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         assertEquals(1, validationResourceSet.getResources().size());
         assertTrue(validationResourceSet.getResources().get(0).getContents().isEmpty());
@@ -90,7 +99,8 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     @ParameterizedTest
     @DisplayName("replace root element and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         record(resourceSet, rs -> {
             Root root = aet.Root();
@@ -113,16 +123,19 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
         Resource oldState = validationResourceSet.getResource(getTestUri(), true);
         var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
 
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         assertEquals(1, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResources().get(0),
+                containsModelOf(modelResource.get()));
     }
 
     @ParameterizedTest
     @DisplayName("change a root element property and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         Root root = aet.Root();
 
@@ -143,19 +156,23 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
         Resource oldState = validationResourceSet.getResource(getTestUri(), true);
         var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
         assertEquals(1, changes.getEChanges().size());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
+        assertEquals(1, changes.getEChanges().stream()
+                .filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
 
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         assertEquals(1, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResources().get(0),
+                containsModelOf(modelResource.get()));
     }
 
     @SuppressWarnings("null")
     @ParameterizedTest
     @DisplayName("change a root element's id and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         Root root = aet.Root();
 
@@ -174,25 +191,24 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
         ResourceSet validationResourceSet = withGlobalFactories(new ResourceSetImpl());
         Resource oldState = validationResourceSet.getResource(getTestUri(), true);
-        var unresolvedChanges = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
+        var unresolvedChanges =
+                strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
         var changes = VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
                 .resolveAndApply(unresolvedChanges);
 
         switch (strategyToTest.getUseIdentifiers()) {
             case ONLY:
             case WHEN_AVAILABLE: {
-                List<DeleteEObject<?>> deleteChanges = changes.getEChanges().stream()
-                        .filter(c -> c instanceof DeleteEObject)
-                        .map(c -> (DeleteEObject<?>) c)
-                        .collect(Collectors.toList());
+                List<DeleteEObject<?>> deleteChanges =
+                        changes.getEChanges().stream().filter(c -> c instanceof DeleteEObject)
+                                .map(c -> (DeleteEObject<?>) c).collect(Collectors.toList());
                 assertEquals(1, deleteChanges.size());
                 assertTrue(deleteChanges.get(0).getAffectedElement() instanceof Root);
                 assertEquals("Root", ((Root) deleteChanges.get(0).getAffectedElement()).getId());
 
-                List<CreateEObject<?>> createChanges = changes.getEChanges().stream()
-                        .filter(c -> c instanceof CreateEObject)
-                        .map(c -> (CreateEObject<?>) c)
-                        .collect(Collectors.toList());
+                List<CreateEObject<?>> createChanges =
+                        changes.getEChanges().stream().filter(c -> c instanceof CreateEObject)
+                                .map(c -> (CreateEObject<?>) c).collect(Collectors.toList());
                 assertEquals(1, createChanges.size());
                 assertTrue(createChanges.get(0).getAffectedElement() instanceof Root);
                 assertEquals("Root2", ((Root) createChanges.get(0).getAffectedElement()).getId());
@@ -200,20 +216,22 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
             }
             case NEVER: {
                 assertEquals(1, changes.getEChanges().size());
-                assertEquals(1,
-                        changes.getEChanges().stream().filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
+                assertEquals(1, changes.getEChanges().stream()
+                        .filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
                 break;
             }
         }
 
         assertEquals(1, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResources().get(0),
+                containsModelOf(modelResource.get()));
     }
 
     @ParameterizedTest
     @DisplayName("change a non-root element property and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         Root root = aet.Root();
         Root containedRoot = aet.Root();
@@ -238,19 +256,23 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
         Resource oldState = validationResourceSet.getResource(getTestUri(), true);
         var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
         assertEquals(1, changes.getEChanges().size());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
+        assertEquals(1, changes.getEChanges().stream()
+                .filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
 
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         assertEquals(1, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResources().get(0),
+                containsModelOf(modelResource.get()));
     }
 
     @SuppressWarnings("null")
     @ParameterizedTest
     @DisplayName("change a non-root element's id and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         Root root = aet.Root();
         Root containedRoot = aet.Root();
@@ -273,40 +295,42 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
         ResourceSet validationResourceSet = withGlobalFactories(new ResourceSetImpl());
         Resource oldState = validationResourceSet.getResource(getTestUri(), true);
-        var unresolvedChanges = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
+        var unresolvedChanges =
+                strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
         var changes = VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
                 .resolveAndApply(unresolvedChanges);
 
         switch (strategyToTest.getUseIdentifiers()) {
             case ONLY:
             case WHEN_AVAILABLE: {
-                List<DeleteEObject<?>> deleteChanges = changes.getEChanges().stream()
-                        .filter(c -> c instanceof DeleteEObject)
-                        .map(c -> (DeleteEObject<?>) c)
-                        .collect(Collectors.toList());
+                List<DeleteEObject<?>> deleteChanges =
+                        changes.getEChanges().stream().filter(c -> c instanceof DeleteEObject)
+                                .map(c -> (DeleteEObject<?>) c).collect(Collectors.toList());
                 assertEquals(1, deleteChanges.size());
                 assertTrue(deleteChanges.get(0).getAffectedElement() instanceof Root);
-                assertEquals("ContainedRoot", ((Root) deleteChanges.get(0).getAffectedElement()).getId());
+                assertEquals("ContainedRoot",
+                        ((Root) deleteChanges.get(0).getAffectedElement()).getId());
 
-                List<CreateEObject<?>> createChanges = changes.getEChanges().stream()
-                        .filter(c -> c instanceof CreateEObject)
-                        .map(c -> (CreateEObject<?>) c)
-                        .collect(Collectors.toList());
+                List<CreateEObject<?>> createChanges =
+                        changes.getEChanges().stream().filter(c -> c instanceof CreateEObject)
+                                .map(c -> (CreateEObject<?>) c).collect(Collectors.toList());
                 assertEquals(1, createChanges.size());
                 assertTrue(createChanges.get(0).getAffectedElement() instanceof Root);
-                assertEquals("ContainedRoot2", ((Root) createChanges.get(0).getAffectedElement()).getId());
+                assertEquals("ContainedRoot2",
+                        ((Root) createChanges.get(0).getAffectedElement()).getId());
                 break;
             }
             case NEVER: {
                 assertEquals(1, changes.getEChanges().size());
-                assertEquals(1,
-                        changes.getEChanges().stream().filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
+                assertEquals(1, changes.getEChanges().stream()
+                        .filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
                 break;
             }
         }
 
         assertEquals(1, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResources().get(0), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResources().get(0),
+                containsModelOf(modelResource.get()));
     }
 
     @ParameterizedTest
@@ -337,20 +361,25 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
         var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
         assertEquals(2, changes.getEChanges().size());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
 
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         modelResource.get().save(null);
         assertEquals(2, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResource(movedResourceUri, false),
+                containsModelOf(modelResource.get()));
     }
 
     @ParameterizedTest
     @DisplayName("move a resource to new location changing root feature and calculate state-based difference")
     @MethodSource("strategiesToTest")
-    public void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         Capture<Resource> modelResource = new Capture<>();
         Root root = aet.Root();
 
@@ -378,14 +407,19 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
         var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
         assertEquals(3, changes.getEChanges().size());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
-        assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
+        assertEquals(1,
+                changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
+        assertEquals(1, changes.getEChanges().stream()
+                .filter(c -> c instanceof ReplaceSingleValuedEAttribute).count());
 
-        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet).resolveAndApply(changes);
+        VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
+                .resolveAndApply(changes);
 
         modelResource.get().save(null);
         assertEquals(2, validationResourceSet.getResources().size());
-        assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(modelResource.get()));
+        assertThat(validationResourceSet.getResource(movedResourceUri, false),
+                containsModelOf(modelResource.get()));
     }
 }

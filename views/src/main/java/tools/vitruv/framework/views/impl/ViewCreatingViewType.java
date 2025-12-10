@@ -31,10 +31,10 @@ public interface ViewCreatingViewType<S extends ViewSelector, Id> extends ViewTy
   void updateView(ModifiableView view);
 
   /**
-   * Commits the changes made to the view and its containing elements to the underlying {@link
-   * ChangeableViewSource}. Since view elements do not necessarily correspond to elements of the
-   * underlying view source, the view type is responsible for transforming the given {@link
-   * VitruviusChange} such that the underlying view source can process it.
+   * Commits the changes made to the view and its containing elements to the underlying
+   * {@link ChangeableViewSource}. Since view elements do not necessarily correspond to elements of
+   * the underlying view source, the view type is responsible for transforming the given
+   * {@link VitruviusChange} such that the underlying view source can process it.
    *
    * @param view is the modified view.
    * @param viewChange are the changes performed to the view.

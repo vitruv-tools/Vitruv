@@ -16,7 +16,8 @@ public class EdgeCaseStateChangeTest extends StateChangePropagationTest {
      */
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testNoUmlChange(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testNoUmlChange(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         compareChanges(getUmlModel(), getUmlCheckpoint(), strategyToTest);
     }
 
@@ -27,7 +28,8 @@ public class EdgeCaseStateChangeTest extends StateChangePropagationTest {
      */
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testNoPcmChange(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testNoPcmChange(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         compareChanges(getUmlModel(), getUmlCheckpoint(), strategyToTest);
     }
 
@@ -38,9 +40,11 @@ public class EdgeCaseStateChangeTest extends StateChangePropagationTest {
     @MethodSource("strategiesToTest")
     public void testNullResources(StateBasedChangeResolutionStrategy strategyToTest) {
         Resource nullResource = null;
-        assertThrows(IllegalArgumentException.class, () -> strategyToTest.getChangeSequenceForCreated(nullResource));
+        assertThrows(IllegalArgumentException.class,
+                () -> strategyToTest.getChangeSequenceForCreated(nullResource));
         assertThrows(IllegalArgumentException.class,
                 () -> strategyToTest.getChangeSequenceBetween(nullResource, nullResource));
-        assertThrows(IllegalArgumentException.class, () -> strategyToTest.getChangeSequenceForDeleted(nullResource));
+        assertThrows(IllegalArgumentException.class,
+                () -> strategyToTest.getChangeSequenceForDeleted(nullResource));
     }
 }

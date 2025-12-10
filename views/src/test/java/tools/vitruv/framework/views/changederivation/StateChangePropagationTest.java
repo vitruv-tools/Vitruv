@@ -35,7 +35,7 @@ import static tools.vitruv.change.testutils.metamodels.PcmMockupCreators.pcm;
 import static tools.vitruv.change.testutils.metamodels.UmlMockupCreators.uml;
 import uml_mockup.UPackage;
 
-@ExtendWith({ TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class })
+@ExtendWith({TestProjectManager.class, TestLogging.class, RegisterMetamodelsInStandalone.class})
 public abstract class StateChangePropagationTest {
     protected static final String PCM_FILE_EXT = "pcm_mockup";
     protected static final String UML_FILE_EXT = "uml_mockup";
@@ -52,8 +52,7 @@ public abstract class StateChangePropagationTest {
     protected ResourceSet checkpointResourceSet;
 
     /**
-     * Creates the strategy, sets up the test model and prepares everything for
-     * determining changes.
+     * Creates the strategy, sets up the test model and prepares everything for determining changes.
      */
     @BeforeEach
     public void setup(@TestProject Path testProjectFolder) {
@@ -82,9 +81,12 @@ public abstract class StateChangePropagationTest {
     public static Stream<Named<StateBasedChangeResolutionStrategy>> strategiesToTest() {
         return Stream.of(
                 Named.of("identifiers when available",
-                        new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.WHEN_AVAILABLE)),
-                Named.of("only identifiers", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.ONLY)),
-                Named.of("never identifiers", new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.NEVER)));
+                        new DefaultStateBasedChangeResolutionStrategy(
+                                UseIdentifiers.WHEN_AVAILABLE)),
+                Named.of("only identifiers",
+                        new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.ONLY)),
+                Named.of("never identifiers",
+                        new DefaultStateBasedChangeResolutionStrategy(UseIdentifiers.NEVER)));
     }
 
     /**
@@ -97,34 +99,35 @@ public abstract class StateChangePropagationTest {
     }
 
     /**
-     * USE THIS METHOD TO COMPARE RESULTS!
-     * Compares two changes: The recorded change sequence and the resolved changes
-     * by the state delta based strategy.
+     * USE THIS METHOD TO COMPARE RESULTS! Compares two changes: The recorded change sequence and
+     * the resolved changes by the state delta based strategy.
      */
     protected void compareChanges(Resource model, Resource checkpoint,
             StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
         model.save(null);
         VitruviusChange<EObject> deltaBasedChange = endRecording(model);
-        VitruviusChange<HierarchicalId> unresolvedStateBasedChange = strategyToTest.getChangeSequenceBetween(model,
-                checkpoint);
+        VitruviusChange<HierarchicalId> unresolvedStateBasedChange =
+                strategyToTest.getChangeSequenceBetween(model, checkpoint);
         assertNotNull(unresolvedStateBasedChange);
-        VitruviusChange<EObject> stateBasedChange = VitruviusChangeResolverFactory
-                .forHierarchicalIds(checkpoint.getResourceSet()).resolveAndApply(unresolvedStateBasedChange);
+        VitruviusChange<EObject> stateBasedChange =
+                VitruviusChangeResolverFactory.forHierarchicalIds(checkpoint.getResourceSet())
+                        .resolveAndApply(unresolvedStateBasedChange);
         String message = getTextualRepresentation(stateBasedChange, deltaBasedChange);
         var stateBasedChangedObjects = stateBasedChange.getAffectedAndReferencedEObjects();
         var deltaBasedChangedObjects = deltaBasedChange.getAffectedAndReferencedEObjects();
         assertEquals(stateBasedChangedObjects.size(), deltaBasedChangedObjects.size(),
                 "Got a different number of changed objects:\n" + message);
         stateBasedChangedObjects.forEach(stateBasedChangedObject -> {
-            assertTrue(deltaBasedChangedObjects.stream().anyMatch(it -> EcoreUtil.equals(it, stateBasedChangedObject)),
-                    "Could not find this changed object in the delta based change:\n" + stateBasedChangedObject + "\n\n"
-                            + message);
+            assertTrue(
+                    deltaBasedChangedObjects.stream()
+                            .anyMatch(it -> EcoreUtil.equals(it, stateBasedChangedObject)),
+                    "Could not find this changed object in the delta based change:\n"
+                            + stateBasedChangedObject + "\n\n" + message);
         });
     }
 
     /**
-     * Returns the recorded change sequences (the "original" changes) for a specific
-     * model instance.
+     * Returns the recorded change sequences (the "original" changes) for a specific model instance.
      */
     protected VitruviusChange<EObject> endRecording(Notifier notifier) {
         changeRecorder.removeFromRecording(notifier);

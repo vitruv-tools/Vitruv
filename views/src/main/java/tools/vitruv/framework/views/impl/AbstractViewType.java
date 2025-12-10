@@ -6,7 +6,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import tools.vitruv.framework.views.ViewSelector;
 
-public abstract class AbstractViewType<S extends ViewSelector, Id> implements ViewCreatingViewType<S, Id> {
+public abstract class AbstractViewType<S extends ViewSelector, Id>
+        implements ViewCreatingViewType<S, Id> {
     private final String name;
     private final EPackage metamodel;
 
@@ -24,7 +25,7 @@ public abstract class AbstractViewType<S extends ViewSelector, Id> implements Vi
     /**
      * constructor for view types with metamodel
      * 
-     * @param name      the name of the view type
+     * @param name the name of the view type
      * @param metamodel the metamodel of the view type
      */
     public AbstractViewType(String name, EPackage metamodel) {

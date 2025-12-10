@@ -27,9 +27,8 @@ import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 /**
- * A view that derives changes based on the changed state of its
- * resources and allows to propagate them
- * back to the underlying models using the {@link #commitChanges} method.
+ * A view that derives changes based on the changed state of its resources and allows to propagate
+ * them back to the underlying models using the {@link #commitChanges} method.
  */
 public class ChangeDerivingView implements ModifiableView, CommittableView {
     private final BasicView view;
@@ -40,19 +39,21 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
     /**
      * Creates a new instance with the given underlying view and change resolution
      * 
-     * @param view                     the underlying view
+     * @param view the underlying view
      * @param changeResolutionStrategy the strategy to derive changes between two
      * 
      * @throws IllegalArgumentException if view or change resolution strategy are
-     * @throws IllegalStateException    if the view is modified or outdated
+     * @throws IllegalStateException if the view is modified or outdated
      * 
      * @see #commitChanges()
      */
-    public ChangeDerivingView(BasicView view, StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+    public ChangeDerivingView(BasicView view,
+            StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         checkArgument(view != null, "view must not be null");
         checkState(!view.isModified(), "view must not be modified");
         checkState(!view.isOutdated(), "view must not be outdated");
-        checkArgument(changeResolutionStrategy != null, "change resolution strategy must not be null");
+        checkArgument(changeResolutionStrategy != null,
+                "change resolution strategy must not be null");
         this.view = view;
         this.changeResolutionStrategy = changeResolutionStrategy;
         setupReferenceState();
@@ -67,13 +68,12 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
 
     private void setupReferenceState() {
         originalStateViewResourceSet = new ResourceSetImpl();
-        ResourceCopier.copyViewResources(view.getViewResourceSet().getResources(), originalStateViewResourceSet);
+        ResourceCopier.copyViewResources(view.getViewResourceSet().getResources(),
+                originalStateViewResourceSet);
         originalStateResourceMapping = new HashMap<>();
         view.getViewResourceSet().getResources().forEach(resource -> {
             Resource originalResource = originalStateViewResourceSet.getResources().stream()
-                    .filter(res -> res.getURI().equals(resource.getURI()))
-                    .findFirst()
-                    .orElse(null);
+                    .filter(res -> res.getURI().equals(resource.getURI())).findFirst().orElse(null);
             originalStateResourceMapping.put(resource, originalResource);
         });
     }
@@ -83,12 +83,14 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
         view.checkNotClosed();
         List<VitruviusChange<HierarchicalId>> changes = new ArrayList<>();
         Set<Resource> allResources = new HashSet<>(originalStateResourceMapping.keySet());
-        allResources.addAll(view.getViewResourceSet().getResources()); // consider newly added resources
+        allResources.addAll(view.getViewResourceSet().getResources()); // consider newly added
+                                                                       // resources
 
         for (Resource changedResource : allResources) {
             if (!URIUtil.isPathmap(changedResource.getURI())) {
                 Resource referenceResource = originalStateResourceMapping.get(changedResource);
-                VitruviusChange<HierarchicalId> change = generateChange(changedResource, referenceResource);
+                VitruviusChange<HierarchicalId> change =
+                        generateChange(changedResource, referenceResource);
                 if (change.containsConcreteChange()) {
                     // only add changes that can be propagated, i.e., that are not empty
                     // (see https://github.com/vitruv-tools/Vitruv/issues/717)
@@ -97,7 +99,8 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
             }
         }
 
-        VitruviusChange<HierarchicalId> change = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+        VitruviusChange<HierarchicalId> change =
+                VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         view.getViewType().commitViewChanges(this, change);
         view.setViewChanged(false);
     }
@@ -110,7 +113,8 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
         view.close();
     }
 
-    private VitruviusChange<HierarchicalId> generateChange(Resource newState, Resource referenceState) {
+    private VitruviusChange<HierarchicalId> generateChange(Resource newState,
+            Resource referenceState) {
         if (referenceState == null) {
             return changeResolutionStrategy.getChangeSequenceForCreated(newState);
         } else if (newState == null) {
@@ -139,7 +143,8 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
     }
 
     @Override
-    public ChangeDerivingView withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+    public ChangeDerivingView withChangeDerivingTrait(
+            StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         ChangeDerivingView newView = view.withChangeDerivingTrait(changeResolutionStrategy);
         closeOriginalState();
         return newView;
@@ -167,12 +172,14 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
     }
 
     @Override
-    public void registerRoot(org.eclipse.emf.ecore.EObject object, org.eclipse.emf.common.util.URI persistAt) {
+    public void registerRoot(org.eclipse.emf.ecore.EObject object,
+            org.eclipse.emf.common.util.URI persistAt) {
         view.registerRoot(object, persistAt);
     }
 
     @Override
-    public void moveRoot(org.eclipse.emf.ecore.EObject object, org.eclipse.emf.common.util.URI newLocation) {
+    public void moveRoot(org.eclipse.emf.ecore.EObject object,
+            org.eclipse.emf.common.util.URI newLocation) {
         view.moveRoot(object, newLocation);
     }
 

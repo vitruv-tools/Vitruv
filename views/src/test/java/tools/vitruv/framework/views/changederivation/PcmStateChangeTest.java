@@ -12,7 +12,8 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
 
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         var newComponent = PcmMockupCreators.pcm.Component();
         newComponent.setName("NewlyAddedComponent");
         pcmRoot.getComponents().add(newComponent);
@@ -21,21 +22,24 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
 
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         pcmRoot.getComponents().get(0).setName("RenamedComponent");
         compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
     }
 
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         pcmRoot.getComponents().remove(0);
         compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
     }
 
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         var newInterface = PcmMockupCreators.pcm.Interface();
         newInterface.setName("NewlyAddedInterface");
         pcmRoot.getInterfaces().add(PcmMockupCreators.pcm.Interface());
@@ -48,7 +52,8 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
 
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         var newInterface = PcmMockupCreators.pcm.Interface();
         newInterface.setName("NewlyAddedInterface");
         pcmRoot.getInterfaces().add(newInterface);
@@ -78,7 +83,8 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
 
     @ParameterizedTest
     @MethodSource("strategiesToTest")
-    public void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    public void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest)
+            throws IOException {
         IntStream.rangeClosed(1, 3).forEach(index -> {
             var iface = PcmMockupCreators.pcm.Interface();
             iface.setName("NewlyAddedInterface" + index);

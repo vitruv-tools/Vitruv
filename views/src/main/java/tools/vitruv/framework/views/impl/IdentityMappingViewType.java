@@ -30,10 +30,8 @@ import tools.vitruv.framework.views.ViewSource;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
 
 /**
- * A view type that allows creating views based on a basic element-wise
- * selection mechanism and
- * providing a one-to-one (identity) mapping of elements within the
- * {@link ViewSource} to a created
+ * A view type that allows creating views based on a basic element-wise selection mechanism and
+ * providing a one-to-one (identity) mapping of elements within the {@link ViewSource} to a created
  * {@link View}.
  */
 public class IdentityMappingViewType
@@ -48,10 +46,9 @@ public class IdentityMappingViewType
   }
 
   /**
-   * Creates a new {@link IdentityMappingViewType} with the given name and
-   * metamodel EPackage.
+   * Creates a new {@link IdentityMappingViewType} with the given name and metamodel EPackage.
    * 
-   * @param name      the name of the view type
+   * @param name the name of the view type
    * @param metamodel the metamodel of the view type
    */
   public IdentityMappingViewType(String name, EPackage metamodel) {
@@ -60,51 +57,42 @@ public class IdentityMappingViewType
 
   @Override
   public DirectViewElementSelector<HierarchicalId> createSelector(ChangeableViewSource viewSource) {
-    return new DirectViewElementSelector<>(
-        this,
-        viewSource,
-        viewSource.getViewSourceModels().stream()
-            .map(
-                resource -> {
-                  if (!resource.getContents().isEmpty()
-                      && ResourceCopier.requiresFullCopy(resource)) {
-                    // Some resources (like UML) can only be copied as a whole, so no option to
-                    // select
-                    // specific root elements
-                    return Stream.of(resource.getContents().get(0));
-                  }
-                  return resource.getContents().stream();
-                })
-            .flatMap(Function.identity())
-            .filter(Objects::nonNull)
-            .toList());
+    return new DirectViewElementSelector<>(this, viewSource,
+        viewSource.getViewSourceModels().stream().map(resource -> {
+          if (!resource.getContents().isEmpty() && ResourceCopier.requiresFullCopy(resource)) {
+            // Some resources (like UML) can only be copied as a whole, so no option to
+            // select
+            // specific root elements
+            return Stream.of(resource.getContents().get(0));
+          }
+          return resource.getContents().stream();
+        }).flatMap(Function.identity()).filter(Objects::nonNull).toList());
   }
 
   @Override
   public ModifiableView createView(DirectViewElementSelector<HierarchicalId> selector) {
-    checkArgument(
-        selector.getViewType() == this, "cannot create view with selector for different view type");
+    checkArgument(selector.getViewType() == this,
+        "cannot create view with selector for different view type");
     return new BasicView(selector.getViewType(), selector.getViewSource(), selector.getSelection());
   }
 
   @Override
   public void updateView(ModifiableView view) {
-    view.modifyContents(
-        viewResourceSet -> {
-          viewResourceSet.getResources().forEach(Resource::unload);
-          viewResourceSet.getResources().clear();
-          createViewResources(view, viewResourceSet);
-        });
+    view.modifyContents(viewResourceSet -> {
+      viewResourceSet.getResources().forEach(Resource::unload);
+      viewResourceSet.getResources().clear();
+      createViewResources(view, viewResourceSet);
+    });
   }
 
   @Override
   public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
     ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
-    VitruviusChangeResolver<HierarchicalId> idChangeResolver = VitruviusChangeResolverFactory
-        .forHierarchicalIds(viewSourceCopyResourceSet);
+    VitruviusChangeResolver<HierarchicalId> idChangeResolver =
+        VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);
     UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
-    VitruviusChangeResolver<Uuid> uuidChangeResolver = VitruviusChangeResolverFactory
-        .forUuids(viewSourceCopyUuidResolver);
+    VitruviusChangeResolver<Uuid> uuidChangeResolver =
+        VitruviusChangeResolverFactory.forUuids(viewSourceCopyUuidResolver);
     Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
     view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
@@ -113,15 +101,15 @@ public class IdentityMappingViewType
     view.getViewSource().propagateChange(unresolvedChanges);
   }
 
-  private Map<Resource, Resource> createViewResources(
-      ModifiableView view, ResourceSet viewResourceSet) {
+  private Map<Resource, Resource> createViewResources(ModifiableView view,
+      ResourceSet viewResourceSet) {
     Collection<Resource> viewSources = view.getViewSource().getViewSourceModels();
     ViewSelection selection = view.getSelection();
     List<Resource> resourcesWithSelectedElements = viewSources.stream()
         .filter(
             resource -> resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
         .toList();
-    return ResourceCopier.copyViewSourceResources(
-        resourcesWithSelectedElements, viewResourceSet, selection::isViewObjectSelected);
+    return ResourceCopier.copyViewSourceResources(resourcesWithSelectedElements, viewResourceSet,
+        selection::isViewObjectSelected);
   }
 }

@@ -14,9 +14,8 @@ public final class ViewTypeFactory {
     }
 
     /**
-     * Creates a view type that generates a view via a one-to-one (identity) mapping
-     * of
-     * selected resource root elements in a view source to a {@link View}.
+     * Creates a view type that generates a view via a one-to-one (identity) mapping of selected
+     * resource root elements in a view source to a {@link View}.
      * 
      * @param name the name of the view type
      * @return a new identity mapping view type
@@ -26,15 +25,15 @@ public final class ViewTypeFactory {
     }
 
     /**
-     * Creates a view type that generates a view via a one-to-one (identity) mapping
-     * of
-     * selected resource root elements in a view source to a {@link View}.
+     * Creates a view type that generates a view via a one-to-one (identity) mapping of selected
+     * resource root elements in a view source to a {@link View}.
      * 
-     * @param name      the name of the view type
+     * @param name the name of the view type
      * @param metamodel the metamodel EPackage for the view type
      * @return a new identity mapping view type with the specified metamodel
      */
-    public static ViewType<? extends ViewSelector> createIdentityMappingViewType(String name, EPackage metamodel) {
+    public static ViewType<? extends ViewSelector> createIdentityMappingViewType(String name,
+            EPackage metamodel) {
         return new IdentityMappingViewType(name, metamodel);
     }
 }

@@ -31,7 +31,7 @@ public interface View extends AutoCloseable {
    * Provides all root model elements of this view that conform to a certain type.
    *
    * @param clazz is requested root element type.
-   * @param <T>   is the requested root element type.
+   * @param <T> is the requested root element type.
    * @throws IllegalStateException if called on a closed view.
    * @see View#isClosed()
    * 
@@ -49,24 +49,20 @@ public interface View extends AutoCloseable {
   boolean isModified();
 
   /**
-   * Returns whether the view is outdated, i.e., whether the underlying view
-   * sources have changed.
+   * Returns whether the view is outdated, i.e., whether the underlying view sources have changed.
    * 
    * @return whether the view is outdated.
    */
   boolean isOutdated();
 
   /**
-   * Updates the view from the underlying {@link ViewSource}, thus invalidating
-   * its previous state
+   * Updates the view from the underlying {@link ViewSource}, thus invalidating its previous state
    * and now providing an updated view on the {@code ViewSource}. It reuses the
-   * {@link
-   * ViewSelection} with whom the view has been created. This can only be done for
-   * an unmodified
-   * view.
+   * {@link ViewSelection} with whom the view has been created. This can only be done for an
+   * unmodified view.
    *
    * @throws UnsupportedOperationException if called on a modified view
-   * @throws IllegalStateException         if called on a closed view
+   * @throws IllegalStateException if called on a closed view
    * @see #isClosed()
    * @see #isModified()
    * 
@@ -74,8 +70,7 @@ public interface View extends AutoCloseable {
   void update();
 
   /**
-   * Checks whether the view was closed. Closed views cannot be used further. All
-   * methods may thrown
+   * Checks whether the view was closed. Closed views cannot be used further. All methods may thrown
    * an {@link IllegalStateException}.
    * 
    * @return whether the view was closed.
@@ -83,37 +78,30 @@ public interface View extends AutoCloseable {
   boolean isClosed();
 
   /**
-   * Persists the given object at the given {@link URI} and adds it as view root.
-   * The newly
-   * registered root will not be present in the view, you have to commit the view
-   * and checkout a new
-   * one (you probably also have to adapt the selection) in order to be able to
-   * see and modify the
+   * Persists the given object at the given {@link URI} and adds it as view root. The newly
+   * registered root will not be present in the view, you have to commit the view and checkout a new
+   * one (you probably also have to adapt the selection) in order to be able to see and modify the
    * new root.
    *
    * <p>
-   * This method is in beta state, as it is still under evaluation whether it is
-   * sufficient and
+   * This method is in beta state, as it is still under evaluation whether it is sufficient and
    * appropriate for registering root objects in views.
    * 
-   * @param object    the object to register as root
+   * @param object the object to register as root
    * @param persistAt the URI where the root object is to be persisted
    */
   @Beta
   void registerRoot(EObject object, URI persistAt);
 
   /**
-   * Moves the given object to the given {@link URI}. The given {@link EObject}
-   * must already be a
-   * root object of the view, otherwise an {@link IllegalStateException} is
-   * thrown.
+   * Moves the given object to the given {@link URI}. The given {@link EObject} must already be a
+   * root object of the view, otherwise an {@link IllegalStateException} is thrown.
    *
    * <p>
-   * This method is in beta state, as it is still under evaluation whether it is
-   * sufficient and
+   * This method is in beta state, as it is still under evaluation whether it is sufficient and
    * appropriate for registering root objects in views.
    * 
-   * @param object      the object to move
+   * @param object the object to move
    * @param newLocation the new location where the root object is to be moved
    */
   @Beta
@@ -134,12 +122,11 @@ public interface View extends AutoCloseable {
   ViewType<? extends ViewSelector> getViewType();
 
   /**
-   * Returns a {@link CommittableView} based on the view's configuration. Changes
-   * to commit are
+   * Returns a {@link CommittableView} based on the view's configuration. Changes to commit are
    * identified by recording any changes made to the view.
    *
    * @throws UnsupportedOperationException if called on a modified view
-   * @throws IllegalStateException         if called on a closed view
+   * @throws IllegalStateException if called on a closed view
    * @see #isClosed()
    * @see #isModified()
    * 
@@ -148,16 +135,13 @@ public interface View extends AutoCloseable {
   CommittableView withChangeRecordingTrait();
 
   /**
-   * Returns a {@link CommittableView} based on the view's configuration. Changes
-   * to commit are
-   * identified by comparing the current view state with its state from the last
-   * update.
+   * Returns a {@link CommittableView} based on the view's configuration. Changes to commit are
+   * identified by comparing the current view state with its state from the last update.
    *
-   * @param changeResolutionStrategy The change resolution strategy to use for
-   *                                 view state
-   *                                 comparison. Must not be <code>null</code>.
+   * @param changeResolutionStrategy The change resolution strategy to use for view state
+   *        comparison. Must not be <code>null</code>.
    * @throws UnsupportedOperationException if called on a modified view
-   * @throws IllegalStateException         if called on a closed view
+   * @throws IllegalStateException if called on a closed view
    * @see #isClosed()
    * @see #isModified()
    * 
@@ -167,14 +151,12 @@ public interface View extends AutoCloseable {
       StateBasedChangeResolutionStrategy changeResolutionStrategy);
 
   /**
-   * Returns a {@link CommittableView} based on the view's configuration. Changes
-   * to commit are
-   * identified by comparing the current view state with its state from the last
-   * update. To compare
+   * Returns a {@link CommittableView} based on the view's configuration. Changes to commit are
+   * identified by comparing the current view state with its state from the last update. To compare
    * states the {@link DefaultStateBasedChangeResolutionStrategy} is applied.
    *
    * @throws UnsupportedOperationException if called on a modified view
-   * @throws IllegalStateException         if called on a closed view
+   * @throws IllegalStateException if called on a closed view
    * @see #isClosed()
    * @see #isModified()
    * 

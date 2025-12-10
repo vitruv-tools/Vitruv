@@ -30,17 +30,17 @@ import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 
 /**
- * This default strategy for diff based state changes uses EMFCompare to resolve
- * a
- * diff to a sequence of individual changes.
+ * This default strategy for diff based state changes uses EMFCompare to resolve a diff to a
+ * sequence of individual changes.
  */
-public class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
+public class DefaultStateBasedChangeResolutionStrategy
+        implements StateBasedChangeResolutionStrategy {
     /** The identifier matching behavior used by this strategy */
     private final UseIdentifiers useIdentifiers;
 
     /**
-     * Creates a new instance with the default identifier matching behavior
-     * which is match by identifier when available.
+     * Creates a new instance with the default identifier matching behavior which is match by
+     * identifier when available.
      */
     public DefaultStateBasedChangeResolutionStrategy() {
         this(UseIdentifiers.WHEN_AVAILABLE);
@@ -56,16 +56,17 @@ public class DefaultStateBasedChangeResolutionStrategy implements StateBasedChan
     }
 
     private void checkNoProxies(Resource resource, String stateNotice) {
-        List<String> proxies = StreamSupport.stream(ResourceUtil.getReferencedProxies(resource).spliterator(), false)
-                .map(Object::toString)
-                .collect(Collectors.toList());
+        List<String> proxies = StreamSupport
+                .stream(ResourceUtil.getReferencedProxies(resource).spliterator(), false)
+                .map(Object::toString).collect(Collectors.toList());
         checkArgument(proxies.isEmpty(),
-                "%s '%s' should not contain proxies, but contains the following: %s",
-                stateNotice, resource.getURI(), String.join(", ", proxies));
+                "%s '%s' should not contain proxies, but contains the following: %s", stateNotice,
+                resource.getURI(), String.join(", ", proxies));
     }
 
     @Override
-    public VitruviusChange<HierarchicalId> getChangeSequenceBetween(Resource newState, Resource oldState) {
+    public VitruviusChange<HierarchicalId> getChangeSequenceBetween(Resource newState,
+            Resource oldState) {
         checkArgument(oldState != null && newState != null,
                 "old state or new state must not be null!");
         checkNoProxies(newState, "new state");
@@ -121,14 +122,14 @@ public class DefaultStateBasedChangeResolutionStrategy implements StateBasedChan
             function.run();
 
             VitruviusChange<EObject> recordedChanges = changeRecorder.endRecording();
-            var changeResolver = VitruviusChangeResolverFactory.forHierarchicalIds(resource.getResourceSet());
+            var changeResolver =
+                    VitruviusChangeResolverFactory.forHierarchicalIds(resource.getResourceSet());
             return changeResolver.assignIds(recordedChanges);
         }
     }
 
     /**
-     * Compares states using EMFCompare and replays the changes to the current
-     * state.
+     * Compares states using EMFCompare and replays the changes to the current state.
      */
     private void compareStatesAndReplayChanges(Notifier newState, Notifier currentState) {
         DefaultComparisonScope scope = new DefaultComparisonScope(newState, currentState, null);
@@ -136,14 +137,14 @@ public class DefaultStateBasedChangeResolutionStrategy implements StateBasedChan
         Registry matchEngineRegistry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
         matchEngineRegistry.add(new MatchEngineFactoryImpl(useIdentifiers));
 
-        EMFCompare emfCompare = EMFCompare.builder()
-                .setMatchEngineFactoryRegistry(matchEngineRegistry)
-                .build();
+        EMFCompare emfCompare =
+                EMFCompare.builder().setMatchEngineFactoryRegistry(matchEngineRegistry).build();
 
         Comparison comparison = emfCompare.compare(scope);
 
         // Replay the EMF compare differences
-        org.eclipse.emf.compare.merge.IMerger.Registry mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance();
+        org.eclipse.emf.compare.merge.IMerger.Registry mergerRegistry =
+                IMerger.RegistryImpl.createStandaloneInstance();
         BatchMerger merger = new BatchMerger(mergerRegistry);
         merger.copyAllLeftToRight(comparison.getDifferences(), new BasicMonitor());
     }

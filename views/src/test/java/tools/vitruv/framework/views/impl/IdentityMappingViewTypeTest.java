@@ -1,7 +1,16 @@
 package tools.vitruv.framework.views.impl;
 
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static java.util.Collections.emptySet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -11,24 +20,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
-import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
-
-import allElementTypes.Root;
-import com.google.common.collect.FluentIterable;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -37,6 +28,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.google.common.collect.FluentIterable;
+
+import allElementTypes.Root;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
@@ -49,6 +49,8 @@ import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
 import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.change.testutils.TestLogging;
+import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
@@ -103,9 +105,8 @@ public class IdentityMappingViewTypeTest {
     @Test
     @DisplayName("for source containing single element")
     void forSourceContainingElement() {
-      Resource resource =
-          withGlobalFactories(new ResourceSetImpl())
-              .createResource(URI.createURI("test:///test.aet"));
+      Resource resource = withGlobalFactories(new ResourceSetImpl())
+          .createResource(URI.createURI("test:///test.aet"));
       Root rootElement = aet.Root();
       resource.getContents().add(rootElement);
       ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
@@ -117,9 +118,8 @@ public class IdentityMappingViewTypeTest {
     @Test
     @DisplayName("for source containing non-root elements")
     void forSourceContainingNonRootElements() {
-      Resource resource =
-          withGlobalFactories(new ResourceSetImpl())
-              .createResource(URI.createURI("test:///test.aet"));
+      Resource resource = withGlobalFactories(new ResourceSetImpl())
+          .createResource(URI.createURI("test:///test.aet"));
       Root rootElement = aet.Root();
       rootElement.setSingleValuedContainmentEReference(aet.NonRoot());
       resource.getContents().add(rootElement);
@@ -271,16 +271,10 @@ public class IdentityMappingViewTypeTest {
         assertThat(view.getRootObjects().size(), is(2));
         assertThat(view.getRootObjects(), hasItem(equalsDeeply(firstRootElement)));
         assertThat(view.getRootObjects(), hasItem(equalsDeeply(secondRootElement)));
-        Root rootWithContainment =
-            FluentIterable.from(view.getRootObjects(Root.class))
-                .filter(root -> root.getRecursiveRoot() != null)
-                .first()
-                .get();
-        Root rootWithoutContainment =
-            FluentIterable.from(view.getRootObjects(Root.class))
-                .filter(root -> root.getRecursiveRoot() == null)
-                .first()
-                .get();
+        Root rootWithContainment = FluentIterable.from(view.getRootObjects(Root.class))
+            .filter(root -> root.getRecursiveRoot() != null).first().get();
+        Root rootWithoutContainment = FluentIterable.from(view.getRootObjects(Root.class))
+            .filter(root -> root.getRecursiveRoot() == null).first().get();
         assertThat(rootWithContainment.getRecursiveRoot(), is(rootWithoutContainment));
       }
     }
@@ -317,16 +311,12 @@ public class IdentityMappingViewTypeTest {
       selector.getSelectableElements().forEach(element -> selector.setSelected(element, true));
       try (ModifiableView view = basicViewType.createView(selector)) {
         root.setSingleValuedContainmentEReference(aet.NonRoot());
-        assertThat(
-            (view.getRootObjects(Root.class).iterator().next())
-                .getSingleValuedContainmentEReference(),
-            equalTo(null));
+        assertThat((view.getRootObjects(Root.class).iterator().next())
+            .getSingleValuedContainmentEReference(), equalTo(null));
         basicViewType.updateView(view);
         assertThat(view.getRootObjects().size(), is(1));
-        assertThat(
-            (view.getRootObjects(Root.class).iterator().next())
-                .getSingleValuedContainmentEReference(),
-            is(anything()));
+        assertThat((view.getRootObjects(Root.class).iterator().next())
+            .getSingleValuedContainmentEReference(), is(anything()));
       }
     }
 
@@ -427,8 +417,8 @@ public class IdentityMappingViewTypeTest {
     void withNullView() {
       VitruviusChange<HierarchicalId> someChange =
           VitruviusChangeFactory.getInstance().createTransactionalChange(Set.of());
-      assertThrows(
-          NullPointerException.class, () -> basicViewType.commitViewChanges(null, someChange));
+      assertThrows(NullPointerException.class,
+          () -> basicViewType.commitViewChanges(null, someChange));
     }
 
     @ParameterizedTest
@@ -444,8 +434,8 @@ public class IdentityMappingViewTypeTest {
 
     private static Stream<VitruviusChange<HierarchicalId>> testEmptyChanges() {
       VitruviusChangeFactory factory = VitruviusChangeFactory.getInstance();
-      return Stream.of(
-          factory.createTransactionalChange(Set.of()), factory.createCompositeChange(Set.of()));
+      return Stream.of(factory.createTransactionalChange(Set.of()),
+          factory.createCompositeChange(Set.of()));
     }
 
     @Test

@@ -21,8 +21,8 @@ import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 /**
- * A view that records changes to its resources and allows to propagate
- * them back to the underlying models using the {@link #commitChanges} method.
+ * A view that records changes to its resources and allows to propagate them back to the underlying
+ * models using the {@link #commitChanges} method.
  */
 public class ChangeRecordingView implements ModifiableView, CommittableView {
     private final BasicView view;
@@ -52,8 +52,10 @@ public class ChangeRecordingView implements ModifiableView, CommittableView {
     public void commitChanges() {
         view.checkNotClosed();
         VitruviusChange<EObject> recordedChange = changeRecorder.endRecording();
-        var changeResolver = VitruviusChangeResolverFactory.forHierarchicalIds(view.getViewResourceSet());
-        VitruviusChange<HierarchicalId> unresolvedChanges = changeResolver.assignIds(recordedChange);
+        var changeResolver =
+                VitruviusChangeResolverFactory.forHierarchicalIds(view.getViewResourceSet());
+        VitruviusChange<HierarchicalId> unresolvedChanges =
+                changeResolver.assignIds(recordedChange);
         view.getViewType().commitViewChanges(this, unresolvedChanges);
         view.setViewChanged(false);
         changeRecorder.beginRecording();
@@ -84,7 +86,8 @@ public class ChangeRecordingView implements ModifiableView, CommittableView {
     }
 
     @Override
-    public ChangeDerivingView withChangeDerivingTrait(StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+    public ChangeDerivingView withChangeDerivingTrait(
+            StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         ChangeDerivingView newView = view.withChangeDerivingTrait(changeResolutionStrategy);
         changeRecorder.close();
         return newView;

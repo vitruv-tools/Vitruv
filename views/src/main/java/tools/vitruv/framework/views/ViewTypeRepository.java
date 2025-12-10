@@ -32,8 +32,7 @@ public class ViewTypeRepository implements ViewTypeProvider {
      *
      * @param viewType the view type to register, must not be null
      * @throws IllegalArgumentException if viewType is null
-     * @throws IllegalStateException    if a view type with the same name is already
-     *                                  registered
+     * @throws IllegalStateException if a view type with the same name is already registered
      */
     public void register(ViewType<?> viewType) {
         checkArgument(viewType != null, "null cannot be added as a view type");
@@ -45,8 +44,7 @@ public class ViewTypeRepository implements ViewTypeProvider {
     /**
      * Finds a view type by its name.
      *
-     * @param viewTypeName the name of the view type to search for, must not be null
-     *                     or empty
+     * @param viewTypeName the name of the view type to search for, must not be null or empty
      * @return the view type with the given name, or null if not found
      * @throws IllegalArgumentException if viewTypeName is null or empty
      */

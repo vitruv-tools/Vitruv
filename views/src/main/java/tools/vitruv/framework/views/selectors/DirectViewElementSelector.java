@@ -16,11 +16,10 @@ import tools.vitruv.framework.views.impl.ViewCreatingViewType;
 import tools.vitruv.framework.views.selection.ElementViewSelection;
 
 /**
- * A view selector that provides a selection of elements being view objects at
- * the same time. This means, there is no indirection between selected elements
- * and view elements (such as selecting types but providing instances in the
- * view),
- * but a selection is performed on the view elements themselves.
+ * A view selector that provides a selection of elements being view objects at the same time. This
+ * means, there is no indirection between selected elements and view elements (such as selecting
+ * types but providing instances in the view), but a selection is performed on the view elements
+ * themselves.
  */
 public class DirectViewElementSelector<Id> implements ViewSelector {
     private final ModifiableViewSelection viewSelection;
@@ -28,20 +27,17 @@ public class DirectViewElementSelector<Id> implements ViewSelector {
     private final ViewCreatingViewType<DirectViewElementSelector<Id>, Id> viewType;
 
     /**
-     * Creates a new selector based on the given collection of selectable elements
-     * for the given {@link ViewType} and {@link ChangeableViewSource}. All
-     * arguments
-     * must not be <code>null</code>.
-     * All elements will be unselected after creation.
+     * Creates a new selector based on the given collection of selectable elements for the given
+     * {@link ViewType} and {@link ChangeableViewSource}. All arguments must not be
+     * <code>null</code>. All elements will be unselected after creation.
      * 
-     * @param viewType           - the {@link ViewType} to create a view for when
-     *                           calling {@link createView}
-     * @param viewSource         - the {@link ChangeableViewSource} to create a view
-     *                           from
-     * @param selectableElements - the elements to select from to be used by the
-     *                           {@link ViewType} when creating a view
+     * @param viewType - the {@link ViewType} to create a view for when calling {@link createView}
+     * @param viewSource - the {@link ChangeableViewSource} to create a view from
+     * @param selectableElements - the elements to select from to be used by the {@link ViewType}
+     *        when creating a view
      */
-    public DirectViewElementSelector(ViewCreatingViewType<DirectViewElementSelector<Id>, Id> viewType,
+    public DirectViewElementSelector(
+            ViewCreatingViewType<DirectViewElementSelector<Id>, Id> viewType,
             ChangeableViewSource viewSource, Collection<EObject> selectableElements) {
         checkArgument(selectableElements != null, "selectable elements must not be null");
         checkArgument(viewType != null, "view type must not be null");

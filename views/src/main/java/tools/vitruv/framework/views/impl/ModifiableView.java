@@ -8,8 +8,7 @@ import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.View;
 
 /**
- * A view whose contents can be modified, in particular by a view type
- * implementation.
+ * A view whose contents can be modified, in particular by a view type implementation.
  */
 public interface ModifiableView extends View {
     /**
