@@ -9,6 +9,12 @@ import tools.vitruv.change.testutils.metamodels.PcmMockupCreators;
 /** Tests for state-based change propagation in PCM models. */
 public class PcmStateChangeTest extends StateChangePropagationTest {
 
+  /**
+   * Tests adding a component to the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest)
@@ -19,6 +25,12 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
   }
 
+  /**
+   * Tests renaming a component in the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest)
@@ -27,6 +39,12 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
   }
 
+  /**
+   * Tests deleting a component from the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest)
@@ -35,6 +53,12 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
   }
 
+  /**
+   * Tests adding a provided interface to a component in the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
@@ -49,6 +73,12 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
   }
 
+  /**
+   * Tests adding an interface with multiple methods to a component in the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest)
@@ -67,6 +97,12 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
   }
 
+  /**
+   * Tests adding different provided interfaces to a component in the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testAddDifferentProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
@@ -82,6 +118,12 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
   }
 
+  /**
+   * Tests adding multiple interfaces with methods to the PCM model.
+   *
+   * @param strategyToTest the strategy to test
+   * @throws IOException if an I/O error occurs
+   */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
   public void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest)
