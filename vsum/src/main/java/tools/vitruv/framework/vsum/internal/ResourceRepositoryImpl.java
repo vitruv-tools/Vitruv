@@ -163,7 +163,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   @Override
   public void saveOrDeleteModels() {
     if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(InfoMessages.DEBUG_SAVING_ALL_MODELS , fileSystemLayout);
+      LOGGER.debug(InfoMessages.DEBUG_SAVING_ALL_MODELS, fileSystemLayout);
     }
     Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
         modelInstances.entrySet().iterator();
