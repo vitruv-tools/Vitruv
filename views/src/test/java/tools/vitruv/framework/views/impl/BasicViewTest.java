@@ -1,40 +1,37 @@
 package tools.vitruv.framework.views.impl;
 
-import org.eclipse.emf.common.util.URI;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
+
+import allElementTypes.NonRoot;
+import allElementTypes.Root;
+import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import org.mockito.MockitoAnnotations;
-
-import allElementTypes.NonRoot;
-import allElementTypes.Root;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.change.testutils.TestLogging;
-import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
 /** Test class for the BasicView class. */
 @ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 class BasicViewTest {
-  @Mock
-  ViewCreatingViewType<?, HierarchicalId> mockViewType;
-  @Mock
-  ChangeableViewSource mockChangeableViewSource;
-  @Mock
-  ModifiableViewSelection mockViewSelection;
+  @Mock ViewCreatingViewType<?, HierarchicalId> mockViewType;
+  @Mock ChangeableViewSource mockChangeableViewSource;
+  @Mock ModifiableViewSelection mockViewSelection;
 
   /** Initializes the mocks before each test. */
   @BeforeEach
@@ -52,21 +49,24 @@ class BasicViewTest {
     @Test
     @DisplayName("with null view type")
     void withNullViewType() {
-      assertThrows(IllegalArgumentException.class,
+      assertThrows(
+          IllegalArgumentException.class,
           () -> new BasicView(null, mockChangeableViewSource, mockViewSelection));
     }
 
     @Test
     @DisplayName("with null view source")
     void withNullViewSource() {
-      assertThrows(IllegalArgumentException.class,
+      assertThrows(
+          IllegalArgumentException.class,
           () -> new BasicView(mockViewType, null, mockViewSelection));
     }
 
     @Test
     @DisplayName("with null view selection")
     void withNullViewSelection() {
-      assertThrows(IllegalArgumentException.class,
+      assertThrows(
+          IllegalArgumentException.class,
           () -> new BasicView(mockViewType, mockChangeableViewSource, null));
     }
 

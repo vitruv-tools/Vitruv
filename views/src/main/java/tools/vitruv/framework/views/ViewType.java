@@ -12,14 +12,14 @@ public interface ViewType<S extends ViewSelector> {
   /**
    * Returns the EPackage of the underlying metamodel of the view type or null, if no explicit
    * metamodel exists.
-   * 
+   *
    * @return the metamodel of the view type or null if no explicit metamodel exists
    */
   EPackage getMetamodel();
 
   /**
    * Returns the name of the view type.
-   * 
+   *
    * @return the name of the view type
    */
   String getName();

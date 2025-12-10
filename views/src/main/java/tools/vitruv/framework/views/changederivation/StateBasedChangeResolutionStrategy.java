@@ -1,7 +1,6 @@
 package tools.vitruv.framework.views.changederivation;
 
 import org.eclipse.emf.ecore.resource.Resource;
-
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.composite.description.VitruviusChange;
 
@@ -18,9 +17,9 @@ public interface StateBasedChangeResolutionStrategy {
    * unmodified from calling this method.
    *
    * @param newState is the new state of the resource, must not be <code>null</code> and must not
-   *        contain proxies.
+   *     contain proxies.
    * @param oldState is the current or old state of the resource, must not be <code>null</code> and
-   *        must not contain proxies.
+   *     must not contain proxies.
    * @return a unresolved {@link VitruviusChange} that contains the individual change sequence.
    */
   VitruviusChange<HierarchicalId> getChangeSequenceBetween(Resource newState, Resource oldState);
@@ -30,7 +29,7 @@ public interface StateBasedChangeResolutionStrategy {
    * change sequences. Changes must use hierarchical IDs and are returned unresolved.
    *
    * @param newState is the new state of the resource, must not be <code>null</code> and must not
-   *        contain proxies.
+   *     contain proxies.
    * @return a unresolved {@link VitruviusChange} that contains the individual change sequence.
    */
   VitruviusChange<HierarchicalId> getChangeSequenceForCreated(Resource newState);
@@ -41,7 +40,7 @@ public interface StateBasedChangeResolutionStrategy {
    * oldState} remains unmodified from calling this method.
    *
    * @param oldState is the new state of the resource, must not be <code>null</code> and must not
-   *        contain proxies.
+   *     contain proxies.
    * @return a unresolved {@link VitruviusChange} that contains the individual change sequence.
    */
   VitruviusChange<HierarchicalId> getChangeSequenceForDeleted(Resource oldState);

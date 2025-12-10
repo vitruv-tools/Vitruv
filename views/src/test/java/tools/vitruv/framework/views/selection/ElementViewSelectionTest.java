@@ -1,24 +1,23 @@
 package tools.vitruv.framework.views.selection;
 
-import java.util.ArrayList;
 import static java.util.Collections.emptySet;
-import java.util.List;
-import java.util.Set;
-
-import org.eclipse.emf.ecore.EObject;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
+
+import allElementTypes.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import org.eclipse.emf.ecore.EObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import allElementTypes.Root;
 import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.change.testutils.TestLogging;
-import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
 /** Tests for the {@link ElementViewSelection} class. */
@@ -69,14 +68,16 @@ public class ElementViewSelectionTest {
     @Test
     @DisplayName("element in selection")
     void elementInSelection() {
-      assertThat("all added elements must be selectable",
+      assertThat(
+          "all added elements must be selectable",
           selectableElements.stream().allMatch(element -> selection.isSelectable(element)));
     }
 
     @Test
     @DisplayName("element not in selection")
     void elementNotInSelection() {
-      assertThat("elements not added to selection must not be selectable",
+      assertThat(
+          "elements not added to selection must not be selectable",
           !selection.isSelectable(aet.Root()));
     }
 
@@ -104,9 +105,11 @@ public class ElementViewSelectionTest {
     @Test
     @DisplayName("no element")
     void noElement() {
-      assertThat("unselected elements must not be selected by default",
+      assertThat(
+          "unselected elements must not be selected by default",
           !selection.isSelected(selectableElements.get(0)));
-      assertThat("unselected elements must not be selected by default",
+      assertThat(
+          "unselected elements must not be selected by default",
           !selection.isSelected(selectableElements.get(1)));
     }
 
@@ -114,9 +117,11 @@ public class ElementViewSelectionTest {
     @DisplayName("first element")
     void firstElement() {
       selection.setSelected(selectableElements.get(0), true);
-      assertThat("element must be selected after selection",
+      assertThat(
+          "element must be selected after selection",
           selection.isSelected(selectableElements.get(0)));
-      assertThat("unselected elements must not be selected by default",
+      assertThat(
+          "unselected elements must not be selected by default",
           !selection.isSelected(selectableElements.get(1)));
     }
 
@@ -124,9 +129,11 @@ public class ElementViewSelectionTest {
     @DisplayName("second element")
     void secondElement() {
       selection.setSelected(selectableElements.get(1), true);
-      assertThat("unselected elements must not be selected by default",
+      assertThat(
+          "unselected elements must not be selected by default",
           !selection.isSelected(selectableElements.get(0)));
-      assertThat("element must be selected after selection",
+      assertThat(
+          "element must be selected after selection",
           selection.isSelected(selectableElements.get(1)));
     }
 
@@ -135,9 +142,11 @@ public class ElementViewSelectionTest {
     void allElements() {
       selection.setSelected(selectableElements.get(0), true);
       selection.setSelected(selectableElements.get(1), true);
-      assertThat("element must be selected after selection",
+      assertThat(
+          "element must be selected after selection",
           selection.isSelected(selectableElements.get(0)));
-      assertThat("element must be selected after selection",
+      assertThat(
+          "element must be selected after selection",
           selection.isSelected(selectableElements.get(1)));
     }
 
@@ -171,9 +180,11 @@ public class ElementViewSelectionTest {
     @DisplayName("first element")
     void firstElement() {
       selection.setSelected(selectableElements.get(0), false);
-      assertThat("element must be unselected after deselection",
+      assertThat(
+          "element must be unselected after deselection",
           !selection.isSelected(selectableElements.get(0)));
-      assertThat("element must be selected without deselection",
+      assertThat(
+          "element must be selected without deselection",
           selection.isSelected(selectableElements.get(1)));
     }
 
@@ -181,9 +192,11 @@ public class ElementViewSelectionTest {
     @DisplayName("second element")
     void secondElement() {
       selection.setSelected(selectableElements.get(1), false);
-      assertThat("element must be selected without deselection",
+      assertThat(
+          "element must be selected without deselection",
           selection.isSelected(selectableElements.get(0)));
-      assertThat("element must be unselected after deselection",
+      assertThat(
+          "element must be unselected after deselection",
           !selection.isSelected(selectableElements.get(1)));
     }
 
@@ -192,9 +205,11 @@ public class ElementViewSelectionTest {
     void allElements() {
       selection.setSelected(selectableElements.get(0), false);
       selection.setSelected(selectableElements.get(1), false);
-      assertThat("element must be unselected after deselection",
+      assertThat(
+          "element must be unselected after deselection",
           !selection.isSelected(selectableElements.get(0)));
-      assertThat("element must be unselected after deselection",
+      assertThat(
+          "element must be unselected after deselection",
           !selection.isSelected(selectableElements.get(1)));
     }
 
@@ -227,21 +242,24 @@ public class ElementViewSelectionTest {
     @Test
     @DisplayName("matching selected element")
     void matchingSelectedElement() {
-      assertThat("view element must be validated as selected after selecting it",
+      assertThat(
+          "view element must be validated as selected after selecting it",
           selection.isViewObjectSelected(selectableElements.get(0)));
     }
 
     @Test
     @DisplayName("matching unselected element")
     void matchingUnselectedElement() {
-      assertThat("view element must be validated as unselected when not selecting it",
+      assertThat(
+          "view element must be validated as unselected when not selecting it",
           !selection.isViewObjectSelected(selectableElements.get(1)));
     }
 
     @Test
     @DisplayName("matching no element")
     void matchingNoElement() {
-      assertThat("view element must be validated as unselected when it cannot be selected",
+      assertThat(
+          "view element must be validated as unselected when it cannot be selected",
           !selection.isViewObjectSelected(aet.Root()));
     }
   }

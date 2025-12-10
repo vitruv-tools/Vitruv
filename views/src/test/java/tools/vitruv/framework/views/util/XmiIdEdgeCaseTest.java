@@ -61,9 +61,10 @@ class XmiIdEdgeCaseTest {
         createPopulatedUmlResourceAndIdMapping("my3");
 
     ResourceSet copyResourceSet = new ResourceSetImpl();
-    Map<Resource, Resource> copiedModels = ResourceCopier.copyViewResources(
-        List.of(umlResourcePair.get0(), umlResourcePair2.get0(), umlResourcePair3.get0()),
-        copyResourceSet);
+    Map<Resource, Resource> copiedModels =
+        ResourceCopier.copyViewResources(
+            List.of(umlResourcePair.get0(), umlResourcePair2.get0(), umlResourcePair3.get0()),
+            copyResourceSet);
     XMLResource copiedModel = (XMLResource) copiedModels.get(umlResourcePair.get0());
     XMLResource copiedModel2 = (XMLResource) copiedModels.get(umlResourcePair2.get0());
     XMLResource copiedModel3 = (XMLResource) copiedModels.get(umlResourcePair3.get0());
@@ -91,20 +92,35 @@ class XmiIdEdgeCaseTest {
     UClass uClass2 = uml.Class();
     uPackage2.getClasses().add(uClass2);
 
-    Map<String, EObject> expectedIdMapping = Map.of(name + "_package-1", uPackage1,
-        name + "_package-2", uPackage2, name + "_class-1", uClass1, name + "_class-2", uClass2);
+    Map<String, EObject> expectedIdMapping =
+        Map.of(
+            name + "_package-1",
+            uPackage1,
+            name + "_package-2",
+            uPackage2,
+            name + "_class-1",
+            uClass1,
+            name + "_class-2",
+            uClass2);
     expectedIdMapping.forEach((id, obj) -> umlResource.setID(obj, id));
     return new Pair<XMLResource, Map<String, EObject>>(umlResource, expectedIdMapping);
   }
 
   private void validateIds(Resource copiedResource, Map<String, EObject> expectedIdMapping) {
-    expectedIdMapping.forEach((id, object) -> {
-      EObject copiedObject = copiedResource.getEObject(id);
-      assertNotNull(copiedObject, "could not find element with id " + id);
-      assertEquals(((Identified) object).getId(), ((Identified) copiedObject).getId(),
-          "retrieved incorrect element for id " + id + "\nexpected: " + object + ", actual: "
-              + copiedObject);
-    });
+    expectedIdMapping.forEach(
+        (id, object) -> {
+          EObject copiedObject = copiedResource.getEObject(id);
+          assertNotNull(copiedObject, "could not find element with id " + id);
+          assertEquals(
+              ((Identified) object).getId(),
+              ((Identified) copiedObject).getId(),
+              "retrieved incorrect element for id "
+                  + id
+                  + "\nexpected: "
+                  + object
+                  + ", actual: "
+                  + copiedObject);
+        });
   }
 
   /**

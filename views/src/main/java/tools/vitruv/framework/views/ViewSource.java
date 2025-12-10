@@ -1,9 +1,7 @@
 package tools.vitruv.framework.views;
 
 import java.util.Collection;
-
 import org.eclipse.emf.ecore.resource.Resource;
-
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 
 /** A view source giving access to the underlying source models of the view. */

@@ -1,29 +1,28 @@
 package tools.vitruv.framework.views.selectors;
 
-import java.util.ArrayList;
 import static java.util.Collections.emptySet;
-import java.util.List;
-import java.util.Set;
-
-import org.eclipse.emf.ecore.EObject;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
+
+import allElementTypes.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import org.eclipse.emf.ecore.EObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
-
-import allElementTypes.Root;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.change.testutils.TestLogging;
-import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.impl.ModifiableView;
@@ -35,8 +34,7 @@ class DirectViewElementSelectorTest {
   @Mock
   ViewCreatingViewType<DirectViewElementSelector<HierarchicalId>, HierarchicalId> mockViewType;
 
-  @Mock
-  ChangeableViewSource mockViewSource;
+  @Mock ChangeableViewSource mockViewSource;
 
   /** Initializes the mocks for each test. */
   @BeforeEach
@@ -73,7 +71,8 @@ class DirectViewElementSelectorTest {
       @Test
       @DisplayName("with null selectable elements")
       void nullElements() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(
+            IllegalArgumentException.class,
             () -> new DirectViewElementSelector<>(mockViewType, mockViewSource, null));
       }
     }
@@ -102,8 +101,9 @@ class DirectViewElementSelectorTest {
     void withMultipleSelectableElements() {
       Root firstRoot = aet.Root();
       Root secondRoot = aet.Root();
-      ViewSelector selector = new DirectViewElementSelector<>(mockViewType, mockViewSource,
-          Set.of(firstRoot, secondRoot));
+      ViewSelector selector =
+          new DirectViewElementSelector<>(
+              mockViewType, mockViewSource, Set.of(firstRoot, secondRoot));
       assertThat(selector.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
       assertThat("BasicViewElementSelectors must always be valid", selector.isValid());
     }
@@ -128,21 +128,24 @@ class DirectViewElementSelectorTest {
     @Test
     @DisplayName("matching selected element")
     void matchingSelectedElement() {
-      assertThat("view element must be validated as selected after selecting it",
+      assertThat(
+          "view element must be validated as selected after selecting it",
           selector.getSelection().isViewObjectSelected(selectableElements.get(0)));
     }
 
     @Test
     @DisplayName("matching unselected element")
     void matchingUnselectedElement() {
-      assertThat("view element must be validated as unselected when not selecting it",
+      assertThat(
+          "view element must be validated as unselected when not selecting it",
           !selector.getSelection().isViewObjectSelected(selectableElements.get(1)));
     }
 
     @Test
     @DisplayName("matching no element")
     void matchingNoElement() {
-      assertThat("view element must be validated as unselected when it cannot be selected",
+      assertThat(
+          "view element must be validated as unselected when it cannot be selected",
           !selector.getSelection().isViewObjectSelected(aet.Root()));
     }
   }

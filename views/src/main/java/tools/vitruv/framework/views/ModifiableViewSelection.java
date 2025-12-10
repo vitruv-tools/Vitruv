@@ -1,14 +1,13 @@
 package tools.vitruv.framework.views;
 
 import java.util.Collection;
-
 import org.eclipse.emf.ecore.EObject;
 
 /** A {@link ViewSelection} that can be changed by performing selections of the elements. */
 public interface ModifiableViewSelection extends ViewSelection {
   /**
-   * Returns the elements that can be selected, i.e., those that may be passed to
-   * {@link #isSelected(EObject)} and {@link #setSelected(EObject, boolean)}.
+   * Returns the elements that can be selected, i.e., those that may be passed to {@link
+   * #isSelected(EObject)} and {@link #setSelected(EObject, boolean)}.
    *
    * @return the selectable {@link EObject}s
    */
