@@ -21,9 +21,8 @@ import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 /**
- * A {@link View} that records changes to its resources and allows to propagate
- * them
- * back to the underlying models using the {@link #commitChanges} method.
+ * A view that records changes to its resources and allows to propagate
+ * them back to the underlying models using the {@link #commitChanges} method.
  */
 public class ChangeRecordingView implements ModifiableView, CommittableView {
     private final BasicView view;
@@ -62,17 +61,19 @@ public class ChangeRecordingView implements ModifiableView, CommittableView {
 
     @Override
     public void close() throws Exception {
-        if (!isClosed()) {
-            changeRecorder.close();
+        try (view) {
+            if (!isClosed()) {
+                changeRecorder.close();
+            }
         }
-        view.close();
     }
 
     private void endRecordingAndClose(ChangeRecorder recorder) {
-        if (recorder.isRecording()) {
-            recorder.endRecording();
+        try (recorder) {
+            if (recorder.isRecording()) {
+                recorder.endRecording();
+            }
         }
-        recorder.close();
     }
 
     @Override

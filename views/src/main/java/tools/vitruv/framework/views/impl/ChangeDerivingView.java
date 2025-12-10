@@ -27,7 +27,7 @@ import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
 
 /**
- * A {@link View} that derives changes based on the changed state of its
+ * A view that derives changes based on the changed state of its
  * resources and allows to propagate them
  * back to the underlying models using the {@link #commitChanges} method.
  */
@@ -37,7 +37,13 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
     private ResourceSet originalStateViewResourceSet;
     private Map<Resource, Resource> originalStateResourceMapping;
 
-    protected ChangeDerivingView(BasicView view, StateBasedChangeResolutionStrategy changeResolutionStrategy) {
+    /**
+     * Creates a new instance with the given underlying view and change resolution
+     * 
+     * @param view
+     * @param changeResolutionStrategy
+     */
+    public ChangeDerivingView(BasicView view, StateBasedChangeResolutionStrategy changeResolutionStrategy) {
         checkArgument(view != null, "view must not be null");
         checkState(!view.isModified(), "view must not be modified");
         checkState(!view.isOutdated(), "view must not be outdated");

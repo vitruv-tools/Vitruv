@@ -10,12 +10,23 @@ public abstract class AbstractViewType<S extends ViewSelector, Id> implements Vi
     private final String name;
     private final EPackage metamodel;
 
+    /**
+     * constructor for view types without metamodel
+     * 
+     * @param name
+     */
     public AbstractViewType(String name) {
         checkArgument(name != null, "view type name must not be null");
         this.name = name;
         this.metamodel = null;
     }
 
+    /**
+     * constructor for view types with metamodel
+     * 
+     * @param name
+     * @param metamodel
+     */
     public AbstractViewType(String name, EPackage metamodel) {
         checkArgument(name != null, "view type name must not be null");
         checkArgument(metamodel != null, "view type metamodel must not be null");
@@ -23,10 +34,20 @@ public abstract class AbstractViewType<S extends ViewSelector, Id> implements Vi
         this.metamodel = metamodel;
     }
 
+    /**
+     * Returns the name of this view type.
+     * 
+     * @return the name of this view type
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the metamodel of this view type.
+     * 
+     * @return the metamodel of this view type
+     */
     public EPackage getMetamodel() {
         return this.metamodel;
     }
