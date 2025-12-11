@@ -8,6 +8,7 @@ import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactor
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,12 +34,14 @@ import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel;
 import tools.vitruv.change.correspondence.view.CorrespondenceModelViewFactory;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
+import tools.vitruv.change.utils.ResourcePersistenceObserver;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
 class ResourceRepositoryImpl implements ModelRepository {
   private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
 
+  private final Collection<ResourcePersistenceObserver> persistenceObservers = new ArrayList<>();
   private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
   private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
   private final PersistableCorrespondenceModel correspondenceModel;
@@ -96,6 +99,7 @@ class ResourceRepositoryImpl implements ModelRepository {
       // There are no existing models, so don't do anything
       return;
     }
+    // TODO Explicitly load resource.
     modelUris.forEach(uri -> loadOrCreateResource(modelsResourceSet, uri));
     uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
     modelUris.forEach(this::createOrLoadModel);
@@ -129,6 +133,7 @@ class ResourceRepositoryImpl implements ModelRepository {
     if (instance != null) {
       return instance;
     }
+    // TODO Explicitly load resource.
     return createOrLoadModel(modelUri);
   }
 
@@ -137,6 +142,7 @@ class ResourceRepositoryImpl implements ModelRepository {
     if (modelUri.isFile() || modelUri.isPlatform()) {
       resource = getOrCreateResource(modelsResourceSet, modelUri);
     } else {
+      // TODO Explicitly load resource.
       resource = loadOrCreateResource(modelsResourceSet, modelUri);
     }
     ModelInstance modelInstance = new ModelInstance(resource);
@@ -225,5 +231,15 @@ class ResourceRepositoryImpl implements ModelRepository {
     modelsResourceSet.getResources().forEach(Resource::unload);
     modelsResourceSet.getResources().clear();
     uuidResolver = null;
+  }
+
+  @Override
+  public void registerModelPersistanceObserver(ResourcePersistenceObserver observer) {
+    this.persistenceObservers.add(observer);
+  }
+
+  @Override
+  public void deregisterModelPersistanceObserver(ResourcePersistenceObserver observer) {
+    this.persistenceObservers.remove(observer);
   }
 }

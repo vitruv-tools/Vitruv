@@ -24,6 +24,8 @@ import tools.vitruv.change.propagation.ChangePropagationObservableRegistry;
 import tools.vitruv.change.propagation.ChangePropagationObserver;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider;
 import tools.vitruv.change.propagation.impl.ChangePropagator;
+import tools.vitruv.change.utils.ResourcePersistanceObservable;
+import tools.vitruv.change.utils.ResourcePersistenceObserver;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeProvider;
@@ -35,7 +37,10 @@ import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
 public class VirtualModelImpl implements InternalVirtualModel,
-    ChangePropagationObservableRegistry {
+    ChangePropagationObservableRegistry,
+    ResourcePersistanceObservable
+
+     {
   private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
 
   private final ModelRepository resourceRepository;
@@ -223,5 +228,15 @@ public class VirtualModelImpl implements InternalVirtualModel,
   @Override
   public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
     this.changePropagationMode = changePropagationMode;
+  }
+
+  @Override
+  public void registerModelPersistanceObserver(ResourcePersistenceObserver observer) {
+    this.resourceRepository.registerModelPersistanceObserver(observer);
+  }
+
+  @Override
+  public void deregisterModelPersistanceObserver(ResourcePersistenceObserver observer) {
+    this.resourceRepository.deregisterModelPersistanceObserver(observer);
   }
 }
