@@ -1,10 +1,10 @@
 package tools.vitruv.framework.vsum.internal;
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.xtext.xbase.lib.Exceptions;
+
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.TransactionalChange;
@@ -175,11 +177,17 @@ class ResourceRepositoryImpl implements ModelRepository {
         modelInstances.entrySet().iterator();
     while (modelInstancesIterator.hasNext()) {
       ModelInstance modelInstance = modelInstancesIterator.next().getValue();
-      if (modelInstance.isEmpty()) {
+      final var underlyingResource = modelInstance.getResource();
+
+      if (modelInstance.isEmpty()) {        
+        this.persistenceObservers.forEach(p -> p.startDeletingResource(underlyingResource));
         modelInstance.delete();
         modelInstancesIterator.remove();
+        this.persistenceObservers.forEach(p -> p.finishDeletingResource(underlyingResource));
       } else {
+        this.persistenceObservers.forEach(p -> p.startSavingResource(underlyingResource));
         modelInstance.save();
+        this.persistenceObservers.forEach(p -> p.finishSavingResource(underlyingResource));
       }
     }
     correspondenceModel.save();
@@ -241,5 +249,43 @@ class ResourceRepositoryImpl implements ModelRepository {
   @Override
   public void deregisterModelPersistanceObserver(ResourcePersistenceObserver observer) {
     this.persistenceObservers.remove(observer);
+  }
+
+    /**
+   * Returns a {@link Resource} that is either loaded from the given {@link URI} if some model
+   * is persisted at that {@link URI}, or creates a new {@link Resource} if it does not exist yet.
+   * 
+   * @param resourceSet -
+   * 			the {@link ResourceSet} to load the {@link Resource} into
+   * @param uri -
+   * 			the {@link URI} of the {@link Resource} to load
+   * @return a {@link Resource} created for or loaded from the given {@link URI}
+   * @throws RuntimeException if some exception occurred during loading the file
+   */
+  Resource loadOrCreateResource(final ResourceSet resourceSet, final URI uri) throws RuntimeException {
+    try {
+      var resource = resourceSet.getResource(uri, false);
+      if (resource == null) {
+        resource = resourceSet.createResource(uri);
+      }
+      if (!resource.isLoaded()) {
+        this.persistenceObservers.forEach(o -> o.startLoadingResource(uri));
+        resource.load(null);
+        final var loadedResource = resource;
+        this.persistenceObservers.forEach(o -> o.finishLoadingResource(loadedResource));
+      }
+      return resource;
+    } catch (final Throwable _t) {
+      if (_t instanceof RuntimeException) {
+        final RuntimeException e = (RuntimeException)_t;
+        if (((e.getCause() instanceof FileNotFoundException) || e.getMessage().contains("not exist"))) {
+          return resourceSet.getResource(uri, false);
+        } else {
+          throw e;
+        }
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
+    }
   }
 }

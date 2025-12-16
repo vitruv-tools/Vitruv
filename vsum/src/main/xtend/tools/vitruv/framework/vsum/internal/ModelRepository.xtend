@@ -4,8 +4,9 @@ import java.util.Collection
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.change.propagation.ChangeRecordingModelRepository
+import tools.vitruv.change.utils.ResourcePersistanceObservable
 
-package interface ModelRepository extends ChangeRecordingModelRepository {
+package interface ModelRepository extends ChangeRecordingModelRepository, ResourcePersistanceObservable {
 	/**
 	 * Returns the model at the given {@link URI} if it was already loaded to or created in
 	 * the repository. Returns <code>null</code> otherwise.
