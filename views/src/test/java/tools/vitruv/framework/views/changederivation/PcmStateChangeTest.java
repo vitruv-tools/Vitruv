@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import tools.vitruv.change.testutils.metamodels.PcmMockupCreators;
 
 /** Tests for state-based change propagation in PCM models. */
-public class PcmStateChangeTest extends StateChangePropagationTest {
+class PcmStateChangeTest extends StateChangePropagationTest {
 
   /**
    * Tests adding a component to the PCM model.
@@ -17,7 +17,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest)
+  void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     var newComponent = PcmMockupCreators.pcm.Component();
     newComponent.setName("NewlyAddedComponent");
@@ -33,7 +33,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest)
+  void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     pcmRoot.getComponents().get(0).setName("RenamedComponent");
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
@@ -47,7 +47,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest)
+  void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     pcmRoot.getComponents().remove(0);
     compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
@@ -61,7 +61,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
+  void testAddProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     var newInterface = PcmMockupCreators.pcm.Interface();
     newInterface.setName("NewlyAddedInterface");
@@ -81,7 +81,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest)
+  void testInterfaceWithMultipleMethods(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     var newInterface = PcmMockupCreators.pcm.Interface();
     newInterface.setName("NewlyAddedInterface");
@@ -105,7 +105,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testAddDifferentProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
+  void testAddDifferentProvidedInterface(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     var firstInterface = PcmMockupCreators.pcm.Interface();
     firstInterface.setName("NewlyAddedInterface");
@@ -126,7 +126,7 @@ public class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest)
+  void testAddMultipleInterfaces(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     IntStream.rangeClosed(1, 3)
         .forEach(

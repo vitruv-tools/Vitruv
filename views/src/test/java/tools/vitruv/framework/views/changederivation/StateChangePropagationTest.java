@@ -72,7 +72,6 @@ public abstract class StateChangePropagationTest {
             createPcmMockupModel();
             createUmlMockupModel();
           } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
           }
         });

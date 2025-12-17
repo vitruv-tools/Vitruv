@@ -42,7 +42,7 @@ public class DefaultVirtualModelBasedTestView
         toChangePropagationSpecList(changePropagationSpecifications);
     this.uriMode = uriMode;
     TestUserInteraction userInteraction = new TestUserInteraction();
-    this.virtualModel = generateVirtualModel(testProjectPath, vsumPath, userInteraction);
+    this.virtualModel = generateVirtualModel(vsumPath, userInteraction);
     this.testView = generateTestView(testProjectPath, userInteraction);
   }
 
@@ -56,7 +56,7 @@ public class DefaultVirtualModelBasedTestView
   }
 
   private InternalVirtualModel generateVirtualModel(
-      Path testProjectPath, Path vsumPath, TestUserInteraction userInteraction) {
+      Path vsumPath, TestUserInteraction userInteraction) {
     try {
       return new VirtualModelBuilder()
           .withStorageFolder(vsumPath)
@@ -111,6 +111,7 @@ public class DefaultVirtualModelBasedTestView
   }
 
   /** Gets an EObject of the specified type from the given path.. */
+  @Override
   public <T extends EObject> T from(Class<T> type, Path path) {
     return testView.from(type, path);
   }

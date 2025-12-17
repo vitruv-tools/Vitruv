@@ -27,7 +27,7 @@ import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
 import tools.vitruv.change.testutils.Capture;
 
 /** Tests for state-based change propagation using the basic state change resolution. */
-public class BasicStateChangePropagationTest extends StateChangePropagationTest {
+class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
   private URI getTestUri() {
     return getModelURI("Test.allElementTypes");

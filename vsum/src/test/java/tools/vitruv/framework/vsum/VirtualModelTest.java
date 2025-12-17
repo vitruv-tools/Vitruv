@@ -43,7 +43,7 @@ import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 /** Tests for virtual models. */
 @ExtendWith(TestProjectManager.class)
-public class VirtualModelTest {
+class VirtualModelTest {
   private static final String NON_ROOT_ID = "NonRootId";
   private static final String ROOT_ID = "RootId";
 
@@ -55,13 +55,13 @@ public class VirtualModelTest {
    * @param projectFolder The project folder.
    */
   @BeforeEach
-  public void initializeProjectFolder(@TestProject Path projectFolder) {
+  void initializeProjectFolder(@TestProject Path projectFolder) {
     this.projectFolder = projectFolder;
   }
 
   @Test
   @DisplayName("propagate a simple change into a virtual model")
-  public void propagateIntoVirtualModel() throws Exception {
+  void propagateIntoVirtualModel() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -81,7 +81,7 @@ public class VirtualModelTest {
 
   @Test
   @DisplayName("propagate a simple change into a virtual model and preserve consistency")
-  public void propagateIntoVirtualModelWithConsistency() throws Exception {
+  void propagateIntoVirtualModelWithConsistency() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -113,7 +113,7 @@ public class VirtualModelTest {
 
   @Test
   @DisplayName("persist element as resource root also contained in other persisted element")
-  public void singleChangeForRootElementInMultipleResource() throws Exception {
+  void singleChangeForRootElementInMultipleResource() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -145,20 +145,19 @@ public class VirtualModelTest {
     assertEquals(
         1,
         consequentialChanges.stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEReference)
+            .filter(ReplaceSingleValuedEReference.class::isInstance)
             .count());
     assertEquals(
         2,
         consequentialChanges.stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+            .filter(ReplaceSingleValuedEAttribute.class::isInstance)
             .count());
     assertEquals(7, consequentialChanges.size());
   }
 
   @Test
   @DisplayName("add element to containment of element persisted in two resources")
-  public void singleChangeForElementContainedInRootElementInMultipleResource() throws Exception {
-
+  void singleChangeForElementContainedInRootElementInMultipleResource() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -197,12 +196,12 @@ public class VirtualModelTest {
     assertEquals(
         2,
         consequentialChanges.stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEReference)
+            .filter(ReplaceSingleValuedEReference.class::isInstance)
             .count());
     assertEquals(
         3,
         consequentialChanges.stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+            .filter(ReplaceSingleValuedEAttribute.class::isInstance)
             .count());
     assertEquals(11, consequentialChanges.size());
   }
@@ -210,7 +209,7 @@ public class VirtualModelTest {
   @Test
   @DisplayName(
       "load resource that should have been saved after propagating a change into a virtual model")
-  public void savedVirtualModel() throws Exception {
+  void savedVirtualModel() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -232,7 +231,7 @@ public class VirtualModelTest {
 
   @Test
   @DisplayName("reload a virtual model to which a simple change was propagated")
-  public void reloadVirtualModel() throws Exception {
+  void reloadVirtualModel() throws Exception {
     ResourceSet resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -265,7 +264,7 @@ public class VirtualModelTest {
   @DisplayName(
       "reload a virtual model with consistency preservation to which a simple change was"
           + " propagated")
-  public void reloadVirtualModelWithConsistency() throws Exception {
+  void reloadVirtualModelWithConsistency() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -303,7 +302,7 @@ public class VirtualModelTest {
   @Test
   @DisplayName(
       "move element such that corresponding element is moved from one resource to another and back")
-  public void moveCorrespondingToOtherResourceAndBack() throws Exception {
+  void moveCorrespondingToOtherResourceAndBack() throws Exception {
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
     var changeRecorder = new ChangeRecorder(resourceSet);
     changeRecorder.addToRecording(resourceSet);
@@ -340,7 +339,7 @@ public class VirtualModelTest {
   @SuppressWarnings("null")
   @Test
   @DisplayName("create a view for a virtual model")
-  public void createView() throws Exception {
+  void createView() throws Exception {
     var virtualModel =
         (InternalVirtualModel) createAndLoadTestVirtualModel(getPathToVirtualModelProjectFolder());
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
@@ -359,7 +358,7 @@ public class VirtualModelTest {
   @SuppressWarnings("null")
   @Test
   @DisplayName("update view after a change in the virtual model")
-  public void updateView() throws Exception {
+  void updateView() throws Exception {
     var virtualModel =
         (InternalVirtualModel) createAndLoadTestVirtualModel(getPathToVirtualModelProjectFolder());
     var resourceSet = withGlobalFactories(new ResourceSetImpl());
@@ -400,7 +399,7 @@ public class VirtualModelTest {
 
   @Test
   @DisplayName("change view and commit changes")
-  public void commitView() throws Exception {
+  void commitView() throws Exception {
     var virtualModel =
         (InternalVirtualModel) createAndLoadTestVirtualModel(getPathToVirtualModelProjectFolder());
     var resourceSet = withGlobalFactories(new ResourceSetImpl());

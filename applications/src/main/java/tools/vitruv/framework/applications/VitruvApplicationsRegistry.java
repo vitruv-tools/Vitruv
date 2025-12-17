@@ -82,8 +82,8 @@ public class VitruvApplicationsRegistry {
     for (IConfigurationElement element : elements) {
       try {
         Object executableExtension = element.createExecutableExtension("class");
-        if (executableExtension instanceof VitruvApplication) {
-          applications.add((VitruvApplication) executableExtension);
+        if (executableExtension instanceof VitruvApplication application) {
+          applications.add(application);
         }
       } catch (Exception e) {
         LOGGER.warn("Error when loading application for extension: " + element, e);

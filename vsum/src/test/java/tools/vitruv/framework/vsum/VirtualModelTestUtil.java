@@ -148,8 +148,8 @@ public final class VirtualModelTestUtil {
       // If there is a corresponding element, reuse it, otherwise create one
       List<Root> correspondingRoots =
           correspondenceModel.getCorrespondingEObjects(insertedRoot).stream()
-              .filter(obj -> obj instanceof Root)
-              .map(obj -> (Root) obj)
+              .filter(Root.class::isInstance)
+              .map(Root.class::cast)
               .collect(Collectors.toList());
 
       Root correspondingRoot;
@@ -165,8 +165,8 @@ public final class VirtualModelTestUtil {
       if (insertedRoot.eContainer() != null) {
         List<Root> correspondingObjects =
             correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer(), null).stream()
-                .filter(obj -> obj instanceof Root)
-                .map(obj -> (Root) obj)
+                .filter(Root.class::isInstance)
+                .map(Root.class::cast)
                 .collect(Collectors.toList());
         assertEquals(1, correspondingObjects.size());
         correspondingObjects.get(0).setRecursiveRoot(correspondingRoot);

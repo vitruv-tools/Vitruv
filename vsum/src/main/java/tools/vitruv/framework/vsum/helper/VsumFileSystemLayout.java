@@ -64,7 +64,7 @@ public class VsumFileSystemLayout {
             case "." -> "_.";
             case ".." -> "_._.";
             case "" -> "_";
-            default -> keyPart.replaceAll("_", "__");
+            default -> keyPart.replace("_", "__");
           };
       result = result.resolve(URLEncoder.encode(preparedKeyPart, UTF_8));
     }

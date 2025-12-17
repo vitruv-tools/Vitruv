@@ -8,12 +8,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import tools.vitruv.change.testutils.metamodels.UmlMockupCreators;
 
 /** Tests for state-based change propagation in UML models. */
-public class UmlStateChangeTest extends StateChangePropagationTest {
+class UmlStateChangeTest extends StateChangePropagationTest {
 
   /** Tests renaming of types in UML models. */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testRenameTypes(StateBasedChangeResolutionStrategy strategyToTest)
+  void testRenameTypes(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     umlRoot.getClasses().get(0).setName("RenamedClass");
     umlRoot.getInterfaces().get(0).setName("RenamedInterface");
@@ -31,7 +31,7 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
       value = UseIdentifiers.class,
       names = {"ONLY"},
       mode = EnumSource.Mode.EXCLUDE)
-  public void testNewAttributes(UseIdentifiers useIdentifiers) throws IOException {
+  void testNewAttributes(UseIdentifiers useIdentifiers) throws IOException {
     DefaultStateBasedChangeResolutionStrategy strategyToTest =
         new DefaultStateBasedChangeResolutionStrategy(useIdentifiers);
     umlRoot.getClasses().get(0).getAttributes().add(UmlMockupCreators.uml.Attribute());
@@ -52,7 +52,7 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testNewMethod(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+  void testNewMethod(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     umlRoot.getInterfaces().get(0).getMethods().add(UmlMockupCreators.uml.Method());
     umlRoot
         .getInterfaces()
@@ -71,7 +71,7 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testNewClass(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+  void testNewClass(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     var newClass = UmlMockupCreators.uml.Class();
     newClass.setName("NewlyAddedClass");
     umlRoot.getClasses().add(newClass);
@@ -89,7 +89,7 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
       value = UseIdentifiers.class,
       names = {"NEVER"},
       mode = EnumSource.Mode.EXCLUDE)
-  public void testReplaceClass(UseIdentifiers useIdentifiers) throws IOException {
+  void testReplaceClass(UseIdentifiers useIdentifiers) throws IOException {
     umlRoot.getClasses().remove(0);
     var newClass = UmlMockupCreators.uml.Class();
     newClass.setName("NewlyAddedClass");
@@ -107,7 +107,7 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testDeleteClass(StateBasedChangeResolutionStrategy strategyToTest)
+  void testDeleteClass(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     umlRoot.getClasses().remove(0);
     compareChanges(umlModel, umlCheckpoint, strategyToTest);
@@ -121,7 +121,7 @@ public class UmlStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  public void testNewInterface(StateBasedChangeResolutionStrategy strategyToTest)
+  void testNewInterface(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     var newInterface = UmlMockupCreators.uml.Interface();
     newInterface.setName("NewlyAddedInterface");
