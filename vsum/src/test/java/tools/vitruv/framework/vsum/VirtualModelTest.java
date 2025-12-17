@@ -139,9 +139,9 @@ public class VirtualModelTest {
         propagatedChanges.stream()
             .flatMap(pc -> pc.getConsequentialChanges().getEChanges().stream())
             .toList();
-    assertEquals(2, consequentialChanges.stream().filter(c -> c instanceof CreateEObject).count());
+    assertEquals(2, consequentialChanges.stream().filter(CreateEObject.class::isInstance).count());
     assertEquals(
-        2, consequentialChanges.stream().filter(c -> c instanceof InsertRootEObject).count());
+        2, consequentialChanges.stream().filter(InsertRootEObject.class::isInstance).count());
     assertEquals(
         1,
         consequentialChanges.stream()
@@ -191,9 +191,9 @@ public class VirtualModelTest {
         propagatedChanges.stream()
             .flatMap(pc -> pc.getConsequentialChanges().getEChanges().stream())
             .toList();
-    assertEquals(3, consequentialChanges.stream().filter(c -> c instanceof CreateEObject).count());
+    assertEquals(3, consequentialChanges.stream().filter(CreateEObject.class::isInstance).count());
     assertEquals(
-        3, consequentialChanges.stream().filter(c -> c instanceof InsertRootEObject).count());
+        3, consequentialChanges.stream().filter(InsertRootEObject.class::isInstance).count());
     assertEquals(
         2,
         consequentialChanges.stream()

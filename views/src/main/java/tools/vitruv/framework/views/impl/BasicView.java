@@ -153,14 +153,11 @@ class BasicView implements ModifiableView, ChangePropagationListener {
                 viewChanged = true;
               }
             });
-    if (notifier instanceof ResourceSet) {
-      ResourceSet resourceSet = (ResourceSet) notifier;
+    if (notifier instanceof ResourceSet resourceSet) {
       resourceSet.getResources().forEach(this::addChangeListeners);
-    } else if (notifier instanceof Resource) {
-      Resource resource = (Resource) notifier;
+    } else if (notifier instanceof Resource resource) {
       resource.getContents().forEach(this::addChangeListeners);
-    } else if (notifier instanceof EObject) {
-      EObject eObject = (EObject) notifier;
+    } else if (notifier instanceof EObject eObject) {
       eObject.eContents().forEach(this::addChangeListeners);
     }
   }

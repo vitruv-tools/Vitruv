@@ -57,7 +57,7 @@ public class DefaultStateBasedChangeResolutionStrategy
     List<String> proxies =
         StreamSupport.stream(ResourceUtil.getReferencedProxies(resource).spliterator(), false)
             .map(Object::toString)
-            .collect(Collectors.toList());
+            .toList();
     checkArgument(
         proxies.isEmpty(),
         "%s '%s' should not contain proxies, but contains the following: %s",
@@ -101,9 +101,8 @@ public class DefaultStateBasedChangeResolutionStrategy
 
     return record(
         newResource,
-        () -> {
-          newResource.getContents().addAll(EcoreUtil.copyAll(newState.getContents()));
-        });
+        () -> newResource.getContents().addAll(EcoreUtil.copyAll(newState.getContents()))
+    );
   }
 
   @Override
@@ -117,9 +116,8 @@ public class DefaultStateBasedChangeResolutionStrategy
 
     return record(
         currentStateCopy,
-        () -> {
-          currentStateCopy.getContents().clear();
-        });
+        () -> currentStateCopy.getContents().clear()
+    );
   }
 
   private VitruviusChange<HierarchicalId> record(Resource resource, Runnable function) {

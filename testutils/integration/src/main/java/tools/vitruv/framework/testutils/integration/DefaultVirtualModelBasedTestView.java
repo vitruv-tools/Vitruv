@@ -1,6 +1,7 @@
 package tools.vitruv.framework.testutils.integration;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -47,7 +48,7 @@ public class DefaultVirtualModelBasedTestView
 
   private Iterable<ChangePropagationSpecification> toChangePropagationSpecList(
       Iterable<? extends ChangePropagationSpecification> specs) {
-    List<ChangePropagationSpecification> list = new java.util.ArrayList<>();
+    List<ChangePropagationSpecification> list = new ArrayList<>();
     for (ChangePropagationSpecification spec : specs) {
       list.add(spec);
     }
@@ -109,12 +110,13 @@ public class DefaultVirtualModelBasedTestView
     testView.disposeViewResources();
   }
 
-  /** Gets the virtual model used by this test view. */
+  /** Gets an EObject of the specified type from the given path.. */
   public <T extends EObject> T from(Class<T> type, Path path) {
     return testView.from(type, path);
   }
 
   /** Gets an EObject of the specified type from the given resource. */
+  @Override
   public <T extends EObject> T from(Class<T> type, Resource resource) {
     return testView.from(type, resource);
   }
@@ -160,6 +162,7 @@ public class DefaultVirtualModelBasedTestView
   }
 
   /** Gets the resource at the given path. */
+  @Override
   public Resource resourceAt(Path path) {
     return testView.resourceAt(path);
   }

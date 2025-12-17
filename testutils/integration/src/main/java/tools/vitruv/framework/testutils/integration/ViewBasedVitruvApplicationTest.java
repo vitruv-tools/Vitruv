@@ -27,7 +27,7 @@ public abstract class ViewBasedVitruvApplicationTest {
   private TestUserInteraction userInteraction;
 
   /** Determines the {@link ChangePropagationSpecification}s to be used in this test. */
-  protected abstract Iterable<? extends ChangePropagationSpecification>
+  protected abstract Iterable<ChangePropagationSpecification>
       getChangePropagationSpecifications();
 
   /**

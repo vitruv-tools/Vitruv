@@ -42,7 +42,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("create new resource and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void createNewResource(StateBasedChangeResolutionStrategy strategyToTest)
+  void createNewResource(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     ResourceSetImpl resourceSet = new ResourceSetImpl();
     Root root = aet.Root();
@@ -54,8 +54,8 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     var changes = strategyToTest.getChangeSequenceForCreated(modelResource);
     assertEquals(3, changes.getEChanges().size());
     assertEquals(
-        1, changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
-    assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof CreateEObject).count());
+        1, changes.getEChanges().stream().filter(InsertRootEObject.class::isInstance).count());
+    assertEquals(1, changes.getEChanges().stream().filter(CreateEObject.class::isInstance).count());
     assertEquals(
         1,
         changes.getEChanges().stream()
@@ -81,7 +81,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("delete existing resource and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void deleteResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+  void deleteResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     record(
         resourceSet,
@@ -97,8 +97,8 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     var changes = strategyToTest.getChangeSequenceForDeleted(modelResource.get());
     assertEquals(2, changes.getEChanges().size());
     assertEquals(
-        1, changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
-    assertEquals(1, changes.getEChanges().stream().filter(c -> c instanceof DeleteEObject).count());
+        1, changes.getEChanges().stream().filter(RemoveRootEObject.class::isInstance).count());
+    assertEquals(1, changes.getEChanges().stream().filter(DeleteEObject.class::isInstance).count());
 
     // Load resource to apply generated changes to
     ResourceSetImpl validationResourceSet = new ResourceSetImpl();
@@ -119,7 +119,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("replace root element and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest)
+  void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     record(
@@ -163,7 +163,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("change a root element property and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest)
+  void changeRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     Root root = aet.Root();
@@ -212,7 +212,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("change a root element's id and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest)
+  void changeRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     Root root = aet.Root();
@@ -242,12 +242,11 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
             .resolveAndApply(unresolvedChanges);
 
     switch (strategyToTest.getUseIdentifiers()) {
-      case ONLY:
-      case WHEN_AVAILABLE:
+      case ONLY, WHEN_AVAILABLE:
         {
           List<DeleteEObject<?>> deleteChanges =
               changes.getEChanges().stream()
-                  .filter(c -> c instanceof DeleteEObject)
+                  .filter(DeleteEObject.class::isInstance)
                   .map(c -> (DeleteEObject<?>) c)
                   .collect(Collectors.toList());
           assertEquals(1, deleteChanges.size());
@@ -256,7 +255,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
           List<CreateEObject<?>> createChanges =
               changes.getEChanges().stream()
-                  .filter(c -> c instanceof CreateEObject)
+                  .filter(CreateEObject.class::isInstance)
                   .map(c -> (CreateEObject<?>) c)
                   .collect(Collectors.toList());
           assertEquals(1, createChanges.size());
@@ -291,7 +290,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("change a non-root element property and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest)
+  void changeNonRootElementFeature(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     Root root = aet.Root();
@@ -344,7 +343,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("change a non-root element's id and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest)
+  void changeNonRootElementId(DefaultStateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     Root root = aet.Root();
@@ -383,7 +382,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
         {
           List<DeleteEObject<?>> deleteChanges =
               changes.getEChanges().stream()
-                  .filter(c -> c instanceof DeleteEObject)
+                  .filter(DeleteEObject.class::isInstance)
                   .map(c -> (DeleteEObject<?>) c)
                   .collect(Collectors.toList());
           assertEquals(1, deleteChanges.size());
@@ -392,7 +391,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
 
           List<CreateEObject<?>> createChanges =
               changes.getEChanges().stream()
-                  .filter(c -> c instanceof CreateEObject)
+                  .filter(CreateEObject.class::isInstance)
                   .map(c -> (CreateEObject<?>) c)
                   .collect(Collectors.toList());
           assertEquals(1, createChanges.size());
@@ -428,7 +427,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @ParameterizedTest
   @DisplayName("move a resource to new location and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void moveResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+  void moveResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     Root root = aet.Root();
 
@@ -458,9 +457,9 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
     assertEquals(2, changes.getEChanges().size());
     assertEquals(
-        1, changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
+        1, changes.getEChanges().stream().filter(RemoveRootEObject.class::isInstance).count());
     assertEquals(
-        1, changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
+        1, changes.getEChanges().stream().filter(InsertRootEObject.class::isInstance).count());
 
     VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
         .resolveAndApply(changes);
@@ -482,7 +481,7 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
   @DisplayName(
       "move a resource to new location changing root feature and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  public void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest)
+  void moveResourceAndChangeRootFeature(StateBasedChangeResolutionStrategy strategyToTest)
       throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     Root root = aet.Root();
@@ -516,9 +515,9 @@ public class BasicStateChangePropagationTest extends StateChangePropagationTest 
     var changes = strategyToTest.getChangeSequenceBetween(modelResource.get(), oldState);
     assertEquals(3, changes.getEChanges().size());
     assertEquals(
-        1, changes.getEChanges().stream().filter(c -> c instanceof RemoveRootEObject).count());
+        1, changes.getEChanges().stream().filter(RemoveRootEObject.class::isInstance).count());
     assertEquals(
-        1, changes.getEChanges().stream().filter(c -> c instanceof InsertRootEObject).count());
+        1, changes.getEChanges().stream().filter(InsertRootEObject.class::isInstance).count());
     assertEquals(
         1,
         changes.getEChanges().stream()

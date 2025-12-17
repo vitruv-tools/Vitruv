@@ -21,7 +21,7 @@ public abstract class AbstractViewType<S extends ViewSelector, Id>
    *
    * @param name the name of the view type
    */
-  public AbstractViewType(String name) {
+  protected AbstractViewType(String name) {
     checkArgument(name != null, "view type name must not be null");
     this.name = name;
     this.metamodel = null;
@@ -33,7 +33,7 @@ public abstract class AbstractViewType<S extends ViewSelector, Id>
    * @param name the name of the view type
    * @param metamodel the metamodel of the view type
    */
-  public AbstractViewType(String name, EPackage metamodel) {
+  protected AbstractViewType(String name, EPackage metamodel) {
     checkArgument(name != null, "view type name must not be null");
     checkArgument(metamodel != null, "view type metamodel must not be null");
     this.name = name;
