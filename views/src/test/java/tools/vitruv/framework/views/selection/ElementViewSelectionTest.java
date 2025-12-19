@@ -21,7 +21,7 @@ import tools.vitruv.change.testutils.TestLogging;
 import tools.vitruv.framework.views.ModifiableViewSelection;
 
 /** Tests for the {@link ElementViewSelection} class. */
-@ExtendWith({ TestLogging.class, RegisterMetamodelsInStandalone.class })
+@ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class ElementViewSelectionTest {
   @Nested
   @DisplayName("inialize")
@@ -298,7 +298,8 @@ public class ElementViewSelectionTest {
     void withMultipleElements() {
       Root firstRoot = aet.Root();
       Root secondRoot = aet.Root();
-      ModifiableViewSelection originalSelection = new ElementViewSelection(Set.of(firstRoot, secondRoot));
+      ModifiableViewSelection originalSelection =
+          new ElementViewSelection(Set.of(firstRoot, secondRoot));
       ModifiableViewSelection copy = new ElementViewSelection(originalSelection);
       assertThat(copy.getSelectableElements(), is(Set.of(firstRoot, secondRoot)));
     }
