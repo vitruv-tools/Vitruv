@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -101,8 +100,7 @@ public class DefaultStateBasedChangeResolutionStrategy
 
     return record(
         newResource,
-        () -> newResource.getContents().addAll(EcoreUtil.copyAll(newState.getContents()))
-    );
+        () -> newResource.getContents().addAll(EcoreUtil.copyAll(newState.getContents())));
   }
 
   @Override
@@ -114,10 +112,7 @@ public class DefaultStateBasedChangeResolutionStrategy
     ResourceSetImpl monitoredResourceSet = new ResourceSetImpl();
     Resource currentStateCopy = ResourceCopier.copyViewResource(oldState, monitoredResourceSet);
 
-    return record(
-        currentStateCopy,
-        () -> currentStateCopy.getContents().clear()
-    );
+    return record(currentStateCopy, () -> currentStateCopy.getContents().clear());
   }
 
   private VitruviusChange<HierarchicalId> record(Resource resource, Runnable function) {

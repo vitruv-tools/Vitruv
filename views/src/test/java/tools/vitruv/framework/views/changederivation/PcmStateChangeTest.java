@@ -17,12 +17,11 @@ class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
+  void testAddComponent(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     var newComponent = PcmMockupCreators.pcm.Component();
     newComponent.setName("NewlyAddedComponent");
-    pcmRoot.getComponents().add(newComponent);
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+    getPcmRoot().getComponents().add(newComponent);
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /**
@@ -33,10 +32,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
-    pcmRoot.getComponents().get(0).setName("RenamedComponent");
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+  void testRenameComponent(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    getPcmRoot().getComponents().get(0).setName("RenamedComponent");
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /**
@@ -47,10 +45,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
    */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
-    pcmRoot.getComponents().remove(0);
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+  void testDeleteComponent(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    getPcmRoot().getComponents().remove(0);
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /**
@@ -65,12 +62,12 @@ class PcmStateChangeTest extends StateChangePropagationTest {
       throws IOException {
     var newInterface = PcmMockupCreators.pcm.Interface();
     newInterface.setName("NewlyAddedInterface");
-    pcmRoot.getInterfaces().add(PcmMockupCreators.pcm.Interface());
+    getPcmRoot().getInterfaces().add(PcmMockupCreators.pcm.Interface());
     var newMethod = PcmMockupCreators.pcm.Method();
     newMethod.setName("newMethod");
     newInterface.getMethods().add(newMethod);
-    pcmRoot.getComponents().get(0).setProvidedInterface(newInterface);
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+    getPcmRoot().getComponents().get(0).setProvidedInterface(newInterface);
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /**
@@ -85,7 +82,7 @@ class PcmStateChangeTest extends StateChangePropagationTest {
       throws IOException {
     var newInterface = PcmMockupCreators.pcm.Interface();
     newInterface.setName("NewlyAddedInterface");
-    pcmRoot.getInterfaces().add(newInterface);
+    getPcmRoot().getInterfaces().add(newInterface);
     IntStream.rangeClosed(0, 5)
         .forEach(
             index -> {
@@ -93,8 +90,8 @@ class PcmStateChangeTest extends StateChangePropagationTest {
               method.setName("newMethod" + index);
               newInterface.getMethods().add(method);
             });
-    pcmRoot.getComponents().get(0).setProvidedInterface(newInterface);
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+    getPcmRoot().getComponents().get(0).setProvidedInterface(newInterface);
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /**
@@ -111,11 +108,11 @@ class PcmStateChangeTest extends StateChangePropagationTest {
     firstInterface.setName("NewlyAddedInterface");
     var secondInterface = PcmMockupCreators.pcm.Interface();
     secondInterface.setName("NewlyAddedInterface2");
-    pcmRoot.getInterfaces().add(firstInterface);
-    pcmRoot.getInterfaces().add(secondInterface);
-    pcmRoot.getComponents().get(0).setProvidedInterface(firstInterface);
-    pcmRoot.getComponents().get(0).setProvidedInterface(secondInterface);
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+    getPcmRoot().getInterfaces().add(firstInterface);
+    getPcmRoot().getInterfaces().add(secondInterface);
+    getPcmRoot().getComponents().get(0).setProvidedInterface(firstInterface);
+    getPcmRoot().getComponents().get(0).setProvidedInterface(secondInterface);
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /**
@@ -133,9 +130,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
             index -> {
               var iface = PcmMockupCreators.pcm.Interface();
               iface.setName("NewlyAddedInterface" + index);
-              pcmRoot.getInterfaces().add(iface);
+              getPcmRoot().getInterfaces().add(iface);
             });
-    pcmRoot
+    getPcmRoot()
         .getInterfaces()
         .forEach(
             iface -> {
@@ -143,6 +140,6 @@ class PcmStateChangeTest extends StateChangePropagationTest {
               method.setName("newMethod");
               iface.getMethods().add(method);
             });
-    compareChanges(pcmModel, pcmCheckpoint, strategyToTest);
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 }

@@ -7,7 +7,6 @@ import allElementTypes.AllElementTypesPackage;
 import allElementTypes.Root;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -150,7 +149,7 @@ public final class VirtualModelTestUtil {
           correspondenceModel.getCorrespondingEObjects(insertedRoot).stream()
               .filter(Root.class::isInstance)
               .map(Root.class::cast)
-              .collect(Collectors.toList());
+              .toList();
 
       Root correspondingRoot;
       if (correspondingRoots.size() == 1) {
@@ -167,7 +166,7 @@ public final class VirtualModelTestUtil {
             correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer(), null).stream()
                 .filter(Root.class::isInstance)
                 .map(Root.class::cast)
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(1, correspondingObjects.size());
         correspondingObjects.get(0).setRecursiveRoot(correspondingRoot);
       }

@@ -10,7 +10,6 @@ import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.a
 import allElementTypes.Root;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -42,8 +41,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
   @ParameterizedTest
   @DisplayName("create new resource and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  void createNewResource(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
+  void createNewResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     ResourceSetImpl resourceSet = new ResourceSetImpl();
     Root root = aet.Root();
     root.setId("Root");
@@ -59,7 +57,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     assertEquals(
         1,
         changes.getEChanges().stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+            .filter(ReplaceSingleValuedEAttribute.class::isInstance)
             .count());
 
     // Create empty resource to apply generated changes to
@@ -84,11 +82,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
   void deleteResource(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           Root root = aet.Root();
           root.setId("Root");
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -119,15 +117,14 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
   @ParameterizedTest
   @DisplayName("replace root element and calculate state-based difference")
   @MethodSource("strategiesToTest")
-  void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
+  void replaceRootElement(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     Capture<Resource> modelResource = new Capture<>();
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           Root root = aet.Root();
           root.setId("Root");
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -135,7 +132,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     modelResource.get().save(null);
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           modelResource.get().getContents().clear();
           Root newRoot = aet.Root();
@@ -169,10 +166,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     Root root = aet.Root();
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root");
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -180,7 +177,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     modelResource.get().save(null);
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setSingleValuedEAttribute(2);
         });
@@ -192,7 +189,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     assertEquals(
         1,
         changes.getEChanges().stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+            .filter(ReplaceSingleValuedEAttribute.class::isInstance)
             .count());
 
     VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
@@ -218,10 +215,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     Root root = aet.Root();
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root");
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -229,7 +226,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     modelResource.get().save(null);
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root2");
         });
@@ -247,8 +244,8 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
           List<DeleteEObject<?>> deleteChanges =
               changes.getEChanges().stream()
                   .filter(DeleteEObject.class::isInstance)
-                  .map(c -> (DeleteEObject<?>) c)
-                  .collect(Collectors.toList());
+                  .<DeleteEObject<?>>map(c -> (DeleteEObject<?>) c)
+                  .toList();
           assertEquals(1, deleteChanges.size());
           assertTrue(deleteChanges.get(0).getAffectedElement() instanceof Root);
           assertEquals("Root", ((Root) deleteChanges.get(0).getAffectedElement()).getId());
@@ -256,8 +253,8 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
           List<CreateEObject<?>> createChanges =
               changes.getEChanges().stream()
                   .filter(CreateEObject.class::isInstance)
-                  .map(c -> (CreateEObject<?>) c)
-                  .collect(Collectors.toList());
+                  .<CreateEObject<?>>map(c -> (CreateEObject<?>) c)
+                  .toList();
           assertEquals(1, createChanges.size());
           assertTrue(createChanges.get(0).getAffectedElement() instanceof Root);
           assertEquals("Root2", ((Root) createChanges.get(0).getAffectedElement()).getId());
@@ -297,13 +294,13 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     Root containedRoot = aet.Root();
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root");
           containedRoot.setId("ContainedRoot");
           containedRoot.setSingleValuedEAttribute(0);
           root.setRecursiveRoot(containedRoot);
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -311,7 +308,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     modelResource.get().save(null);
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           containedRoot.setSingleValuedEAttribute(1);
         });
@@ -323,7 +320,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     assertEquals(
         1,
         changes.getEChanges().stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+            .filter(ReplaceSingleValuedEAttribute.class::isInstance)
             .count());
 
     VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)
@@ -350,13 +347,13 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     Root containedRoot = aet.Root();
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root");
           containedRoot.setId("ContainedRoot");
           containedRoot.setSingleValuedEAttribute(0);
           root.setRecursiveRoot(containedRoot);
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -364,7 +361,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     modelResource.get().save(null);
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           containedRoot.setId("ContainedRoot2");
         });
@@ -377,14 +374,13 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
             .resolveAndApply(unresolvedChanges);
 
     switch (strategyToTest.getUseIdentifiers()) {
-      case ONLY:
-      case WHEN_AVAILABLE:
+      case ONLY, WHEN_AVAILABLE:
         {
           List<DeleteEObject<?>> deleteChanges =
               changes.getEChanges().stream()
                   .filter(DeleteEObject.class::isInstance)
-                  .map(c -> (DeleteEObject<?>) c)
-                  .collect(Collectors.toList());
+                  .<DeleteEObject<?>>map(c -> (DeleteEObject<?>) c)
+                  .toList();
           assertEquals(1, deleteChanges.size());
           assertTrue(deleteChanges.get(0).getAffectedElement() instanceof Root);
           assertEquals("ContainedRoot", ((Root) deleteChanges.get(0).getAffectedElement()).getId());
@@ -392,8 +388,8 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
           List<CreateEObject<?>> createChanges =
               changes.getEChanges().stream()
                   .filter(CreateEObject.class::isInstance)
-                  .map(c -> (CreateEObject<?>) c)
-                  .collect(Collectors.toList());
+                  .<CreateEObject<?>>map(c -> (CreateEObject<?>) c)
+                  .toList();
           assertEquals(1, createChanges.size());
           assertTrue(createChanges.get(0).getAffectedElement() instanceof Root);
           assertEquals(
@@ -406,7 +402,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
           assertEquals(
               1,
               changes.getEChanges().stream()
-                  .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+                  .filter(ReplaceSingleValuedEAttribute.class::isInstance)
                   .count());
           break;
         }
@@ -432,10 +428,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     Root root = aet.Root();
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root");
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -447,9 +443,9 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
     URI movedResourceUri = getModelURI("moved.allElementTypes");
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
-          Resource movedResource = resourceSet.createResource(movedResourceUri);
+          Resource movedResource = getResourceSet().createResource(movedResourceUri);
           movedResource.getContents().add(root);
           modelResource.set(movedResource);
         });
@@ -487,10 +483,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     Root root = aet.Root();
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           root.setId("Root");
-          Resource resource = resourceSet.createResource(getTestUri());
+          Resource resource = getResourceSet().createResource(getTestUri());
           resource.getContents().add(root);
           modelResource.set(resource);
         });
@@ -503,11 +499,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     URI movedResourceUri = getModelURI("moved.allElementTypes");
 
     record(
-        resourceSet,
+        getResourceSet(),
         rs -> {
           modelResource.get().getContents().remove(root);
           root.setSingleValuedEAttribute(2);
-          Resource movedResource = resourceSet.createResource(movedResourceUri);
+          Resource movedResource = getResourceSet().createResource(movedResourceUri);
           movedResource.getContents().add(root);
           modelResource.set(movedResource);
         });
@@ -521,7 +517,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
     assertEquals(
         1,
         changes.getEChanges().stream()
-            .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+            .filter(ReplaceSingleValuedEAttribute.class::isInstance)
             .count());
 
     VitruviusChangeResolverFactory.forHierarchicalIds(validationResourceSet)

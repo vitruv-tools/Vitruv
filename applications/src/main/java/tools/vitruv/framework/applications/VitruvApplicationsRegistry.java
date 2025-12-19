@@ -86,7 +86,7 @@ public class VitruvApplicationsRegistry {
           applications.add(application);
         }
       } catch (Exception e) {
-        LOGGER.warn("Error when loading application for extension: " + element, e);
+        LOGGER.warn("Error when loading application for extension: {}", element, e);
       }
     }
     return applications;

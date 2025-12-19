@@ -25,8 +25,7 @@ public abstract class VitruvApplicationTest implements VirtualModelBasedTestView
   private VirtualModelBasedTestView testView;
 
   /** Determines the {@link ChangePropagationSpecification}s to be used in this test. */
-  protected abstract Iterable<? extends ChangePropagationSpecification>
-      getChangePropagationSpecifications();
+  protected abstract Iterable<ChangePropagationSpecification> getChangePropagationSpecifications();
 
   /** Determines which {@link UriMode} should be used for this test. */
   protected UriMode getUriMode() {
