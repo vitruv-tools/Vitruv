@@ -266,7 +266,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
           assertEquals(
               1,
               changes.getEChanges().stream()
-                  .filter(c -> c instanceof ReplaceSingleValuedEAttribute)
+                  .filter(ReplaceSingleValuedEAttribute.class::isInstance)
                   .count());
           break;
         }
