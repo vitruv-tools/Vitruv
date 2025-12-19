@@ -13,17 +13,15 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
   /** Tests the comparison of two states with no changes for the uml mockup model. */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  void testNoUmlChange(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
+  void testNoUmlChange(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
     compareChanges(getUmlModel(), getUmlCheckpoint(), strategyToTest);
   }
 
   /** Tests the comparison of two states with no changes for the pcm mockup model. */
   @ParameterizedTest
   @MethodSource("strategiesToTest")
-  void testNoPcmChange(StateBasedChangeResolutionStrategy strategyToTest)
-      throws IOException {
-    compareChanges(getUmlModel(), getUmlCheckpoint(), strategyToTest);
+  void testNoPcmChange(StateBasedChangeResolutionStrategy strategyToTest) throws IOException {
+    compareChanges(getPcmModel(), getPcmCheckpoint(), strategyToTest);
   }
 
   /** Tests invalid input: null instead of state resources. */

@@ -70,13 +70,6 @@ public abstract class VitruvApplicationTest implements VirtualModelBasedTestView
   }
 
   @Override
-  public void close() throws Exception {
-    if (this.testView != null) {
-      this.testView.close();
-    }
-  }
-
-  @Override
   public <T extends EObject> T from(Class<T> type, Path path) {
     return this.testView.from(type, path);
   }

@@ -29,13 +29,6 @@ public final class VirtualModelManager {
   public InternalVirtualModel getVirtualModel(Path folder) {
     InternalVirtualModel virtualModel = VirtualModelRegistry.getInstance().getVirtualModel(folder);
     if (virtualModel == null) {
-      // get the workspace root
-      // IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-      // // get the project handle
-      // IProject project = root.getProject(name);
-      // // open up this newly-created project in Eclipse
-      // project.open(new NullProgressMonitor());
-      // // TODO HK: Extract VSUM from project
       throw new UnsupportedOperationException("Virtual models cannot be loaded yet");
     }
     return virtualModel;

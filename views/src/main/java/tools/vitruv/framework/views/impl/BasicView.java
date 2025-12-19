@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -60,7 +59,7 @@ class BasicView implements ModifiableView, ChangePropagationListener {
     checkNotClosed();
     return viewResourceSet.getResources().stream()
         .flatMap(resource -> resource.getContents().stream())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override

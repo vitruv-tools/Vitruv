@@ -43,16 +43,16 @@ public abstract class StateChangePropagationTest {
   protected static final String PCM_FILE_EXT = "pcm_mockup";
   protected static final String UML_FILE_EXT = "uml_mockup";
 
-  protected Path testProjectFolder;
-  protected Resource umlCheckpoint;
-  protected Resource pcmCheckpoint;
-  protected Resource umlModel;
-  protected Resource pcmModel;
-  protected Repository pcmRoot;
-  protected UPackage umlRoot;
-  protected ChangeRecorder changeRecorder;
-  protected ResourceSet resourceSet;
-  protected ResourceSet checkpointResourceSet;
+  private Path testProjectFolder;
+  private Resource umlCheckpoint;
+  private Resource pcmCheckpoint;
+  private Resource umlModel;
+  private Resource pcmModel;
+  private Repository pcmRoot;
+  private UPackage umlRoot;
+  private ChangeRecorder changeRecorder;
+  private ResourceSet resourceSet;
+  private ResourceSet checkpointResourceSet;
 
   /**
    * Creates the strategy, sets up the test model and prepares everything for determining changes.
