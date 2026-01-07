@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +23,7 @@ import tools.vitruv.change.interaction.InternalUserInteractor;
 import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.change.propagation.ChangePropagationObservableRegistry;
 import tools.vitruv.change.propagation.ChangePropagationObserver;
+import tools.vitruv.change.propagation.ChangePropagationSpecification;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider;
 import tools.vitruv.change.propagation.impl.ChangePropagator;
 import tools.vitruv.change.utils.ResourcePersistanceObservable;
@@ -238,5 +240,11 @@ public class VirtualModelImpl implements InternalVirtualModel,
   @Override
   public void deregisterModelPersistanceObserver(ResourcePersistenceObserver observer) {
     this.resourceRepository.deregisterModelPersistanceObserver(observer);
+  }
+
+  public Collection<ChangePropagationSpecification> getChangePropagationSpecifications() {
+    List<ChangePropagationSpecification> specifications = new ArrayList<>();
+    this.changePropagationSpecificationProvider.forEach(spec -> specifications.add(spec));
+    return specifications;
   }
 }
