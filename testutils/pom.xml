@@ -19,6 +19,5 @@
 
   <modules>
     <module>integration</module>
-    <module>deprecated</module>
   </modules>
 </project>
