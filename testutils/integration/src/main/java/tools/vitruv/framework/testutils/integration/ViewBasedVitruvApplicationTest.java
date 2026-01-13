@@ -27,8 +27,7 @@ public abstract class ViewBasedVitruvApplicationTest {
   private TestUserInteraction userInteraction;
 
   /** Determines the {@link ChangePropagationSpecification}s to be used in this test. */
-  protected abstract Iterable<ChangePropagationSpecification>
-      getChangePropagationSpecifications();
+  protected abstract Iterable<ChangePropagationSpecification> getChangePropagationSpecifications();
 
   /**
    * Determines the {@link ChangePropagationMode} to use in this test. If <code>true</code> is
@@ -45,12 +44,12 @@ public abstract class ViewBasedVitruvApplicationTest {
   }
 
   @BeforeEach
-  final void prepareVirtualModel(
+  void prepareVirtualModel(
       TestInfo testInfo,
       @TestProject Path testProjectPath,
       @TestProject(variant = "vsum") Path vsumPath) {
     try {
-      Iterable<? extends ChangePropagationSpecification> changePropagationSpecifications =
+      Iterable<ChangePropagationSpecification> changePropagationSpecifications =
           getChangePropagationSpecifications();
       ChangePropagationMode changePropagationMode =
           enableTransitiveCyclicChangePropagation()
@@ -62,8 +61,7 @@ public abstract class ViewBasedVitruvApplicationTest {
               .withStorageFolder(vsumPath)
               .withUserInteractorForResultProvider(
                   new TestUserInteraction.ResultProvider(userInteraction))
-              .withChangePropagationSpecification(
-                  (ChangePropagationSpecification) changePropagationSpecifications)
+              .withChangePropagationSpecifications(changePropagationSpecifications)
               .buildAndInitialize();
       virtualModel.setChangePropagationMode(changePropagationMode);
       this.testProjectPath = testProjectPath;
@@ -73,7 +71,7 @@ public abstract class ViewBasedVitruvApplicationTest {
   }
 
   @AfterEach
-  final void closeAfterTest() {
+  void closeAfterTest() {
     if (virtualModel != null) {
       virtualModel.dispose();
     }

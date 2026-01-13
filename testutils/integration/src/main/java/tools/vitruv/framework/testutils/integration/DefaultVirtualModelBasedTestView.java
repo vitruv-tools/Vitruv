@@ -36,7 +36,7 @@ public class DefaultVirtualModelBasedTestView
   public DefaultVirtualModelBasedTestView(
       Path testProjectPath,
       Path vsumPath,
-      Iterable<? extends ChangePropagationSpecification> changePropagationSpecifications,
+      Iterable<ChangePropagationSpecification> changePropagationSpecifications,
       UriMode uriMode) {
     this.changePropagationSpecifications =
         toChangePropagationSpecList(changePropagationSpecifications);
@@ -47,7 +47,7 @@ public class DefaultVirtualModelBasedTestView
   }
 
   private Iterable<ChangePropagationSpecification> toChangePropagationSpecList(
-      Iterable<? extends ChangePropagationSpecification> specs) {
+      Iterable<ChangePropagationSpecification> specs) {
     List<ChangePropagationSpecification> list = new ArrayList<>();
     for (ChangePropagationSpecification spec : specs) {
       list.add(spec);
