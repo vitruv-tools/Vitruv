@@ -17,7 +17,11 @@ import tools.vitruv.framework.views.ModifiableViewSelection;
 public abstract class AbstractViewSelection implements ModifiableViewSelection {
   final Map<EObject, Boolean> elementsSelection = new HashMap<>();
 
-  /** Creates a new view selection with the given selectable elements. */
+  /**
+   * Creates a new view selection with the given selectable elements.
+   *
+   * @param selectableElements the elements that can be selected in this view selection
+   */
   protected AbstractViewSelection(Collection<EObject> selectableElements) {
     selectableElements.forEach(
         object ->

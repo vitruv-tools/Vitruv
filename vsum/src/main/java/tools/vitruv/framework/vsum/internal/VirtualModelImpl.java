@@ -32,10 +32,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
-
 /** The implementation of the {@link InternalVirtualModel} interface. */
-public class VirtualModelImpl implements InternalVirtualModel,
-    ChangePropagationObservableRegistry {
+public class VirtualModelImpl implements InternalVirtualModel, ChangePropagationObservableRegistry {
   private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
 
   private final ModelRepository resourceRepository;
@@ -111,8 +109,8 @@ public class VirtualModelImpl implements InternalVirtualModel,
             changePropagationSpecificationProvider,
             userInteractor,
             changePropagationMode);
-    List<PropagatedChange> result = changePropagator.propagateChange(
-        change, changePropagationObservers);
+    List<PropagatedChange> result =
+        changePropagator.propagateChange(change, changePropagationObservers);
     save();
 
     if (LOGGER.isTraceEnabled()) {
