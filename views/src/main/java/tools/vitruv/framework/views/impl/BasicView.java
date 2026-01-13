@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -166,7 +167,7 @@ class BasicView implements ModifiableView, ChangePropagationListener {
   }
 
   @Override
-  public void modifyContents(java.util.function.Consumer<ResourceSet> modificationFunction) {
+  public void modifyContents(Consumer<ResourceSet> modificationFunction) {
     modificationFunction.accept(viewResourceSet);
   }
 

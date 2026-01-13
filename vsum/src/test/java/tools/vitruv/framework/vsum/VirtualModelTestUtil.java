@@ -37,7 +37,7 @@ public final class VirtualModelTestUtil {
    */
   public static VitruviusChange<Uuid> recordChanges(
       ResourceSet resourceSet, UuidResolver uuidResolver, Runnable changesToPerform) {
-    tools.vitruv.change.composite.description.VitruviusChange<tools.vitruv.change.atomic.uuid.Uuid>
+    VitruviusChange<Uuid>
         resolvedChange;
     try (ChangeRecorder recorder = new ChangeRecorder(resourceSet)) {
       recorder.addToRecording(resourceSet);

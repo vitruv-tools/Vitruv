@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -170,7 +171,7 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
   }
 
   @Override
-  public void modifyContents(java.util.function.Consumer<ResourceSet> modificationFunction) {
+  public void modifyContents(Consumer<ResourceSet> modificationFunction) {
     view.modifyContents(modificationFunction);
   }
 
