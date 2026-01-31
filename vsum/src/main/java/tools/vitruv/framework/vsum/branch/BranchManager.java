@@ -17,10 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevWalk;
 
 /**
  * Manages Git-based branches for the Vitruvius. All branch operations such as creation, switching, deletion,
@@ -106,6 +102,7 @@ public class BranchManager {
     public void switchBranch(String nameOrUid) throws BranchOperationException {
         checkNotNull(nameOrUid, "Branch identifier must not be null");
 
+        // Resolve name-or-UID to a concrete branch name
         var resolvedName = resolveBranchIdentifier(nameOrUid);
 
         try (var git = Git.open(repoRoot.toFile())) {
@@ -126,7 +123,7 @@ public class BranchManager {
      *
      * @param name The name of the branch to delete.
      * @throws BranchOperationException If the branch is currently active, does not exist, or the
-     *     Git operation fails.
+     *                                  Git operation fails.
      */
     public void deleteBranch(String name) throws BranchOperationException {
         checkNotNull(name, "Branch name must not be null");
@@ -134,6 +131,7 @@ public class BranchManager {
         try (var git = Git.open(repoRoot.toFile())) {
             // prevent deletion of the currently checked-out branch
             var repo = git.getRepository();
+            // Prevent deletion of the currently checked-out branch
             var head = repo.findRef("HEAD");
             if (head != null && head.getTarget() != null && head.getTarget().getName().equals("refs/heads/" + name)) {
                 throw new BranchOperationException("Cannot delete the currently checked-out branch: " + name);
@@ -160,14 +158,243 @@ public class BranchManager {
         }
     }
 
-    private String resolveBranchIdentifier(String nameOrUid) {
-        return  nameOrUid + METADATA_DIR;
+    /**
+     * Returns metadata for all branches currently tracked by Git. Branches that were created outside
+     * of the {@link BranchManager} (i.e., have no metadata file) are included with synthesized
+     * metadata: they are marked {@link BranchState#ACTIVE} with an unknown parent.
+     *
+     * @return A list of {@link BranchMetadata} for every branch in the repository.
+     * @throws BranchOperationException If the repository cannot be read.
+     */
+    public List<BranchMetadata> listBranches() throws BranchOperationException {
+        try (var git = Git.open(repoRoot.toFile())) {
+            var refs = git.branchList().call();
+            var result = new ArrayList<BranchMetadata>();
+
+            for (var ref : refs) {
+                // Strip the "refs/heads/" prefix to get the logical branch name
+                var name = ref.getName().replace("refs/heads/", "");
+                var metadataFile = metadataPath(name);
+
+                if (Files.exists(metadataFile)) {
+                    // Branch managed by Vitruvius — read persisted metadata
+                    result.add(BranchMetadata.readFrom(metadataFile));
+                } else {
+                    // Branch exists in Git but not in Vitruvius metadata. synthesize metadata to ensure consistent handling.
+                    var uid = ref.getObjectId().getName().substring(0, 7);
+                    var now = LocalDateTime.now();
+                    result.add(new BranchMetadata(name, uid, BranchState.ACTIVE, "unknown", now, now));
+                    LOGGER.debug("Branch '{}' has no metadata file, synthesized defaults", name);
+                }
+            }
+            LOGGER.debug("Listed {} branch(es)", result.size());
+            return result;
+
+        } catch (GitAPIException e) {
+            throw new BranchOperationException("Failed to list branches", e);
+        } catch (IOException e) {
+            throw new BranchOperationException("Failed to read branch metadata while listing", e);
+
+        }
     }
 
-    private Path metadataPath(String name) {
-        return null;
+    /**
+     * Returns all branches whose names match the given glob pattern. Supports {@code *} (matches any
+     * sequence of characters) and {@code ?} (matches a single character).
+     *
+     * @param pattern A glob pattern to match against branch names (e.g., {@code "feature-*"}).
+     * @return A list of {@link BranchMetadata} for all matching branches.
+     * @throws BranchOperationException If the branch list cannot be retrieved.
+     */
+    public List<BranchMetadata> findBranches(String pattern) throws BranchOperationException {
+        checkNotNull(pattern, "Search pattern must not be null");
+
+        var matcher = repoRoot.getFileSystem().getPathMatcher("glob:" + pattern);
+        var allBranches = listBranches();
+
+        var matches = allBranches.stream().filter(m -> matcher.matches(Path.of(m.getName()))).collect(Collectors.toList());
+
+        LOGGER.debug("Found {} branch(es) matching pattern '{}'", matches.size(), pattern);
+        return matches;
     }
 
-    private void validateBranchName(String name) {
+    /**
+     * Resolves a branch identifier to a branch name. The identifier can be either an exact branch
+     * name or a prefix of a branch's unique identifier (uid). If the identifier matches both a name
+     * and one or more uids, the name takes precedence.
+     *
+     * @param nameOrUid A branch name or uid prefix.
+     * @return The resolved branch name.
+     * @throws BranchOperationException If the identifier matches no branch or is ambiguous (matches
+     *                                  multiple branches by uid).
+     */
+    public String resolveBranchIdentifier(String nameOrUid) throws BranchOperationException {
+        checkNotNull(nameOrUid, "Branch identifier must not be null");
+
+        try (var git = Git.open(repoRoot.toFile())) {
+            var repo = git.getRepository();
+
+            // exact branch name match
+            var exactRef = repo.findRef("refs/heads/" + nameOrUid);
+            if (exactRef != null) {
+                LOGGER.debug("Resolved identifier '{}' to branch name directly", nameOrUid);
+                return nameOrUid;
+            }
+
+            // resolve via UID prefix using metadata files
+            var metadataDir = repoRoot.resolve(METADATA_DIR);
+            if (!Files.isDirectory(metadataDir)) {
+                throw new BranchOperationException("No branch matches identifier: " + nameOrUid);
+            }
+
+            var matches = Files.list(metadataDir)
+                    .filter(p -> p.toString().endsWith(".metadata"))
+                    .map(p -> {
+                        try {
+                            return BranchMetadata.readFrom(p);
+                        } catch (IOException e) {
+                            LOGGER.warn("Failed to read metadata file: {}", p, e);
+                            return null;
+                        }
+                    })
+                    .filter(m -> m != null && m.getUid().startsWith(nameOrUid)).toList();
+
+            if (matches.size() == 1) {
+                LOGGER.debug("Resolved uid prefix '{}' to branch '{}'", nameOrUid, matches.get(0).getName());
+                return matches.get(0).getName();
+            } else if (matches.isEmpty()) {
+                throw new BranchOperationException("No branch matches identifier: " + nameOrUid);
+            } else {
+                // Multiple UID matches → ambiguous
+                var ambiguous = matches.stream().map(BranchMetadata::getName).collect(Collectors.joining(", "));
+                throw new BranchOperationException("Ambiguous identifier '" + nameOrUid + "' matches multiple branches: " + ambiguous);
+            }
+
+        } catch (IOException e) {
+            throw new BranchOperationException("Failed to read metadata while resolving identifier '" + nameOrUid + "'", e);
+        }
+    }
+
+    /**
+     * Returns the parent-child topology of all managed branches. Each entry maps a parent branch
+     * name to the list of branches that were directly forked from it. Only branches with persisted
+     * {@link BranchMetadata} are included — branches created outside of the {@link BranchManager}
+     * are not part of the topology.
+     *
+     * @return A map from parent branch name to its direct child branch names.
+     * @throws BranchOperationException If the metadata files cannot be read.
+     */
+    public Map<String, List<String>> getBranchTopology() throws BranchOperationException {
+        var metadataDir = repoRoot.resolve(METADATA_DIR);
+        if (!Files.isDirectory(metadataDir)) {
+            return new LinkedHashMap<>();
+        }
+
+        try {
+            var topology = new LinkedHashMap<String, List<String>>();
+
+            try (var stream = Files.list(metadataDir)) {
+                var metadataFiles = stream.filter(p -> p.toString().endsWith(".metadata")).toList();
+
+                for (var file : metadataFiles) {
+                    var metadata = BranchMetadata.readFrom(file);
+                    // Skip deleted branches — they're no longer part of the active topology
+                    if (metadata.getState() == BranchState.DELETED) {
+                        continue;
+                    }
+                    topology.computeIfAbsent(metadata.getParent(), k -> new ArrayList<>()).add(metadata.getName());
+                }
+            }
+            LOGGER.debug("Built branch topology with {} parent(s)", topology.size());
+            return topology;
+
+        } catch (IOException e) {
+            throw new BranchOperationException("Failed to read metadata while building topology", e);
+        }
+    }
+
+
+    /**
+     * Validates a proposed branch name. The name must not be empty, must not conflict with an
+     * existing branch, and must conform to Git's branch naming rules (no spaces, no {@code ..}, no
+     * trailing {@code .lock}, no special characters {@code ~^:?*[\\}).
+     *
+     * @param name The branch name to validate.
+     * @throws BranchOperationException If the name is invalid or already in use.
+     */
+    public void validateBranchName(String name) throws BranchOperationException {
+        checkNotNull(name, "Branch name must not be null");
+
+        if (name.isBlank()) {
+            throw new BranchOperationException("Branch name must not be blank");
+        }
+        if (name.contains("..")) {
+            throw new BranchOperationException("Branch name must not contain '..': " + name);
+        }
+        if (name.endsWith(".lock")) {
+            throw new BranchOperationException("Branch name must not end with '.lock': " + name);
+        }
+        if (name.chars().anyMatch(c -> " ~^:?*[\\".indexOf(c) >= 0)) {
+            throw new BranchOperationException("Branch name contains illegal characters: " + name);
+        }
+
+        // Check for conflict with an existing branch
+        try (var git = Git.open(repoRoot.toFile())) {
+            var repo = git.getRepository();
+            if (repo.findRef("refs/heads/" + name) != null) {
+                throw new BranchOperationException("Branch already exists: " + name);
+            }
+        } catch (IOException e) {
+            throw new BranchOperationException("Failed to open repository while validating branch name '" + name + "'", e);
+        }
+    }
+
+    /**
+     * Returns the current lifecycle state of the specified branch. If the branch has no persisted
+     * metadata (e.g., it was created outside of the {@link BranchManager}), it is assumed to be
+     * {@link BranchState#ACTIVE}.
+     *
+     * @param name The name of the branch.
+     * @return The {@link BranchState} of the branch.
+     * @throws BranchOperationException If the branch does not exist in Git or the metadata cannot be
+     *                                  read.
+     */
+    public BranchState getBranchState(String name) throws BranchOperationException {
+        checkNotNull(name, "Branch name must not be null");
+
+        try (var git = Git.open(repoRoot.toFile())) {
+            var repo = git.getRepository();
+            if (repo.findRef("refs/heads/" + name) == null) {
+                // Branch doesn't exist in Git — check if it was deleted (metadata might still exist)
+                var metadataFile = metadataPath(name);
+                if (Files.exists(metadataFile)) {
+                    return BranchMetadata.readFrom(metadataFile).getState();
+                }
+                throw new BranchOperationException("Branch does not exist: " + name);
+            }
+
+            // Branch exists in Git — read state from metadata if available
+            var metadataFile = metadataPath(name);
+            if (Files.exists(metadataFile)) {
+                return BranchMetadata.readFrom(metadataFile).getState();
+            }
+
+            // No metadata file — default to ACTIVE
+            LOGGER.debug("Branch '{}' has no metadata, defaulting to ACTIVE", name);
+            return BranchState.ACTIVE;
+
+        } catch (IOException e) {
+            throw new BranchOperationException("Failed to read metadata for branch '" + name + "'", e);
+        }
+    }
+
+    /**
+     * Returns the path to the metadata file for the given branch name.
+     *
+     * @param branchName The branch name.
+     * @return The path to the {@code .metadata} file.
+     */
+    private Path metadataPath(String branchName) {
+        return repoRoot.resolve(METADATA_DIR).resolve(branchName + ".metadata");
     }
 }
