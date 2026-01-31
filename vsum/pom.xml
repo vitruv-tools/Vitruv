@@ -1,144 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>tools.vitruv</groupId>
-    <artifactId>tools.vitruv.framework</artifactId>
-    <version>3.2.4-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.framework</artifactId>
+        <version>3.2.4-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>tools.vitruv.framework.vsum</artifactId>
+    <artifactId>tools.vitruv.framework.vsum</artifactId>
 
-  <name>Vitruv V-SUM definition</name>
-  <description>Vsum creation</description>
+    <name>Vitruv V-SUM definition</name>
+    <description>Vsum creation</description>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
-  <dependencies>
-    <!-- project dependencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.views</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+    <dependencies>
+        <!-- project dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tools.vitruv.framework.views</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <!-- Vitruvius dependencies -->
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.utils</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.composite</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.propagation</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.correspondence</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.interaction</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.atomic</artifactId>
-    </dependency>
+        <!-- Vitruvius dependencies -->
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.composite</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.propagation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.correspondence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.interaction</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.atomic</artifactId>
+        </dependency>
 
-    <!-- Vitruvius test depencies -->
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>tools.vitruv</groupId>
-      <artifactId>tools.vitruv.change.testutils.core</artifactId>
-      <scope>test</scope>
-    </dependency>
+        <!-- Vitruvius test depencies -->
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>tools.vitruv</groupId>
+            <artifactId>tools.vitruv.change.testutils.core</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-    <!-- external compile dependencies -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>org.eclipse.emf.common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.emf</groupId>
-      <artifactId>org.eclipse.emf.ecore</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtend</groupId>
-      <artifactId>org.eclipse.xtend.lib</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtext</groupId>
-      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-    </dependency>
+        <!-- external compile dependencies -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.xtend</groupId>
+            <artifactId>org.eclipse.xtend.lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.xtext</groupId>
+            <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+        </dependency>
 
-    <!-- external test dependencies -->
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-commons</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-launcher</artifactId>
-      <scope>test</scope>
-    </dependency>
+        <!-- external test dependencies -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-    <!-- p2 compile dependencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <!-- p2 compile dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <!-- p2 test dependencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+        <!-- p2 test dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

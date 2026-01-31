@@ -1,208 +1,213 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <!-- Build Parent -->
-  <parent>
-    <groupId>tools.vitruv</groupId>
-    <artifactId>parent</artifactId>
-    <version>3.3.2</version>
-  </parent>
+    <!-- Build Parent -->
+    <parent>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>parent</artifactId>
+        <version>3.3.2</version>
+    </parent>
 
-  <!-- Project Information -->
-  <artifactId>tools.vitruv.framework</artifactId>
-  <version>3.2.4-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <!-- Project Information -->
+    <artifactId>tools.vitruv.framework</artifactId>
+    <version>3.2.4-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-  <name>Vitruv Framework</name>
-  <description>The Vitruv framework providing the definition of views and v-sums.</description>
-  <url>https://github.com/vitruv-tools/Vitruv</url>
+    <name>Vitruv Framework</name>
+    <description>The Vitruv framework providing the definition of views and v-sums.</description>
+    <url>https://github.com/vitruv-tools/Vitruv</url>
 
-  <!-- Organizational Information -->
-  <licenses>
-    <license>
-      <name>Eclipse Public License - v 1.0</name>
-      <url>https://www.eclipse.org/org/documents/epl-v10.php</url>
-    </license>
-  </licenses>
+    <!-- Organizational Information -->
+    <licenses>
+        <license>
+            <name>Eclipse Public License - v 1.0</name>
+            <url>https://www.eclipse.org/org/documents/epl-v10.php</url>
+        </license>
+    </licenses>
 
-  <scm>
-    <connection>scm:git:git://github.com/vitruv-tools/Vitruv.git</connection>
-    <developerConnection>scm:git:https://github.com/vitruv-tools/Vitruv.git</developerConnection>
-    <url>https://github.com/vitruv-tools/Vitruv/tree/main</url>
-  </scm>
+    <scm>
+        <connection>scm:git:git://github.com/vitruv-tools/Vitruv.git</connection>
+        <developerConnection>scm:git:https://github.com/vitruv-tools/Vitruv.git</developerConnection>
+        <url>https://github.com/vitruv-tools/Vitruv/tree/main</url>
+    </scm>
 
-  <!-- Modules -->
-  <modules>
-    <module>views</module>
-    <module>vsum</module>
-    <module>testutils</module>
-    <module>applications</module>
-    <module>p2wrappers</module>
-  </modules>
+    <!-- Modules -->
+    <modules>
+        <module>views</module>
+        <module>vsum</module>
+        <module>testutils</module>
+        <module>applications</module>
+        <module>p2wrappers</module>
+    </modules>
 
-  <properties>
-    <vitruv-change.version>3.2.4-SNAPSHOT</vitruv-change.version>
-    <!-- SonarQube configuration -->
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.organization>vitruv-tools</sonar.organization>
-    <sonar.projectKey>vitruv-tools_Vitruv</sonar.projectKey>
-  </properties>
+    <properties>
+        <vitruv-change.version>3.2.4-SNAPSHOT</vitruv-change.version>
+        <!-- SonarQube configuration -->
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.organization>vitruv-tools</sonar.organization>
+        <sonar.projectKey>vitruv-tools_Vitruv</sonar.projectKey>
+    </properties>
 
-  <!-- Dependency Management -->
-  <dependencyManagement>
-    <dependencies>
-      <!-- Vitruvius dependencies -->
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.atomic</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.correspondence</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.composite</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.interaction</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.interaction.model</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.propagation</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.testutils.core</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.testutils.integration</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tools.vitruv</groupId>
-        <artifactId>tools.vitruv.change.utils</artifactId>
-        <version>${vitruv-change.version}</version>
-      </dependency>
+    <!-- Dependency Management -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Vitruvius dependencies -->
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.atomic</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.correspondence</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.composite</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.interaction</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.interaction.model</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.propagation</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.testutils.core</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.testutils.integration</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.utils</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
 
-      <!-- External dependencies -->
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>33.5.0-jre</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>2.25.3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.common</artifactId>
-        <version>2.44.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.ecore</artifactId>
-        <version>2.41.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-        <version>2.39.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.core.runtime</artifactId>
-        <version>3.34.100</version>
-      </dependency>
-      <!-- required to mitigate Eclipse dependency signing problems -->
-      <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.equinox.common</artifactId>
-        <version>3.20.300</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.platform</groupId>
-        <artifactId>org.eclipse.equinox.registry</artifactId>
-        <version>3.12.600</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>org.eclipse.xtend.lib</artifactId>
-        <version>2.39.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.xtext</groupId>
-        <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-        <version>2.41.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest</artifactId>
-        <version>3.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>6.0.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-params</artifactId>
-        <version>6.0.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.platform</groupId>
-        <artifactId>junit-platform-commons</artifactId>
-        <version>6.0.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.platform</groupId>
-        <artifactId>junit-platform-launcher</artifactId>
-        <version>6.0.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>5.21.0</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+            <!-- External dependencies -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.5.0-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jgit</groupId>
+                <artifactId>org.eclipse.jgit</artifactId>
+                <version>7.5.0.202512021534-r</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.25.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.emf</groupId>
+                <artifactId>org.eclipse.emf.common</artifactId>
+                <version>2.44.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.emf</groupId>
+                <artifactId>org.eclipse.emf.ecore</artifactId>
+                <version>2.41.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.emf</groupId>
+                <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+                <version>2.39.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.platform</groupId>
+                <artifactId>org.eclipse.core.runtime</artifactId>
+                <version>3.34.100</version>
+            </dependency>
+            <!-- required to mitigate Eclipse dependency signing problems -->
+            <dependency>
+                <groupId>org.eclipse.platform</groupId>
+                <artifactId>org.eclipse.equinox.common</artifactId>
+                <version>3.20.300</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.platform</groupId>
+                <artifactId>org.eclipse.equinox.registry</artifactId>
+                <version>3.12.600</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.xtend</groupId>
+                <artifactId>org.eclipse.xtend.lib</artifactId>
+                <version>2.39.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.xtext</groupId>
+                <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+                <version>2.41.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>6.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>6.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-commons</artifactId>
+                <version>6.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-launcher</artifactId>
+                <version>6.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>5.21.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-  <repositories>
-    <!-- allow snapshots -->
-    <repository>
-      <id>ossrh-snapshots</id>
-      <name>OSSRH Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
+    <repositories>
+        <!-- allow snapshots -->
+        <repository>
+            <id>ossrh-snapshots</id>
+            <name>OSSRH Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
 </project>
