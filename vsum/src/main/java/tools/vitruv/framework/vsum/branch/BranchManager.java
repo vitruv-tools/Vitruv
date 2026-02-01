@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum.branch;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,25 +11,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
+import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
 
 /**
  * Manages Git-based branches for the Vitruvius. All branch operations such as creation, switching, deletion,
  * and querying will be delegated to Git via JGit. Branch metadata (lifecycle, state, parent, timestamps) is
  * persisted in {@code .vitruvius/branches/} alongside the repository.
- *
- * <p>This class is stateless: every operation reads directly from the Git repository and the
- * metadata files on disk, so the instance is always consistent with the actual repository state.
  */
 public class BranchManager {
     private static final Logger LOGGER = LogManager.getLogger(BranchManager.class);
     private static final String METADATA_DIR = ".vitruvius/branches";
     private final Path repoRoot;
+    @Setter
     private PostCheckoutHandler postCheckoutHandler;
 
     /**
@@ -44,10 +42,6 @@ public class BranchManager {
         checkArgument(Files.isDirectory(repoRoot.resolve(".git")), "No Git repository found at: %s", repoRoot);
     }
 
-    public void setPostCheckoutHandler(PostCheckoutHandler handler) {
-        this.postCheckoutHandler = handler;
-    }
-
     /**
      * Creates a new branch with the given name, forked from the specified source branch. The new
      * branch is created in {@link BranchState#ACTIVE} state.
@@ -55,8 +49,7 @@ public class BranchManager {
      * @param name       The name of the new branch.
      * @param fromBranch The name of the branch to fork from.
      * @return The {@link BranchMetadata} of the newly created branch.
-     * @throws BranchOperationException If the branch already exists, the source branch does not
-     *                                  exist, or the Git operation fails.
+     * @throws BranchOperationException If the branch already exists, the source branch does not exist, or the Git operation fails.
      */
     public BranchMetadata createBranch(String name, String fromBranch) throws BranchOperationException {
         checkNotNull(name, "Branch name must not be null");

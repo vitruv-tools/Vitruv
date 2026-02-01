@@ -3,6 +3,7 @@ package tools.vitruv.framework.vsum.branch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -33,7 +34,6 @@ public class PostCheckoutHandler {
         LOGGER.info("Branch switched from {} to {}", oldBranch, newBranch);
 
         try {
-            //todo: implement actual reload
             LOGGER.debug("Reloading models from file system");
             virtualModel.reload();
             LOGGER.info("Models reloaded successfully for branch {}", newBranch);

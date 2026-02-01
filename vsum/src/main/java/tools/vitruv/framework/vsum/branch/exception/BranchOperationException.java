@@ -1,4 +1,6 @@
-package tools.vitruv.framework.vsum.branch;
+package tools.vitruv.framework.vsum.branch.exception;
+
+import tools.vitruv.framework.vsum.branch.BranchManager;
 
 /**
  * Thrown when a branch operation in Vitruvius's branching system fails.
