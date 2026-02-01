@@ -7,8 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests for {@link BranchManager}.
@@ -120,6 +123,26 @@ class BranchManagerTest {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
                 assertThrows(BranchOperationException.class, () -> manager.switchBranch("nonexistent"));
+            }
+        }
+
+        @Test
+        @DisplayName("switch branch with handler triggers post-checkout")
+        void switchWithHandlerTriggersPostCheckout(@TempDir Path repoDir) throws Exception {
+            try (var git = initRepo(repoDir)) {
+                var manager = new BranchManager(repoDir);
+                manager.createBranch("feature-test", "main");
+
+                // Set up a mock handler to verify it gets called
+                var virtualModel = mock(VirtualModel.class);
+                var handler = new PostCheckoutHandler(virtualModel);
+                manager.setPostCheckoutHandler(handler);
+
+                // Switch branches
+                manager.switchBranch("feature-test");
+
+                // Verify the handler was triggered and called reload
+                verify(virtualModel).reload();
             }
         }
     }

@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Repository;
 
 /**
  * Manages Git-based branches for the Vitruvius. All branch operations such as creation, switching, deletion,
@@ -30,6 +31,7 @@ public class BranchManager {
     private static final Logger LOGGER = LogManager.getLogger(BranchManager.class);
     private static final String METADATA_DIR = ".vitruvius/branches";
     private final Path repoRoot;
+    private PostCheckoutHandler postCheckoutHandler;
 
     /**
      * Creates a new {@link BranchManager} for the Git repository at the given path.
@@ -40,6 +42,10 @@ public class BranchManager {
     public BranchManager(Path repoRoot) {
         this.repoRoot = checkNotNull(repoRoot, "Repository root must not be null");
         checkArgument(Files.isDirectory(repoRoot.resolve(".git")), "No Git repository found at: %s", repoRoot);
+    }
+
+    public void setPostCheckoutHandler(PostCheckoutHandler handler) {
+        this.postCheckoutHandler = handler;
     }
 
     /**
@@ -108,9 +114,20 @@ public class BranchManager {
         // Resolve name-or-UID to a concrete branch name
         var resolvedName = resolveBranchIdentifier(nameOrUid);
 
+        String oldBranch = null;
         try (var git = Git.open(repoRoot.toFile())) {
+            var repo = git.getRepository();
+            var head = repo.findRef("HEAD");
+            if (head != null && head.isSymbolic()) {
+                oldBranch = Repository.shortenRefName(head.getTarget().getName());
+            }
             git.checkout().setName(resolvedName).call();
             LOGGER.info("Switched to branch '{}'", resolvedName);
+
+            if (postCheckoutHandler != null && oldBranch != null) {
+                LOGGER.debug("Invoking post-checkout handler for branch switch");
+                postCheckoutHandler.onBranchSwitch(oldBranch, resolvedName);
+            }
 
         } catch (GitAPIException e) {
             throw new BranchOperationException("Failed to switch to branch '" + resolvedName + "'", e);
