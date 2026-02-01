@@ -8,11 +8,7 @@ import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactor
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +41,7 @@ class ResourceRepositoryImpl implements ModelRepository {
     private final PersistableCorrespondenceModel correspondenceModel;
     private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
     private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
-    private final VitruviusChangeResolver<Uuid> changeResolver =
+    private VitruviusChangeResolver<Uuid> changeResolver =
             VitruviusChangeResolverFactory.forUuids(uuidResolver);
 
     private final VsumFileSystemLayout fileSystemLayout;
@@ -78,180 +74,199 @@ class ResourceRepositoryImpl implements ModelRepository {
 
     @Override
     public void reload() {
-        LOGGER.info("Reloading all models from the file system into the repository.");
+        LOGGER.info("Reloading models from file system");
 
-        // stop ChangeRecorder
+        // Stop recording changes during reload
         boolean wasRecording = isRecording;
         if (isRecording) {
             changeRecorder.endRecording();
             isRecording = false;
         }
 
-        // unload existing models
-        LOGGER.debug("Unloading {} existing models", modelsResourceSet.getResources().size());
+        // Remove all current resources from change recorder tracking BEFORE unloading
+        LOGGER.debug("Removing {} models from change recorder", modelsResourceSet.getResources().size());
+        // Make a copy of the list since we'll be modifying it
+        var resourcesToRemove = new ArrayList<>(modelsResourceSet.getResources());
+        for (Resource resource : resourcesToRemove) {
+            if (resource.getURI().isFile() || resource.getURI().isPlatform()) {
+                changeRecorder.removeFromRecording(resource);
+            }
+        }
+
+        // Unload all existing resources
+        LOGGER.debug("Unloading models");
         modelsResourceSet.getResources().forEach(Resource::unload);
         modelsResourceSet.getResources().clear();
         modelInstances.clear();
 
-        LOGGER.debug("Loading models from file system");
+        // Reset UUID resolver
+        LOGGER.debug("Resetting UUID resolver");
+        uuidResolver = UuidResolver.create(modelsResourceSet);
+
+        // Recreate the change resolver with new UUID resolver
+        changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver);
+
+        // Reload from disk
+        LOGGER.debug("Loading models from disk");
         loadExistingModels();
 
+        // Resume recording if it was active before
         if (wasRecording) {
             changeRecorder.beginRecording();
             isRecording = true;
         }
-        LOGGER.info("Models was reloaded successfully.");
+        LOGGER.info("Models reloaded successfully");
     }
 
-        private void writeModelsFile () throws IOException {
-            Files.write(
-                    fileSystemLayout.getModelsNamesFilesPath(),
-                    modelsResourceSet.getResources().stream()
-                            .map(Resource::getURI)
-                            .map(URI::toString)
-                            .toList());
+    private void writeModelsFile() throws IOException {
+        Files.write(
+                fileSystemLayout.getModelsNamesFilesPath(),
+                modelsResourceSet.getResources().stream()
+                        .map(Resource::getURI)
+                        .map(URI::toString)
+                        .toList());
+    }
+
+    private void readModelsFile() throws IOException {
+        List<URI> modelUris;
+        try {
+            modelUris =
+                    Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream()
+                            .map(URI::createURI)
+                            .toList();
+
+        } catch (NoSuchFileException e) {
+            // There are no existing models, so don't do anything
+            return;
         }
+        modelUris.forEach(uri -> loadOrCreateResource(modelsResourceSet, uri));
+        uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
+        modelUris.forEach(this::createOrLoadModel);
+    }
 
-        private void readModelsFile () throws IOException {
-            List<URI> modelUris;
-            try {
-                modelUris =
-                        Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream()
-                                .map(URI::createURI)
-                                .toList();
+    @Override
+    public EditableCorrespondenceModelView<Correspondence> getCorrespondenceModel() {
+        return CorrespondenceModelViewFactory.createEditableCorrespondenceModelView(
+                correspondenceModel);
+    }
 
-            } catch (NoSuchFileException e) {
-                // There are no existing models, so don't do anything
-                return;
+    @Override
+    public ModelInstance getModel(URI modelUri) {
+        return modelInstances.get(modelUri);
+    }
+
+    @Override
+    public UuidResolver getUuidResolver() {
+        return uuidResolver;
+    }
+
+    private ModelInstance getCreateOrLoadModelUnlessLoading(URI modelUri) {
+        if (isLoading) {
+            return null;
+        }
+        return getCreateOrLoadModel(modelUri);
+    }
+
+    private ModelInstance getCreateOrLoadModel(URI modelUri) {
+        ModelInstance instance = getModel(modelUri);
+        if (instance != null) {
+            return instance;
+        }
+        return createOrLoadModel(modelUri);
+    }
+
+    private ModelInstance createOrLoadModel(URI modelUri) {
+        Resource resource;
+        if (modelUri.isFile() || modelUri.isPlatform()) {
+            resource = getOrCreateResource(modelsResourceSet, modelUri);
+        } else {
+            resource = loadOrCreateResource(modelsResourceSet, modelUri);
+        }
+        ModelInstance modelInstance = new ModelInstance(resource);
+        modelInstances.put(modelUri, modelInstance);
+        registerRecorder(modelInstance);
+        return modelInstance;
+    }
+
+    private void registerRecorder(ModelInstance modelInstance) {
+        // Only monitor modifiable models (file / platform URIs, not pathmap URIs)
+        if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
+            changeRecorder.addToRecording(modelInstance.getResource());
+            if (isRecording && !changeRecorder.isRecording()) {
+                changeRecorder.beginRecording();
             }
-            modelUris.forEach(uri -> loadOrCreateResource(modelsResourceSet, uri));
-            uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
-            modelUris.forEach(this::createOrLoadModel);
         }
+    }
 
-        @Override
-        public EditableCorrespondenceModelView<Correspondence> getCorrespondenceModel () {
-            return CorrespondenceModelViewFactory.createEditableCorrespondenceModelView(
-                    correspondenceModel);
+    @Override
+    public void persistAsRoot(EObject rootObject, URI uri) {
+        getCreateOrLoadModel(uri).addRoot(rootObject);
+    }
+
+    @Override
+    public void saveOrDeleteModels() {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(InfoMessages.DEBUG_SAVING_ALL_MODELS, fileSystemLayout);
         }
-
-        @Override
-        public ModelInstance getModel (URI modelUri){
-            return modelInstances.get(modelUri);
-        }
-
-        @Override
-        public UuidResolver getUuidResolver () {
-            return uuidResolver;
-        }
-
-        private ModelInstance getCreateOrLoadModelUnlessLoading (URI modelUri){
-            if (isLoading) {
-                return null;
-            }
-            return getCreateOrLoadModel(modelUri);
-        }
-
-        private ModelInstance getCreateOrLoadModel (URI modelUri){
-            ModelInstance instance = getModel(modelUri);
-            if (instance != null) {
-                return instance;
-            }
-            return createOrLoadModel(modelUri);
-        }
-
-        private ModelInstance createOrLoadModel (URI modelUri){
-            Resource resource;
-            if (modelUri.isFile() || modelUri.isPlatform()) {
-                resource = getOrCreateResource(modelsResourceSet, modelUri);
+        Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
+                modelInstances.entrySet().iterator();
+        while (modelInstancesIterator.hasNext()) {
+            ModelInstance modelInstance = modelInstancesIterator.next().getValue();
+            if (modelInstance.isEmpty()) {
+                modelInstance.delete();
+                modelInstancesIterator.remove();
             } else {
-                resource = loadOrCreateResource(modelsResourceSet, modelUri);
-            }
-            ModelInstance modelInstance = new ModelInstance(resource);
-            modelInstances.put(modelUri, modelInstance);
-            registerRecorder(modelInstance);
-            return modelInstance;
-        }
-
-        private void registerRecorder (ModelInstance modelInstance){
-            // Only monitor modifiable models (file / platform URIs, not pathmap URIs)
-            if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
-                changeRecorder.addToRecording(modelInstance.getResource());
-                if (isRecording && !changeRecorder.isRecording()) {
-                    changeRecorder.beginRecording();
-                }
+                modelInstance.save();
             }
         }
-
-        @Override
-        public void persistAsRoot (EObject rootObject, URI uri){
-            getCreateOrLoadModel(uri).addRoot(rootObject);
-        }
-
-        @Override
-        public void saveOrDeleteModels () {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(InfoMessages.DEBUG_SAVING_ALL_MODELS, fileSystemLayout);
-            }
-            Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
-                    modelInstances.entrySet().iterator();
-            while (modelInstancesIterator.hasNext()) {
-                ModelInstance modelInstance = modelInstancesIterator.next().getValue();
-                if (modelInstance.isEmpty()) {
-                    modelInstance.delete();
-                    modelInstancesIterator.remove();
-                } else {
-                    modelInstance.save();
-                }
-            }
-            correspondenceModel.save();
-            try {
-                writeModelsFile();
-                uuidResolver.storeAtUri(fileSystemLayout.getUuidsURI());
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-
-        @Override
-        public Iterable<TransactionalChange<EObject>> recordChanges (Runnable changeApplicator){
-            changeRecorder.beginRecording();
-            isRecording = true;
-            LOGGER.debug(InfoMessages.DEBUG_START_RECORDING_VIRTUAL_MODEL);
-            changeApplicator.run();
-            LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
-            isRecording = false;
-            changeRecorder.endRecording();
-            TransactionalChange<EObject> change = changeRecorder.getChange();
-            changeResolver.assignIds(change);
-            return change.containsConcreteChange() ? List.of(change) : List.of();
-        }
-
-        @Override
-        public VitruviusChange<EObject> applyChange (VitruviusChange < Uuid > change) {
-            return changeResolver.resolveAndApply(change);
-        }
-
-        @Override
-        public URI getMetadataModelURI (String...metadataKey){
-            return fileSystemLayout.getConsistencyMetadataModelURI(metadataKey);
-        }
-
-        @Override
-        public Resource getModelResource (URI uri){
-            return getCreateOrLoadModel(uri).getResource();
-        }
-
-        @Override
-        public Collection<Resource> getModelResources () {
-            return modelsResourceSet.getResources();
-        }
-
-        @Override
-        public void close () {
-            changeRecorder.close();
-            modelsResourceSet.getResources().forEach(Resource::unload);
-            modelsResourceSet.getResources().clear();
-            uuidResolver = null;
+        correspondenceModel.save();
+        try {
+            writeModelsFile();
+            uuidResolver.storeAtUri(fileSystemLayout.getUuidsURI());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
         }
     }
+
+    @Override
+    public Iterable<TransactionalChange<EObject>> recordChanges(Runnable changeApplicator) {
+        changeRecorder.beginRecording();
+        isRecording = true;
+        LOGGER.debug(InfoMessages.DEBUG_START_RECORDING_VIRTUAL_MODEL);
+        changeApplicator.run();
+        LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
+        isRecording = false;
+        changeRecorder.endRecording();
+        TransactionalChange<EObject> change = changeRecorder.getChange();
+        changeResolver.assignIds(change);
+        return change.containsConcreteChange() ? List.of(change) : List.of();
+    }
+
+    @Override
+    public VitruviusChange<EObject> applyChange(VitruviusChange<Uuid> change) {
+        return changeResolver.resolveAndApply(change);
+    }
+
+    @Override
+    public URI getMetadataModelURI(String... metadataKey) {
+        return fileSystemLayout.getConsistencyMetadataModelURI(metadataKey);
+    }
+
+    @Override
+    public Resource getModelResource(URI uri) {
+        return getCreateOrLoadModel(uri).getResource();
+    }
+
+    @Override
+    public Collection<Resource> getModelResources() {
+        return modelsResourceSet.getResources();
+    }
+
+    @Override
+    public void close() {
+        changeRecorder.close();
+        modelsResourceSet.getResources().forEach(Resource::unload);
+        modelsResourceSet.getResources().clear();
+        uuidResolver = null;
+    }
+}
