@@ -56,6 +56,7 @@ public class BranchManager {
         checkNotNull(name, "Branch name must not be null");
         checkNotNull(fromBranch, "Source branch must not be null");
         validateBranchName(name);
+        LOGGER.debug("createBranch called: name='{}', fromBranch='{}'", name, fromBranch);
 
         // handling .git directory
         try (var git = Git.open(repoRoot.toFile())) {
@@ -63,6 +64,7 @@ public class BranchManager {
             var repo = git.getRepository();
             var sourceRef = repo.findRef("refs/heads/" + fromBranch);
             if (sourceRef == null) {
+                LOGGER.debug("Source branch not found: '{}'", fromBranch);
                 throw new BranchOperationException("Source branch does not exist: " + fromBranch);
             }
 
@@ -70,6 +72,7 @@ public class BranchManager {
             // equivalent to git branch <name> <fromBranch> or git branch <name> <commit-hash>
             // todo: DOKU sourceRef (main, HEAD,..) getObjectId() returns commit id ref points to, getName returns commit hash as string
             git.branchCreate().setName(name).setStartPoint(sourceRef.getObjectId().getName()).call();
+            LOGGER.debug("Git branch created: name='{}', startPoint='{}'", name, sourceRef.getObjectId().getName());
 
             // resolve the new branch's commit SHA for the uid
             var newRef = repo.findRef("refs/heads/" + name);
