@@ -16,6 +16,11 @@ public interface ModelRepository extends ChangeRecordingModelRepository {
   /** Loads existing models from the file system into the repository. */
   void loadExistingModels();
 
+  /** Reloads all models from the file system into the repository
+   * It will unload currently loaded models and reload from disk to reflect the current state of the working dir
+   */
+  void reload();
+
   /** Saves or deletes models in the repository based on their state. */
   void saveOrDeleteModels();
 
