@@ -1,26 +1,38 @@
 #!/bin/bash
 # Vitruvius Post-Checkout Hook
-# This script is called by Git after every branch switch
+# This script is called automatically by Git after every branch switch.
+# Its purpose is to create a trigger file so that the VSUM can reload models
+# when a branch change happens, even if the developer uses command-line Git.
 
-# Git provides these arguments:
-PREV_HEAD=$1
-NEW_HEAD=$2
-BRANCH_SWITCH=$3
+# Git passes three arguments to post-checkout hooks:
+PREV_HEAD=$1       # The previous commit hash (before checkout)
+NEW_HEAD=$2        # The new commit hash (after checkout)
+BRANCH_SWITCH=$3   # 1 if the checkout changed branches, 0 if just files
 
-# Only trigger reload for actual branch switches (not file checkouts)
+# Only trigger reload when switching branches, not when checking out files / commits
 if [ "$BRANCH_SWITCH" = "1" ]; then
-    # Get the repository root (where .git directory is)
+    # Get the absolute path of the Git repository root
+    # 'git rev-parse --show-toplevel' returns the path to the top-level directory
     REPO_ROOT=$(git rev-parse --show-toplevel)
-    
-    # Create the reload trigger file
+
+    # Define where the trigger file will be located
+    # .vitruvius is a hidden folder we use for VSUM metadata
     TRIGGER_DIR="$REPO_ROOT/.vitruvius"
     TRIGGER_FILE="$TRIGGER_DIR/reload-trigger"
-    
-    # Create directory if needed
+
+    # Create the directory if it doesn't already exist
     mkdir -p "$TRIGGER_DIR"
-    
-    # Create trigger file with timestamp
+
+    # Write a simple trigger file with the current timestamp
+    # This is what the VSUM watcher will look for
     echo "Reload requested at $(date)" > "$TRIGGER_FILE"
-    
+
+    # print a message to the terminal to show that the hook ran
     echo "Vitruvius: Branch switch detected, reload triggered"
 fi
+
+
+# TODO: if time permits -> also trigger reload for detached HEAD checkouts.
+# git checkout <commit-sha>
+# if [ "$BRANCH_SWITCH" = "1" ] || [ "$2" != "$1" ]; then
+
