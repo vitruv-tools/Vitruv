@@ -10,14 +10,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class BranchMetadata {
     private static final Logger LOGGER = LogManager.getLogger(BranchMetadata.class);
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
     private final String name;
     private final String uid;
     private BranchState state;
@@ -110,8 +108,8 @@ public class BranchMetadata {
         entries.put("parent", parent);
         entries.put("createdAt", createdAt.format(TIMESTAMP_FORMAT));
         entries.put("updatedAt", updatedAt.format(TIMESTAMP_FORMAT));
-
         var lines = entries.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).toList();
+        //write each entry of lines list as separate line
         Files.write(path, lines);
         LOGGER.debug("Wrote branch metadata to {}", path);
     }
@@ -129,19 +127,17 @@ public class BranchMetadata {
         var lines = Files.readAllLines(path);
         Map<String, String> entries = new LinkedHashMap<>();
         for (var line : lines) {
-            var idx = line.indexOf('=');
-            if (idx > 0) {
-                entries.put(line.substring(0, idx), line.substring(idx + 1));
+            var separatorIndex = line.indexOf('=');
+            if (separatorIndex > 0) {
+                entries.put(line.substring(0, separatorIndex), line.substring(separatorIndex + 1));
             }
         }
-
         String name = requireEntry(entries, "name", path);
         String uid = requireEntry(entries, "uid", path);
         BranchState state = BranchState.valueOf(requireEntry(entries, "state", path));
         String parent = requireEntry(entries, "parent", path);
         LocalDateTime createdAt = LocalDateTime.parse(requireEntry(entries, "createdAt", path), TIMESTAMP_FORMAT);
         LocalDateTime updatedAt = LocalDateTime.parse(requireEntry(entries, "updatedAt", path), TIMESTAMP_FORMAT);
-
         LOGGER.debug("Read branch metadata from {}", path);
         return new BranchMetadata(name, uid, state, parent, createdAt, updatedAt);
     }
@@ -153,5 +149,4 @@ public class BranchMetadata {
         }
         return value;
     }
-
 }

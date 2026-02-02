@@ -59,21 +59,21 @@ public class BranchManager {
 
         // handling .git directory
         try (var git = Git.open(repoRoot.toFile())) {
-            // resolve the source branch
+            // resolve the source branch git open
             var repo = git.getRepository();
+            //find source branch reference git show-ref refs/heads/<frombranch>
             var sourceRef = repo.findRef("refs/heads/" + fromBranch);
             if (sourceRef == null) {
                 LOGGER.debug("Source branch not found: '{}'", fromBranch);
                 throw new BranchOperationException("Source branch does not exist: " + fromBranch);
             }
-
             // create a new branch that points to the same commit as the source branch
             // equivalent to git branch <name> <fromBranch> or git branch <name> <commit-hash>
             // todo: DOKU sourceRef (main, HEAD,..) getObjectId() returns commit id ref points to, getName returns commit hash as string
             git.branchCreate().setName(name).setStartPoint(sourceRef.getObjectId().getName()).call();
             LOGGER.debug("Git branch created: name='{}', startPoint='{}'", name, sourceRef.getObjectId().getName());
 
-            // resolve the new branch's commit SHA for the uid
+            // get ref to the new branch
             var newRef = repo.findRef("refs/heads/" + name);
             var uid = newRef.getObjectId().getName().substring(0, 7);
 
@@ -81,7 +81,6 @@ public class BranchManager {
             var now = LocalDateTime.now();
             var metadata = new BranchMetadata(name, uid, BranchState.ACTIVE, fromBranch, now, now);
             metadata.writeTo(metadataPath(name));
-
             LOGGER.info("Created branch '{}' from '{}'", name, fromBranch);
             return metadata;
 
@@ -89,8 +88,7 @@ public class BranchManager {
             throw new BranchOperationException("Failed to create branch '" + name + "'", e);
 
         } catch (IOException e) {
-            throw new BranchOperationException(
-                    "Failed to write metadata for branch '" + name + "'", e);
+            throw new BranchOperationException("Failed to write metadata for branch '" + name + "'", e);
         }
     }
 
@@ -98,25 +96,25 @@ public class BranchManager {
      * Switches the working directory to the specified branch. The branch can be identified either by
      * its name or by a prefix of its unique identifier (uid).
      *
-     * @param nameOrUid The branch name or a uid prefix to switch to.
+     * @param nameOrUid The branch name or an uid prefix to switch to.
      * @throws BranchOperationException If the branch cannot be found or the checkout fails.
      */
     public void switchBranch(String nameOrUid) throws BranchOperationException {
         checkNotNull(nameOrUid, "Branch identifier must not be null");
-
-        // Resolve name-or-UID to a concrete branch name
         var resolvedName = resolveBranchIdentifier(nameOrUid);
 
         String oldBranch = null;
         try (var git = Git.open(repoRoot.toFile())) {
             var repo = git.getRepository();
-            var head = repo.findRef("HEAD");
+            var head = repo.findRef("HEAD"); // get cirrent branch name git symbolic-ref --short HEAD
             if (head != null && head.isSymbolic()) {
                 oldBranch = Repository.shortenRefName(head.getTarget().getName());
             }
+            //checkout the new branch git checkout <targetbranch>
             git.checkout().setName(resolvedName).call();
             LOGGER.info("Switched to branch '{}'", resolvedName);
 
+            //trigger post checkout actions
             if (postCheckoutHandler != null && oldBranch != null) {
                 LOGGER.debug("Invoking post-checkout handler for branch switch");
                 postCheckoutHandler.onBranchSwitch(oldBranch, resolvedName);
@@ -124,8 +122,10 @@ public class BranchManager {
 
         } catch (GitAPIException e) {
             throw new BranchOperationException("Failed to switch to branch '" + resolvedName + "'", e);
+
         } catch (IOException e) {
             throw new BranchOperationException("Failed to open repository while switching to branch '" + resolvedName + "'", e);
+
         }
     }
 
@@ -142,15 +142,14 @@ public class BranchManager {
         checkNotNull(name, "Branch name must not be null");
 
         try (var git = Git.open(repoRoot.toFile())) {
-            // prevent deletion of the currently checked-out branch
             var repo = git.getRepository();
-            // Prevent deletion of the currently checked-out branch
+            // check currently checked-out branch to avoid accidentally deleting current branch
             var head = repo.findRef("HEAD");
             if (head != null && head.getTarget() != null && head.getTarget().getName().equals("refs/heads/" + name)) {
                 throw new BranchOperationException("Cannot delete the currently checked-out branch: " + name);
             }
 
-            // delete the branch
+            // delete the branch git branch -D <branchname>
             git.branchDelete().setBranchNames(name).setForce(true).call();
 
             // Update branch lifecycle state to DELETED
@@ -181,16 +180,15 @@ public class BranchManager {
      */
     public List<BranchMetadata> listBranches() throws BranchOperationException {
         try (var git = Git.open(repoRoot.toFile())) {
+            //list all local branches git branch --list
             var refs = git.branchList().call();
             var result = new ArrayList<BranchMetadata>();
 
             for (var ref : refs) {
-                // Strip the "refs/heads/" prefix to get the logical branch name
                 var name = ref.getName().replace("refs/heads/", "");
                 var metadataFile = metadataPath(name);
 
                 if (Files.exists(metadataFile)) {
-                    // Branch managed by Vitruvius — read persisted metadata
                     result.add(BranchMetadata.readFrom(metadataFile));
                 } else {
                     // Branch exists in Git but not in Vitruvius metadata. synthesize metadata to ensure consistent handling.
@@ -205,6 +203,7 @@ public class BranchManager {
 
         } catch (GitAPIException e) {
             throw new BranchOperationException("Failed to list branches", e);
+
         } catch (IOException e) {
             throw new BranchOperationException("Failed to read branch metadata while listing", e);
 
@@ -221,12 +220,9 @@ public class BranchManager {
      */
     public List<BranchMetadata> findBranches(String pattern) throws BranchOperationException {
         checkNotNull(pattern, "Search pattern must not be null");
-
         var matcher = repoRoot.getFileSystem().getPathMatcher("glob:" + pattern);
         var allBranches = listBranches();
-
         var matches = allBranches.stream().filter(m -> matcher.matches(Path.of(m.getName()))).collect(Collectors.toList());
-
         LOGGER.debug("Found {} branch(es) matching pattern '{}'", matches.size(), pattern);
         return matches;
     }
@@ -243,23 +239,19 @@ public class BranchManager {
      */
     public String resolveBranchIdentifier(String nameOrUid) throws BranchOperationException {
         checkNotNull(nameOrUid, "Branch identifier must not be null");
-
         try (var git = Git.open(repoRoot.toFile())) {
             var repo = git.getRepository();
-
             // exact branch name match
             var exactRef = repo.findRef("refs/heads/" + nameOrUid);
             if (exactRef != null) {
                 LOGGER.debug("Resolved identifier '{}' to branch name directly", nameOrUid);
                 return nameOrUid;
             }
-
             // resolve via UID prefix using metadata files
             var metadataDir = repoRoot.resolve(METADATA_DIR);
             if (!Files.isDirectory(metadataDir)) {
                 throw new BranchOperationException("No branch matches identifier: " + nameOrUid);
             }
-
             var matches = Files.list(metadataDir)
                     .filter(p -> p.toString().endsWith(".metadata"))
                     .map(p -> {
@@ -271,20 +263,20 @@ public class BranchManager {
                         }
                     })
                     .filter(m -> m != null && m.getUid().startsWith(nameOrUid)).toList();
-
             if (matches.size() == 1) {
                 LOGGER.debug("Resolved uid prefix '{}' to branch '{}'", nameOrUid, matches.get(0).getName());
                 return matches.get(0).getName();
             } else if (matches.isEmpty()) {
                 throw new BranchOperationException("No branch matches identifier: " + nameOrUid);
             } else {
-                // Multiple UID matches → ambiguous
+                //todo: enable returning all branches that match the name pattern
                 var ambiguous = matches.stream().map(BranchMetadata::getName).collect(Collectors.joining(", "));
                 throw new BranchOperationException("Ambiguous identifier '" + nameOrUid + "' matches multiple branches: " + ambiguous);
             }
 
         } catch (IOException e) {
             throw new BranchOperationException("Failed to read metadata while resolving identifier '" + nameOrUid + "'", e);
+
         }
     }
 
@@ -302,16 +294,12 @@ public class BranchManager {
         if (!Files.isDirectory(metadataDir)) {
             return new LinkedHashMap<>();
         }
-
         try {
             var topology = new LinkedHashMap<String, List<String>>();
-
             try (var stream = Files.list(metadataDir)) {
                 var metadataFiles = stream.filter(p -> p.toString().endsWith(".metadata")).toList();
-
                 for (var file : metadataFiles) {
                     var metadata = BranchMetadata.readFrom(file);
-                    // Skip deleted branches — they're no longer part of the active topology
                     if (metadata.getState() == BranchState.DELETED) {
                         continue;
                     }
@@ -323,9 +311,9 @@ public class BranchManager {
 
         } catch (IOException e) {
             throw new BranchOperationException("Failed to read metadata while building topology", e);
+
         }
     }
-
 
     /**
      * Validates a proposed branch name. The name must not be empty, must not conflict with an
@@ -350,7 +338,6 @@ public class BranchManager {
         if (name.chars().anyMatch(c -> " ~^:?*[\\".indexOf(c) >= 0)) {
             throw new BranchOperationException("Branch name contains illegal characters: " + name);
         }
-
         // Check for conflict with an existing branch
         try (var git = Git.open(repoRoot.toFile())) {
             var repo = git.getRepository();
@@ -378,24 +365,18 @@ public class BranchManager {
         try (var git = Git.open(repoRoot.toFile())) {
             var repo = git.getRepository();
             if (repo.findRef("refs/heads/" + name) == null) {
-                // Branch doesn't exist in Git — check if it was deleted (metadata might still exist)
                 var metadataFile = metadataPath(name);
                 if (Files.exists(metadataFile)) {
                     return BranchMetadata.readFrom(metadataFile).getState();
                 }
                 throw new BranchOperationException("Branch does not exist: " + name);
             }
-
-            // Branch exists in Git — read state from metadata if available
             var metadataFile = metadataPath(name);
             if (Files.exists(metadataFile)) {
                 return BranchMetadata.readFrom(metadataFile).getState();
             }
-
-            // No metadata file — default to ACTIVE
             LOGGER.debug("Branch '{}' has no metadata, defaulting to ACTIVE", name);
             return BranchState.ACTIVE;
-
         } catch (IOException e) {
             throw new BranchOperationException("Failed to read metadata for branch '" + name + "'", e);
         }

@@ -75,14 +75,12 @@ class ResourceRepositoryImpl implements ModelRepository {
     @Override
     public void reload() {
         LOGGER.info("Reloading models from file system");
-
         // Stop recording changes during reload
         boolean wasRecording = isRecording;
         if (isRecording) {
             changeRecorder.endRecording();
             isRecording = false;
         }
-
         // Remove all current resources from change recorder tracking BEFORE unloading
         LOGGER.debug("Removing {} models from change recorder", modelsResourceSet.getResources().size());
         // Make a copy of the list since we'll be modifying it
@@ -92,24 +90,19 @@ class ResourceRepositoryImpl implements ModelRepository {
                 changeRecorder.removeFromRecording(resource);
             }
         }
-
         // Unload all existing resources
         LOGGER.debug("Unloading models");
         modelsResourceSet.getResources().forEach(Resource::unload);
         modelsResourceSet.getResources().clear();
         modelInstances.clear();
-
         // Reset UUID resolver
         LOGGER.debug("Resetting UUID resolver");
         uuidResolver = UuidResolver.create(modelsResourceSet);
-
         // Recreate the change resolver with new UUID resolver
         changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver);
-
         // Reload from disk
         LOGGER.debug("Loading models from disk");
         loadExistingModels();
-
         // Resume recording if it was active before
         if (wasRecording) {
             changeRecorder.beginRecording();

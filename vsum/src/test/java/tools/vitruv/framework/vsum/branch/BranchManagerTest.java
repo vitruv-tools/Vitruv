@@ -28,7 +28,6 @@ class BranchManagerTest {
      */
     private static Git initRepo(Path repoDir) throws Exception {
         var git = Git.init().setDirectory(repoDir.toFile()).setInitialBranch("main").call();
-        // Git needs at least one commit before branches can be created
         var file = repoDir.resolve("init.txt");
         Files.writeString(file, "initial commit");
         git.add().addFilepattern("init.txt").call();
@@ -130,19 +129,13 @@ class BranchManagerTest {
         @Test
         @DisplayName("switch branch with handler triggers post-checkout")
         void switchWithHandlerTriggersPostCheckout(@TempDir Path repoDir) throws Exception {
-            try (var git = initRepo(repoDir)) {
+            try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
                 manager.createBranch("feature-test", "main");
-
-                // Set up a mock handler to verify it gets called
                 var virtualModel = mock(VirtualModel.class);
                 var handler = new PostCheckoutHandler(virtualModel);
                 manager.setPostCheckoutHandler(handler);
-
-                // Switch branches
                 manager.switchBranch("feature-test");
-
-                // Verify the handler was triggered and called reload
                 verify(virtualModel).reload();
             }
         }
@@ -183,7 +176,6 @@ class BranchManagerTest {
         void failOnDeleteCurrentBranch(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                // We're on main — trying to delete it should fail
                 assertThrows(BranchOperationException.class, () -> manager.deleteBranch("main"));
             }
         }
@@ -213,12 +205,10 @@ class BranchManagerTest {
         @DisplayName("branch created outside BranchManager is listed with synthesized metadata")
         void listIncludesExternalBranch(@TempDir Path repoDir) throws Exception {
             try (var git = initRepo(repoDir)) {
-                // Create a branch directly via JGit, bypassing BranchManager
                 git.branchCreate().setName("external-branch").call();
                 var manager = new BranchManager(repoDir);
                 var branches = manager.listBranches();
                 var external = branches.stream().filter(m -> m.getName().equals("external-branch")).findFirst().orElseThrow();
-
                 assertEquals(BranchState.ACTIVE, external.getState());
                 assertEquals("unknown", external.getParent());
                 assertEquals(7, external.getUid().length());
@@ -280,7 +270,6 @@ class BranchManagerTest {
                 manager.createBranch("v10", "main");
                 var matches = manager.findBranches("v?");
                 var names = matches.stream().map(BranchMetadata::getName).toList();
-                // v? matches exactly one character after v — so v1 and v2, not v10
                 assertEquals(2, matches.size());
                 assertTrue(names.contains("v1"));
                 assertTrue(names.contains("v2"));
@@ -319,11 +308,8 @@ class BranchManagerTest {
         void nameOverridesUid(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                // Create a branch whose name looks like an uid
                 var metadata = manager.createBranch("branching-test", "main");
-                // Now create a branch literally named after that uid
                 manager.createBranch(metadata.getUid(), "main");
-                // Resolving the uid string should return it as a name match, not search for uid prefix
                 var resolved = manager.resolveBranchIdentifier(metadata.getUid());
                 assertEquals(metadata.getUid(), resolved);
             }
@@ -351,11 +337,9 @@ class BranchManagerTest {
                 manager.createBranch("branching-test", "main");
                 manager.createBranch("feature-auth", "branching-test");
                 var topology = manager.getBranchTopology();
-                // main -> [branching-test]
                 assertTrue(topology.containsKey("main"));
                 assertEquals(1, topology.get("main").size());
                 assertTrue(topology.get("main").contains("branching-test"));
-                // branching-test -> [feature-auth]
                 assertTrue(topology.containsKey("branching-test"));
                 assertEquals(1, topology.get("branching-test").size());
                 assertTrue(topology.get("branching-test").contains("feature-auth"));
@@ -387,7 +371,6 @@ class BranchManagerTest {
                 manager.createBranch("feature-signup", "main");
                 manager.deleteBranch("branching-test");
                 var topology = manager.getBranchTopology();
-                // Only feature-signup should remain under main
                 assertEquals(1, topology.get("main").size());
                 assertTrue(topology.get("main").contains("feature-signup"));
             }
@@ -398,7 +381,6 @@ class BranchManagerTest {
         void emptyTopology(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                // No branches created through BranchManager — no metadata dir exists
                 var topology = manager.getBranchTopology();
                 assertTrue(topology.isEmpty());
             }
@@ -414,7 +396,6 @@ class BranchManagerTest {
         void validName(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                // Should not throw
                 manager.validateBranchName("branching-test");
             }
         }
@@ -462,7 +443,6 @@ class BranchManagerTest {
         void failOnExistingBranch(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                // "main" already exists from initRepo
                 assertThrows(BranchOperationException.class, () -> manager.validateBranchName("main"));
             }
         }
