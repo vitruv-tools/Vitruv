@@ -1,0 +1,26 @@
+#!/bin/bash
+# Vitruvius Post-Checkout Hook
+# This script is called by Git after every branch switch
+
+# Git provides these arguments:
+PREV_HEAD=$1
+NEW_HEAD=$2
+BRANCH_SWITCH=$3
+
+# Only trigger reload for actual branch switches (not file checkouts)
+if [ "$BRANCH_SWITCH" = "1" ]; then
+    # Get the repository root (where .git directory is)
+    REPO_ROOT=$(git rev-parse --show-toplevel)
+    
+    # Create the reload trigger file
+    TRIGGER_DIR="$REPO_ROOT/.vitruvius"
+    TRIGGER_FILE="$TRIGGER_DIR/reload-trigger"
+    
+    # Create directory if needed
+    mkdir -p "$TRIGGER_DIR"
+    
+    # Create trigger file with timestamp
+    echo "Reload requested at $(date)" > "$TRIGGER_FILE"
+    
+    echo "Vitruvius: Branch switch detected, reload triggered"
+fi
