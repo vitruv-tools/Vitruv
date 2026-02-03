@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -343,6 +342,7 @@ class BranchManagerTest {
                 assertTrue(topology.containsKey("branching-test"));
                 assertEquals(1, topology.get("branching-test").size());
                 assertTrue(topology.get("branching-test").contains("feature-auth"));
+
             }
         }
 

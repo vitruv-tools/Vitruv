@@ -307,6 +307,8 @@ public class BranchManager {
                 }
             }
             LOGGER.debug("Built branch topology with {} parent(s)", topology.size());
+            LOGGER.debug("Built branch topology with {} parent(s)", topology);
+
             return topology;
 
         } catch (IOException e) {
