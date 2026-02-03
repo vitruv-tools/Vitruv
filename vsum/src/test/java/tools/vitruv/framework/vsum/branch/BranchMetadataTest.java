@@ -29,7 +29,7 @@ class BranchMetadataTest {
             assertEquals(BranchState.ACTIVE, metadata.getState());
             assertEquals("main", metadata.getParent());
             assertEquals(now, metadata.getCreatedAt());
-            assertEquals(now, metadata.getUpdatedAt());
+            assertEquals(now, metadata.getLastModified());
         }
 
         @Test
@@ -68,9 +68,9 @@ class BranchMetadataTest {
             metadata.setState(BranchState.DELETED);
             var afterUpdate = LocalDateTime.now();
             assertEquals(BranchState.DELETED, metadata.getState());
-            assertTrue(metadata.getUpdatedAt().isAfter(createdAt), "Updated timestamp should be after creation timestamp");
-            assertFalse(metadata.getUpdatedAt().isBefore(beforeUpdate), "Updated timestamp should be at or after setState call");
-            assertFalse(metadata.getUpdatedAt().isAfter(afterUpdate), "Updated timestamp should be at or before setState return");
+            assertTrue(metadata.getLastModified().isAfter(createdAt), "Updated timestamp should be after creation timestamp");
+            assertFalse(metadata.getLastModified().isBefore(beforeUpdate), "Updated timestamp should be at or after setState call");
+            assertFalse(metadata.getLastModified().isAfter(afterUpdate), "Updated timestamp should be at or before setState return");
         }
     }
 
@@ -107,7 +107,7 @@ class BranchMetadataTest {
             assertEquals(original.getState(), loaded.getState());
             assertEquals(original.getParent(), loaded.getParent());
             assertEquals(original.getCreatedAt(), loaded.getCreatedAt());
-            assertEquals(original.getUpdatedAt(), loaded.getUpdatedAt());
+            assertEquals(original.getLastModified(), loaded.getLastModified());
         }
 
         @Test
