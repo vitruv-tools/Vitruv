@@ -21,7 +21,7 @@ public class BranchMetadata {
     private BranchState state;
     private final String parent;
     private final LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime lastModified;
 
     /**
      * Creates a new {@link BranchMetadata} instance.
@@ -31,15 +31,15 @@ public class BranchMetadata {
      * @param state     The current lifecycle state of the branch.
      * @param parent    The name of the branch from which this branch was created.
      * @param createdAt The creation timestamp of the branch.
-     * @param updatedAt The last updated timestamp of the branch.
+     * @param lastModified The last updated timestamp of the branch.
      */
-    public BranchMetadata(String name, String uid, BranchState state, String parent, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public BranchMetadata(String name, String uid, BranchState state, String parent, LocalDateTime createdAt, LocalDateTime lastModified) {
         this.name = checkNotNull(name, "Branch name must not be null");
         this.uid = checkNotNull(uid, "Branch uid must not be null");
         this.state = checkNotNull(state, "Branch state must not be null");
         this.parent = checkNotNull(parent, "Branch parent must not be null");
         this.createdAt = checkNotNull(createdAt, "Branch creation time must not be null");
-        this.updatedAt = checkNotNull(updatedAt, "Branch update time must not be null");
+        this.lastModified = checkNotNull(lastModified, "Branch update time must not be null");
     }
 
     /**
@@ -68,7 +68,7 @@ public class BranchMetadata {
      */
     public void setState(BranchState state) {
         this.state = checkNotNull(state, "Branch state must not be null");
-        this.updatedAt = LocalDateTime.now();
+        this.lastModified = LocalDateTime.now();
     }
 
     /**
@@ -88,8 +88,8 @@ public class BranchMetadata {
     /**
      * Returns the timestamp of the last update to this ranch
      */
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public LocalDateTime getLastModified() {
+        return lastModified;
     }
 
     /**
@@ -107,7 +107,7 @@ public class BranchMetadata {
         entries.put("state", state.name());
         entries.put("parent", parent);
         entries.put("createdAt", createdAt.format(TIMESTAMP_FORMAT));
-        entries.put("updatedAt", updatedAt.format(TIMESTAMP_FORMAT));
+        entries.put("updatedAt", lastModified.format(TIMESTAMP_FORMAT));
         var lines = entries.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).toList();
         //write each entry of lines list as separate line
         Files.write(path, lines);

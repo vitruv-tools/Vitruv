@@ -1,0 +1,31 @@
+Setup (tbd)
+- GitHookInstaller copies bash script from resources/git-hooks to .git/hooks
+- VsumReloadWatcher
+
+Testablauf:
+1.Step: dev uses git command
+dev in terminal
+    cd home/user/myProject
+    git checkout featureX
+git executes
+    checkout().call branch
+    run .git/hooks/post-checkout
+2.Step: post-checkout hook (bash script) runs
+    #!/bin/bash
+    REPO_ROOT=$(git rev-parse --show-toplevel)
+    TRIGGER_FILE="$REPO_ROOT/.vitruvius/reload-trigger"
+
+    # Create trigger file
+    echo "Reload requested at: $(date)" > "$TRIGGER_FILE"
+
+    result:
+    file created at .vitruvius/reload-trigger
+3.Step: VsumReloadWatcher detects trigger
+VsumReloadWatcher
+    detects if .vitruvius/reload-trigger file exists
+    call postCheckoutHandler.onBranchSwitch()
+4.Step; reload vsum
+PostCheckoutHandler:
+    call virtualModel.reload()
+VirtualModel
+    reloads vsum by unloading models from memory and loading new models

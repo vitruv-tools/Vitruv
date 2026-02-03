@@ -1,0 +1,10 @@
+.vitruvius/branches/name.metadata
+name=feature-login
+uid=a3f2c1
+state=ACTIVE
+parent=main
+createdAt=2026-01-31T10:00:00
+lastModified=2026-01-31T10:00:00
+
+.vitruvius/reload-trigger
+Reload requested at: now()

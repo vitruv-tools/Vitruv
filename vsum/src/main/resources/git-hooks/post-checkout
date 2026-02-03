@@ -20,7 +20,7 @@ if [ "$BRANCH_SWITCH" = "1" ]; then
     TRIGGER_DIR="$REPO_ROOT/.vitruvius"
     TRIGGER_FILE="$TRIGGER_DIR/reload-trigger"
 
-    # Create the directory if it doesn't already exist
+    # Create the directory if it does not already exist
     mkdir -p "$TRIGGER_DIR"
 
     # Write a simple trigger file with the current timestamp
@@ -32,7 +32,7 @@ if [ "$BRANCH_SWITCH" = "1" ]; then
 fi
 
 
-# TODO: if time permits -> also trigger reload for detached HEAD checkouts.
+# TODO: consider also trigger reload for detached HEAD checkouts.
 # git checkout <commit-sha>
 # if [ "$BRANCH_SWITCH" = "1" ] || [ "$2" != "$1" ]; then
 
