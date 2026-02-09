@@ -8,7 +8,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
+import tools.vitruv.framework.vsum.branch.data.BranchState;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
+import tools.vitruv.framework.vsum.branch.handler.PostCheckoutHandler;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

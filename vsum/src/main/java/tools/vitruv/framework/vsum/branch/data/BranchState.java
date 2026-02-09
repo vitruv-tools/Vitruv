@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.branch;
+package tools.vitruv.framework.vsum.branch.data;
 
 
 /**

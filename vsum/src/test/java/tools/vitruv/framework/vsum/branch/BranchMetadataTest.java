@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
+import tools.vitruv.framework.vsum.branch.data.BranchState;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

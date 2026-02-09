@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
+import tools.vitruv.framework.vsum.branch.handler.PostCheckoutHandler;
 
 /** Tests for {@link PostCheckoutHandler}. */
 class PostCheckoutHandlerTest {

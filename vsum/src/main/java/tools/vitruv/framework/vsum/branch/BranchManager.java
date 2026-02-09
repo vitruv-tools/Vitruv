@@ -17,7 +17,10 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
+import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
+import tools.vitruv.framework.vsum.branch.data.BranchState;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
+import tools.vitruv.framework.vsum.branch.handler.PostCheckoutHandler;
 
 /**
  * Manages Git-based branches for the Vitruvius. All branch operations such as creation, switching, deletion,
