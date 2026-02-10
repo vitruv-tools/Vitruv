@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum.branch.util;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
@@ -16,38 +15,30 @@ import java.util.Map;
 /**
  * Manages validation result files that communicate V-SUM validation status.
  *
- * <p>Creates two files:
+ * <p>Creates two files per validation request:
  * <ul>
- *   <li><b>validation-result</b> - Human-readable text to show in terminal</li>
- *   <li><b>validation-result.json</b> - Machine-readable JSON for UI/API/future use</li>
+ *   <li><b>validation-result-{requestId}</b> - Human-readable text to show in terminal</li>
+ *   <li><b>validation-result-{requestId}.json</b> - Machine-readable JSON for UI/API/future use</li>
  * </ul>
+ *
+ * <p>Each validation request gets its own result files identified by request ID.
+ * This prevents concurrent commits from reading each other's validation results.
  *
  * <p>Workflow:
  * <ol>
  *   <li>VsumValidationWatcher validates VSUM</li>
- *   <li>Writes result files (text + JSON)</li>
- *   <li>Git pre-commit hook reads text file and displays to developer</li>
+ *   <li>Writes result files with request ID (text + JSON)</li>
+ *   <li>Git pre-commit hook reads its specific result file by request ID</li>
  *   <li>Hook allows/blocks commit based on validation status</li>
+ *   <li>Result files are cleaned up after reading</li>
  *   <li>todo: UI reads JSON file for structured display</li>
  * </ol>
  */
 public class ValidationResultFile {
     private static final Logger LOGGER = LogManager.getLogger(ValidationResultFile.class);
-    private static final String TEXT_RESULT_FILENAME = "validation-result";
-    private static final String JSON_RESULT_FILENAME = "validation-result.json";
-
-    /**
-     * -- GETTER --
-     *
-     */
-    @Getter
-    private final Path textResultPath;
-    /**
-     * -- GETTER --
-     *
-     */
-    @Getter
-    private final Path jsonResultPath;
+    private static final String TEXT_RESULT_PREFIX = "validation-result";
+    private static final String JSON_RESULT_SUFFIX = ".json";
+    private final Path vitruviusDir;
     private final Gson gson;
 
     /**
@@ -56,29 +47,44 @@ public class ValidationResultFile {
      * @param repositoryRoot The root directory of the Git repository
      */
     public ValidationResultFile(Path repositoryRoot) {
-        Path vitruviusDir = repositoryRoot.resolve(".vitruvius");
-        this.textResultPath = vitruviusDir.resolve(TEXT_RESULT_FILENAME);
-        this.jsonResultPath = vitruviusDir.resolve(JSON_RESULT_FILENAME);
+        this.vitruviusDir = repositoryRoot.resolve(".vitruvius");
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     /**
-     * Writes validation result in both text and JSON formats.
+     * Writes validation result in both text and JSON formats with request-specific filenames.
+     *
+     * <p>Result files are named with the request ID to prevent concurrent commits
+     * from reading each other's results.
+     *
+     * <p>Files created:
+     * <ul>
+     *   <li>{@code .vitruvius/validation-result-{requestId}}</li>
+     *   <li>{@code .vitruvius/validation-result-{requestId}.json}</li>
+     * </ul>
      *
      * @param result the validation result to write
+     * @param requestId the unique request identifier (from ValidationTriggerFile)
      * @throws IOException if files cannot be written
      */
-    public void writeResult(ValidationResult result) throws IOException {
-        Files.createDirectories(textResultPath.getParent());
-        writeTextResult(result);
-        writeJsonResult(result);
-        LOGGER.debug("Wrote validation result: valid={}, errors={}, warnings={}", result.isValid(), result.getErrors().size(), result.getWarnings().size());
+    public void writeResult(ValidationResult result, String requestId) throws IOException {
+        Files.createDirectories(vitruviusDir);
+
+        Path textResultPath = getTextResultPath(requestId);
+        Path jsonResultPath = getJsonResultPath(requestId);
+
+        writeTextResult(result, textResultPath);
+        writeJsonResult(result, jsonResultPath);
+
+        LOGGER.debug("Wrote validation result for requestId={}: valid={}, errors={}, warnings={}", requestId, result.isValid(), result.getErrors().size(), result.getWarnings().size());
     }
 
     /**
      * Writes human-readable text result for developers.
+     *
+     * <p> Now accepts explicit path parameter for request-specific files.
      */
-    private void writeTextResult(ValidationResult result) throws IOException {
+    private void writeTextResult(ValidationResult result, Path textResultPath) throws IOException {
         StringBuilder sb = new StringBuilder();
         // Header
         sb.append("\n");
@@ -121,41 +127,77 @@ public class ValidationResultFile {
             sb.append("Fix errors above before committing.\n");
             sb.append("\n");
         }
+
         Files.writeString(textResultPath, sb.toString());
     }
 
     /**
      * Writes machine-readable JSON result for UI/API.
+     *
+     * <p> Now accepts explicit path parameter for request-specific files.
      */
-    private void writeJsonResult(ValidationResult result) throws IOException {
+    private void writeJsonResult(ValidationResult result, Path jsonResultPath) throws IOException {
         Map<String, Object> data = new HashMap<>();
         data.put("valid", result.isValid());
         data.put("timestamp", LocalDateTime.now().toString());
         data.put("errors", result.getErrors());
         data.put("warnings", result.getWarnings());
+
         String json = gson.toJson(data);
         Files.writeString(jsonResultPath, json);
     }
 
     /**
-     * Reads validation result from JSON file.
+     * Reads validation result from request-specific JSON file.
      *
-     * <p>todo: Implement JSON parsing with proper error handling.
-     * For now, this method is not needed as only the Git hook reads the text file.
+     * <p> Reads result for a specific request ID.
      *
-     * @return the validation result
-     * @throws UnsupportedOperationException always (not yet implemented)
+     * @param requestId the unique request identifier
+     * @return the validation result, or null if file doesn't exist
+     * @throws IOException if file exists but cannot be read
      */
-    public ValidationResult readResult() {
-        throw new UnsupportedOperationException("Reading validation results not yet implemented. " + "Will be added in Iteration 2 with proper JSON parsing. " + "Git hooks read the text file directly.");
+    public ValidationResult readResult(String requestId) throws IOException {
+        Path jsonResultPath = getJsonResultPath(requestId);
+
+        if (!Files.exists(jsonResultPath)) {
+            return null;
+        }
+
+        String json = Files.readString(jsonResultPath);
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> data = gson.fromJson(json, Map.class);
+
+        boolean valid = (Boolean) data.get("valid");
+
+        @SuppressWarnings("unchecked")
+        var errors = (java.util.List<String>) data.get("errors");
+
+        @SuppressWarnings("unchecked")
+        var warnings = (java.util.List<String>) data.get("warnings");
+
+        if (valid) {
+            if (warnings != null && !warnings.isEmpty()) {
+                return ValidationResult.successWithWarnings(warnings);
+            }
+            return ValidationResult.success();
+        } else {
+            return ValidationResult.failure(errors != null ? errors : java.util.List.of());
+        }
     }
 
     /**
-     * Deletes both validation result files.
+     * Deletes both validation result files for a specific request.
      *
-     * @throws IOException if files cannot be deleted
+     * <p> Deletes request-specific files.
+     *
+     * @param requestId the unique request identifier
+     * @throws IOException if files exist but cannot be deleted
      */
-    public void deleteResult() throws IOException {
+    public void deleteResult(String requestId) throws IOException {
+        Path textResultPath = getTextResultPath(requestId);
+        Path jsonResultPath = getJsonResultPath(requestId);
+
         boolean textDeleted = false;
         boolean jsonDeleted = false;
 
@@ -170,17 +212,90 @@ public class ValidationResultFile {
         }
 
         if (textDeleted || jsonDeleted) {
-            LOGGER.debug("Deleted validation result files");
+            LOGGER.debug("Deleted validation result files for requestId={}", requestId);
         }
     }
 
     /**
-     * Checks if validation result files exist.
+     * Checks if validation result files exist for a specific request.
      *
-     * @return true if at least one result file exists
+     * <p> Checks for request-specific files.
+     *
+     * @param requestId the unique request identifier
+     * @return true if at least one result file exists for this request
      */
-    public boolean exists() {
-        return Files.exists(textResultPath) || Files.exists(jsonResultPath);
+    public boolean exists(String requestId) {
+        return Files.exists(getTextResultPath(requestId)) || Files.exists(getJsonResultPath(requestId));
     }
 
+    /**
+     * Gets the path for the text result file for a specific request.
+     *
+     * @param requestId the unique request identifier
+     * @return path to the text result file
+     */
+    public Path getTextResultPath(String requestId) {
+        return vitruviusDir.resolve(TEXT_RESULT_PREFIX + "-" + requestId);
+    }
+
+    /**
+     * Gets the path for the JSON result file for a specific request.
+     *
+     * @param requestId the unique request identifier
+     * @return path to the JSON result file
+     */
+    public Path getJsonResultPath(String requestId) {
+        return vitruviusDir.resolve(TEXT_RESULT_PREFIX + "-" + requestId + JSON_RESULT_SUFFIX);
+    }
+
+    /**
+     * DEPRECATED: Use {@link #writeResult(ValidationResult, String)} instead.
+     *
+     * <p>This method is kept for backward compatibility but will write to a file
+     * named "validation-result-legacy" which won't be read by the updated pre-commit hook.
+     *
+     * @param result the validation result to write
+     * @throws IOException if files cannot be written
+     * @deprecated Use writeResult(ValidationResult, String) with a request ID
+     */
+    @Deprecated
+    public void writeResult(ValidationResult result) throws IOException {
+        LOGGER.warn("Using deprecated writeResult() without request ID. Use writeResult(result, requestId) instead.");
+        writeResult(result, "legacy");
+    }
+
+    /**
+     * DEPRECATED: Use {@link #readResult(String)} instead.
+     *
+     * @return the validation result
+     * @throws UnsupportedOperationException always
+     * @deprecated Use readResult(String requestId) instead
+     */
+    @Deprecated
+    public ValidationResult readResult() {
+        throw new UnsupportedOperationException("Reading validation results without request ID is not supported. " + "Use readResult(String requestId) instead.");
+    }
+
+    /**
+     * DEPRECATED: Use {@link #deleteResult(String)} instead.
+     *
+     * @throws IOException if files cannot be deleted
+     * @deprecated Use deleteResult(String requestId) instead
+     */
+    @Deprecated
+    public void deleteResult() throws IOException {
+        LOGGER.warn("Using deprecated deleteResult() without request ID. Use deleteResult(requestId) instead.");
+        deleteResult("legacy");
+    }
+
+    /**
+     * DEPRECATED: Use {@link #exists(String)} instead.
+     *
+     * @return true if legacy result files exist
+     * @deprecated Use exists(String requestId) instead
+     */
+    @Deprecated
+    public boolean exists() {
+        return exists("legacy");
+    }
 }
