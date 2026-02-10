@@ -1,9 +1,10 @@
-package tools.vitruv.framework.vsum.branch;
+package tools.vitruv.framework.vsum.branch.handler;
 
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.branch.util.ReloadTriggerFile;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
 
 import java.nio.file.Path;
