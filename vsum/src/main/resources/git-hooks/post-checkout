@@ -1,8 +1,12 @@
 #!/bin/bash
 # Vitruvius Post-Checkout Hook
+#
 # This script is called automatically by Git after every branch switch.
 # Its purpose is to create a trigger file so that the VSUM can reload models
 # when a branch change happens, even if the developer uses command-line Git.
+#
+# Generates unique request ID for debugging, but does NOT wait for reload.
+# Reload happens asynchronously in the background - this hook exits immediately.
 
 # Git passes three arguments to post-checkout hooks:
 PREV_HEAD=$1       # The previous commit hash (before checkout)
@@ -12,27 +16,47 @@ BRANCH_SWITCH=$3   # 1 if the checkout changed branches, 0 if just files
 # Only trigger reload when switching branches, not when checking out files / commits
 if [ "$BRANCH_SWITCH" = "1" ]; then
     # Get the absolute path of the Git repository root
-    # 'git rev-parse --show-toplevel' returns the path to the top-level directory
     REPO_ROOT=$(git rev-parse --show-toplevel)
 
+    # Get the current branch name
+    BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
+
     # Define where the trigger file will be located
-    # .vitruvius is a hidden folder we use for VSUM metadata
     TRIGGER_DIR="$REPO_ROOT/.vitruvius"
     TRIGGER_FILE="$TRIGGER_DIR/reload-trigger"
 
     # Create the directory if it does not already exist
     mkdir -p "$TRIGGER_DIR"
 
-    # Write a simple trigger file with the current timestamp
-    # This is what the VSUM watcher will look for
-    echo "Reload requested at $(date)" > "$TRIGGER_FILE"
+    # Generate unique request ID for this reload request
+    # This is used for debugging/logging only - hook does NOT wait for reload
+    if command -v uuidgen &> /dev/null; then
+        REQUEST_ID=$(uuidgen)
+    elif [ -f /proc/sys/kernel/random/uuid ]; then
+        REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
+    else
+        # Fallback: timestamp + random number
+        REQUEST_ID="$(date +%s)-$$-$RANDOM"
+    fi
 
-    # print a message to the terminal to show that the hook ran
-    echo "Vitruvius: Branch switch detected, reload triggered"
+    # Get timestamp
+    TIMESTAMP=$(date +%s)
+
+    # Write trigger file with format: branchName|requestId|timestamp
+    echo "$BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
+
+    # Print message to terminal (brief, since this happens on every checkout)
+    echo "🔄 Vitruvius: Reload triggered for branch '$BRANCH'"
+
+    # Optional debug output (comment out for production)
+    # echo "   Request ID: $REQUEST_ID"
+
+    # Hook exits immediately - reload happens asynchronously in background
+    # No waiting, no timeout, no result checking
 fi
 
+# Exit successfully (always allow checkout to proceed)
+exit 0
 
-# TODO: consider also trigger reload for detached HEAD checkouts.
-# git checkout <commit-sha>
-# if [ "$BRANCH_SWITCH" = "1" ] || [ "$2" != "$1" ]; then
-
+# TODO: Consider also triggering reload for detached HEAD checkouts:
+# if [ "$BRANCH_SWITCH" = "1" ] || [ "$NEW_HEAD" != "$PREV_HEAD" ]; then
