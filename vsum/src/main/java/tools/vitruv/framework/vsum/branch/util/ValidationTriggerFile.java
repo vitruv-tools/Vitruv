@@ -3,156 +3,146 @@ package tools.vitruv.framework.vsum.branch.util;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Manages a trigger file that signals validation requests from Git pre-commit hook.
- *
+ * Manages the trigger file used for inter-process communication between the Git {@code pre-commit} hook and the Vitruvius background validation watcher.
  * <ul>
- *   <li>Git pre-commit hook creates this file before allowing commit</li>
- *   <li>File contains commit SHA, branch name, request ID, and timestamp</li>
- *   <li>VsumValidationWatcher checks for the file periodically (every 500ms)</li>
- *   <li>If exists, watcher validates V-SUM, writes result, and deletes trigger</li>
- *   <li>Hook reads validation result and allows/blocks commit</li>
+ *   <li>The Git pre-commit hook creates this file before allowing the commit.</li>
+ *   <li>The file contains the commit SHA, branch name, request identifier, and timestamp.</li>
+ *   <li>{@link tools.vitruv.framework.vsum.branch.handler.VsumValidationWatcher} polls for the file every 500ms.</li>
+ *   <li>When found, the watcher validates the virtual model, writes the result, and deletes the trigger file.</li>
+ *   <li>The hook reads the validation result and allows or blocks the commit.</li>
  * </ul>
- *
- * <p><b>Concurrency:</b> Multiple concurrent commits are supported via unique request IDs.
- * Each request gets a separate result file identified by its request ID.
+ * <p>Concurrent commits are supported through unique request identifiers.
+ * Each request produces its own pair of result files identified by the request identifier, so two simultaneous hook invocations cannot read each other's results.
  */
 public class ValidationTriggerFile {
     private static final Logger LOGGER = LogManager.getLogger(ValidationTriggerFile.class);
     private static final String TRIGGER_FILENAME = "validate-trigger";
     private static final String DELIMITER = "|";
 
+    /**
+     * Pre-compiled pattern for splitting the trigger file content on the delimiter.
+     * Using {@link Pattern#quote} prevents the pipe character from being interpreted as a regex alternation operator.
+     */
+    private static final Pattern SPLIT_PATTERN = Pattern.compile(Pattern.quote(DELIMITER));
+
     private final Path triggerFilePath;
 
     /**
-     * Creates a new validation trigger file manager for the given repository.
-     *
-     * @param repositoryRoot The root directory of the Git repository
+     * Creates a new validation trigger file manager for the given repository root.
+     * The trigger file will be located at {@code <repositoryRoot>/.vitruvius/validate-trigger}.
+     * @param repositoryRoot the root directory of the Git repository.
      */
     public ValidationTriggerFile(Path repositoryRoot) {
         this.triggerFilePath = repositoryRoot.resolve(".vitruvius").resolve(TRIGGER_FILENAME);
     }
 
     /**
-     * Creates the trigger file with commit information to request validation.
-     *
+     * Creates the trigger file to request validation of the virtual model for the given commit.
+     * A unique request identifier is generated automatically and returned so that the hook can later read the correct result file by identifier.
      * <p>File format: {@code commitSha|branch|requestId|timestamp}
-     *
-     * <p> Generates a unique request ID (UUID) to identify this validation request.
-     * This enables concurrent commits by allowing each request to have its own result file.
-     *
-     * @param commitSha the Git commit SHA (40 characters)
-     * @param branch the branch name
-     * @return the generated request ID (UUID string) - use this to read the result
-     * @throws IOException if the file cannot be created
+     * <p>The parent directory is created automatically if it does not exist yet.
+     * @param commitSha the Git commit SHA, must not be null.
+     * @param branch    the branch name, must not be null.
+     * @return the generated request identifier (UUID string) for reading the result file.
+     * @throws IOException if the file or its parent directory cannot be created.
      */
     public String createTrigger(String commitSha, String branch) throws IOException {
-        Objects.requireNonNull(commitSha, "commitSha must not be null");
-        Objects.requireNonNull(branch, "branch must not be null");
+        checkNotNull(commitSha, "commit SHA must not be null");
+        checkNotNull(branch, "branch must not be null");
 
-        // Generate unique request ID for this validation request
+        // generate a UUID so the hook can locate its specific result file later.
         String requestId = UUID.randomUUID().toString();
         long timestamp = System.currentTimeMillis();
 
-        // Create parent directory if needed
         Files.createDirectories(triggerFilePath.getParent());
 
-        // Write commitSha|branch|requestId|timestamp
+        // write the four fields separated by the delimiter so the watcher can parse them.
         String content = String.format("%s%s%s%s%s%s%d", commitSha, DELIMITER, branch, DELIMITER, requestId, DELIMITER, timestamp);
-
         Files.writeString(triggerFilePath, content);
 
         LOGGER.debug("Created validation trigger file at: {} (commit={}, branch={}, requestId={})", triggerFilePath, commitSha.substring(0, Math.min(7, commitSha.length())), branch, requestId);
 
-        //Return request ID so hook can wait for the correct result file
         return requestId;
     }
 
     /**
-     * Checks if the trigger file exists. If it does, reads the information,
-     * deletes it, and returns the trigger info.
-     *
-     * <p>If the file cannot be deleted, a warning is logged but the trigger
-     * information is still returned. The file will be cleaned up on the next poll.
-     *
-     * <p>Now parses request ID and timestamp for concurrent request tracking.
-     *
-     * @return trigger information if file existed, null otherwise
+     * Checks whether the trigger file exists. If it does, reads the content, deletes the file, and returns the parsed trigger information.
+     * Returns {@code null} if the file does not exist.
+     * <p>If the file content is malformed (wrong number of fields or empty required fields), it is deleted and
+     * {@code null} is returned so the watcher does not retry the same corrupted file.
+     * <p>If the file cannot be deleted after reading, the trigger information is still returned and the failure is logged as a warning.
+     * The watcher will attempt deletion again on the next poll cycle.
+     * @return the parsed {@link TriggerInfo}, or {@code null} if no valid trigger was found.
      */
     public TriggerInfo checkAndClearTrigger() {
         if (!Files.exists(triggerFilePath)) {
-            return null;  // No trigger
+            return null;
         }
 
         try {
-            // Read content
             String content = Files.readString(triggerFilePath);
+            String[] parts = SPLIT_PATTERN.split(content.trim());
 
-            // Parse commitSha|branch|requestId|timestamp
-            String[] parts = content.trim().split("\\" + DELIMITER);
-
-            // Support both old format (2 parts) and new format (4 parts) for backward compatibility
+            // accept either the current four-field format or the legacy two-field format.
             if (parts.length != 2 && parts.length != 4) {
-                LOGGER.warn("Invalid validation trigger format: '{}'. Expected: commitSha|branch|requestId|timestamp or commitSha|branch", content);
-                // Try to delete malformed trigger
-                try {
-                    Files.delete(triggerFilePath);
-                } catch (IOException deleteEx) {
-                    LOGGER.warn("Could not delete malformed trigger file", deleteEx);
-                }
+                LOGGER.warn("Invalid validation trigger format: '{}'. " + "Expected commitSha|branch|requestId|timestamp or commitSha|branch", content);
+                attemptFileDeletion();
                 return null;
             }
 
             String commitSha = parts[0].trim();
-            String branch = parts[1].trim();
-
-            // Parse request ID and timestamp if present
+            String branch    = parts[1].trim();
             String requestId;
-            long timestamp;
+            long   timestamp;
 
             if (parts.length == 4) {
+                // current four-field format.
                 requestId = parts[2].trim();
                 try {
                     timestamp = Long.parseLong(parts[3].trim());
                 } catch (NumberFormatException e) {
-                    LOGGER.warn("Invalid timestamp in trigger file: {}", parts[3]);
-                    timestamp = System.currentTimeMillis(); // Fallback to current time
+                    // the timestamp field is malformed
+                    // fall back to the current time so the watcher can still associate a meaningful time with the request.
+                    LOGGER.warn("Invalid timestamp in trigger file: '{}'", parts[3]);
+                    timestamp = System.currentTimeMillis();
                 }
             } else {
-                // Old format without request ID - generate one for compatibility
+                // synthesize the missing fields so the rest of the watcher flow is unchanged.
                 requestId = UUID.randomUUID().toString();
                 timestamp = System.currentTimeMillis();
-                LOGGER.warn("Legacy trigger format detected (no request ID). Generated requestId={}", requestId);
+                LOGGER.warn("Legacy trigger format detected (no request ID), generated requestId='{}'", requestId);
             }
 
-            // Validate parsed data
+            // a trigger with any empty required field cannot be processed meaningfully.
             if (commitSha.isEmpty() || branch.isEmpty() || requestId.isEmpty()) {
-                LOGGER.warn("Empty commitSha, branch, or requestId in trigger file");
-                try {
-                    Files.delete(triggerFilePath);
-                } catch (IOException deleteEx) {
-                    LOGGER.warn("Could not delete invalid trigger file", deleteEx);
-                }
+                LOGGER.warn("Empty commit SHA, branch, or request ID in trigger file, discarding");
+                attemptFileDeletion();
                 return null;
             }
 
-            // Create TriggerInfo with request ID and timestamp
             TriggerInfo info = new TriggerInfo(commitSha, branch, requestId, timestamp);
 
-            // Try to delete trigger file
+            // attempt to delete the trigger now that it has been consumed.
+            // if the delete fails, the info is still returned and deletion will be retried on the next poll.
             try {
                 Files.delete(triggerFilePath);
                 LOGGER.debug("Validation trigger detected and cleared: commit={}, branch={}, requestId={}", commitSha.substring(0, Math.min(7, commitSha.length())), branch, requestId);
             } catch (IOException deleteEx) {
-                LOGGER.warn("Failed to delete validation trigger file: {}. Will retry on next poll.", triggerFilePath, deleteEx);
+                LOGGER.warn("Failed to delete validation trigger file, will retry on next poll: {}", triggerFilePath, deleteEx);
             }
             return info;
+
         } catch (IOException e) {
             LOGGER.warn("Failed to read validation trigger file: {}", triggerFilePath, e);
             return null;
@@ -160,69 +150,67 @@ public class ValidationTriggerFile {
     }
 
     /**
-     * Checks if the trigger file currently exists, without reading or deleting it.
-     *
-     * @return true if the trigger file exists, false otherwise
+     * Returns true if the trigger file currently exists on disk. Does not read or modify the file.
+     * @return {@code true} if the trigger file exists, {@code false} otherwise.
      */
     public boolean exists() {
         return Files.exists(triggerFilePath);
     }
 
     /**
-     * Returns the path where the trigger file is located.
-     * Useful for Git hooks that need to create the file.
-     *
-     * @return The full path to the trigger file
+     * Returns the path where the trigger file is written. Useful for Git hooks that need to know the full path before writing the file.
+     * @return the full path to the trigger file.
      */
     public Path getTriggerPath() {
         return triggerFilePath;
     }
 
     /**
-     * Information read from a validation trigger file.
-     * Contains the commit SHA, branch name, request ID, and timestamp for which validation is requested.
-     *
-     * <p>Now includes request ID (UUID) and timestamp for concurrent request tracking.
+     * Attempts to delete the trigger file, logging a warning if the delete fails.
+     * Used to discard malformed or invalid trigger files without propagating an exception to the caller.
+     */
+    private void attemptFileDeletion() {
+        try {
+            Files.delete(triggerFilePath);
+        } catch (IOException e) {
+            LOGGER.warn("Could not delete malformed validation trigger file: {}", triggerFilePath, e);
+        }
+    }
+
+    /**
+     * Holds the information parsed from a validation trigger file.
+     * <p>Each instance identifies a single validation request: the commit being validated, the branch it was made on,
+     * a unique request identifier for matching the result file, and the timestamp for debugging and timeout detection.
      */
     @Getter
     public static class TriggerInfo {
-        /**
-         * The Git commit SHA (40 characters).
-         */
+
+        /** The full Git commit SHA for which validation was requested. */
         private final String commitSha;
 
-        /**
-         * The branch name.
-         */
+        /** The branch on which the commit was made. */
         private final String branch;
 
         /**
-         * Unique request ID (UUID) identifying this validation request.
-         * Used to match validation results with the correct request.
+         * Unique request identifier (UUID) that links this trigger to its result files.
+         * The pre-commit hook uses this identifier to read the correct result file.
          */
         private final String requestId;
 
-        /**
-         * Timestamp (milliseconds since epoch) when the trigger was created.
-         * Used for debugging and timeout detection.
-         */
+        /** Timestamp (milliseconds since epoch) when the trigger file was created. */
         private final long timestamp;
 
         /**
-         * Creates trigger information with request ID and timestamp.
-         *
-         * <p>includes requestId and timestamp for concurrency support.
-         *
-         * @param commitSha the Git commit SHA
-         * @param branch the branch name
-         * @param requestId the unique request identifier (UUID)
-         * @param timestamp the creation timestamp (milliseconds since epoch)
-         * @throws NullPointerException if commitSha, branch, or requestId is null
+         * Creates a new {@link TriggerInfo} with the given fields.
+         * @param commitSha the Git commit SHA. must not be null.
+         * @param branch    the branch name. must not be null.
+         * @param requestId the unique request identifier. must not be null.
+         * @param timestamp the creation timestamp in milliseconds since epoch.
          */
         public TriggerInfo(String commitSha, String branch, String requestId, long timestamp) {
-            this.commitSha = Objects.requireNonNull(commitSha, "commitSha must not be null");
-            this.branch = Objects.requireNonNull(branch, "branch must not be null");
-            this.requestId = Objects.requireNonNull(requestId, "requestId must not be null");
+            this.commitSha = Objects.requireNonNull(commitSha, "commit SHA must not be null");
+            this.branch    = Objects.requireNonNull(branch, "branch must not be null");
+            this.requestId = Objects.requireNonNull(requestId, "request identifier must not be null");
             this.timestamp = timestamp;
         }
 
@@ -231,7 +219,10 @@ public class ValidationTriggerFile {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             TriggerInfo that = (TriggerInfo) o;
-            return timestamp == that.timestamp && Objects.equals(commitSha, that.commitSha) && Objects.equals(branch, that.branch) && Objects.equals(requestId, that.requestId);
+            return timestamp == that.timestamp
+                    && Objects.equals(commitSha, that.commitSha)
+                    && Objects.equals(branch, that.branch)
+                    && Objects.equals(requestId, that.requestId);
         }
 
         @Override
@@ -241,7 +232,12 @@ public class ValidationTriggerFile {
 
         @Override
         public String toString() {
-            return "TriggerInfo{" + "commitSha=" + commitSha.substring(0, Math.min(7, commitSha.length())) + ", branch=" + branch + ", requestId=" + requestId + ", timestamp=" + timestamp + "}";
+            return "TriggerInfo{"
+                    + "commitSha='" + commitSha.substring(0, Math.min(7, commitSha.length())) + "'"
+                    + ", branch='" + branch + "'"
+                    + ", requestId='" + requestId + "'"
+                    + ", timestamp=" + timestamp
+                    + "}";
         }
     }
 }

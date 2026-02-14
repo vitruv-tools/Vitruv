@@ -13,199 +13,200 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 
 /**
- * This class installs Git hook scripts into a repository.
- * The hooks ensure that VSUM is reloaded when developers switch branches using Git commands such as {@code git checkout}.
- * The hook scripts are copied from application resources into the repository's {@code .git/hooks} directory.
- * If a hook already exists, it is backed up before being replaced.
- * Currently, the following hooks are supported:
+ * Installs and uninstalls Git hook scripts into a repository's {@code .git/hooks} directory.
+ * The hooks enable Vitruvius to react to Git operations without requiring developers to run any manual setup steps: 
+ * The installer copies the hook scripts from the application's bundled resources and makes them executable.
+ *
+ * <p>The following hooks are currently supported:
  * <ul>
- *   <li>{@code post-checkout}: triggered after a branch switch</li>
- *   <li>{@code pre-commit}: triggered before a commit to validate V-SUM consistency</li>
- *   <li>{@code post-merge}: (TODO) triggered after a merge</li>
+ *   <li>{@code post-checkout}: triggered after a branch switch via {@code git checkout} or {@code git switch}. 
+ *       Writes a reload trigger file so that the Vitruvius background watcher can refresh the VirtualModel state.</li>
+ *   <li>{@code pre-commit}: triggered before each commit.
+ *       Requests a VirtualModel validation and blocks the commit if consistency errors are detected.</li>
  * </ul>
  *
- * This is intended for Unix-like systems. On Windows, git bash is required to execute the hook scripts.
+ * <p>If a hook file already exists when installing, it is renamed to {@code <hookName>.backup} before the new file is written.
+ * Uninstalling removes the Vitruvius hook and restores the backup if one is present to preserve any hook that the developer had configured before Vitruvius was set up.
+ *
+ * <p>This installer is designed for Unix-like systems where POSIX file permissions are available.
+ * On Windows, the executable bit cannot be set via the Java POSIX permission interface, but Git hooks will still run correctly when Git for Windows (Git Bash) is
+ * installed, because Git Bash interprets the shebang line directly.
  */
 public class GitHookInstaller {
     private static final Logger LOGGER = LogManager.getLogger(GitHookInstaller.class);
+
+    /** classpath prefix under which the hook script templates are stored as resources. */
     private static final String HOOKS_RESOURCE_PATH = "/git-hooks/";
+
     private static final String POST_CHECKOUT_HOOK = "post-checkout";
     private static final String PRE_COMMIT_HOOK = "pre-commit";
 
     /**
-     * Returns the hooks directory for this repository.
+     * The {@code .git/hooks} directory of the target repository. All hook files are written to and read from this directory.
      */
     @Getter
     private final Path hooksDirectory;
 
     /**
-     * Creates a new hook installer for the given repository.
+     * Creates a new installer targeting the given repository root.
      *
-     * @param repositoryRoot The root directory of the Git repository
-     * @throws IllegalArgumentException if the directory is not a Git repository
+     * @param repositoryRoot the root directory of the Git repository. Must contain a {@code .git/hooks} subdirectory.
+     * @throws IllegalArgumentException if the directory is not a Git repository or the {@code .git/hooks} directory is missing.
      */
     public GitHookInstaller(Path repositoryRoot) {
         this.hooksDirectory = repositoryRoot.resolve(".git/hooks");
         if (!Files.isDirectory(hooksDirectory)) {
-            throw new IllegalArgumentException("Not a Git repository (.git/hooks directory): " + repositoryRoot);
+            throw new IllegalArgumentException("not a Git repository (missing .git/hooks directory): " + repositoryRoot);
         }
     }
 
     /**
-     * Installs the post-checkout hook that triggers VSUM reload after branch switches.
-     *
-     * <p>If a post-checkout hook already exists, it will be backed up with a
-     * {@code .backup} suffix before being replaced.</p>
-     *
-     * @throws IOException if the hook cannot be installed
+     * Installs the {@code post-checkout} hook that triggers a Vitruvius VirtualModel reload after each branch switch.
+     * If a hook file already exists, it is backed up before being replaced.
+     * @throws IOException if the hook resource cannot be found, the backup cannot be created, or the hook file cannot be written.
      */
     public void installPostCheckoutHook() throws IOException {
-        Path hookPath = hooksDirectory.resolve(POST_CHECKOUT_HOOK);
-        // backup if existing hook is present
-        if (Files.exists(hookPath)) {
-            Path backupPath = hooksDirectory.resolve(POST_CHECKOUT_HOOK + ".backup");
-            Files.move(hookPath, backupPath, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.info("Post-checkout hook has been backed up");
-        }
-        // copy hook template from resources to .git/hooks
-        String resourcePath = HOOKS_RESOURCE_PATH + POST_CHECKOUT_HOOK;
-        try (InputStream hookTemplate = getClass().getResourceAsStream(resourcePath)) {
-            if (hookTemplate == null) {
-                throw new IOException("Hook template not found in resources: " + resourcePath);
-            }
-            Files.copy(hookTemplate, hookPath, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.debug("Copied hook template to: {}", hookPath);
-        }
-        // make hook executable
-        makeExecutable(hookPath);
-        LOGGER.info("Installed post-checkout hook at: {}", hookPath);
+        installHook(POST_CHECKOUT_HOOK);
     }
 
     /**
-     * Installs the pre-commit hook that validates V-SUM before allowing commits.
-     *
-     * <p>If a pre-commit hook already exists, it will be backed up with a
-     * {@code .backup} suffix before being replaced.</p>
-     *
-     * @throws IOException if the hook cannot be installed
+     * Installs the {@code pre-commit} hook that validates VirtualModel consistency before allowing a commit to proceed.
+     * If a hook file already exists, it is backed up before being replaced.
+     * @throws IOException if the hook resource cannot be found, the backup cannot be created, or the hook file cannot be written.
      */
     public void installPreCommitHook() throws IOException {
-        Path hookPath = hooksDirectory.resolve(PRE_COMMIT_HOOK);
-
-        // backup if existing hook is present
-        if (Files.exists(hookPath)) {
-            Path backupPath = hooksDirectory.resolve(PRE_COMMIT_HOOK + ".backup");
-            Files.move(hookPath, backupPath, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.info("Pre-commit hook backed up");
-        }
-
-        // copy hook template from resources to .git/hooks
-        String resourcePath = HOOKS_RESOURCE_PATH + PRE_COMMIT_HOOK;
-        try (InputStream hookTemplate = getClass().getResourceAsStream(resourcePath)) {
-            if (hookTemplate == null) {
-                throw new IOException("Hook template not found in resources: " + resourcePath);
-            }
-            Files.copy(hookTemplate, hookPath, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.debug("Copied pre-commit hook template to: {}", hookPath);
-        }
-
-        // make hook executable
-        makeExecutable(hookPath);
-        LOGGER.info("Installed pre-commit hook at: {}", hookPath);
+        installHook(PRE_COMMIT_HOOK);
     }
 
     /**
-     * Installs all available Git hooks.
-     * Currently, installs post-checkout and pre-commit hooks.
-     *
-     * @throws IOException if any hook installation fails
+     * Installs all currently supported Git hooks ({@code post-checkout} and {@code pre-commit}).
+     * If any installation fails the exception is propagated immediately and subsequent hooks are not installed.
+     * @throws IOException if any hook cannot be installed.
      */
     public void installAllHooks() throws IOException {
         installPostCheckoutHook();
         installPreCommitHook();
-
-        // TODO: Add installPostMergeHook()
-        LOGGER.info("Installed all Git hooks (post-checkout, pre-commit)");
+        // todo: installPostMergeHook() will be added here once the post-merge handler
+        LOGGER.info("installed all Git hooks ({}, {})", POST_CHECKOUT_HOOK, PRE_COMMIT_HOOK);
     }
 
     /**
-     * Removes the post-checkout hook.
-     * If a backup exists, it will be restored.
-     *
-     * @throws IOException if the hook cannot be uninstalled
+     * Removes the {@code post-checkout} hook. If a backup exists from a previous installation, the backup is restored
+     * so that the developer's original hook is active again.
+     * @throws IOException if the hook file cannot be deleted or the backup cannot be restored.
      */
     public void uninstallPostCheckoutHook() throws IOException {
-        Path hookPath = hooksDirectory.resolve(POST_CHECKOUT_HOOK);
-        Path backupPath = hooksDirectory.resolve(POST_CHECKOUT_HOOK + ".backup");
-        if (Files.exists(hookPath)) {
-            Files.delete(hookPath);
-            LOGGER.info("Removed post-checkout hook");
-        }
-        // restore backup if it exists
-        if (Files.exists(backupPath)) {
-            Files.move(backupPath, hookPath, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.info("Restored backup post-checkout hook");
-        }
+        uninstallHook(POST_CHECKOUT_HOOK);
     }
 
     /**
-     * Removes the pre-commit hook.
-     * If a backup exists, it will be restored.
-     *
-     * @throws IOException if the hook cannot be uninstalled
+     * Removes the {@code pre-commit} hook. iIf a backup exists from a previous installation, the backup is restored
+     * so that the developer's original hook is active again.
+     * @throws IOException if the hook file cannot be deleted or the backup cannot be restored.
      */
     public void uninstallPreCommitHook() throws IOException {
-        Path hookPath = hooksDirectory.resolve(PRE_COMMIT_HOOK);
-        Path backupPath = hooksDirectory.resolve(PRE_COMMIT_HOOK + ".backup");
-
-        if (Files.exists(hookPath)) {
-            Files.delete(hookPath);
-            LOGGER.info("Removed pre-commit hook");
-        }
-
-        // restore backup if it exists
-        if (Files.exists(backupPath)) {
-            Files.move(backupPath, hookPath, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.info("Restored backup pre-commit hook");
-        }
+        uninstallHook(PRE_COMMIT_HOOK);
     }
 
     /**
-     * Checks if the post-checkout hook is currently installed.
-     *
-     * @return true if the hook exists, false otherwise
+     * Returns true if the {@code post-checkout} hook file is currently present in the hooks' directory.
+     * This does not verify whether the file is the Vitruvius-managed version.
      */
     public boolean isPostCheckoutHookInstalled() {
         return Files.exists(hooksDirectory.resolve(POST_CHECKOUT_HOOK));
     }
 
     /**
-     * Checks if the pre-commit hook is currently installed.
-     *
-     * @return true if the hook exists, false otherwise
+     * returns true if the {@code pre-commit} hook file is currently present in the hooks'directory.
+     * This does not verify whether the file is the Vitruvius-managed version.
      */
     public boolean isPreCommitHookInstalled() {
         return Files.exists(hooksDirectory.resolve(PRE_COMMIT_HOOK));
     }
 
     /**
-     * Makes a file executable on Unix-like systems.
-     * On Windows, git bash will handle the executability.
+     * Performs the actual installation of a single hook by name.
+     * <p>Steps:
+     * <ol>
+     *   <li>If a hook file already exists, move it to {@code <hookName>.backup}.</li>
+     *   <li>Copy the hook script from the bundled classpath resource to the hooks' directory.</li>
+     *   <li>Set the executable permission bits so that Git can invoke the script.</li>
+     * </ol>
      *
-     * @param path The file to make executable
+     * @param hookName the file name of the hook (for example {@code "post-checkout"}).
+     * @throws IOException if any of the above steps fail.
+     */
+    private void installHook(String hookName) throws IOException {
+        var hookPath = hooksDirectory.resolve(hookName);
+
+        // back up any pre-existing hook so it can be restored on uninstallation to preserve hooks that the developer configured before Vitruvius was set up.
+        if (Files.exists(hookPath)) {
+            var backupPath = hooksDirectory.resolve(hookName + ".backup");
+            Files.move(hookPath, backupPath, StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.info("backed up existing {} hook", hookName);
+        }
+
+        // copy the hook script from the application's bundled resources into the hooks directory.
+        var resourcePath = HOOKS_RESOURCE_PATH + hookName;
+        try (InputStream hookTemplate = getClass().getResourceAsStream(resourcePath)) {
+            if (hookTemplate == null) {
+                throw new IOException("hook template not found in resources: " + resourcePath);
+            }
+            Files.copy(hookTemplate, hookPath, StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.debug("copied hook template to: {}", hookPath);
+        }
+
+        makeExecutable(hookPath);
+        LOGGER.info("installed {} hook at: {}", hookName, hookPath);
+    }
+
+    /**
+     * Performs the actual uninstallation of a single hook by name. This shared helper is used
+     * by both {@link #uninstallPostCheckoutHook()} and {@link #uninstallPreCommitHook()}.
+     *
+     * <p>Calling this method when no hook is installed is safe and does nothing.
+     *
+     * @param hookName the file name of the hook (for example {@code "pre-commit"}).
+     * @throws IOException if the hook file cannot be deleted or the backup cannot be moved.
+     */
+    private void uninstallHook(String hookName) throws IOException {
+        var hookPath = hooksDirectory.resolve(hookName);
+        var backupPath = hooksDirectory.resolve(hookName + ".backup");
+
+        if (Files.exists(hookPath)) {
+            Files.delete(hookPath);
+            LOGGER.info("removed {} hook", hookName);
+        }
+
+        // restore the developer's original hook if a backup was created during installation.
+        if (Files.exists(backupPath)) {
+            Files.move(backupPath, hookPath, StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.info("restored backup {} hook", hookName);
+        }
+    }
+
+    /**
+     * Sets the executable permission bits on a file so that Git can invoke it as a hook script.
+     * Owner, group, and others execute bits are all set to match the standard Git hook convention.
+     *
+     * <p>On Windows, the POSIX permission interface is not supported and this method catches the
+     * resulting exception silently. Git for Windows (Git Bash) does not require the executable
+     * bit to be set because it reads and executes the shebang line directly.
+     *
+     * @param path the hook file to make executable.
      */
     private void makeExecutable(Path path) {
         try {
-            // mark the hook as executable for unix-like system
             Set<PosixFilePermission> perms = Files.getPosixFilePermissions(path);
             perms.add(PosixFilePermission.OWNER_EXECUTE);
             perms.add(PosixFilePermission.GROUP_EXECUTE);
             perms.add(PosixFilePermission.OTHERS_EXECUTE);
             Files.setPosixFilePermissions(path, perms);
-            LOGGER.debug("Made hook executable: {}", path);
+            LOGGER.debug("set executable permissions on hook: {}", path);
         } catch (UnsupportedOperationException | IOException e) {
-            //for windows it would throw exception, but git hook will still be handled as long as git bash is installed
-            LOGGER.debug("Could not set POSIX permissions on Windows: {}", e.getMessage());
+            // POSIX permissions are not available on Windows. The hook will still be executedcorrectly by Git Bash,
+            // which interprets the shebang line without requiring the executable bit to be set on the file system.
+            LOGGER.debug("could not set POSIX permissions (likely running on Windows): {}", e.getMessage());
         }
     }
 }

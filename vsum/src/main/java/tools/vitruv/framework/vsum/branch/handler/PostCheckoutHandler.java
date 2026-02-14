@@ -9,11 +9,20 @@ import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Handles post-checkout operations after a Git branch switch. This handler is responsible for
- * reloading models from the file system to reflect the state of the newly checked-out branch.
+ * Handles post-checkout operations after a Git branch switch.
+ * This handler is responsible for reloading VSUM from the file system so that its in-memory state reflects the content of the newly checked-out branch.
  *
- * <p>Triggered by {@link BranchManager#switchBranch(String)} after the Git checkout operation
- * completes successfully.
+ * <p>The handler is invoked from two different paths depending on how the branch switch occurred:
+ * <ul>
+ *   <li>directly via {@link BranchManager#switchBranch(String)}, which calls
+ *       {@link #onBranchSwitch(String, String)} synchronously after the Git checkout.</li>
+ *   <li>via the file-based inter-process communication path, where the {@code post-checkout} Git
+ *       hook writes a reload trigger file and the background watcher thread picks it up and
+ *       invokes this handler asynchronously.</li>
+ * </ul>
+ *
+ * <p>in both cases the effect is the same: the VirtualModel discards its current in-memory state and reloads all resources from disk. 
+ * This ensures consistency between the branch content visible on the file system and the model state used by Vitruvius consistency rules.
  */
 public class PostCheckoutHandler {
     private static final Logger LOGGER = LogManager.getLogger(PostCheckoutHandler.class);
@@ -21,26 +30,39 @@ public class PostCheckoutHandler {
     private final VirtualModel virtualModel;
 
     /**
-     * Creates a new {@link PostCheckoutHandler}
-     * @param virtualModel the virtual model whose resources should be handled after checkout
+     * Creates a new {@link PostCheckoutHandler} backed by the given VirtualModel.
+     * @param virtualModel the VirtualModel whose resources will be reloaded after each branch switch, must not be null.
      */
     public PostCheckoutHandler(VirtualModel virtualModel) {
-        this.virtualModel = checkNotNull(virtualModel, "VirtualModel muss not be null");
+        this.virtualModel = checkNotNull(virtualModel, "VirtualModel must not be null");
     }
 
+    /**
+     * Reloads the VirtualModel after a successful branch switch.
+     * This method should be called once the Git working directory already reflects the new branch content, so that the reload reads the correct files from disk.
+     *
+     * <p>if the reload fails, the exception is wrapped in a {@link BranchOperationException} so that callers receive
+     * a consistent error type regardless of what the VirtualModel throws internally.
+     *
+     * @param oldBranch the name of the branch that was active before the switch.
+     * @param newBranch the name of the branch that is now checked out.
+     * @throws BranchOperationException if the VirtualModel reload fails for any reason.
+     */
     public void onBranchSwitch(String oldBranch, String newBranch) throws BranchOperationException {
-        checkNotNull(oldBranch, "oldBranch muss not be null");
-        checkNotNull(newBranch, "newBranch must not be null");
+        checkNotNull(oldBranch, "old branch name must not be null");
+        checkNotNull(newBranch, "new branch name must not be null");
 
-        LOGGER.info("Branch switched from {} to {}", oldBranch, newBranch);
+        LOGGER.info("branch switched from '{}' to '{}'", oldBranch, newBranch);
 
         try {
-            LOGGER.debug("Reloading models from file system");
+            // let VirtualModel to discard its current in-memory state and reload all resources from the file system.
+            // after a branch switch the files on disk represent the new branch, so reloading is necessary to keep the model consistent.
+            LOGGER.debug("reloading VirtualModel resources from file system");
             virtualModel.reload();
-            LOGGER.info("Models reloaded successfully for branch {}", newBranch);
+            LOGGER.info("VirtualModel reloaded successfully for branch '{}'", newBranch);
 
         } catch (Exception e) {
-            throw new BranchOperationException("Failed to reload models after switching to branch " + newBranch, e);
+            throw new BranchOperationException("failed to reload VirtualModel after switching to branch '" + newBranch + "'", e);
         }
     }
 }

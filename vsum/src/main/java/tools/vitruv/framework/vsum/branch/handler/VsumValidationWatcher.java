@@ -16,64 +16,71 @@ import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Background watcher that monitors for VSUM validation requests.
- *
- * <p>Polls for validation trigger files created by Git pre-commit hooks.
- * When a trigger is detected:
+ * Background daemon that polls for validation trigger files created by the Git {@code pre-commit} hook and validates the VSUM before
+ * allowing the commit to proceed.
+ * <p>When a trigger is detected, the watcher:
  * <ol>
- *   <li>Acquires lock to prevent concurrent validations</li>
- *   <li>Validates the VSUM using {@link PreCommitHandler}</li>
- *   <li>Writes validation results to request-specific files</li>
- *   <li>Generates semantic changelog if validation passed</li>
- *   <li>Auto-stages changelog for commit</li>
- *   <li>Releases lock and deletes the trigger file</li>
+ *   <li>Acquires a lock file to prevent concurrent validations from corrupting the model state.</li>
+ *   <li>Validates the VirtualModel using {@link PreCommitHandler}.</li>
+ *   <li>Writes the validation result to request-specific files so the hook can read it.</li>
+ *   <li>Generates a semantic changelog and auto-stages it if validation passed.</li>
+ *   <li>Releases the lock.</li>
  * </ol>
  *
- * <p><b>Concurrency:</b> Multiple validation requests are processed sequentially using
- * a lock file. Each request gets its own result files identified by request ID.
+ * <p>Concurrency: multiple validation requests that arrive within the same poll window are processed sequentially. 
+ * If the lock is already held when a second request arrives, the trigger is re-created so it is retried on the next poll cycle. 
+ * Each request carries a unique request identifier so that result files can be matched to the originating hook invocation even when requests are retried.
  */
 public class VsumValidationWatcher {
     private static final Logger LOGGER = LogManager.getLogger(VsumValidationWatcher.class);
     private static final long POLL_INTERVAL_MS = 500;
-    private static final String THREAD_NAME = "VSUM-Validation-Watcher";
-    private static final String LOCK_FILENAME = ".validation.lock";  // Lock file name
 
-    private final Path repositoryRoot;  // Store repository root for Git operations
+    /** Maximum time in milliseconds to wait for the watcher thread to terminate on stop. */
+    private static final long STOP_TIMEOUT_MS = 2000;
+
+    private static final String THREAD_NAME = "VSUM-Validation-Watcher";
+    private static final String LOCK_FILENAME = ".validation.lock";
+
+    /** Root of the Git repository, used to resolve the changelog path and for JGit operations. */
+    private final Path repositoryRoot;
+
     private final ValidationTriggerFile triggerFile;
     private final ValidationResultFile resultFile;
     private final PreCommitHandler handler;
-    private final Path lockFile;  // lock file path
+
+    /** OS-managed lock file that prevents two validation runs from executing concurrently. */
+    private final Path lockFile;
 
     private Thread watcherThread;
 
-    /**
-     * -- GETTER --
-     *
-     */
+    /** True while the background polling thread is running. */
     @Getter
     private volatile boolean running;
 
     /**
-     * Creates a validation watcher for the given virtual model.
-     *
-     * @param virtualModel the virtual model to validate
-     * @param repositoryRoot the Git repository root directory
+     * Creates a validation watcher for the given VirtualModel and repository.
+     * @param virtualModel   the VirtualModel to validate on each pre-commit trigger. must not be null.
+     * @param repositoryRoot the root directory of the Git repository. must not be null.
      */
     public VsumValidationWatcher(InternalVirtualModel virtualModel, Path repositoryRoot) {
-        this.repositoryRoot = repositoryRoot;
+        checkNotNull(virtualModel, "VirtualModel must not be null");
+        this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
         this.triggerFile = new ValidationTriggerFile(repositoryRoot);
         this.resultFile = new ValidationResultFile(repositoryRoot);
         this.handler = new PreCommitHandler(virtualModel);
         this.running = false;
-        this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);  // NEW: Lock file
+        this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);
     }
 
     /**
      * Starts the validation watcher in a background daemon thread.
-     *
-     * @throws IllegalStateException if the watcher is already running
+     * The thread is marked as a daemon so it does not prevent the JVM from shutting down when the main application exits.
+     * @throws IllegalStateException if the watcher is already running.
      */
     public synchronized void start() {
         if (running) {
@@ -87,9 +94,8 @@ public class VsumValidationWatcher {
     }
 
     /**
-     * Stops the validation watcher and waits for the thread to terminate.
-     *
-     * <p>Blocks for up to 2 seconds waiting for graceful shutdown.
+     * Stops the validation watcher and waits up to {@value #STOP_TIMEOUT_MS} milliseconds for the background thread to terminate.
+     * Calling this method on a watcher that is not running is safe and does nothing.
      */
     public synchronized void stop() {
         if (!running) {
@@ -97,11 +103,13 @@ public class VsumValidationWatcher {
         }
         running = false;
         if (watcherThread != null) {
+            // interrupt the thread in case it is currently sleeping between poll cycles.
             watcherThread.interrupt();
             try {
-                watcherThread.join(1000);
+                watcherThread.join(STOP_TIMEOUT_MS);
             } catch (InterruptedException e) {
                 LOGGER.warn("Interrupted while waiting for watcher thread to stop");
+                // restore the interrupt flag so the caller can handle it if needed.
                 Thread.currentThread().interrupt();
             }
         }
@@ -109,27 +117,26 @@ public class VsumValidationWatcher {
     }
 
     /**
-     * Main watch loop - polls for validation triggers.
-     *
-     * <p>Runs until {@link #stop()} is called or thread is interrupted.
+     * Main polling loop executed by the background thread.
+     * Checks for a trigger file on every cycle and delegates to {@link #handleValidationRequest} when one is found.
+     * Exits when {@link #running} becomes false or the thread is interrupted.
      */
     private void watchLoop() {
         LOGGER.debug("Validation watch loop started, polling every {}ms", POLL_INTERVAL_MS);
         while (running) {
             try {
-                // Check for validation trigger
+                // check whether a validation trigger has been created by the pre-commit hook.
                 ValidationTriggerFile.TriggerInfo info = triggerFile.checkAndClearTrigger();
                 if (info != null) {
                     handleValidationRequest(info);
                 }
-                // Sleep before next poll
                 Thread.sleep(POLL_INTERVAL_MS);
             } catch (InterruptedException e) {
                 LOGGER.debug("Validation watcher interrupted");
                 running = false;
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
-                // Log error but keep running
+                // log the error and continue so that a single bad trigger does not permanently stop the watcher from processing future requests.
                 LOGGER.error("Error in validation watcher loop, will continue", e);
             }
         }
@@ -137,134 +144,118 @@ public class VsumValidationWatcher {
     }
 
     /**
-     * Handles a validation request from the trigger file.
-     *
-     * <p> Acquires lock before validation to prevent concurrent validations
-     * from corrupting VSUM state. Writes results to request-specific files.
-     *
-     * @param info the trigger information (commit SHA, branch, request ID, timestamp)
+     * Handles a single validation request.
+     * Acquires the OS lock before starting validation so that two concurrent hook invocations cannot run the validation simultaneously.
+     * If the lock is already held, the trigger is re-created for retry on the next poll cycle and an error result is written so the hook does not time out.
+     * @param info the trigger information parsed from the trigger file.
      */
     private void handleValidationRequest(ValidationTriggerFile.TriggerInfo info) {
-        String commitShort = info.getCommitSha().substring(0, Math.min(8, info.getCommitSha().length()));
-        String requestId = info.getRequestId();  //Get request ID
+        // use the standard seven-character short SHA matching the Git convention.
+        String commitShort = info.getCommitSha().substring(0, Math.min(7, info.getCommitSha().length()));
+        String requestId = info.getRequestId();
 
-        LOGGER.info("Validation requested for commit {} on branch {} (requestId={})", commitShort, info.getBranch(), requestId);
+        LOGGER.info("Validation requested for commit {} on branch {} (requestId='{}')", commitShort, info.getBranch(), requestId);
 
-        // Acquire lock before validation
         try {
-            // Ensure .vitruvius directory exists
+            // the lock file directory must exist before FileChannel.open() can create the file.
             Files.createDirectories(lockFile.getParent());
-            // Try to acquire lock (non-blocking with timeout)
+
+            // use a non-blocking tryLock() so the watcher can immediately return and retry on the next poll cycle rather than blocking the thread indefinitely.
             try (FileChannel channel = FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
-                // Try to acquire lock with timeout
                 FileLock lock = channel.tryLock();
                 if (lock == null) {
-                    // Another validation is in progress
-                    LOGGER.warn("Another validation is in progress, will retry on next poll (requestId={})", requestId);
-                    // Put the trigger back for retry on next poll
+                    // the lock is held by another validation
+                    // re-create the trigger so this request is not lost and will be retried on the next poll.
+                    LOGGER.warn("Another validation is in progress, re-queuing trigger for retry (requestId='{}')", requestId);
                     try {
                         triggerFile.createTrigger(info.getCommitSha(), info.getBranch());
-                        LOGGER.debug("Re-created trigger for retry (requestId={})", requestId);
                     } catch (IOException e) {
-                        LOGGER.error("Failed to re-create trigger for retry (requestId={})", requestId, e);
-                        // Write error result so hook doesnt timeout
+                        LOGGER.error("Failed to re-create trigger for retry (requestId='{}')", requestId, e);
+                        // write an error result so the hook receives a response and does not hang.
                         writeErrorResult(requestId, "Validation queue full - try again");
                     }
                     return;
                 }
 
                 try {
-                    // Lock acquired, perform validation
-                    LOGGER.debug("Lock acquired for validation (requestId={})", requestId);
+                    LOGGER.debug("Lock acquired for validation (requestId='{}')", requestId);
                     performValidation(info, commitShort, requestId);
                 } finally {
-                    // Release lock
+                    // always release the lock, even if performValidation throws, to unblock any validation requests that are waiting to retry.
                     lock.release();
-                    LOGGER.debug("Lock released (requestId={})", requestId);
+                    LOGGER.debug("Lock released (requestId='{}')", requestId);
                 }
+
             } catch (IOException e) {
-                LOGGER.error("Failed to acquire lock for validation (requestId={})", requestId, e);
+                LOGGER.error("Failed to acquire validation lock (requestId='{}')", requestId, e);
                 writeErrorResult(requestId, "Failed to acquire validation lock: " + e.getMessage());
             }
 
         } catch (Exception e) {
-            LOGGER.error("Unexpected error handling validation request (requestId={})", requestId, e);
+            LOGGER.error("Unexpected error handling validation request (requestId='{}')", requestId, e);
             writeErrorResult(requestId, "Validation failed: " + e.getMessage());
         }
     }
 
     /**
-     * Performs the actual validation (called while holding lock).
-     *
-     * @param info the trigger information
-     * @param commitShort the short commit SHA (first 8 chars)
-     * @param requestId the unique request identifier
+     * Performs validation and writes the result while holding the lock.
+     * If validation passes, also generates and auto-stages the semantic changelog.
+     * A failure to generate or stage the changelog is logged as a warning but does not retroactively fail the validation result.
+     * @param info         the trigger information.
+     * @param commitShort  the first seven characters of the commit SHA, used in file names and logs.
+     * @param requestId    the unique request identifier used to name the result files.
      */
     private void performValidation(ValidationTriggerFile.TriggerInfo info, String commitShort, String requestId) {
         try {
-            // Validate V-SUM
             long startTime = System.currentTimeMillis();
             ValidationResult result = handler.validate();
             long duration = System.currentTimeMillis() - startTime;
-            LOGGER.info("Validation completed in {}ms: {} (requestId={})", duration, result.isValid() ? "PASSED ✓" : "FAILED ✗", requestId);
-            // Write result files with request ID
+            LOGGER.info("Validation completed in {}ms: {} (requestId='{}')", duration, result.isValid() ? "PASSED ✓" : "FAILED ✗", requestId);
+
+            // write the result files so the pre-commit hook can read the outcome.
             try {
                 resultFile.writeResult(result, requestId);
-                LOGGER.debug("Validation result files written for requestId={}", requestId);
+                LOGGER.debug("Validation result files written (requestId='{}')", requestId);
             } catch (Exception e) {
-                LOGGER.error("Failed to write validation result files (requestId={})", requestId, e);
+                LOGGER.error("Failed to write validation result files (requestId='{}')", requestId, e);
             }
 
-            // Generate and save changelog if validation passed
             if (result.isValid()) {
+                // generate the changelog and stage it only when validation succeeds, so that failed commits do not produce changelog entries.
                 try {
                     SemanticChangelog changelog = handler.generateChangelog(info.getCommitSha(), info.getBranch());
-                    // Save changelog to .vitruvius/changelogs/<commitShort>.txt
-                    Path vitruviusDir = triggerFile.getTriggerPath().getParent();
-                    Path changelogDir = vitruviusDir.resolve("changelogs");
-                    Path changelogFile = changelogDir.resolve(commitShort + ".txt");
-
+                    Path changelogFile = triggerFile.getTriggerPath().getParent().resolve("changelogs").resolve(commitShort + ".txt");
                     changelog.writeTo(changelogFile);
-
                     LOGGER.info("Semantic changelog generated for commit {}", commitShort);
                     LOGGER.debug("Changelog saved to: {}", changelogFile);
-
-                    // auto-stage the changelog for commit
                     autoStageChangelog(changelogFile, commitShort);
-
                 } catch (Exception e) {
-                    LOGGER.warn("Failed to generate changelog, but validation passed (requestId={})", requestId, e);
+                    LOGGER.warn("Failed to generate changelog, but validation passed (requestId='{}')", requestId, e);
                 }
             } else {
-                LOGGER.warn("Validation failed: {} errors, {} warnings (requestId={})", result.getErrors().size(), result.getWarnings().size(), requestId);
+                LOGGER.warn("Validation failed: {} errors, {} warnings (requestId='{}')", result.getErrors().size(), result.getWarnings().size(), requestId);
                 if (!result.getErrors().isEmpty()) {
                     LOGGER.warn("First error: {}", result.getErrors().get(0));
                 }
             }
 
         } catch (Exception e) {
-            LOGGER.error("Validation failed with exception for commit {} (requestId={})", commitShort, requestId, e);
+            LOGGER.error("Validation failed with exception for commit {} (requestId='{}')", commitShort, requestId, e);
             writeErrorResult(requestId, "Validation crashed: " + e.getMessage());
         }
     }
 
     /**
-     * Auto-stages the changelog file for commit using JGit.
-     *
-     * <p>This ensures changelogs are automatically included in commits without
-     * developer action. If auto-staging fails, logs warning but doesn't fail validation.
-     *
-     * @param changelogFile the changelog file to stage
-     * @param commitShort the short commit SHA (for logging)
+     * Auto-stages the given changelog file using JGit so that it is automatically included in the commit without requiring any manual developer action.
+     * A failure to stage is logged as a warning and does not affect the validation result.
+     * @param changelogFile the changelog file to stage.
+     * @param commitShort   the short commit SHA, used in log messages.
      */
     private void autoStageChangelog(Path changelogFile, String commitShort) {
-        try {
-            // Open Git repository
-            Git git = Git.open(repositoryRoot.toFile());
-            // Compute relative path from repository root
+        try (Git git = Git.open(repositoryRoot.toFile())) {
+            // git add expects a forward-slash path relative to the repository root.
             Path relativePath = repositoryRoot.relativize(changelogFile);
-            String filePattern = relativePath.toString().replace('\\', '/');  // Git uses forward slashes
-            // Stage the changelog file
+            String filePattern = relativePath.toString().replace('\\', '/');
             git.add().addFilepattern(filePattern).call();
             LOGGER.info("Changelog auto-staged for commit {} ({})", commitShort, filePattern);
         } catch (Exception e) {
@@ -274,17 +265,17 @@ public class VsumValidationWatcher {
     }
 
     /**
-     * Writes an error result when validation cannot be performed.
-     *
-     * @param requestId the request identifier
-     * @param errorMessage the error message to write
+     * Writes an error result file when validation cannot be performed, for example when the lock cannot be acquired.
+     * This ensures the pre-commit hook always receives a response and does not hang waiting for a result file that will never appear.
+     * @param requestId    the request identifier used to name the result file.
+     * @param errorMessage the error message to include in the result.
      */
     private void writeErrorResult(String requestId, String errorMessage) {
         try {
-            ValidationResult errorResult = ValidationResult.failure(java.util.List.of(errorMessage));
+            ValidationResult errorResult = ValidationResult.failure(List.of(errorMessage));
             resultFile.writeResult(errorResult, requestId);
         } catch (Exception writeError) {
-            LOGGER.error("Failed to write error result (requestId={})", requestId, writeError);
+            LOGGER.error("Failed to write error result (requestId='{}')", requestId, writeError);
         }
     }
 }

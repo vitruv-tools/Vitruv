@@ -3,56 +3,54 @@ package tools.vitruv.framework.vsum.branch.data;
 /**
  * Represents the type of operation performed on a file in a Git commit.
  *
- * <p>Maps to Git's file status codes:
+ * <p>Each constant maps to one of Git's file status codes so that changelogs produced by
+ * Vitruvius use the same terminology as the underlying version control system.
  * <ul>
- *   <li>A (added) - new file created</li>
- *   <li>M (modified) - existing file changed</li>
- *   <li>D (deleted) - file removed</li>
- *   <li>R (renamed) - file moved to new location</li>
- *   <li>C (copied) - file duplicated to new location</li>
+ *   <li>{@link #ADDED} - Git status code {@code A}: new file created.</li>
+ *   <li>{@link #MODIFIED} - Git status code {@code M}: existing file content changed.</li>
+ *   <li>{@link #DELETED} - Git status code {@code D}: file removed.</li>
+ *   <li>{@link #RENAMED} - Git status code {@code R}: file moved to a new location.</li>
+ *   <li>{@link #COPIED} - Git status code {@code C}: file duplicated to a new location.</li>
  * </ul>
  *
- * <p> todo: Use for conflict categorization and resolution strategies
- * <ul>
- *   <li>Content conflicts: M+M on same file → three-way merge</li>
- *   <li>Structural conflicts: A+A same file, D+M → manual resolution</li>
- *   <li>Rename conflicts: R+R to different names → user choice</li>
- *   <li>Add/delete conflicts: A+D → keep or delete decision</li>
- * </ul>
+ * <p>These operation types are also intended to drive conflict categorization and resolution
+ * strategies during branch merges. For example, two concurrent {@link #MODIFIED} operations
+ * on the same file suggest a content conflict requiring a three-way merge, while an
+ * {@link #ADDED} on one branch and a {@link #DELETED} on another requires an explicit
+ * keep-or-delete decision. This classification is planned for a future iteration once
+ * element-level change tracking is available.
  */
 public enum FileOperation {
 
     /**
-     * File was newly created in this commit.
-     * Corresponds to Git status code 'A'.
+     * A new file was created in this commit.
+     * Corresponds to Git status code {@code A}.
      */
     ADDED,
 
     /**
-     * File content was changed in this commit.
-     * Corresponds to Git status code 'M'.
+     * The content of an existing file was changed in this commit.
+     * Corresponds to Git status code {@code M}.
      */
     MODIFIED,
 
     /**
-     * File was removed in this commit.
-     * Corresponds to Git status code 'D'.
+     * A file was removed in this commit.
+     * Corresponds to Git status code {@code D}.
      */
     DELETED,
 
     /**
-     * File was moved to a new location.
-     * Corresponds to Git status code 'R'.
-     *
-     * <p> todo: Track old and new paths in FileChange
+     * A file was moved to a new location. The previous path is captured in the
+     * {@code oldPath} field of the corresponding {@link FileChange}.
+     * Corresponds to Git status code {@code R}.
      */
     RENAMED,
 
     /**
-     * File was copied to a new location.
-     * Corresponds to Git status code 'C'.
-     *
-     * <p> todo: Track source and destination in FileChange
+     * A file was duplicated to a new location. Tracking of the source path alongside
+     * the destination path is planned for a future iteration.
+     * Corresponds to Git status code {@code C}.
      */
     COPIED
 }

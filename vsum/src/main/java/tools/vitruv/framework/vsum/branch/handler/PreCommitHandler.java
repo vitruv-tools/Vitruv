@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
-import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.branch.data.FileChange;
 import tools.vitruv.framework.vsum.branch.data.SemanticChangelog;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -22,22 +22,20 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Handles pre-commit validation of the V-SUM.
+ * Validates the VSUM for consistency before allowing a Git commit to proceed, and generates the semantic changelog entry for the commit.
  *
- * <p>Validates V-SUM consistency before allowing Git commits to ensure:
- * <ul>
- *   <li>All resources are loadable (no corrupted XMI files)</li>
- *   <li>No unresolved proxy objects (all references valid)</li>
- *   <li>Correspondences are valid (no broken links between models)</li>
- *   <li>UUID resolver is in a consistent state</li>
- * </ul>
+ * <p>Validation checks performed:
+ * <ol>
+ *   <li>All model resources are loadable and contain no XMI parse errors.</li>
+ *   <li>No unresolved proxy objects exist (all cross-references can be resolved).</li>
+ *   <li>The correspondence model is accessible and not null.</li>
+ *   <li>The UUID resolver is accessible and not null.</li>
+ * </ol>
  *
- * <p>Also generates semantic changelogs for commits.
- *
- * <p>todo: Add domain-specific validation rules
- * <p>todo: Add change recorder state validation
- * <p>todo: Integrate with Vitruvius reaction validation
+ * <p>todo: domain-specific validation rules, change recorder state validation, integration with Vitruvius reaction validation, detailed correspondence link checking, and orphaned UUID detection are planned for a future iteration.
  */
 public class PreCommitHandler {
     private static final Logger LOGGER = LogManager.getLogger(PreCommitHandler.class);
@@ -45,46 +43,39 @@ public class PreCommitHandler {
     private final InternalVirtualModel virtualModel;
 
     /**
-     * Creates a pre-commit handler for the given virtual model.
-     *
-     * @param virtualModel the internal virtual model to validate
+     * Creates a pre-commit handler for the given VirtualModel.
+     * @param virtualModel the internal VirtualModel to validate, must not be null.
      */
     public PreCommitHandler(InternalVirtualModel virtualModel) {
-        this.virtualModel = virtualModel;
+        this.virtualModel = checkNotNull(virtualModel, "VirtualModel must not be null");
     }
 
     /**
-     * Validates the V-SUM for consistency.
-     *
-     * <p>Performs the following checks:
-     * <ol>
-     *   <li>All resources are loadable and have no errors</li>
-     *   <li>No unresolved proxy objects exist</li>
-     *   <li>All correspondences point to valid, non-proxy objects</li>
-     *   <li>UUID resolver is accessible and functional</li>
-     * </ol>
-     *
-     * @return validation result with errors and warnings
+     * Validates the VirtualModel for consistency. Returns a {@link ValidationResult} that indicates whether the commit is safe to proceed,
+     * with error messages describing any detected inconsistencies and warning messages for non-blocking issues.
+     * <p>If an unexpected exception is thrown during any validation step, it is caught, logged, and added to the error list rather than propagated,
+     * so that the caller always receives a well-formed result.
+     * @return the validation result with errors and warnings collected during all checks.
      */
     public ValidationResult validate() {
-        LOGGER.info("Starting V-SUM validation");
+        LOGGER.info("Starting VirtualModel validation");
         List<String> errors = new ArrayList<>();
         List<String> warnings = new ArrayList<>();
         try {
-            // Check all resources are loadable
+            // check all resources are loadable and free of XMI parse errors
             validateResourcesLoadable(errors, warnings);
-            // Check for unresolved proxies
+            // check that no cross-references point to unresolved proxy objects
             validateNoProxies(errors);
-            // Check correspondences are valid
+            // check that the correspondence model is reachable.
             validateCorrespondences(errors, warnings);
-            // Check UUID resolver state
+            // check that the UUID resolver is reachable.
             validateUuidResolver(errors);
         } catch (Exception e) {
             errors.add("Validation failed with unexpected exception: " + e.getMessage());
             LOGGER.error("Unexpected validation error", e);
         }
 
-        // Build result
+        // build the result from the collected errors and warnings.
         ValidationResult result;
         if (!errors.isEmpty()) {
             result = warnings.isEmpty() ? ValidationResult.failure(errors) : ValidationResult.failureWithWarnings(errors, warnings);
@@ -93,12 +84,13 @@ public class PreCommitHandler {
         } else {
             result = ValidationResult.success();
         }
-        LOGGER.info("V-SUM validation completed: valid={}, errors={}, warnings={}", result.isValid(), errors.size(), warnings.size());
+        LOGGER.info("VirtualModel validation completed: valid={}, errors={}, warnings={}", result.isValid(), errors.size(), warnings.size());
         return result;
     }
 
     /**
-     * Validates that all resources can be loaded and have no errors.
+     * Checks that every model resource can be loaded and has no XMI parse errors.
+     * Resources that are not yet loaded are loaded eagerly so that parse errors are detected immediately.
      */
     private void validateResourcesLoadable(List<String> errors, List<String> warnings) {
         Collection<Resource> resources = virtualModel.getViewSourceModels();
@@ -109,19 +101,18 @@ public class PreCommitHandler {
         LOGGER.debug("Validating {} resources", resources.size());
         for (Resource resource : resources) {
             try {
-                // Check if resource is loaded
+                // load the resource if it has not been loaded yet, so that parse errors surface now rather than silently remaining undetected.
                 if (!resource.isLoaded()) {
                     LOGGER.debug("Loading resource: {}", resource.getURI());
                     resource.load(Collections.emptyMap());
                 }
-
-                // Check for load errors
+                // collect all XMI parse errors reported by the resource.
                 if (!resource.getErrors().isEmpty()) {
                     for (Resource.Diagnostic error : resource.getErrors()) {
                         errors.add("Resource load error in " + resource.getURI() + ": " + error.getMessage() + " (line " + error.getLine() + ")");
                     }
                 }
-                // Check for warnings
+                // collect parse warnings, which do not block the commit but should be visible.
                 if (!resource.getWarnings().isEmpty()) {
                     for (Resource.Diagnostic warning : resource.getWarnings()) {
                         warnings.add("Resource warning in " + resource.getURI() + ": " + warning.getMessage());
@@ -138,7 +129,8 @@ public class PreCommitHandler {
     }
 
     /**
-     * Validates that no unresolved proxy objects exist in any resource.
+     * Checks that no object in any loaded resource is an unresolved proxy, and that no non-containment cross-reference points to a proxy.
+     * Unresolved proxies indicate that the VirtualModel references objects in files that no longer exist or have moved.
      */
     private void validateNoProxies(List<String> errors) {
         Collection<Resource> resources = virtualModel.getViewSourceModels();
@@ -146,20 +138,20 @@ public class PreCommitHandler {
 
         for (Resource resource : resources) {
             if (resource.isLoaded()) {
-                // Iterate all contents recursively
+                // traverse all model objects in the resource recursively.
                 TreeIterator<EObject> iterator = resource.getAllContents();
                 while (iterator.hasNext()) {
                     EObject obj = iterator.next();
-                    // Check if object itself is a proxy
+                    // an object that is itself a proxy means its containing resource was not resolved during load.
                     if (obj.eIsProxy()) {
                         String uri = EcoreUtil.getURI(obj).toString();
                         errors.add("Unresolved proxy object: " + uri + " in resource " + resource.getURI());
                         proxyCount++;
                     }
-                    // Check all cross-references for proxies
+                    // check non-containment references without resolving them, so that dangling proxies are reported rather than silently auto-resolved.
                     for (EReference ref : obj.eClass().getEAllReferences()) {
                         if (!ref.isContainment()) {
-                            Object value = obj.eGet(ref, false); // Don't resolve proxies
+                            Object value = obj.eGet(ref, false);
                             if (value instanceof EObject && ((EObject) value).eIsProxy()) {
                                 errors.add("Unresolved reference '" + ref.getName() + "' in " + EcoreUtil.getURI(obj) + " points to proxy " + EcoreUtil.getURI((EObject) value));
                                 proxyCount++;
@@ -183,19 +175,17 @@ public class PreCommitHandler {
     }
 
     /**
-     * Validates that all correspondences point to valid, non-proxy objects.
+     * Checks that the correspondence model is accessible. Detailed validation of individual correspondence links is planned for a future iteration once the correspondence model
+     * view exposes a way to enumerate all stored correspondences.
      */
     private void validateCorrespondences(List<String> errors, List<String> warnings) {
         try {
             EditableCorrespondenceModelView<Correspondence> corrModel = virtualModel.getCorrespondenceModel();
-
             if (corrModel == null) {
                 errors.add("Correspondence model is null");
                 return;
             }
-            // The correspondence model view doesn't directly expose all correspondences
-            // currently only validate that the correspondence model is at least accessible
-            // TODO: Add more detailed correspondence validation
+            // accessibility is the only check possible at this stage because the correspondence model view does not currently expose a full enumeration API.
             LOGGER.debug("Correspondence model is accessible");
         } catch (Exception e) {
             errors.add("Failed to access correspondence model: " + e.getMessage());
@@ -204,7 +194,8 @@ public class PreCommitHandler {
     }
 
     /**
-     * Validates that the UUID resolver is in a valid state.
+     * Checks that the UUID resolver is accessible. Detailed validation such as detecting
+     * orphaned UUIDs or verifying UUID-to-object mappings is planned for a future iteration.
      */
     private void validateUuidResolver(List<String> errors) {
         try {
@@ -213,11 +204,9 @@ public class PreCommitHandler {
                 errors.add("UUID resolver is null");
                 return;
             }
-            // UUID resolver is accessible and functional
+            // accessibility is the only check performed at this stage
+            // deeper validation such as orphaned UUID detection will be added in a future iteration.
             LOGGER.debug("UUID resolver is accessible");
-            // TODO: Add more detailed UUID resolver validation
-            // Check for orphaned UUIDs
-            // Validate UUID to object mappings
         } catch (Exception e) {
             errors.add("Failed to access UUID resolver: " + e.getMessage());
             LOGGER.error("UUID resolver validation error", e);
@@ -225,29 +214,20 @@ public class PreCommitHandler {
     }
 
     /**
-     * Generates a semantic changelog for the given commit.
-     *
-     * <p>TODO : Implement changelog generation by querying Git for changed files.
-     * For now, returns a minimal changelog.
-     *
-     * @param commitSha the Git commit SHA
-     * @param branch the branch name
-     * @return semantic changelog
+     * Generates a minimal semantic changelog entry for the given commit.
+     * Returns a placeholder changelog because querying Git for the actual changed files via JGit is planned for a future iteration.
+     * At that point, this method will diff HEAD against HEAD^ and produce a {@link FileChange} entry for each added, modified, or deleted file.
+     * @param commitSha the full Git commit SHA.
+     * @param branch    the branch on which the commit was made.
+     * @return a {@link SemanticChangelog} with an empty change list and a placeholder author.
      */
     public SemanticChangelog generateChangelog(String commitSha, String branch) {
-        LOGGER.info("Generating changelog for commit {} on branch {}", commitSha.substring(0, Math.min(8, commitSha.length())), branch);
+        // use the standard seven-character short SHA that matches the Git convention and the format used in SemanticChangelog.toString().
+        LOGGER.info("Generating changelog for commit {} on branch {}", commitSha.substring(0, Math.min(7, commitSha.length())), branch);
 
-        // TODO: Query Git to detect changed files
-        // - Use JGit to get diff between HEAD and HEAD^
-        // - Determine which files were ADDED, MODIFIED, DELETED
-        // - Create FileChange objects for each
-
-        // For now, create minimal changelog
+        // actual file changes will be populated once JGit diff integration is available.
         List<FileChange> changes = new ArrayList<>();
-        // changes.add(new FileChange("models/User.java", FileOperation.MODIFIED));
 
-        // TODO: Get actual author from Git
-        // TODO: Get actual commit message
         return SemanticChangelog.create(commitSha, "system", LocalDateTime.now(), "Commit on " + branch, branch, changes);
     }
 }

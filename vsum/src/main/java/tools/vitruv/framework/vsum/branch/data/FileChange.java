@@ -1,87 +1,64 @@
 package tools.vitruv.framework.vsum.branch.data;
 
 import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a single file change within a semantic changelog.
+ * Represents a single file-level change captured in a {@link SemanticChangelog}.
  *
- * <p>Tracks the file path, operation type (added, modified, deleted, renamed, copied),
- * and optionally the old path for rename operations.
- * todo: Element-level changes will be added for fine-grained conflict detection.
+ * <p>Each instance records which file was affected, what operation was performed (see {@link FileOperation}),
+ * and optionally the previous path for rename operations.
+ * An ordered list of element-level changes within the file is also stored, though it is currently always empty.
+ * todo: Fine-grained element tracking to enable more precise conflict categorization during branch merges.
+ * <p>Instances are immutable after construction. The {@code elementChanges} list is defensively copied on construction and exposed as an unmodifiable view.
  */
 @Getter
 public class FileChange {
 
-    /**
-     * -- GETTER --
-     *
-     */
+    /** The path of the changed file relative to the repository root. */
     private final String filePath;
-    /**
-     * -- GETTER --
-     *
-     */
+
+    /** The type of operation performed on the file. */
     private final FileOperation operation;
+
     /**
-     * -- GETTER --
-     *
+     * The previous path of the file before it was renamed. Only non-null when {@code operation} is {@link FileOperation#RENAMED}, null for all other operations.
      */
-    private final String oldPath;  // nullable and will only be used for RENAMED operations
+    private final String oldPath;
 
     /**
-     * Detailed element-level changes within this file.
-     *
-     * <p> todo: Populate with element-level changes such as:
-     * <ul>
-     *   <li>Method added/modified/deleted</li>
-     *   <li>Field added/modified/deleted</li>
-     *   <li>Class structure changes</li>
-     * </ul>
-     *
-     * <p> todo: Use for conflict categorization:
-     * <ul>
-     *   <li>Content conflicts (same method modified by both branches)</li>
-     *   <li>Structural conflicts (method added in both branches)</li>
-     *   <li>Semantic conflicts (breaking correspondences)</li>
-     *   <li>Enables different resolution strategies per conflict type</li>
-     * </ul>
-     *
-     * <p>Currently always empty.
-     * -- GETTER --
-     *
-
+     * Element-level changes within this file, such as methods or fields that were added, modified, or deleted.
+     * todo: Typed as {@code List<?>} because the concrete element change type will be defined in a future iteration alongside the EMF model diffing implementation.
+     * <p>Currently always empty. Will be populated once element-level tracking is introduced.
      */
     private final List<?> elementChanges;
 
     /**
-     * Creates a file change with all details.
+     * Creates a file change with all available details.
      *
-     * @param filePath the path of the changed file (must not be null or empty)
-     * @param operation the type of operation (must not be null)
-     * @param oldPath the old path for RENAMED operations (must be null for non-RENAMED operations)
-     * @param elementChanges detailed element-level changes (null for now, populated in Iteration 2)
-     * @throws IllegalArgumentException if filePath is null/empty, operation is null,
-     *                                  or oldPath is provided for non-RENAMED operations
+     * @param filePath       the path of the changed file. must not be null or blank.
+     * @param operation      the type of operation performed on the file. must not be null.
+     * @param oldPath        the previous path for {@link FileOperation#RENAMED} operations. must be null for all other operation types.
+     * @param elementChanges detailed element-level changes within the file. may be null, in which case an empty list is used.
+     * @throws IllegalArgumentException if {@code filePath} is null or blank, if {@code operation} is null,
+     *                                  if {@code oldPath} is provided for a non-renamed operation, or if {@code oldPath} is missing for a renamed operation.
      */
     public FileChange(String filePath, FileOperation operation, String oldPath, List<?> elementChanges) {
-        // Validate required fields
         if (filePath == null || filePath.trim().isEmpty()) {
             throw new IllegalArgumentException("filePath must not be null or empty");
         }
         if (operation == null) {
             throw new IllegalArgumentException("operation must not be null");
         }
-
-        // oldPath only valid for RENAMED operations
+        // oldPath is only meaningful for rename operations
         if (oldPath != null && operation != FileOperation.RENAMED) {
             throw new IllegalArgumentException("oldPath can only be set for RENAMED operations, but operation is: " + operation);
         }
-
-        // RENAMED operations must have oldPath
+        // a rename without a source path cannot be interpreted correctly, so both fieldsmust be present or absent together.
         if (operation == FileOperation.RENAMED && oldPath == null) {
             throw new IllegalArgumentException("RENAMED operation requires oldPath to be set");
         }
@@ -89,45 +66,44 @@ public class FileChange {
         this.filePath = filePath;
         this.operation = operation;
         this.oldPath = oldPath;
+        // copy the list so that external mutations do not affect this instance.
         this.elementChanges = elementChanges != null ? Collections.unmodifiableList(new ArrayList<>(elementChanges)) : Collections.emptyList();
     }
 
     /**
-     * Creates a simple file change without old path or element details.
-     *
-     * <p> Used for ADDED, MODIFIED, DELETED, and COPIED operations.
-     *
-     * @param filePath the path of the changed file
-     * @param operation the type of operation
-     * @throws IllegalArgumentException if filePath is null or operation is null
+     * Creates a file change without an old path or element-level details. Suitable for {@link FileOperation#ADDED}, {@link FileOperation#MODIFIED},
+     * and {@link FileOperation#DELETED} operations.
+     * @param filePath  the path of the changed file, must not be null or blank.
+     * @param operation the type of operation, must not be null.
+     * @throws IllegalArgumentException if {@code filePath} is null or blank, or if {@code operation} is null.
      */
     public FileChange(String filePath, FileOperation operation) {
         this(filePath, operation, null, null);
     }
 
     /**
-     * Creates a file change with old path (for renamed files).
+     * Creates a file change with a previous path for rename operations.
      *
-     * <p>Typically used for RENAMED operations.
-     *
-     * @param filePath the new path of the file
-     * @param operation the type of operation (must be RENAMED)
-     * @param oldPath the previous path of the file
-     * @throws IllegalArgumentException if filePath is null, operation is null, or operation is not RENAMED
+     * @param filePath  the new path of the file, must not be null or blank.
+     * @param operation the type of operation, must be {@link FileOperation#RENAMED}.
+     * @param oldPath   the previous path of the file, must not be null.
+     * @throws IllegalArgumentException if any argument is null, if {@code filePath} is blank, or if {@code operation} is not {@link FileOperation#RENAMED}.
      */
     public FileChange(String filePath, FileOperation operation, String oldPath) {
         this(filePath, operation, oldPath, null);
     }
 
     /**
-     * @return true if this is a rename operation
+     * Returns true if this change represents a file rename, i.e., if the operation is {@link FileOperation#RENAMED}.
+     * When true, {@link #getOldPath()} returns the previous path.
      */
     public boolean isRenamed() {
         return operation == FileOperation.RENAMED;
     }
 
     /**
-     * @return true if element-level changes are available
+     * Returns true if element-level change details are available for this file change.
+     * Currently, always returns false because element-level tracking is not yet implemented.
      */
     public boolean hasElementChanges() {
         return !elementChanges.isEmpty();
@@ -138,10 +114,10 @@ public class FileChange {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FileChange that = (FileChange) o;
-        return Objects.equals(filePath, that.filePath) &&
-                operation == that.operation &&
-                Objects.equals(oldPath, that.oldPath) &&
-                Objects.equals(elementChanges, that.elementChanges);
+        return Objects.equals(filePath, that.filePath)
+                && operation == that.operation
+                && Objects.equals(oldPath, that.oldPath)
+                && Objects.equals(elementChanges, that.elementChanges);
     }
 
     @Override
@@ -151,7 +127,7 @@ public class FileChange {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append(operation).append(": ").append(filePath);
         if (oldPath != null) {
             sb.append(" (was: ").append(oldPath).append(")");
