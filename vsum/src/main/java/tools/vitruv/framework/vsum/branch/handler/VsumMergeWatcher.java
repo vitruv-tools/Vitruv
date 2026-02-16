@@ -1,0 +1,210 @@
+package tools.vitruv.framework.vsum.branch.handler;
+
+import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.jgit.api.Git;
+import tools.vitruv.framework.vsum.branch.data.ValidationResult;
+import tools.vitruv.framework.vsum.branch.util.MergeResultFile;
+import tools.vitruv.framework.vsum.branch.util.MergeTriggerFile;
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class VsumMergeWatcher {
+    private static final Logger LOGGER = LogManager.getLogger(VsumMergeWatcher.class);
+    private static final long POLL_INTERVAL_MS = 500;
+    private static final long STOP_TIMEOUT_MS = 2000;
+    private static final String THREAD_NAME = "VSUM-Merge-Watcher";
+    private static final String LOCK_FILENAME = ".merge.lock";
+
+    private final Path repositoryRoot;
+    private final MergeTriggerFile triggerFile;
+    private final MergeResultFile resultFile;
+    private final PostMergeHandler handler;
+    private final Path lockFile;
+
+    private Thread watcherThread;
+    @Getter
+    private volatile boolean running;
+
+    public VsumMergeWatcher(InternalVirtualModel virtualModel, Path repositoryRoot) {
+        checkNotNull(virtualModel, "virtual model must not be null");
+        this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
+        this.triggerFile = new MergeTriggerFile(repositoryRoot);
+        this.resultFile = new MergeResultFile(repositoryRoot);
+        this.handler = new PostMergeHandler(virtualModel, repositoryRoot);
+        this.running = false;
+        this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);
+    }
+
+    public synchronized void start() {
+        if (running) {
+            throw new IllegalStateException("Merge watcher is already running");
+        }
+        running = true;
+        watcherThread = new Thread(this::watchLoop, THREAD_NAME);
+        watcherThread.setDaemon(true);
+        watcherThread.start();
+        LOGGER.info("V-SUM merge watcher started");
+    }
+
+    public synchronized void stop() {
+        if (running) {
+            return;
+        }
+        running = false;
+        if (watcherThread != null) {
+            watcherThread.interrupt();
+            try {
+                watcherThread.join(STOP_TIMEOUT_MS);
+            } catch (InterruptedException e) {
+                LOGGER.warn("Interrupted while waiting for merge watcher thread to stop");
+                Thread.currentThread().interrupt();
+            }
+        }
+        LOGGER.info("V-SUM merge watcher stopped");
+    }
+
+    private void watchLoop() {
+        LOGGER.debug("Merge watch loop started, polling every {}ms", POLL_INTERVAL_MS);
+        while(running) {
+            try {
+                MergeTriggerFile.TriggerInfo info = triggerFile.checkAndClearTrigger();
+                if (info != null) {
+                    handleMergeRequest(info);
+                }
+                Thread.sleep(POLL_INTERVAL_MS);
+            } catch (InterruptedException e) {
+                LOGGER.debug("Merge watcher interrupted");
+                running = false;
+                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                LOGGER.error("Error in merge watcher loop, will continue", e);
+            }
+        }
+        LOGGER.debug("Merge watcher loop existed");
+    }
+
+    private void handleMergeRequest(MergeTriggerFile.TriggerInfo info) {
+        String mergeShort = info.getMergeCommitSha().substring(0, Math.min(7, info.getMergeCommitSha().length()));
+        String requestId = info.getRequestId();
+
+        LOGGER.info("Merge validation requested for commit {} ({} → {}) (requestId='{}')", mergeShort, info.getSourceBranch(), info.getTargetBranch(), requestId);
+
+        try {
+            Files.createDirectories(lockFile.getParent());
+
+            try (FileChannel channel = FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE)){
+                FileLock lock = channel.tryLock();
+                if (lock == null) {
+                    LOGGER.warn("Another merge validation is in progress, " + "re-queuing trigger for retry (requestId='{}')", requestId);
+                    try {
+                        triggerFile.createTrigger(info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch());
+                    } catch (IOException e) {
+                        LOGGER.error("Failed to re-create merge trigger for retry " + "(requestId='{}')", requestId, e);
+                        //write a warning result so the hook receives a response instead of waiting indefinitely
+                        writeWarningResult(requestId, "Merge validation queue full - try again");
+                    }
+                    return;
+                }
+                try {
+                    LOGGER.debug("Lock acquired for merge validation (requestId='{}')", requestId);
+                    performMergeValidation(info, mergeShort, requestId);
+                } finally {
+                    lock.release();
+                    LOGGER.debug("Lock released (requestId='{}')", requestId);
+                }
+            } catch (IOException e) {
+                LOGGER.error("Failed to acquire merge lock (requestId='{}')", requestId, e);
+                writeWarningResult(requestId, "Failed to acquire merge validation lock: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error handling merge request (requestId='{}')", requestId, e);
+            writeWarningResult(requestId, "Merge validation failed: " + e.getMessage());
+        }
+    }
+
+    private void performMergeValidation(MergeTriggerFile.TriggerInfo info, String mergeShort, String requestId) {
+        try {
+            long startTime = System.currentTimeMillis();
+            ValidationResult result = handler.validate();
+            long duration = System.currentTimeMillis() - startTime;
+            LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')", duration, result.isValid() ? "PASSED ✓" : "WARNING ⚠", requestId);
+
+            // write the request-scoped result files so the post-merge hook can display the outcome to the developer in the terminal.
+            try {
+                resultFile.writeResult(result, requestId);
+                LOGGER.debug("Merge result files written (requestId='{}')", requestId);
+            } catch (Exception e) {
+                LOGGER.error("Failed to write merge result files (requestId='{}')", requestId, e);
+            }
+
+            // write the permanent merge metadata record regardless of validation outcome.
+            // a failed validation is still a completed merge and must be recorded (MG-6).
+            try {
+                handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch(), result);
+                LOGGER.info("Merge metadata written for commit {}", mergeShort);
+                autoStageMetadata(info.getMergeCommitSha(), mergeShort);
+            } catch (Exception e) {
+                LOGGER.warn("Failed to generate merge metadata for commit {} (not critical)", mergeShort, e);
+            }
+
+            if (!result.isValid()) {
+                LOGGER.warn("Merged VSUM state has {} inconsistenc{}, {} warning{} (requestId='{}')",
+                        result.getErrors().size(),
+                        result.getErrors().size() == 1 ? "y" : "ies",
+                        result.getWarnings().size(),
+                        result.getWarnings().size() == 1 ? "" : "s",
+                        requestId);
+                if (!result.getErrors().isEmpty()) {
+                    LOGGER.warn("First inconsistency: {}", result.getErrors().get(0));
+                }
+            }
+
+        } catch (Exception e) {
+            LOGGER.error("Merge validation failed with exception for commit {} (requestId='{}')", mergeShort, requestId, e);
+            writeWarningResult(requestId, "Merge validation crashed: " + e.getMessage());
+        }
+    }
+
+    private void autoStageMetadata(String mergeCommitSha, String mergeShort) {
+        try (Git git = Git.open(repositoryRoot.toFile())) {
+            Path metadataFile = resultFile.getMetadataPath(mergeCommitSha);
+            //git add expects a forward-slash path relative to the repo root
+            Path relativePath = repositoryRoot.relativize(metadataFile);
+            String filePattern = relativePath.toString().replace('\\', '/');
+            git.add().addFilepattern(filePattern).call();
+            LOGGER.info("Merge metadata auto-staged for commit {} ({})", mergeShort, filePattern);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to auto-stage merge metadata for commit {} (not critical)", mergeShort, e);
+        }
+    }
+    /**
+     * Writes a warning result file when merge validation cannot be performed, for
+     * example when the lock cannot be acquired. This ensures the post-merge hook
+     * always receives a response and does not hang waiting indefinitely.
+     *
+     * <p>The result is written as a failure with a warning message rather than a hard
+     * failure, consistent with the non-blocking nature of post-merge validation.
+     *
+     * @param requestId    the request identifier used to name the result file.
+     * @param errorMessage the warning message to include in the result.
+     */
+    private void writeWarningResult(String requestId, String errorMessage) {
+        try {
+            ValidationResult warningResult = ValidationResult.failure(List.of(errorMessage));
+            resultFile.writeResult(warningResult, requestId);
+        } catch (Exception writeError) {
+            LOGGER.error("Failed to write warning result (requestId='{}')", requestId, writeError);
+        }
+    }
+}

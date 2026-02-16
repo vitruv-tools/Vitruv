@@ -23,6 +23,8 @@ import java.util.Set;
  *       Writes a reload trigger file so that the Vitruvius background watcher can refresh the VirtualModel state.</li>
  *   <li>{@code pre-commit}: triggered before each commit.
  *       Requests a VirtualModel validation and blocks the commit if consistency errors are detected.</li>
+ *   <li>{@code post-merge}: triggered after {@code git merge} or {@code git pull} completes.
+ *       Writes a merge trigger file so that the Vitruvius background watcher can validate the merged model state and write a permanent merge metadata record.</li>
  * </ul>
  *
  * <p>If a hook file already exists when installing, it is renamed to {@code <hookName>.backup} before the new file is written.
@@ -40,6 +42,7 @@ public class GitHookInstaller {
 
     private static final String POST_CHECKOUT_HOOK = "post-checkout";
     private static final String PRE_COMMIT_HOOK = "pre-commit";
+    private static final String POST_MERGE_HOOK = "post-merge";
 
     /**
      * The {@code .git/hooks} directory of the target repository. All hook files are written to and read from this directory.
@@ -79,6 +82,16 @@ public class GitHookInstaller {
     }
 
     /**
+     * Installs the {@code post-merge} hook that triggers post-merge VSUM validation after {@code git merge} or {@code git pull} completes.
+     * Writes a merge trigger file so that the Vitruvius background watcher can validate the merged model state and write a permanent merge metadata record.
+     * if a hook file already exists, it is backed up before being replaced.
+     * @throws IOException if the hook resource cannot be found, the backup cannot be created, or the hook file cannot be written.
+     */
+    public void installPostMergeHook() throws IOException {
+        installHook(POST_MERGE_HOOK);
+    }
+
+    /**
      * Installs all currently supported Git hooks ({@code post-checkout} and {@code pre-commit}).
      * If any installation fails the exception is propagated immediately and subsequent hooks are not installed.
      * @throws IOException if any hook cannot be installed.
@@ -86,13 +99,13 @@ public class GitHookInstaller {
     public void installAllHooks() throws IOException {
         installPostCheckoutHook();
         installPreCommitHook();
-        // todo: installPostMergeHook() will be added here once the post-merge handler
-        LOGGER.info("installed all Git hooks ({}, {})", POST_CHECKOUT_HOOK, PRE_COMMIT_HOOK);
+        installPostMergeHook();
+        LOGGER.info("installed all Git hooks ({}, {}, {})", POST_CHECKOUT_HOOK, PRE_COMMIT_HOOK, POST_MERGE_HOOK);
     }
 
     /**
-     * Removes the {@code post-checkout} hook. If a backup exists from a previous installation, the backup is restored
-     * so that the developer's original hook is active again.
+     * Removes the {@code post-checkout} hook.
+     * If a backup exists from a previous installation, the backup is restored so that the developer's original hook is active again.
      * @throws IOException if the hook file cannot be deleted or the backup cannot be restored.
      */
     public void uninstallPostCheckoutHook() throws IOException {
@@ -100,12 +113,21 @@ public class GitHookInstaller {
     }
 
     /**
-     * Removes the {@code pre-commit} hook. iIf a backup exists from a previous installation, the backup is restored
-     * so that the developer's original hook is active again.
+     * Removes the {@code pre-commit} hook.
+     * If a backup exists from a previous installation, the backup is restored so that the developer's original hook is active again.
      * @throws IOException if the hook file cannot be deleted or the backup cannot be restored.
      */
     public void uninstallPreCommitHook() throws IOException {
         uninstallHook(PRE_COMMIT_HOOK);
+    }
+
+    /**
+     * Removes the {@code post-merge} hook.
+     * If a backup exists from a previous installation, the backup is restored so that the developer's original hook is active again.
+     * @throws IOException if the hook file cannot be deleted or the backup cannot be restored.
+     */
+    public void uninstallPostMergeHook() throws IOException {
+        uninstallHook(POST_MERGE_HOOK);
     }
 
     /**
@@ -122,6 +144,14 @@ public class GitHookInstaller {
      */
     public boolean isPreCommitHookInstalled() {
         return Files.exists(hooksDirectory.resolve(PRE_COMMIT_HOOK));
+    }
+
+    /**
+     * Returns true if the {@code post-merge} hook file is currently present in the hooks directory.
+     * This does not verify whether the file is the Vitruvius-managed version.
+     */
+    public boolean isPostMergeHookInstalled() {
+        return Files.exists(hooksDirectory.resolve(POST_MERGE_HOOK));
     }
 
     /**
