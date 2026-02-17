@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Git post-commit hook for Vitruvius semantic changelog generation
+#
+# This hook is triggered after every successful commit and signals the Vitruvius
+# background watcher to generate the semantic changelog for the commit.
+#
+# Installation:
+#   This script is automatically installed by GitHookInstaller.java
+#
+# Workflow:
+#   1. Reads the real commit SHA via git rev-parse HEAD (the new commit now exists)
+#   2. Reads the current branch name
+#   3. Generates a unique request ID for traceability in logs
+#   4. Writes a post-commit trigger file and exits immediately (fire-and-forget)
+#
+# Unlike the pre-commit hook, this hook does NOT wait for any result. Changelog
+# generation happens asynchronously in the background while the developer continues
+# working. The hook always exits 0 - it never blocks or fails a commit.
+#
+# The key difference from using pre-commit for changelog generation:
+#   - At pre-commit time: git rev-parse HEAD returns the PARENT commit SHA
+#   - At post-commit time: git rev-parse HEAD returns the NEW commit SHA
+# Using post-commit ensures the changelog file name and content match the actual
+# commit visible in git log, making the changelog properly traceable.
+#
+
+# Get repository root
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# Get the real commit SHA - at post-commit time HEAD points to the new commit
+COMMIT_SHA=$(git rev-parse HEAD)
+
+# Get the current branch name
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
+
+# Vitruvius directory
+VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
+
+# Ensure .vitruvius directory exists
+mkdir -p "$VITRUVIUS_DIR"
+
+# Generate unique request ID for traceability in watcher logs
+if command -v uuidgen &> /dev/null; then
+    REQUEST_ID=$(uuidgen)
+elif [ -f /proc/sys/kernel/random/uuid ]; then
+    REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
+else
+    # Fallback: timestamp + process ID + random number
+    REQUEST_ID="$(date +%s)-$$-$RANDOM"
+fi
+
+# File path for the trigger
+TRIGGER_FILE="$VITRUVIUS_DIR/post-commit-trigger"
+
+# Write the trigger file with format: commitSha|branch|requestId|timestamp
+# VsumPostCommitWatcher will detect this and generate the changelog asynchronously
+TIMESTAMP=$(date +%s)
+echo "$COMMIT_SHA|$BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
+
+echo "📝 Vitruvius: Changelog generation triggered for commit ${COMMIT_SHA:0:8} on '$BRANCH'"
+# Optional debug output (comment out for production)
+# echo "   Request ID: $REQUEST_ID"
+
+# Exit immediately - changelog generation is asynchronous, no waiting needed
+# This hook never blocks a commit
+exit 0
