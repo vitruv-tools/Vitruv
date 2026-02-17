@@ -97,16 +97,16 @@ public class ValidationTriggerFile
         }
 
         String commitSha = parts[0].trim();
-        String branch    = parts[1].trim();
+        String branch = parts[1].trim();
         String requestId;
-        long   timestamp;
+        long timestamp;
 
         if (parts.length == 4) {
             requestId = parts[2].trim();
             try {
                 timestamp = Long.parseLong(parts[3].trim());
             } catch (NumberFormatException e) {
-                // malformed timestamp — fall back to now so the watcher can still
+                // malformed timestamp - fall back to now so the watcher can still
                 // associate a meaningful time with the request.
                 LOGGER.warn("Invalid timestamp in validation trigger: '{}'", parts[3]);
                 timestamp = java.lang.System.currentTimeMillis();
@@ -131,7 +131,6 @@ public class ValidationTriggerFile
         return new TriggerInfo(commitSha, branch, requestId, timestamp);
     }
 
-    // -------------------------------------------------------------------------
 
     /**
      * Holds the information parsed from a validation trigger file.
@@ -143,10 +142,14 @@ public class ValidationTriggerFile
     @Getter
     public static class TriggerInfo extends AbstractTriggerFile.TriggerInfo {
 
-        /** The full Git commit SHA for which validation was requested. */
+        /**
+         * The full Git commit SHA for which validation was requested.
+         */
         private final String commitSha;
 
-        /** The branch on which the commit was made. */
+        /**
+         * The branch on which the commit was made.
+         */
         private final String branch;
 
         /**
@@ -160,7 +163,7 @@ public class ValidationTriggerFile
         public TriggerInfo(String commitSha, String branch, String requestId, long timestamp) {
             super(requestId, timestamp);
             this.commitSha = Objects.requireNonNull(commitSha, "commit SHA must not be null");
-            this.branch    = Objects.requireNonNull(branch, "branch must not be null");
+            this.branch = Objects.requireNonNull(branch, "branch must not be null");
         }
 
         @Override

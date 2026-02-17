@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *       invokes this handler asynchronously.</li>
  * </ul>
  *
- * <p>in both cases the effect is the same: the VirtualModel discards its current in-memory state and reloads all resources from disk. 
+ * <p>in both cases the effect is the same: the VirtualModel discards its current in-memory state and reloads all resources from disk.
  * This ensures consistency between the branch content visible on the file system and the model state used by Vitruvius consistency rules.
  */
 public class PostCheckoutHandler {
@@ -31,6 +31,7 @@ public class PostCheckoutHandler {
 
     /**
      * Creates a new {@link PostCheckoutHandler} backed by the given VirtualModel.
+     *
      * @param virtualModel the VirtualModel whose resources will be reloaded after each branch switch, must not be null.
      */
     public PostCheckoutHandler(VirtualModel virtualModel) {

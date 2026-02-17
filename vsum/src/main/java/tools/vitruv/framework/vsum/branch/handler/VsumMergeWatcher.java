@@ -76,7 +76,7 @@ public class VsumMergeWatcher {
 
     private void watchLoop() {
         LOGGER.debug("Merge watch loop started, polling every {}ms", POLL_INTERVAL_MS);
-        while(running) {
+        while (running) {
             try {
                 MergeTriggerFile.TriggerInfo info = triggerFile.checkAndClearTrigger();
                 if (info != null) {
@@ -103,7 +103,7 @@ public class VsumMergeWatcher {
         try {
             Files.createDirectories(lockFile.getParent());
 
-            try (FileChannel channel = FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE)){
+            try (FileChannel channel = FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
                 FileLock lock = channel.tryLock();
                 if (lock == null) {
                     LOGGER.warn("Another merge validation is in progress, " + "re-queuing trigger for retry (requestId='{}')", requestId);
@@ -188,6 +188,7 @@ public class VsumMergeWatcher {
             LOGGER.warn("Failed to auto-stage merge metadata for commit {} (not critical)", mergeShort, e);
         }
     }
+
     /**
      * Writes a warning result file when merge validation cannot be performed, for
      * example when the lock cannot be acquired. This ensures the post-merge hook

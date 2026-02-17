@@ -110,18 +110,18 @@ public class PostMergeHandler {
             return;
         }
         int proxyCount = 0;
-        for(Resource resource : resources) {
+        for (Resource resource : resources) {
             if (!resource.isLoaded()) {
                 continue;
             }
             TreeIterator<EObject> iterator = resource.getAllContents();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 EObject object = iterator.next();
                 if (object.eIsProxy()) {
                     errors.add("Unresolved proxy object after merge: " + EcoreUtil.getURI(object) + " in resource " + resource.getURI());
                     proxyCount++;
                 }
-                for(EReference ref : object.eClass().getEAllReferences()) {
+                for (EReference ref : object.eClass().getEAllReferences()) {
                     if (!ref.isContainment()) {
                         Object value = object.eGet(ref, false);
                         if (value instanceof EObject && ((EObject) value).eIsProxy()) {

@@ -33,10 +33,14 @@ import java.nio.file.StandardOpenOption;
 public class VsumReloadWatcher {
     private static final Logger LOGGER = LogManager.getLogger(VsumReloadWatcher.class);
 
-    /** How often the watcher polls for a trigger file, in milliseconds. */
+    /**
+     * How often the watcher polls for a trigger file, in milliseconds.
+     */
     private static final long CHECK_INTERVAL_MS = 500;
 
-    /** Maximum time in milliseconds to wait for the watcher thread to terminate on stop. */
+    /**
+     * Maximum time in milliseconds to wait for the watcher thread to terminate on stop.
+     */
     private static final long STOP_TIMEOUT_MS = 2000;
 
     private static final String LOCK_FILENAME = ".reload.lock";
@@ -44,7 +48,9 @@ public class VsumReloadWatcher {
     private final ReloadTriggerFile triggerFile;
     private final PostCheckoutHandler handler;
 
-    /** Path to the OS-managed lock file that prevents concurrent reloads. */
+    /**
+     * Path to the OS-managed lock file that prevents concurrent reloads.
+     */
     private final Path lockFile;
 
     private Thread watcherThread;
@@ -54,6 +60,7 @@ public class VsumReloadWatcher {
 
     /**
      * Creates a new {@link VsumReloadWatcher} for the given VirtualModel and repository.
+     *
      * @param virtualModel   the VirtualModel to reload when a branch switch is detected.
      * @param repositoryRoot the root directory of the Git repository. The trigger file and lock file will be located under {@code .vitruvius/} inside this directory.
      */
@@ -67,6 +74,7 @@ public class VsumReloadWatcher {
     /**
      * Starts the watcher in a background daemon thread.
      * The thread is marked as a daemon so it does not prevent the JVM from shutting down when the main application exits.
+     *
      * @throws IllegalStateException if the watcher is already running.
      */
     public synchronized void start() {
@@ -134,6 +142,7 @@ public class VsumReloadWatcher {
      * Handles a single reload request with OS-level lock protection to prevent concurrent reloads from corrupting the VirtualModel state.
      * <p>If the lock cannot be acquired because another reload is already in progress, the trigger is re-created so that the request is retried on the next poll cycle.
      * This approach is consistent with the validation watcher and avoids silently dropping branch switch events under load.
+     *
      * @param info the trigger information parsed from the trigger file.
      */
     private void handleReloadRequest(ReloadTriggerFile.TriggerInfo info) {
@@ -183,6 +192,7 @@ public class VsumReloadWatcher {
      * Performs the actual VirtualModel reload while holding the lock.
      * The old branch name is passed as {@code "unknown"} because the watcher receives only the new branch name from the trigger file
      * The previous branch is not available in the fire-and-forget inter-process communication path.
+     *
      * @param info the trigger information containing the new branch name and request identifier.
      */
     private void performReload(ReloadTriggerFile.TriggerInfo info) {

@@ -44,7 +44,9 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
 
     private static final Logger LOGGER = LogManager.getLogger(AbstractTriggerFile.class);
 
-    /** Delimiter separating fields inside every trigger file. */
+    /**
+     * Delimiter separating fields inside every trigger file.
+     */
     protected static final String DELIMITER = "|";
 
     /**
@@ -54,7 +56,9 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
      */
     protected static final Pattern SPLIT_PATTERN = Pattern.compile(Pattern.quote(DELIMITER));
 
-    /** Full path to the trigger file on disk. Set once at construction time. */
+    /**
+     * Full path to the trigger file on disk. Set once at construction time.
+     */
     protected final Path triggerFilePath;
 
     /**
@@ -103,7 +107,7 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
      * watcher will reattempt deletion on the next poll cycle.
      *
      * @return the parsed trigger information, or {@code null} if no valid trigger
-     *         was found.
+     * was found.
      */
     public T checkAndClearTrigger() {
         if (!Files.exists(triggerFilePath)) {
@@ -114,7 +118,7 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
             String content = Files.readString(triggerFilePath);
             String[] parts = SPLIT_PATTERN.split(content.trim());
 
-            // delegate field-level parsing to the subclass — it knows how many fields
+            // delegate field-level parsing to the subclass - it knows how many fields
             // to expect and what each field means.
             T info = parseTriggerInfo(parts);
             if (info == null) {
@@ -164,7 +168,7 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
      *
      * <p>Implementations must validate the number of fields and the content of each
      * required field. If the parts are invalid or a required field is empty, the
-     * implementation must return {@code null} — {@link #checkAndClearTrigger()} will
+     * implementation must return {@code null} - {@link #checkAndClearTrigger()} will
      * then discard and delete the file.
      *
      * @param parts the fields split from the trigger file content on {@link #DELIMITER}.
@@ -194,10 +198,14 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
      */
     public abstract static class TriggerInfo {
 
-        /** Unique request identifier (UUID) for tracing this request across logs. */
+        /**
+         * Unique request identifier (UUID) for tracing this request across logs.
+         */
         private final String requestId;
 
-        /** Timestamp in milliseconds since epoch when the trigger file was created. */
+        /**
+         * Timestamp in milliseconds since epoch when the trigger file was created.
+         */
         private final long timestamp;
 
         /**

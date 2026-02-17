@@ -10,13 +10,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
-import tools.vitruv.framework.vsum.branch.data.FileChange;
-import tools.vitruv.framework.vsum.branch.data.SemanticChangelog;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +32,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *   <li>The UUID resolver is accessible and not null.</li>
  * </ol>
  *
+ * <p>Changelog generation has been moved to {@link PostCommitHandler}, which runs after
+ * the commit is finalized and can therefore use the real commit SHA assigned by Git.
+ *
  * <p>todo: domain-specific validation rules, change recorder state validation, integration with Vitruvius reaction validation, detailed correspondence link checking, and orphaned UUID detection are planned for a future iteration.
  */
 public class PreCommitHandler {
@@ -44,6 +44,7 @@ public class PreCommitHandler {
 
     /**
      * Creates a pre-commit handler for the given VirtualModel.
+     *
      * @param virtualModel the internal VirtualModel to validate, must not be null.
      */
     public PreCommitHandler(InternalVirtualModel virtualModel) {
@@ -55,6 +56,7 @@ public class PreCommitHandler {
      * with error messages describing any detected inconsistencies and warning messages for non-blocking issues.
      * <p>If an unexpected exception is thrown during any validation step, it is caught, logged, and added to the error list rather than propagated,
      * so that the caller always receives a well-formed result.
+     *
      * @return the validation result with errors and warnings collected during all checks.
      */
     public ValidationResult validate() {
@@ -212,7 +214,8 @@ public class PreCommitHandler {
             LOGGER.error("UUID resolver validation error", e);
         }
     }
-
+}
+    /*
     /**
      * Generates a minimal semantic changelog entry for the given commit.
      * Returns a placeholder changelog because querying Git for the actual changed files via JGit is planned for a future iteration.
@@ -220,7 +223,7 @@ public class PreCommitHandler {
      * @param commitSha the full Git commit SHA.
      * @param branch    the branch on which the commit was made.
      * @return a {@link SemanticChangelog} with an empty change list and a placeholder author.
-     */
+
     public SemanticChangelog generateChangelog(String commitSha, String branch) {
         // use the standard seven-character short SHA that matches the Git convention and the format used in SemanticChangelog.toString().
         LOGGER.info("Generating changelog for commit {} on branch {}", commitSha.substring(0, Math.min(7, commitSha.length())), branch);
@@ -230,4 +233,4 @@ public class PreCommitHandler {
 
         return SemanticChangelog.create(commitSha, "system", LocalDateTime.now(), "Commit on " + branch, branch, changes);
     }
-}
+    */

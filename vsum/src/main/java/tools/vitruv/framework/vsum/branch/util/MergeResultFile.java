@@ -42,19 +42,19 @@ public class MergeResultFile {
         LOGGER.debug("Wrote merge result for requestId='{}': valid={}, errors={}, warnings={}", requestId, result.isValid(), result.getErrors().size(), result.getWarnings().size());
     }
 
-    public void writeMetadata(String mergeCommitSha, String sourceBranch, String targetBranch, ValidationResult result) throws IOException{
+    public void writeMetadata(String mergeCommitSha, String sourceBranch, String targetBranch, ValidationResult result) throws IOException {
         Path mergesDir = vitruviusDir.resolve(MERGE_DIR);
         Path metadataPath = mergesDir.resolve(mergeCommitSha + METADATA_SUFFIX);
         Files.createDirectories(mergesDir);
 
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("mergeCommitSha", mergeCommitSha);
-        metadata.put("sourceBranch",   sourceBranch);
-        metadata.put("targetBranch",   targetBranch);
-        metadata.put("timestamp",      LocalDateTime.now().toString());
-        metadata.put("valid",          result.isValid());
-        metadata.put("errors",         result.getErrors());
-        metadata.put("warnings",       result.getWarnings());
+        metadata.put("sourceBranch", sourceBranch);
+        metadata.put("targetBranch", targetBranch);
+        metadata.put("timestamp", LocalDateTime.now().toString());
+        metadata.put("valid", result.isValid());
+        metadata.put("errors", result.getErrors());
+        metadata.put("warnings", result.getWarnings());
 
         //todo: conflict metadata
         metadata.put("semanticConflicts", List.of());
@@ -179,8 +179,7 @@ public class MergeResultFile {
 
     /**
      * Writes a machine-readable JSON representation of the merge validation result.
-     * Includes the request identifier so the hook can verify it is reading the
-     * correct result file.
+     * Includes the request identifier so the hook can verify it is reading the correct result file.
      */
     private void writeJsonResult(ValidationResult result, String requestId, Path jsonResultPath) throws IOException {
         Map<String, Object> data = new HashMap<>();
@@ -191,6 +190,4 @@ public class MergeResultFile {
         data.put("warnings", result.getWarnings());
         Files.writeString(jsonResultPath, gson.toJson(data));
     }
-
-
 }

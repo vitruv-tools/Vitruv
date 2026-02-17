@@ -3,8 +3,6 @@ package tools.vitruv.framework.vsum.branch.handler;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.jgit.api.Git;
-import tools.vitruv.framework.vsum.branch.data.SemanticChangelog;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
 import tools.vitruv.framework.vsum.branch.util.ValidationResultFile;
 import tools.vitruv.framework.vsum.branch.util.ValidationTriggerFile;
@@ -28,12 +26,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *   <li>Acquires a lock file to prevent concurrent validations from corrupting the model state.</li>
  *   <li>Validates the VirtualModel using {@link PreCommitHandler}.</li>
  *   <li>Writes the validation result to request-specific files so the hook can read it.</li>
- *   <li>Generates a semantic changelog and auto-stages it if validation passed.</li>
  *   <li>Releases the lock.</li>
  * </ol>
  *
- * <p>Concurrency: multiple validation requests that arrive within the same poll window are processed sequentially. 
- * If the lock is already held when a second request arrives, the trigger is re-created so it is retried on the next poll cycle. 
+ * <p>Changelog generation is handled separately by {@link VsumPostCommitWatcher}, which runs after
+ * the commit is finalized and can therefore use the real commit SHA assigned by Git.
+ *
+ * <p>Concurrency: multiple validation requests that arrive within the same poll window are processed sequentially.
+ * If the lock is already held when a second request arrives, the trigger is re-created so it is retried on the next poll cycle.
  * Each request carries a unique request identifier so that result files can be matched to the originating hook invocation even when requests are retried.
  */
 public class VsumValidationWatcher {
@@ -46,7 +46,6 @@ public class VsumValidationWatcher {
     private static final String THREAD_NAME = "VSUM-Validation-Watcher";
     private static final String LOCK_FILENAME = ".validation.lock";
 
-    /** Root of the Git repository, used to resolve the changelog path and for JGit operations. */
     private final Path repositoryRoot;
 
     private final ValidationTriggerFile triggerFile;
@@ -199,10 +198,8 @@ public class VsumValidationWatcher {
 
     /**
      * Performs validation and writes the result while holding the lock.
-     * If validation passes, also generates and auto-stages the semantic changelog.
-     * A failure to generate or stage the changelog is logged as a warning but does not retroactively fail the validation result.
      * @param info         the trigger information.
-     * @param commitShort  the first seven characters of the commit SHA, used in file names and logs.
+     * @param commitShort  the first seven characters of the commit SHA, used in logs.
      * @param requestId    the unique request identifier used to name the result files.
      */
     private void performValidation(ValidationTriggerFile.TriggerInfo info, String commitShort, String requestId) {
@@ -220,19 +217,7 @@ public class VsumValidationWatcher {
                 LOGGER.error("Failed to write validation result files (requestId='{}')", requestId, e);
             }
 
-            if (result.isValid()) {
-                // generate the changelog and stage it only when validation succeeds, so that failed commits do not produce changelog entries.
-                try {
-                    SemanticChangelog changelog = handler.generateChangelog(info.getCommitSha(), info.getBranch());
-                    Path changelogFile = triggerFile.getTriggerPath().getParent().resolve("changelogs").resolve(commitShort + ".txt");
-                    changelog.writeTo(changelogFile);
-                    LOGGER.info("Semantic changelog generated for commit {}", commitShort);
-                    LOGGER.debug("Changelog saved to: {}", changelogFile);
-                    autoStageChangelog(changelogFile, commitShort);
-                } catch (Exception e) {
-                    LOGGER.warn("Failed to generate changelog, but validation passed (requestId='{}')", requestId, e);
-                }
-            } else {
+            if (!result.isValid()) {
                 LOGGER.warn("Validation failed: {} errors, {} warnings (requestId='{}')", result.getErrors().size(), result.getWarnings().size(), requestId);
                 if (!result.getErrors().isEmpty()) {
                     LOGGER.warn("First error: {}", result.getErrors().get(0));
@@ -242,25 +227,6 @@ public class VsumValidationWatcher {
         } catch (Exception e) {
             LOGGER.error("Validation failed with exception for commit {} (requestId='{}')", commitShort, requestId, e);
             writeErrorResult(requestId, "Validation crashed: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Auto-stages the given changelog file using JGit so that it is automatically included in the commit without requiring any manual developer action.
-     * A failure to stage is logged as a warning and does not affect the validation result.
-     * @param changelogFile the changelog file to stage.
-     * @param commitShort   the short commit SHA, used in log messages.
-     */
-    private void autoStageChangelog(Path changelogFile, String commitShort) {
-        try (Git git = Git.open(repositoryRoot.toFile())) {
-            // git add expects a forward-slash path relative to the repository root.
-            Path relativePath = repositoryRoot.relativize(changelogFile);
-            String filePattern = relativePath.toString().replace('\\', '/');
-            git.add().addFilepattern(filePattern).call();
-            LOGGER.info("Changelog auto-staged for commit {} ({})", commitShort, filePattern);
-        } catch (Exception e) {
-            LOGGER.warn("Failed to auto-stage changelog for commit {} (not critical)", commitShort, e);
-            LOGGER.warn("Developer can manually stage with: git add {}", changelogFile);
         }
     }
 

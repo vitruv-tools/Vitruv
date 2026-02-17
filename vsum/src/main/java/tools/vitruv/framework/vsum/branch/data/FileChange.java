@@ -19,10 +19,14 @@ import java.util.Objects;
 @Getter
 public class FileChange {
 
-    /** The path of the changed file relative to the repository root. */
+    /**
+     * The path of the changed file relative to the repository root.
+     */
     private final String filePath;
 
-    /** The type of operation performed on the file. */
+    /**
+     * The type of operation performed on the file.
+     */
     private final FileOperation operation;
 
     /**
@@ -73,6 +77,7 @@ public class FileChange {
     /**
      * Creates a file change without an old path or element-level details. Suitable for {@link FileOperation#ADDED}, {@link FileOperation#MODIFIED},
      * and {@link FileOperation#DELETED} operations.
+     *
      * @param filePath  the path of the changed file, must not be null or blank.
      * @param operation the type of operation, must not be null.
      * @throws IllegalArgumentException if {@code filePath} is null or blank, or if {@code operation} is null.

@@ -37,32 +37,32 @@ public class BranchMetadata {
 
     /**
      * -- GETTER --
-     *  returns the name of this branch.
+     * returns the name of this branch.
      */
     private final String name;
     /**
      * -- GETTER --
-     *  returns the short unique identifier of this branch, derived from the first seven characters of the commit hash at the time the branch was created.
+     * returns the short unique identifier of this branch, derived from the first seven characters of the commit hash at the time the branch was created.
      */
     private final String uid;
     /**
      * -- GETTER --
-     *  returns the current lifecycle state of this branch.
+     * returns the current lifecycle state of this branch.
      */
     private BranchState state;
     /**
      * -- GETTER --
-     *  returns the name of the parent branch from which this branch was created.
+     * returns the name of the parent branch from which this branch was created.
      */
     private final String parent;
     /**
      * -- GETTER --
-     *  returns the timestamp when this branch was created.
+     * returns the timestamp when this branch was created.
      */
     private final LocalDateTime createdAt;
     /**
      * -- GETTER --
-     *  returns the timestamp of the most recent modification to this branch metadata.
+     * returns the timestamp of the most recent modification to this branch metadata.
      */
     private LocalDateTime lastModified;
 
@@ -128,7 +128,7 @@ public class BranchMetadata {
      *
      * @param path the file path to read from.
      * @return a new {@link BranchMetadata} instance populated from the file contents.
-     * @throws IOException if the file cannot be read.
+     * @throws IOException              if the file cannot be read.
      * @throws IllegalArgumentException if a required key is missing or a value cannot be parsed.
      */
     public static BranchMetadata readFrom(Path path) throws IOException {
@@ -159,8 +159,8 @@ public class BranchMetadata {
      * so that the caller receives a clear message about which field is missing rather than a generic null pointer error.
      *
      * @param entries the parsed key-value pairs from the metadata file.
-     * @param key  the required key to look up.
-     * @param path the source file path, included in the error message for easier debugging.
+     * @param key     the required key to look up.
+     * @param path    the source file path, included in the error message for easier debugging.
      * @return the value associated with the key.
      * @throws IllegalArgumentException if the key is not present in the entries map.
      */

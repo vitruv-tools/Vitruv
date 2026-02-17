@@ -96,15 +96,15 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
 
         String branchName;
         String requestId;
-        long   timestamp;
+        long timestamp;
 
         if (parts.length == 3) {
             branchName = parts[0].trim();
-            requestId  = parts[1].trim();
+            requestId = parts[1].trim();
             try {
                 timestamp = Long.parseLong(parts[2].trim());
             } catch (NumberFormatException e) {
-                // malformed timestamp — fall back to now so the watcher can still
+                // malformed timestamp - fall back to now so the watcher can still
                 // associate a meaningful time with the reload request.
                 LOGGER.warn("Invalid timestamp in reload trigger: '{}'", parts[2]);
                 timestamp = java.lang.System.currentTimeMillis();
@@ -112,8 +112,8 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
         } else {
             // legacy single-field format: the entire content is just the branch name.
             branchName = parts[0].trim();
-            requestId  = UUID.randomUUID().toString();
-            timestamp  = java.lang.System.currentTimeMillis();
+            requestId = UUID.randomUUID().toString();
+            timestamp = java.lang.System.currentTimeMillis();
             LOGGER.warn("Legacy reload trigger format detected, generated requestId='{}'",
                     requestId);
         }
@@ -129,19 +129,20 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
         return new TriggerInfo(branchName, requestId, timestamp);
     }
 
-    // -------------------------------------------------------------------------
 
     /**
      * Holds the information parsed from a reload trigger file.
      *
      * <p>Unlike validation trigger information, reload trigger information has no
-     * associated result file — the hook is fire-and-forget. The request identifier
+     * associated result file - the hook is fire-and-forget. The request identifier
      * is provided purely for traceability across hook and watcher logs.
      */
     @Getter
     public static class TriggerInfo extends AbstractTriggerFile.TriggerInfo {
 
-        /** The name of the branch that was checked out when the trigger was created. */
+        /**
+         * The name of the branch that was checked out when the trigger was created.
+         */
         private final String branchName;
 
         /**

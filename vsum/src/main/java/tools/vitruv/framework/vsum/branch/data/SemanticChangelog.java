@@ -13,7 +13,7 @@ import java.util.Objects;
 
 /**
  * Represents the semantic changelog produced by Vitruvius for a single Git commit.
- * <p>Each instance captures both the standard Git commit metadata that appears in {@code git log --pretty=fuller} (commit SHA, author, committer, dates, message) 
+ * <p>Each instance captures both the standard Git commit metadata that appears in {@code git log --pretty=fuller} (commit SHA, author, committer, dates, message)
  * and Vitruvius-specific information: the branch on which the commit was made and the list of file-level changes detected in the VSUM
  *
  * <p>Example of the Git metadata format captured here:
@@ -37,13 +37,19 @@ import java.util.Objects;
 @Getter
 public class SemanticChangelog {
 
-    /** The full 40-character Git commit SHA that this changelog describes. */
+    /**
+     * The full 40-character Git commit SHA that this changelog describes.
+     */
     private final String commitSha;
 
-    /** The name and email of the person who authored the changes, in Git format. */
+    /**
+     * The name and email of the person who authored the changes, in Git format.
+     */
     private final String author;
 
-    /** The date and time when the changes were originally authored. */
+    /**
+     * The date and time when the changes were originally authored.
+     */
     private final LocalDateTime authorDate;
 
     /**
@@ -52,13 +58,19 @@ public class SemanticChangelog {
      */
     private final String committer;
 
-    /** The date and time when the commit was recorded in the repository. */
+    /**
+     * The date and time when the commit was recorded in the repository.
+     */
     private final LocalDateTime commitDate;
 
-    /** The full commit message as it appears in the Git history. */
+    /**
+     * The full commit message as it appears in the Git history.
+     */
     private final String message;
 
-    /** The name of the branch on which this commit was made. */
+    /**
+     * The name of the branch on which this commit was made.
+     */
     private final String branch;
 
     /**
@@ -87,6 +99,7 @@ public class SemanticChangelog {
 
     /**
      * Validates that a string is non-null and non-blank.
+     *
      * @param value     the value to validate.
      * @param fieldName the field name used in the error message.
      * @return the validated value, unchanged.
@@ -102,6 +115,7 @@ public class SemanticChangelog {
     /**
      * Creates a changelog for the common case where the author and committer are the same person, and the author date equals the commit date.
      * This covers direct commits where no rebasing or cherry-picking has taken place.
+     *
      * @param commitSha  the full 40-character Git commit SHA.
      * @param author     the author name and email (for example {@code "John Schmidt <johnschmidt@gmail.com>"}).
      * @param authorDate the date and time when the changes were authored.
@@ -119,6 +133,7 @@ public class SemanticChangelog {
     /**
      * Returns a builder for constructing a changelog with a separate committer.
      * Use when the author and committer differ, for example after a cherry-pick, rebase, or patch application.
+     *
      * @return a new {@link Builder} instance.
      */
     public static Builder builder() {
@@ -138,19 +153,52 @@ public class SemanticChangelog {
         private String branch;
         private List<FileChange> changes;
 
-        private Builder() {}
+        private Builder() {
+        }
 
-        public Builder commitSha(String commitSha) { this.commitSha = commitSha; return this; }
-        public Builder author(String author) { this.author = author; return this; }
-        public Builder authorDate(LocalDateTime authorDate) { this.authorDate = authorDate; return this; }
-        public Builder committer(String committer) { this.committer = committer; return this; }
-        public Builder commitDate(LocalDateTime commitDate) { this.commitDate = commitDate; return this; }
-        public Builder message(String message) { this.message = message; return this; }
-        public Builder branch(String branch) { this.branch = branch; return this; }
-        public Builder changes(List<FileChange> changes) { this.changes = changes; return this; }
+        public Builder commitSha(String commitSha) {
+            this.commitSha = commitSha;
+            return this;
+        }
+
+        public Builder author(String author) {
+            this.author = author;
+            return this;
+        }
+
+        public Builder authorDate(LocalDateTime authorDate) {
+            this.authorDate = authorDate;
+            return this;
+        }
+
+        public Builder committer(String committer) {
+            this.committer = committer;
+            return this;
+        }
+
+        public Builder commitDate(LocalDateTime commitDate) {
+            this.commitDate = commitDate;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder branch(String branch) {
+            this.branch = branch;
+            return this;
+        }
+
+        public Builder changes(List<FileChange> changes) {
+            this.changes = changes;
+            return this;
+        }
 
         /**
          * Builds the {@link SemanticChangelog} with the values set on this builder.
+         *
          * @return a new {@link SemanticChangelog} instance.
          * @throws IllegalArgumentException if any required field is null or blank.
          */
@@ -216,6 +264,7 @@ public class SemanticChangelog {
      * Writes this changelog to a human-readable text file at the given path, following the same layout as {@code git log --pretty=fuller}.
      * Parent directories are created automatically if they do not exist.
      * <p>The committer section is omitted when author and committer are the same to keep the output concise for the common case.
+     *
      * @param path the file path to write the changelog to.
      * @throws IOException if the file or its parent directories cannot be created or written.
      */

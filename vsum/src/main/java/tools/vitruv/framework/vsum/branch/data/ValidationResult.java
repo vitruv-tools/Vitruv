@@ -7,12 +7,12 @@ import java.util.List;
 
 /**
  * Holds the outcome of validating the VSUM before a Git commit.
- * <p>A result is either valid (the commit may proceed) or invalid (the commit should be blocked). 
+ * <p>A result is either valid (the commit may proceed) or invalid (the commit should be blocked).
  * In both cases, warning messages may be present to inform the developer of non-blocking issues detected during validation.
  *
- * <p>Instances are created exclusively through the static factory methods 
+ * <p>Instances are created exclusively through the static factory methods
  * ({@link #success()}, {@link #successWithWarnings}, {@link #failure}, {@link #failureWithWarnings})
- * rather than through a public constructor. 
+ * rather than through a public constructor.
  * This makes the intent of each result explicit at the call site and prevents invalid combinations such as a valid result that carries errors.
  *
  * <p>All instances are immutable and thread-safe. The error and warning lists are copied on construction and exposed as unmodifiable views.
@@ -20,7 +20,9 @@ import java.util.List;
 @Getter
 public class ValidationResult {
 
-    /** Whether the VirtualModel passed validation and the commit is allowed to proceed. */
+    /**
+     * Whether the VirtualModel passed validation and the commit is allowed to proceed.
+     */
     private final boolean valid;
 
     /**
@@ -47,6 +49,7 @@ public class ValidationResult {
 
     /**
      * Creates a successful validation result with no errors or warnings.
+     *
      * @return a valid result with empty error and warning lists.
      */
     public static ValidationResult success() {
@@ -56,6 +59,7 @@ public class ValidationResult {
     /**
      * Creates a successful validation result with non-blocking warnings. The VirtualModel is consistent enough to allow the commit,
      * but the developer should be informed of the issues described in the warning messages.
+     *
      * @param warnings warning messages describing non-blocking issues. must not be null.
      * @return a valid result with the given warnings and no errors.
      * @throws NullPointerException if {@code warnings} is null.
@@ -66,6 +70,7 @@ public class ValidationResult {
 
     /**
      * Creates a failed validation result. The commit should be blocked until the issues described in the error messages are resolved.
+     *
      * @param errors error messages describing why validation failed, must not be null.
      * @return an invalid result with the given errors and no warnings.
      * @throws NullPointerException if {@code errors} is null.
@@ -77,6 +82,7 @@ public class ValidationResult {
     /**
      * Creates a failed validation result with both errors and warnings. The commit should be blocked,
      * and the warnings provide additional context about related issues.
+     *
      * @param errors   error messages describing why validation failed, must not be null.
      * @param warnings additional warning messages, must not be null.
      * @return an invalid result with the given errors and warnings.

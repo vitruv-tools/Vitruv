@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Manages the validation result files that communicate virtual model consistency status from the {@link tools.vitruv.framework.vsum.branch.handler.VsumValidationWatcher} 
+ * Manages the validation result files that communicate virtual model consistency status from the {@link tools.vitruv.framework.vsum.branch.handler.VsumValidationWatcher}
  * to the Git {@code pre-commit} hook.
  * <p>Two files are written per validation request so that the hook can display a human-readable message in the terminal and a future UI component can parse the
  * structured output:
@@ -44,6 +44,7 @@ public class ValidationResultFile {
 
     /**
      * Creates a validation result file manager for the given repository.
+     *
      * @param repositoryRoot the root directory of the Git repository.
      */
     public ValidationResultFile(Path repositoryRoot) {
@@ -59,6 +60,7 @@ public class ValidationResultFile {
      *   <li>{@code .vitruvius/validation-result-{requestId}}</li>
      *   <li>{@code .vitruvius/validation-result-{requestId}.json}</li>
      * </ul>
+     *
      * @param result    the validation result to write.
      * @param requestId the unique request identifier from {@link ValidationTriggerFile}.
      * @throws IOException if the files cannot be created or written.
@@ -134,6 +136,7 @@ public class ValidationResultFile {
     /**
      * Reads and reconstructs a {@link ValidationResult} from the JSON result file for the given request identifier.
      * Returns {@code null} if no result file exists yet, which indicates the watcher has not finished processing the request.
+     *
      * @param requestId the unique request identifier.
      * @return the reconstructed validation result, or {@code null} if the file does not exist.
      * @throws IOException if the file exists but cannot be read or parsed.
@@ -166,6 +169,7 @@ public class ValidationResultFile {
 
     /**
      * Deletes both result files for the given request identifier. Does nothing for each file that does not exist.
+     *
      * @param requestId the unique request identifier.
      * @throws IOException if a file exists but cannot be deleted.
      */
@@ -173,8 +177,14 @@ public class ValidationResultFile {
         boolean deleted = false;
         Path textResultPath = getTextResultPath(requestId);
         Path jsonResultPath = getJsonResultPath(requestId);
-        if (Files.exists(textResultPath)) { Files.delete(textResultPath); deleted = true; }
-        if (Files.exists(jsonResultPath)) { Files.delete(jsonResultPath); deleted = true; }
+        if (Files.exists(textResultPath)) {
+            Files.delete(textResultPath);
+            deleted = true;
+        }
+        if (Files.exists(jsonResultPath)) {
+            Files.delete(jsonResultPath);
+            deleted = true;
+        }
         if (deleted) {
             LOGGER.debug("Deleted validation result files for requestId='{}'", requestId);
         }
@@ -183,6 +193,7 @@ public class ValidationResultFile {
     /**
      * Returns true if at least one result file exists for the given request identifier.
      * The text file is written first, so this returns true as soon as to write begins.
+     *
      * @param requestId the unique request identifier.
      * @return {@code true} if at least one result file is present.
      */
@@ -192,6 +203,7 @@ public class ValidationResultFile {
 
     /**
      * Returns the path of the human-readable text result file for the given request.
+     *
      * @param requestId the unique request identifier.
      * @return the path to the text result file.
      */
@@ -201,6 +213,7 @@ public class ValidationResultFile {
 
     /**
      * Returns the path of the machine-readable JSON result file for the given request.
+     *
      * @param requestId the unique request identifier.
      * @return the path to the JSON result file.
      */
@@ -211,6 +224,7 @@ public class ValidationResultFile {
 
     /**
      * Deletes result files for the fixed identifier {@code "legacy"}.
+     *
      * @throws IOException if the files cannot be deleted.
      * @deprecated Use {@link #deleteResult(String)} with a request identifier.
      */
