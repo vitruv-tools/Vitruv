@@ -58,7 +58,7 @@ public class VsumMergeWatcher {
     }
 
     public synchronized void stop() {
-        if (running) {
+        if (!running) {
             return;
         }
         running = false;

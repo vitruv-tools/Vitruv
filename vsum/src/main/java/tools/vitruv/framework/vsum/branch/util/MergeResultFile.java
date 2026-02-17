@@ -120,7 +120,7 @@ public class MergeResultFile {
         return Files.exists(getTextResultPath(requestId)) || Files.exists(getJsonResultPath(requestId));
     }
 
-    public boolean metadataExist(String mergeCommitSha) {
+    public boolean metadataExists(String mergeCommitSha) {
         return Files.exists(getMetadataPath(mergeCommitSha));
     }
 
