@@ -35,11 +35,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class BranchManager {
     private static final Logger LOGGER = LogManager.getLogger(BranchManager.class);
 
-    /** subdirectory inside repository root where branch metadata files are stored. */
+    /**
+     * subdirectory inside repository root where branch metadata files are stored.
+     */
     private static final String METADATA_DIR = ".vitruvius/branches";
     private final Path repoRoot;
 
-    /** handler invoked after a branch switch is performed. If set, the handler receives the old nand new branch names so that the VirtualModel can reload its state correctly */
+    /**
+     * handler invoked after a branch switch is performed. If set, the handler receives the old nand new branch names so that the VirtualModel can reload its state correctly
+     */
     @Setter
     private PostCheckoutHandler postCheckoutHandler;
 
@@ -60,7 +64,7 @@ public class BranchManager {
      *
      * <p> The unique identifier stored in metadata is the first seven characters of the commit hash that the new branch points to.
      *
-     * @param name name of the new branch.
+     * @param name       name of the new branch.
      * @param fromBranch name of the existing branch to fork from.
      * @return The {@link BranchMetadata} of the newly created branch.
      * @throws BranchOperationException when a branch with identical name already exists, the source branch does not exist, or the Git operation fails.
@@ -246,6 +250,7 @@ public class BranchManager {
      * For example, the pattern {@code "bugfix-*} matches {@code "bugfix-viewtype"} and {@code "bugfix-propagation"} but not {@code "feature-vcs"}
      *
      * <p> glob wildcard is used instead of regex to reduce the complexity of regular expression's knowledge
+     *
      * @param pattern A glob pattern to match against branch names
      * @return A list of {@link BranchMetadata} for all matching branches. Empty list is returned if no branch matches
      * @throws BranchOperationException If the branch list cannot be retrieved.

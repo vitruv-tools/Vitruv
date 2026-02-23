@@ -187,9 +187,9 @@ class ValidationTriggerFileTest {
         assertTrue(info.getTimestamp() > 0);
     }
 
-    // -------------------------------------------------------------------------
-    // checkAndClearTrigger — resilience against malformed content
-    // -------------------------------------------------------------------------
+    
+    // checkAndClearTrigger - resilience against malformed content
+    
 
     /**
      * Verifies that a file with an unrecognized number of fields is discarded and deleted.
@@ -261,9 +261,9 @@ class ValidationTriggerFileTest {
                 "the fallback timestamp must be within the wall clock window of the call");
     }
 
-    // -------------------------------------------------------------------------
+    
     // exists / getTriggerPath
-    // -------------------------------------------------------------------------
+    
 
     /**
      * Verifies that {@link ValidationTriggerFile#getTriggerPath()} returns the path under
@@ -277,9 +277,9 @@ class ValidationTriggerFileTest {
                 triggerFile.getTriggerPath());
     }
 
-    // -------------------------------------------------------------------------
+    
     // TriggerInfo
-    // -------------------------------------------------------------------------
+    
 
     /**
      * Verifies that {@link ValidationTriggerFile.TriggerInfo} stores all provided fields

@@ -215,22 +215,4 @@ public class PreCommitHandler {
         }
     }
 }
-    /*
-    /**
-     * Generates a minimal semantic changelog entry for the given commit.
-     * Returns a placeholder changelog because querying Git for the actual changed files via JGit is planned for a future iteration.
-     * At that point, this method will diff HEAD against HEAD^ and produce a {@link FileChange} entry for each added, modified, or deleted file.
-     * @param commitSha the full Git commit SHA.
-     * @param branch    the branch on which the commit was made.
-     * @return a {@link SemanticChangelog} with an empty change list and a placeholder author.
 
-    public SemanticChangelog generateChangelog(String commitSha, String branch) {
-        // use the standard seven-character short SHA that matches the Git convention and the format used in SemanticChangelog.toString().
-        LOGGER.info("Generating changelog for commit {} on branch {}", commitSha.substring(0, Math.min(7, commitSha.length())), branch);
-
-        // actual file changes will be populated once JGit diff integration is available.
-        List<FileChange> changes = new ArrayList<>();
-
-        return SemanticChangelog.create(commitSha, "system", LocalDateTime.now(), "Commit on " + branch, branch, changes);
-    }
-    */

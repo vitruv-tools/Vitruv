@@ -2,10 +2,17 @@ package tools.vitruv.framework.vsum.branch.handler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 import tools.vitruv.framework.vsum.branch.data.FileChange;
 import tools.vitruv.framework.vsum.branch.data.SemanticChangelog;
 
+import java.nio.file.Path;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +34,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class PostCommitHandler {
 
     private static final Logger LOGGER = LogManager.getLogger(PostCommitHandler.class);
+    private final Path repositoryRoot;
 
     /**
      * Creates a post-commit handler.
      */
-    public PostCommitHandler() {
-        // no dependencies needed since changelog generation does not require VSUM access.
+    public PostCommitHandler(Path repositoryRoot) {
+        this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
     }
 
     /**
@@ -56,9 +64,34 @@ public class PostCommitHandler {
         // and the format used in SemanticChangelog.toString().
         LOGGER.info("Generating changelog for commit {} on branch {}", commitSha.substring(0, Math.min(7, commitSha.length())), branch);
 
-        // actual file changes will be populated once JGit diff integration is available.
-        List<FileChange> changes = new ArrayList<>();
+        try (Git git = Git.open(repositoryRoot.toFile());
+             RevWalk revWalk = new RevWalk(git.getRepository())) {
 
-        return SemanticChangelog.create(commitSha, "system", LocalDateTime.now(), "Commit on " + branch, branch, changes);
+            // Read the commit object from Git
+            ObjectId commitId = git.getRepository().resolve(commitSha);
+            RevCommit commit = revWalk.parseCommit(commitId);
+
+            // Extract real commit info
+            String author = commit.getAuthorIdent().getName();
+            Instant commitTime = Instant.ofEpochSecond(commit.getCommitTime());
+            LocalDateTime authorDate = LocalDateTime.ofInstant(commitTime, ZoneId.systemDefault());
+            String message = commit.getFullMessage().trim();
+
+            // File changes are still a placeholder (TODO: add JGit diff integration)
+            List<FileChange> changes = new ArrayList<>();
+
+            LOGGER.debug("Read commit info from Git: author={}, message={}", author, message);
+
+            return SemanticChangelog.create(
+                    commitSha, author, authorDate, message, branch, changes);
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to read commit info from Git for SHA {}, using fallback", commitSha, e);
+
+            // Fallback to placeholders if Git read fails
+            return SemanticChangelog.create(
+                    commitSha, "unknown", LocalDateTime.now(),
+                    "Commit on " + branch, branch, new ArrayList<>());
+        }
     }
 }

@@ -32,8 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>File format: {@code commitSha|branch|requestId|timestamp}
  * <br>Legacy format (still accepted): {@code commitSha|branch}
  */
-public class ValidationTriggerFile
-        extends AbstractTriggerFile<ValidationTriggerFile.TriggerInfo> {
+public class ValidationTriggerFile extends AbstractTriggerFile<ValidationTriggerFile.TriggerInfo> {
 
     private static final Logger LOGGER = LogManager.getLogger(ValidationTriggerFile.class);
     private static final String TRIGGER_FILENAME = "validate-trigger";
@@ -69,11 +68,9 @@ public class ValidationTriggerFile
         long timestamp = java.lang.System.currentTimeMillis();
 
         // format the four fields and delegate the write to the base class.
-        writeTrigger(String.format("%s%s%s%s%s%s%d",
-                commitSha, DELIMITER, branch, DELIMITER, requestId, DELIMITER, timestamp));
+        writeTrigger(String.format("%s%s%s%s%s%s%d", commitSha, DELIMITER, branch, DELIMITER, requestId, DELIMITER, timestamp));
 
-        LOGGER.debug("Created validation trigger: commit={}, branch={}, requestId={}",
-                commitSha.substring(0, Math.min(7, commitSha.length())), branch, requestId);
+        LOGGER.debug("Created validation trigger: commit={}, branch={}, requestId={}", commitSha.substring(0, Math.min(7, commitSha.length())), branch, requestId);
 
         return requestId;
     }

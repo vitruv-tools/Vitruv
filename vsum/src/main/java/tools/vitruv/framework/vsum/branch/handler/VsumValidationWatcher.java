@@ -112,6 +112,15 @@ public class VsumValidationWatcher {
                 Thread.currentThread().interrupt();
             }
         }
+        // clean up any leftover lock file when stopping
+        try {
+            if (Files.deleteIfExists(lockFile)) {
+                LOGGER.debug("Cleaned up lock file on watcher stop");
+            }
+        } catch (IOException e) {
+            LOGGER.warn("Failed to clean up lock file on stop (non-critical)", e);
+        }
+
         LOGGER.info("V-SUM validation watcher stopped");
     }
 

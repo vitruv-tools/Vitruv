@@ -58,7 +58,7 @@ public class VsumPostCommitWatcher {
     public VsumPostCommitWatcher(Path repositoryRoot) {
         this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
         this.triggerFile = new PostCommitTriggerFile(repositoryRoot);
-        this.handler = new PostCommitHandler();
+        this.handler = new PostCommitHandler(repositoryRoot);
         this.running = false;
     }
 
