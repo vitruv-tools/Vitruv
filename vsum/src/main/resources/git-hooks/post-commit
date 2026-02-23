@@ -9,10 +9,11 @@
 #   This script is automatically installed by GitHookInstaller.java
 #
 # Workflow:
-#   1. Reads the real commit SHA via git rev-parse HEAD (the new commit now exists)
-#   2. Reads the current branch name
-#   3. Generates a unique request ID for traceability in logs
-#   4. Writes a post-commit trigger file and exits immediately (fire-and-forget)
+#   1. Checks if commit contains XMI/model file changes (skip if not)
+#   2. Reads the real commit SHA via git rev-parse HEAD (the new commit now exists)
+#   3. Reads the current branch name
+#   4. Generates a unique request ID for traceability in logs
+#   5. Writes a post-commit trigger file and exits immediately (fire-and-forget)
 #
 # Unlike the pre-commit hook, this hook does NOT wait for any result. Changelog
 # generation happens asynchronously in the background while the developer continues
@@ -27,6 +28,56 @@
 
 # Get repository root
 REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# ============================================================================
+# ADDED: Check if commit contains XMI/model file changes
+# Only generate changelogs for commits that affect models
+# This prevents:
+# 1. Infinite loops (committing changelogs doesn't trigger new changelogs)
+# 2. Unnecessary changelogs for code/documentation-only commits
+# ============================================================================
+
+# Get list of files changed in this commit
+# Special handling for: root commits (no parent) and merge commits (2+ parents)
+
+if git rev-parse HEAD~2 &> /dev/null; then
+    # Merge commit (2 or more parents)
+    # Compare against first parent to see what was merged in
+    FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD^1 HEAD)
+elif git rev-parse HEAD~1 &> /dev/null; then
+    # Normal commit with one parent - use diff-tree
+    FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD)
+else
+    # Root commit (no parent) - list all files in the commit
+    FILES_CHANGED=$(git ls-tree --name-only -r HEAD)
+fi
+
+# Check if ANY XMI/model files were changed
+HAS_MODEL_CHANGES=false
+
+while IFS= read -r file; do
+    # Check for XMI-based model files
+    # .xmi      = Standard XMI files
+    # .model    = Custom model files (XMI format)
+    # .model2   = Custom model2 files (XMI format)
+    # .ecore    = Ecore metamodels (XMI format)
+    # .uml      = UML models (XMI format)
+    # .notation = Diagram notation (XMI format)
+    if [[ "$file" =~ \.(xmi|model|model2|ecore|uml|notation)$ ]]; then
+        HAS_MODEL_CHANGES=true
+        break
+    fi
+done <<< "$FILES_CHANGED"
+
+# Skip changelog generation if no model files changed
+if [ "$HAS_MODEL_CHANGES" = false ]; then
+    echo "📝 Vitruvius: Skipping changelog (no XMI/model files changed)"
+    exit 0
+fi
+
+# ============================================================================
+# Continue with normal changelog generation
+# ============================================================================
 
 # Get the real commit SHA - at post-commit time HEAD points to the new commit
 COMMIT_SHA=$(git rev-parse HEAD)

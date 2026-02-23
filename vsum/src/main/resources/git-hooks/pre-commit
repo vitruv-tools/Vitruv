@@ -52,10 +52,10 @@ TRIGGER_FILE="$VITRUVIUS_DIR/validate-trigger"
 RESULT_FILE="$VITRUVIUS_DIR/validation-result-$REQUEST_ID"
 RESULT_JSON="$VITRUVIUS_DIR/validation-result-$REQUEST_ID.json"
 
-echo "🔍 Validating V-SUM consistency..."
-echo "   Request ID: $REQUEST_ID"
-echo "   Commit:     ${COMMIT_SHA:0:8}"
-echo "   Branch:     $BRANCH"
+echo "Validating V-SUM consistency..."
+echo "Request ID: $REQUEST_ID"
+echo "Commit:     ${COMMIT_SHA:0:8}"
+echo "Branch:     $BRANCH"
 echo ""
 
 # Create validation trigger file with request ID and timestamp
