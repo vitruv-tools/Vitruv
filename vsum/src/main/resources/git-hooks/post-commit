@@ -5,51 +5,45 @@
 # This hook is triggered after every successful commit and signals the Vitruvius
 # background watcher to generate the semantic changelog for the commit.
 #
+# For merge commits (commits with 2+ parents), this hook ALSO triggers merge
+# metadata generation, because conflict-requiring merges don't fire post-merge
+# until AFTER the resolution commit.
+#
 # Installation:
 #   This script is automatically installed by GitHookInstaller.java
 #
 # Workflow:
 #   1. Checks if commit contains XMI/model file changes (skip if not)
-#   2. Reads the real commit SHA via git rev-parse HEAD (the new commit now exists)
-#   3. Reads the current branch name
-#   4. Generates a unique request ID for traceability in logs
-#   5. Writes a post-commit trigger file and exits immediately (fire-and-forget)
-#
-# Unlike the pre-commit hook, this hook does NOT wait for any result. Changelog
-# generation happens asynchronously in the background while the developer continues
-# working. The hook always exits 0 - it never blocks or fails a commit.
-#
-# The key difference from using pre-commit for changelog generation:
-#   - At pre-commit time: git rev-parse HEAD returns the PARENT commit SHA
-#   - At post-commit time: git rev-parse HEAD returns the NEW commit SHA
-# Using post-commit ensures the changelog file name and content match the actual
-# commit visible in git log, making the changelog properly traceable.
+#   2. Reads the real commit SHA via git rev-parse HEAD
+#   3. Detects if this is a merge commit (has 2+ parents)
+#   4. Creates post-commit trigger for changelog
+#   5. If merge commit: Also creates merge trigger for merge metadata
+#   6. Exits immediately (fire-and-forget)
 #
 
 # Get repository root
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
-# ============================================================================
-# ADDED: Check if commit contains XMI/model file changes
-# Only generate changelogs for commits that affect models
-# This prevents:
-# 1. Infinite loops (committing changelogs doesn't trigger new changelogs)
-# 2. Unnecessary changelogs for code/documentation-only commits
-# ============================================================================
+
+# Check if commit contains XMI/model file changes
+
 
 # Get list of files changed in this commit
 # Special handling for: root commits (no parent) and merge commits (2+ parents)
 
-if git rev-parse HEAD~2 &> /dev/null; then
-    # Merge commit (2 or more parents)
+if git rev-parse HEAD^2 &> /dev/null; then
+    # Merge commit (has second parent)
     # Compare against first parent to see what was merged in
     FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD^1 HEAD)
-elif git rev-parse HEAD~1 &> /dev/null; then
-    # Normal commit with one parent - use diff-tree
+    IS_MERGE_COMMIT=true
+elif git rev-parse HEAD^1 &> /dev/null; then
+    # Normal commit (has parent)
     FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD)
+    IS_MERGE_COMMIT=false
 else
-    # Root commit (no parent) - list all files in the commit
+    # Root commit (no parent)
     FILES_CHANGED=$(git ls-tree --name-only -r HEAD)
+    IS_MERGE_COMMIT=false
 fi
 
 # Check if ANY XMI/model files were changed
@@ -57,29 +51,23 @@ HAS_MODEL_CHANGES=false
 
 while IFS= read -r file; do
     # Check for XMI-based model files
-    # .xmi      = Standard XMI files
-    # .model    = Custom model files (XMI format)
-    # .model2   = Custom model2 files (XMI format)
-    # .ecore    = Ecore metamodels (XMI format)
-    # .uml      = UML models (XMI format)
-    # .notation = Diagram notation (XMI format)
     if [[ "$file" =~ \.(xmi|model|model2|ecore|uml|notation)$ ]]; then
         HAS_MODEL_CHANGES=true
         break
     fi
 done <<< "$FILES_CHANGED"
 
-# Skip changelog generation if no model files changed
+# Skip if no model files changed
 if [ "$HAS_MODEL_CHANGES" = false ]; then
     echo "📝 Vitruvius: Skipping changelog (no XMI/model files changed)"
     exit 0
 fi
 
-# ============================================================================
-# Continue with normal changelog generation
-# ============================================================================
 
-# Get the real commit SHA - at post-commit time HEAD points to the new commit
+# Generate triggers for changelog (and merge metadata if merge commit)
+
+
+# Get the commit SHA
 COMMIT_SHA=$(git rev-parse HEAD)
 
 # Get the current branch name
@@ -87,32 +75,48 @@ BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
 
 # Vitruvius directory
 VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
-
-# Ensure .vitruvius directory exists
 mkdir -p "$VITRUVIUS_DIR"
 
-# Generate unique request ID for traceability in watcher logs
+# Generate unique request ID
 if command -v uuidgen &> /dev/null; then
     REQUEST_ID=$(uuidgen)
 elif [ -f /proc/sys/kernel/random/uuid ]; then
     REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
 else
-    # Fallback: timestamp + process ID + random number
     REQUEST_ID="$(date +%s)-$$-$RANDOM"
 fi
 
-# File path for the trigger
-TRIGGER_FILE="$VITRUVIUS_DIR/post-commit-trigger"
-
-# Write the trigger file with format: commitSha|branch|requestId|timestamp
-# VsumPostCommitWatcher will detect this and generate the changelog asynchronously
 TIMESTAMP=$(date +%s)
+
+# Always create post-commit trigger (for changelog)
+TRIGGER_FILE="$VITRUVIUS_DIR/post-commit-trigger"
 echo "$COMMIT_SHA|$BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
 
-echo "📝 Vitruvius: Changelog generation triggered for commit ${COMMIT_SHA:0:8} on '$BRANCH'"
-# Optional debug output (comment out for production)
-# echo "   Request ID: $REQUEST_ID"
+# If this is a merge commit, ALSO create merge trigger
+if [ "$IS_MERGE_COMMIT" = true ]; then
+    # Get source branch (the branch that was merged in)
+    SOURCE_COMMIT=$(git rev-parse HEAD^2)
+    SOURCE_BRANCH=$(git name-rev --name-only "$SOURCE_COMMIT" 2>/dev/null || echo "unknown-branch")
+    # Clean up branch name
+    SOURCE_BRANCH=$(echo "$SOURCE_BRANCH" | sed 's|^remotes/origin/||')
 
-# Exit immediately - changelog generation is asynchronous, no waiting needed
-# This hook never blocks a commit
+    # Generate separate request ID for merge
+    if command -v uuidgen &> /dev/null; then
+        MERGE_REQUEST_ID=$(uuidgen)
+    elif [ -f /proc/sys/kernel/random/uuid ]; then
+        MERGE_REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
+    else
+        MERGE_REQUEST_ID="$(date +%s)-$$-$RANDOM"
+    fi
+
+    # Create merge trigger
+    MERGE_TRIGGER="$VITRUVIUS_DIR/merge-trigger"
+    echo "$COMMIT_SHA|$SOURCE_BRANCH|$BRANCH|$MERGE_REQUEST_ID|$TIMESTAMP" > "$MERGE_TRIGGER"
+
+    echo "📝 Vitruvius: Changelog + Merge metadata triggered for commit ${COMMIT_SHA:0:8} ($SOURCE_BRANCH → $BRANCH)"
+else
+    echo "📝 Vitruvius: Changelog generation triggered for commit ${COMMIT_SHA:0:8} on '$BRANCH'"
+fi
+
+# Exit immediately - generation is asynchronous
 exit 0

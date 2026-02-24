@@ -122,6 +122,13 @@ public class VsumMergeWatcher {
                 } finally {
                     lock.release();
                     LOGGER.debug("Lock released (requestId='{}')", requestId);
+                    // delete the lock file after releasing the lock
+                    try {
+                        Files.deleteIfExists(lockFile);
+                        LOGGER.debug("Lock file deleted (requestId='{}')", info.getRequestId());
+                    } catch (IOException deleteError) {
+                        LOGGER.warn("Failed to delete lock file (non-critical) (requestId='{}')", info.getRequestId(), deleteError);
+                    }
                 }
             } catch (IOException e) {
                 LOGGER.error("Failed to acquire merge lock (requestId='{}')", requestId, e);

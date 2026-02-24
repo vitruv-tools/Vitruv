@@ -162,12 +162,21 @@ public class VsumPostCommitWatcher {
      * @param commitShort   the short commit SHA, used in log messages.
      */
     private void autoStageChangelog(Path changelogFile, String commitShort) {
+        long startTime = System.currentTimeMillis();  // ADD THIS
+
         try (Git git = Git.open(repositoryRoot.toFile())) {
-            // git add expects a forward-slash path relative to the repository root.
+            long gitOpenTime = System.currentTimeMillis();  // ADD THIS
+            LOGGER.debug("Git.open took {}ms", gitOpenTime - startTime);  // ADD THIS
+
             Path relativePath = repositoryRoot.relativize(changelogFile);
             String filePattern = relativePath.toString().replace('\\', '/');
+
+            long beforeAdd = System.currentTimeMillis();  // ADD THIS
             git.add().addFilepattern(filePattern).call();
-            LOGGER.info("Changelog auto-staged for commit {} ({})", commitShort, filePattern);
+            long afterAdd = System.currentTimeMillis();  // ADD THIS
+
+            LOGGER.info("Changelog auto-staged for commit {} ({}) - staging took {}ms",
+                    commitShort, filePattern, afterAdd - beforeAdd);  // MODIFY THIS
         } catch (Exception e) {
             LOGGER.warn("Failed to auto-stage changelog for commit {} (not critical)", commitShort, e);
             LOGGER.warn("Developer can manually stage with: git add {}", changelogFile);

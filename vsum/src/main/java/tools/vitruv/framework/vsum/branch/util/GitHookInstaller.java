@@ -47,12 +47,15 @@ public class GitHookInstaller {
     private static final String POST_MERGE_HOOK = "post-merge";
     private static final String POST_COMMIT_HOOK = "post-commit";
 
+    /** classpath location of the .gitignore template for Vitruvius files. */
+    private static final String GITIGNORE_TEMPLATE_PATH = "/vitruvius/.gitignore.template";
+
     /**
      * The {@code .git/hooks} directory of the target repository. All hook files are written to and read from this directory.
      */
     @Getter
     private final Path hooksDirectory;
-
+    private final Path repositoryRoot;
     /**
      * Creates a new installer targeting the given repository root.
      *
@@ -60,6 +63,7 @@ public class GitHookInstaller {
      * @throws IllegalArgumentException if the directory is not a Git repository or the {@code .git/hooks} directory is missing.
      */
     public GitHookInstaller(Path repositoryRoot) {
+        this.repositoryRoot = repositoryRoot;
         this.hooksDirectory = repositoryRoot.resolve(".git/hooks");
         if (!Files.isDirectory(hooksDirectory)) {
             throw new IllegalArgumentException("not a Git repository (missing .git/hooks directory): " + repositoryRoot);
@@ -113,9 +117,32 @@ public class GitHookInstaller {
         installPreCommitHook();
         installPostMergeHook();
         installPostCommitHook();
+        installGitignore();
         LOGGER.info("installed all Git hooks ({}, {}, {}, {})", POST_CHECKOUT_HOOK, PRE_COMMIT_HOOK, POST_MERGE_HOOK, POST_COMMIT_HOOK);
     }
+    /**
+     * creates a {@code .gitignore} file in the repository root to exclude Vitruvius runtime
+     * files (lock files, trigger files, VSUM state) from version control. the .gitignore is
+     * only created if it does not already exist; existing .gitignore files are never modified.
+     * @throws IOException if the .gitignore template cannot be read or the file cannot be written.
+     */
+    public void installGitignore() throws IOException {
+        Path gitignoreFile = repositoryRoot.resolve(".gitignore");
 
+        // only create if it doesn't exist - never modify existing .gitignore
+        if (Files.exists(gitignoreFile)) {
+            LOGGER.debug(".gitignore already exists, skipping creation");
+            return;
+        }
+        // read template from classpath and write to repository root
+        try (InputStream template = getClass().getResourceAsStream(GITIGNORE_TEMPLATE_PATH)) {
+            if (template == null) {
+                throw new IOException("could not find .gitignore template at: " + GITIGNORE_TEMPLATE_PATH);
+            }
+            Files.copy(template, gitignoreFile);
+            LOGGER.info("created .gitignore for Vitruvius runtime files");
+        }
+    }
     /**
      * Removes the {@code post-checkout} hook.
      * If a backup exists from a previous installation, the backup is restored so that the developer's original hook is active again.

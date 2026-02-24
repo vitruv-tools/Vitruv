@@ -109,6 +109,16 @@ public class VsumReloadWatcher {
                 Thread.currentThread().interrupt();
             }
         }
+
+        // clean up any leftover lock file when stopping
+        try {
+            if (Files.deleteIfExists(lockFile)) {
+                LOGGER.debug("Cleaned up lock file on watcher stop");
+            }
+        } catch (IOException e) {
+            LOGGER.warn("Failed to clean up lock file on stop (non-critical)", e);
+        }
+
         LOGGER.info("VSUM reload watcher stopped");
     }
 
@@ -146,8 +156,7 @@ public class VsumReloadWatcher {
      * @param info the trigger information parsed from the trigger file.
      */
     private void handleReloadRequest(ReloadTriggerFile.TriggerInfo info) {
-        LOGGER.info("Reload trigger detected for branch '{}' (requestId='{}')",
-                info.getBranchName(), info.getRequestId());
+        LOGGER.info("Reload trigger detected for branch '{}' (requestId='{}')", info.getBranchName(), info.getRequestId());
 
         try {
             // the lock file directory must exist before FileChannel.open() can create the file.
@@ -177,6 +186,13 @@ public class VsumReloadWatcher {
                     // always release the lock, even if performReload throws, to unblock any reload requests that are waiting to retry.
                     lock.release();
                     LOGGER.debug("Lock released (requestId='{}')", info.getRequestId());
+                    // delete the lock file after releasing the lock
+                    try {
+                        Files.deleteIfExists(lockFile);
+                        LOGGER.debug("Lock file deleted (requestId='{}')", info.getRequestId());
+                    } catch (IOException deleteError) {
+                        LOGGER.warn("Failed to delete lock file (non-critical) (requestId='{}')", info.getRequestId(), deleteError);
+                    }
                 }
 
             } catch (IOException e) {

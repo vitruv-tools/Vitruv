@@ -95,6 +95,11 @@ class ResourceRepositoryImpl implements ModelRepository {
         modelsResourceSet.getResources().forEach(Resource::unload);
         modelsResourceSet.getResources().clear();
         modelInstances.clear();
+
+        // ADDED: Clear package registry to prevent stale metamodel references
+        LOGGER.debug("Clearing package registry");
+        modelsResourceSet.getPackageRegistry().clear();
+
         // Reset UUID resolver
         LOGGER.debug("Resetting UUID resolver");
         uuidResolver = UuidResolver.create(modelsResourceSet);

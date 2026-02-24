@@ -192,6 +192,14 @@ public class VsumValidationWatcher {
                     // always release the lock, even if performValidation throws, to unblock any validation requests that are waiting to retry.
                     lock.release();
                     LOGGER.debug("Lock released (requestId='{}')", requestId);
+
+                    // delete the lock file after releasing the lock
+                    try {
+                        Files.deleteIfExists(lockFile);
+                        LOGGER.debug("Lock file deleted (requestId='{}')", info.getRequestId());
+                    } catch (IOException deleteError) {
+                        LOGGER.warn("Failed to delete lock file (non-critical) (requestId='{}')", info.getRequestId(), deleteError);
+                    }
                 }
 
             } catch (IOException e) {
