@@ -1,0 +1,20 @@
+# Vitruvius runtime files
+.vitruvius/*.lock
+.vitruvius/*-trigger
+.vitruvius/validation-result-*
+
+# VSUM runtime state (regenerated from models)
+vsum/
+vitruvData/
+consistencymetadata/
+
+# Ignore everything in .vitruvius by default
+.vitruvius/*
+
+# Keep permanent records
+!.vitruvius/changelogs/
+!.vitruvius/changelogs/**
+!.vitruvius/merges/
+!.vitruvius/merges/**
+!.vitruvius/branches/
+!.vitruvius/branches/**
