@@ -153,27 +153,39 @@ public class MergeResultFile {
         builder.append("\n");
 
         if (result.isValid()) {
-            builder.append(" POST-MERGE VALIDATION PASSED\n");
-            builder.append(" Merged VSUM state is consistent");
+            // CHANGED: Added ✔ to match the hook's grep pattern
+            builder.append("✔ POST-MERGE VALIDATION PASSED\n");
+            builder.append("\n");
+            builder.append("Merged VSUM state is consistent\n");
         } else {
-            builder.append(" POST-MERGE VALIDATION WARNING\n");
-            builder.append(" The merged VSUM state contains inconsistencies.\n");
-            builder.append(" The merge has completed but the model may require attention.\n");
+            builder.append("✘ POST-MERGE VALIDATION FAILED\n");
+            builder.append("\n");
+            builder.append("The merged VSUM state contains inconsistencies.\n");
+            builder.append("The merge has completed but the model may require attention.\n");
         }
         builder.append("\n");
 
         if (result.hasErrors()) {
             builder.append("Inconsistencies detected (").append(result.getErrors().size()).append("):\n");
             for (String error : result.getErrors()) {
-                builder.append(" ").append(error).append("\n");
+                builder.append("  ✘ ").append(error).append("\n");
+            }
+            builder.append("\n");
+        }
+
+        if (result.hasWarnings()) {
+            builder.append("Warnings (").append(result.getWarnings().size()).append("):\n");
+            for (String warning : result.getWarnings()) {
+                builder.append("  ⚠").append(warning).append("\n");
             }
             builder.append("\n");
         }
 
         if (result.isValid() && !result.hasWarnings()) {
-            builder.append(" No inconsistencies or warnings found.\n\n");
+            builder.append("No inconsistencies or warnings found.\n");
         }
 
+        builder.append("\n");
         Files.writeString(textResultPath, builder.toString());
     }
 

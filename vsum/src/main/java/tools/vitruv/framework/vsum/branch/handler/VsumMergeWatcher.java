@@ -25,6 +25,7 @@ public class VsumMergeWatcher {
     private static final long STOP_TIMEOUT_MS = 2000;
     private static final String THREAD_NAME = "VSUM-Merge-Watcher";
     private static final String LOCK_FILENAME = ".merge.lock";
+    private final InternalVirtualModel virtualModel;
 
     private final Path repositoryRoot;
     private final MergeTriggerFile triggerFile;
@@ -43,6 +44,7 @@ public class VsumMergeWatcher {
         this.resultFile = new MergeResultFile(repositoryRoot);
         this.handler = new PostMergeHandler(virtualModel, repositoryRoot);
         this.running = false;
+        this.virtualModel = virtualModel;
         this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);
     }
 
@@ -143,11 +145,14 @@ public class VsumMergeWatcher {
     private void performMergeValidation(MergeTriggerFile.TriggerInfo info, String mergeShort, String requestId) {
         try {
             long startTime = System.currentTimeMillis();
+
+            // Validate the merge
             ValidationResult result = handler.validate();
             long duration = System.currentTimeMillis() - startTime;
+
             LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')", duration, result.isValid() ? "PASSED ✓" : "WARNING ⚠", requestId);
 
-            // write the request-scoped result files so the post-merge hook can display the outcome to the developer in the terminal.
+            // Write result files
             try {
                 resultFile.writeResult(result, requestId);
                 LOGGER.debug("Merge result files written (requestId='{}')", requestId);
@@ -155,14 +160,22 @@ public class VsumMergeWatcher {
                 LOGGER.error("Failed to write merge result files (requestId='{}')", requestId, e);
             }
 
-            // write the permanent merge metadata record regardless of validation outcome.
-            // a failed validation is still a completed merge and must be recorded (MG-6).
+            // Write merge metadata
             try {
                 handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch(), result);
                 LOGGER.info("Merge metadata written for commit {}", mergeShort);
                 autoStageMetadata(info.getMergeCommitSha(), mergeShort);
             } catch (Exception e) {
                 LOGGER.warn("Failed to generate merge metadata for commit {} (not critical)", mergeShort, e);
+            }
+
+            // Auto-reload VSUM after merge to sync in-memory state
+            try {
+                LOGGER.info("Reloading VSUM after merge to sync with merged state");
+                virtualModel.reload();
+                LOGGER.info("VSUM reloaded successfully after merge");
+            } catch (Exception e) {
+                LOGGER.warn("Failed to reload VSUM after merge: {}", e.getMessage());
             }
 
             if (!result.isValid()) {
@@ -178,7 +191,8 @@ public class VsumMergeWatcher {
             }
 
         } catch (Exception e) {
-            LOGGER.error("Merge validation failed with exception for commit {} (requestId='{}')", mergeShort, requestId, e);
+            LOGGER.error("Merge validation failed with exception for commit {} (requestId='{}')",
+                    mergeShort, requestId, e);
             writeWarningResult(requestId, "Merge validation crashed: " + e.getMessage());
         }
     }
