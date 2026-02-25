@@ -8,6 +8,8 @@ import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactor
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -75,45 +77,131 @@ class ResourceRepositoryImpl implements ModelRepository {
     @Override
     public void reload() {
         LOGGER.info("Reloading models from file system");
+
         // Stop recording changes during reload
         boolean wasRecording = isRecording;
         if (isRecording) {
             changeRecorder.endRecording();
             isRecording = false;
         }
+
         // Remove all current resources from change recorder tracking BEFORE unloading
         LOGGER.debug("Removing {} models from change recorder", modelsResourceSet.getResources().size());
-        // Make a copy of the list since we'll be modifying it
         var resourcesToRemove = new ArrayList<>(modelsResourceSet.getResources());
         for (Resource resource : resourcesToRemove) {
             if (resource.getURI().isFile() || resource.getURI().isPlatform()) {
                 changeRecorder.removeFromRecording(resource);
             }
         }
+
         // Unload all existing resources
         LOGGER.debug("Unloading models");
         modelsResourceSet.getResources().forEach(Resource::unload);
         modelsResourceSet.getResources().clear();
         modelInstances.clear();
 
-        // ADDED: Clear package registry to prevent stale metamodel references
+        // Clear package registry to prevent stale metamodel references
         LOGGER.debug("Clearing package registry");
         modelsResourceSet.getPackageRegistry().clear();
 
         // Reset UUID resolver
         LOGGER.debug("Resetting UUID resolver");
         uuidResolver = UuidResolver.create(modelsResourceSet);
+
         // Recreate the change resolver with new UUID resolver
         changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver);
-        // Reload from disk
-        LOGGER.debug("Loading models from disk");
-        loadExistingModels();
+
+        // Always use file system discovery
+        LOGGER.debug("Discovering models from file system");
+        isLoading = true;
+
+        try {
+            discoverAndLoadModels();
+        } catch (Exception e) {
+            LOGGER.error("Failed to discover models from file system", e);
+        }
+
+        // Load correspondences (tolerant of missing models)
+        try {
+            correspondenceModel.loadSerializedCorrespondences(modelsResourceSet);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to load correspondences (will rebuild as needed): {}", e.getMessage());
+        }
+
+        isLoading = false;
+
         // Resume recording if it was active before
         if (wasRecording) {
             changeRecorder.beginRecording();
             isRecording = true;
         }
+
         LOGGER.info("Models reloaded successfully");
+    }
+
+    private void discoverAndLoadModels() throws IOException {
+        // TODO: only temporal fix
+        Path rootPath = fileSystemLayout.getVsumProjectFolder();
+
+        LOGGER.debug("Scanning {} for model files", rootPath);
+
+        // Find all model files (including model, model2, model3, model99, etc.)
+        List<URI> discoveredModels = Files.list(rootPath)
+                .filter(Files::isRegularFile)
+                .filter(path -> {
+                    String name = path.getFileName().toString();
+                    // Match: .xmi, .model, .model2, .model3, .model99, etc.
+                    return name.endsWith(".xmi") ||
+                            name.matches(".*\\.model\\d*") ||  // Matches .model, .model2, .model3, etc.
+                            name.endsWith(".ecore") ||
+                            name.endsWith(".uml") ||
+                            name.endsWith(".notation");
+                })
+                .map(path -> URI.createFileURI(path.toAbsolutePath().toString()))
+                .toList();
+
+        LOGGER.info("Discovered {} model file(s) on file system", discoveredModels.size());
+
+        if (discoveredModels.isEmpty()) {
+            LOGGER.warn("No model files found in repository root");
+            return;
+        }
+
+        // Load resources
+        for (URI uri : discoveredModels) {
+            LOGGER.debug("Loading model: {}", uri);
+            try {
+                loadOrCreateResource(modelsResourceSet, uri);
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load model {}: {}", uri, e.getMessage());
+                // Continue with other models
+            }
+        }
+
+        // Try to load UUIDs (tolerant of missing objects)
+        try {
+            uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
+            LOGGER.debug("UUID mappings loaded successfully");
+        } catch (Exception e) {
+            LOGGER.warn("Could not load UUID mappings (will regenerate): {}", e.getMessage());
+        }
+
+        // Create model instances
+        for (URI uri : discoveredModels) {
+            try {
+                createOrLoadModel(uri);
+            } catch (Exception e) {
+                LOGGER.warn("Failed to create model instance for {}: {}", uri, e.getMessage());
+            }
+        }
+
+        // Update models.models file to reflect current state
+        try {
+            writeModelsFile();
+            LOGGER.debug("Updated models.models with discovered models");
+        } catch (IOException e) {
+            LOGGER.warn("Failed to write models.models (non-critical)", e);
+        }
     }
 
     private void writeModelsFile() throws IOException {
