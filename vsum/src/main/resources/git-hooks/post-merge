@@ -2,137 +2,102 @@
 #
 # Git post-merge hook for Vitruvius V-SUM merge validation
 #
-# This hook is triggered after every merge or pull and validates that the merged V-SUM is in a consistent state.
-# Unlike pre-commit, this validation is non-blocking: the merge has already completed, so detected inconsistencies are reported as
-# warnings rather than blocking the operation.
-#
-# Installation:
-#   This script is automatically installed by GitHookInstaller.java
+# Triggered after every merge or pull. Validates that the merged V-SUM is consistent.
+# This is non-blocking: the merge has already completed, so inconsistencies are
+# reported as warnings rather than blocking the operation.
 #
 # Workflow:
-#   1. Gets merge commit SHA, source branch, and target branch
-#   2. Generates unique request ID (UUID) for this merge validation request
-#   3. Creates a merge trigger file with request ID
-#   4. Waits for VsumMergeWatcher to process and write request-specific results
-#   5. Reads validation result using request ID and displays warnings if needed
-#   6. Always exits 0 (never blocks) - merge is already complete
-#
-# Supports concurrent merge operations via unique request IDs
+#   1. Detect if this is a fast-forward merge (skip if so - follow Git's behavior)
+#   2. Get merge commit SHA, source branch, and target branch
+#   3. Generate unique request ID and create merge trigger file
+#   4. Wait for VsumMergeWatcher to process and write results
+#   5. Display validation result and always exit 0 (never blocks)
 #
 
-set -e  # Exit on error (but always exit 0 at the end)
+set -e
 
-# Git passes one argument to post-merge hooks:
-SQUASH_MERGE=$1    # 1 if the merge was a squash merge, 0 for normal merge. Currently not used, but is available for future enhancement
+# Git passes one argument: 1 if squash merge, 0 for normal merge
+SQUASH_MERGE=$1
 
-# Get repository root
-REPO_ROOT=$(git rev-parse --show-toplevel) # absolute path to the root of the repo
-
-# Get current branch name (the target branch that received the merge)
+REPO_ROOT=$(git rev-parse --show-toplevel)
 TARGET_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
-
-# Get the merge commit SHA (HEAD after the merge completed)
 MERGE_COMMIT_SHA=$(git rev-parse HEAD)
 
-# Determine the source branch that was merged in
-# For a merge commit, the second parent is the branch that was merged
-# For a fast-forward or pull, we may not have a second parent
-if git rev-parse HEAD^2 &>/dev/null; then # if HEAD^2 exists then this is a real merge commit
-    SOURCE_COMMIT=$(git rev-parse HEAD^2) # retrieve the commit sha of the second parent (merged branch)
-    # Try to get the branch name from reflog or describe
-    SOURCE_BRANCH=$(git name-rev --name-only "$SOURCE_COMMIT" 2>/dev/null || echo "unknown-branch")
-    # Clean up the branch name (remove remotes/ prefix if present)
-    SOURCE_BRANCH=$(echo "$SOURCE_BRANCH" | sed 's|^remotes/origin/||')
-else
-    # Fast-forward merge or pull with no second parent
-    # Use MERGE_HEAD as merged commit sha if available (left by git during the merge)
-    if [ -f "$REPO_ROOT/.git/MERGE_HEAD" ]; then
-        SOURCE_COMMIT=$(cat "$REPO_ROOT/.git/MERGE_HEAD")
-        SOURCE_BRANCH=$(git name-rev --name-only "$SOURCE_COMMIT" 2>/dev/null || echo "unknown-branch")
-        SOURCE_BRANCH=$(echo "$SOURCE_BRANCH" | sed 's|^remotes/origin/||')
-    else
-        # Fallback for pull without conflicts
-        SOURCE_BRANCH="remote-branch"
-    fi
+# Detect fast-forward merges and skip validation
+# Git doesn't create a merge commit for fast-forward merges, so we follow
+# the same principle and don't create merge metadata.
+# Detection: check if HEAD has a second parent (HEAD^2)
+
+if ! git rev-parse HEAD^2 &>/dev/null; then
+    echo "Fast-forward merge completed"
+    echo "Git did not create a merge commit (linear history)"
+    echo "No merge metadata will be generated (following Git's behavior)"
+    echo ""
+    echo "To force merge commits: git merge --no-ff <branch>"
+    exit 0
 fi
+
+echo "Merge commit detected"
+echo "Merge SHA: ${MERGE_COMMIT_SHA:0:8}"
+
+# Determine source branch (the branch that was merged in)
+SOURCE_COMMIT=$(git rev-parse HEAD^2)
+SOURCE_BRANCH=$(git name-rev --name-only "$SOURCE_COMMIT" 2>/dev/null || echo "unknown-branch")
+SOURCE_BRANCH=$(echo "$SOURCE_BRANCH" | sed 's|^remotes/origin/||')
 
 # Vitruvius directory
 VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
-
-# Creates .vitruvius directory if it does not exist
 mkdir -p "$VITRUVIUS_DIR"
 
-# Generate unique request ID for this merge validation request
-# This prevents concurrent merges from reading each other's results
-if command -v uuidgen &> /dev/null; then # check if uuidgen command exists in the system
-    REQUEST_ID=$(uuidgen) # if yes then generate one uuid
-elif [ -f /proc/sys/kernel/random/uuid ]; then # Linux fallback for Linux system
-    REQUEST_ID=$(cat /proc/sys/kernel/random/uuid) # reads uuid directly from the kernel
+# Generate unique request ID for this merge validation
+if command -v uuidgen &> /dev/null; then
+    REQUEST_ID=$(uuidgen)
+elif [ -f /proc/sys/kernel/random/uuid ]; then
+    REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
 else
-    # Fallback: timestamp + random number if both options above dont exist
-    REQUEST_ID="$(date +%s)-$$-$RANDOM" # timestamp in seconds - unique PID - a random number between 0–32767, built-in bash variable
+    REQUEST_ID="$(date +%s)-$$-$RANDOM"
 fi
 
 # File paths
 TRIGGER_FILE="$VITRUVIUS_DIR/merge-trigger"
-# Result files now include request ID
 RESULT_FILE="$VITRUVIUS_DIR/merge-result-$REQUEST_ID"
 RESULT_JSON="$VITRUVIUS_DIR/merge-result-$REQUEST_ID.json"
 
-echo "🔍 Validating merged V-SUM state..."
-echo "   Request ID:    $REQUEST_ID"
-echo "   Merge commit:  ${MERGE_COMMIT_SHA:0:8}"
-echo "   Source:        $SOURCE_BRANCH"
-echo "   Target:        $TARGET_BRANCH"
+echo "Validating merged V-SUM state..."
+echo "Request ID:    $REQUEST_ID"
+echo "Merge commit:  ${MERGE_COMMIT_SHA:0:8}"
+echo "Source:        $SOURCE_BRANCH"
+echo "Target:        $TARGET_BRANCH"
 echo ""
 
-# Create merge trigger file with request ID and timestamp
-# Format: mergeCommitSha|sourceBranch|targetBranch|requestId|timestamp
+# Create merge trigger file
 TIMESTAMP=$(date +%s)
-echo "$MERGE_COMMIT_SHA|$SOURCE_BRANCH|$TARGET_BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE" # redirect output into a file
+echo "$MERGE_COMMIT_SHA|$SOURCE_BRANCH|$TARGET_BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
 
-# Wait for merge validation result (max 30 seconds = 60 iterations * 0.5s)
 MAX_WAIT=60
 WAITED=0
 
 while [ $WAITED -lt $MAX_WAIT ]; do
-    # Check for request-specific result file
     if [ -f "$RESULT_FILE" ]; then
-        # Result file exists - read it
+        # Result file exists - display it
+        echo ""
+        cat "$RESULT_FILE"
+        echo ""
 
-        # Check if validation passed by looking for success marker
-        if grep -q "✔ POST-MERGE VALIDATION PASSED" "$RESULT_FILE"; then
-            # Validation passed
-            echo "✅ Merged V-SUM state is consistent"
+        # Check if there were errors
+        if grep -qi "error\|failed" "$RESULT_FILE"; then
+            echo "The merge has completed, but the model may need attention."
+            echo "Review the inconsistencies above and resolve them in a follow-up commit."
             echo ""
-
-            # Clean up result files
-            rm -f "$RESULT_FILE" "$RESULT_JSON"
-
-            # Always exit 0 - merge is already complete
-            exit 0
-
-        else
-            # Validation detected inconsistencies - display warning report
-            echo "⚠️  POST-MERGE VALIDATION WARNING"
-            echo ""
-
-            # Display full warning report
-            cat "$RESULT_FILE"
-            echo ""
-
-            # Clean up result files
-            rm -f "$RESULT_FILE" "$RESULT_JSON"
-
-            echo "ℹ️  The merge has completed, but the model may need attention."
-            echo "   Review the inconsistencies above and resolve them in a follow-up commit."
-            echo ""
-            echo "   Merge metadata saved to .vitruvius/merges/${MERGE_COMMIT_SHA:0:7}.metadata"
-
-            # Always exit 0 - this is a warning, not a failure
-            # The merge is already complete and cannot be undone by this hook
-            exit 0
         fi
+
+        echo "Merge metadata saved to .vitruvius/merges/${MERGE_COMMIT_SHA:0:7}.metadata"
+        echo ""
+
+        # Clean up result files
+        rm -f "$RESULT_FILE" "$RESULT_JSON"
+
+        exit 0
     fi
 
     # Wait 0.5 seconds before checking again
@@ -142,12 +107,11 @@ while [ $WAITED -lt $MAX_WAIT ]; do
     # Show progress every 5 seconds
     if [ $((WAITED % 10)) -eq 0 ]; then
         ELAPSED=$((WAITED / 2))
-        echo "⏳ Still waiting for merge validation... (${ELAPSED}s elapsed)"
+        echo "Still waiting for merge validation... (${ELAPSED}s elapsed)"
     fi
 done
 
-# Timeout - validation took too long or watcher not running
-echo "⚠️  Merge validation timeout after $((MAX_WAIT / 2)) seconds"
+echo "Merge validation timeout after $((MAX_WAIT / 2)) seconds"
 echo ""
 echo "Request ID: $REQUEST_ID"
 echo ""
@@ -166,12 +130,9 @@ echo "  3. Check logs for errors related to request ID: $REQUEST_ID"
 echo ""
 echo "You may want to manually verify the merged V-SUM state."
 
-# Clean up trigger file if still exists
+# Clean up
 rm -f "$TRIGGER_FILE"
-
-# Clean up our result files if they were created during timeout
 rm -f "$RESULT_FILE" "$RESULT_JSON"
 
-# Always exit 0 - the merge is already complete
-# Even on timeout, we cannot and should not undo the merge
+# Always exit 0 - merge is already complete and cannot be undone
 exit 0

@@ -1,97 +1,52 @@
 #!/bin/bash
 #
-# Git post-checkout hook for Vitruvius VSUM reload and branch metadata tracking
-#
-# This hook is triggered after:
-#   - Branch switches (git checkout <branch>, git switch <branch>)
-#   - New branch creation (git checkout -b <branch>, git switch -c <branch>)
-#   - File checkouts (git checkout -- <file>)
-#
-# Arguments passed by Git:
-#   $1 = previous HEAD ref
-#   $2 = new HEAD ref
-#   $3 = flag: 1 = branch checkout, 0 = file checkout
-#
-# For branch operations, this hook:
-#   1. Writes a reload trigger file to signal VsumReloadWatcher
-#   2. Writes branch metadata if a new branch was created
+# Git post-checkout hook for Vitruvius VSUM branch switching
 #
 
-# Get repository root
-REPO_ROOT=$(git rev-parse --show-toplevel)
-
-# Get hook arguments
-PREV_HEAD=$1
+PREVIOUS_HEAD=$1
 NEW_HEAD=$2
-BRANCH_FLAG=$3
+BRANCH_SWITCH=$3
 
-# Only process branch checkouts, not file checkouts
-if [ "$BRANCH_FLAG" != "1" ]; then
+if [ "$BRANCH_SWITCH" != "1" ]; then
     exit 0
 fi
 
-# Get the new branch name
+REPO_ROOT=$(git rev-parse --show-toplevel)
 NEW_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
 
-# Vitruvius directory
 VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
-BRANCHES_DIR="$VITRUVIUS_DIR/branches"
-
-# Ensure .vitruvius directories exist
 mkdir -p "$VITRUVIUS_DIR"
-mkdir -p "$BRANCHES_DIR"
 
-
-# STEP 1: Write reload trigger (always, for every branch switch)
-
-TRIGGER_FILE="$VITRUVIUS_DIR/reload-trigger"
-echo "$NEW_BRANCH" > "$TRIGGER_FILE"
-
-
-# STEP 2: Create branch metadata if this is a new branch
-
-# Detect if this is a new branch by checking if metadata already exists
-METADATA_FILE="$BRANCHES_DIR/$NEW_BRANCH.metadata"
+METADATA_FILE="$VITRUVIUS_DIR/branches/$NEW_BRANCH.metadata"
 
 if [ ! -f "$METADATA_FILE" ]; then
-    # This is a new branch - need to create metadata
+    echo "Vitruvius: Creating metadata for new branch '$NEW_BRANCH'..."
 
-    # Special case: master/main branch is the root branch (no parent)
-    if [ "$NEW_BRANCH" == "master" ] || [ "$NEW_BRANCH" == "main" ]; then
-        PARENT_BRANCH="none"
-        echo "Vitruvius: Creating metadata for root branch '$NEW_BRANCH'"
+    mkdir -p "$VITRUVIUS_DIR/branches"
+
+    # Determine parent branch
+    if [ "$NEW_BRANCH" = "master" ] || [ "$NEW_BRANCH" = "main" ]; then
+        # Root branches are their own parent
+        PARENT_BRANCH="$NEW_BRANCH"
     else
-        # Determine parent branch from git reflog
-        # When you run "git checkout -b new-branch", reflog shows:
-        # "checkout: moving from <parent> to new-branch"
-        PARENT_BRANCH=$(git reflog -1 | grep -oP "checkout: moving from \K[^ ]+" || echo "unknown")
+        # FIXED: Use reflog to find where we came from
+        # Format: "checkout: moving from <parent> to <new>"
+        PARENT_BRANCH=$(git reflog -1 --format="%gs" | sed -n 's/checkout: moving from \(.*\) to .*/\1/p')
 
-        # If reflog detection failed, use unknown
-        if [ -z "$PARENT_BRANCH" ]; then
-            PARENT_BRANCH="unknown"
+        # Clean up branch name (remove remotes/, tags/, etc.)
+        PARENT_BRANCH=$(echo "$PARENT_BRANCH" | sed 's|^remotes/origin/||' | sed 's|^refs/heads/||')
+
+        # Fallback to master if empty or looks like a SHA
+        if [ -z "$PARENT_BRANCH" ] || [[ "$PARENT_BRANCH" =~ ^[0-9a-f]{7,40}$ ]]; then
+            PARENT_BRANCH="master"
         fi
-
-        echo "Vitruvius: Branch metadata created for '$NEW_BRANCH' (parent: '$PARENT_BRANCH')"
     fi
 
-    # Get commit SHA (unique identifier for this branch)
-    COMMIT_SHA=$(git rev-parse HEAD)
-    SHORT_SHA="${COMMIT_SHA:0:7}"
+    TIMESTAMP=$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S)
 
-    # Get current timestamp in ISO 8601 format
-    # Try different date command formats for cross-platform compatibility
-    if date -Iseconds >/dev/null 2>&1; then
-        TIMESTAMP=$(date -Iseconds)
-    else
-        # Fallback for systems without -Iseconds (e.g., macOS)
-        TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S%z")
-    fi
-
-    # Write metadata file in JSON format (matching BranchMetadata.java structure)
     cat > "$METADATA_FILE" << EOF
 {
   "branchName": "$NEW_BRANCH",
-  "uniqueId": "$SHORT_SHA",
   "state": "ACTIVE",
   "parentBranch": "$PARENT_BRANCH",
   "createdAt": "$TIMESTAMP",
@@ -99,10 +54,23 @@ if [ ! -f "$METADATA_FILE" ]; then
 }
 EOF
 
-git add "$METADATA_FILE" 2>/dev/null || true
-
-else
-    :
+    echo "Metadata created: $NEW_BRANCH.metadata (parent: $PARENT_BRANCH)"
+    git add "$METADATA_FILE" 2>/dev/null || true
 fi
+
+if command -v uuidgen &> /dev/null; then
+    REQUEST_ID=$(uuidgen)
+elif [ -f /proc/sys/kernel/random/uuid ]; then
+    REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
+else
+    REQUEST_ID="$(date +%s)-$$-$RANDOM"
+fi
+
+TIMESTAMP=$(date +%s)
+TRIGGER_FILE="$VITRUVIUS_DIR/reload-trigger"
+echo "$NEW_BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
+
+echo "Vitruvius: Branch switched from '$PARENT_BRANCH' to '$NEW_BRANCH'"
+echo "VSUM will reload to reflect the checked-out branch"
 
 exit 0
