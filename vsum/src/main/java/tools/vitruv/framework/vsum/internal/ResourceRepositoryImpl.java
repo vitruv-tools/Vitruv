@@ -181,9 +181,25 @@ class ResourceRepositoryImpl implements ModelRepository {
         // Try to load UUIDs (tolerant of missing objects)
         try {
             uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
-            LOGGER.debug("UUID mappings loaded successfully");
+            LOGGER.info("✅ UUID mappings loaded successfully");
+
+            // Count how many objects have UUIDs
+            int uuidCount = 0;
+            for (Resource resource : modelsResourceSet.getResources()) {
+                Iterator<EObject> iterator = resource.getAllContents();
+                while (iterator.hasNext()) {
+                    EObject obj = iterator.next();
+                    if (uuidResolver.hasUuid(obj)) {
+                        uuidCount++;
+                    }
+                }
+            }
+            LOGGER.info("   Loaded UUIDs for {} objects in ResourceSet", uuidCount);
+
         } catch (Exception e) {
-            LOGGER.warn("Could not load UUID mappings (will regenerate): {}", e.getMessage());
+            LOGGER.error("❌ UUID loading FAILED: {}", e.getMessage());
+            LOGGER.error("   This means some/all objects will not have UUIDs!");
+            e.printStackTrace();  // Get full stack trace
         }
 
         // Create model instances
