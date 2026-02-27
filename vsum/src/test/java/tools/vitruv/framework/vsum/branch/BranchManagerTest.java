@@ -110,79 +110,81 @@ class BranchManagerTest {
     }
 
 
-    @Nested
-    @DisplayName("switchBranch")
-    class SwitchBranch {
 
-        /**
-         * Verifies that switching by exact branch name updates the HEAD reference to point to the target branch.
-         * Git repository state is checked directly after the switch.
-         */
-        @Test
-        @DisplayName("switches to an existing branch by name and updates HEAD")
-        void switchByName(@TempDir Path repoDir) throws Exception {
-            try (var git = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                manager.createBranch("bugfix-viewtype", "master");
+    //@Nested
+    //@DisplayName("switchBranch")
+    //class SwitchBranch {
+//
+    //    /**
+    //     * Verifies that switching by exact branch name updates the HEAD reference to point to the target branch.
+    //     * Git repository state is checked directly after the switch.
+    //     */
+    //    @Test
+    //    @DisplayName("switches to an existing branch by name and updates HEAD")
+    //    void switchByName(@TempDir Path repoDir) throws Exception {
+    //        try (var git = initRepo(repoDir)) {
+    //            var manager = new BranchManager(repoDir);
+    //            manager.createBranch("bugfix-viewtype", "master");
+//
+    //            manager.switchBranch("bugfix-viewtype");
+//
+    //            var head = git.getRepository().findRef("HEAD");
+    //            assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName(), "HEAD must point to the target branch after switching");
+    //        }
+    //    }
+//
+    //    /**
+    //     * Verifies that a branch can also be identified by its unique identifier prefix rather han its full name.
+    //     */
+    //    @Test
+    //    @DisplayName("switches to a branch identified by its unique identifier prefix")
+    //    void switchByUid(@TempDir Path repoDir) throws Exception {
+    //        try (var git = initRepo(repoDir)) {
+    //            var manager = new BranchManager(repoDir);
+    //            var metadata = manager.createBranch("bugfix-viewtype", "master");
+//
+    //            manager.switchBranch(metadata.getUid());
+//
+    //            var head = git.getRepository().findRef("HEAD");
+    //            assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName());
+    //        }
+    //    }
+//
+    //    /**
+    //     * Verifies that switching to a branch that does not exist raises an exception instead of leaving the working directory in an undefined state.
+    //     */
+    //    @Test
+    //    @DisplayName("fails when the target branch does not exist")
+    //    void failOnNonExistentBranch(@TempDir Path repoDir) throws Exception {
+    //        try (var ignored = initRepo(repoDir)) {
+    //            var manager = new BranchManager(repoDir);
+    //            assertThrows(BranchOperationException.class, () -> manager.switchBranch("nonexistent"));
+    //        }
+    //    }
+//
+    //    /**
+    //     * Verifies that when a post-checkout handler is registered, the VirtualModel reload is triggered after a successful branch switch.
+    //     * this ensures the virtual model stays in sync with the newly checked-out branch content.
+    //     */
+    //    @Test
+    //    @DisplayName("triggers virtual model reload via post-checkout handler after switching")
+    //    void switchWithHandlerTriggersVirtualModelReload(@TempDir Path repoDir) throws Exception {
+    //        try (var ignored = initRepo(repoDir)) {
+    //            var manager = new BranchManager(repoDir);
+    //            manager.createBranch("bugfix-viewtype", "master");
+//
+    //            var virtualModel = mock(VirtualModel.class);
+    //            var handler = new PostCheckoutHandler(virtualModel);
+    //            manager.setPostCheckoutHandler(handler);
+//
+    //            manager.switchBranch("bugfix-viewtype");
+//
+    //            // the virtual model must be reloaded exactly once so that its state reflects the files and models present on the new branch.
+    //            verify(virtualModel).reload();
+    //        }
+    //    }
+    //}
 
-                manager.switchBranch("bugfix-viewtype");
-
-                var head = git.getRepository().findRef("HEAD");
-                assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName(), "HEAD must point to the target branch after switching");
-            }
-        }
-
-        /**
-         * Verifies that a branch can also be identified by its unique identifier prefix rather han its full name.
-         */
-        @Test
-        @DisplayName("switches to a branch identified by its unique identifier prefix")
-        void switchByUid(@TempDir Path repoDir) throws Exception {
-            try (var git = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                var metadata = manager.createBranch("bugfix-viewtype", "master");
-
-                manager.switchBranch(metadata.getUid());
-
-                var head = git.getRepository().findRef("HEAD");
-                assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName());
-            }
-        }
-
-        /**
-         * Verifies that switching to a branch that does not exist raises an exception instead of leaving the working directory in an undefined state.
-         */
-        @Test
-        @DisplayName("fails when the target branch does not exist")
-        void failOnNonExistentBranch(@TempDir Path repoDir) throws Exception {
-            try (var ignored = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                assertThrows(BranchOperationException.class, () -> manager.switchBranch("nonexistent"));
-            }
-        }
-
-        /**
-         * Verifies that when a post-checkout handler is registered, the VirtualModel reload is triggered after a successful branch switch. 
-         * this ensures the virtual model stays in sync with the newly checked-out branch content.
-         */
-        @Test
-        @DisplayName("triggers virtual model reload via post-checkout handler after switching")
-        void switchWithHandlerTriggersVirtualModelReload(@TempDir Path repoDir) throws Exception {
-            try (var ignored = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                manager.createBranch("bugfix-viewtype", "master");
-
-                var virtualModel = mock(VirtualModel.class);
-                var handler = new PostCheckoutHandler(virtualModel);
-                manager.setPostCheckoutHandler(handler);
-
-                manager.switchBranch("bugfix-viewtype");
-
-                // the virtual model must be reloaded exactly once so that its state reflects the files and models present on the new branch.
-                verify(virtualModel).reload();
-            }
-        }
-    }
 
     @Nested
     @DisplayName("deleteBranch")

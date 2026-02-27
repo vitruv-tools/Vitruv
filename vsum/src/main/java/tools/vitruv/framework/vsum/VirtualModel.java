@@ -5,6 +5,7 @@ import tools.vitruv.change.composite.propagation.ChangeableModelRepository;
 import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.framework.views.ViewProvider;
 import tools.vitruv.framework.views.ViewTypeProvider;
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 /** A virtual model in the VSUM framework that provides changeable model repositories and views. */
 public interface VirtualModel extends ChangeableModelRepository, ViewProvider, ViewTypeProvider {
@@ -21,7 +22,7 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
      * the files on disk.
      * This is typically called after a git branch switch to ensure the virtual model reflects the checked-out branch.
      */
-  void reload();
+  void reload(VsumFileSystemLayout newLayout);
 
   /**
    * Defines how changes are propagated when passed to {@link #propagateChange(VitruviusChange)}. By

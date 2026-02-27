@@ -68,8 +68,7 @@ fi
 
 TIMESTAMP=$(date +%s)
 TRIGGER_FILE="$VITRUVIUS_DIR/reload-trigger"
-echo "$NEW_BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
-
+echo "$NEW_BRANCH|$REQUEST_ID|$TIMESTAMP|$PARENT_BRANCH" > "$TRIGGER_FILE"
 echo "Vitruvius: Branch switched from '$PARENT_BRANCH' to '$NEW_BRANCH'"
 echo "VSUM will reload to reflect the checked-out branch"
 

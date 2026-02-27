@@ -1,18 +1,5 @@
 package tools.vitruv.framework.vsum.internal;
 
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource;
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
-import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.Map.Entry;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -35,18 +22,34 @@ import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.Map.Entry;
+
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.*;
+import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel;
+
 class ResourceRepositoryImpl implements ModelRepository {
     private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
 
     private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
     private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
-    private final PersistableCorrespondenceModel correspondenceModel;
+    //private final PersistableCorrespondenceModel correspondenceModel;
+    //Linh:new
+    private PersistableCorrespondenceModel correspondenceModel;
+
     private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
     private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
     private VitruviusChangeResolver<Uuid> changeResolver =
             VitruviusChangeResolverFactory.forUuids(uuidResolver);
 
-    private final VsumFileSystemLayout fileSystemLayout;
+    //private final VsumFileSystemLayout fileSystemLayout;
+    //Linh:new
+    private VsumFileSystemLayout fileSystemLayout;
+
 
     private boolean isRecording = false;
     private boolean isLoading = false;
@@ -72,6 +75,13 @@ class ResourceRepositoryImpl implements ModelRepository {
         }
         correspondenceModel.loadSerializedCorrespondences(modelsResourceSet);
         isLoading = false;
+    }
+
+    public void reload(VsumFileSystemLayout newLayout) {
+        this.fileSystemLayout = newLayout;
+        // correspondenceModel URI is baked in at construction so recreating is required
+        this.correspondenceModel = createPersistableCorrespondenceModel(newLayout.getCorrespondencesURI());
+        reload();
     }
 
     @Override
@@ -178,28 +188,42 @@ class ResourceRepositoryImpl implements ModelRepository {
             }
         }
 
-        // Try to load UUIDs (tolerant of missing objects)
+        // Try to load UUIDs from this branch's uuid file
+        boolean uuidsLoaded = false;
         try {
             uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
-            LOGGER.info("✅ UUID mappings loaded successfully");
 
-            // Count how many objects have UUIDs
             int uuidCount = 0;
             for (Resource resource : modelsResourceSet.getResources()) {
-                Iterator<EObject> iterator = resource.getAllContents();
-                while (iterator.hasNext()) {
-                    EObject obj = iterator.next();
-                    if (uuidResolver.hasUuid(obj)) {
-                        uuidCount++;
+                Iterator<EObject> it = resource.getAllContents();
+                while (it.hasNext()) {
+                    if (uuidResolver.hasUuid(it.next())) uuidCount++;
+                }
+            }
+            LOGGER.info("UUID mappings loaded: {} objects registered", uuidCount);
+            uuidsLoaded = uuidCount > 0;
+
+        } catch (Exception e) {
+            LOGGER.warn("Could not load UUID file (may not exist yet for new branch): {}",
+                    e.getMessage());
+        }
+
+        // If no UUIDs were loaded, this is a new branch that inherited model files
+        // from its parent branch via Git. Register fresh UUIDs for all existing objects.
+        if (!uuidsLoaded) {
+            LOGGER.info("No existing UUIDs found — assigning fresh UUIDs for new branch");
+            for (Resource resource : modelsResourceSet.getResources()) {
+                if (resource.getURI().isFile() || resource.getURI().isPlatform()) {
+                    Iterator<EObject> it = resource.getAllContents();
+                    while (it.hasNext()) {
+                        EObject obj = it.next();
+                        if (!uuidResolver.hasUuid(obj)) {
+                            uuidResolver.registerEObject(obj);
+                        }
                     }
                 }
             }
-            LOGGER.info("   Loaded UUIDs for {} objects in ResourceSet", uuidCount);
-
-        } catch (Exception e) {
-            LOGGER.error("❌ UUID loading FAILED: {}", e.getMessage());
-            LOGGER.error("   This means some/all objects will not have UUIDs!");
-            e.printStackTrace();  // Get full stack trace
+            LOGGER.info("Fresh UUIDs assigned for all objects on new branch");
         }
 
         // Create model instances

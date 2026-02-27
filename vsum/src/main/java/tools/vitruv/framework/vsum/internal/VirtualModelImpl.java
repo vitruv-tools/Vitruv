@@ -39,9 +39,13 @@ import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 public class VirtualModelImpl implements InternalVirtualModel, ChangePropagationObservableRegistry {
     private static final Logger LOGGER = LogManager.getLogger(VirtualModelImpl.class);
 
-    private final ModelRepository resourceRepository;
+    //private final ModelRepository resourceRepository;
     private final ViewTypeProvider viewTypeRepository;
-    private final VsumFileSystemLayout fileSystemLayout;
+    //private final VsumFileSystemLayout fileSystemLayout;
+    /**Linh:new*/
+    private VsumFileSystemLayout fileSystemLayout;
+    private ModelRepository resourceRepository;
+
     private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
     private final List<ChangePropagationObserver> changePropagationObservers = new LinkedList<>();
 
@@ -78,10 +82,11 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     }
 
     @Override
-    public void reload() {
-        LOGGER.info("Reloading VirtualModel from file system");
-        resourceRepository.reload();
-        LOGGER.info("VirtualModel reloaded successfully");
+    public void reload(VsumFileSystemLayout newLayout) {
+        LOGGER.info("Reloading VirtualModel for branch '{}'", newLayout.getCurrentBranch());
+        this.fileSystemLayout = newLayout;
+        resourceRepository.reload(newLayout);
+        LOGGER.info("VirtualModel reloaded for branch '{}'", newLayout.getCurrentBranch());
     }
 
     @Override

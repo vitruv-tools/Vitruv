@@ -172,7 +172,7 @@ public class VsumReloadWatcher {
                     // require re-creating the trigger so this request is not lost and will be retried on the next poll.
                     LOGGER.warn("Another reload is in progress, re-queuing trigger for retry (requestId='{}')", info.getRequestId());
                     try {
-                        triggerFile.createTrigger(info.getBranchName());
+                        triggerFile.createTrigger(info.getBranchName(), info.getOldBranchName());
                     } catch (IOException e) {
                         LOGGER.error("Failed to re-create trigger for retry (requestId='{}')", info.getRequestId(), e);
                     }
@@ -214,16 +214,11 @@ public class VsumReloadWatcher {
     private void performReload(ReloadTriggerFile.TriggerInfo info) {
         try {
             long startTime = System.currentTimeMillis();
-            // the old branch name is unknown in this path because the trigger file only records the new branch.
-            // passing "unknown" is safe because PostCheckoutHandler uses the old branch name only for logging, not for any model operation.
-            handler.onBranchSwitch("unknown", info.getBranchName());
+            handler.onBranchSwitch(info.getOldBranchName(), info.getBranchName());
             long duration = System.currentTimeMillis() - startTime;
-            LOGGER.info("VirtualModel reloaded successfully in {}ms (branch='{}', requestId='{}')", duration, info.getBranchName(), info.getRequestId());
-
+            LOGGER.info("VirtualModel reloaded in {}ms (branch='{}' ← '{}', requestId='{}')", duration, info.getBranchName(), info.getOldBranchName(), info.getRequestId());
         } catch (BranchOperationException e) {
-            // a failed reload leaves the VirtualModel in a stale state.
-            // the error is logged so the developer can investigate
-            LOGGER.error("Failed to reload VirtualModel after branch switch (branch='{}', requestId='{}')", info.getBranchName(), info.getRequestId(), e);
+            LOGGER.error("Failed to reload after branch switch (branch='{}', requestId='{}')", info.getBranchName(), info.getRequestId(), e);
         }
     }
 }

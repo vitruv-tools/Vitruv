@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.branch.BranchManager;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -56,10 +57,16 @@ public class PostCheckoutHandler {
         LOGGER.info("branch switched from '{}' to '{}'", oldBranch, newBranch);
 
         try {
+            // Construct a new layout.
+            // at this point Git already reflects the new branch, so JGit will resolve the correct branch name automatically
+            VsumFileSystemLayout newLayout = new VsumFileSystemLayout(virtualModel.getFolder());
+            newLayout.prepare();
+            newLayout.inheritFromBranchIfEmpty(oldBranch);
+
             // let VirtualModel to discard its current in-memory state and reload all resources from the file system.
             // after a branch switch the files on disk represent the new branch, so reloading is necessary to keep the model consistent.
-            LOGGER.debug("reloading VirtualModel resources from file system");
-            virtualModel.reload();
+            LOGGER.debug("reloading VirtualModel for branch '{}'", newBranch);
+            virtualModel.reload(newLayout);
             LOGGER.info("VirtualModel reloaded successfully for branch '{}'", newBranch);
 
         } catch (Exception e) {

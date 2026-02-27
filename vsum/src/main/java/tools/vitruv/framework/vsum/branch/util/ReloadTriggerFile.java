@@ -60,19 +60,13 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
      * @return the generated request identifier (UUID string) for logging purposes.
      * @throws IOException if the trigger file or its parent directory cannot be created.
      */
-    public String createTrigger(String branchName) throws IOException {
+    public String createTrigger(String branchName, String oldBranchName) throws IOException {
         checkNotNull(branchName, "branch name must not be null");
-
+        checkNotNull(oldBranchName, "old branch name must not be null");
         String requestId = UUID.randomUUID().toString();
         long timestamp = java.lang.System.currentTimeMillis();
-
-        // format the three fields and delegate the write to the base class.
-        writeTrigger(String.format("%s%s%s%s%d",
-                branchName, DELIMITER, requestId, DELIMITER, timestamp));
-
-        LOGGER.debug("Created reload trigger: branch='{}', requestId='{}'",
-                branchName, requestId);
-
+        writeTrigger(String.format("%s%s%s%s%d%s%s", branchName, DELIMITER, requestId, DELIMITER, timestamp, DELIMITER, oldBranchName));
+        LOGGER.debug("Created reload trigger: branch='{}', oldBranch='{}', requestId='{}'", branchName, oldBranchName, requestId);
         return requestId;
     }
 
@@ -88,33 +82,47 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
      */
     @Override
     protected TriggerInfo parseTriggerInfo(String[] parts) {
-        if (parts.length != 3 && parts.length != 1) {
-            LOGGER.warn("Invalid reload trigger field count: expected 3 or 1, got {}",
-                    parts.length);
+        if (parts.length != 4 && parts.length != 3 && parts.length != 1) {
+            LOGGER.warn("Invalid reload trigger field count: expected 4, 3, or 1, got {}", parts.length);
             return null;
         }
 
         String branchName;
         String requestId;
         long timestamp;
+        String oldBranchName;
 
-        if (parts.length == 3) {
+        if (parts.length == 4) {
             branchName = parts[0].trim();
             requestId = parts[1].trim();
             try {
                 timestamp = Long.parseLong(parts[2].trim());
             } catch (NumberFormatException e) {
-                // malformed timestamp - fall back to now so the watcher can still
-                // associate a meaningful time with the reload request.
                 LOGGER.warn("Invalid timestamp in reload trigger: '{}'", parts[2]);
                 timestamp = java.lang.System.currentTimeMillis();
             }
+            oldBranchName = parts[3].trim();
+
+        } else if (parts.length == 3) {
+            // old format without oldBranch — fall back to "unknown"
+            branchName = parts[0].trim();
+            requestId = parts[1].trim();
+            try {
+                timestamp = Long.parseLong(parts[2].trim());
+            } catch (NumberFormatException e) {
+                LOGGER.warn("Invalid timestamp in reload trigger: '{}'", parts[2]);
+                timestamp = java.lang.System.currentTimeMillis();
+            }
+            oldBranchName = "unknown";
+            LOGGER.warn("Reload trigger missing oldBranch field — inheritance may not work correctly");
+
         } else {
-            // legacy single-field format: the entire content is just the branch name.
+            // legacy single-field format
             branchName = parts[0].trim();
             requestId = UUID.randomUUID().toString();
             timestamp = java.lang.System.currentTimeMillis();
-            LOGGER.warn("Legacy reload trigger format detected, generated requestId='{}'",
+            oldBranchName = "unknown";
+            LOGGER.warn("Legacy reload trigger format — oldBranch unknown, requestId='{}'",
                     requestId);
         }
 
@@ -123,10 +131,10 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
             return null;
         }
 
-        LOGGER.debug("Reload trigger parsed: branch='{}', requestId='{}'",
-                branchName, requestId);
+        LOGGER.debug("Reload trigger parsed: branch='{}', oldBranch='{}', requestId='{}'",
+                branchName, oldBranchName, requestId);
 
-        return new TriggerInfo(branchName, requestId, timestamp);
+        return new TriggerInfo(branchName, oldBranchName, requestId, timestamp);
     }
 
 
@@ -140,22 +148,16 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
     @Getter
     public static class TriggerInfo extends AbstractTriggerFile.TriggerInfo {
 
-        /**
-         * The name of the branch that was checked out when the trigger was created.
-         */
         private final String branchName;
+        private final String oldBranchName;   // ← add this
 
-        /**
-         * Creates a new {@link TriggerInfo}.
-         *
-         * @param branchName the branch name. Must not be null.
-         * @param requestId  the unique request identifier. Must not be null.
-         * @param timestamp  the creation timestamp in milliseconds since epoch.
-         */
-        public TriggerInfo(String branchName, String requestId, long timestamp) {
+        public TriggerInfo(String branchName, String oldBranchName,
+                           String requestId, long timestamp) {
             super(requestId, timestamp);
-            this.branchName = Objects.requireNonNull(branchName, "branch name must not be null");
+            this.branchName = Objects.requireNonNull(branchName);
+            this.oldBranchName = Objects.requireNonNull(oldBranchName);
         }
+
 
         @Override
         public boolean equals(Object o) {

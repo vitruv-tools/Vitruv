@@ -4,6 +4,7 @@ import java.util.Collection;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.change.propagation.ChangeRecordingModelRepository;
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 /** Repository for model instances in the VSUM framework. */
 public interface ModelRepository extends ChangeRecordingModelRepository {
@@ -20,6 +21,8 @@ public interface ModelRepository extends ChangeRecordingModelRepository {
    * It will unload currently loaded models and reload from disk to reflect the current state of the working dir
    */
   void reload();
+
+  void reload(VsumFileSystemLayout newLayout);
 
   /** Saves or deletes models in the repository based on their state. */
   void saveOrDeleteModels();
