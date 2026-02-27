@@ -5,7 +5,6 @@
 
 # VSUM runtime state (regenerated from models)
 vsum/
-vitruvData/
 consistencymetadata/
 
 # Ignore everything in .vitruvius by default

@@ -2,6 +2,7 @@ Setup (tbd)
 - GitHookInstaller copies bash script from resources/git-hooks to .git/hooks
 - VsumReloadWatcher
 
+
 Testablauf:
 1.Step: dev uses git command
 dev in terminal
@@ -29,3 +30,14 @@ PostCheckoutHandler:
     call virtualModel.reload()
 VirtualModel
     reloads vsum by unloading models from memory and loading new models
+
+
+dev types git checkout featureX in terminal
+git updates all files on disk to match the featureX branch
+git automatically runs the post-checkout hook (bash script)
+hook creates a trigger file: .vitruvius/reload-trigger
+watcher detects this file
+watcher deletes the trigger and calls PostCheckoutHandler
+PostCheckoutHandler calls VirtualModel.reload()
+reload clears memory and loads models from disk (which git just updated)
+vsum now has the correct models for featureX branch

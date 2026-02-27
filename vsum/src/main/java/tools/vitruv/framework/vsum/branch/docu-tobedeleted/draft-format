@@ -6,5 +6,66 @@ parent=main
 createdAt=2026-01-31T10:00:00
 lastModified=2026-01-31T10:00:00
 
+
+
 .vitruvius/reload-trigger
 Reload requested at: now()
+
+.vitruvius/validate-trigger
+
+Content:
+  abc1234567890abcdef|feature-ui
+  (commit SHA + branch name)
+
+
+Commit C2 (hash: d4e5f6)
+├─ tree T2
+│  └─ hello.txt → blob B2 ("Hello World")
+├─ parent: C1
+├─ author: Linh
+└─ message: "Update greeting"
+
+File Operations Git Tracks:
+
+A = Added (new file)
+M = Modified (existing file changed)
+D = Deleted (file removed)
+R = Renamed (file moved)
+C = Copied
+
+git commit
+$ git show abc123
+
+commit abc1234567890abcdef  # Full SHA (40 chars)
+Author: Jane Doe <jane@example.com>
+Date:   Sat Feb 8 10:30:45 2026 +0100
+
+    Add user authentication feature  # Commit message
+
+diff --git a/models/User.java b/models/User.java
+index a1b2c3d..e4f5g6h 100644
+--- a/models/User.java
++++ b/models/User.java
+@@ -10,0 +11,5 @@
++    public void authenticate() {
++        // ...
++    }
+
+Changelog
+commiSha: "abc123"
+branch: "featureX"
+timestamp: "2026-02-06T10:00:00"
+modifiedFiles: ["User.java", "User.uml", "Payment.java"]
+
+
+
+Extend (2.phase)
+Changelog
+commiSha: "abc123"
+branch: "featureX"
+timestamp: "2026-02-06T10:00:00"
+changes: [
+    {file: "User.java", operation: "MODIFIED", origin: "DEVELOPER"},
+    {file: "User.uml", operation: "MODIFIED", origin: "PROPAGATION"}
+  ]
+}
