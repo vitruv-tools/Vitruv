@@ -212,19 +212,15 @@ public class VsumFileSystemLayout {
 
         Path myUuidsFile = Path.of(getUuidsURI().toFileString());
         if (Files.exists(myUuidsFile)) {
-            LOGGER.debug("Branch '{}' already has vsum state, skipping inheritance",
-                    currentBranch);
+            LOGGER.debug("Branch '{}' already has vsum state, skipping inheritance", currentBranch);
             return;
         }
 
-        LOGGER.info("Branch '{}' has no vsum state — inheriting from '{}'",
-                currentBranch, sourceBranchName);
+        LOGGER.info("Branch '{}' has no vsum state — inheriting from '{}'", currentBranch, sourceBranchName);
 
         // Build source paths directly to avoid triggering checkPrepared() on a
         // layout that was never prepared
-        Path sourceVsumFolder = vsumProjectFolder
-                .resolve(VSUM_BASE_DIR)
-                .resolve(sourceBranchName);
+        Path sourceVsumFolder = vsumProjectFolder.resolve(VSUM_BASE_DIR).resolve(sourceBranchName);
         Path sourceUuidsFile = sourceVsumFolder.resolve(UUIDS_FILE);
         Path sourceCorrespondencesFile = sourceVsumFolder.resolve(CORRESPONDENCES_FILE);
         Path myCorrespondencesFile = Path.of(getCorrespondencesURI().toFileString());
@@ -234,23 +230,18 @@ public class VsumFileSystemLayout {
                 Files.copy(sourceUuidsFile, myUuidsFile);
                 LOGGER.debug("Inherited uuid.uuid from branch '{}'", sourceBranchName);
             } else {
-                LOGGER.debug("Source branch '{}' has no uuid.uuid — starting fresh",
-                        sourceBranchName);
+                LOGGER.debug("Source branch '{}' has no uuid.uuid — starting fresh", sourceBranchName);
             }
 
             if (Files.exists(sourceCorrespondencesFile)) {
                 Files.copy(sourceCorrespondencesFile, myCorrespondencesFile);
-                LOGGER.debug("Inherited correspondences from branch '{}'",
-                        sourceBranchName);
+                LOGGER.debug("Inherited correspondences from branch '{}'", sourceBranchName);
             } else {
-                LOGGER.debug("Source branch '{}' has no correspondences — starting fresh",
-                        sourceBranchName);
+                LOGGER.debug("Source branch '{}' has no correspondences — starting fresh", sourceBranchName);
             }
 
         } catch (IOException e) {
-            LOGGER.warn(
-                    "Could not inherit vsum state from '{}' — starting fresh: {}",
-                    sourceBranchName, e.getMessage());
+            LOGGER.warn("Could not inherit vsum state from '{}' — starting fresh: {}", sourceBranchName, e.getMessage());
         }
     }
 
