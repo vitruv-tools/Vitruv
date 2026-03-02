@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 
@@ -47,7 +48,9 @@ public class GitHookInstaller {
     private static final String POST_MERGE_HOOK = "post-merge";
     private static final String POST_COMMIT_HOOK = "post-commit";
 
-    /** classpath location of the .gitignore template for Vitruvius files. */
+    /**
+     * classpath location of the .gitignore template for Vitruvius files.
+     */
     private static final String GITIGNORE_TEMPLATE_PATH = "/vitruvius/.gitignore.template";
 
     /**
@@ -56,6 +59,7 @@ public class GitHookInstaller {
     @Getter
     private final Path hooksDirectory;
     private final Path repositoryRoot;
+
     /**
      * Creates a new installer targeting the given repository root.
      *
@@ -120,29 +124,56 @@ public class GitHookInstaller {
         installGitignore();
         LOGGER.info("installed all Git hooks ({}, {}, {}, {})", POST_CHECKOUT_HOOK, PRE_COMMIT_HOOK, POST_MERGE_HOOK, POST_COMMIT_HOOK);
     }
+
     /**
      * creates a {@code .gitignore} file in the repository root to exclude Vitruvius runtime
      * files (lock files, trigger files, VSUM state) from version control. the .gitignore is
      * only created if it does not already exist; existing .gitignore files are never modified.
+     *
      * @throws IOException if the .gitignore template cannot be read or the file cannot be written.
+     */
+    /**
+     * Appends Vitruvius entries to the repository's {@code .gitignore} file,
+     * or creates the file if it does not exist yet.
+     *
+     * <p>If the file already contains the Vitruvius section (detected by the
+     * presence of the guard comment), this method does nothing so that repeated
+     * calls during re-initialization are safe.
+     *
+     * @throws IOException if the template cannot be read or the file cannot be written.
      */
     public void installGitignore() throws IOException {
         Path gitignoreFile = repositoryRoot.resolve(".gitignore");
 
-        // only create if it doesn't exist - never modify existing .gitignore
-        if (Files.exists(gitignoreFile)) {
-            LOGGER.debug(".gitignore already exists, skipping creation");
-            return;
-        }
-        // read template from classpath and write to repository root
+        // Read template from classpath
+        String templateContent;
         try (InputStream template = getClass().getResourceAsStream(GITIGNORE_TEMPLATE_PATH)) {
             if (template == null) {
                 throw new IOException("could not find .gitignore template at: " + GITIGNORE_TEMPLATE_PATH);
             }
-            Files.copy(template, gitignoreFile);
-            LOGGER.info("created .gitignore for Vitruvius runtime files");
+            templateContent = new String(template.readAllBytes());
         }
+
+        if (!Files.exists(gitignoreFile)) {
+            // No .gitignore yet, create it from the template
+            Files.writeString(gitignoreFile, templateContent);
+            LOGGER.info("created .gitignore with Vitruvius entries");
+            return;
+        }
+
+        // .gitignore exists, only append if Vitruvius section not already present
+        String existingContent = Files.readString(gitignoreFile);
+        if (existingContent.contains("# This section is managed by Vitruvius")) {
+            LOGGER.debug(".gitignore already contains Vitruvius entries, skipping");
+            return;
+        }
+
+        // Append with a blank line separator to avoid merging with existing content
+        String separator = existingContent.endsWith("\n") ? "\n" : "\n\n";
+        Files.writeString(gitignoreFile, existingContent + separator + templateContent, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+        LOGGER.info("appended Vitruvius entries to existing .gitignore");
     }
+
     /**
      * Removes the {@code post-checkout} hook.
      * If a backup exists from a previous installation, the backup is restored so that the developer's original hook is active again.

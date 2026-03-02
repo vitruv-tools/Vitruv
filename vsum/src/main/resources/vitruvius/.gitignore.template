@@ -3,10 +3,6 @@
 .vitruvius/*-trigger
 .vitruvius/validation-result-*
 
-# VSUM runtime state (regenerated from models)
-vsum/
-consistencymetadata/
-
 # Ignore everything in .vitruvius by default
 .vitruvius/*
 
