@@ -120,7 +120,7 @@ public class VsumMergeWatcher {
                 }
                 try {
                     LOGGER.debug("Lock acquired for merge validation (requestId='{}')", requestId);
-                    //performMergeValidation(info, mergeShort, requestId);
+                    performMergeValidation(info, mergeShort, requestId);
                 } finally {
                     lock.release();
                     LOGGER.debug("Lock released (requestId='{}')", requestId);
@@ -142,60 +142,56 @@ public class VsumMergeWatcher {
         }
     }
 
-    //private void performMergeValidation(MergeTriggerFile.TriggerInfo info, String mergeShort, String requestId) {
-    //    try {
-    //        long startTime = System.currentTimeMillis();
-//
-    //        // Validate the merge
-    //        ValidationResult result = handler.validate();
-    //        long duration = System.currentTimeMillis() - startTime;
-//
-    //        LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')", duration, result.isValid() ? "PASSED ✓" : "WARNING ⚠", requestId);
-//
-    //        // Write result files
-    //        try {
-    //            resultFile.writeResult(result, requestId);
-    //            LOGGER.debug("Merge result files written (requestId='{}')", requestId);
-    //        } catch (Exception e) {
-    //            LOGGER.error("Failed to write merge result files (requestId='{}')", requestId, e);
-    //        }
-//
-    //        // Write merge metadata
-    //        try {
-    //            handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch(), result);
-    //            LOGGER.info("Merge metadata written for commit {}", mergeShort);
-    //            autoStageMetadata(info.getMergeCommitSha(), mergeShort);
-    //        } catch (Exception e) {
-    //            LOGGER.warn("Failed to generate merge metadata for commit {} (not critical)", mergeShort, e);
-    //        }
-//
-    //        // Auto-reload VSUM after merge to sync in-memory state
-    //        try {
-    //            LOGGER.info("Reloading VSUM after merge to sync with merged state");
-    //            virtualModel.reload();
-    //            LOGGER.info("VSUM reloaded successfully after merge");
-    //        } catch (Exception e) {
-    //            LOGGER.warn("Failed to reload VSUM after merge: {}", e.getMessage());
-    //        }
-//
-    //        if (!result.isValid()) {
-    //            LOGGER.warn("Merged VSUM state has {} inconsistenc{}, {} warning{} (requestId='{}')",
-    //                    result.getErrors().size(),
-    //                    result.getErrors().size() == 1 ? "y" : "ies",
-    //                    result.getWarnings().size(),
-    //                    result.getWarnings().size() == 1 ? "" : "s",
-    //                    requestId);
-    //            if (!result.getErrors().isEmpty()) {
-    //                LOGGER.warn("First inconsistency: {}", result.getErrors().get(0));
-    //            }
-    //        }
-//
-    //    } catch (Exception e) {
-    //        LOGGER.error("Merge validation failed with exception for commit {} (requestId='{}')",
-    //                mergeShort, requestId, e);
-    //        writeWarningResult(requestId, "Merge validation crashed: " + e.getMessage());
-    //    }
-    //}
+    private void performMergeValidation(MergeTriggerFile.TriggerInfo info, String mergeShort, String requestId) {
+        try {
+            long startTime = System.currentTimeMillis();
+
+            // Validate the merged state first
+            ValidationResult result = handler.validate();
+            long duration = System.currentTimeMillis() - startTime;
+
+            LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')", duration, result.isValid() ? "PASSED" : "WARNING", requestId);
+
+            // Only reload if the merged state is valid -
+            // if there are conflict markers or proxy errors, leave the model
+            // in its pre-merge state so the user can fix the issues first
+            if (result.isValid()) {
+                try {
+                    LOGGER.info("Reloading VirtualModel to reflect merged state");
+                    virtualModel.reload();
+                    LOGGER.info("VirtualModel reloaded successfully after merge");
+                } catch (Exception e) {
+                    LOGGER.warn("Failed to reload VirtualModel after merge: {}", e.getMessage());
+                    // TODO: post-merge vsum reconstruction
+                    // when the merged state introduces objects unknown to master's uuid.uuid
+                    // (e.g. fast-forward merge), a full UUID re-registration may be needed.
+                    // Pending supervisor feedback on how to handle this case.
+                }
+            } else {
+                LOGGER.warn("Merged state has inconsistencies - skipping reload. " + "Resolve conflicts and commit the resolution.");
+            }
+
+            // Write result files regardless of validity
+            try {
+                resultFile.writeResult(result, requestId);
+            } catch (Exception e) {
+                LOGGER.error("Failed to write merge result files (requestId='{}')", requestId, e);
+            }
+
+            // Write merge metadata regardless of validity
+            try {
+                handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch(), result);
+                LOGGER.info("Merge metadata written for commit {}", mergeShort);
+                autoStageMetadata(info.getMergeCommitSha(), mergeShort);
+            } catch (Exception e) {
+                LOGGER.warn("Failed to generate merge metadata for commit {} (non-critical)", mergeShort, e);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error("Merge validation failed with exception for commit {} (requestId='{}')", mergeShort, requestId, e);
+            writeWarningResult(requestId, "Merge validation crashed: " + e.getMessage());
+        }
+    }
 
     private void autoStageMetadata(String mergeCommitSha, String mergeShort) {
         try (Git git = Git.open(repositoryRoot.toFile())) {

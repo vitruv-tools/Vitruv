@@ -214,6 +214,13 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     }
 
     @Override
+    public void reload() {
+        LOGGER.info("Reloading VirtualModel after merge for branch '{}'", fileSystemLayout.getCurrentBranch());
+        resourceRepository.reload();
+        LOGGER.info("VirtualModel reloaded successfully after merge");
+    }
+
+    @Override
     public Collection<Resource> getViewSourceModels() {
         return resourceRepository.getModelResources();
     }

@@ -26,4 +26,11 @@ public interface InternalVirtualModel extends VirtualModel, ChangeableViewSource
 
   /** Disposes of the virtual model, releasing any resources held. */
   void dispose();
+
+    /**
+     * Reloads all models from the file system into the current branch's vsum state,
+     * discarding any in-memory state. Called after a merge to reflect the merged
+     * model files on disk without switching the vsum layout.
+     */
+    void reload();
 }
