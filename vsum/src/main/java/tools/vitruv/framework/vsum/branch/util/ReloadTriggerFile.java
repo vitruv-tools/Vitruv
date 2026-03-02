@@ -104,7 +104,7 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
             oldBranchName = parts[3].trim();
 
         } else if (parts.length == 3) {
-            // old format without oldBranch — fall back to "unknown"
+            // old format without oldBranch - fall back to "unknown"
             branchName = parts[0].trim();
             requestId = parts[1].trim();
             try {
@@ -114,7 +114,7 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
                 timestamp = java.lang.System.currentTimeMillis();
             }
             oldBranchName = "unknown";
-            LOGGER.warn("Reload trigger missing oldBranch field — inheritance may not work correctly");
+            LOGGER.warn("Reload trigger missing oldBranch field - inheritance may not work correctly");
 
         } else {
             // legacy single-field format
@@ -122,7 +122,7 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
             requestId = UUID.randomUUID().toString();
             timestamp = java.lang.System.currentTimeMillis();
             oldBranchName = "unknown";
-            LOGGER.warn("Legacy reload trigger format — oldBranch unknown, requestId='{}'",
+            LOGGER.warn("Legacy reload trigger format - oldBranch unknown, requestId='{}'",
                     requestId);
         }
 
@@ -149,10 +149,9 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
     public static class TriggerInfo extends AbstractTriggerFile.TriggerInfo {
 
         private final String branchName;
-        private final String oldBranchName;   // ← add this
+        private final String oldBranchName;
 
-        public TriggerInfo(String branchName, String oldBranchName,
-                           String requestId, long timestamp) {
+        public TriggerInfo(String branchName, String oldBranchName, String requestId, long timestamp) {
             super(requestId, timestamp);
             this.branchName = Objects.requireNonNull(branchName);
             this.oldBranchName = Objects.requireNonNull(oldBranchName);
@@ -178,6 +177,7 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
         public String toString() {
             return "TriggerInfo{"
                     + "branchName='" + branchName + "'"
+                    + ", oldBranchName='" + oldBranchName + "'"  // ← add this
                     + ", requestId='" + getRequestId() + "'"
                     + ", timestamp=" + getTimestamp()
                     + "}";

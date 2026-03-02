@@ -111,25 +111,6 @@ while [ $WAITED -lt $MAX_WAIT ]; do
     fi
 done
 
-echo "Merge validation timeout after $((MAX_WAIT / 2)) seconds"
-echo ""
-echo "Request ID: $REQUEST_ID"
-echo ""
-echo "The merge has completed successfully, but post-merge validation could not finish."
-echo ""
-echo "Possible causes:"
-echo "  - VsumMergeWatcher is not running"
-echo "  - Validation is taking longer than expected"
-echo "  - Another merge validation is in progress (lock contention)"
-echo "  - Java application is not responding"
-echo ""
-echo "Please ensure:"
-echo "  1. Your Vitruvius application is running"
-echo "  2. VsumMergeWatcher has been started"
-echo "  3. Check logs for errors related to request ID: $REQUEST_ID"
-echo ""
-echo "You may want to manually verify the merged V-SUM state."
-
 # Clean up
 rm -f "$TRIGGER_FILE"
 rm -f "$RESULT_FILE" "$RESULT_JSON"
