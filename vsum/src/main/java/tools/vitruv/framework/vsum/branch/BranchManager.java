@@ -95,13 +95,9 @@ public class BranchManager {
             git.branchCreate().setName(name).setStartPoint(sourceRef.getObjectId().getName()).call();
             LOGGER.debug("Git branch created: name='{}', startPoint='{}'", name, sourceRef.getObjectId().getName());
 
-            // resolve the newly created branch reference to obtain the commit hash for metadata
-            var newRef = repo.findRef("refs/heads/" + name);
-            var uid = newRef.getObjectId().getName().substring(0, 7);
-
             // write metadata of the new branch
             var now = LocalDateTime.now();
-            var metadata = new BranchMetadata(name, uid, BranchState.ACTIVE, fromBranch, now, now);
+            var metadata = new BranchMetadata(name, BranchState.ACTIVE, fromBranch, now, now);
             metadata.writeTo(metadataPath(name));
             LOGGER.info("Created branch '{}' from '{}'", name, fromBranch);
             return metadata;
@@ -224,9 +220,8 @@ public class BranchManager {
                     result.add(BranchMetadata.readFrom(metadataFile));
                 } else {
                     // Branch exists in Git but not in Vitruvius metadata. synthesize metadata to ensure consistent handling.
-                    var uid = ref.getObjectId().getName().substring(0, 7);
                     var now = LocalDateTime.now();
-                    result.add(new BranchMetadata(name, uid, BranchState.ACTIVE, "unknown", now, now));
+                    result.add(new BranchMetadata(name, BranchState.ACTIVE, "unknown", now, now));
                     LOGGER.debug("Branch '{}' has no metadata file, synthesized defaults", name);
                 }
             }
@@ -267,68 +262,29 @@ public class BranchManager {
     }
 
     /**
-     * Resolves a branch identifier to a branch name. The identifier can be either an exact branch name or a prefix of a branch's unique identifier (uid).
-     * <p>Resolution order:
-     * <ol>
-     *   <li>If a branch with that exact name exists in Git, return it immediately.</li>
-     *   <li>Otherwise, scan all metadata files for a unique identifier that starts with the given prefix and return the corresponding branch name.</li>
-     * </ol>
-     *
-     * <p>Exact name matching always takes precedence over unique identifier prefix matching.
-     *
-     * @param nameOrUid A branch name or uid prefix.
+     * Resolves a branch identifier to a branch name.
+     * @param name A branch name
      * @return The resolved branch name.
      * @throws BranchOperationException If the identifier matches no branch or is ambiguous (matches multiple branches by uid).
      */
-    public String resolveBranchIdentifier(String nameOrUid) throws BranchOperationException {
-        checkNotNull(nameOrUid, "Branch identifier must not be null");
+    public String resolveBranchIdentifier(String name) throws BranchOperationException {
+        checkNotNull(name, "Branch identifier must not be null");
         try (var git = Git.open(repoRoot.toFile())) {
             var repo = git.getRepository();
 
-            // try an exact name match first
-            var exactRef = repo.findRef("refs/heads/" + nameOrUid);
+            var exactRef = repo.findRef("refs/heads/" + name);
             if (exactRef != null) {
-                LOGGER.debug("Resolved identifier '{}' to branch name directly", nameOrUid);
-                return nameOrUid;
+                LOGGER.debug("Resolved identifier '{}' to branch name directly", name);
+                return name;
             }
 
-            // fall back to UID prefix by scanning all metadata files
-            var metadataDir = repoRoot.resolve(METADATA_DIR);
-            if (!Files.isDirectory(metadataDir)) {
-                throw new BranchOperationException("No branch matches identifier: " + nameOrUid);
-            }
-
-            // the stream is closed via try-with-resources to avoid leaking the directory handle
-            List<BranchMetadata> matches;
-            try (var stream = Files.list(metadataDir)) {
-                matches = stream.filter(p -> p.toString().endsWith(".metadata"))
-                        .map(p -> {
-                            try {
-                                return BranchMetadata.readFrom(p);
-                            } catch (IOException e) {
-                                LOGGER.warn("failed to read metadata from file: {}", p, e);
-                                return null;
-                            }
-                        })
-                        .filter(m -> m != null && m.getUid().startsWith(nameOrUid))
-                        .toList();
-            }
-
-            if (matches.size() == 1) {
-                LOGGER.debug("Resolved uid prefix '{}' to branch '{}'", nameOrUid, matches.get(0).getName());
-                return matches.get(0).getName();
-            } else if (matches.isEmpty()) {
-                throw new BranchOperationException("No branch matches identifier: " + nameOrUid);
-            } else {
-                var ambiguous = matches.stream().map(BranchMetadata::getName).collect(Collectors.joining(", "));
-                throw new BranchOperationException("Ambiguous identifier '" + nameOrUid + "' matches multiple branches: " + ambiguous);
-            }
+            throw new BranchOperationException("No branch matches identifier: " + name);
 
         } catch (IOException e) {
-            throw new BranchOperationException("Failed to read metadata while resolving identifier '" + nameOrUid + "'", e);
-
+            throw new BranchOperationException("Failed to open repository while resolving identifier '" + name + "'", e);
         }
     }
+
 
     /**
      * Returns the parent-child topology of all managed branches. Each entry maps a parent branch name to the list of branches
@@ -446,6 +402,33 @@ public class BranchManager {
             return BranchState.ACTIVE;
         } catch (IOException e) {
             throw new BranchOperationException("Failed to read metadata for branch '" + name + "'", e);
+        }
+    }
+
+    /**
+     * Marks the given branch as MERGED by updating its metadata state.
+     * Called automatically after a successful merge is detected by VsumMergeWatcher.
+     * The branch remains visible in metadata history but is excluded from topology.
+     *
+     * @param branchName the name of the branch that was merged in.
+     * @throws BranchOperationException if the metadata file cannot be read or written.
+     */
+    public void markAsMerged(String branchName) throws BranchOperationException {
+        checkNotNull(branchName, "branch name must not be null");
+        var metadataFile = metadataPath(branchName);
+
+        if (!Files.exists(metadataFile)) {
+            LOGGER.debug("No metadata file found for branch '{}', skipping MERGED status update", branchName);
+            return;
+        }
+
+        try {
+            var metadata = BranchMetadata.readFrom(metadataFile);
+            metadata.setState(BranchState.MERGED);
+            metadata.writeTo(metadataFile);
+            LOGGER.info("Branch '{}' marked as MERGED", branchName);
+        } catch (IOException e) {
+            throw new BranchOperationException("Failed to update metadata for merged branch '" + branchName + "'", e);
         }
     }
 

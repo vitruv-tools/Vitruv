@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
+import tools.vitruv.framework.vsum.branch.BranchManager;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
 import tools.vitruv.framework.vsum.branch.util.MergeResultFile;
 import tools.vitruv.framework.vsum.branch.util.MergeTriggerFile;
@@ -26,7 +27,7 @@ public class VsumMergeWatcher {
     private static final String THREAD_NAME = "VSUM-Merge-Watcher";
     private static final String LOCK_FILENAME = ".merge.lock";
     private final InternalVirtualModel virtualModel;
-
+    private final BranchManager branchManager;
     private final Path repositoryRoot;
     private final MergeTriggerFile triggerFile;
     private final MergeResultFile resultFile;
@@ -45,6 +46,7 @@ public class VsumMergeWatcher {
         this.handler = new PostMergeHandler(virtualModel, repositoryRoot);
         this.running = false;
         this.virtualModel = virtualModel;
+        this.branchManager = new BranchManager(repositoryRoot);
         this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);
     }
 
@@ -152,7 +154,7 @@ public class VsumMergeWatcher {
 
             LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')", duration, result.isValid() ? "PASSED" : "WARNING", requestId);
 
-            // Only reload if the merged state is valid -
+            // Only reload if the merged state is valid
             // if there are conflict markers or proxy errors, leave the model
             // in its pre-merge state so the user can fix the issues first
             if (result.isValid()) {
@@ -169,6 +171,13 @@ public class VsumMergeWatcher {
                 }
             } else {
                 LOGGER.warn("Merged state has inconsistencies - skipping reload. " + "Resolve conflicts and commit the resolution.");
+            }
+
+            // Mark source branch as MERGED
+            try {
+                branchManager.markAsMerged(info.getSourceBranch());
+            } catch (Exception e) {
+                LOGGER.warn("Failed to mark branch '{}' as MERGED (non-critical): {}", info.getSourceBranch(), e.getMessage());
             }
 
             // Write result files regardless of validity

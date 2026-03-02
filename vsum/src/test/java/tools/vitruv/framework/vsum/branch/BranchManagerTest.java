@@ -5,18 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
 import tools.vitruv.framework.vsum.branch.data.BranchState;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
-import tools.vitruv.framework.vsum.branch.handler.PostCheckoutHandler;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 /**
  * Unit tests for {@link BranchManager}.
@@ -45,14 +41,14 @@ class BranchManagerTest {
         git.commit().setMessage("Initial commit").setAllowEmpty(false).call();
         return git;
     }
-    
+
     @Nested
     @DisplayName("createBranch")
     class CreateBranch {
 
         /**
          * Verifies that creating a branch returns correct metadata and also persists it to disk.
-         * Both the in-memory result and the file content are checked in one test because they represent a single operation 
+         * Both the in-memory result and the file content are checked in one test because they represent a single operation
          * that must succeed atomically from the caller's perspective.
          */
         @Test
@@ -68,16 +64,15 @@ class BranchManagerTest {
                 assertEquals("master", metadata.getParent());
                 assertEquals(BranchState.ACTIVE, metadata.getState());
                 // the unique identifier is the first seven characters of the commit hash made by Git
-                assertEquals(7, metadata.getUid().length());
 
                 // the metadata file must also exist on disk so that Vitruvius can reconstruct the branch history across sessions.
                 var metadataFile = repoDir.resolve(".vitruvius/branches/bugfix-viewtype.metadata");
                 assertTrue(Files.exists(metadataFile), "metadata file must be written to disk");
 
                 var lines = Files.readAllLines(metadataFile);
-                assertTrue(lines.stream().anyMatch(l -> l.startsWith("name=bugfix-viewtype")));
-                assertTrue(lines.stream().anyMatch(l -> l.startsWith("state=ACTIVE")));
-                assertTrue(lines.stream().anyMatch(l -> l.startsWith("parent=master")));
+                assertTrue(lines.stream().anyMatch(l -> l.contains("\"branchName\"")));
+                assertTrue(lines.stream().anyMatch(l -> l.contains("\"state\"")));
+                assertTrue(lines.stream().anyMatch(l -> l.contains("\"parentBranch\"")));
             }
         }
 
@@ -110,81 +105,42 @@ class BranchManagerTest {
     }
 
 
+    @Nested
+    @DisplayName("switchBranch")
+    class SwitchBranch {
 
-    //@Nested
-    //@DisplayName("switchBranch")
-    //class SwitchBranch {
-//
-    //    /**
-    //     * Verifies that switching by exact branch name updates the HEAD reference to point to the target branch.
-    //     * Git repository state is checked directly after the switch.
-    //     */
-    //    @Test
-    //    @DisplayName("switches to an existing branch by name and updates HEAD")
-    //    void switchByName(@TempDir Path repoDir) throws Exception {
-    //        try (var git = initRepo(repoDir)) {
-    //            var manager = new BranchManager(repoDir);
-    //            manager.createBranch("bugfix-viewtype", "master");
-//
-    //            manager.switchBranch("bugfix-viewtype");
-//
-    //            var head = git.getRepository().findRef("HEAD");
-    //            assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName(), "HEAD must point to the target branch after switching");
-    //        }
-    //    }
-//
-    //    /**
-    //     * Verifies that a branch can also be identified by its unique identifier prefix rather han its full name.
-    //     */
-    //    @Test
-    //    @DisplayName("switches to a branch identified by its unique identifier prefix")
-    //    void switchByUid(@TempDir Path repoDir) throws Exception {
-    //        try (var git = initRepo(repoDir)) {
-    //            var manager = new BranchManager(repoDir);
-    //            var metadata = manager.createBranch("bugfix-viewtype", "master");
-//
-    //            manager.switchBranch(metadata.getUid());
-//
-    //            var head = git.getRepository().findRef("HEAD");
-    //            assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName());
-    //        }
-    //    }
-//
-    //    /**
-    //     * Verifies that switching to a branch that does not exist raises an exception instead of leaving the working directory in an undefined state.
-    //     */
-    //    @Test
-    //    @DisplayName("fails when the target branch does not exist")
-    //    void failOnNonExistentBranch(@TempDir Path repoDir) throws Exception {
-    //        try (var ignored = initRepo(repoDir)) {
-    //            var manager = new BranchManager(repoDir);
-    //            assertThrows(BranchOperationException.class, () -> manager.switchBranch("nonexistent"));
-    //        }
-    //    }
-//
-    //    /**
-    //     * Verifies that when a post-checkout handler is registered, the VirtualModel reload is triggered after a successful branch switch.
-    //     * this ensures the virtual model stays in sync with the newly checked-out branch content.
-    //     */
-    //    @Test
-    //    @DisplayName("triggers virtual model reload via post-checkout handler after switching")
-    //    void switchWithHandlerTriggersVirtualModelReload(@TempDir Path repoDir) throws Exception {
-    //        try (var ignored = initRepo(repoDir)) {
-    //            var manager = new BranchManager(repoDir);
-    //            manager.createBranch("bugfix-viewtype", "master");
-//
-    //            var virtualModel = mock(VirtualModel.class);
-    //            var handler = new PostCheckoutHandler(virtualModel);
-    //            manager.setPostCheckoutHandler(handler);
-//
-    //            manager.switchBranch("bugfix-viewtype");
-//
-    //            // the virtual model must be reloaded exactly once so that its state reflects the files and models present on the new branch.
-    //            verify(virtualModel).reload();
-    //        }
-    //    }
-    //}
+        /**
+         * Verifies that switching by exact branch name updates the HEAD reference to point to the target branch.
+         * Git repository state is checked directly after the switch.
+         */
+        @Test
+        @DisplayName("switches to an existing branch by name and updates HEAD")
+        void switchByName(@TempDir Path repoDir) throws Exception {
+            try (var git = initRepo(repoDir)) {
+                var manager = new BranchManager(repoDir);
+                manager.createBranch("bugfix-viewtype", "master");
 
+                manager.switchBranch("bugfix-viewtype");
+
+                var head = git.getRepository().findRef("HEAD");
+                assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName(), "HEAD must point to the target branch after switching");
+            }
+        }
+
+
+        /**
+         * Verifies that switching to a branch that does not exist raises an exception instead of leaving the working directory in an undefined state.
+         */
+        @Test
+        @DisplayName("fails when the target branch does not exist")
+        void failOnNonExistentBranch(@TempDir Path repoDir) throws Exception {
+            try (var ignored = initRepo(repoDir)) {
+                var manager = new BranchManager(repoDir);
+                assertThrows(BranchOperationException.class, () -> manager.switchBranch("nonexistent"));
+            }
+        }
+
+    }
 
     @Nested
     @DisplayName("deleteBranch")
@@ -211,7 +167,8 @@ class BranchManagerTest {
                 var metadataFile = repoDir.resolve(".vitruvius/branches/bugfix-viewtype.metadata");
                 assertTrue(Files.exists(metadataFile), "metadata file must be preserved after deletion");
                 var lines = Files.readAllLines(metadataFile);
-                assertTrue(lines.stream().anyMatch(l -> l.equals("state=DELETED")), "metadata state must be updated to DELETED");
+                assertTrue(lines.stream().anyMatch(l -> l.contains("\"state\"")));
+                assertTrue(lines.stream().anyMatch(l -> l.contains("\"DELETED\"")));
             }
         }
 
@@ -235,7 +192,7 @@ class BranchManagerTest {
     class ListBranches {
 
         /**
-         * Verifies that all branches present in the repository appear in the returned list with their correct names, 
+         * Verifies that all branches present in the repository appear in the returned list with their correct names,
          * regardless of whether they were created via the manager or directly via Git.
          */
         @Test
@@ -275,7 +232,6 @@ class BranchManagerTest {
 
                 assertEquals(BranchState.ACTIVE, external.getState());
                 assertEquals("unknown", external.getParent());
-                assertEquals(7, external.getUid().length());
             }
         }
 
@@ -306,7 +262,7 @@ class BranchManagerTest {
     class FindBranches {
 
         /**
-         * Verifies that the glob wildcard {@code *} matches any sequence of characters in the branch name suffix, 
+         * Verifies that the glob wildcard {@code *} matches any sequence of characters in the branch name suffix,
          * and that branches not matching the pattern are excluded.
          */
         @Test
@@ -389,71 +345,6 @@ class BranchManagerTest {
             }
         }
 
-        /**
-         * Verifies that a unique identifier prefix is resolved to the corresponding branch name
-         * by scanning the metadata files. 
-         */
-        @Test
-        @DisplayName("resolves a unique identifier prefix to the branch name via metadata lookup")
-        void resolveByUid(@TempDir Path repoDir) throws Exception {
-            try (var ignored = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                var metadata = manager.createBranch("bugfix-viewtype", "master");
-
-                var resolved = manager.resolveBranchIdentifier(metadata.getUid());
-
-                assertEquals("bugfix-viewtype", resolved);
-            }
-        }
-
-        /**
-         * Verifies that when an identifier matches both an exact branch name and a unique identifier prefix of another branch, the exact name takes precedence. 
-         */
-        @Test
-        @DisplayName("exact name match takes precedence over unique identifier prefix match")
-        void nameOverridesUid(@TempDir Path repoDir) throws Exception {
-            try (var ignored = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                var metadata = manager.createBranch("bugfix-viewtype", "master");
-                // create a second branch whose name equals the unique identifier of the first branch, 
-                // so that the same string would match both an exact name and a uid prefix.
-                manager.createBranch(metadata.getUid(), "master");
-
-                var resolved = manager.resolveBranchIdentifier(metadata.getUid());
-
-                // the branch with that exact name must win over the uid prefix match.
-                assertEquals(metadata.getUid(), resolved);
-            }
-        }
-
-        /**
-         * Verifies that an ambiguous unique identifier prefix (one that matches more than one branch's metadata) raises an exception 
-         * instead of returning one of the candidates.
-         */
-        @Test
-        @DisplayName("fails when a unique identifier prefix matches multiple branches")
-        void failOnAmbiguousUid(@TempDir Path repoDir) throws Exception {
-            try (var ignored = initRepo(repoDir)) {
-                var manager = new BranchManager(repoDir);
-                var first = manager.createBranch("bugfix-viewtype", "master");
-                var second = manager.createBranch("feature-signup", "master");
-
-                // find the longest common prefix of the two unique identifiers to construct an ambiguous query. 
-                // if the two hashes share no prefix we skip this test as the precondition cannot be satisfied.
-                var uid1 = first.getUid();
-                var uid2 = second.getUid();
-                int sharedLength = 0;
-                for (int i = 0; i < Math.min(uid1.length(), uid2.length()); i++) {
-                    if (uid1.charAt(i) == uid2.charAt(i)) sharedLength++;
-                    else break;
-                }
-                // only run the ambiguity assertion if the two hashes actually share a prefix.
-                if (sharedLength > 0) {
-                    var ambiguousPrefix = uid1.substring(0, sharedLength);
-                    assertThrows(BranchOperationException.class, () -> manager.resolveBranchIdentifier(ambiguousPrefix), "ambiguous unique identifier prefix must raise an exception");
-                }
-            }
-        }
 
         /**
          * Verifies that an identifier that matches neither a branch name nor any unique identifier prefix raises an exception.
@@ -467,13 +358,13 @@ class BranchManagerTest {
             }
         }
     }
-    
+
     @Nested
     @DisplayName("getBranchTopology")
     class GetBranchTopology {
 
         /**
-         * Verifies that a two-level parent-child hierarchy is correctly reflected in the topology map. 
+         * Verifies that a two-level parent-child hierarchy is correctly reflected in the topology map.
          * Each branch must appear as a child of the branch it was forked from.
          */
         @Test

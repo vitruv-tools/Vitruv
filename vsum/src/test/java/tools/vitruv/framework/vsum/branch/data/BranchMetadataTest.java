@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for {@link BranchMetadata}.
  *
- * <p>Tests are organized into three groups: construction validation, state mutation, and file serialization (write and read). 
+ * <p>Tests are organized into three groups: construction validation, state mutation, and file serialization (write and read).
  * The serialization tests are the most critical because metadata file is the only persistence mechanism for branch lifecycle information across Vitruvius sessions.
  */
 class BranchMetadataTest {
-    
+
     @Nested
     @DisplayName("construction")
     class Construction {
@@ -32,10 +32,8 @@ class BranchMetadataTest {
         void createsWithAllFields() {
             var now = LocalDateTime.now();
 
-            var metadata = new BranchMetadata("feature-vcs", "a1b2c3d", BranchState.ACTIVE, "main", now, now);
-
+            var metadata = new BranchMetadata("feature-vcs", BranchState.ACTIVE, "main", now, now);
             assertEquals("feature-vcs", metadata.getName());
-            assertEquals("a1b2c3d", metadata.getUid());
             assertEquals(BranchState.ACTIVE, metadata.getState());
             assertEquals("main", metadata.getParent());
             assertEquals(now, metadata.getCreatedAt());
@@ -51,12 +49,11 @@ class BranchMetadataTest {
         void rejectsNullFields() {
             var now = LocalDateTime.now();
 
-            assertThrows(NullPointerException.class, () -> new BranchMetadata(null, "uid", BranchState.ACTIVE, "main", now, now), "null name must be rejected");
-            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", null, BranchState.ACTIVE, "main", now, now), "null unique identifier must be rejected");
-            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", "uid", null, "main", now, now), "null state must be rejected");
-            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", "uid", BranchState.ACTIVE, null, now, now), "null parent must be rejected");
-            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", "uid", BranchState.ACTIVE, "main", null, now), "null creation timestamp must be rejected");
-            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", "uid", BranchState.ACTIVE, "main", now, null), "null last modified timestamp must be rejected");
+            assertThrows(NullPointerException.class, () -> new BranchMetadata(null, BranchState.ACTIVE, "main", now, now), "null name must be rejected");
+            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", null, "main", now, now), "null state must be rejected");
+            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", BranchState.ACTIVE, null, now, now), "null parent must be rejected");
+            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", BranchState.ACTIVE, "main", null, now), "null creation timestamp must be rejected");
+            assertThrows(NullPointerException.class, () -> new BranchMetadata("name", BranchState.ACTIVE, "main", now, null), "null last modified timestamp must be rejected");
         }
     }
 
@@ -71,7 +68,7 @@ class BranchMetadataTest {
         @DisplayName("updates the state and advances the last modified timestamp")
         void updatesStateAndTimestamp() throws InterruptedException {
             var createdAt = LocalDateTime.now();
-            var metadata = new BranchMetadata("feature-vcs", "a1b2c3d", BranchState.ACTIVE, "main", createdAt, createdAt);
+            var metadata = new BranchMetadata("feature-vcs", BranchState.ACTIVE, "main", createdAt, createdAt);
 
             // a small sleep ensures the clock advances so that the updated timestamp is measurably later than the creation timestamp on all platforms.
             Thread.sleep(10);
@@ -93,7 +90,7 @@ class BranchMetadataTest {
         @DisplayName("rejects null state")
         void rejectsNullState() {
             var now = LocalDateTime.now();
-            var metadata = new BranchMetadata("feature-vcs", "a1b2c3d", BranchState.ACTIVE, "main", now, now);
+            var metadata = new BranchMetadata("feature-vcs", BranchState.ACTIVE, "main", now, now);
 
             assertThrows(NullPointerException.class, () -> metadata.setState(null));
         }
@@ -111,19 +108,18 @@ class BranchMetadataTest {
         void writesMetadataToFile(@TempDir Path tempDir) throws Exception {
             var metadataPath = tempDir.resolve("feature-vcs.metadata");
             var now = LocalDateTime.now();
-            var metadata = new BranchMetadata("feature-vcs", "a1b2c3d", BranchState.ACTIVE, "main", now, now);
+            var metadata = new BranchMetadata("feature-vcs", BranchState.ACTIVE, "main", now, now);
 
             metadata.writeTo(metadataPath);
 
             assertTrue(Files.exists(metadataPath), "metadata file must be created");
             var lines = Files.readAllLines(metadataPath);
             // verify that every required field is present with the expected value.
-            assertTrue(lines.stream().anyMatch(l -> l.startsWith("name=feature-vcs")));
-            assertTrue(lines.stream().anyMatch(l -> l.startsWith("uid=a1b2c3d")));
-            assertTrue(lines.stream().anyMatch(l -> l.startsWith("state=ACTIVE")));
-            assertTrue(lines.stream().anyMatch(l -> l.startsWith("parent=main")));
-            assertTrue(lines.stream().anyMatch(l -> l.startsWith("createdAt=")));
-            assertTrue(lines.stream().anyMatch(l -> l.startsWith("updatedAt=")));
+            assertTrue(lines.stream().anyMatch(l -> l.contains("\"branchName\"")));
+            assertTrue(lines.stream().anyMatch(l -> l.contains("\"state\"")));
+            assertTrue(lines.stream().anyMatch(l -> l.contains("\"parentBranch\"")));
+            assertTrue(lines.stream().anyMatch(l -> l.contains("\"createdAt\"")));
+            assertTrue(lines.stream().anyMatch(l -> l.contains("\"lastModified\"")));
         }
 
         /**
@@ -134,13 +130,12 @@ class BranchMetadataTest {
         void roundTripPreservesAllFields(@TempDir Path tempDir) throws Exception {
             var metadataPath = tempDir.resolve("feature-vcs.metadata");
             var now = LocalDateTime.now();
-            var original = new BranchMetadata("feature-vcs", "a1b2c3d", BranchState.ACTIVE, "main", now, now);
+            var original = new BranchMetadata("feature-vcs", BranchState.ACTIVE, "main", now, now);
 
             original.writeTo(metadataPath);
             var loaded = BranchMetadata.readFrom(metadataPath);
 
             assertEquals(original.getName(), loaded.getName());
-            assertEquals(original.getUid(), loaded.getUid());
             assertEquals(original.getState(), loaded.getState());
             assertEquals(original.getParent(), loaded.getParent());
             assertEquals(original.getCreatedAt().withNano(0), loaded.getCreatedAt().withNano(0));
@@ -157,7 +152,7 @@ class BranchMetadataTest {
             // use a nested path that does not yet exist on disk.
             var metadataPath = tempDir.resolve("nested/directory/feature-vcs.metadata");
             var now = LocalDateTime.now();
-            var metadata = new BranchMetadata("feature-vcs", "a1b2c3d", BranchState.ACTIVE, "main", now, now);
+            var metadata = new BranchMetadata("feature-vcs", BranchState.ACTIVE, "main", now, now);
 
             // writeTo must succeed without the caller creating the parent directories first.
             assertDoesNotThrow(() -> metadata.writeTo(metadataPath));
@@ -173,8 +168,14 @@ class BranchMetadataTest {
             var metadataPath = tempDir.resolve("feature-vcs.metadata");
             // write a file that is missing the 'parent' field to simulate a corrupted or
             // manually edited metadata file.
-            Files.write(metadataPath, List.of("name=feature-vcs", "uid=a1b2c3d", "state=ACTIVE", "createdAt=2026-02-01T10:30:00", "updatedAt=2026-02-01T10:30:00"));
-
+            Files.writeString(metadataPath, """
+                    {
+                      "branchName": "feature-vcs",
+                      "state": "ACTIVE",
+                      "createdAt": "2026-02-01T10:30:00",
+                      "lastModified": "2026-02-01T10:30:00"
+                    }
+                    """);
             var exception = assertThrows(IllegalArgumentException.class, () -> BranchMetadata.readFrom(metadataPath));
             assertTrue(exception.getMessage().contains("parent"), "the error message must name the missing key so the developer can locate it");
         }
@@ -198,8 +199,15 @@ class BranchMetadataTest {
         @DisplayName("throws an exception when the state value is not a recognized enum constant")
         void throwsWhenStateInvalid(@TempDir Path tempDir) throws Exception {
             var metadataPath = tempDir.resolve("feature-vcs.metadata");
-            Files.write(metadataPath, List.of("name=feature-vcs", "uid=a1b2c3d", "state=UNKNOWN_STATE", "parent=main", "createdAt=2026-02-01T10:30:00", "updatedAt=2026-02-01T10:30:00"));
-
+            Files.writeString(metadataPath, """
+                    {
+                      "branchName": "feature-vcs",
+                      "state": "UNKNOWN_STATE",
+                      "parentBranch": "main",
+                      "createdAt": "2026-02-01T10:30:00",
+                      "lastModified": "2026-02-01T10:30:00"
+                    }
+                    """);
             assertThrows(IllegalArgumentException.class, () -> BranchMetadata.readFrom(metadataPath));
         }
 
@@ -211,8 +219,15 @@ class BranchMetadataTest {
         @DisplayName("throws an exception when a timestamp field cannot be parsed")
         void throwsWhenTimestampInvalid(@TempDir Path tempDir) throws Exception {
             var metadataPath = tempDir.resolve("feature-vcs.metadata");
-            Files.write(metadataPath, List.of("name=feature-vcs", "uid=a1b2c3d", "state=ACTIVE", "parent=main", "createdAt=not-a-valid-timestamp", "updatedAt=2026-02-01T10:30:00"));
-
+            Files.writeString(metadataPath, """
+                    {
+                      "branchName": "feature-vcs",
+                      "state": "ACTIVE",
+                      "parentBranch": "main",
+                      "createdAt": "not-a-valid-timestamp",
+                      "lastModified": "2026-02-01T10:30:00"
+                    }
+                    """);
             assertThrows(java.time.format.DateTimeParseException.class, () -> BranchMetadata.readFrom(metadataPath));
         }
     }

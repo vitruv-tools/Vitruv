@@ -14,8 +14,6 @@
 #   4. Waits for VsumValidationWatcher to process and write request-specific results
 #   5. Reads validation result using request ID and allows/blocks commit accordingly
 #
-# Supports concurrent commits via unique request IDs
-#
 
 set -e  # Exit on error
 
@@ -34,6 +32,22 @@ VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
 
 # Ensure .vitruvius directory exists
 mkdir -p "$VITRUVIUS_DIR"
+
+METADATA_FILE="$VITRUVIUS_DIR/branches/$BRANCH.metadata"
+
+if [ -f "$METADATA_FILE" ]; then
+    # Timestamp at the moment the commit is attempted
+    COMMIT_TIMESTAMP=$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S)
+
+    # Update lastModified field in JSON using sed
+    # This works for both hook-created and Java-created metadata files
+    # since both now use the same JSON format
+    sed -i "s|\"lastModified\": \".*\"|\"lastModified\": \"$COMMIT_TIMESTAMP\"|" "$METADATA_FILE"
+
+    # Stage the updated metadata file so it is included in this commit
+    git add "$METADATA_FILE"
+    echo "Vitruvius: Updated lastModified for branch '$BRANCH'"
+fi
 
 # Generate unique request ID for this validation request
 # This prevents concurrent commits from reading each other's results
