@@ -13,3 +13,5 @@
 !.vitruvius/merges/**
 !.vitruvius/branches/
 !.vitruvius/branches/**
+!.vitruvius/versions/
+!.vitruvius/versions/**

@@ -71,9 +71,8 @@ public class PostMergeHandler {
         return result;
     }
 
-    public void generateMergeMetadata(MergeResultFile mergeResultFile, String mergeCommitSha, String sourceBranch, String targetBranch, ValidationResult result) throws IOException {
-        LOGGER.info("Generating merge metadata for commit {} ({} → {})", mergeCommitSha.substring(0, Math.min(7, mergeCommitSha.length())), sourceBranch, targetBranch);
-        mergeResultFile.writeMetadata(mergeCommitSha, sourceBranch, targetBranch, result);
+    public void generateMergeMetadata(MergeResultFile mergeResultFile, String mergeCommitSha, String sourceBranch, String targetBranch, ValidationResult result, List<String> conflictingFiles) throws IOException {
+        mergeResultFile.writeMetadata(mergeCommitSha, sourceBranch, targetBranch, result, conflictingFiles);
     }
 
     private void validateUuidResolver(List<String> errors) {

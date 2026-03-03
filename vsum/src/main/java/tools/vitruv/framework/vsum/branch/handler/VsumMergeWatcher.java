@@ -189,7 +189,7 @@ public class VsumMergeWatcher {
 
             // Write merge metadata regardless of validity
             try {
-                handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch(), result);
+                handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(), info.getSourceBranch(), info.getTargetBranch(), result, List.of());
                 LOGGER.info("Merge metadata written for commit {}", mergeShort);
                 autoStageMetadata(info.getMergeCommitSha(), mergeShort);
             } catch (Exception e) {

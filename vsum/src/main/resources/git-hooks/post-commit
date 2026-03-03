@@ -57,9 +57,10 @@ while IFS= read -r file; do
     # .model    = Custom model files (XMI format)
     # .model2   = Custom model2 files (XMI format)
     # .ecore    = Ecore metamodels (XMI format)
+    # .genmodel = Genmodel of corresponding Ecore (XMI Format)
     # .uml      = UML models (XMI format)
     # .notation = Diagram notation (XMI format)
-    if [[ "$file" =~ \.(xmi|model[0-9]*|ecore|uml)$ ]]; then
+    if [[ "$file" =~ \.(xmi|model[0-9]*|ecore|genmodel|uml)$ ]]; then
         HAS_MODEL_CHANGES=true
         break
     fi

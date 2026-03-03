@@ -42,7 +42,7 @@ public class MergeResultFile {
         LOGGER.debug("Wrote merge result for requestId='{}': valid={}, errors={}, warnings={}", requestId, result.isValid(), result.getErrors().size(), result.getWarnings().size());
     }
 
-    public void writeMetadata(String mergeCommitSha, String sourceBranch, String targetBranch, ValidationResult result) throws IOException {
+    public void writeMetadata(String mergeCommitSha, String sourceBranch, String targetBranch, ValidationResult result, List<String> conflictingFiles) throws IOException {
         Path mergesDir = vitruviusDir.resolve(MERGE_DIR);
         Path metadataPath = mergesDir.resolve(mergeCommitSha + METADATA_SUFFIX);
         Files.createDirectories(mergesDir);
@@ -56,7 +56,7 @@ public class MergeResultFile {
         metadata.put("errors", result.getErrors());
         metadata.put("warnings", result.getWarnings());
 
-        //todo: conflict metadata
+        metadata.put("conflictingFiles", conflictingFiles);  // Git-level file conflicts
         metadata.put("semanticConflicts", List.of());
 
         Files.writeString(metadataPath, gson.toJson(metadata));
@@ -154,37 +154,33 @@ public class MergeResultFile {
 
         if (result.isValid()) {
             // CHANGED: Added ✔ to match the hook's grep pattern
-            builder.append("✔ POST-MERGE VALIDATION PASSED\n");
+            builder.append("POST-MERGE VALIDATION PASSED\n");
             builder.append("\n");
             builder.append("Merged VSUM state is consistent\n");
         } else {
-            builder.append("✘ POST-MERGE VALIDATION FAILED\n");
+            builder.append("POST-MERGE VALIDATION FAILED\n");
             builder.append("\n");
             builder.append("The merged VSUM state contains inconsistencies.\n");
             builder.append("The merge has completed but the model may require attention.\n");
         }
         builder.append("\n");
-
         if (result.hasErrors()) {
             builder.append("Inconsistencies detected (").append(result.getErrors().size()).append("):\n");
             for (String error : result.getErrors()) {
-                builder.append("  ✘ ").append(error).append("\n");
+                builder.append(error).append("\n");
             }
             builder.append("\n");
         }
-
         if (result.hasWarnings()) {
             builder.append("Warnings (").append(result.getWarnings().size()).append("):\n");
             for (String warning : result.getWarnings()) {
-                builder.append("  ⚠").append(warning).append("\n");
+                builder.append(warning).append("\n");
             }
             builder.append("\n");
         }
-
         if (result.isValid() && !result.hasWarnings()) {
             builder.append("No inconsistencies or warnings found.\n");
         }
-
         builder.append("\n");
         Files.writeString(textResultPath, builder.toString());
     }
