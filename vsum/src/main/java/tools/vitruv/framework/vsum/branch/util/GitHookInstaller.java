@@ -298,6 +298,17 @@ public class GitHookInstaller {
     }
 
     /**
+     * Returns true if all four Vitruvius hooks are currently installed.
+     * Used by ManualTest to skip reinstallation on subsequent runs.
+     */
+    public boolean areAllHooksInstalled() {
+        return isPostCheckoutHookInstalled()
+                && isPreCommitHookInstalled()
+                && isPostMergeHookInstalled()
+                && isPostCommitHookInstalled();
+    }
+
+    /**
      * Sets the executable permission bits on a file so that Git can invoke it as a hook script.
      * Owner, group, and others execute bits are all set to match the standard Git hook convention.
      *

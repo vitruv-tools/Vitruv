@@ -2,16 +2,3 @@
 .vitruvius/*.lock
 .vitruvius/*-trigger
 .vitruvius/validation-result-*
-
-# Ignore everything in .vitruvius by default
-.vitruvius/*
-
-# Keep permanent records
-!.vitruvius/changelogs/
-!.vitruvius/changelogs/**
-!.vitruvius/merges/
-!.vitruvius/merges/**
-!.vitruvius/branches/
-!.vitruvius/branches/**
-!.vitruvius/versions/
-!.vitruvius/versions/**

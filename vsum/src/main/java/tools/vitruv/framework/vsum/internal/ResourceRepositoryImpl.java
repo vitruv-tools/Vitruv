@@ -25,7 +25,6 @@ import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -78,8 +77,11 @@ class ResourceRepositoryImpl implements ModelRepository {
     }
 
     public void reload(VsumFileSystemLayout newLayout) {
+        // redirect to new file system layout
+        // everything that reads from disk after this point will read from the new branch's dir
         this.fileSystemLayout = newLayout;
-        // correspondenceModel URI is baked in at construction so recreating is required
+        //internal URi still points to the previous branchs correspondence file
+        // recreating is required since correspondence model uri is no longer valid
         this.correspondenceModel = createPersistableCorrespondenceModel(newLayout.getCorrespondencesURI());
         reload();
     }
@@ -87,15 +89,16 @@ class ResourceRepositoryImpl implements ModelRepository {
     @Override
     public void reload() {
         LOGGER.info("Reloading models from file system");
-
-        // Stop recording changes during reload
+        // 1.step: stop recording changes during reload
+        // if changeRecoreder is still on during reload, it would trigger some unwanted deletion events for every element being unloaded
         boolean wasRecording = isRecording;
         if (isRecording) {
             changeRecorder.endRecording();
             isRecording = false;
         }
 
-        // Remove all current resources from change recorder tracking BEFORE unloading
+        // 2.step: remove all current resources from change recorder tracking before unloading
+        // to prevent any dangling references in the recorder
         LOGGER.debug("Removing {} models from change recorder", modelsResourceSet.getResources().size());
         var resourcesToRemove = new ArrayList<>(modelsResourceSet.getResources());
         for (Resource resource : resourcesToRemove) {
@@ -104,145 +107,39 @@ class ResourceRepositoryImpl implements ModelRepository {
             }
         }
 
-        // Unload all existing resources
+        // 3.step: unload all existing resources to avoid any proxy resolution failures
         LOGGER.debug("Unloading models");
         modelsResourceSet.getResources().forEach(Resource::unload);
         modelsResourceSet.getResources().clear();
         modelInstances.clear();
-
-        // Clear package registry to prevent stale metamodel references
         LOGGER.debug("Clearing package registry");
-        modelsResourceSet.getPackageRegistry().clear();
+        modelsResourceSet.getPackageRegistry().clear(); // Clear package registry to prevent stale metamodel references
 
-        // Reset UUID resolver
+        // 4.step: reset UUID Resolver
         LOGGER.debug("Resetting UUID resolver");
         uuidResolver = UuidResolver.create(modelsResourceSet);
-
         // Recreate the change resolver with new UUID resolver
         changeResolver = VitruviusChangeResolverFactory.forUuids(uuidResolver);
 
-        // Always use file system discovery
+        //5.step: load correspondences
         LOGGER.debug("Discovering models from file system");
         isLoading = true;
-
-        try {
-            discoverAndLoadModels();
-        } catch (Exception e) {
-            LOGGER.error("Failed to discover models from file system", e);
-        }
-
-        // Load correspondences (tolerant of missing models)
         try {
             correspondenceModel.loadSerializedCorrespondences(modelsResourceSet);
         } catch (Exception e) {
             LOGGER.warn("Failed to load correspondences (will rebuild as needed): {}", e.getMessage());
         }
-
         isLoading = false;
 
-        // Resume recording if it was active before
+
+        // 6.step: resume recording if it was active before
         if (wasRecording) {
             changeRecorder.beginRecording();
             isRecording = true;
         }
-
         LOGGER.info("Models reloaded successfully");
     }
 
-    private void discoverAndLoadModels() throws IOException {
-        // TODO: only temporal fix
-        Path rootPath = fileSystemLayout.getVsumProjectFolder();
-
-        LOGGER.debug("Scanning {} for model files", rootPath);
-
-        // Find all model files (including model, model2, model3, model99, etc.)
-        List<URI> discoveredModels = Files.list(rootPath)
-                .filter(Files::isRegularFile)
-                .filter(path -> {
-                    String name = path.getFileName().toString();
-                    // Match: .xmi, .model, .model2, .model3, .model99, etc.
-                    return name.endsWith(".xmi") ||
-                            name.matches(".*\\.model\\d*") ||  // Matches .model, .model2, .model3, etc.
-                            name.endsWith(".ecore") ||
-                            name.endsWith(".uml") ||
-                            name.endsWith(".notation");
-                })
-                .map(path -> URI.createFileURI(path.toAbsolutePath().toString()))
-                .toList();
-
-        LOGGER.info("Discovered {} model file(s) on file system", discoveredModels.size());
-
-        if (discoveredModels.isEmpty()) {
-            LOGGER.warn("No model files found in repository root");
-            return;
-        }
-
-        // Load resources
-        for (URI uri : discoveredModels) {
-            LOGGER.debug("Loading model: {}", uri);
-            try {
-                loadOrCreateResource(modelsResourceSet, uri);
-            } catch (Exception e) {
-                LOGGER.warn("Failed to load model {}: {}", uri, e.getMessage());
-                // Continue with other models
-            }
-        }
-
-        // Try to load UUIDs from this branch's uuid file
-        boolean uuidsLoaded = false;
-        try {
-            uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
-
-            int uuidCount = 0;
-            for (Resource resource : modelsResourceSet.getResources()) {
-                Iterator<EObject> it = resource.getAllContents();
-                while (it.hasNext()) {
-                    if (uuidResolver.hasUuid(it.next())) uuidCount++;
-                }
-            }
-            LOGGER.info("UUID mappings loaded: {} objects registered", uuidCount);
-            uuidsLoaded = uuidCount > 0;
-
-        } catch (Exception e) {
-            LOGGER.warn("Could not load UUID file (may not exist yet for new branch): {}",
-                    e.getMessage());
-        }
-
-        // If no UUIDs were loaded, this is a new branch that inherited model files
-        // from its parent branch via Git. Register fresh UUIDs for all existing objects.
-        if (!uuidsLoaded) {
-            LOGGER.info("No existing UUIDs found — assigning fresh UUIDs for new branch");
-            for (Resource resource : modelsResourceSet.getResources()) {
-                if (resource.getURI().isFile() || resource.getURI().isPlatform()) {
-                    Iterator<EObject> it = resource.getAllContents();
-                    while (it.hasNext()) {
-                        EObject obj = it.next();
-                        if (!uuidResolver.hasUuid(obj)) {
-                            uuidResolver.registerEObject(obj);
-                        }
-                    }
-                }
-            }
-            LOGGER.info("Fresh UUIDs assigned for all objects on new branch");
-        }
-
-        // Create model instances
-        for (URI uri : discoveredModels) {
-            try {
-                createOrLoadModel(uri);
-            } catch (Exception e) {
-                LOGGER.warn("Failed to create model instance for {}: {}", uri, e.getMessage());
-            }
-        }
-
-        // Update models.models file to reflect current state
-        try {
-            writeModelsFile();
-            LOGGER.debug("Updated models.models with discovered models");
-        } catch (IOException e) {
-            LOGGER.warn("Failed to write models.models (non-critical)", e);
-        }
-    }
 
     private void writeModelsFile() throws IOException {
         Files.write(
