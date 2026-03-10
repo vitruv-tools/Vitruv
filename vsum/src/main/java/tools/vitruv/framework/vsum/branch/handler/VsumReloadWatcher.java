@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.branch.BranchAwareVirtualModel;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
 import tools.vitruv.framework.vsum.branch.util.ReloadTriggerFile;
 
@@ -46,7 +47,7 @@ public class VsumReloadWatcher {
     private static final String LOCK_FILENAME = ".reload.lock";
 
     private final ReloadTriggerFile triggerFile;
-    private final PostCheckoutHandler handler;
+    private final BranchAwareVirtualModel branchVsum;
 
     /**
      * Path to the OS-managed lock file that prevents concurrent reloads.
@@ -61,14 +62,15 @@ public class VsumReloadWatcher {
     /**
      * Creates a new {@link VsumReloadWatcher} for the given VirtualModel and repository.
      *
-     * @param virtualModel   the VirtualModel to reload when a branch switch is detected.
+     * @param branchVsum   the VirtualModel to reload when a branch switch is detected.
      * @param repositoryRoot the root directory of the Git repository. The trigger file and lock file will be located under {@code .vitruvius/} inside this directory.
      */
-    public VsumReloadWatcher(VirtualModel virtualModel, Path repositoryRoot) {
+    public VsumReloadWatcher(BranchAwareVirtualModel branchVsum, Path repositoryRoot) {
         this.triggerFile = new ReloadTriggerFile(repositoryRoot);
-        this.handler = new PostCheckoutHandler(virtualModel);
         this.running = false;
         this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);
+        this.branchVsum = branchVsum;
+
     }
 
     /**
@@ -181,7 +183,7 @@ public class VsumReloadWatcher {
 
                 try {
                     LOGGER.debug("Lock acquired, performing reload (requestId='{}')", info.getRequestId());
-                    performReload(info);
+                    performSwitch(info);
                 } finally {
                     // always release the lock, even if performReload throws, to unblock any reload requests that are waiting to retry.
                     lock.release();
@@ -211,10 +213,10 @@ public class VsumReloadWatcher {
      *
      * @param info the trigger information containing the new branch name and request identifier.
      */
-    private void performReload(ReloadTriggerFile.TriggerInfo info) {
+    private void performSwitch(ReloadTriggerFile.TriggerInfo info) {
         try {
             long startTime = System.currentTimeMillis();
-            handler.onBranchSwitch(info.getOldBranchName(), info.getBranchName());
+            branchVsum.switchBranch(info.getOldBranchName(), info.getBranchName());
             long duration = System.currentTimeMillis() - startTime;
             LOGGER.info("VirtualModel reloaded in {}ms (branch='{}' ← '{}', requestId='{}')", duration, info.getBranchName(), info.getOldBranchName(), info.getRequestId());
         } catch (BranchOperationException e) {

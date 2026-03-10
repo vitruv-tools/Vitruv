@@ -4,7 +4,7 @@ import org.eclipse.jgit.api.Git;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.branch.BranchAwareVirtualModel;
 import tools.vitruv.framework.vsum.branch.util.ReloadTriggerFile;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
@@ -37,8 +37,8 @@ class VsumReloadWatcherTest {
     @Test
     @DisplayName("Starts and stops cleanly, reflecting running state correctly")
     void startsAndStopsCleanly(@TempDir Path tempDir) {
-        var mockVsum = mock(VirtualModel.class);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
 
         assertFalse(watcher.isRunning(), "watcher must not be running before start() is called");
         watcher.start();
@@ -55,8 +55,8 @@ class VsumReloadWatcherTest {
     @Test
     @DisplayName("Throws an exception when started while already running")
     void throwsExceptionWhenStartingTwice(@TempDir Path tempDir) {
-        var mockVsum = mock(VirtualModel.class);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
 
         watcher.start();
         try {
@@ -75,8 +75,8 @@ class VsumReloadWatcherTest {
     @Test
     @DisplayName("Stopping a watcher that was never started completes without throwing")
     void stoppingNonRunningWatcherDoesNotThrow(@TempDir Path tempDir) {
-        var mockVsum = mock(VirtualModel.class);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
 
         // stop() must be idempotent and safe to call even before start().
         assertDoesNotThrow(watcher::stop);
@@ -90,8 +90,8 @@ class VsumReloadWatcherTest {
     @Test
     @DisplayName("Stop completes within 3 seconds")
     void stopsWithinReasonableTime(@TempDir Path tempDir) {
-        var mockVsum = mock(VirtualModel.class);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
         watcher.start();
 
         long startTime = System.currentTimeMillis();
@@ -110,13 +110,13 @@ class VsumReloadWatcherTest {
     @Test
     @DisplayName("Does not call reload() when no trigger file exists")
     void doesNotReloadWithoutTrigger(@TempDir Path tempDir) throws Exception {
-        var mockVsum = mock(VirtualModel.class);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
         watcher.start();
         // wait for several poll cycles to confirm the watcher polls without side effects.
         Thread.sleep(1500);
 
-        verify(mockVsum, never()).reload(any(VsumFileSystemLayout.class));
+        verify(mockBranchVsum, never()).reload(any(VsumFileSystemLayout.class));
         assertFalse(triggerFile(tempDir).exists(), "trigger file must remain absent when no trigger was created");
 
         watcher.stop();
@@ -133,9 +133,9 @@ class VsumReloadWatcherTest {
     @DisplayName("Detects a trigger file, calls reload() exactly once, and deletes the file")
     void detectsTriggerFileAndReloads(@TempDir Path tempDir) throws Exception {
         initGitRepo(tempDir);
-        var mockVsum = mock(VirtualModel.class);
-        when(mockVsum.getFolder()).thenReturn(tempDir);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
+        when(mockBranchVsum.getFolder()).thenReturn(tempDir);
         var triggerFile = new ReloadTriggerFile(tempDir);
 
         watcher.start();
@@ -146,7 +146,7 @@ class VsumReloadWatcherTest {
         // wait long enough for the watcher to pick up the trigger (poll interval is 500ms).
         Thread.sleep(1500);
 
-        verify(mockVsum, times(1)).reload(any(VsumFileSystemLayout.class));
+        verify(mockBranchVsum, times(1)).switchBranch(eq(OLD_BRANCH), eq(BRANCH));
         assertFalse(triggerFile.exists(), "trigger file must be deleted after the reload completes");
         watcher.stop();
     }
@@ -161,9 +161,9 @@ class VsumReloadWatcherTest {
     @DisplayName("Processes multiple sequential triggers, calling reload() once per trigger")
     void handlesMultipleSequentialReloads(@TempDir Path tempDir) throws Exception {
         initGitRepo(tempDir);
-        var mockVsum = mock(VirtualModel.class);
-        when(mockVsum.getFolder()).thenReturn(tempDir);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        when(mockBranchVsum.getFolder()).thenReturn(tempDir);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
         var triggerFile = new ReloadTriggerFile(tempDir);
 
         watcher.start();
@@ -184,7 +184,7 @@ class VsumReloadWatcherTest {
         assertFalse(triggerFile.exists(), "third trigger must be deleted after processing");
 
         // three triggers must produce exactly three reload calls.
-        verify(mockVsum, times(3)).reload(any(VsumFileSystemLayout.class));
+        verify(mockBranchVsum, times(3)).switchBranch(anyString(), anyString());
         watcher.stop();
     }
 
@@ -200,9 +200,9 @@ class VsumReloadWatcherTest {
     @DisplayName("Detects and processes a legacy single-field trigger, calling reload() once")
     void handlesLegacySingleFieldTrigger(@TempDir Path tempDir) throws Exception {
         initGitRepo(tempDir);
-        var mockVsum = mock(VirtualModel.class);
-        when(mockVsum.getFolder()).thenReturn(tempDir);
-        var watcher = new VsumReloadWatcher(mockVsum, tempDir);
+        var mockBranchVsum = mock(BranchAwareVirtualModel.class);
+        when(mockBranchVsum.getFolder()).thenReturn(tempDir);
+        var watcher = new VsumReloadWatcher(mockBranchVsum, tempDir);
         var filePath = tempDir.resolve(".vitruvius/reload-trigger");
 
         watcher.start();
@@ -213,7 +213,7 @@ class VsumReloadWatcherTest {
         Files.writeString(filePath, "feature");
         Thread.sleep(1500);
 
-        verify(mockVsum, times(1)).reload(any(VsumFileSystemLayout.class));
+        verify(mockBranchVsum, times(1)).switchBranch(eq("unknown"), eq("feature"));
         assertFalse(Files.exists(filePath), "legacy single-field trigger file must be detected and deleted");
         watcher.stop();
     }

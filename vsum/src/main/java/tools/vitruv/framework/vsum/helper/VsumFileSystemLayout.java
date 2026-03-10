@@ -192,12 +192,15 @@ public class VsumFileSystemLayout {
     }
 
     /**
-     * Linh:new todo: delete before abgabe
-     * Creates a layout for testing, bypassing Git branch resolution.
-     * Uses "test" as the branch name.
+     * Creates a layout for a specific branch, bypassing JGit branch resolution.
+     * Used when the branch name is already known, for example during branch switching
+     * in {@link tools.vitruv.framework.vsum.branch.BranchAwareVirtualModel}.
+     * @param vsumProjectFolder the Vitruv project folder
+     * @param branchName  the branch name to use
+     * @return a new layout pointing to {@code .vitruvius/vsum/{branchName}/}
      */
-    public static VsumFileSystemLayout forTesting(Path vsumProjectFolder) {
-        return new VsumFileSystemLayout(vsumProjectFolder, "test");
+    public static VsumFileSystemLayout forBranch(Path vsumProjectFolder, String branchName) {
+        return new VsumFileSystemLayout(vsumProjectFolder, branchName);
     }
 
     /**
