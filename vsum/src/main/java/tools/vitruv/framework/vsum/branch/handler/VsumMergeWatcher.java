@@ -158,19 +158,17 @@ public class VsumMergeWatcher {
             // if there are conflict markers or proxy errors, leave the model
             // in its pre-merge state so the user can fix the issues first
             if (result.isValid()) {
+                handler.copyVsumFromSourceBranch(info.getSourceBranch(), info.getTargetBranch());
+
                 try {
                     LOGGER.info("Reloading VirtualModel to reflect merged state");
                     virtualModel.reload();
                     LOGGER.info("VirtualModel reloaded successfully after merge");
                 } catch (Exception e) {
                     LOGGER.warn("Failed to reload VirtualModel after merge: {}", e.getMessage());
-                    // TODO: post-merge vsum reconstruction
-                    // when the merged state introduces objects unknown to master's uuid.uuid
-                    // (e.g. fast-forward merge), a full UUID re-registration may be needed.
-                    // Pending supervisor feedback on how to handle this case.
                 }
             } else {
-                LOGGER.warn("Merged state has inconsistencies - skipping reload. " + "Resolve conflicts and commit the resolution.");
+                LOGGER.warn("Merged state has inconsistencies — skipping VSUM copy and reload. " + "Resolve conflicts and commit the resolution.");
             }
 
             // Mark source branch as MERGED

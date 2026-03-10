@@ -201,5 +201,63 @@ public class PostMergeHandler {
         }
     }
 
+    public void copyVsumFromSourceBranch(String sourceBranch, String targetBranch) {
+        checkNotNull(sourceBranch, "sourceBranch must not be null");
+        checkNotNull(targetBranch, "targetBranch must not be null");
+
+        Path sourceVsum = repositoryRoot.resolve(".vitruvius/vsum").resolve(sourceBranch);
+        Path targetVsum = repositoryRoot.resolve(".vitruvius/vsum").resolve(targetBranch);
+
+        if (!Files.exists(sourceVsum)) {
+            LOGGER.warn("Source branch '{}' has no VSUM state to copy", sourceBranch);
+            return;
+        }
+
+        try {
+            // remove stale target vsum state before copying
+            if (Files.exists(targetVsum)) {
+                deleteDirectory(targetVsum);
+                LOGGER.debug("Removed stale VSUM state for target branch '{}'", targetBranch);
+            }
+
+            // Copy source VSUM to target recursively
+            copyDirectory(sourceVsum, targetVsum);
+            LOGGER.info("Copied VSUM state from '{}' to '{}' after merge", sourceBranch, targetBranch);
+
+        } catch (IOException e) {
+            LOGGER.error("Failed to copy VSUM state from '{}' to '{}': {}", sourceBranch, targetBranch, e.getMessage(), e);
+        }
+    }
+
+    private void copyDirectory(Path source, Path target) throws IOException {
+        Files.createDirectories(target);
+        try (var stream = Files.walk(source)) {
+            stream.forEach(sourcePath -> {
+                try {
+                    Path targetPath = target.resolve(source.relativize(sourcePath));
+                    if (Files.isDirectory(sourcePath)) {
+                        Files.createDirectories(targetPath);
+                    } else {
+                        Files.copy(sourcePath, targetPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to copy " + sourcePath, e);
+                }
+            });
+        }
+    }
+
+    private void deleteDirectory(Path directory) throws IOException {
+        try (var stream = Files.walk(directory)) {
+            stream.sorted(java.util.Comparator.reverseOrder()).forEach(path -> {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to delete " + path, e);
+                }
+            });
+        }
+    }
+
 
 }

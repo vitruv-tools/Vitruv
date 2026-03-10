@@ -30,10 +30,26 @@ MERGE_COMMIT_SHA=$(git rev-parse HEAD)
 
 if ! git rev-parse HEAD^2 &>/dev/null; then
     echo "Fast-forward merge completed"
+
+    # For fast-forward merges, copy source branch VSUM to target branch VSUM.
+    # In a fast-forward merge the target branch moves its HEAD to the source
+    # branch tip — the model content is identical, so the source branch VSUM
+    # is the correct state for the target branch after the merge.
+    SOURCE_BRANCH_FF=$(git name-rev --name-only HEAD@{1} 2>/dev/null \
+        | sed 's|^remotes/origin/||' \
+        | sed 's/~[0-9]*$//')
+    TARGET_BRANCH_FF=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
+    SOURCE_VSUM="$REPO_ROOT/.vitruvius/vsum/$SOURCE_BRANCH_FF"
+    TARGET_VSUM="$REPO_ROOT/.vitruvius/vsum/$TARGET_BRANCH_FF"
+
+    if [ -d "$SOURCE_VSUM" ] && [ "$SOURCE_BRANCH_FF" != "$TARGET_BRANCH_FF" ]; then
+        rm -rf "$TARGET_VSUM"
+        cp -r "$SOURCE_VSUM" "$TARGET_VSUM"
+        echo "Vitruvius: VSUM state copied from '$SOURCE_BRANCH_FF' to '$TARGET_BRANCH_FF'"
+    fi
+
     echo "Git did not create a merge commit (linear history)"
     echo "No merge metadata will be generated (following Git's behavior)"
-    echo ""
-    echo "To force merge commits: git merge --no-ff <branch>"
     exit 0
 fi
 
