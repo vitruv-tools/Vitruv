@@ -66,6 +66,7 @@ while IFS= read -r file; do
     fi
 done <<< "$FILES_CHANGED"
 
+
 # Skip if no model files changed
 if [ "$HAS_MODEL_CHANGES" = false ]; then
     echo "Vitruvius: Skipping changelog (no XMI/model files changed)"
@@ -85,6 +86,23 @@ BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
 # Vitruvius directory
 VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
 mkdir -p "$VITRUVIUS_DIR"
+
+# Stage and amend VSUM state for current branch into the commit
+VSUM_DIR="$REPO_ROOT/.vitruvius/vsum/$BRANCH"
+AMEND_GUARD="$VITRUVIUS_DIR/.amend-in-progress"
+
+if [ -f "$AMEND_GUARD" ]; then
+    # We are inside the re-triggered hook from the amend — skip to avoid recursion
+    rm -f "$AMEND_GUARD"
+else
+    if [ -d "$VSUM_DIR" ]; then
+        # Create guard before amend so the re-triggered hook skips this block
+        touch "$AMEND_GUARD"
+        git add "$VSUM_DIR"
+        git commit --amend --no-edit --no-verify
+        echo "Vitruvius: VSUM state for branch '$BRANCH' committed"
+    fi
+fi
 
 # Generate unique request ID for changelog
 if command -v uuidgen &> /dev/null; then
