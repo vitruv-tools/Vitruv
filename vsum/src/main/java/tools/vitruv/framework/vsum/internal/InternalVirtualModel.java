@@ -3,11 +3,11 @@ package tools.vitruv.framework.vsum.internal;
 import org.eclipse.emf.common.util.URI;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
-import tools.vitruv.framework.views.ChangeableViewSource;
+import tools.vitruv.framework.vsum.schedule.SchedulableChangeableViewSource;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /** Internal interface for virtual models in the VSUM framework. */
-public interface InternalVirtualModel extends VirtualModel, ChangeableViewSource {
+public interface InternalVirtualModel extends VirtualModel, SchedulableChangeableViewSource {
 
   /**
    * Gets the correspondence model view associated with this virtual model.

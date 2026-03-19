@@ -19,6 +19,7 @@ import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
+import tools.vitruv.framework.vsum.schedule.Scheduler;
 
 /** Builder for creating and initializing virtual models in the VSUM framework. */
 public class VirtualModelBuilder {
@@ -27,6 +28,7 @@ public class VirtualModelBuilder {
       new HashSet<>();
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
+  private Scheduler scheduler;
 
   /**
    * Sets the storage folder for the virtual model.
@@ -171,13 +173,17 @@ public class VirtualModelBuilder {
     return this;
   }
 
+  public VirtualModelBuilder withScheduler(Scheduler scheduler) {
+    this.scheduler = scheduler;
+    return this;
+  }
+
   /**
    * Builds and initializes the virtual model.
    *
    * @return the initialized virtual model
-   * @throws IOException if an I/O error occurs during initialization
    */
-  public InternalVirtualModel buildAndInitialize() throws IOException {
+  public InternalVirtualModel buildAndInitialize() {
     checkState(storageFolder != null, "No storage folder was configured!");
     checkState(userInteractor != null, "No user interactor was configured!");
 
@@ -188,19 +194,28 @@ public class VirtualModelBuilder {
         new ChangePropagationSpecificationRepository(changePropagationSpecifications);
 
     VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
-    fileSystemLayout.prepare();
+
+    try {
+      fileSystemLayout.prepare();
+    } catch (IOException exc) {
+      throw new IllegalStateException("Could not prepare flie system layout!", exc);
+    }
 
     VirtualModelImpl vsum =
         new VirtualModelImpl(
             fileSystemLayout, userInteractor, viewTypeRepository, changeSpecificationRepository);
     vsum.loadExistingModels();
+    vsum.registerScheduler(scheduler);
 
     try {
       ProjectMarker.getProjectRootFolder(storageFolder);
     } catch (IllegalStateException exception) {
-      ProjectMarker.markAsProjectRootFolder(storageFolder);
+      try {
+        ProjectMarker.markAsProjectRootFolder(storageFolder);
+      } catch (IOException exc) {
+        throw new IllegalStateException("Could not mark project folder as root folder!", exc);
+      }
     }
-
     return vsum;
   }
 }

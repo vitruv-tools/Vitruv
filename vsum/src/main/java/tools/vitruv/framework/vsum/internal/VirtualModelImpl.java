@@ -28,6 +28,9 @@ import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
+import tools.vitruv.framework.vsum.schedule.PropagationStrategy;
+import tools.vitruv.framework.vsum.schedule.Schedule;
+import tools.vitruv.framework.vsum.schedule.Scheduler;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
@@ -45,6 +48,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
   private final InternalUserInteractor userInteractor;
   private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
+  private Scheduler scheduler;
 
   /**
    * Creates a new instance of the {@link VirtualModelImpl} class.
@@ -93,24 +97,33 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
   @Override
   public synchronized List<PropagatedChange> propagateChange(VitruviusChange<Uuid> change) {
+    if (scheduler == null) {
+      return propagateChangeAsync(change);
+    } else {
+      scheduler.add(change);
+      return List.of();
+    }
+  }
+
+  private List<PropagatedChange> propagateChangeAsync(VitruviusChange<Uuid> change) {
     checkNotNull(change, ErrorMessages.CHANGE_NULL);
     checkArgument(
-        change.containsConcreteChange(),
-        ErrorMessages.CHANGE_HAS_NO_CONCRETE_CHANGE,
-        System.lineSeparator(),
-        change);
+            change.containsConcreteChange(),
+            ErrorMessages.CHANGE_HAS_NO_CONCRETE_CHANGE,
+            System.lineSeparator(),
+            change);
 
     LOGGER.info(InfoMessages.START_PROPAGATION);
     startChangePropagation(change);
 
     ChangePropagator changePropagator =
-        new ChangePropagator(
-            resourceRepository,
-            changePropagationSpecificationProvider,
-            userInteractor,
-            changePropagationMode);
+            new ChangePropagator(
+                    resourceRepository,
+                    changePropagationSpecificationProvider,
+                    userInteractor,
+                    changePropagationMode);
     List<PropagatedChange> result =
-        changePropagator.propagateChange(change, changePropagationObservers);
+            changePropagator.propagateChange(change, changePropagationObservers);
     save();
 
     if (LOGGER.isTraceEnabled()) {
@@ -221,5 +234,32 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   @Override
   public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
     this.changePropagationMode = changePropagationMode;
+  }
+
+  /**
+   * @param scheduler
+   */
+  @Override
+  public void registerScheduler(Scheduler scheduler) {
+    this.scheduler = scheduler;
+  }
+
+  /**
+   * @param strategy
+   * @param schedule
+   * @return
+   */
+  @Override
+  public List<PropagatedChange> propagateSchedule(PropagationStrategy strategy, Schedule schedule) {
+    return strategy.propagate(schedule, this);
+  }
+
+  /**
+   * @param changes
+   * @return
+   */
+  @Override
+  public List<List<PropagatedChange>> propagateChanges(List<VitruviusChange<Uuid>> changes) {
+    return changes.stream().map(this::propagateChangeAsync).toList();
   }
 }

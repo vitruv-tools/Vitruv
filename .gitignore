@@ -1,6 +1,9 @@
 # VS Code
 .vscode/
 
+# IntelliJ
+.idea/
+
 # Maven
 target/
 *.log

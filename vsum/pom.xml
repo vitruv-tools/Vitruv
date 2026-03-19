@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework</artifactId>
-    <version>3.2.4-SNAPSHOT</version>
+    <version>3.2.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.vsum</artifactId>
@@ -139,6 +139,15 @@
       <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jdk8</artifactId>
+          <version>2.19.0</version>
+      </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
     </dependency>
   </dependencies>
 </project>
