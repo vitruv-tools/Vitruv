@@ -208,7 +208,7 @@ class VsumReloadWatcherTest {
         watcher.start();
         Thread.sleep(100);
 
-        // write only the branch name — the original minimal format produced by early hooks.
+        // write only the branch name - the original minimal format produced by early hooks.
         Files.createDirectories(filePath.getParent());
         Files.writeString(filePath, "feature");
         Thread.sleep(1500);

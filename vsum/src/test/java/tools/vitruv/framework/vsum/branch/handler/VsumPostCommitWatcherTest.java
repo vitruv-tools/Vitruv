@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import tools.vitruv.framework.vsum.branch.util.PostCommitTriggerFile;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,23 +12,15 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for {@link VsumPostCommitWatcher}.
  *
- * <p>These tests start the real watcher thread and interact with the real
- * {@link PostCommitTriggerFile} on a temporary directory. No mock VSUM is needed
- * because {@link VsumPostCommitWatcher} only depends on the repository root -
- * changelog generation is pure computation with no VSUM access.
- *
- * <p>The watcher is fire-and-forget: unlike {@link VsumValidationWatcher}, there
- * are no result files to poll for. Tests instead wait for the changelog file to
- * appear in {@code .vitruvius/changelogs/}.
+ * <p>The watcher's sole responsibility is lifecycle management and trigger detection:
+ * it polls for a {@link PostCommitTriggerFile}, clears it when found, and delegates
+ * to {@link PostCommitHandler}. Tests verify these behaviors only — post-commit
+ * actions are the responsibility of {@link PostCommitHandler} and tested separately.
  */
 class VsumPostCommitWatcherTest {
 
     private static final String COMMIT_SHA = "abc1234567890abcdef1234567890abcdef12345";
-    private static final String BRANCH     = "main";
-
-    
-    // lifecycle
-    
+    private static final String BRANCH = "main";
 
     /**
      * Verifies the basic start/stop lifecycle: the watcher must not be running before
@@ -48,12 +39,11 @@ class VsumPostCommitWatcherTest {
     }
 
     /**
-     * Verifies that calling start() on an already-running watcher throws an exception.
-     * A second start would create a second background thread polling the same trigger file,
-     * which could generate duplicate changelog entries.
+     * Verifies that calling start() on an already-running watcher throws.
+     * A second start would create a second background thread polling the same trigger file.
      */
     @Test
-    @DisplayName("Throws an exception when started while already running")
+    @DisplayName("Throws when started while already running")
     void throwsExceptionWhenStartingTwice(@TempDir Path tempDir) {
         var watcher = new VsumPostCommitWatcher(tempDir);
         watcher.start();
@@ -65,9 +55,8 @@ class VsumPostCommitWatcherTest {
     }
 
     /**
-     * Verifies that calling stop() on a watcher that was never started does not throw.
-     * This makes it safe to call stop() in cleanup code regardless of whether start()
-     * was ever reached.
+     * Verifies that stop() on a watcher that was never started does not throw.
+     * This makes it safe to call stop() in cleanup code unconditionally.
      */
     @Test
     @DisplayName("Stopping a watcher that was never started completes without throwing")
@@ -91,161 +80,85 @@ class VsumPostCommitWatcherTest {
         long duration = System.currentTimeMillis() - startTime;
 
         assertFalse(watcher.isRunning());
-        assertTrue(duration < 3000,
-                "stop() must complete within 3 seconds but took " + duration + "ms");
+        assertTrue(duration < 3000, "stop() must complete within 3 seconds but took " + duration + "ms");
     }
 
-    
-    // trigger → changelog round-trip
-    
-
     /**
-     * Verifies the core end-to-end flow: when a trigger file is created, the watcher
-     * detects it, generates the changelog, writes it to
-     * {@code .vitruvius/changelogs/<shortSha>.txt}, and deletes the trigger file.
+     * Verifies that the watcher detects a trigger file and clears it within the poll interval.
      */
     @Test
-    @DisplayName("Detects a trigger and writes the changelog file")
-    void detectsTriggerAndWritesChangelog(@TempDir Path tempDir) throws Exception {
-        var watcher     = new VsumPostCommitWatcher(tempDir);
+    @DisplayName("Detects a trigger and clears the trigger file")
+    void detectsTriggerAndClearsTriggerFile(@TempDir Path tempDir) throws Exception {
+        var watcher = new VsumPostCommitWatcher(tempDir);
         var triggerFile = new PostCommitTriggerFile(tempDir);
-        Path changelog  = changelogPath(tempDir, COMMIT_SHA);
 
         watcher.start();
         try {
             triggerFile.createTrigger(COMMIT_SHA, BRANCH);
-            waitForFile(changelog, 3000);
-
-            assertTrue(Files.exists(changelog),
-                    "changelog file must be written after the post-commit trigger is processed");
-            assertFalse(triggerFile.exists(),
-                    "trigger file must be deleted after the watcher processes it");
+            waitForTriggerCleared(triggerFile, 3000);
+            assertFalse(triggerFile.exists(), "trigger file must be deleted after the watcher processes it");
         } finally {
             watcher.stop();
         }
     }
 
     /**
-     * Verifies that the changelog file written by the watcher contains the real commit
-     * SHA from the trigger. This is the traceability requirement: the changelog on disk
-     * must match the commit visible in {@code git log}.
+     * Verifies that two sequential triggers are both detected and cleared.
      */
     @Test
-    @DisplayName("Changelog file contains the real commit SHA from the trigger")
-    void changelogContainsRealCommitSha(@TempDir Path tempDir) throws Exception {
-        var watcher     = new VsumPostCommitWatcher(tempDir);
+    @DisplayName("Two sequential triggers are both detected and cleared")
+    void twoSequentialTriggersAreBothCleared(@TempDir Path tempDir) throws Exception {
+        var watcher = new VsumPostCommitWatcher(tempDir);
         var triggerFile = new PostCommitTriggerFile(tempDir);
-        Path changelog  = changelogPath(tempDir, COMMIT_SHA);
+        String sha1 = "aaa1111111111111111111111111111111111111";
+        String sha2 = "bbb2222222222222222222222222222222222222";
 
         watcher.start();
         try {
-            triggerFile.createTrigger(COMMIT_SHA, BRANCH);
-            waitForFile(changelog, 3000);
-
-            String content = Files.readString(changelog);
-            assertTrue(content.contains(COMMIT_SHA),
-                    "changelog must contain the real commit SHA, but was:\n" + content);
-            assertTrue(content.contains(BRANCH),
-                    "changelog must contain the branch name, but was:\n" + content);
-        } finally {
-            watcher.stop();
-        }
-    }
-
-    /**
-     * Verifies that each trigger produces a distinct changelog file named after its own
-     * short SHA. Two sequential triggers must not overwrite each other.
-     */
-    @Test
-    @DisplayName("Two sequential triggers produce two distinct changelog files")
-    void twoSequentialTriggersProduceTwoChangelogs(@TempDir Path tempDir) throws Exception {
-        var watcher     = new VsumPostCommitWatcher(tempDir);
-        var triggerFile = new PostCommitTriggerFile(tempDir);
-        String sha1     = "aaa1111111111111111111111111111111111111";
-        String sha2     = "bbb2222222222222222222222222222222222222";
-        Path changelog1 = changelogPath(tempDir, sha1);
-        Path changelog2 = changelogPath(tempDir, sha2);
-
-        watcher.start();
-        try {
-            // process first trigger fully before creating the second.
             triggerFile.createTrigger(sha1, BRANCH);
-            waitForFile(changelog1, 3000);
+            waitForTriggerCleared(triggerFile, 3000);
+            assertFalse(triggerFile.exists(), "trigger file must be cleared after first trigger");
 
             triggerFile.createTrigger(sha2, BRANCH);
-            waitForFile(changelog2, 3000);
-
-            assertTrue(Files.exists(changelog1),
-                    "first changelog must exist after processing");
-            assertTrue(Files.exists(changelog2),
-                    "second changelog must exist after processing");
-            assertNotEquals(changelog1, changelog2,
-                    "each commit must produce a distinct changelog file");
-
-            // each file must contain only its own SHA.
-            String content1 = Files.readString(changelog1);
-            String content2 = Files.readString(changelog2);
-            assertTrue(content1.contains(sha1),
-                    "first changelog must contain sha1");
-            assertTrue(content2.contains(sha2),
-                    "second changelog must contain sha2");
-            assertFalse(content1.contains(sha2),
-                    "first changelog must not contain sha2");
-            assertFalse(content2.contains(sha1),
-                    "second changelog must not contain sha1");
+            waitForTriggerCleared(triggerFile, 3000);
+            assertFalse(triggerFile.exists(), "trigger file must be cleared after second trigger");
         } finally {
             watcher.stop();
         }
     }
 
     /**
-     * Verifies that the watcher remains idle when no trigger file is present. No
-     * changelog files must be created spontaneously without a trigger.
+     * Verifies that the watcher does not create any files when no trigger is written.
      */
     @Test
-    @DisplayName("Watcher remains idle and produces no changelog without a trigger")
+    @DisplayName("Watcher remains idle when no trigger is present")
     void watcherIdleWithNoTrigger(@TempDir Path tempDir) throws Exception {
-        var watcher    = new VsumPostCommitWatcher(tempDir);
-        Path changelog = changelogPath(tempDir, COMMIT_SHA);
+        var watcher = new VsumPostCommitWatcher(tempDir);
 
         watcher.start();
         try {
-            // wait two poll cycles with no trigger written.
-            Thread.sleep(1200);
-
-            assertFalse(Files.exists(changelog),
-                    "no changelog must be written without a trigger");
+            Thread.sleep(1200); // wait two poll cycles
+            assertFalse(triggerFile(tempDir).exists(), "no trigger file must appear without an external write");
         } finally {
             watcher.stop();
         }
     }
 
-    
-    // helpers
-    
-
-    /**
-     * Returns the expected path for the changelog file of the given commit SHA.
-     * Mirrors the path that {@link VsumPostCommitWatcher} writes to.
-     */
-    private static Path changelogPath(Path repoRoot, String commitSha) {
-        return repoRoot.resolve(".vitruvius")
-                .resolve("changelogs")
-                .resolve(commitSha.substring(0, 7) + ".txt");
+    private static PostCommitTriggerFile triggerFile(Path repoRoot) {
+        return new PostCommitTriggerFile(repoRoot);
     }
 
     /**
-     * Polls until the given file exists or the timeout expires. Fails the test if the
-     * file does not appear within the timeout.
+     * Polls until the trigger file no longer exists or the timeout expires.
      */
-    private static void waitForFile(Path path, long timeoutMs) throws InterruptedException {
+    private static void waitForTriggerCleared(PostCommitTriggerFile triggerFile, long timeoutMs) throws InterruptedException {
         long deadline = System.currentTimeMillis() + timeoutMs;
         while (System.currentTimeMillis() < deadline) {
-            if (Files.exists(path)) {
+            if (!triggerFile.exists()) {
                 return;
             }
             Thread.sleep(50);
         }
-        fail("Expected file not written within " + timeoutMs + "ms: " + path);
+        fail("Trigger file was not cleared within " + timeoutMs + "ms");
     }
 }

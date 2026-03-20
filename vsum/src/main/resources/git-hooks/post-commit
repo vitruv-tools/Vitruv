@@ -140,7 +140,7 @@ if [ "$IS_MERGE_COMMIT" = true ]; then
     MERGE_TRIGGER="$VITRUVIUS_DIR/merge-trigger"
     echo "$COMMIT_SHA|$SOURCE_BRANCH|$BRANCH|$MERGE_REQUEST_ID|$TIMESTAMP" > "$MERGE_TRIGGER"
     
-    echo "Vitruvius: Changelog + Merge metadata triggered for commit ${COMMIT_SHA:0:8} ($SOURCE_BRANCH → $BRANCH)"
+    echo "Vitruvius: Changelog + Merge metadata triggered for commit ${COMMIT_SHA:0:8} ($SOURCE_BRANCH -> $BRANCH)"
 else
     echo "Vitruvius: Changelog generation triggered for commit ${COMMIT_SHA:0:8} on '$BRANCH'"
 fi

@@ -2,6 +2,8 @@ package tools.vitruv.framework.vsum.branch.data;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangeEntry;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangeType;
 
 import java.util.List;
 
@@ -53,9 +55,10 @@ class FileChangeTest {
     @Test
     @DisplayName("Full constructor stores element-level changes and exposes them via getter")
     void fullConstructorStoresElementChanges() {
-        var elementChanges = List.of("change1", "change2");
+        var elementChanges = List.of(
+                SemanticChangeEntry.builder().index(0).changeType(SemanticChangeType.ELEMENT_CREATED).emfType("CreateEObject").build(),
+                SemanticChangeEntry.builder().index(1).changeType(SemanticChangeType.ATTRIBUTE_SET).emfType("ReplaceSingleValuedEAttribute").build());
         var change = new FileChange("models/User.java", FileOperation.MODIFIED, null, elementChanges);
-
         assertEquals(2, change.getElementChanges().size(), "all provided element changes must be stored");
         assertTrue(change.hasElementChanges());
     }
@@ -66,7 +69,7 @@ class FileChangeTest {
     @Test
     @DisplayName("Element changes list is unmodifiable after construction")
     void elementChangesListIsUnmodifiable() {
-        var elementChanges = List.of("change1");
+        var elementChanges = List.of(SemanticChangeEntry.builder().index(0).changeType(SemanticChangeType.ELEMENT_CREATED).emfType("CreateEObject").build());
         var change = new FileChange("models/User.java", FileOperation.MODIFIED, null, elementChanges);
 
         assertThrows(UnsupportedOperationException.class, () -> change.getElementChanges().add(null), "the returned list must not allow external modification");
@@ -107,7 +110,7 @@ class FileChangeTest {
     @Test
     @DisplayName("hasElementChanges reflects whether element-level changes are present")
     void hasElementChangesReflectsPresenceOfChanges() {
-        var withChanges = new FileChange("models/User.java", FileOperation.MODIFIED, null, List.of("change1"));
+        var withChanges = new FileChange("models/User.java", FileOperation.MODIFIED, null, List.of(SemanticChangeEntry.builder().index(0).changeType(SemanticChangeType.ELEMENT_CREATED).emfType("CreateEObject").build()));
         assertTrue(withChanges.hasElementChanges(), "a change with element details must report hasElementChanges() as true");
 
         var withoutChanges = new FileChange("models/User.java", FileOperation.MODIFIED);

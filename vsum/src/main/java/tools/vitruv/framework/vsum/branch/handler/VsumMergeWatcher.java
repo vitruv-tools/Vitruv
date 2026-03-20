@@ -102,7 +102,7 @@ public class VsumMergeWatcher {
         String mergeShort = info.getMergeCommitSha().substring(0, Math.min(7, info.getMergeCommitSha().length()));
         String requestId = info.getRequestId();
 
-        LOGGER.info("Merge validation requested for commit {} ({} → {}) (requestId='{}')", mergeShort, info.getSourceBranch(), info.getTargetBranch(), requestId);
+        LOGGER.info("Merge validation requested for commit {} ({} -> {}) (requestId='{}')", mergeShort, info.getSourceBranch(), info.getTargetBranch(), requestId);
 
         try {
             Files.createDirectories(lockFile.getParent());

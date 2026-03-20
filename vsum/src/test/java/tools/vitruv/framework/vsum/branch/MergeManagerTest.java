@@ -25,7 +25,7 @@ import static tools.vitruv.framework.vsum.branch.GitTestHelper.*;
 class MergeManagerTest {
 
     @Nested
-    @DisplayName("merge — fast-forward")
+    @DisplayName("merge - fast-forward")
     class FastForward {
 
         @Test
@@ -37,7 +37,7 @@ class MergeManagerTest {
                 git.checkout().setName("feature").call();
                 commitFile(git, repoDir, "system.model", "<System/>", "Add system model");
 
-                // Switch back to master — it has no new commits so merge is fast-forward
+                // Switch back to master - it has no new commits so merge is fast-forward
                 git.checkout().setName("master").call();
                 var manager = new MergeManager(repoDir);
 
@@ -72,7 +72,7 @@ class MergeManagerTest {
     }
 
     @Nested
-    @DisplayName("merge — non-fast-forward")
+    @DisplayName("merge - non-fast-forward")
     class NonFastForward {
 
         @Test
@@ -120,7 +120,7 @@ class MergeManagerTest {
     }
 
     @Nested
-    @DisplayName("merge — conflicts")
+    @DisplayName("merge - conflicts")
     class Conflicts {
 
         @Test
@@ -177,7 +177,7 @@ class MergeManagerTest {
     }
 
     @Nested
-    @DisplayName("merge — auto-delete after merge")
+    @DisplayName("merge - auto-delete after merge")
     class AutoDelete {
 
         @Test
@@ -214,7 +214,7 @@ class MergeManagerTest {
     }
 
     @Nested
-    @DisplayName("merge — error cases")
+    @DisplayName("merge - error cases")
     class ErrorCases {
 
         @Test
@@ -239,7 +239,7 @@ class MergeManagerTest {
     }
 
     @Nested
-    @DisplayName("merge — trigger file")
+    @DisplayName("merge - trigger file")
     class TriggerFile {
 
         @Test
