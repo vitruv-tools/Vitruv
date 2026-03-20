@@ -15,6 +15,7 @@ import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangeBuffer;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.ModelInstance;
@@ -60,12 +61,19 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
     private String activeBranchName;
 
     /**
+     * Accumulates atomic EChanges between commits so they can be serialized into the semantic changelog.
+     * Registered as a {@link ChangePropagationListener} on construction and cleared by {@link CommitManager} at commit time.
+     */
+    private final SemanticChangeBuffer changeBuffer = new SemanticChangeBuffer();
+
+    /**
      * Creates a new {@link BranchAwareVirtualModel} wrapping the given already-initialized {@link InternalVirtualModel}.
      * <p>The initial branch name is resolved from the repository's current Git HEAD via
      * {@link VsumFileSystemLayout}, so the repository must have at least one commit.
      * The wrapped model is expected to already be fully initialized and loaded
      * this constructor does not call {@code buildAndInitialize()} or {@code loadExistingModels()}.
-     * @param repoRoot root directory of the Git repository, must not be null.
+     *
+     * @param repoRoot    root directory of the Git repository, must not be null.
      * @param activeModel the already-initialized V-SUM instance to wrap, must not be null.
      */
     public BranchAwareVirtualModel(Path repoRoot, InternalVirtualModel activeModel) {
@@ -74,7 +82,17 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
         // Resolve the current branch from Git HEAD so activeBranchName is always correct
         VsumFileSystemLayout currentLayout = new VsumFileSystemLayout(repoRoot);
         this.activeBranchName = currentLayout.getCurrentBranch();
+        activeModel.addChangePropagationListener(changeBuffer);
         LOGGER.info("BranchAwareVirtualModel initialized on branch '{}'", activeBranchName);
+    }
+
+    /**
+     * Returns the change buffer that accumulates atomic EChanges between commits.
+     * {@link CommitManager} calls {@link SemanticChangeBuffer#drainChanges()} on this buffer
+     * at commit time to produce the semantic changelog.
+     */
+    public SemanticChangeBuffer getChangeBuffer() {
+        return changeBuffer;
     }
 
     /**
@@ -91,6 +109,7 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
      *   <li>Calls {@link InternalVirtualModel#reload(VsumFileSystemLayout)} to reset the
      *       in-memory resource set, UUID resolver, and correspondence model to reflect the target branch's files on disk.</li>
      * </ol>
+     *
      * @param oldBranch the branch that was active before the switch, must not be null.
      * @param newBranch the branch to switch to, must not be null.
      * @throws BranchOperationException if layout preparation or reload fails.
@@ -132,6 +151,7 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
 
     /**
      * Returns the name of the currently active Git branch.
+     *
      * @return the active branch name, never null.
      */
     public String getActiveBranch() {
