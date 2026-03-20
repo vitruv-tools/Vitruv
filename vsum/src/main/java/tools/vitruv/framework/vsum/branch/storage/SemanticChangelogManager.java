@@ -89,7 +89,7 @@ public class SemanticChangelogManager {
      * @param authorDate        date the changes were authored.
      * @param message           commit message.
      * @param parentShas        parent commit SHAs (one for normal commits, two for merge commits).
-     * @param changesByResource map of resource URI → ordered atomic EChanges, from {@link SemanticChangeBuffer#drainChanges()}.
+     * @param changesByResource map of resource URI -> ordered atomic EChanges, from {@link SemanticChangeBuffer#drainChanges()}.
      * @param activeResources   all currently loaded EMF Resources; used to locate the resource objects for XMI snapshot writing.
      *                          May be null or empty to skip XMI.
      * @param uuidResolver      resolver used to convert EObjects to stable UUIDs for JSON output.
