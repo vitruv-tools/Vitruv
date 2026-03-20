@@ -1,6 +1,7 @@
 package tools.vitruv.framework.vsum.branch.data;
 
 import lombok.Getter;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangeEntry;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,11 +36,11 @@ public class FileChange {
     private final String oldPath;
 
     /**
-     * Element-level changes within this file, such as methods or fields that were added, modified, or deleted.
-     * todo: Typed as {@code List<?>} because the concrete element change type will be defined in a future iteration alongside the EMF model diffing implementation.
-     * <p>Currently always empty. Will be populated once element-level tracking is introduced.
+     * Semantic atomic changes within this file, ordered by recording sequence.
+     * Each entry captures one EMF {@code EChange} in a human-readable and machine-queryable form.
+     * Populated at commit time via {@link tools.vitruv.framework.vsum.branch.storage.SemanticChangeBuffer}.
      */
-    private final List<?> elementChanges;
+    private final List<SemanticChangeEntry> elementChanges;
 
     /**
      * Creates a file change with all available details.
@@ -47,11 +48,11 @@ public class FileChange {
      * @param filePath       the path of the changed file. must not be null or blank.
      * @param operation      the type of operation performed on the file. must not be null.
      * @param oldPath        the previous path for {@link FileOperation#RENAMED} operations. must be null for all other operation types.
-     * @param elementChanges detailed element-level changes within the file. may be null, in which case an empty list is used.
+     * @param elementChanges semantic atomic changes within the file. may be null, in which case an empty list is used.
      * @throws IllegalArgumentException if {@code filePath} is null or blank, if {@code operation} is null,
      *                                  if {@code oldPath} is provided for a non-renamed operation, or if {@code oldPath} is missing for a renamed operation.
      */
-    public FileChange(String filePath, FileOperation operation, String oldPath, List<?> elementChanges) {
+    public FileChange(String filePath, FileOperation operation, String oldPath, List<SemanticChangeEntry> elementChanges) {
         if (filePath == null || filePath.trim().isEmpty()) {
             throw new IllegalArgumentException("filePath must not be null or empty");
         }

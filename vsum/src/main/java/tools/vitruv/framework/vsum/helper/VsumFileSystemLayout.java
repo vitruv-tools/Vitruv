@@ -219,7 +219,7 @@ public class VsumFileSystemLayout {
             return;
         }
 
-        LOGGER.info("Branch '{}' has no vsum state — inheriting from '{}'", currentBranch, sourceBranchName);
+        LOGGER.info("Branch '{}' has no vsum state - inheriting from '{}'", currentBranch, sourceBranchName);
 
         // Build source paths directly to avoid triggering checkPrepared() on a
         // layout that was never prepared
@@ -233,18 +233,18 @@ public class VsumFileSystemLayout {
                 Files.copy(sourceUuidsFile, myUuidsFile);
                 LOGGER.debug("Inherited uuid.uuid from branch '{}'", sourceBranchName);
             } else {
-                LOGGER.debug("Source branch '{}' has no uuid.uuid — starting fresh", sourceBranchName);
+                LOGGER.debug("Source branch '{}' has no uuid.uuid - starting fresh", sourceBranchName);
             }
 
             if (Files.exists(sourceCorrespondencesFile)) {
                 Files.copy(sourceCorrespondencesFile, myCorrespondencesFile);
                 LOGGER.debug("Inherited correspondences from branch '{}'", sourceBranchName);
             } else {
-                LOGGER.debug("Source branch '{}' has no correspondences — starting fresh", sourceBranchName);
+                LOGGER.debug("Source branch '{}' has no correspondences - starting fresh", sourceBranchName);
             }
 
         } catch (IOException e) {
-            LOGGER.warn("Could not inherit vsum state from '{}' — starting fresh: {}", sourceBranchName, e.getMessage());
+            LOGGER.warn("Could not inherit vsum state from '{}' - starting fresh: {}", sourceBranchName, e.getMessage());
         }
     }
 

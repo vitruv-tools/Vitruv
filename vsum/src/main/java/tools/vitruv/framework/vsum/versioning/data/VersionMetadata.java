@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * mirroring what Git stores in the annotated tag object but making it queryable
  * without JGit calls.
  *
- * <p>Immutable after construction — versions are permanent records.
+ * <p>Immutable after construction - versions are permanent records.
  *
  * <p>Covers DE-6: version ID, timestamp, author, optional description.
  */
@@ -34,7 +34,7 @@ public class VersionMetadata {
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    /** The version identifier — matches the Git tag name (e.g. "v1.0"). */
+    /** The version identifier - matches the Git tag name (e.g. "v1.0"). */
     private final String versionId;
 
     /** The full SHA of the commit this version points to. */

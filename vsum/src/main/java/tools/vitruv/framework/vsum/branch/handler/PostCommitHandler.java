@@ -2,96 +2,146 @@ package tools.vitruv.framework.vsum.branch.handler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import tools.vitruv.framework.vsum.branch.data.FileChange;
-import tools.vitruv.framework.vsum.branch.data.SemanticChangelog;
+import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangeBuffer;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangelogManager;
 
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Generates the semantic changelog entry for a Git commit after the commit has been finalized by Git.
+ * Handles post-commit events for commits made directly via Git (not through the API).
  *
- * <p>Changelog generation was intentionally separated from {@link PreCommitHandler} because the pre-commit hook fires before the commit exists and therefore cannot know the real commit SHA that Git will assign.
- * Using the parent SHA at pre-commit time would produce changelogs whose SHA does not match any entry in {@code git log},
- * making the audit trail misleading and untraceable.
+ * <p>When a developer commits directly from their IDE or Git CLI, the Git {@code post-commit}
+ * hook writes a trigger file that {@link VsumPostCommitWatcher} detects and forwards here.
  *
- * <p>The post-commit hook fires after the commit is finalized.
- * At that point, {@code git rev-parse HEAD} returns the real SHA of the new commit, which is what this handler receives and embeds in the changelog.
+ * <p><b>Changelog writing</b>: Both commit paths produce the same JSON/XMI semantic changelog:
+ * <ul>
+ *   <li><b>API path</b> ({@link tools.vitruv.framework.vsum.branch.CommitManager}): changelog is
+ *       written synchronously at commit time, staged in the same commit.</li>
+ *   <li><b>Direct Git path</b> (this class): changelog is written asynchronously after the
+ *       post-commit hook fires, staged as uncommitted changes for the next commit.</li>
+ * </ul>
  *
- * <p>todo: actual file changes will be populated once JGit diff integration is available. At that point, {@link #generateChangelog} will diff HEAD against HEAD^
- * and produce a {@link FileChange} entry for each added, modified, or deleted file.
+ * <p>Semantic tracking (buffer, UUID resolver, resource supplier) is optional. If not attached
+ * via {@link #attachSemanticChangeTracking}, the handler logs the event only. This allows the
+ * class to be used in Git-only scenarios without a live VSUM.
  */
 public class PostCommitHandler {
 
     private static final Logger LOGGER = LogManager.getLogger(PostCommitHandler.class);
+
     private final Path repositoryRoot;
+    private final SemanticChangelogManager changelogManager;
+
+    /** Nullable - only set when {@link #attachSemanticChangeTracking} is called. */
+    private SemanticChangeBuffer changeBuffer;
+    private UuidResolver uuidResolver;
+    private Supplier<Collection<Resource>> resourceSupplier;
 
     /**
-     * Creates a post-commit handler.
+     * Creates a post-commit handler for the repository at the given root.
+     *
+     * @param repositoryRoot the root directory of the Git repository, must not be null.
      */
     public PostCommitHandler(Path repositoryRoot) {
         this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
+        this.changelogManager = new SemanticChangelogManager(repositoryRoot);
     }
 
     /**
-     * Generates a semantic changelog entry for the given commit.
+     * Attaches semantic change tracking so that JSON and XMI changelogs are written
+     * when a post-commit trigger is detected (direct Git path).
      *
-     * <p>The {@code commitSha} must be the real SHA assigned by Git to the new commit, read from {@code git rev-parse HEAD} in the post-commit hook.
-     * This ensures the changelog file name ({@code .vitruvius/changelogs/<shortSha>.txt}) and the SHA embedded in the changelog content both match the actual commit in {@code git log}.
+     * <p>Must be called before the first commit is made to ensure no changes are missed.
      *
-     * <p>Returns a placeholder changelog because querying Git for the actual changed files via JGit diff is planned for a future iteration.
-     * At that point, this method will diff HEAD against HEAD^ and produce a {@link FileChange} entry for each added, modified, or deleted file.
-     *
-     * @param commitSha the real Git commit SHA assigned to the new commit. Must not be null.
-     * @param branch    the branch on which the commit was made. Must not be null.
-     * @return a {@link SemanticChangelog} with an empty change list and a placeholder author.
+     * @param changeBuffer     buffer that accumulated EChanges since the last drain, must not be null.
+     * @param uuidResolver     resolver used to convert EObjects to stable UUIDs, must not be null.
+     * @param resourceSupplier supplier that returns the currently loaded EMF resources, must not be null.
      */
-    public SemanticChangelog generateChangelog(String commitSha, String branch) {
-        checkNotNull(commitSha, "commit SHA must not be null");
+    public void attachSemanticChangeTracking(SemanticChangeBuffer changeBuffer, UuidResolver uuidResolver, Supplier<Collection<Resource>> resourceSupplier) {
+        this.changeBuffer = checkNotNull(changeBuffer, "changeBuffer must not be null");
+        this.uuidResolver = checkNotNull(uuidResolver, "uuidResolver must not be null");
+        this.resourceSupplier = checkNotNull(resourceSupplier, "resourceSupplier must not be null");
+        LOGGER.info("Semantic change tracking attached to PostCommitHandler");
+    }
+
+    /**
+     * Called by {@link VsumPostCommitWatcher} when a post-commit trigger is detected.
+     * Writes the JSON and XMI semantic changelog if tracking is attached and the buffer
+     * contains changes. Failures are non-fatal and logged as warnings.
+     *
+     * @param commitSha the full 40-character SHA of the new commit, must not be null.
+     * @param branch    the branch on which the commit was made, must not be null.
+     */
+    public void handlePostCommit(String commitSha, String branch) {
+        checkNotNull(commitSha, "commitSha must not be null");
         checkNotNull(branch, "branch must not be null");
+        String shortSha = commitSha.substring(0, Math.min(7, commitSha.length()));
+        LOGGER.info("Post-commit detected for {} on branch '{}' (direct Git path)", shortSha, branch);
 
-        // use the standard seven-character short SHA that matches the Git convention
-        // and the format used in SemanticChangelog.toString().
-        LOGGER.info("Generating changelog for commit {} on branch {}", commitSha.substring(0, Math.min(7, commitSha.length())), branch);
+        if (changeBuffer != null && changeBuffer.hasChanges()) {
+            writeSemanticChangelog(commitSha, branch, shortSha);
+        } else if (changeBuffer != null) {
+            LOGGER.debug("No semantic changes buffered for commit {} - skipping changelog", shortSha);
+        }
+    }
 
-        try (Git git = Git.open(repositoryRoot.toFile());
-             RevWalk revWalk = new RevWalk(git.getRepository())) {
+    private void writeSemanticChangelog(String commitSha, String branch, String shortSha) {
+        try (Git git = Git.open(repositoryRoot.toFile())) {
+            ObjectId oid = git.getRepository().resolve(commitSha);
+            if (oid == null) {
+                LOGGER.warn("Cannot resolve commit SHA {} - skipping semantic changelog", shortSha);
+                return;
+            }
 
-            // Read the commit object from Git
-            ObjectId commitId = git.getRepository().resolve(commitSha);
-            RevCommit commit = revWalk.parseCommit(commitId);
+            RevCommit revCommit;
+            try (RevWalk walk = new RevWalk(git.getRepository())) {
+                revCommit = walk.parseCommit(oid);
+            }
 
-            // Extract real commit info
-            String author = commit.getAuthorIdent().getName();
-            Instant commitTime = Instant.ofEpochSecond(commit.getCommitTime());
-            LocalDateTime authorDate = LocalDateTime.ofInstant(commitTime, ZoneId.systemDefault());
-            String message = commit.getFullMessage().trim();
+            PersonIdent author = revCommit.getAuthorIdent();
+            LocalDateTime authorDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(author.getWhen().getTime()), ZoneId.systemDefault());
 
-            // File changes are still a placeholder (TODO: add JGit diff integration)
-            List<FileChange> changes = new ArrayList<>();
+            List<String> parentShas = new ArrayList<>();
+            for (RevCommit parent : revCommit.getParents()) {
+                parentShas.add(parent.getName());
+            }
 
-            LOGGER.debug("Read commit info from Git: author={}, message={}", author, message);
+            Map<String, List<EChange<EObject>>> changesByResource = changeBuffer.drainChanges();
+            Collection<Resource> activeResources = resourceSupplier.get();
 
-            return SemanticChangelog.create(
-                    commitSha, author, authorDate, message, branch, changes);
+            List<Path> writtenFiles = changelogManager.write(
+                    commitSha, branch, author.getName(), authorDate,
+                    revCommit.getFullMessage().trim(),
+                    parentShas, changesByResource, activeResources, uuidResolver);
+
+            for (Path file : writtenFiles) {
+                String relativePath = repositoryRoot.relativize(file).toString().replace('\\', '/');
+                git.add().addFilepattern(relativePath).call();
+                LOGGER.debug("Staged changelog file: {}", file.getFileName());
+            }
+            LOGGER.info("Semantic changelog written ({} file(s)) for commit {}", writtenFiles.size(), shortSha);
 
         } catch (Exception e) {
-            LOGGER.error("Failed to read commit info from Git for SHA {}, using fallback", commitSha, e);
-
-            // Fallback to placeholders if Git read fails
-            return SemanticChangelog.create(
-                    commitSha, "unknown", LocalDateTime.now(),
-                    "Commit on " + branch, branch, new ArrayList<>());
+            LOGGER.warn("Failed to write semantic changelog for commit {} (non-critical): {}", shortSha, e.getMessage());
         }
     }
 }

@@ -168,7 +168,7 @@ public class VsumMergeWatcher {
                     LOGGER.warn("Failed to reload VirtualModel after merge: {}", e.getMessage());
                 }
             } else {
-                LOGGER.warn("Merged state has inconsistencies — skipping VSUM copy and reload. " + "Resolve conflicts and commit the resolution.");
+                LOGGER.warn("Merged state has inconsistencies - skipping VSUM copy and reload. " + "Resolve conflicts and commit the resolution.");
             }
 
             // Mark source branch as MERGED

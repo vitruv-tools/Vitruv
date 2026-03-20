@@ -12,9 +12,9 @@ public class RollbackResult {
     public enum RollbackStatus {
         /** Rollback completed successfully and VSUM reloaded. */
         SUCCESS,
-        /** Rollback completed but VSUM reload failed — model state may be stale. */
+        /** Rollback completed but VSUM reload failed - model state may be stale. */
         SUCCESS_RELOAD_FAILED,
-        /** Rollback failed — repository state unchanged. */
+        /** Rollback failed - repository state unchanged. */
         FAILED
     }
 
@@ -41,7 +41,7 @@ public class RollbackResult {
         return new RollbackResult(RollbackStatus.SUCCESS_RELOAD_FAILED, targetVersion, newHeadSha,
                 "Rollback to '" + targetVersion.getVersionId()
                         + "' completed but VSUM reload failed: " + reloadError
-                        + " — restart the application to restore a consistent state");
+                        + " - restart the application to restore a consistent state");
     }
 
     public static RollbackResult failed(VersionMetadata targetVersion, String reason) {

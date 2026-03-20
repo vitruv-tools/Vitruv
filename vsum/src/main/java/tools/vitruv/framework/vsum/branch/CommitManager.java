@@ -8,10 +8,16 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import tools.vitruv.change.atomic.EChange;
+import tools.vitruv.change.atomic.uuid.UuidResolver;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
 import tools.vitruv.framework.vsum.branch.data.CommitOptions;
 import tools.vitruv.framework.vsum.branch.data.CommitResult;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangeBuffer;
+import tools.vitruv.framework.vsum.branch.storage.SemanticChangelogManager;
 import tools.vitruv.framework.vsum.branch.util.PostCommitTriggerFile;
 
 import java.io.IOException;
@@ -21,8 +27,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -52,6 +60,20 @@ public class CommitManager {
     private static final java.util.regex.Pattern MODEL_PATTERN = java.util.regex.Pattern.compile(".*\\.model\\d*$", java.util.regex.Pattern.CASE_INSENSITIVE);
     private final Path repoRoot;
     private final PostCommitTriggerFile triggerFile;
+    private final SemanticChangelogManager changelogManager;
+
+    /**
+     * Optional: buffer, resolver, and resource supplier provided by {@link BranchAwareVirtualModel}
+     * so that semantic changes can be written to the changelog at commit time.
+     * All three are null when CommitManager is used without a live VirtualModel (Git-only scenarios).
+     */
+    private SemanticChangeBuffer changeBuffer;
+    private UuidResolver uuidResolver;
+    /**
+     * Supplies the currently loaded EMF Resources at commit time so XMI snapshots can be written.
+     * Called lazily inside {@link #writeSemanticChangelog} to capture the post-commit resource state.
+     */
+    private Supplier<Collection<Resource>> resourceSupplier;
 
     /**
      * Creates a new CommitManager for the Git repository at the given path.
@@ -62,6 +84,23 @@ public class CommitManager {
         this.repoRoot = checkNotNull(repoRoot, "repository root must not be null");
         checkArgument(Files.isDirectory(repoRoot.resolve(".git")), "No Git repository found at: %s", repoRoot);
         this.triggerFile = new PostCommitTriggerFile(repoRoot);
+        this.changelogManager = new SemanticChangelogManager(repoRoot);
+    }
+
+    /**
+     * Attaches semantic change tracking so that EChanges accumulated since the last commit are
+     * written to JSON and XMI changelog files as part of each {@link #commit} call.
+     *
+     * @param changeBuffer     the buffer to drain at commit time, must not be null.
+     * @param uuidResolver     the resolver used to convert EObjects to stable UUIDs for JSON output, must not be null.
+     * @param resourceSupplier supplier that returns the currently loaded EMF Resources at commit time
+     *                         used to write XMI delta snapshots. Must not be null.
+     */
+    public void attachSemanticChangeTracking(SemanticChangeBuffer changeBuffer, UuidResolver uuidResolver, Supplier<Collection<Resource>> resourceSupplier) {
+        this.changeBuffer = checkNotNull(changeBuffer, "changeBuffer must not be null");
+        this.uuidResolver = checkNotNull(uuidResolver, "uuidResolver must not be null");
+        this.resourceSupplier = checkNotNull(resourceSupplier, "resourceSupplier must not be null");
+        LOGGER.info("Semantic change tracking attached to CommitManager");
     }
 
     /**
@@ -112,8 +151,13 @@ public class CommitManager {
             boolean hasModelChanges = stagedFiles.stream().anyMatch(this::isModelFile);
             CommitResult result = new CommitResult(commitSha, branch, author.getName(), author.getEmailAddress(), authorDate, stagedFiles, hasModelChanges);
 
-            // Write post-commit trigger so VsumPostCommitWatcher generates the changelog
-            // Only trigger if model files were changed, mirrors the hook behavior
+            // Write semantic changelog if change tracking is attached and model files were changed.
+            if (hasModelChanges && changeBuffer != null && changeBuffer.hasChanges()) {
+                writeSemanticChangelog(git, commitSha, branch, author.getName(), authorDate, revCommit);
+            }
+
+            // Write post-commit trigger so VsumPostCommitWatcher generates the (text-based) changelog.
+            // Only trigger if model files were changed, mirrors the hook behavior.
             if (hasModelChanges) {
                 try {
                     triggerFile.createTrigger(commitSha, branch);
@@ -198,6 +242,47 @@ public class CommitManager {
         } catch (Exception e) {
             // metadata update failing should not block the commit
             LOGGER.warn("Failed to update branch metadata lastModified (non-critical): {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Drains the change buffer, writes the JSON changelog and XMI delta snapshots, and stages
+     * all produced files so they are tracked by Git.
+     * Failures are logged as warnings and do not roll back the commit.
+     */
+    private void writeSemanticChangelog(Git git, String commitSha, String branch, String authorName, LocalDateTime authorDate, RevCommit revCommit) {
+        try {
+            java.util.Map<String, java.util.List<EChange<EObject>>> changesByResource = changeBuffer.drainChanges();
+
+            if (changesByResource.isEmpty()) {
+                LOGGER.debug("No semantic changes to write for commit {}", commitSha.substring(0, 7));
+                return;
+            }
+
+            // Collect parent SHAs for three-way merge support
+            java.util.List<String> parentShas = new java.util.ArrayList<>();
+            for (RevCommit parent : revCommit.getParents()) {
+                parentShas.add(parent.getName());
+            }
+
+            // Resolve active resources for XMI snapshot writing
+            Collection<Resource> activeResources = resourceSupplier != null ? resourceSupplier.get() : java.util.Collections.emptyList();
+
+            java.util.List<java.nio.file.Path> writtenFiles = changelogManager.write(
+                    commitSha, branch, authorName, authorDate,
+                    revCommit.getFullMessage().trim(),
+                    parentShas, changesByResource, activeResources, uuidResolver);
+
+            // Stage all written changelog files (JSON + XMI) so they are tracked by Git
+            for (java.nio.file.Path file : writtenFiles) {
+                String relativePath = repoRoot.relativize(file).toString().replace('\\', '/');
+                git.add().addFilepattern(relativePath).call();
+                LOGGER.debug("Staged changelog file: {}", file.getFileName());
+            }
+            LOGGER.info("Staged {} changelog file(s) for commit {}", writtenFiles.size(), commitSha.substring(0, 7));
+
+        } catch (Exception e) {
+            LOGGER.warn("Failed to write semantic changelog for commit {} (non-critical): {}", commitSha.substring(0, 7), e.getMessage());
         }
     }
 

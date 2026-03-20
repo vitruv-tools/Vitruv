@@ -20,7 +20,7 @@ public class RollbackPreview {
     /** The version that will be restored. */
     private final VersionMetadata targetVersion;
 
-    /** The commit SHA currently at HEAD — will be abandoned after rollback. */
+    /** The commit SHA currently at HEAD - will be abandoned after rollback. */
     private final String currentHeadSha;
 
     /** The branch on which the rollback will be performed. */

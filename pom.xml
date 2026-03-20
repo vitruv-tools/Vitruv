@@ -62,6 +62,11 @@
             </dependency>
             <dependency>
                 <groupId>tools.vitruv</groupId>
+                <artifactId>tools.vitruv.change.changederivation</artifactId>
+                <version>${vitruv-change.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.vitruv</groupId>
                 <artifactId>tools.vitruv.change.correspondence</artifactId>
                 <version>${vitruv-change.version}</version>
             </dependency>

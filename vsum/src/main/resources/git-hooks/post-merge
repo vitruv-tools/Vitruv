@@ -33,7 +33,7 @@ if ! git rev-parse HEAD^2 &>/dev/null; then
 
     # For fast-forward merges, copy source branch VSUM to target branch VSUM.
     # In a fast-forward merge the target branch moves its HEAD to the source
-    # branch tip — the model content is identical, so the source branch VSUM
+    # branch tip - the model content is identical, so the source branch VSUM
     # is the correct state for the target branch after the merge.
     SOURCE_BRANCH_FF=$(git name-rev --name-only HEAD@{1} 2>/dev/null \
         | sed 's|^remotes/origin/||' \

@@ -92,7 +92,7 @@ VSUM_DIR="$REPO_ROOT/.vitruvius/vsum/$BRANCH"
 AMEND_GUARD="$VITRUVIUS_DIR/.amend-in-progress"
 
 if [ -f "$AMEND_GUARD" ]; then
-    # We are inside the re-triggered hook from the amend — skip to avoid recursion
+    # We are inside the re-triggered hook from the amend - skip to avoid recursion
     rm -f "$AMEND_GUARD"
 else
     if [ -d "$VSUM_DIR" ]; then

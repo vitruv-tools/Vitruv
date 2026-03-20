@@ -31,7 +31,7 @@ public class CommitResult {
     /** Relative paths of all files that were staged and included in the commit. */
     private final List<String> stagedFiles;
 
-    /** Whether any model files were included — determines if changelog should be generated. */
+    /** Whether any model files were included - determines if changelog should be generated. */
     private final boolean hasModelChanges;
 
     public CommitResult(String commitSha, String branch, String authorName, String authorEmail, LocalDateTime authorDate, List<String> stagedFiles, boolean hasModelChanges) {
