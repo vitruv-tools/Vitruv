@@ -28,10 +28,17 @@ public class GitTestHelper {
         git.getRepository().getConfig().setString("user", null, "email", "test@example.com");
         git.getRepository().getConfig().save();
 
-        // Initial commit so HEAD exists
+        // Initial commit with model file and fake V-SUM files (as the post-commit hook would stage)
         var file = repoDir.resolve("init.txt");
         Files.writeString(file, "initial commit");
         git.add().addFilepattern("init.txt").call();
+
+        var vsumDir = repoDir.resolve(".vitruvius/vsum/master");
+        Files.createDirectories(vsumDir);
+        Files.writeString(vsumDir.resolve("uuid.uuid"), "fake-uuid-content");
+        Files.writeString(vsumDir.resolve("correspondences.correspondence"), "fake-correspondence-content");
+        git.add().addFilepattern(".vitruvius").call();
+
         git.commit().setMessage("Initial commit").call();
 
         return git;

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
+import tools.vitruv.framework.vsum.branch.data.BranchState;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.versioning.data.RollbackPreview;
 import tools.vitruv.framework.vsum.versioning.data.RollbackResult;
@@ -230,6 +232,130 @@ class VersioningServiceTest {
                 var service = new VersioningService(repoDir, mockVirtualModel());
                 assertThrows(VersioningException.class,
                         () -> service.previewRollback("nonexistent"));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteVersion")
+    class DeleteVersion {
+
+        @Test
+        @DisplayName("removes metadata file and Git tag")
+        void removesMetadataAndTag(@TempDir Path repoDir) throws Exception {
+            try (var git = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                service.createVersion("v1.0", "to delete");
+
+                service.deleteVersion("v1.0");
+
+                assertFalse(Files.exists(repoDir.resolve(".vitruvius/versions/v1.0.metadata")));
+                assertNull(git.getRepository().findRef("refs/tags/v1.0"));
+            }
+        }
+
+        @Test
+        @DisplayName("throws when version does not exist")
+        void throwsWhenVersionNotFound(@TempDir Path repoDir) throws Exception {
+            try (var ignored = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                assertThrows(VersioningException.class,
+                        () -> service.deleteVersion("nonexistent"));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("createBranchFromVersion")
+    class CreateBranchFromVersion {
+
+        @Test
+        @DisplayName("creates Git branch pointing to the version's commit")
+        void createsGitBranchAtVersionCommit(@TempDir Path repoDir) throws Exception {
+            try (var git = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                var version = service.createVersion("v1.0", "baseline");
+
+                service.createBranchFromVersion("feature-x", "v1.0");
+
+                var branchRef = git.getRepository().findRef("refs/heads/feature-x");
+                assertNotNull(branchRef, "Git branch feature-x must exist");
+                assertEquals(version.getCommitSha(), branchRef.getObjectId().getName(),
+                        "branch must point to the version's commit");
+            }
+        }
+
+        @Test
+        @DisplayName("extracts V-SUM files from the version's commit into the new branch's directory")
+        void extractsVsumFilesFromVersionCommit(@TempDir Path repoDir) throws Exception {
+            try (var ignored = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                service.createVersion("v1.0", "baseline");
+
+                service.createBranchFromVersion("feature-x", "v1.0");
+
+                var newVsumDir = repoDir.resolve(".vitruvius/vsum/feature-x");
+                assertTrue(Files.exists(newVsumDir.resolve("uuid.uuid")));
+                assertEquals("fake-uuid-content",
+                        Files.readString(newVsumDir.resolve("uuid.uuid")));
+                assertTrue(Files.exists(newVsumDir.resolve("correspondences.correspondence")));
+            }
+        }
+
+        @Test
+        @DisplayName("writes branch metadata with ACTIVE state and correct parent")
+        void writesBranchMetadata(@TempDir Path repoDir) throws Exception {
+            try (var ignored = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                service.createVersion("v1.0", "baseline");
+
+                BranchMetadata metadata = service.createBranchFromVersion("feature-x", "v1.0");
+
+                assertEquals("feature-x", metadata.getName());
+                assertEquals(BranchState.ACTIVE, metadata.getState());
+                assertEquals("master", metadata.getParent());
+                assertTrue(Files.exists(repoDir.resolve(".vitruvius/branches/feature-x.metadata")));
+            }
+        }
+
+        @Test
+        @DisplayName("branch starts from version commit, not current HEAD")
+        void branchStartsFromVersionNotCurrentHead(@TempDir Path repoDir) throws Exception {
+            try (var git = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                var v1 = service.createVersion("v1.0", "baseline");
+
+                commitFile(git, repoDir, "extra.xmi", "<extra/>", "Second commit");
+
+                service.createBranchFromVersion("feature-from-v1", "v1.0");
+
+                var branchRef = git.getRepository().findRef("refs/heads/feature-from-v1");
+                assertNotNull(branchRef);
+                assertEquals(v1.getCommitSha(), branchRef.getObjectId().getName(),
+                        "branch must point to v1.0 commit, not new HEAD");
+            }
+        }
+
+        @Test
+        @DisplayName("throws when version does not exist")
+        void throwsWhenVersionNotFound(@TempDir Path repoDir) throws Exception {
+            try (var ignored = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                assertThrows(VersioningException.class,
+                        () -> service.createBranchFromVersion("feature-x", "nonexistent"));
+            }
+        }
+
+        @Test
+        @DisplayName("throws when branch name already exists")
+        void throwsWhenBranchAlreadyExists(@TempDir Path repoDir) throws Exception {
+            try (var ignored = initRepo(repoDir)) {
+                var service = new VersioningService(repoDir, mockVirtualModel());
+                service.createVersion("v1.0", "baseline");
+                service.createBranchFromVersion("feature-x", "v1.0");
+
+                assertThrows(VersioningException.class,
+                        () -> service.createBranchFromVersion("feature-x", "v1.0"));
             }
         }
     }

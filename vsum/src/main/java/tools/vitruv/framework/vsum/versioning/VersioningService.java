@@ -7,17 +7,23 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
+import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
+import tools.vitruv.framework.vsum.branch.data.BranchState;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.versioning.data.RollbackPreview;
 import tools.vitruv.framework.vsum.versioning.data.RollbackResult;
 import tools.vitruv.framework.vsum.versioning.data.VersionMetadata;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -43,7 +49,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class VersioningService {
 
     private static final Logger LOGGER = LogManager.getLogger(VersioningService.class);
-    private static final String VERSIONS_DIR = ".vitruvius/versions";
+    private static final String VERSIONS_DIR  = ".vitruvius/versions";
+    private static final String VSUM_BASE_DIR = ".vitruvius/vsum";
+    private static final String BRANCHES_DIR  = ".vitruvius/branches";
     private static final String TAG_PREFIX = "refs/tags/";
 
     private final Path repoRoot;
@@ -70,8 +78,7 @@ public class VersioningService {
      * @return the {@link VersionMetadata} for the newly created version.
      * @throws VersioningException if the tag already exists or the Git operation fails.
      */
-    public VersionMetadata createVersion(String versionId, String description)
-            throws VersioningException {
+    public VersionMetadata createVersion(String versionId, String description) throws VersioningException {
         checkNotNull(versionId, "version ID must not be null");
         checkArgument(!versionId.isBlank(), "version ID must not be blank");
         try (Git git = Git.open(repoRoot.toFile())) {
@@ -253,6 +260,85 @@ public class VersioningService {
     }
 
     /**
+     * Deletes the named version: removes the Git tag and the metadata file.
+     * @param versionId the version identifier to delete, must not be null.
+     * @throws VersioningException if the version does not exist or the metadata file cannot be deleted.
+     */
+    public void deleteVersion(String versionId) throws VersioningException {
+        checkNotNull(versionId, "version ID must not be null");
+        Path metadataFile = versionMetadataPath(versionId);
+        if (!Files.exists(metadataFile)) {
+            throw new VersioningException("Version not found: " + versionId);
+        }
+        // Delete the Git tag (non-fatal if already gone).
+        try (Git git = Git.open(repoRoot.toFile())) {
+            git.tagDelete().setTags(versionId).call();
+            LOGGER.debug("Deleted Git tag '{}'", versionId);
+        } catch (GitAPIException e) {
+            LOGGER.warn("Could not delete Git tag '{}' (non-critical): {}", versionId, e.getMessage());
+        } catch (IOException e) {
+            LOGGER.warn("Could not open repository to delete tag (non-critical): {}", e.getMessage());
+        }
+        // Delete the metadata file.
+        try {
+            Files.delete(metadataFile);
+            LOGGER.info("Deleted version '{}'", versionId);
+        } catch (IOException e) {
+            throw new VersioningException("Failed to delete version metadata: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Creates a new Git branch whose V-SUM state is initialised from the named version's commit.
+     *
+     * <p>This enables: <em>"create feature-x, but start its V-SUM from the stable v1.0 snapshot"</em>.
+     * The V-SUM files stored inside the version's commit are extracted via JGit {@link TreeWalk}
+     * and written to {@code .vitruvius/vsum/<branchName>/} without touching the working directory.
+     *
+     * @param branchName the name of the new branch to create, must not be null or blank.
+     * @param versionId  the version whose commit provides the V-SUM starting point, must not be null.
+     * @return the {@link BranchMetadata} of the newly created branch.
+     * @throws VersioningException if the version does not exist, the branch already exists, or Git fails.
+     */
+    public BranchMetadata createBranchFromVersion(String branchName, String versionId) throws VersioningException {
+        checkNotNull(branchName, "branch name must not be null");
+        checkNotNull(versionId, "version ID must not be null");
+        checkArgument(!branchName.isBlank(), "branch name must not be blank");
+
+        VersionMetadata version = getVersion(versionId); // throws if not found
+        validateBranchName(branchName);
+
+        try (Git git = Git.open(repoRoot.toFile())) {
+            Repository repo = git.getRepository();
+
+            ObjectId oid = repo.resolve(version.getCommitSha());
+            if (oid == null) {
+                throw new VersioningException("Cannot resolve commit for version: " + versionId);
+            }
+
+            git.branchCreate().setName(branchName).setStartPoint(version.getCommitSha()).call();
+            LOGGER.info("Created Git branch '{}' from version '{}' (commit {})", branchName, versionId, version.getCommitSha().substring(0, 7));
+
+            try (RevWalk walk = new RevWalk(repo)) {
+                RevCommit commit = walk.parseCommit(oid);
+                extractVsumFromCommit(repo, commit, version.getBranch(), branchName);
+            }
+
+            LocalDateTime now = LocalDateTime.now();
+            BranchMetadata metadata = new BranchMetadata(branchName, BranchState.ACTIVE, version.getBranch(), now, now);
+            metadata.writeTo(repoRoot.resolve(BRANCHES_DIR).resolve(branchName + ".metadata"));
+
+            LOGGER.info("Branch '{}' created from version '{}' with V-SUM state from commit {}", branchName, versionId, version.getCommitSha().substring(0, 7));
+            return metadata;
+
+        } catch (GitAPIException e) {
+            throw new VersioningException("Failed to create branch '" + branchName + "' from version '" + versionId + "': " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new VersioningException("I/O error while creating branch from version: " + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Computes the list of files that differ between the target commit and HEAD.
      * Used in rollback preview to show the developer which files will change.
      */
@@ -272,6 +358,58 @@ public class VersioningService {
             LOGGER.warn("Failed to compute changed files for rollback preview: {}", e.getMessage());
         }
         return changed;
+    }
+
+    private void validateBranchName(String name) throws VersioningException {
+        if (name.isBlank()) {
+            throw new VersioningException("Branch name must not be blank");
+        }
+        if (name.contains("..")) {
+            throw new VersioningException("Branch name must not contain '..': " + name);
+        }
+        if (name.endsWith(".lock")) {
+            throw new VersioningException("Branch name must not end with '.lock': " + name);
+        }
+        if (name.chars().anyMatch(c -> " ~^:?*[\\".indexOf(c) >= 0)) {
+            throw new VersioningException("Branch name contains illegal characters: " + name);
+        }
+        try (Git git = Git.open(repoRoot.toFile())) {
+            if (git.getRepository().findRef("refs/heads/" + name) != null) {
+                throw new VersioningException("Branch already exists: " + name);
+            }
+        } catch (IOException e) {
+            throw new VersioningException("Failed to validate branch name: " + e.getMessage(), e);
+        }
+    }
+
+    private void extractVsumFromCommit(Repository repo, RevCommit commit, String sourceBranch, String targetBranch) throws IOException {
+        RevTree tree = commit.getTree();
+        String vsumPrefix = VSUM_BASE_DIR + "/" + sourceBranch + "/";
+        Path targetVsumDir = repoRoot.resolve(VSUM_BASE_DIR).resolve(targetBranch);
+        Files.createDirectories(targetVsumDir);
+
+        int extracted = 0;
+        try (TreeWalk treeWalk = new TreeWalk(repo)) {
+            treeWalk.addTree(tree);
+            treeWalk.setRecursive(true);
+            while (treeWalk.next()) {
+                String path = treeWalk.getPathString();
+                if (!path.startsWith(vsumPrefix)) continue;
+                Path targetFile = targetVsumDir.resolve(path.substring(vsumPrefix.length()));
+                Files.createDirectories(targetFile.getParent());
+                ObjectLoader loader = repo.open(treeWalk.getObjectId(0));
+                try (OutputStream out = Files.newOutputStream(targetFile)) {
+                    loader.copyTo(out);
+                }
+                extracted++;
+                LOGGER.debug("Extracted V-SUM file: {} -> {}", path, targetFile);
+            }
+        }
+        if (extracted == 0) {
+            LOGGER.warn("No V-SUM files found under '{}' in commit {} — new branch '{}' starts with empty V-SUM", vsumPrefix, commit.getName().substring(0, 7), targetBranch);
+        } else {
+            LOGGER.info("Extracted {} V-SUM file(s) from commit {} into branch '{}'", extracted, commit.getName().substring(0, 7), targetBranch);
+        }
     }
 
     /**
