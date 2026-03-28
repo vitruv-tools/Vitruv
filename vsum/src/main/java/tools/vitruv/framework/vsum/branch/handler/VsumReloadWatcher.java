@@ -218,7 +218,7 @@ public class VsumReloadWatcher {
             long startTime = System.currentTimeMillis();
             branchVsum.switchBranch(info.getOldBranchName(), info.getBranchName());
             long duration = System.currentTimeMillis() - startTime;
-            LOGGER.info("VirtualModel reloaded in {}ms (branch='{}' ← '{}', requestId='{}')", duration, info.getBranchName(), info.getOldBranchName(), info.getRequestId());
+            LOGGER.info("VirtualModel reloaded in {}ms (branch='{}' <- '{}', requestId='{}')", duration, info.getBranchName(), info.getOldBranchName(), info.getRequestId());
         } catch (BranchOperationException e) {
             LOGGER.error("Failed to reload after branch switch (branch='{}', requestId='{}')", info.getBranchName(), info.getRequestId(), e);
         }

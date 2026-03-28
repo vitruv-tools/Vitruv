@@ -177,7 +177,7 @@ public class ReloadTriggerFile extends AbstractTriggerFile<ReloadTriggerFile.Tri
         public String toString() {
             return "TriggerInfo{"
                     + "branchName='" + branchName + "'"
-                    + ", oldBranchName='" + oldBranchName + "'"  // ← add this
+                    + ", oldBranchName='" + oldBranchName + "'"  // <- add this
                     + ", requestId='" + getRequestId() + "'"
                     + ", timestamp=" + getTimestamp()
                     + "}";
