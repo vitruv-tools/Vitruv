@@ -96,15 +96,7 @@ public class SemanticChangelogManager {
      * @return list of paths of all written files (JSON + any XMI files) for Git staging.
      * @throws IOException if the JSON file cannot be written (XMI failures are non-fatal).
      */
-    public List<Path> write(String commitSha,
-                            String branch,
-                            String author,
-                            LocalDateTime authorDate,
-                            String message,
-                            List<String> parentShas,
-                            Map<String, List<EChange<EObject>>> changesByResource,
-                            Collection<Resource> activeResources,
-                            UuidResolver uuidResolver) throws IOException {
+    public List<Path> write(String commitSha, String branch, String author, LocalDateTime authorDate, String message, List<String> parentShas, Map<String, List<EChange<EObject>>> changesByResource, Collection<Resource> activeResources, UuidResolver uuidResolver) throws IOException {
 
         checkNotNull(commitSha, "commitSha must not be null");
         checkNotNull(branch, "branch must not be null");
@@ -170,11 +162,7 @@ public class SemanticChangelogManager {
         return gson.fromJson(json, ChangelogDocument.class);
     }
 
-    private ChangelogDocument buildDocument(String commitSha, String branch, String author,
-                                            LocalDateTime authorDate, String message,
-                                            List<String> parentShas,
-                                            Map<String, List<EChange<EObject>>> changesByResource,
-                                            EChangeToEntryConverter converter) {
+    private ChangelogDocument buildDocument(String commitSha, String branch, String author, LocalDateTime authorDate, String message, List<String> parentShas, Map<String, List<EChange<EObject>>> changesByResource, EChangeToEntryConverter converter) {
         ChangelogDocument doc = new ChangelogDocument();
         doc.formatVersion = FORMAT_VERSION;
 
@@ -204,11 +192,7 @@ public class SemanticChangelogManager {
             List<SemanticChangeEntry> entries = converter.convert(eChanges);
             totalSemantic += entries.size();
 
-            entries.stream()
-                    .filter(e -> e.getElementUuid() != null && !e.getElementUuid().equals("unknown"))
-                    .map(SemanticChangeEntry::getElementUuid)
-                    .filter(uuid -> !allUuids.contains(uuid))
-                    .forEach(allUuids::add);
+            entries.stream().filter(e -> e.getElementUuid() != null && !e.getElementUuid().equals("unknown")).map(SemanticChangeEntry::getElementUuid).filter(uuid -> !allUuids.contains(uuid)).forEach(allUuids::add);
 
             ChangelogDocument.FileChangeInfo fileInfo = new ChangelogDocument.FileChangeInfo();
             fileInfo.operation = detectOperation(resourceUri, eChanges).name();
@@ -290,11 +274,7 @@ public class SemanticChangelogManager {
     }
 
     private Gson buildGson() {
-        return new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (src, type, ctx) -> new JsonPrimitive(src.format(DATE_FORMATTER)))
-                .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, ctx) -> LocalDateTime.parse(json.getAsString(), DATE_FORMATTER))
-                .create();
+        return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (src, type, ctx) -> new JsonPrimitive(src.format(DATE_FORMATTER))).registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, ctx) -> LocalDateTime.parse(json.getAsString(), DATE_FORMATTER)).create();
     }
 
     /**

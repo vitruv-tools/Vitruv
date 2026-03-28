@@ -108,7 +108,6 @@ public class EChangeToEntryConverter {
     }
 
     // Handle single-valued attribute changes
-    // -------------------------------------------------------------------------
 
     @SuppressWarnings("unchecked")
     private SemanticChangeEntry handleReplaceAttribute(ReplaceSingleValuedEAttribute<?, ?> change, int index) {
@@ -125,7 +124,7 @@ public class EChangeToEntryConverter {
             type = SemanticChangeType.ATTRIBUTE_CHANGED;
         }
 
-        return SemanticChangeEntry.builder().index(index).changeType(type).emfType("ReplaceSingleValuedEAttribute").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).from(formatValue(oldValue)).to(formatValue(newValue)).build();
+        return SemanticChangeEntry.builder().index(index).changeType(type).emfType("ReplaceSingleValuedEAttribute").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).from(formatValue(oldValue)).to(formatValue(newValue)).containerUuid(resolveContainerUuid(element)).build();
     }
 
     @SuppressWarnings("unchecked")
@@ -133,7 +132,7 @@ public class EChangeToEntryConverter {
         EObject element = (EObject) change.getAffectedElement();
         Object newValue = ((InsertEAttributeValue<Object, Object>) change).getNewValue();
 
-        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.ATTRIBUTE_VALUE_INSERTED).emfType("InsertEAttributeValue").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).to(formatValue(newValue)).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).build();
+        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.ATTRIBUTE_VALUE_INSERTED).emfType("InsertEAttributeValue").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).to(formatValue(newValue)).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).containerUuid(resolveContainerUuid(element)).build();
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +140,7 @@ public class EChangeToEntryConverter {
         EObject element = (EObject) change.getAffectedElement();
         Object oldValue = ((RemoveEAttributeValue<Object, Object>) change).getOldValue();
 
-        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.ATTRIBUTE_VALUE_REMOVED).emfType("RemoveEAttributeValue").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).from(formatValue(oldValue)).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).build();
+        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.ATTRIBUTE_VALUE_REMOVED).emfType("RemoveEAttributeValue").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).from(formatValue(oldValue)).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).containerUuid(resolveContainerUuid(element)).build();
     }
 
     // Handle single-valued reference changes
@@ -160,7 +159,7 @@ public class EChangeToEntryConverter {
         } else {
             type = SemanticChangeType.REFERENCE_CHANGED;
         }
-        return SemanticChangeEntry.builder().index(index).changeType(type).emfType("ReplaceSingleValuedEReference").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).from(oldRef != null ? resolveUuid(oldRef) : null).to(newRef != null ? resolveUuid(newRef) : null).build();
+        return SemanticChangeEntry.builder().index(index).changeType(type).emfType("ReplaceSingleValuedEReference").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).from(oldRef != null ? resolveUuid(oldRef) : null).to(newRef != null ? resolveUuid(newRef) : null).containerUuid(resolveContainerUuid(element)).build();
     }
 
     // Handle multi-valued reference changes
@@ -170,7 +169,7 @@ public class EChangeToEntryConverter {
         EObject element = (EObject) change.getAffectedElement();
         EObject inserted = (EObject) ((InsertEReference<Object>) change).getNewValue();
 
-        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.REFERENCE_VALUE_INSERTED).emfType("InsertEReference").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).referencedElementUuid(inserted != null ? resolveUuid(inserted) : null).to(inserted != null ? resolveUuid(inserted) : null).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).build();
+        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.REFERENCE_VALUE_INSERTED).emfType("InsertEReference").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).referencedElementUuid(inserted != null ? resolveUuid(inserted) : null).to(inserted != null ? resolveUuid(inserted) : null).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).containerUuid(resolveContainerUuid(element)).build();
     }
 
     @SuppressWarnings("unchecked")
@@ -178,7 +177,7 @@ public class EChangeToEntryConverter {
         EObject element = (EObject) change.getAffectedElement();
         EObject removed = (EObject) ((RemoveEReference<Object>) change).getOldValue();
 
-        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.REFERENCE_VALUE_REMOVED).emfType("RemoveEReference").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).referencedElementUuid(removed != null ? resolveUuid(removed) : null).from(removed != null ? resolveUuid(removed) : null).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).build();
+        return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.REFERENCE_VALUE_REMOVED).emfType("RemoveEReference").elementUuid(resolveUuid(element)).eClass(formatEClass(element)).feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null).referencedElementUuid(removed != null ? resolveUuid(removed) : null).from(removed != null ? resolveUuid(removed) : null).position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex()).containerUuid(resolveContainerUuid(element)).build();
     }
 
     // Handle root EObject changes
@@ -207,6 +206,25 @@ public class EChangeToEntryConverter {
             eClass = formatEClass(element);
         }
         return SemanticChangeEntry.builder().index(index).changeType(SemanticChangeType.ELEMENT_REORDERED).emfType(emfType).elementUuid(uuid).eClass(eClass).build();
+    }
+
+    /**
+     * Resolves the UUID of the immediate EMF container of the given element.
+     * Returns {@code null} if the element has no container (root element) or if
+     * UUID resolution fails for the container.
+     */
+    private String resolveContainerUuid(EObject element) {
+        if (element == null) return null;
+        EObject container = element.eContainer();
+        if (container == null) return null;
+        try {
+            if (uuidResolver.hasUuid(container)) {
+                return uuidResolver.getUuid(container).toString();
+            }
+        } catch (Exception e) {
+            LOGGER.debug("Container UUID resolution failed for container of type '{}': {}", container.eClass() != null ? container.eClass().getName() : "?", e.getMessage());
+        }
+        return null;
     }
 
     /**

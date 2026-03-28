@@ -99,6 +99,17 @@ public class SemanticChangeEntry {
     private final String referencedElementUuid;
 
     /**
+     * UUID of the immediate EMF container (parent) of the affected element at the time the
+     * change was recorded. {@code null} for root elements and lifecycle changes
+     * ({@link SemanticChangeType#ELEMENT_CREATED}, {@link SemanticChangeType#ELEMENT_DELETED}).
+     *
+     * <p>Used as the foundation for cascading-deletion detection: if an element is deleted
+     * and its UUID is tombstoned, any change entry whose {@code containerUuid} matches the
+     * tombstoned UUID can be identified as a now-invalid orphan change.
+     */
+    private final String containerUuid;
+
+    /**
      * Zero-based index within the list at which the value was inserted or removed.
      * Only meaningful for multi-valued attribute and reference changes
      * ({@link SemanticChangeType#ATTRIBUTE_VALUE_INSERTED}, {@link SemanticChangeType#ATTRIBUTE_VALUE_REMOVED},
@@ -118,6 +129,7 @@ public class SemanticChangeEntry {
         this.from = builder.from;
         this.to = builder.to;
         this.referencedElementUuid = builder.referencedElementUuid;
+        this.containerUuid = builder.containerUuid;
         this.position = builder.position;
     }
 
@@ -135,6 +147,7 @@ public class SemanticChangeEntry {
         private String from;
         private String to;
         private String referencedElementUuid;
+        private String containerUuid;
         private int position = -1;
 
         private Builder() {
@@ -185,6 +198,11 @@ public class SemanticChangeEntry {
             return this;
         }
 
+        public Builder containerUuid(String containerUuid) {
+            this.containerUuid = containerUuid;
+            return this;
+        }
+
         public Builder position(int position) {
             this.position = position;
             return this;
@@ -200,16 +218,16 @@ public class SemanticChangeEntry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SemanticChangeEntry that = (SemanticChangeEntry) o;
-        return index == that.index && position == that.position && changeType == that.changeType && Objects.equals(emfType, that.emfType) && Objects.equals(elementUuid, that.elementUuid) && Objects.equals(eClass, that.eClass) && Objects.equals(feature, that.feature) && Objects.equals(from, that.from) && Objects.equals(to, that.to) && Objects.equals(referencedElementUuid, that.referencedElementUuid);
+        return index == that.index && position == that.position && changeType == that.changeType && Objects.equals(emfType, that.emfType) && Objects.equals(elementUuid, that.elementUuid) && Objects.equals(eClass, that.eClass) && Objects.equals(feature, that.feature) && Objects.equals(from, that.from) && Objects.equals(to, that.to) && Objects.equals(referencedElementUuid, that.referencedElementUuid) && Objects.equals(containerUuid, that.containerUuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(index, changeType, emfType, elementUuid, eClass, feature, from, to, referencedElementUuid, position);
+        return Objects.hash(index, changeType, emfType, elementUuid, eClass, feature, from, to, referencedElementUuid, containerUuid, position);
     }
 
     @Override
     public String toString() {
-        return "SemanticChangeEntry{" + "index=" + index + ", changeType=" + changeType + ", elementUuid='" + elementUuid + '\'' + ", feature='" + feature + '\'' + ", from='" + from + '\'' + ", to='" + to + '\'' + '}';
+        return "SemanticChangeEntry{" + "index=" + index + ", changeType=" + changeType + ", elementUuid='" + elementUuid + '\'' + ", containerUuid='" + containerUuid + '\'' + ", feature='" + feature + '\'' + ", from='" + from + '\'' + ", to='" + to + '\'' + '}';
     }
 }
