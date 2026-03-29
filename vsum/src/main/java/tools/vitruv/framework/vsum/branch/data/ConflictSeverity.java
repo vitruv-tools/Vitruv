@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum.branch.data;
 
 /**
- * Classifies how severe a conflict is during a branch merge
+ * Classifies how severe a conflict is during a branch merge.
  *
  * <p>Severity is determined by the types of changes involved:
  * <ul>

@@ -1,10 +1,9 @@
 package tools.vitruv.framework.vsum.branch.data;
 
+import java.util.Objects;
 import lombok.Getter;
 import tools.vitruv.framework.vsum.branch.storage.SemanticChangeEntry;
 import tools.vitruv.framework.vsum.branch.storage.SemanticChangeType;
-
-import java.util.Objects;
 
 /**
  * Represents a semantic conflict between two branches: the same model element was changed
@@ -28,68 +27,84 @@ import java.util.Objects;
 @Getter
 public class SemanticConflict {
 
-    /**
-     * Stable Vitruvius UUID of the model element at the centre of this conflict.
-     * Matches {@link SemanticChangeEntry#getElementUuid()} on both sides.
-     */
-    private final String elementUuid;
+  /**
+   * Stable Vitruvius UUID of the model element at the centre of this conflict.
+   * Matches {@link SemanticChangeEntry#getElementUuid()} on both sides.
+   */
+  private final String elementUuid;
 
-    /**
-     * Name of the structural feature (attribute or reference) that was changed.
-     * {@code null} when the conflict is an element-lifecycle conflict
-     * (e.g. element deleted on one branch, modified on the other).
-     */
-    private final String feature;
+  /**
+   * Name of the structural feature (attribute or reference) that was changed.
+   * {@code null} when the conflict is an element-lifecycle conflict
+   * (e.g. element deleted on one branch, modified on the other).
+   */
+  private final String feature;
 
-    /**
-     * The semantic change recorded on branch A for this element/feature.
-     */
-    private final SemanticChangeEntry changeOnBranchA;
+  /**
+   * The semantic change recorded on branch A for this element/feature.
+   */
+  private final SemanticChangeEntry changeOnBranchA;
 
-    /**
-     * The semantic change recorded on branch B for this element/feature.
-     */
-    private final SemanticChangeEntry changeOnBranchB;
+  /**
+   * The semantic change recorded on branch B for this element/feature.
+   */
+  private final SemanticChangeEntry changeOnBranchB;
 
-    /**
-     * How severe this conflict is, used to prioritise resolution effort.
-     */
-    private final ConflictSeverity severity;
+  /**
+   * How severe this conflict is, used to prioritise resolution effort.
+   */
+  private final ConflictSeverity severity;
 
-    public SemanticConflict(String elementUuid, String feature,
-                            SemanticChangeEntry changeOnBranchA,
-                            SemanticChangeEntry changeOnBranchB,
-                            ConflictSeverity severity) {
-        this.elementUuid     = Objects.requireNonNull(elementUuid, "elementUuid must not be null");
-        this.feature         = feature; // nullable for lifecycle conflicts
-        this.changeOnBranchA = Objects.requireNonNull(changeOnBranchA, "changeOnBranchA must not be null");
-        this.changeOnBranchB = Objects.requireNonNull(changeOnBranchB, "changeOnBranchB must not be null");
-        this.severity        = Objects.requireNonNull(severity, "severity must not be null");
+  /**
+   * Creates a new {@link SemanticConflict} with all conflict details.
+   *
+   * @param elementUuid    stable Vitruvius UUID of the conflicting model element.
+   * @param feature        structural feature that was changed; may be null for lifecycle
+   *                       conflicts.
+   * @param changeOnBranchA the semantic change recorded on branch A.
+   * @param changeOnBranchB the semantic change recorded on branch B.
+   * @param severity       how severe this conflict is.
+   */
+  public SemanticConflict(String elementUuid, String feature,
+      SemanticChangeEntry changeOnBranchA,
+      SemanticChangeEntry changeOnBranchB,
+      ConflictSeverity severity) {
+    this.elementUuid = Objects.requireNonNull(elementUuid, "elementUuid must not be null");
+    this.feature = feature; // nullable for lifecycle conflicts
+    this.changeOnBranchA = Objects.requireNonNull(changeOnBranchA,
+        "changeOnBranchA must not be null");
+    this.changeOnBranchB = Objects.requireNonNull(changeOnBranchB,
+        "changeOnBranchB must not be null");
+    this.severity = Objects.requireNonNull(severity, "severity must not be null");
+  }
+
+  @Override
+  public String toString() {
+    return "SemanticConflict{"
+        + "elementUuid='" + elementUuid + '\''
+        + ", feature='" + feature + '\''
+        + ", severity=" + severity
+        + ", typeA=" + changeOnBranchA.getChangeType()
+        + ", typeB=" + changeOnBranchB.getChangeType()
+        + '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    @Override
-    public String toString() {
-        return "SemanticConflict{"
-                + "elementUuid='" + elementUuid + '\''
-                + ", feature='" + feature + '\''
-                + ", severity=" + severity
-                + ", typeA=" + changeOnBranchA.getChangeType()
-                + ", typeB=" + changeOnBranchB.getChangeType()
-                + '}';
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    SemanticConflict that = (SemanticConflict) o;
+    return Objects.equals(elementUuid, that.elementUuid)
+        && Objects.equals(feature, that.feature)
+        && severity == that.severity;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SemanticConflict that = (SemanticConflict) o;
-        return Objects.equals(elementUuid, that.elementUuid)
-                && Objects.equals(feature, that.feature)
-                && severity == that.severity;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(elementUuid, feature, severity);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(elementUuid, feature, severity);
+  }
 }
