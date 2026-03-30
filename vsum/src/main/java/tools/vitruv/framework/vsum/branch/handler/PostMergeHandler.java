@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
+import tools.vitruv.framework.vsum.branch.BranchManager;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
 import tools.vitruv.framework.vsum.branch.util.MergeResultFile;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
@@ -37,6 +38,8 @@ public class PostMergeHandler {
 
   private final Path repositoryRoot;
 
+  private final BranchManager branchManager;
+
   /**
    * Creates a post-merge handler for the given VirtualModel and repository root.
    *
@@ -46,6 +49,49 @@ public class PostMergeHandler {
   public PostMergeHandler(InternalVirtualModel virtualModel, Path repositoryRoot) {
     this.virtualModel = checkNotNull(virtualModel, "virtual model must not be null");
     this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
+    this.branchManager = new BranchManager(repositoryRoot);
+  }
+
+  /**
+   * Performs all post-merge V-SUM operations in sequence:
+   * <ol>
+   *   <li>Validates the merged V-SUM state.</li>
+   *   <li>If valid: copies VSUM state from source to target branch and reloads the model.</li>
+   *   <li>Marks the source branch as merged regardless of validation outcome.</li>
+   * </ol>
+   *
+   * @param sourceBranch the branch that was merged in.
+   * @param targetBranch the branch that received the merge.
+   * @return the validation result from step 1.
+   */
+  public ValidationResult performPostMerge(String sourceBranch, String targetBranch) {
+    checkNotNull(sourceBranch, "sourceBranch must not be null");
+    checkNotNull(targetBranch, "targetBranch must not be null");
+
+    ValidationResult result = validate();
+
+    if (result.isValid()) {
+      copyVsumFromSourceBranch(sourceBranch, targetBranch);
+      try {
+        LOGGER.info("Reloading VirtualModel to reflect merged state");
+        virtualModel.reload();
+        LOGGER.info("VirtualModel reloaded successfully after merge");
+      } catch (Exception e) {
+        LOGGER.warn("Failed to reload VirtualModel after merge: {}", e.getMessage());
+      }
+    } else {
+      LOGGER.warn("Merged state has inconsistencies - skipping VSUM copy and reload. "
+          + "Resolve conflicts and commit the resolution.");
+    }
+
+    try {
+      branchManager.markAsMerged(sourceBranch);
+    } catch (Exception e) {
+      LOGGER.warn("Failed to mark branch '{}' as MERGED (non-critical): {}",
+          sourceBranch, e.getMessage());
+    }
+
+    return result;
   }
 
   /**

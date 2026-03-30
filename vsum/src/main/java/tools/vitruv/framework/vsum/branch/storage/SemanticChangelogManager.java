@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,12 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.eobject.CreateEObject;
 import tools.vitruv.change.atomic.eobject.DeleteEObject;
@@ -215,6 +222,8 @@ public class SemanticChangelogManager {
     int totalSemantic = 0;
     Set<String> allUuids = new LinkedHashSet<>();
 
+    Map<String, DiffEntry> gitDiff = buildGitDiffMap(commitSha);
+
     for (Map.Entry<String, List<EChange<EObject>>> entry : changesByResource.entrySet()) {
       String resourceUri = entry.getKey();
       List<EChange<EObject>> eChanges = entry.getValue();
@@ -227,9 +236,15 @@ public class SemanticChangelogManager {
           .map(SemanticChangeEntry::getElementUuid)
           .forEach(allUuids::add);
 
+      String relPath = toRelativePath(resourceUri);
+      DiffEntry diffEntry = gitDiff.get(relPath);
+
       ChangelogDocument.FileChangeInfo fileInfo = new ChangelogDocument.FileChangeInfo();
-      fileInfo.operation = detectOperation(resourceUri, eChanges).name();
-      fileInfo.path = toRelativePath(resourceUri);
+      fileInfo.operation = detectOperation(relPath, eChanges, gitDiff).name();
+      fileInfo.path = relPath;
+      if (diffEntry != null && diffEntry.getChangeType() == DiffEntry.ChangeType.RENAME) {
+        fileInfo.oldPath = diffEntry.getOldPath();
+      }
       fileInfo.semanticChanges = entries;
       doc.fileChanges.add(fileInfo);
     }
@@ -275,11 +290,28 @@ public class SemanticChangelogManager {
   }
 
   /**
-   * Infers the file-level operation from the types of EChanges present.
-   * If only create changes are present the file was likely ADDED; if only deletes, DELETED;
-   * otherwise MODIFIED.
+   * Resolves the file-level operation for a resource. The Git diff map is consulted first
+   * because it accurately reflects ADD, MODIFY, DELETE, and RENAME as recorded by Git.
+   * The EChange heuristic is used only when no Git diff entry is available (e.g. for
+   * in-memory-only resources that were never tracked by Git).
+   *
+   * @param relPath   repository-relative path of the resource (forward slashes).
+   * @param eChanges  atomic EChanges for the resource, used as fallback.
+   * @param gitDiff   map of new-path → {@link DiffEntry} built from the commit's parent diff.
    */
-  private FileOperation detectOperation(String resourceUri, List<EChange<EObject>> eChanges) {
+  private FileOperation detectOperation(String relPath, List<EChange<EObject>> eChanges,
+      Map<String, DiffEntry> gitDiff) {
+    DiffEntry diff = gitDiff.get(relPath);
+    if (diff != null) {
+      switch (diff.getChangeType()) {
+        case ADD: return FileOperation.ADDED;
+        case DELETE: return FileOperation.DELETED;
+        case RENAME: return FileOperation.RENAMED;
+        case MODIFY:
+        default: return FileOperation.MODIFIED;
+      }
+    }
+    // Fallback: infer from EChange types when no Git diff entry is present.
     boolean hasCreate = eChanges.stream().anyMatch(c -> c instanceof CreateEObject<?>);
     boolean hasDelete = eChanges.stream().anyMatch(c -> c instanceof DeleteEObject<?>);
     if (hasCreate && !hasDelete) {
@@ -289,6 +321,47 @@ public class SemanticChangelogManager {
       return FileOperation.DELETED;
     }
     return FileOperation.MODIFIED;
+  }
+
+  /**
+   * Builds a map of repository-relative new-path → {@link DiffEntry} by diffing the given
+   * commit against its first parent. Returns an empty map for initial commits or on any error.
+   */
+  private Map<String, DiffEntry> buildGitDiffMap(String commitSha) {
+    try (Git git = Git.open(repositoryRoot.toFile())) {
+      var repo = git.getRepository();
+      var commitId = repo.resolve(commitSha);
+      if (commitId == null) {
+        return Map.of();
+      }
+      try (RevWalk revWalk = new RevWalk(repo)) {
+        RevCommit commit = revWalk.parseCommit(commitId);
+        if (commit.getParentCount() == 0) {
+          return Map.of();
+        }
+        RevCommit parent = revWalk.parseCommit(commit.getParent(0).getId());
+        try (ObjectReader reader = repo.newObjectReader()) {
+          CanonicalTreeParser oldTree = new CanonicalTreeParser();
+          oldTree.reset(reader, parent.getTree().getId());
+          CanonicalTreeParser newTree = new CanonicalTreeParser();
+          newTree.reset(reader, commit.getTree().getId());
+
+          List<DiffEntry> diffs = git.diff()
+              .setOldTree(oldTree)
+              .setNewTree(newTree)
+              .call();
+
+          Map<String, DiffEntry> result = new HashMap<>();
+          for (DiffEntry entry : diffs) {
+            result.put(entry.getNewPath(), entry);
+          }
+          return result;
+        }
+      }
+    } catch (Exception e) {
+      LOGGER.debug("Could not build Git diff map for commit '{}': {}", commitSha, e.getMessage());
+      return Map.of();
+    }
   }
 
   /**
@@ -388,7 +461,7 @@ public class SemanticChangelogManager {
      */
     public static class FileChangeInfo {
 
-      /** File-level operation: ADDED, MODIFIED, or DELETED. */
+      /** File-level operation: ADDED, MODIFIED, DELETED, or RENAMED. */
       public String operation;
 
       /** Repository-relative path of the file. */

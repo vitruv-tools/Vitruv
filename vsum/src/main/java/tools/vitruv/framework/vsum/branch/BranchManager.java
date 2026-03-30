@@ -487,6 +487,39 @@ public class BranchManager {
   }
 
   /**
+   * Creates a metadata file for the given branch if one does not already exist.
+   * Used when a branch is first checked out via Git CLI to ensure all branches
+   * have consistent Vitruvius metadata regardless of how they were created.
+   *
+   * <p>Failures are non-fatal and logged as warnings so that a metadata write
+   * error never blocks a branch switch.
+   *
+   * @param branchName   the name of the branch.
+   * @param parentBranch the name of the branch this was branched from.
+   */
+  public void ensureMetadataExists(String branchName, String parentBranch) {
+    checkNotNull(branchName, "branch name must not be null");
+    checkNotNull(parentBranch, "parent branch must not be null");
+
+    Path metadataFile = metadataPath(branchName);
+    if (Files.exists(metadataFile)) {
+      LOGGER.debug("Metadata already exists for branch '{}', skipping", branchName);
+      return;
+    }
+    try {
+      Files.createDirectories(metadataFile.getParent());
+      LocalDateTime now = LocalDateTime.now();
+      BranchMetadata metadata =
+          new BranchMetadata(branchName, BranchState.ACTIVE, parentBranch, now, now);
+      metadata.writeTo(metadataFile);
+      LOGGER.info("Created metadata for branch '{}' (parent: '{}')", branchName, parentBranch);
+    } catch (IOException e) {
+      LOGGER.warn("Failed to create metadata for branch '{}' (non-critical): {}",
+          branchName, e.getMessage());
+    }
+  }
+
+  /**
    * Returns the path to the metadata file for the given branch name.
    *
    * @param branchName the branch name.

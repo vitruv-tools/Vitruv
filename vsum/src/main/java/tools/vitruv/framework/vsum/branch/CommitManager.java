@@ -44,8 +44,11 @@ import tools.vitruv.framework.vsum.branch.util.PostCommitTriggerFile;
  *   <li>Auto-stage modified model files (.xmi, .model, .model2, .ecore, .uml, .genmodel)</li>
  *   <li>Stage branch metadata (lastModified update) as part of the same commit</li>
  *   <li>Create the Git commit via JGit using author info from Git config</li>
- *   <li>Write the post-commit trigger file so the existing VsumPostCommitWatcher generates
- *       the changelog asynchronously</li>
+ *   <li>If semantic change tracking is attached: write the JSON/XMI changelog synchronously
+ *       right after the commit and stage it via {@code git add} as uncommitted changes</li>
+ *   <li>Write the post-commit trigger file so {@link tools.vitruv.framework.vsum.branch.handler.VsumPostCommitWatcher}
+ *       can also react to the commit. If the changelog was already written above, the watcher's
+ *       attempt is a no-op because the buffer has already been drained.</li>
  * </ul>
  */
 public class CommitManager {

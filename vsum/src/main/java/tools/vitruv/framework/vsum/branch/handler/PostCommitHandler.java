@@ -31,12 +31,16 @@ import tools.vitruv.framework.vsum.branch.storage.SemanticChangelogManager;
  * <p>When a developer commits directly from their IDE or Git CLI, the Git {@code post-commit}
  * hook writes a trigger file that {@link VsumPostCommitWatcher} detects and forwards here.
  *
- * <p><b>Changelog writing</b>: Both commit paths produce the same JSON/XMI semantic changelog:
+ * <p><b>Changelog writing</b>: Both commit paths produce the same JSON/XMI semantic changelog,
+ * and in both cases the changelog ends up as staged but uncommitted changes:
  * <ul>
  *   <li><b>API path</b> ({@link tools.vitruv.framework.vsum.branch.CommitManager}): changelog
- *       is written synchronously at commit time, staged in the same commit.</li>
- *   <li><b>Direct Git path</b> (this class): changelog is written asynchronously after the
- *       post-commit hook fires, staged as uncommitted changes for the next commit.</li>
+ *       is written synchronously right after the commit and staged via {@code git add}. The
+ *       post-commit trigger file is also written, but the watcher's attempt to write the
+ *       changelog is a no-op because the buffer has already been drained.</li>
+ *   <li><b>Direct Git path</b> (this class): changelog is written asynchronously when the
+ *       post-commit hook fires and the watcher detects the trigger file, then staged via
+ *       {@code git add} as uncommitted changes.</li>
  * </ul>
  *
  * <p>Semantic tracking (buffer, UUID resolver, resource supplier) is optional. If not attached

@@ -13,7 +13,6 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
-import tools.vitruv.framework.vsum.branch.BranchManager;
 import tools.vitruv.framework.vsum.branch.data.ValidationResult;
 import tools.vitruv.framework.vsum.branch.util.MergeResultFile;
 import tools.vitruv.framework.vsum.branch.util.MergeTriggerFile;
@@ -34,10 +33,6 @@ public class VsumMergeWatcher {
   private static final String THREAD_NAME = "VSUM-Merge-Watcher";
 
   private static final String LOCK_FILENAME = ".merge.lock";
-
-  private final InternalVirtualModel virtualModel;
-
-  private final BranchManager branchManager;
 
   private final Path repositoryRoot;
 
@@ -68,8 +63,6 @@ public class VsumMergeWatcher {
     this.resultFile = new MergeResultFile(repositoryRoot);
     this.handler = new PostMergeHandler(virtualModel, repositoryRoot);
     this.running = false;
-    this.virtualModel = virtualModel;
-    this.branchManager = new BranchManager(repositoryRoot);
     this.lockFile = repositoryRoot.resolve(".vitruvius").resolve(LOCK_FILENAME);
   }
 
@@ -189,45 +182,19 @@ public class VsumMergeWatcher {
     try {
       long startTime = System.currentTimeMillis();
 
-      ValidationResult result = handler.validate();
+      ValidationResult result = handler.performPostMerge(
+          info.getSourceBranch(), info.getTargetBranch());
       long duration = System.currentTimeMillis() - startTime;
 
-      LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')",
+      LOGGER.info("Post-merge operations completed in {}ms: {} (requestId='{}')",
           duration, result.isValid() ? "PASSED" : "WARNING", requestId);
 
-      // skip VSUM copy and reload if the merged state has conflicts or proxy errors —
-      // leave the model as-is so the user can fix the issues first.
-      if (result.isValid()) {
-        handler.copyVsumFromSourceBranch(info.getSourceBranch(), info.getTargetBranch());
-
-        try {
-          LOGGER.info("Reloading VirtualModel to reflect merged state");
-          virtualModel.reload();
-          LOGGER.info("VirtualModel reloaded successfully after merge");
-        } catch (Exception e) {
-          LOGGER.warn("Failed to reload VirtualModel after merge: {}", e.getMessage());
-        }
-      } else {
-        LOGGER.warn("Merged state has inconsistencies - skipping VSUM copy and reload. "
-            + "Resolve conflicts and commit the resolution.");
-      }
-
-      // Mark source branch as MERGED
-      try {
-        branchManager.markAsMerged(info.getSourceBranch());
-      } catch (Exception e) {
-        LOGGER.warn("Failed to mark branch '{}' as MERGED (non-critical): {}",
-            info.getSourceBranch(), e.getMessage());
-      }
-
-      // Write result files regardless of validity
       try {
         resultFile.writeResult(result, requestId);
       } catch (Exception e) {
         LOGGER.error("Failed to write merge result files (requestId='{}')", requestId, e);
       }
 
-      // Write merge metadata regardless of validity
       try {
         handler.generateMergeMetadata(resultFile, info.getMergeCommitSha(),
             info.getSourceBranch(), info.getTargetBranch(), result, List.of());

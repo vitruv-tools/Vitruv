@@ -9,6 +9,7 @@ import tools.vitruv.framework.vsum.branch.BranchManager;
 import tools.vitruv.framework.vsum.branch.exception.BranchOperationException;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
+
 /**
  * Handles post-checkout operations after a Git branch switch.
  * This handler is responsible for reloading VSUM from the file system so that its
@@ -34,6 +35,7 @@ public class PostCheckoutHandler {
   private static final Logger LOGGER = LogManager.getLogger(PostCheckoutHandler.class);
 
   private final VirtualModel virtualModel;
+  private final BranchManager branchManager;
 
   /**
    * Creates a new {@link PostCheckoutHandler} backed by the given VirtualModel.
@@ -43,6 +45,7 @@ public class PostCheckoutHandler {
    */
   public PostCheckoutHandler(VirtualModel virtualModel) {
     this.virtualModel = checkNotNull(virtualModel, "VirtualModel must not be null");
+    this.branchManager = new BranchManager(virtualModel.getFolder());
   }
 
   /**
@@ -65,6 +68,11 @@ public class PostCheckoutHandler {
     LOGGER.info("branch switched from '{}' to '{}'", oldBranch, newBranch);
 
     try {
+      // Ensure metadata exists for the new branch regardless of how it was created.
+      // This covers branches created via git CLI where BranchManager.createBranch()
+      // was not called. Non-fatal: a metadata failure must not block the reload.
+      branchManager.ensureMetadataExists(newBranch, oldBranch);
+
       // Git already reflects newBranch at this point; JGit resolves it automatically.
       VsumFileSystemLayout newLayout = new VsumFileSystemLayout(virtualModel.getFolder());
       newLayout.prepare();
