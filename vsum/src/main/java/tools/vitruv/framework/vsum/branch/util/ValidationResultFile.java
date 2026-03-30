@@ -181,30 +181,6 @@ public class ValidationResultFile {
   }
 
   /**
-   * Deletes result files for the fixed identifier {@code "legacy"}.
-   *
-   * @throws IOException if the files cannot be deleted.
-   * @deprecated Use {@link #deleteResult(String)} with a request identifier.
-   */
-  @Deprecated
-  public void deleteResult() throws IOException {
-    LOGGER.warn("Using deprecated deleteResult() without request ID"
-        + " - use deleteResult(requestId) instead");
-    deleteResult("legacy");
-  }
-
-  /**
-   * Returns true if result files exist for the fixed identifier {@code "legacy"}.
-   *
-   * @return {@code true} if legacy result files are present.
-   * @deprecated Use {@link #exists(String)} with a request identifier.
-   */
-  @Deprecated
-  public boolean exists() {
-    return exists("legacy");
-  }
-
-  /**
    * Writes a human-readable text summary of the validation result to the given path.
    * The output is intended to be displayed directly in the terminal by the Git hook.
    */

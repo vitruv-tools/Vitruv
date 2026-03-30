@@ -2,10 +2,9 @@ package tools.vitruv.framework.vsum.branch.storage;
 
 import java.util.Objects;
 import lombok.Getter;
-import tools.vitruv.framework.vsum.branch.data.SemanticChangelog;
 
 /**
- * Represents a single atomic model change within a {@link SemanticChangelog} JSON entry.
+ * Represents a single atomic model change within a semantic changelog JSON entry.
  *
  * <p>Each entry corresponds to one EMF {@code EChange} and captures enough information to:
  * <ul>
