@@ -75,7 +75,6 @@ public class MergeTriggerFile extends AbstractTriggerFile<MergeTriggerFile.Trigg
     String requestId = UUID.randomUUID().toString();
     long timestamp = System.currentTimeMillis();
 
-    // format the five fields and delegate the write to the base class.
     writeTrigger(String.format("%s%s%s%s%s%s%s%s%d",
         mergeCommitSha, DELIMITER, sourceBranch, DELIMITER,
         targetBranch, DELIMITER, requestId, DELIMITER, timestamp));

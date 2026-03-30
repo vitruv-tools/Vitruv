@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -94,17 +96,17 @@ public class SemanticChangelogManager {
    * XMI snapshots are written to {@code .vitruvius/changelogs/<branch>/xmi/<shortSha>.xmi}
    * for each resource that had changes.
    *
-   * @param commitSha         full 40-character commit SHA.
-   * @param branch            branch name.
-   * @param author            author name.
-   * @param authorDate        date the changes were authored.
-   * @param message           commit message.
-   * @param parentShas        parent commit SHAs (one for normal commits, two for merge commits).
+   * @param commitSha full 40-character commit SHA.
+   * @param branch branch name.
+   * @param author author name.
+   * @param authorDate date the changes were authored.
+   * @param message commit message.
+   * @param parentShas parent commit SHAs (one for normal commits, two for merge commits).
    * @param changesByResource map of resource URI -> ordered atomic EChanges, from
    *     {@link SemanticChangeBuffer#drainChanges()}.
-   * @param activeResources   all currently loaded EMF Resources; used to locate the resource
+   * @param activeResources all currently loaded EMF Resources; used to locate the resource
    *     objects for XMI snapshot writing. May be null or empty to skip XMI.
-   * @param uuidResolver      resolver used to convert EObjects to stable UUIDs for JSON output.
+   * @param uuidResolver resolver used to convert EObjects to stable UUIDs for JSON output.
    * @return list of paths of all written files (JSON + any XMI files) for Git staging.
    * @throws IOException if the JSON file cannot be written (XMI failures are non-fatal).
    */
@@ -211,7 +213,7 @@ public class SemanticChangelogManager {
     // File changes with semantic entries
     doc.fileChanges = new ArrayList<>();
     int totalSemantic = 0;
-    List<String> allUuids = new ArrayList<>();
+    Set<String> allUuids = new LinkedHashSet<>();
 
     for (Map.Entry<String, List<EChange<EObject>>> entry : changesByResource.entrySet()) {
       String resourceUri = entry.getKey();
@@ -223,7 +225,6 @@ public class SemanticChangelogManager {
       entries.stream()
           .filter(e -> e.getElementUuid() != null && !e.getElementUuid().equals("unknown"))
           .map(SemanticChangeEntry::getElementUuid)
-          .filter(uuid -> !allUuids.contains(uuid))
           .forEach(allUuids::add);
 
       ChangelogDocument.FileChangeInfo fileInfo = new ChangelogDocument.FileChangeInfo();
@@ -237,7 +238,7 @@ public class SemanticChangelogManager {
     doc.summary = new ChangelogDocument.Summary();
     doc.summary.totalFileChanges = doc.fileChanges.size();
     doc.summary.totalSemanticChanges = totalSemantic;
-    doc.summary.affectedElementUuids = allUuids;
+    doc.summary.affectedElementUuids = new ArrayList<>(allUuids);
 
     return doc;
   }

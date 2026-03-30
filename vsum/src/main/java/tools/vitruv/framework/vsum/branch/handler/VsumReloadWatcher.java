@@ -119,11 +119,8 @@ public class VsumReloadWatcher {
       }
     }
 
-    // clean up any leftover lock file when stopping
     try {
-      if (Files.deleteIfExists(lockFile)) {
-        LOGGER.debug("Cleaned up lock file on watcher stop");
-      }
+      Files.deleteIfExists(lockFile);
     } catch (IOException e) {
       LOGGER.warn("Failed to clean up lock file on stop (non-critical)", e);
     }
@@ -141,7 +138,6 @@ public class VsumReloadWatcher {
 
     while (running) {
       try {
-        // check whether the trigger file exists and parse its contents if so.
         ReloadTriggerFile.TriggerInfo info = triggerFile.checkAndClearTrigger();
         if (info != null) {
           handleReloadRequest(info);
@@ -177,14 +173,12 @@ public class VsumReloadWatcher {
       // the lock file directory must exist before FileChannel.open() can create the file.
       Files.createDirectories(lockFile.getParent());
 
-      // use a non-blocking tryLock() so the watcher can immediately retry on the next
-      // poll cycle rather than blocking indefinitely if another reload is in progress.
+      // tryLock() is non-blocking: returns null immediately if another reload holds it.
       try (FileChannel channel = FileChannel.open(lockFile,
           StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
         FileLock lock = channel.tryLock();
         if (lock == null) {
-          // the lock is held by another reload operation
-          // require re-creating the trigger so this request is not lost and will be retried.
+          // re-create the trigger so this request is not lost and will be retried.
           LOGGER.warn("Another reload is in progress, re-queuing trigger for retry"
               + " (requestId='{}')", info.getRequestId());
           try {
@@ -200,11 +194,8 @@ public class VsumReloadWatcher {
           LOGGER.debug("Lock acquired, performing reload (requestId='{}')", info.getRequestId());
           performSwitch(info);
         } finally {
-          // always release the lock, even if performReload throws, to unblock any reload
-          // requests that are waiting to retry.
           lock.release();
           LOGGER.debug("Lock released (requestId='{}')", info.getRequestId());
-          // delete the lock file after releasing the lock
           try {
             Files.deleteIfExists(lockFile);
             LOGGER.debug("Lock file deleted (requestId='{}')", info.getRequestId());

@@ -127,7 +127,7 @@ public class VsumMergeWatcher {
         LOGGER.error("Error in merge watcher loop, will continue", e);
       }
     }
-    LOGGER.debug("Merge watcher loop existed");
+    LOGGER.debug("Merge watcher loop exited");
   }
 
   private void handleMergeRequest(MergeTriggerFile.TriggerInfo info) {
@@ -141,6 +141,7 @@ public class VsumMergeWatcher {
     try {
       Files.createDirectories(lockFile.getParent());
 
+      // tryLock() is non-blocking: returns null if another merge validation holds it.
       try (FileChannel channel = FileChannel.open(lockFile,
           StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
         FileLock lock = channel.tryLock();
@@ -153,7 +154,7 @@ public class VsumMergeWatcher {
           } catch (IOException e) {
             LOGGER.error("Failed to re-create merge trigger for retry (requestId='{}')",
                 requestId, e);
-            //write a warning result so the hook receives a response instead of waiting
+            // write a warning result so the hook receives a response instead of waiting
             writeWarningResult(requestId, "Merge validation queue full - try again");
           }
           return;
@@ -164,7 +165,6 @@ public class VsumMergeWatcher {
         } finally {
           lock.release();
           LOGGER.debug("Lock released (requestId='{}')", requestId);
-          // delete the lock file after releasing the lock
           try {
             Files.deleteIfExists(lockFile);
             LOGGER.debug("Lock file deleted (requestId='{}')", info.getRequestId());
@@ -189,16 +189,14 @@ public class VsumMergeWatcher {
     try {
       long startTime = System.currentTimeMillis();
 
-      // Validate the merged state first
       ValidationResult result = handler.validate();
       long duration = System.currentTimeMillis() - startTime;
 
       LOGGER.info("Merge validation completed in {}ms: {} (requestId='{}')",
           duration, result.isValid() ? "PASSED" : "WARNING", requestId);
 
-      // Only reload if the merged state is valid
-      // if there are conflict markers or proxy errors, leave the model
-      // in its pre-merge state so the user can fix the issues first
+      // skip VSUM copy and reload if the merged state has conflicts or proxy errors —
+      // leave the model as-is so the user can fix the issues first.
       if (result.isValid()) {
         handler.copyVsumFromSourceBranch(info.getSourceBranch(), info.getTargetBranch());
 
@@ -250,7 +248,7 @@ public class VsumMergeWatcher {
   private void autoStageMetadata(String mergeCommitSha, String mergeShort) {
     try (Git git = Git.open(repositoryRoot.toFile())) {
       Path metadataFile = resultFile.getMetadataPath(mergeCommitSha);
-      //git add expects a forward-slash path relative to the repo root
+      // git add expects a forward-slash path relative to the repo root
       Path relativePath = repositoryRoot.relativize(metadataFile);
       String filePattern = relativePath.toString().replace('\\', '/');
       git.add().addFilepattern(filePattern).call();

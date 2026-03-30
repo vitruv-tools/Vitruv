@@ -65,15 +65,11 @@ public class PostCheckoutHandler {
     LOGGER.info("branch switched from '{}' to '{}'", oldBranch, newBranch);
 
     try {
-      // at this point Git already reflects the new branch, so JGit will resolve the
-      // correct branch name automatically
+      // Git already reflects newBranch at this point; JGit resolves it automatically.
       VsumFileSystemLayout newLayout = new VsumFileSystemLayout(virtualModel.getFolder());
       newLayout.prepare();
       newLayout.inheritFromBranchIfEmpty(oldBranch);
 
-      // let VirtualModel discard its current in-memory state and reload all resources from
-      // the file system. after a branch switch the files on disk represent the new branch,
-      // so reloading is necessary to keep the model consistent.
       LOGGER.debug("reloading VirtualModel for branch '{}'", newBranch);
       virtualModel.reload(newLayout);
       LOGGER.info("VirtualModel reloaded successfully for branch '{}'", newBranch);

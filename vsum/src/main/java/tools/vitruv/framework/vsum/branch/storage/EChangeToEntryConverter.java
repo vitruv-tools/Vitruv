@@ -139,7 +139,7 @@ public class EChangeToEntryConverter {
         .emfType("ReplaceSingleValuedEAttribute")
         .elementUuid(resolveUuid(element))
         .eClass(formatEClass(element))
-        .feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null)
+        .feature(featureName(change))
         .from(formatValue(oldValue))
         .to(formatValue(newValue))
         .containerUuid(resolveContainerUuid(element))
@@ -158,7 +158,7 @@ public class EChangeToEntryConverter {
         .emfType("InsertEAttributeValue")
         .elementUuid(resolveUuid(element))
         .eClass(formatEClass(element))
-        .feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null)
+        .feature(featureName(change))
         .to(formatValue(newValue))
         .position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex())
         .containerUuid(resolveContainerUuid(element))
@@ -177,7 +177,7 @@ public class EChangeToEntryConverter {
         .emfType("RemoveEAttributeValue")
         .elementUuid(resolveUuid(element))
         .eClass(formatEClass(element))
-        .feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null)
+        .feature(featureName(change))
         .from(formatValue(oldValue))
         .position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex())
         .containerUuid(resolveContainerUuid(element))
@@ -207,7 +207,7 @@ public class EChangeToEntryConverter {
         .emfType("ReplaceSingleValuedEReference")
         .elementUuid(resolveUuid(element))
         .eClass(formatEClass(element))
-        .feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null)
+        .feature(featureName(change))
         .from(oldRef != null ? resolveUuid(oldRef) : null)
         .to(newRef != null ? resolveUuid(newRef) : null)
         .containerUuid(resolveContainerUuid(element))
@@ -227,7 +227,7 @@ public class EChangeToEntryConverter {
         .emfType("InsertEReference")
         .elementUuid(resolveUuid(element))
         .eClass(formatEClass(element))
-        .feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null)
+        .feature(featureName(change))
         .referencedElementUuid(inserted != null ? resolveUuid(inserted) : null)
         .to(inserted != null ? resolveUuid(inserted) : null)
         .position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex())
@@ -246,7 +246,7 @@ public class EChangeToEntryConverter {
         .emfType("RemoveEReference")
         .elementUuid(resolveUuid(element))
         .eClass(formatEClass(element))
-        .feature(change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null)
+        .feature(featureName(change))
         .referencedElementUuid(removed != null ? resolveUuid(removed) : null)
         .from(removed != null ? resolveUuid(removed) : null)
         .position(((UpdateSingleListEntryEChange<?, ?>) change).getIndex())
@@ -301,6 +301,10 @@ public class EChangeToEntryConverter {
         .elementUuid(uuid)
         .eClass(eClass)
         .build();
+  }
+
+  private String featureName(FeatureEChange<?, ?> change) {
+    return change.getAffectedFeature() != null ? change.getAffectedFeature().getName() : null;
   }
 
   /**

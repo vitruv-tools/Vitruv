@@ -125,11 +125,8 @@ public class VsumValidationWatcher {
         Thread.currentThread().interrupt();
       }
     }
-    // clean up any leftover lock file when stopping
     try {
-      if (Files.deleteIfExists(lockFile)) {
-        LOGGER.debug("Cleaned up lock file on watcher stop");
-      }
+      Files.deleteIfExists(lockFile);
     } catch (IOException e) {
       LOGGER.warn("Failed to clean up lock file on stop (non-critical)", e);
     }
@@ -146,7 +143,6 @@ public class VsumValidationWatcher {
     LOGGER.debug("Validation watch loop started, polling every {}ms", POLL_INTERVAL_MS);
     while (running) {
       try {
-        // check whether a validation trigger has been created by the pre-commit hook.
         ValidationTriggerFile.TriggerInfo info = triggerFile.checkAndClearTrigger();
         if (info != null) {
           handleValidationRequest(info);
@@ -157,9 +153,7 @@ public class VsumValidationWatcher {
         running = false;
         Thread.currentThread().interrupt();
       } catch (Exception e) {
-        // log the error and continue so that a single bad trigger does not permanently
-        // stop the watcher from processing future requests.
-        LOGGER.error("Error in validation watcher loop, will continue", e);
+          LOGGER.error("Error in validation watcher loop, will continue", e);
       }
     }
     LOGGER.debug("Validation watch loop exited");
@@ -175,7 +169,6 @@ public class VsumValidationWatcher {
    * @param info the trigger information parsed from the trigger file.
    */
   private void handleValidationRequest(ValidationTriggerFile.TriggerInfo info) {
-    // use the standard seven-character short SHA matching the Git convention.
     String commitShort = info.getCommitSha().substring(0, Math.min(7,
         info.getCommitSha().length()));
     String requestId = info.getRequestId();
@@ -187,8 +180,7 @@ public class VsumValidationWatcher {
       // the lock file directory must exist before FileChannel.open() can create the file.
       Files.createDirectories(lockFile.getParent());
 
-      // use a non-blocking tryLock() so the watcher can immediately return and retry on
-      // the next poll cycle rather than blocking the thread indefinitely.
+      // tryLock() is non-blocking: returns null immediately if another validation holds it.
       try (FileChannel channel = FileChannel.open(lockFile,
           StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
         FileLock lock = channel.tryLock();
@@ -212,12 +204,8 @@ public class VsumValidationWatcher {
           LOGGER.debug("Lock acquired for validation (requestId='{}')", requestId);
           performValidation(info, commitShort, requestId);
         } finally {
-          // always release the lock, even if performValidation throws, to unblock any
-          // validation requests that are waiting to retry.
           lock.release();
           LOGGER.debug("Lock released (requestId='{}')", requestId);
-
-          // delete the lock file after releasing the lock
           try {
             Files.deleteIfExists(lockFile);
             LOGGER.debug("Lock file deleted (requestId='{}')", info.getRequestId());
@@ -254,7 +242,6 @@ public class VsumValidationWatcher {
       LOGGER.info("Validation completed in {}ms: {} (requestId='{}')",
           duration, result.isValid() ? "PASSED ✓" : "FAILED ✗", requestId);
 
-      // write the result files so the pre-commit hook can read the outcome.
       try {
         resultFile.writeResult(result, requestId);
         LOGGER.debug("Validation result files written (requestId='{}')", requestId);

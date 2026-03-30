@@ -34,10 +34,6 @@ import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
  *
  * <p>Changelog generation has been moved to {@link PostCommitHandler}, which runs after
  * the commit is finalized and can therefore use the real commit SHA assigned by Git.
- *
- * <p>TODO: domain-specific validation rules, change recorder state validation, integration
- * with Vitruvius reaction validation, detailed correspondence link checking, and orphaned
- * UUID detection are planned for a future iteration.
  */
 public class PreCommitHandler {
 
@@ -70,20 +66,15 @@ public class PreCommitHandler {
     List<String> errors = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     try {
-      // check all resources are loadable and free of XMI parse errors
       validateResourcesLoadable(errors, warnings);
-      // check that no cross-references point to unresolved proxy objects
       validateNoProxies(errors);
-      // check that the correspondence model is reachable.
       validateCorrespondences(errors, warnings);
-      // check that the UUID resolver is reachable.
       validateUuidResolver(errors);
     } catch (Exception e) {
       errors.add("Validation failed with unexpected exception: " + e.getMessage());
       LOGGER.error("Unexpected validation error", e);
     }
 
-    // build the result from the collected errors and warnings.
     ValidationResult result;
     if (!errors.isEmpty()) {
       result = warnings.isEmpty()
@@ -113,20 +104,16 @@ public class PreCommitHandler {
     LOGGER.debug("Validating {} resources", resources.size());
     for (Resource resource : resources) {
       try {
-        // load the resource if it has not been loaded yet, so that parse errors surface
-        // now rather than silently remaining undetected.
         if (!resource.isLoaded()) {
           LOGGER.debug("Loading resource: {}", resource.getURI());
           resource.load(Collections.emptyMap());
         }
-        // collect all XMI parse errors reported by the resource.
         if (!resource.getErrors().isEmpty()) {
           for (Resource.Diagnostic error : resource.getErrors()) {
             errors.add("Resource load error in " + resource.getURI() + ": "
                 + error.getMessage() + " (line " + error.getLine() + ")");
           }
         }
-        // collect parse warnings, which do not block the commit but should be visible.
         if (!resource.getWarnings().isEmpty()) {
           for (Resource.Diagnostic warning : resource.getWarnings()) {
             warnings.add("Resource warning in " + resource.getURI()
@@ -155,20 +142,16 @@ public class PreCommitHandler {
 
     for (Resource resource : resources) {
       if (resource.isLoaded()) {
-        // traverse all model objects in the resource recursively.
         TreeIterator<EObject> iterator = resource.getAllContents();
         while (iterator.hasNext()) {
           EObject obj = iterator.next();
-          // an object that is itself a proxy means its containing resource was not
-          // resolved during load.
           if (obj.eIsProxy()) {
             String uri = EcoreUtil.getURI(obj).toString();
             errors.add("Unresolved proxy object: " + uri
                 + " in resource " + resource.getURI());
             proxyCount++;
           }
-          // check non-containment references without resolving them, so that dangling
-          // proxies are reported rather than silently auto-resolved.
+          // pass false to eGet to avoid auto-resolving proxies — we want to report them.
           for (EReference ref : obj.eClass().getEAllReferences()) {
             if (!ref.isContainment()) {
               Object value = obj.eGet(ref, false);
@@ -211,8 +194,7 @@ public class PreCommitHandler {
         errors.add("Correspondence model is null");
         return;
       }
-      // accessibility is the only check possible at this stage because the correspondence
-      // model view does not currently expose a full enumeration API.
+      // full link enumeration requires a correspondence model view API that is not yet exposed.
       LOGGER.debug("Correspondence model is accessible");
     } catch (Exception e) {
       errors.add("Failed to access correspondence model: " + e.getMessage());
@@ -231,8 +213,6 @@ public class PreCommitHandler {
         errors.add("UUID resolver is null");
         return;
       }
-      // accessibility is the only check performed at this stage
-      // deeper validation such as orphaned UUID detection will be added in a future iteration.
       LOGGER.debug("UUID resolver is accessible");
     } catch (Exception e) {
       errors.add("Failed to access UUID resolver: " + e.getMessage());

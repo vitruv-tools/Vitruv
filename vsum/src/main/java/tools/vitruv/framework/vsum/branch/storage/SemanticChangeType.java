@@ -8,9 +8,9 @@ package tools.vitruv.framework.vsum.branch.storage;
  * on {@link SemanticChangeEntry}) and carries a plain description that is written to the
  * changelog so readers unfamiliar with EMF can still understand what happened.
  *
- * <p>Conflict severity guidance (used by a future TODO: {@code ConflictClassifier}):
+ * <p>Conflict severity guidance:
  * <ul>
- *   <li><b>Low</b>  – {@link #ELEMENT_CREATED}, {@link #ATTRIBUTE_VALUE_INSERTED},
+ *   <li><b>Low</b> – {@link #ELEMENT_CREATED}, {@link #ATTRIBUTE_VALUE_INSERTED},
  *       {@link #ATTRIBUTE_VALUE_REMOVED} when both branches affect different elements or
  *       features.</li>
  *   <li><b>Medium</b> – {@link #ATTRIBUTE_CHANGED} / {@link #REFERENCE_CHANGED} on the same
@@ -23,7 +23,7 @@ package tools.vitruv.framework.vsum.branch.storage;
  */
 public enum SemanticChangeType {
 
-  // 1.Type: Object lifecycle
+  // Object lifecycle
   /**
    * A new model element was created. Maps to {@code CreateEObject}.
    */
@@ -44,7 +44,7 @@ public enum SemanticChangeType {
    */
   ROOT_REMOVED("A root element was removed from a resource"),
 
-  // 2.Type: Single-valued attributes
+  // Single-valued attributes
   /**
    * An attribute received its first value (previous value was unset / default).
    * Maps to {@code ReplaceSingleValuedEAttribute} where {@code oldValue == null}.
@@ -63,7 +63,7 @@ public enum SemanticChangeType {
    */
   ATTRIBUTE_CLEARED("An attribute was cleared"),
 
-  // 3.Type: Multi-valued attributes
+  // Multi-valued attributes
   /**
    * A value was appended or inserted into a multi-valued attribute list.
    * Maps to {@code InsertEAttributeValue}.
@@ -76,7 +76,7 @@ public enum SemanticChangeType {
    */
   ATTRIBUTE_VALUE_REMOVED("A value was removed from an attribute list"),
 
-  // 4.Type: Single-valued references
+  // Single-valued references
   /**
    * A reference was linked to a target element for the first time.
    * Maps to {@code ReplaceSingleValuedEReference} where {@code oldValue == null}.
@@ -95,7 +95,7 @@ public enum SemanticChangeType {
    */
   REFERENCE_CLEARED("A reference was unlinked"),
 
-  // 5.Type: Multi-valued references / containment
+  // Multi-valued references / containment
   /**
    * An element was added to a multi-valued reference or containment list.
    * Maps to {@code InsertEReference}.
@@ -108,7 +108,7 @@ public enum SemanticChangeType {
    */
   REFERENCE_VALUE_REMOVED("An element was removed from a reference list"),
 
-  // 6.Type: Ordering
+  // Ordering
   /**
    * Elements within an ordered containment were rearranged without adding or removing them.
    * Maps to {@code PermuteContainmentEReference}.

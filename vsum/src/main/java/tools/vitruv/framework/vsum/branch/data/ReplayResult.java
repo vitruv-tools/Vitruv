@@ -6,67 +6,48 @@ import lombok.Getter;
 import tools.vitruv.framework.vsum.branch.storage.SemanticChangeEntry;
 
 /**
- * The result of a semantic replay performed by
+ * Result of a semantic replay performed by
  * {@link tools.vitruv.framework.vsum.branch.ChangeReplayer}.
  *
  * <p>Contains the full semantic picture of what two branches changed since their common
- * ancestor:
- * <ul>
- *   <li>The SHA of the common ancestor commit.</li>
- *   <li>Short SHAs of all commits on each branch since the ancestor.</li>
- *   <li>All {@link SemanticChangeEntry} records collected from those commits' JSON changelogs.</li>
- *   <li>The list of {@link SemanticConflict}s where both branches changed the same model element
- *       in an incompatible way.</li>
- * </ul>
- *
- * <p>Consumed by the conflict resolution UI (MG-8) and by {@code MergeManager} when choosing
- * between auto-merge and manual resolution strategies.
+ * ancestor: per-branch commit SHAs, all {@link SemanticChangeEntry} records from those
+ * commits' JSON changelogs, and any detected {@link SemanticConflict}s.
  */
 @Getter
 public class ReplayResult {
 
   /**
-   * Full SHA of the common ancestor commit from which both branches diverged.
-   * {@code null} if no common ancestor could be found (unrelated histories).
+   * Full SHA of the common ancestor commit. {@code null} if histories are unrelated.
    */
   private final String ancestorSha;
 
-  /**
-   * Short SHAs (7-char) of commits on branch A since the ancestor.
-   */
+  /** 7-char short SHAs of commits on branch A since the ancestor. */
   private final List<String> commitShasOnA;
 
-  /**
-   * Short SHAs (7-char) of commits on branch B since the ancestor.
-   */
+  /** 7-char short SHAs of commits on branch B since the ancestor. */
   private final List<String> commitShasOnB;
 
-  /**
-   * All semantic change entries collected from branch A's changelogs.
-   */
+  /** Semantic change entries collected from branch A's changelogs. */
   private final List<SemanticChangeEntry> changesOnA;
 
-  /**
-   * All semantic change entries collected from branch B's changelogs.
-   */
+  /** Semantic change entries collected from branch B's changelogs. */
   private final List<SemanticChangeEntry> changesOnB;
 
   /**
    * Conflicts where both branches changed the same {@code (elementUuid, feature)} pair
-   * in an incompatible way. Empty when both branches made non-overlapping changes.
+   * in an incompatible way. Empty when branches made non-overlapping changes.
    */
   private final List<SemanticConflict> conflicts;
 
   /**
-   * Creates a new {@link ReplayResult} with all replay data.
+   * Creates a new {@link ReplayResult}.
    *
-   * @param ancestorSha    full SHA of the common ancestor commit; may be null for unrelated
-   *                       histories.
-   * @param commitShasOnA  short SHAs of commits on branch A since the ancestor.
-   * @param commitShasOnB  short SHAs of commits on branch B since the ancestor.
-   * @param changesOnA     semantic change entries from branch A's changelogs.
-   * @param changesOnB     semantic change entries from branch B's changelogs.
-   * @param conflicts      detected semantic conflicts between the two branches.
+   * @param ancestorSha full SHA of the common ancestor; may be null.
+   * @param commitShasOnA short SHAs of commits on branch A.
+   * @param commitShasOnB short SHAs of commits on branch B.
+   * @param changesOnA semantic changes from branch A.
+   * @param changesOnB semantic changes from branch B.
+   * @param conflicts detected semantic conflicts.
    */
   public ReplayResult(String ancestorSha, List<String> commitShasOnA,
       List<String> commitShasOnB,
@@ -81,23 +62,17 @@ public class ReplayResult {
     this.conflicts = List.copyOf(Objects.requireNonNull(conflicts));
   }
 
-  /**
-   * Returns {@code true} if at least one semantic conflict was detected.
-   */
+  /** Returns {@code true} if at least one semantic conflict was detected. */
   public boolean hasConflicts() {
     return !conflicts.isEmpty();
   }
 
-  /**
-   * Returns the number of HIGH-severity conflicts.
-   */
+  /** Returns the number of HIGH-severity conflicts. */
   public long highSeverityCount() {
     return conflicts.stream().filter(c -> c.getSeverity() == ConflictSeverity.HIGH).count();
   }
 
-  /**
-   * Returns the number of MEDIUM-severity conflicts.
-   */
+  /** Returns the number of MEDIUM-severity conflicts. */
   public long mediumSeverityCount() {
     return conflicts.stream().filter(c -> c.getSeverity() == ConflictSeverity.MEDIUM).count();
   }

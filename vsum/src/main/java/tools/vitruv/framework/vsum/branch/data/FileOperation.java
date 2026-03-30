@@ -12,13 +12,6 @@ package tools.vitruv.framework.vsum.branch.data;
  *   <li>{@link #RENAMED} - Git status code {@code R}: file moved to a new location.</li>
  *   <li>{@link #COPIED} - Git status code {@code C}: file duplicated to a new location.</li>
  * </ul>
- *
- * <p>These operation types are also intended to drive conflict categorization and resolution
- * strategies during branch merges. For example, two concurrent {@link #MODIFIED} operations
- * on the same file suggest a content conflict requiring a three-way merge, while an
- * {@link #ADDED} on one branch and a {@link #DELETED} on another requires an explicit
- * keep-or-delete decision. This classification is planned for a future iteration once
- * element-level change tracking is available.
  */
 public enum FileOperation {
 
@@ -42,14 +35,13 @@ public enum FileOperation {
 
     /**
      * A file was moved to a new location. The previous path is captured in the
-     * {@code oldPath} field of the corresponding {@link FileChange}.
+     * {@code oldPath} field of the changelog entry.
      * Corresponds to Git status code {@code R}.
      */
     RENAMED,
 
     /**
-     * A file was duplicated to a new location. Tracking of the source path alongside
-     * the destination path is planned for a future iteration.
+     * A file was duplicated to a new location.
      * Corresponds to Git status code {@code C}.
      */
     COPIED

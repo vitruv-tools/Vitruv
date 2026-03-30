@@ -74,7 +74,6 @@ public class PostCommitTriggerFile extends AbstractTriggerFile<PostCommitTrigger
     String requestId = UUID.randomUUID().toString();
     long timestamp = System.currentTimeMillis();
 
-    // format the four fields and delegate the write to the base class.
     writeTrigger(String.format("%s%s%s%s%s%s%d",
         commitSha, DELIMITER, branch, DELIMITER, requestId, DELIMITER, timestamp));
 

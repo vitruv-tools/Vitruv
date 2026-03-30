@@ -45,7 +45,7 @@ public class PostMergeHandler {
    */
   public PostMergeHandler(InternalVirtualModel virtualModel, Path repositoryRoot) {
     this.virtualModel = checkNotNull(virtualModel, "virtual model must not be null");
-    this.repositoryRoot = checkNotNull(repositoryRoot, "repositorx root must not be null");
+    this.repositoryRoot = checkNotNull(repositoryRoot, "repository root must not be null");
   }
 
   /**
@@ -60,17 +60,11 @@ public class PostMergeHandler {
     List<String> warnings = new ArrayList<>();
 
     try {
-      // validate resource loadable
       validateResourcesLoadable(errors, warnings);
-      //validate no conflict markers
       validateNoConflictMarkers(errors);
-      // validate noProxies
       validateNoProxies(errors);
-      //validate correspondences
       validateCorrespondences(errors, warnings);
-      // validate uuid resolver
       validateUuidResolver(errors);
-
     } catch (Exception e) {
       errors.add("Post-merge validation failed with unexpected exception: " + e.getMessage());
       LOGGER.error("Unexpected post-merge validation error", e);
@@ -266,13 +260,12 @@ public class PostMergeHandler {
     }
 
     try {
-      // remove stale target vsum state before copying
+      // remove stale target state before copying so no old files linger
       if (Files.exists(targetVsum)) {
         deleteDirectory(targetVsum);
         LOGGER.debug("Removed stale VSUM state for target branch '{}'", targetBranch);
       }
 
-      // Copy source VSUM to target recursively
       copyDirectory(sourceVsum, targetVsum);
       LOGGER.info("Copied VSUM state from '{}' to '{}' after merge", sourceBranch, targetBranch);
 

@@ -117,8 +117,6 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
       String content = Files.readString(triggerFilePath);
       String[] parts = SPLIT_PATTERN.split(content.trim());
 
-      // delegate field-level parsing to the subclass - it knows how many fields
-      // to expect and what each field means.
       T info = parseTriggerInfo(parts);
       if (info == null) {
         // parseTriggerInfo returns null when the parts are invalid; discard the file.
@@ -128,9 +126,6 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
         return null;
       }
 
-      // attempt to delete the trigger now that it has been successfully consumed.
-      // if the delete fails, the info is still returned so the watcher can act on it;
-      // deletion will be retried on the next poll cycle.
       try {
         Files.delete(triggerFilePath);
         LOGGER.debug("Trigger file consumed and cleared: {}", triggerFilePath);
@@ -200,14 +195,8 @@ public abstract class AbstractTriggerFile<T extends AbstractTriggerFile.TriggerI
    */
   public abstract static class TriggerInfo {
 
-    /**
-     * Unique request identifier (UUID) for tracing this request across logs.
-     */
     private final String requestId;
 
-    /**
-     * Timestamp in milliseconds since epoch when the trigger file was created.
-     */
     private final long timestamp;
 
     /**

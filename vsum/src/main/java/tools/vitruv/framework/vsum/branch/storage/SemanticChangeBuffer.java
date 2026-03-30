@@ -55,6 +55,7 @@ public class SemanticChangeBuffer implements ChangePropagationListener {
 
   @Override
   public synchronized void startedChangePropagation(VitruviusChange<Uuid> changeToPropagate) {
+    // no-op
   }
 
   /**

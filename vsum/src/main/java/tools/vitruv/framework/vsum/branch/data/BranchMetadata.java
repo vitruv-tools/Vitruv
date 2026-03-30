@@ -16,72 +16,37 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Holds the Vitruvius-specific metadata for a single Git branch. While Git itself only stores
- * branch references as pointers to commits, this class tracks additional information that the
- * Vsum needs: the lifecycle state, the parent branch from which this branch was forked,
- * creation and modification timestamps, and a short unique identifier derived from the commit
- * hash at branch creation time.
+ * Vitruvius-specific metadata for a single Git branch, persisted as a JSON file under
+ * {@code .vitruvius/branches/<branchName>.metadata}.
  *
- * <p>Metadata is persisted as a JSON file under
- * {@code .vitruvius/branches/<branchName>.metadata}. This format is intentionally
- * human-readable so that supervisors and developers can inspect branch history without
- * tooling. The file is written by {@link #writeTo(Path)} and reconstructed by
- * {@link #readFrom(Path)}.
+ * <p>Tracks information Git does not store: lifecycle state, the parent branch this branch
+ * was forked from, and creation/modification timestamps.
  *
- * <p>The {@code name} and {@code parent} fields are immutable after construction. The
- * {@code state} field may change over the lifetime of the branch (for example from
- * {@link BranchState#ACTIVE} to {@link BranchState#DELETED}) and is updated via
- * {@link #setState(BranchState)}, which also updates the {@code lastModified} timestamp
- * automatically.
+ * <p>{@code name} and {@code parent} are immutable after construction. {@code state} may
+ * change over the branch lifetime (e.g. ACTIVE → DELETED) via {@link #setState}, which
+ * also refreshes {@code lastModified} automatically.
  */
 @Getter
 public class BranchMetadata {
-  private static final Logger LOGGER = LogManager.getLogger(BranchMetadata.class);
 
-  /**
-   * Formatter used for both writing and reading timestamp fields.
-   */
+  private static final Logger LOGGER = LogManager.getLogger(BranchMetadata.class);
   private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
   private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-  /**
-   * -- GETTER --
-   * returns the name of this branch.
-   */
   private final String name;
-
-  /**
-   * -- GETTER --
-   * returns the current lifecycle state of this branch.
-   */
   private BranchState state;
-
-  /**
-   * -- GETTER --
-   * returns the name of the parent branch from which this branch was created.
-   */
   private final String parent;
-
-  /**
-   * -- GETTER --
-   * returns the timestamp when this branch was created.
-   */
   private final LocalDateTime createdAt;
-
-  /**
-   * -- GETTER --
-   * returns the timestamp of the most recent modification to this branch metadata.
-   */
   private LocalDateTime lastModified;
 
   /**
-   * Creates a new {@link BranchMetadata} instance with all required fields.
+   * Creates a new {@link BranchMetadata} instance.
    *
-   * @param name         the name of the branch.
-   * @param state        the current lifecycle state of the branch.
-   * @param parent       the name of the branch from which this branch was forked.
-   * @param createdAt    the timestamp when the branch was created.
-   * @param lastModified the timestamp of the most recent modification to this metadata.
+   * @param name branch name.
+   * @param state current lifecycle state.
+   * @param parent name of the branch this branch was forked from.
+   * @param createdAt creation timestamp.
+   * @param lastModified last modification timestamp.
    */
   public BranchMetadata(String name, BranchState state, String parent,
       LocalDateTime createdAt, LocalDateTime lastModified) {
@@ -93,10 +58,9 @@ public class BranchMetadata {
   }
 
   /**
-   * Sets the lifecycle state of this branch and updates the {@code lastModified} timestamp
-   * to the current time.
+   * Updates the lifecycle state and refreshes {@code lastModified} to now.
    *
-   * @param state the new lifecycle state. must not be null.
+   * @param state the new lifecycle state, must not be null.
    */
   public void setState(BranchState state) {
     this.state = checkNotNull(state, "branch state must not be null");
@@ -104,7 +68,7 @@ public class BranchMetadata {
   }
 
   /**
-   * Updates lastModified to now without changing any other field.
+   * Refreshes {@code lastModified} to now without changing any other field.
    * Called when a commit is made on this branch.
    */
   public void updateLastModified() {
@@ -112,15 +76,11 @@ public class BranchMetadata {
   }
 
   /**
-   * Writes all metadata fields to a JSON file at the given path.
-   * Parent directories are created automatically if they do not exist, so callers do not
-   * need to create the {@code .vitruvius/branches/} directory in advance.
+   * Serializes this metadata to a pretty-printed JSON file at {@code path}.
+   * Parent directories are created automatically if they do not exist.
    *
-   * <p>The key insertion order is preserved (name, state, parent, createdAt, lastModified)
-   * to make the file easy to read and diff in version control.
-   *
-   * @param path the file path to write the metadata to.
-   * @throws IOException if the file or its parent directories cannot be created or written.
+   * @param path target file path.
+   * @throws IOException if the file cannot be written.
    */
   public void writeTo(Path path) throws IOException {
     Files.createDirectories(path.getParent());
@@ -137,12 +97,12 @@ public class BranchMetadata {
   }
 
   /**
-   * Reads branch metadata from a JSON file at the given path.
+   * Deserializes a {@link BranchMetadata} instance from the JSON file at {@code path}.
    *
-   * @param path the file path to read from.
-   * @return a new {@link BranchMetadata} instance populated from the file contents.
-   * @throws IOException              if the file cannot be read.
-   * @throws IllegalArgumentException if a required key is missing or a value cannot be parsed.
+   * @param path source file path.
+   * @return the reconstructed metadata.
+   * @throws IOException if the file cannot be read.
+   * @throws IllegalArgumentException if a required field is missing or malformed.
    */
   public static BranchMetadata readFrom(Path path) throws IOException {
     String content = Files.readString(path);

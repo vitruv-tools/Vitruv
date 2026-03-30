@@ -32,18 +32,18 @@ public class CommitResult {
   /** Relative paths of all files that were staged and included in the commit. */
   private final List<String> stagedFiles;
 
-  /** Whether any model files were included — determines if changelog should be generated. */
+  /** Whether any model files were included - determines if changelog should be generated. */
   private final boolean hasModelChanges;
 
   /**
    * Creates a new {@link CommitResult} with all commit metadata.
    *
-   * @param commitSha       the full 40-character Git commit SHA.
-   * @param branch          the branch on which the commit was made.
-   * @param authorName      the author name from Git config.
-   * @param authorEmail     the author email from Git config.
-   * @param authorDate      the timestamp of the commit.
-   * @param stagedFiles     relative paths of all staged files.
+   * @param commitSha the full 40-character Git commit SHA.
+   * @param branch the branch on which the commit was made.
+   * @param authorName the author name from Git config.
+   * @param authorEmail the author email from Git config.
+   * @param authorDate the timestamp of the commit.
+   * @param stagedFiles relative paths of all staged files.
    * @param hasModelChanges whether any model files were part of the commit.
    */
   public CommitResult(String commitSha, String branch, String authorName, String authorEmail,

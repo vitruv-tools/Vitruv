@@ -58,12 +58,11 @@ public class SemanticConflict {
   /**
    * Creates a new {@link SemanticConflict} with all conflict details.
    *
-   * @param elementUuid    stable Vitruvius UUID of the conflicting model element.
-   * @param feature        structural feature that was changed; may be null for lifecycle
-   *                       conflicts.
+   * @param elementUuid stable Vitruvius UUID of the conflicting model element.
+   * @param feature structural feature that was changed; may be null for lifecycle conflicts.
    * @param changeOnBranchA the semantic change recorded on branch A.
    * @param changeOnBranchB the semantic change recorded on branch B.
-   * @param severity       how severe this conflict is.
+   * @param severity how severe this conflict is.
    */
   public SemanticConflict(String elementUuid, String feature,
       SemanticChangeEntry changeOnBranchA,
