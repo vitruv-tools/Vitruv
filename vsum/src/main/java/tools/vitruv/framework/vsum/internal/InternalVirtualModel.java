@@ -32,5 +32,5 @@ public interface InternalVirtualModel extends VirtualModel, ChangeableViewSource
      * discarding any in-memory state. Called after a merge to reflect the merged
      * model files on disk without switching the vsum layout.
      */
-    void reload();
+  void reload();
 }

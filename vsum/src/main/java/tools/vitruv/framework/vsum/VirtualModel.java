@@ -17,11 +17,12 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    */
   Path getFolder();
 
-    /**
-     * Reloads all models from the file system, discarding any in memory state and reflecting the current state of
-     * the files on disk.
-     * This is typically called after a git branch switch to ensure the virtual model reflects the checked-out branch.
-     */
+  /**
+   * Reloads all models from the file system, discarding any in memory state and
+   * reflecting the current state of the files on disk.
+   * This is typically called after a git branch switch to ensure
+   * the virtual model reflects the checked-out branch.
+   */
   void reload(VsumFileSystemLayout newLayout);
 
   /**

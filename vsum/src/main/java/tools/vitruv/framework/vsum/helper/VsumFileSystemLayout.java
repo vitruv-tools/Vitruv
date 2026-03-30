@@ -23,7 +23,6 @@ public class VsumFileSystemLayout {
     private static final String CORRESPONDENCES_FILE = "correspondences.correspondence";
     private static final String UUIDS_FILE = "uuid.uuid";
     private static final String MODELS_FILE = "models.models";
-    private static final String VSUM_FOLDER_NAME = "vsum";
     private static final String CONSISTENCY_METADATA_FOLDER_NAME = "consistencymetadata";
 
     /**
