@@ -13,17 +13,20 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for {@link GitHookInstaller}.
  *
- * <p>Each test initializes a real temporary Git repository using JGit so that the hooks directory exists and file system operations can be verified end to end.
+ * <p>Each test initializes a real temporary Git repository using JGit
+ * so that the hooks directory exists and file system operations can be verified end to end.
  * No mocking is used because the installer's behavior is entirely about file system state.
  *
  * <p>Tests that read hook script content (for example checking for the shebang line or the trigger file reference) 
  * depend on the hook resource files being present on the classpath under {@code /git-hooks/}. 
- * If those resources are missing the installation will throw an {@link java.io.IOException} and the test will fail with a clear message.
+ * If those resources are missing the installation will throw an {@link java.io.IOException}
+ * and the test will fail with a clear message.
  */
 class GitHookInstallerTest {
 
     /**
-     * Verifies that constructing an installer with a directory that is not a Git repository raises an {@link IllegalArgumentException}.
+     * Verifies that constructing an installer with a directory
+     * that is not a Git repository raises an {@link IllegalArgumentException}.
      * Without a {@code .git/hooks} directory there is no valid target for hook installation.
      */
     @Test
@@ -59,7 +62,8 @@ class GitHookInstallerTest {
     }
 
     /**
-     * Verifies that installing the post-checkout hook writes the hook file to disk and that the installer's own predicate reflects the new state.
+     * Verifies that installing the post-checkout hook writes the hook file to disk
+     * and that the installer's own predicate reflects the new state.
      */
     @Test
     @DisplayName("installs the post-checkout hook and reports it as installed")
@@ -72,12 +76,14 @@ class GitHookInstallerTest {
 
             installer.installPostCheckoutHook();
 
-            assertTrue(installer.isPostCheckoutHookInstalled(), "hook must be reported as installed after installPostCheckoutHook()");
+            assertTrue(installer.isPostCheckoutHookInstalled(),
+                    "hook must be reported as installed after installPostCheckoutHook()");
         }
     }
 
     /**
-     * Verifies that installing the pre-commit hook writes the hook file to disk and that the installer's own predicate reflects the new state.
+     * Verifies that installing the pre-commit hook writes the hook file to disk
+     * and that the installer's own predicate reflects the new state.
      */
     @Test
     @DisplayName("installs the pre-commit hook and reports it as installed")
@@ -89,13 +95,16 @@ class GitHookInstallerTest {
 
             installer.installPreCommitHook();
 
-            assertTrue(installer.isPreCommitHookInstalled(), "hook must be reported as installed after installPreCommitHook()");
+            assertTrue(installer.isPreCommitHookInstalled(),
+                    "hook must be reported as installed after installPreCommitHook()");
         }
     }
 
     /**
-     * Verifies that the installed post-checkout script is a valid bash script that references the Vitruvius reload trigger file.
-     * This confirms that the correct resource was copied from the classpath and that the file content was not corrupted during the copy.
+     * Verifies that the installed post-checkout script is a valid bash script
+     * that references the Vitruvius reload trigger file.
+     * This confirms that the correct resource was copied from the classpath and
+     * that the file content was not corrupted during the copy.
      */
     @Test
     @DisplayName("post-checkout hook script contains the expected shebang and trigger reference")
@@ -107,11 +116,14 @@ class GitHookInstallerTest {
             var content = Files.readString(tempDir.resolve(".git/hooks/post-checkout"));
 
             // the shebang line is required for Git to invoke the script via the correct shell.
-            assertTrue(content.startsWith("#!/bin/bash"), "hook script must start with a bash shebang line");
+            assertTrue(content.startsWith("#!/bin/bash"),
+                    "hook script must start with a bash shebang line");
             // the reload trigger file reference confirms this is the Vitruvius hook and not
             // some other script that happened to be installed.
-            assertTrue(content.contains("reload-trigger"), "hook script must reference the reload-trigger file");
-            assertTrue(content.contains(".vitruvius"), "hook script must reference the .vitruvius directory");
+            assertTrue(content.contains("reload-trigger"),
+                    "hook script must reference the reload-trigger file");
+            assertTrue(content.contains(".vitruvius"),
+                    "hook script must reference the .vitruvius directory");
         }
     }
 
@@ -135,17 +147,21 @@ class GitHookInstallerTest {
             installer.installPostCheckoutHook();
 
             // the backup must exist and contain the original content so it can be restored later.
-            assertTrue(Files.exists(backupPath), "backup file must be created from the existing hook");
-            assertEquals(originalContent, Files.readString(backupPath), "backup must contain the original hook content");
+            assertTrue(Files.exists(backupPath),
+                    "backup file must be created from the existing hook");
+            assertEquals(originalContent, Files.readString(backupPath),
+                    "backup must contain the original hook content");
 
             // the installed hook must be the Vitruvius hook, not the original.
             var newContent = Files.readString(hookPath);
-            assertTrue(newContent.contains("reload-trigger"), "the installed hook must be the Vitruvius post-checkout hook");
+            assertTrue(newContent.contains("reload-trigger"),
+                    "the installed hook must be the Vitruvius post-checkout hook");
         }
     }
 
     /**
-     * Verifies that {@link GitHookInstaller#installAllHooks()} installs both the post-checkout and the pre-commit hooks in a single call.
+     * Verifies that {@link GitHookInstaller#installAllHooks()} installs both the post-checkout
+     * and the pre-commit hooks in a single call.
      * Each hook is checked independently because both must be present for the full Vitruvius workflow to work.
      */
     @Test
@@ -156,13 +172,16 @@ class GitHookInstallerTest {
 
             installer.installAllHooks();
 
-            assertTrue(installer.isPostCheckoutHookInstalled(), "post-checkout hook must be installed by installAllHooks()");
-            assertTrue(installer.isPreCommitHookInstalled(), "pre-commit hook must be installed by installAllHooks()");
+            assertTrue(installer.isPostCheckoutHookInstalled(),
+                    "post-checkout hook must be installed by installAllHooks()");
+            assertTrue(installer.isPreCommitHookInstalled(),
+                    "pre-commit hook must be installed by installAllHooks()");
         }
     }
 
     /**
-     * Verifies that uninstalling a hook removes it from the hooks directory so that Git will no longer invoke it on branch switches.
+     * Verifies that uninstalling a hook removes it from the hooks directory
+     * so that Git will no longer invoke it on branch switches.
      */
     @Test
     @DisplayName("uninstalls the post-checkout hook and reports it as not installed")
@@ -174,12 +193,14 @@ class GitHookInstallerTest {
 
             installer.uninstallPostCheckoutHook();
 
-            assertFalse(installer.isPostCheckoutHookInstalled(), "hook must not be reported as installed after uninstall");
+            assertFalse(installer.isPostCheckoutHookInstalled(),
+                    "hook must not be reported as installed after uninstall");
         }
     }
 
     /**
-     * Verifies that when a backup was created during installation, uninstalling the Vitruvius hook restores the developer's original hook.
+     * Verifies that when a backup was created during installation,
+     * uninstalling the Vitruvius hook restores the developer's original hook.
      */
     @Test
     @DisplayName("uninstall restores the original hook from the backup")
@@ -194,13 +215,15 @@ class GitHookInstallerTest {
 
             // install creates the backup and replaces the hook with the Vitruvius version.
             installer.installPostCheckoutHook();
-            assertTrue(Files.readString(hookPath).contains("reload-trigger"), "Vitruvius hook must be active after installation");
+            assertTrue(Files.readString(hookPath).contains("reload-trigger"),
+                    "Vitruvius hook must be active after installation");
 
             // uninstall must remove the Vitruvius hook and move the backup back.
             installer.uninstallPostCheckoutHook();
 
             assertTrue(Files.exists(hookPath), "the original hook file must exist after uninstall");
-            assertEquals(originalContent, Files.readString(hookPath), "the restored hook must match the original content");
+            assertEquals(originalContent, Files.readString(hookPath),
+                    "the restored hook must match the original content");
         }
     }
 

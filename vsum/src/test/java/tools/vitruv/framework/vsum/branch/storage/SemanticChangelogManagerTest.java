@@ -33,7 +33,8 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings({"rawtypes", "unchecked"})
 class SemanticChangelogManagerTest {
 
-    @TempDir Path repoRoot;
+    @TempDir
+    Path repoRoot;
 
     private UuidResolver uuidResolver;
     private CreateEObject createChange;
@@ -41,19 +42,19 @@ class SemanticChangelogManagerTest {
 
     private SemanticChangelogManager manager;
 
-    private static final String COMMIT_SHA  = "abc1234567890abcdef1234567890abcdef12345";
-    private static final String SHORT_SHA   = "abc1234";
-    private static final String BRANCH      = "feature-x";
-    private static final String AUTHOR      = "Alice";
+    private static final String COMMIT_SHA = "abc1234567890abcdef1234567890abcdef12345";
+    private static final String SHORT_SHA = "abc1234";
+    private static final String BRANCH = "feature-x";
+    private static final String AUTHOR = "Alice";
     private static final LocalDateTime DATE = LocalDateTime.of(2026, 3, 19, 10, 0, 0);
-    private static final String MESSAGE     = "Add entity model";
+    private static final String MESSAGE = "Add entity model";
 
     @BeforeEach
     void setUp() {
         uuidResolver = mock(UuidResolver.class);
         createChange = mock(CreateEObject.class);
-        element      = mock(EObject.class);
-        manager      = new SemanticChangelogManager(repoRoot);
+        element = mock(EObject.class);
+        manager = new SemanticChangelogManager(repoRoot);
     }
 
     @Nested
@@ -95,7 +96,7 @@ class SemanticChangelogManagerTest {
         @Test
         @DisplayName("Different branches produce files in separate directories")
         void differentBranchesProduceFilesInSeparateDirectories() throws IOException {
-            manager.write(COMMIT_SHA, "main",      AUTHOR, DATE, MESSAGE, List.of(), changesByResource(), null, uuidResolver);
+            manager.write(COMMIT_SHA, "main", AUTHOR, DATE, MESSAGE, List.of(), changesByResource(), null, uuidResolver);
             manager.write(COMMIT_SHA, "feature-x", AUTHOR, DATE, MESSAGE, List.of(), changesByResource(), null, uuidResolver);
 
             assertTrue(Files.exists(repoRoot.resolve(".vitruvius/changelogs/main/json/" + SHORT_SHA + ".json")));

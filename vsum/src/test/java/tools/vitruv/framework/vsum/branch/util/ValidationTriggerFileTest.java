@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for {@link ValidationTriggerFile}.
  *
- * <p>The tests cover the normal create-and-consume lifecycle, the four-field file format, backward compatibility with the legacy two-field format,
+ * <p>The tests cover the normal create-and-consume lifecycle, the four-field file format,
+ * backward compatibility with the legacy two-field format,
  * resilience against malformed content, and the {@link ValidationTriggerFile.TriggerInfo} construction contract.
  */
 class ValidationTriggerFileTest {
@@ -22,12 +23,14 @@ class ValidationTriggerFileTest {
     private static final String BRANCH = "feature-vcs";
 
     /**
-     * Verifies that creating a trigger writes a file in the correct four-field format, creates the {@code .vitruvius} parent directory automatically,
+     * Verifies that creating a trigger writes a file in the correct four-field format,
+     * creates the {@code .vitruvius} parent directory automatically,
      * and returns a non-null request identifier that matches the value written to the file.
      * All three aspects are verified together because they describe one write operation.
      */
     @Test
-    @DisplayName("Creates trigger file with correct four-field format, parent directory, and returned request identifier")
+    @DisplayName("Creates trigger file with correct four-field format, parent directory, " +
+            "and returned request identifier")
     void createsTriggerFileWithCorrectFormatAndDirectory(@TempDir Path tempDir) throws IOException {
         var triggerFile = new ValidationTriggerFile(tempDir);
 
@@ -37,21 +40,26 @@ class ValidationTriggerFileTest {
         String requestId = triggerFile.createTrigger(COMMIT_SHA, BRANCH);
 
         // the directory and trigger file must both be present after creation.
-        assertTrue(Files.isDirectory(tempDir.resolve(".vitruvius")), "parent directory must be created automatically");
+        assertTrue(Files.isDirectory(tempDir.resolve(".vitruvius")),
+                "parent directory must be created automatically");
         assertTrue(triggerFile.exists(), "trigger file must exist after creation");
 
         // verify the four-field format: commitSha|branch|requestId|timestamp.
         String content = Files.readString(triggerFile.getTriggerPath());
         String[] parts = content.split("\\|");
-        assertEquals(4, parts.length, "trigger file must contain four pipe-separated fields");
+        assertEquals(4, parts.length,
+                "trigger file must contain four pipe-separated fields");
         assertEquals(COMMIT_SHA, parts[0]);
         assertEquals(BRANCH, parts[1]);
-        assertEquals(requestId, parts[2], "the returned request identifier must match the value written to the file");
-        assertDoesNotThrow(() -> Long.parseLong(parts[3]), "the fourth field must be a parseable timestamp");
+        assertEquals(requestId, parts[2],
+                "the returned request identifier must match the value written to the file");
+        assertDoesNotThrow(() -> Long.parseLong(parts[3]),
+                "the fourth field must be a parseable timestamp");
     }
 
     /**
-     * Verifies that each call to {@link ValidationTriggerFile#createTrigger} returns a different request identifier so that consecutive commits can be distinguished.
+     * Verifies that each call to {@link ValidationTriggerFile#createTrigger}
+     * returns a different request identifier so that consecutive commits can be distinguished.
      */
     @Test
     @DisplayName("Returns a unique request identifier for each trigger creation")
@@ -63,23 +71,28 @@ class ValidationTriggerFileTest {
         triggerFile.checkAndClearTrigger();
         String requestId2 = triggerFile.createTrigger(COMMIT_SHA, "develop");
 
-        assertNotEquals(requestId1, requestId2, "each trigger creation must produce a distinct request identifier");
+        assertNotEquals(requestId1, requestId2,
+                "each trigger creation must produce a distinct request identifier");
     }
 
     /**
-     * Verifies that passing a null commit SHA or null branch to {@link ValidationTriggerFile#createTrigger} throws a {@link NullPointerException} before any file is written.
+     * Verifies that passing a null commit SHA or null branch to {@link ValidationTriggerFile#createTrigger}
+     * throws a {@link NullPointerException} before any file is written.
      */
     @Test
     @DisplayName("Rejects a null commit SHA or null branch name")
     void createTriggerRejectsNullArguments(@TempDir Path tempDir) {
         var triggerFile = new ValidationTriggerFile(tempDir);
 
-        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(null, BRANCH), "null commit SHA must be rejected");
-        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(COMMIT_SHA, null), "null branch must be rejected");
+        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(null, BRANCH),
+                "null commit SHA must be rejected");
+        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(COMMIT_SHA, null),
+                "null branch must be rejected");
     }
 
     /**
-     * Verifies the normal consumption lifecycle: the returned {@link ValidationTriggerFile.TriggerInfo} carries all four field values correctly
+     * Verifies the normal consumption lifecycle: the returned {@link ValidationTriggerFile.TriggerInfo}
+     * carries all four field values correctly
      * and the trigger file is deleted after reading.
      */
     @Test
@@ -93,7 +106,8 @@ class ValidationTriggerFileTest {
         assertNotNull(info, "a valid trigger must return a non-null TriggerInfo");
         assertEquals(COMMIT_SHA, info.getCommitSha());
         assertEquals(BRANCH, info.getBranch());
-        assertEquals(requestId, info.getRequestId(), "the returned request identifier must match what was written");
+        assertEquals(requestId, info.getRequestId(),
+                "the returned request identifier must match what was written");
         assertTrue(info.getTimestamp() > 0 && info.getTimestamp() <= System.currentTimeMillis());
         assertFalse(triggerFile.exists(), "trigger file must be deleted after consumption");
     }

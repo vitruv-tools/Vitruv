@@ -1,7 +1,6 @@
 package tools.vitruv.framework.vsum.branch;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.PersonIdent;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

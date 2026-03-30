@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum.branch;
 
-import org.eclipse.jgit.api.Git;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static tools.vitruv.framework.vsum.branch.GitTestHelper.*;
+import static tools.vitruv.framework.vsum.branch.GitTestHelper.commitFile;
+import static tools.vitruv.framework.vsum.branch.GitTestHelper.initRepo;
 
 /**
  * Unit tests for {@link MergeManager}.

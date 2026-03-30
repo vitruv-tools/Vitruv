@@ -14,7 +14,8 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static tools.vitruv.framework.vsum.branch.GitTestHelper.*;
+import static tools.vitruv.framework.vsum.branch.GitTestHelper.createModelFile;
+import static tools.vitruv.framework.vsum.branch.GitTestHelper.initRepo;
 
 /**
  * Unit tests for {@link CommitManager}.

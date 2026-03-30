@@ -34,8 +34,10 @@ class ReloadTriggerFileTest {
         assertFalse(Files.exists(tempDir.resolve(".vitruvius")));
         triggerFile.createTrigger(BRANCH, OLD_BRANCH);
         // the directory and the trigger file must both be present after creation.
-        assertTrue(Files.isDirectory(tempDir.resolve(".vitruvius")), "parent directory must be created automatically");
-        assertTrue(Files.exists(tempDir.resolve(".vitruvius/reload-trigger")), "trigger file must exist after creation");
+        assertTrue(Files.isDirectory(tempDir.resolve(".vitruvius")),
+                "parent directory must be created automatically");
+        assertTrue(Files.exists(tempDir.resolve(".vitruvius/reload-trigger")),
+                "trigger file must exist after creation");
     }
 
     /**
@@ -72,7 +74,8 @@ class ReloadTriggerFileTest {
         // clear the first trigger so the second write does not overwrite it.
         triggerFile.checkAndClearTrigger();
         String requestId2 = triggerFile.createTrigger("develop", "main");
-        assertNotEquals(requestId1, requestId2, "each trigger creation must produce a distinct request identifier");
+        assertNotEquals(requestId1, requestId2,
+                "each trigger creation must produce a distinct request identifier");
     }
 
     /**
@@ -84,7 +87,8 @@ class ReloadTriggerFileTest {
     @DisplayName("Rejects a null new branch name")
     void createTriggerRejectsNullNewBranch(@TempDir Path tempDir) {
         var triggerFile = new ReloadTriggerFile(tempDir);
-        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(null, OLD_BRANCH), "null new branch name must be rejected");
+        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(null, OLD_BRANCH),
+                "null new branch name must be rejected");
     }
 
     /**
@@ -96,7 +100,8 @@ class ReloadTriggerFileTest {
     @DisplayName("Rejects a null old branch name")
     void createTriggerRejectsNullOldBranch(@TempDir Path tempDir) {
         var triggerFile = new ReloadTriggerFile(tempDir);
-        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(BRANCH, null), "null old branch name must be rejected");
+        assertThrows(NullPointerException.class, () -> triggerFile.createTrigger(BRANCH, null),
+                "null old branch name must be rejected");
     }
 
     /**
@@ -114,11 +119,16 @@ class ReloadTriggerFileTest {
         ReloadTriggerFile.TriggerInfo result = triggerFile.checkAndClearTrigger();
 
         assertNotNull(result, "a valid trigger must return a non-null TriggerInfo");
-        assertEquals(BRANCH, result.getBranchName(), "branch name must match the value passed to createTrigger");
-        assertEquals(OLD_BRANCH, result.getOldBranchName(), "old branch name must match the value passed to createTrigger");
-        assertEquals(requestId, result.getRequestId(), "request identifier must match the value returned by createTrigger");
-        assertTrue(result.getTimestamp() > 0, "timestamp must be a positive epoch value");
-        assertFalse(Files.exists(tempDir.resolve(".vitruvius/reload-trigger")), "trigger file must be deleted after consumption");
+        assertEquals(BRANCH, result.getBranchName(),
+                "branch name must match the value passed to createTrigger");
+        assertEquals(OLD_BRANCH, result.getOldBranchName(),
+                "old branch name must match the value passed to createTrigger");
+        assertEquals(requestId, result.getRequestId(),
+                "request identifier must match the value returned by createTrigger");
+        assertTrue(result.getTimestamp() > 0,
+                "timestamp must be a positive epoch value");
+        assertFalse(Files.exists(tempDir.resolve(".vitruvius/reload-trigger")),
+                "trigger file must be deleted after consumption");
     }
 
     /**
@@ -132,14 +142,18 @@ class ReloadTriggerFileTest {
         var triggerFile = new ReloadTriggerFile(tempDir);
 
         // no trigger file has been created yet.
-        assertNull(triggerFile.checkAndClearTrigger(), "must return null when no trigger file exists");
+        assertNull(triggerFile.checkAndClearTrigger(),
+                "must return null when no trigger file exists");
 
         triggerFile.createTrigger(BRANCH, OLD_BRANCH);
-        assertNotNull(triggerFile.checkAndClearTrigger(), "must return info after a trigger is created");
+        assertNotNull(triggerFile.checkAndClearTrigger(),
+                "must return info after a trigger is created");
 
         // the trigger was consumed.
-        assertNull(triggerFile.checkAndClearTrigger(), "must return null after the trigger is consumed");
-        assertNull(triggerFile.checkAndClearTrigger(), "repeated calls must continue returning null");
+        assertNull(triggerFile.checkAndClearTrigger(),
+                "must return null after the trigger is consumed");
+        assertNull(triggerFile.checkAndClearTrigger(),
+                "repeated calls must continue returning null");
     }
 
     /**
@@ -190,7 +204,8 @@ class ReloadTriggerFileTest {
         Files.writeString(filePath, "invalid||multiple|delimiters|wrong");
         ReloadTriggerFile.TriggerInfo result = triggerFile.checkAndClearTrigger();
         assertNull(result, "an unrecognized field count must result in a null return");
-        assertFalse(Files.exists(filePath), "the malformed trigger file must be deleted to prevent repeated processing");
+        assertFalse(Files.exists(filePath),
+                "the malformed trigger file must be deleted to prevent repeated processing");
     }
 
     /**
@@ -226,9 +241,12 @@ class ReloadTriggerFileTest {
         ReloadTriggerFile.TriggerInfo result = triggerFile.checkAndClearTrigger();
         long after = System.currentTimeMillis();
 
-        assertNotNull(result, "a malformed timestamp must not discard an otherwise valid trigger");
-        assertEquals("master", result.getOldBranchName(), "old branch name must still be parsed correctly despite malformed timestamp");
-        assertTrue(result.getTimestamp() >= before && result.getTimestamp() <= after, "the fallback timestamp must be within the wall clock window of the call");
+        assertNotNull(result,
+                "a malformed timestamp must not discard an otherwise valid trigger");
+        assertEquals("master", result.getOldBranchName(),
+                "old branch name must still be parsed correctly despite malformed timestamp");
+        assertTrue(result.getTimestamp() >= before && result.getTimestamp() <= after,
+                "the fallback timestamp must be within the wall clock window of the call");
     }
 
 
@@ -276,8 +294,14 @@ class ReloadTriggerFileTest {
         assertEquals(timestamp, info.getTimestamp());
 
         // null values for required string fields must be rejected at construction time.
-        assertThrows(NullPointerException.class, () -> new ReloadTriggerFile.TriggerInfo(null, OLD_BRANCH, "req-id", timestamp), "null new branch name must be rejected");
-        assertThrows(NullPointerException.class, () -> new ReloadTriggerFile.TriggerInfo(BRANCH, null, "req-id", timestamp), "null old branch name must be rejected");
-        assertThrows(NullPointerException.class, () -> new ReloadTriggerFile.TriggerInfo(BRANCH, OLD_BRANCH, null, timestamp), "null request identifier must be rejected");
+        assertThrows(NullPointerException.class, () -> new ReloadTriggerFile.TriggerInfo(
+                null, OLD_BRANCH, "req-id", timestamp),
+                "null new branch name must be rejected");
+        assertThrows(NullPointerException.class, () -> new ReloadTriggerFile.TriggerInfo(
+                BRANCH, null, "req-id", timestamp),
+                "null old branch name must be rejected");
+        assertThrows(NullPointerException.class, () -> new ReloadTriggerFile.TriggerInfo(
+                BRANCH, OLD_BRANCH, null, timestamp),
+                "null request identifier must be rejected");
     }
 }

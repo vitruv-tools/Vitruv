@@ -8,7 +8,6 @@ import org.junit.jupiter.api.io.TempDir;
 import tools.vitruv.framework.vsum.branch.data.BranchMetadata;
 import tools.vitruv.framework.vsum.branch.data.BranchState;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
-import tools.vitruv.framework.vsum.versioning.data.RollbackPreview;
 import tools.vitruv.framework.vsum.versioning.data.RollbackResult;
 import tools.vitruv.framework.vsum.versioning.data.VersionMetadata;
 
@@ -17,7 +16,8 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static tools.vitruv.framework.vsum.branch.GitTestHelper.*;
+import static tools.vitruv.framework.vsum.branch.GitTestHelper.commitFile;
+import static tools.vitruv.framework.vsum.branch.GitTestHelper.initRepo;
 
 /**
  * Unit tests for {@link VersioningService}.

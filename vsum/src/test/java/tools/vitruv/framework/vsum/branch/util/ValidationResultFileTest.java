@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for {@link ValidationResultFile}.
  *
- * <p>The tests cover all four validation outcomes (success, success-with-warnings, failure, failure-with-warnings),
+ * <p>The tests cover all four validation outcomes
+ * (success, success-with-warnings, failure, failure-with-warnings),
  * the JSON round-trip for each outcome, file lifecycle operations (create, overwrite, exists, delete),
  * and isolation between concurrent requests using different request identifiers.
  */
@@ -24,7 +25,8 @@ class ValidationResultFileTest {
     private static final String REQUEST_ID = "test-request-uuid-1234";
 
     /**
-     * Verifies that writing a result creates both the text file and the JSON file, and also creates the parent {@code .vitruvius} directory automatically.
+     * Verifies that writing a result creates both the text file and the JSON file,
+     * and also creates the parent {@code .vitruvius} directory automatically.
      * Both aspects are tested together because they are part of the same single write operation.
      */
     @Test
@@ -37,9 +39,12 @@ class ValidationResultFileTest {
         resultFile.writeResult(ValidationResult.success(), REQUEST_ID);
 
         // the directory and both result files must be present after to write.
-        assertTrue(Files.isDirectory(tempDir.resolve(".vitruvius")), "parent directory must be created automatically");
-        assertTrue(Files.exists(resultFile.getTextResultPath(REQUEST_ID)), "text result file must exist after writing");
-        assertTrue(Files.exists(resultFile.getJsonResultPath(REQUEST_ID)), "JSON result file must exist after writing");
+        assertTrue(Files.isDirectory(tempDir.resolve(".vitruvius")),
+                "parent directory must be created automatically");
+        assertTrue(Files.exists(resultFile.getTextResultPath(REQUEST_ID)),
+                "text result file must exist after writing");
+        assertTrue(Files.exists(resultFile.getJsonResultPath(REQUEST_ID)),
+                "JSON result file must exist after writing");
     }
 
     /**
@@ -58,12 +63,14 @@ class ValidationResultFileTest {
         resultFile.writeResult(ValidationResult.failure(List.of("Error")), REQUEST_ID);
         String secondContent = Files.readString(resultFile.getTextResultPath(REQUEST_ID));
 
-        assertNotEquals(firstContent, secondContent, "the second write must replace the first content");
+        assertNotEquals(firstContent, secondContent,
+                "the second write must replace the first content");
         assertTrue(secondContent.contains("Error"));
     }
 
     /**
-     * Verifies that two concurrent requests identified by different identifiers each produce their own independent pair of result files,
+     * Verifies that two concurrent requests identified by different identifiers
+     * each produce their own independent pair of result files,
      * and that deleting one does not affect the other.
      */
     @Test
@@ -78,11 +85,13 @@ class ValidationResultFileTest {
         String aliceContent = Files.readString(resultFile.getTextResultPath("request-alice"));
         String bobContent = Files.readString(resultFile.getTextResultPath("request-bob"));
         assertTrue(aliceContent.contains("PASSED"));
-        assertTrue(bobContent.contains("FAILED"), "bob's result must not be contaminated by alice's successful result");
+        assertTrue(bobContent.contains("FAILED"),
+                "bob's result must not be contaminated by alice's successful result");
     }
 
     /**
-     * Verifies that a successful result produces a text file containing a passed indicator and a confirmation that no errors or warnings were found.
+     * Verifies that a successful result produces a text file containing a passed indicator
+     * and a confirmation that no errors or warnings were found.
      */
     @Test
     @DisplayName("Text file contains a passed indicator for a successful result")
@@ -92,45 +101,53 @@ class ValidationResultFileTest {
 
         String content = Files.readString(resultFile.getTextResultPath(REQUEST_ID));
 
-        assertTrue(content.contains("✓") || content.contains("PASSED") || content.contains("✔"), "text must indicate that validation passed");
+        assertTrue(content.contains("✓") || content.contains("PASSED") || content.contains("✔"),
+                "text must indicate that validation passed");
         assertTrue(content.contains("No errors"), "text must confirm no issues were found");
     }
 
     /**
-     * Verifies that a failed result produces a text file containing a failed indicator and all error messages so the developer knows exactly what to fix.
+     * Verifies that a failed result produces a text file containing a failed indicator
+     * and all error messages so the developer knows exactly what to fix.
      */
     @Test
     @DisplayName("Text file contains a failed indicator and all error messages for a failed result")
     void textFormatShowsFailedWithErrors(@TempDir Path tempDir) throws IOException {
         var resultFile = new ValidationResultFile(tempDir);
-        resultFile.writeResult(ValidationResult.failure(List.of("Resource not loadable: models/User.xmi", "Broken correspondence in User.java")), REQUEST_ID);
+        resultFile.writeResult(ValidationResult.failure(List.of("Resource not loadable: models/User.xmi",
+                "Broken correspondence in User.java")), REQUEST_ID);
 
         String content = Files.readString(resultFile.getTextResultPath(REQUEST_ID));
 
-        assertTrue(content.contains("✗") || content.contains("FAILED") || content.contains("✘"), "text must indicate that validation failed");
+        assertTrue(content.contains("✗") || content.contains("FAILED") || content.contains("✘"),
+                "text must indicate that validation failed");
         // both error messages must appear so the developer can identify all issues at once.
         assertTrue(content.contains("Resource not loadable"));
         assertTrue(content.contains("Broken correspondence"));
     }
 
     /**
-     * Verifies that a result with warnings includes all warning messages in the text file, regardless of whether validation passed or failed.
+     * Verifies that a result with warnings includes all warning messages in the text file,
+     * regardless of whether validation passed or failed.
      */
     @Test
     @DisplayName("Text file contains all warning messages when warnings are present")
     void textFormatShowsWarnings(@TempDir Path tempDir) throws IOException {
         var resultFile = new ValidationResultFile(tempDir);
-        resultFile.writeResult(ValidationResult.successWithWarnings(List.of("Model file size exceeds 10MB", "Unused correspondence found")), REQUEST_ID);
+        resultFile.writeResult(ValidationResult.successWithWarnings(
+                List.of("Model file size exceeds 10MB", "Unused correspondence found")), REQUEST_ID);
 
         String content = Files.readString(resultFile.getTextResultPath(REQUEST_ID));
 
-        assertTrue(content.contains("Warning") || content.contains("⚠"), "text must include a warning indicator");
+        assertTrue(content.contains("Warning")
+                || content.contains("⚠"), "text must include a warning indicator");
         assertTrue(content.contains("Model file size"));
         assertTrue(content.contains("Unused correspondence"));
     }
 
     /**
-     * Verifies that a successful result produces a JSON file containing {@code "valid": true} and the standard fields that a future UI component will rely on.
+     * Verifies that a successful result produces a JSON file containing {@code "valid": true}
+     * and the standard fields that a future UI component will rely on.
      */
     @Test
     @DisplayName("JSON file contains valid=true and all standard fields for a successful result")
@@ -149,7 +166,8 @@ class ValidationResultFileTest {
     }
 
     /**
-     * Verifies that a failed result produces a JSON file containing {@code "valid": false} and all error messages so they can be parsed programmatically.
+     * Verifies that a failed result produces a JSON file containing {@code "valid": false}
+     * and all error messages so they can be parsed programmatically.
      */
     @Test
     @DisplayName("JSON file contains valid=false and all error messages for a failed result")
@@ -177,7 +195,8 @@ class ValidationResultFileTest {
     }
 
     /**
-     * Verifies that all four factory method outcomes round-trip correctly through the JSON file: success, success-with-warnings, failure, and failure-with-warnings.
+     * Verifies that all four factory method outcomes round-trip correctly
+     * through the JSON file: success, success-with-warnings, failure, and failure-with-warnings.
      * Each must be reconstructed to an equivalent result so the hook reads exactly what the watcher wrote.
      */
     @Test
@@ -208,21 +227,26 @@ class ValidationResultFileTest {
         assertFalse(readFail.isValid());
         assertEquals(2, readFail.getErrors().size());
         assertTrue(readFail.getErrors().contains("Error 1"));
-        assertFalse(readFail.hasWarnings(), "a failure result without warnings must not gain warnings after round-trip");
+        assertFalse(readFail.hasWarnings(),
+                "a failure result without warnings must not gain warnings after round-trip");
 
         // failure with warnings: invalid, errors and warnings both present.
-        resultFile.writeResult(ValidationResult.failureWithWarnings(List.of("Error 1"), List.of("Warning 1")), "req-fail-warn");
-        var readFailWarn = resultFile.readResult("req-fail-warn");
+        resultFile.writeResult(ValidationResult.failureWithWarnings(
+                List.of("Error 1"), List.of("Warning 1")), "req-fail-warn");
+        var readFailWarn = resultFile.readResult(
+                "req-fail-warn");
         assertNotNull(readFailWarn);
         assertFalse(readFailWarn.isValid());
         assertTrue(readFailWarn.hasErrors());
-        assertTrue(readFailWarn.hasWarnings(), "warnings in a failure-with-warnings result must be preserved through the round-trip");
+        assertTrue(readFailWarn.hasWarnings(),
+                "warnings in a failure-with-warnings result must be preserved through the round-trip");
         assertTrue(readFailWarn.getWarnings().contains("Warning 1"));
     }
 
     /**
      * Verifies that {@link ValidationResultFile#exists} correctly reflects the file lifecycle:
-     * false before creation, true after creation, still true if only one of the two files is present, and false after both are deleted.
+     * false before creation, true after creation, still true if only one of the two files is present,
+     * and false after both are deleted.
      */
     @Test
     @DisplayName("exists reflects the full file lifecycle for a request identifier")
@@ -242,11 +266,13 @@ class ValidationResultFileTest {
         assertFalse(resultFile.exists(REQUEST_ID), "must not exist when both files are deleted");
 
         // exists for a different request identifier must not be affected.
-        assertFalse(resultFile.exists("other-request"), "a different request identifier must not appear to exist");
+        assertFalse(resultFile.exists("other-request"),
+                "a different request identifier must not appear to exist");
     }
 
     /**
-     * Verifies that deleting a result removes both the text and JSON files, and that deleting a non-existent result does not throw.
+     * Verifies that deleting a result removes both the text and JSON files,
+     * and that deleting a non-existent result does not throw.
      */
     @Test
     @DisplayName("deleteResult removes both result files and is safe when files are absent")
@@ -267,7 +293,8 @@ class ValidationResultFileTest {
     }
 
     /**
-     * Verifies that deleting the result for one request identifier does not affect the result files of another request identifier.
+     * Verifies that deleting the result for one request identifier does not affect
+     * the result files of another request identifier.
      */
     @Test
     @DisplayName("deleteResult only removes files for the specified request identifier")
@@ -279,7 +306,8 @@ class ValidationResultFileTest {
         resultFile.deleteResult("request-1");
 
         assertFalse(resultFile.exists("request-1"), "deleted request must not exist");
-        assertTrue(resultFile.exists("request-2"), "the other request's files must not be affected by deletion of request-1");
+        assertTrue(resultFile.exists("request-2"),
+                "the other request's files must not be affected by deletion of request-1");
     }
 
     /**
@@ -292,8 +320,10 @@ class ValidationResultFileTest {
         var resultFile = new ValidationResultFile(tempDir);
         var vitruviusDir = tempDir.resolve(".vitruvius");
 
-        assertEquals(vitruviusDir.resolve("validation-result-" + REQUEST_ID), resultFile.getTextResultPath(REQUEST_ID));
-        assertEquals(vitruviusDir.resolve("validation-result-" + REQUEST_ID + ".json"), resultFile.getJsonResultPath(REQUEST_ID));
+        assertEquals(vitruviusDir.resolve(
+                "validation-result-" + REQUEST_ID), resultFile.getTextResultPath(REQUEST_ID));
+        assertEquals(vitruviusDir.resolve(
+                "validation-result-" + REQUEST_ID + ".json"), resultFile.getJsonResultPath(REQUEST_ID));
     }
 
 }

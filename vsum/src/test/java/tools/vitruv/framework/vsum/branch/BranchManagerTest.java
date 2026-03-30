@@ -17,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for {@link BranchManager}.
  *
- * <p>Each test group covers one public method of the manager. Tests operate on a real, temporary Git repository initialized by {@link #initRepo(Path)}
- * rather than mocks, so that the JGit interactions and metadata file writes are exercised end to end within the unit test scope.
+ * <p>Each test group covers one public method of the manager.
+ * Tests operate on a real, temporary Git repository initialized by {@link #initRepo(Path)}
+ * rather than mocks, so that the JGit interactions and
+ * metadata file writes are exercised end to end within the unit test scope.
  *
  * <p>the {@link org.junit.jupiter.api.io.TempDir} annotation ensures every test starts with a
  * clean file system state and that the temporary directory is deleted afterward.
@@ -27,7 +29,8 @@ class BranchManagerTest {
 
     /**
      * Initializes a Git repository at the given path with a single initial commit on {@code main}.
-     * A mock commit is required because JGit does not allow branch creation on a repository that has no commits yet (as there is no head reference to fork from).
+     * A mock commit is required because JGit does not allow branch creation on a repository that has no commits yet
+     * (as there is no head reference to fork from).
      *
      * @param repoDir the directory to initialize the repository in.
      * @return an opened {@link Git} instance for the initialized repository. the caller is responsible for closing it.
@@ -48,7 +51,8 @@ class BranchManagerTest {
 
         /**
          * Verifies that creating a branch returns correct metadata and also persists it to disk.
-         * Both the in-memory result and the file content are checked in one test because they represent a single operation
+         * Both the in-memory result and the file content are checked in one test
+         * because they represent a single operation
          * that must succeed atomically from the caller's perspective.
          */
         @Test
@@ -65,7 +69,8 @@ class BranchManagerTest {
                 assertEquals(BranchState.ACTIVE, metadata.getState());
                 // the unique identifier is the first seven characters of the commit hash made by Git
 
-                // the metadata file must also exist on disk so that Vitruvius can reconstruct the branch history across sessions.
+                // the metadata file must also exist on disk so that
+                // Vitruvius can reconstruct the branch history across sessions.
                 var metadataFile = repoDir.resolve(".vitruvius/branches/bugfix-viewtype.metadata");
                 assertTrue(Files.exists(metadataFile), "metadata file must be written to disk");
 
@@ -85,12 +90,14 @@ class BranchManagerTest {
         void failOnNonExistentSource(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                assertThrows(BranchOperationException.class, () -> manager.createBranch("feature-delta", "nonexistent"));
+                assertThrows(BranchOperationException.class,
+                        () -> manager.createBranch("feature-delta", "nonexistent"));
             }
         }
 
         /**
-         * Verifies that creating a branch whose name already exists raises an exception. The duplicate check is performed during name validation
+         * Verifies that creating a branch whose name already exists raises an exception.
+         * The duplicate check is performed during name validation
          * before any Git operation is attempted.
          */
         @Test
@@ -99,7 +106,8 @@ class BranchManagerTest {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
                 manager.createBranch("bugfix-viewtype", "master");
-                assertThrows(BranchOperationException.class, () -> manager.createBranch("bugfix-viewtype", "master"));
+                assertThrows(BranchOperationException.class,
+                        () -> manager.createBranch("bugfix-viewtype", "master"));
             }
         }
     }
@@ -123,20 +131,23 @@ class BranchManagerTest {
                 manager.switchBranch("bugfix-viewtype");
 
                 var head = git.getRepository().findRef("HEAD");
-                assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName(), "HEAD must point to the target branch after switching");
+                assertEquals("refs/heads/bugfix-viewtype", head.getTarget().getName(),
+                        "HEAD must point to the target branch after switching");
             }
         }
 
 
         /**
-         * Verifies that switching to a branch that does not exist raises an exception instead of leaving the working directory in an undefined state.
+         * Verifies that switching to a branch that does not exist raises an exception
+         * instead of leaving the working directory in an undefined state.
          */
         @Test
         @DisplayName("fails when the target branch does not exist")
         void failOnNonExistentBranch(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                assertThrows(BranchOperationException.class, () -> manager.switchBranch("nonexistent"));
+                assertThrows(BranchOperationException.class,
+                        () -> manager.switchBranch("nonexistent"));
             }
         }
 
@@ -147,7 +158,8 @@ class BranchManagerTest {
     class DeleteBranch {
 
         /**
-         * Verifies that after deletion the branch reference no longer exists in Git, and that the metadata file still exists on disk but is marked as DELETED.
+         * Verifies that after deletion the branch reference no longer exists in Git,
+         * and that the metadata file still exists on disk but is marked as DELETED.
          * The branch should be gone from Git but the history is preserved in metadata.
          */
         @Test
@@ -163,7 +175,8 @@ class BranchManagerTest {
                 var ref = git.getRepository().findRef("refs/heads/bugfix-viewtype");
                 assertNull(ref, "Git reference must be removed after deletion");
 
-                // the metadata file must still exist so that the branch lifecycle history is preserved, and it must reflect the DELETED state.
+                // the metadata file must still exist so that the branch lifecycle history is preserved
+                // and it must reflect the DELETED state.
                 var metadataFile = repoDir.resolve(".vitruvius/branches/bugfix-viewtype.metadata");
                 assertTrue(Files.exists(metadataFile), "metadata file must be preserved after deletion");
                 var lines = Files.readAllLines(metadataFile);
@@ -174,7 +187,8 @@ class BranchManagerTest {
 
         /**
          * Verifies that attempting to delete the currently checked-out branch raises an exception.
-         * Deleting the active branch would leave the working directory without a valid branch reference, which is not a supported state.
+         * Deleting the active branch would leave the working directory without a valid branch reference,
+         * which is not a supported state.
          */
         @Test
         @DisplayName("fails when trying to delete the currently checked-out branch")
@@ -226,9 +240,11 @@ class BranchManagerTest {
                 var manager = new BranchManager(repoDir);
 
                 var branches = manager.listBranches();
-                var external = branches.stream().filter(m -> m.getName().equals("external-branch"))
+                var external = branches.stream().filter(
+                        m -> m.getName().equals("external-branch"))
                         .findFirst()
-                        .orElseThrow(() -> new AssertionError("external branch must appear in list"));
+                        .orElseThrow(() -> new AssertionError(
+                                "external branch must appear in list"));
 
                 assertEquals(BranchState.ACTIVE, external.getState());
                 assertEquals("unknown", external.getParent());
@@ -286,7 +302,8 @@ class BranchManagerTest {
         }
 
         /**
-         * Verifies that an empty list is returned when no branch matches the given pattern, rather than throwing an exception.
+         * Verifies that an empty list is returned when no branch matches the given pattern,
+         * rather than throwing an exception.
          */
         @Test
         @DisplayName("returns an empty list when no branch matches the pattern")
@@ -302,7 +319,8 @@ class BranchManagerTest {
         }
 
         /**
-         * Verifies that the single-character wildcard {@code ?} matches exactly one character, so that multi-character suffixes are excluded from the result.
+         * Verifies that the single-character wildcard {@code ?} matches exactly one character,
+         * so that multi-character suffixes are excluded from the result.
          */
         @Test
         @DisplayName("respects single-character wildcard matching")
@@ -330,7 +348,8 @@ class BranchManagerTest {
     class ResolveBranchIdentifier {
 
         /**
-         * Verifies that an exact branch name is resolved immediately without scanning metadata files, returning the same string that was provided.
+         * Verifies that an exact branch name is resolved immediately without scanning metadata files,
+         * returning the same string that was provided.
          */
         @Test
         @DisplayName("resolves an exact branch name without scanning metadata")
@@ -347,14 +366,16 @@ class BranchManagerTest {
 
 
         /**
-         * Verifies that an identifier that matches neither a branch name nor any unique identifier prefix raises an exception.
+         * Verifies that an identifier that matches neither a branch name nor any unique identifier prefix
+         * raises an exception.
          */
         @Test
         @DisplayName("fails when the identifier matches no branch")
         void failOnNoMatch(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
                 var manager = new BranchManager(repoDir);
-                assertThrows(BranchOperationException.class, () -> manager.resolveBranchIdentifier("nonexistent"));
+                assertThrows(BranchOperationException.class,
+                        () -> manager.resolveBranchIdentifier("nonexistent"));
             }
         }
     }
@@ -411,7 +432,8 @@ class BranchManagerTest {
         }
 
         /**
-         * Verifies that deleted branches are excluded from the topology so that the returned map only represents currently active branches.
+         * Verifies that deleted branches are excluded from the topology
+         * so that the returned map only represents currently active branches.
          */
         @Test
         @DisplayName("excludes deleted branches from the topology")
@@ -442,12 +464,14 @@ class BranchManagerTest {
                 var manager = new BranchManager(repoDir);
                 // the repository has only master, which was created by Git init and has no metadata.
                 var topology = manager.getBranchTopology();
-                assertTrue(topology.isEmpty(), "topology must be empty when no branches were created via the manager");
+                assertTrue(topology.isEmpty(),
+                        "topology must be empty when no branches were created via the manager");
             }
         }
 
         /**
-         * Verifies that external branches (no metadata file) do not cause an error and are simply ignored by the topology.
+         * Verifies that external branches (no metadata file) do not cause an error
+         * and are simply ignored by the topology.
          * Only branches created via the manager are included.
          */
         @Test
@@ -475,7 +499,8 @@ class BranchManagerTest {
     class ValidateBranchName {
 
         /**
-         * Verifies that a well-formed branch name with a hyphen separator passes validation without throwing an exception.
+         * Verifies that a well-formed branch name with a hyphen separator passes validation
+         * without throwing an exception.
          */
         @Test
         @DisplayName("accepts a valid branch name without throwing")
@@ -488,8 +513,10 @@ class BranchManagerTest {
         }
 
         /**
-         * Verifies that blank names, the {@code ..} range operator, the {@code .lock} suffix, and characters with special Git meaning are all rejected.
-         * These rules follow the Git reference format specification and prevent names that would either corrupt the reference database
+         * Verifies that blank names, the {@code ..} range operator, the {@code .lock} suffix,
+         * and characters with special Git meaning are all rejected.
+         * These rules follow the Git reference format specification and
+         * prevent names that would either corrupt the reference database
          * or be misinterpreted by Git commands.
          */
         @Test
@@ -515,7 +542,8 @@ class BranchManagerTest {
         }
 
         /**
-         * Verifies that a name conflicting with an already existing branch is rejected to prevent overwriting of existing branch references.
+         * Verifies that a name conflicting with an already existing branch is
+         * rejected to prevent overwriting of existing branch references.
          */
         @Test
         @DisplayName("rejects a name that already exists as a branch")
@@ -544,18 +572,21 @@ class BranchManagerTest {
                 var manager = new BranchManager(repoDir);
                 manager.createBranch("bugfix-viewtype", "master");
 
-                assertEquals(BranchState.ACTIVE, manager.getBranchState("bugfix-viewtype"), "a newly created branch must be ACTIVE");
+                assertEquals(BranchState.ACTIVE, manager.getBranchState("bugfix-viewtype"),
+                        "a newly created branch must be ACTIVE");
 
                 manager.deleteBranch("bugfix-viewtype");
 
                 // the Git reference is gone after deletion, but the metadata file is preserved.
                 // the state must reflect the deletion rather than throwing an exception.
-                assertEquals(BranchState.DELETED, manager.getBranchState("bugfix-viewtype"), "a deleted branch must report DELETED state via its preserved metadata");
+                assertEquals(BranchState.DELETED, manager.getBranchState("bugfix-viewtype"),
+                        "a deleted branch must report DELETED state via its preserved metadata");
             }
         }
 
         /**
-         * Verifies that a branch created directly via JGit (without a metadata file) defaults to ACTIVE, so that the manager handles external branches gracefully.
+         * Verifies that a branch created directly via JGit (without a metadata file) defaults to ACTIVE,
+         * so that the manager handles external branches gracefully.
          */
         @Test
         @DisplayName("defaults to ACTIVE for external branches that have no metadata file")
@@ -569,7 +600,8 @@ class BranchManagerTest {
         }
 
         /**
-         * Verifies that requesting the state of a branch that does not exist in Git and has no metadata file raises an exception rather than returning a default state.
+         * Verifies that requesting the state of a branch that does not exist in Git and
+         * has no metadata file raises an exception rather than returning a default state.
          */
         @Test
         @DisplayName("fails when the branch does not exist anywhere")

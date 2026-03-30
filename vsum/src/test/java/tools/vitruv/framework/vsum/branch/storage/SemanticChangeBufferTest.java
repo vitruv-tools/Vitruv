@@ -233,13 +233,15 @@ class SemanticChangeBufferTest {
         assertTrue(buffer.drainChanges().containsKey("unknown-resource"));
     }
 
-    private void setupFeatureChange(FeatureEChange<EObject, EStructuralFeature> change, EObject element, Resource resource, String uriStr) {
+    private void setupFeatureChange(FeatureEChange<EObject, EStructuralFeature> change,
+                                    EObject element, Resource resource, String uriStr) {
         when(change.getAffectedElement()).thenReturn(element);
         when(element.eResource()).thenReturn(resource);
         when(resource.getURI()).thenReturn(URI.createURI(uriStr));
     }
 
-    private void setupPropagatedChange(PropagatedChange propagated, VitruviusChange<EObject> original, List<EChange<EObject>> eChanges) {
+    private void setupPropagatedChange(PropagatedChange propagated,
+                                       VitruviusChange<EObject> original, List<EChange<EObject>> eChanges) {
         when(propagated.getOriginalChange()).thenReturn(original);
         when(original.getEChanges()).thenReturn(eChanges);
     }
