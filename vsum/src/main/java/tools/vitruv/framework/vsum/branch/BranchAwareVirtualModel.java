@@ -76,8 +76,8 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
    *
    * <p>The initial branch name is resolved from the repository's current Git HEAD via
    * {@link VsumFileSystemLayout}, so the repository must have at least one commit.
-   * The wrapped model is expected to already be fully initialized and loaded —
-   * this constructor does not call {@code buildAndInitialize()} or
+   * The wrapped model is expected to already be fully initialized and loaded.
+   * This constructor does not call {@code buildAndInitialize()} or
    * {@code loadExistingModels()}.
    *
    * @param repoRoot    root directory of the Git repository, must not be null.
@@ -140,7 +140,7 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
     LOGGER.info("Switching V-VSUM from branch '{}' to '{}'", oldBranch, newBranch);
 
     try {
-      // Use forBranch() to bypass JGit HEAD resolution — the target branch name
+      // Use forBranch() to bypass JGit HEAD resolution - the target branch name
       // is already known from the trigger file.
       VsumFileSystemLayout newLayout = VsumFileSystemLayout.forBranch(repoRoot, newBranch);
 
@@ -204,7 +204,7 @@ public class BranchAwareVirtualModel implements InternalVirtualModel {
   }
 
   /**
-   * Same-branch reload — reloads the V-SUM from disk without switching branches.
+   * Same-branch reload - reloads the V-SUM from disk without switching branches.
    * Called by {@link tools.vitruv.framework.vsum.branch.handler.VsumMergeWatcher}
    * after a merge to refresh in-memory state while staying on the current branch.
    */

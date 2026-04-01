@@ -6,8 +6,8 @@ import lombok.Getter;
 import tools.vitruv.framework.vsum.branch.storage.SemanticChangeEntry;
 
 /**
- * Result of a semantic replay performed by
- * {@link tools.vitruv.framework.vsum.branch.ChangeReplayer}.
+ * Result of a semantic analysis performed by
+ * {@link tools.vitruv.framework.vsum.branch.SemanticConflictDetector}.
  *
  * <p>Contains the full semantic picture of what two branches changed since their common
  * ancestor: per-branch commit SHAs, all {@link SemanticChangeEntry} records from those

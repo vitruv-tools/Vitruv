@@ -77,7 +77,7 @@ public class RollbackPreview {
       filesToChange.forEach(f -> sb.append("    - ").append(f).append("\n"));
     }
     if (hasUncommittedChanges) {
-      sb.append("  ⚠ WARNING: Uncommitted changes will be permanently lost!\n");
+      sb.append("  WARNING: Uncommitted changes will be permanently lost.\n");
     }
     return sb.toString();
   }

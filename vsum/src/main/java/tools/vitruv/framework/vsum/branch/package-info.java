@@ -14,7 +14,7 @@
  *       commits to Git, writing the semantic changelog synchronously.</li>
  *   <li>{@link tools.vitruv.framework.vsum.branch.MergeManager}: merges a source branch into
  *       the current branch via JGit and returns a typed result.</li>
- *   <li>{@link tools.vitruv.framework.vsum.branch.ChangeReplayer}: replays per-branch
+ *   <li>{@link tools.vitruv.framework.vsum.branch.SemanticConflictDetector}: reads per-branch
  *       changelog entries to compute semantic deltas and conflicts.</li>
  *   <li>{@link tools.vitruv.framework.vsum.branch.DeltaVisualizationService}: produces
  *       {@link tools.vitruv.framework.vsum.branch.DeltaView} and

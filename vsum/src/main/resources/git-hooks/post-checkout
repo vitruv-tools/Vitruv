@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Git post-checkout hook for Vitruvius VSUM branch switching.
+#
 # Responsibilities: detect branch switches and write a reload trigger file.
 # Branch metadata creation is handled by PostCheckoutHandler (Java side).
 #
@@ -19,7 +20,7 @@ NEW_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
 VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
 mkdir -p "$VITRUVIUS_DIR"
 
-# Determine the old branch from reflog so it can be passed in the trigger file.
+# Determine the old branch from the reflog so it can be passed in the trigger file.
 # The Java PostCheckoutHandler uses this to initialise the new branch's VSUM state
 # from the correct parent and to create metadata when the branch was created via CLI.
 if [ "$NEW_BRANCH" = "master" ] || [ "$NEW_BRANCH" = "main" ]; then

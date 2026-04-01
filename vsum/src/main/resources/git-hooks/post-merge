@@ -1,51 +1,38 @@
 #!/bin/bash
 #
-# Git post-merge hook for Vitruvius V-SUM merge validation
+# Git post-merge hook for Vitruvius V-SUM merge validation.
 #
-# Triggered after every merge or pull. Validates that the merged V-SUM is consistent.
-# This is non-blocking: the merge has already completed, so inconsistencies are
-# reported as warnings rather than blocking the operation.
+# Triggered after every merge or pull. Validates that the merged V-SUM is
+# consistent. This is non-blocking: the merge has already completed, so
+# inconsistencies are reported as warnings rather than blocking the operation.
 #
 # Workflow:
-#   1. Detect if this is a fast-forward merge (skip if so - follow Git's behavior)
-#   2. Get merge commit SHA, source branch, and target branch
-#   3. Generate unique request ID and create merge trigger file
-#   4. Wait for VsumMergeWatcher to process and write results
-#   5. Display validation result and always exit 0 (never blocks)
+#   1. Detect fast-forward merges: copy source VSUM to target and exit.
+#   2. For real merge commits: write a merge trigger and wait for the result.
+#   3. Display the result and always exit 0.
 #
 
-set -e
-
-# Git passes one argument: 1 if squash merge, 0 for normal merge
 SQUASH_MERGE=$1
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 TARGET_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
 MERGE_COMMIT_SHA=$(git rev-parse HEAD)
 
-# Detect fast-forward merges and skip validation
-# Git doesn't create a merge commit for fast-forward merges, so we follow
-# the same principle and don't create merge metadata.
-# Detection: check if HEAD has a second parent (HEAD^2)
-
+# Fast-forward merges do not create a merge commit.
+# Copy the source branch VSUM to the target and skip metadata generation.
 if ! git rev-parse HEAD^2 &>/dev/null; then
     echo "Fast-forward merge completed"
 
-    # For fast-forward merges, copy source branch VSUM to target branch VSUM.
-    # In a fast-forward merge the target branch moves its HEAD to the source
-    # branch tip - the model content is identical, so the source branch VSUM
-    # is the correct state for the target branch after the merge.
-    SOURCE_BRANCH_FF=$(git name-rev --name-only HEAD@{1} 2>/dev/null \
+    SOURCE_BRANCH=$(git name-rev --name-only HEAD@{1} 2>/dev/null \
         | sed 's|^remotes/origin/||' \
         | sed 's/~[0-9]*$//')
-    TARGET_BRANCH_FF=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
-    SOURCE_VSUM="$REPO_ROOT/.vitruvius/vsum/$SOURCE_BRANCH_FF"
-    TARGET_VSUM="$REPO_ROOT/.vitruvius/vsum/$TARGET_BRANCH_FF"
+    SOURCE_VSUM="$REPO_ROOT/.vitruvius/vsum/$SOURCE_BRANCH"
+    TARGET_VSUM="$REPO_ROOT/.vitruvius/vsum/$TARGET_BRANCH"
 
-    if [ -d "$SOURCE_VSUM" ] && [ "$SOURCE_BRANCH_FF" != "$TARGET_BRANCH_FF" ]; then
+    if [ -d "$SOURCE_VSUM" ] && [ "$SOURCE_BRANCH" != "$TARGET_BRANCH" ]; then
         rm -rf "$TARGET_VSUM"
         cp -r "$SOURCE_VSUM" "$TARGET_VSUM"
-        echo "Vitruvius: VSUM state copied from '$SOURCE_BRANCH_FF' to '$TARGET_BRANCH_FF'"
+        echo "Vitruvius: VSUM state copied from '$SOURCE_BRANCH' to '$TARGET_BRANCH'"
     fi
 
     echo "Git did not create a merge commit (linear history)"
@@ -56,16 +43,13 @@ fi
 echo "Merge commit detected"
 echo "Merge SHA: ${MERGE_COMMIT_SHA:0:8}"
 
-# Determine source branch (the branch that was merged in)
 SOURCE_COMMIT=$(git rev-parse HEAD^2)
 SOURCE_BRANCH=$(git name-rev --name-only "$SOURCE_COMMIT" 2>/dev/null || echo "unknown-branch")
 SOURCE_BRANCH=$(echo "$SOURCE_BRANCH" | sed 's|^remotes/origin/||')
 
-# Vitruvius directory
 VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
 mkdir -p "$VITRUVIUS_DIR"
 
-# Generate unique request ID for this merge validation
 if command -v uuidgen &> /dev/null; then
     REQUEST_ID=$(uuidgen)
 elif [ -f /proc/sys/kernel/random/uuid ]; then
@@ -74,7 +58,6 @@ else
     REQUEST_ID="$(date +%s)-$$-$RANDOM"
 fi
 
-# File paths
 TRIGGER_FILE="$VITRUVIUS_DIR/merge-trigger"
 RESULT_FILE="$VITRUVIUS_DIR/merge-result-$REQUEST_ID"
 RESULT_JSON="$VITRUVIUS_DIR/merge-result-$REQUEST_ID.json"
@@ -86,7 +69,6 @@ echo "Source:        $SOURCE_BRANCH"
 echo "Target:        $TARGET_BRANCH"
 echo ""
 
-# Create merge trigger file
 TIMESTAMP=$(date +%s)
 echo "$MERGE_COMMIT_SHA|$SOURCE_BRANCH|$TARGET_BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
 
@@ -95,12 +77,10 @@ WAITED=0
 
 while [ $WAITED -lt $MAX_WAIT ]; do
     if [ -f "$RESULT_FILE" ]; then
-        # Result file exists - display it
         echo ""
         cat "$RESULT_FILE"
         echo ""
 
-        # Check if there were errors
         if grep -qi "error\|failed" "$RESULT_FILE"; then
             echo "The merge has completed, but the model may need attention."
             echo "Review the inconsistencies above and resolve them in a follow-up commit."
@@ -109,27 +89,18 @@ while [ $WAITED -lt $MAX_WAIT ]; do
 
         echo "Merge metadata saved to .vitruvius/merges/${MERGE_COMMIT_SHA:0:7}.metadata"
         echo ""
-
-        # Clean up result files
         rm -f "$RESULT_FILE" "$RESULT_JSON"
-
         exit 0
     fi
 
-    # Wait 0.5 seconds before checking again
     sleep 0.5
     WAITED=$((WAITED + 1))
 
-    # Show progress every 5 seconds
     if [ $((WAITED % 10)) -eq 0 ]; then
         ELAPSED=$((WAITED / 2))
         echo "Still waiting for merge validation... (${ELAPSED}s elapsed)"
     fi
 done
 
-# Clean up
-rm -f "$TRIGGER_FILE"
-rm -f "$RESULT_FILE" "$RESULT_JSON"
-
-# Always exit 0 - merge is already complete and cannot be undone
+rm -f "$TRIGGER_FILE" "$RESULT_FILE" "$RESULT_JSON"
 exit 0

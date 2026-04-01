@@ -3,7 +3,7 @@
  *
  * <p>Contains:
  * <ul>
- *   <li>{@link tools.vitruv.framework.vsum.branch.exception.BranchOperationException} —
+ *   <li>{@link tools.vitruv.framework.vsum.branch.exception.BranchOperationException} -
  *       checked exception wrapping failures in branch switching, creation, deletion,
  *       and V-SUM reload.</li>
  * </ul>

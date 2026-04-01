@@ -10,7 +10,6 @@ package tools.vitruv.framework.vsum.branch.data;
  *   <li>{@link #MODIFIED} - Git status code {@code M}: existing file content changed.</li>
  *   <li>{@link #DELETED} - Git status code {@code D}: file removed.</li>
  *   <li>{@link #RENAMED} - Git status code {@code R}: file moved to a new location.</li>
- *   <li>{@link #COPIED} - Git status code {@code C}: file duplicated to a new location.</li>
  * </ul>
  */
 public enum FileOperation {
@@ -38,11 +37,5 @@ public enum FileOperation {
      * {@code oldPath} field of the changelog entry.
      * Corresponds to Git status code {@code R}.
      */
-    RENAMED,
-
-    /**
-     * A file was duplicated to a new location.
-     * Corresponds to Git status code {@code C}.
-     */
-    COPIED
+    RENAMED
 }

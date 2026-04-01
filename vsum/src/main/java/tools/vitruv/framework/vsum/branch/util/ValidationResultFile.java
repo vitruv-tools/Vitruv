@@ -190,9 +190,9 @@ public class ValidationResultFile {
     // status line shown at the top of the hook output.
     sb.append("\n");
     if (result.isValid()) {
-      sb.append("✔ VALIDATION PASSED\n");
+      sb.append("VALIDATION PASSED\n");
     } else {
-      sb.append("✘ VALIDATION FAILED\n");
+      sb.append("VALIDATION FAILED\n");
     }
     sb.append("\n\n");
 
@@ -200,7 +200,7 @@ public class ValidationResultFile {
     if (result.hasErrors()) {
       sb.append("Errors (").append(result.getErrors().size()).append("):\n");
       for (String error : result.getErrors()) {
-        sb.append("  ✘ ").append(error).append("\n");
+        sb.append("  - ").append(error).append("\n");
       }
       sb.append("\n");
     }
@@ -209,7 +209,7 @@ public class ValidationResultFile {
     if (result.hasWarnings()) {
       sb.append("Warnings (").append(result.getWarnings().size()).append("):\n");
       for (String warning : result.getWarnings()) {
-        sb.append("  ⚠ ").append(warning).append("\n");
+        sb.append("  ! ").append(warning).append("\n");
       }
       sb.append("\n");
     }

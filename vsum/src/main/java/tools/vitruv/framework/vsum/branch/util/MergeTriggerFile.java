@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
  *       request identifier, and timestamp.</li>
  *   <li>The watcher polls for the file, validates the merged VSUM state, writes the
  *       result and merge metadata, and deletes the trigger file.</li>
- *   <li>Unlike the pre-commit hook, post-merge validation is non-blocking — the merge
+ *   <li>Unlike the pre-commit hook, post-merge validation is non-blocking because the merge
  *       has already completed. The result is written as a warning report if the merged
  *       state contains inconsistencies.</li>
  * </ul>

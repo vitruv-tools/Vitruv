@@ -242,7 +242,7 @@ public class BranchManager {
         if (Files.exists(metadataFile)) {
           result.add(BranchMetadata.readFrom(metadataFile));
         } else {
-          // branch exists in Git but not in Vitruvius metadata — synthesize defaults.
+          // branch exists in Git but not in Vitruvius metadata, so synthesize defaults.
           var now = LocalDateTime.now();
           result.add(new BranchMetadata(name, BranchState.ACTIVE, "unknown", now, now));
           LOGGER.debug("Branch '{}' has no metadata file, synthesized defaults", name);

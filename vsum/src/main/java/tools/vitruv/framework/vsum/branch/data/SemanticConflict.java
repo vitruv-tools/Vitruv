@@ -17,7 +17,7 @@ import tools.vitruv.framework.vsum.branch.storage.SemanticChangeType;
  *       vs. any modification).</li>
  * </ul>
  *
- * <p>The {@link #severity} is assigned by the {@code ChangeReplayer} according to the rules
+ * <p>The {@link #severity} is assigned by the {@code SemanticConflictDetector} according to the rules
  * documented in {@link ConflictSeverity} and {@link SemanticChangeType}.
  *
  * <p>The two {@link SemanticChangeEntry} fields ({@link #changeOnBranchA},

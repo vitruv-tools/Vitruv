@@ -272,7 +272,7 @@ public class MergeManager {
 
   /**
    * Writes the merge trigger file so VsumMergeWatcher picks up and validates the merged
-   * state. Non-fatal if writing fails — the merge has already completed successfully.
+   * state. Non-fatal if writing fails - the merge has already completed successfully.
    *
    * @param result       the successful merge result.
    * @param sourceBranch the branch that was merged in.
@@ -293,7 +293,7 @@ public class MergeManager {
 
   /**
    * Deletes the source branch from Git after a successful merge (BR-5).
-   * Non-fatal if deletion fails — the merge has already completed.
+   * Non-fatal if deletion fails - the merge has already completed.
    *
    * @param git          the open Git instance.
    * @param sourceBranch the branch to delete.

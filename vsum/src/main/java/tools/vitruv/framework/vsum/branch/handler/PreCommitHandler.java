@@ -151,7 +151,7 @@ public class PreCommitHandler {
                 + " in resource " + resource.getURI());
             proxyCount++;
           }
-          // pass false to eGet to avoid auto-resolving proxies — we want to report them.
+          // pass false to eGet to avoid auto-resolving proxies so that we can report them.
           for (EReference ref : obj.eClass().getEAllReferences()) {
             if (!ref.isContainment()) {
               Object value = obj.eGet(ref, false);

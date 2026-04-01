@@ -22,12 +22,12 @@ import static tools.vitruv.framework.vsum.branch.GitTestHelper.commitFile;
 import static tools.vitruv.framework.vsum.branch.GitTestHelper.initRepo;
 
 /**
- * Unit tests for {@link ChangeReplayer}.
+ * Unit tests for {@link SemanticConflictDetector}.
  *
  * <p>Changelogs are written as real JSON files committed to the test repo so that
  * the TreeWalk-based reading path is exercised end-to-end.
  */
-class ChangeReplayerTest {
+class SemanticConflictDetectorTest {
 
     private static final Gson GSON = new Gson();
 
@@ -118,7 +118,7 @@ class ChangeReplayerTest {
 
 
     @Nested
-    @DisplayName("replayBranches - no conflicts")
+    @DisplayName("analyzeBranches - no conflicts")
     class NoConflicts {
 
         @Test
@@ -146,11 +146,11 @@ class ChangeReplayerTest {
                         "feature-x", List.of(fileChange("b.xmi", "uuid-B", "name",
                                 SemanticChangeType.ATTRIBUTE_CHANGED, "Old", "Xyz"))));
 
-                // Switch back to master for replay
+                // Switch back to master for analysis
                 git.checkout().setName("master").call();
 
-                var replayer = new ChangeReplayer(repoDir);
-                ReplayResult result = replayer.replayBranches("master", "feature-x");
+                var detector = new SemanticConflictDetector(repoDir);
+                ReplayResult result = detector.analyzeBranches("master", "feature-x");
 
                 assertFalse(result.hasConflicts(), "different elements should not conflict");
                 // model-change commit + changelog commit = 2 diverging commits per branch
@@ -182,7 +182,7 @@ class ChangeReplayerTest {
 
                 git.checkout().setName("master").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertFalse(result.hasConflicts(), "identical changes are not a conflict");
             }
@@ -198,7 +198,7 @@ class ChangeReplayerTest {
                 commitFile(git, repoDir, "b.xmi", "<B/>", "commit on feature-x");
                 git.checkout().setName("master").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertFalse(result.hasConflicts());
                 assertTrue(result.getChangesOnA().isEmpty());
@@ -209,7 +209,7 @@ class ChangeReplayerTest {
 
 
     @Nested
-    @DisplayName("replayBranches - conflict detection")
+    @DisplayName("analyzeBranches - conflict detection")
     class ConflictDetection {
 
         @Test
@@ -237,7 +237,7 @@ class ChangeReplayerTest {
 
                 git.checkout().setName("master").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertTrue(result.hasConflicts());
                 assertEquals(1, result.getConflicts().size());
@@ -274,7 +274,7 @@ class ChangeReplayerTest {
 
                 git.checkout().setName("master").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertTrue(result.hasConflicts());
                 assertEquals(ConflictSeverity.HIGH, result.getConflicts().get(0).getSeverity());
@@ -288,7 +288,7 @@ class ChangeReplayerTest {
             try (Git git = initRepo(repoDir)) {
                 git.branchCreate().setName("feature-x").call();
 
-                // Both branches deleted uuid-A → same outcome, auto-resolvable
+                // Both branches deleted uuid-A -> same outcome, auto-resolvable
                 String masterSha = commitFile(git, repoDir, "a.xmi", "", "master deletes A");
                 commitChangelog(git, repoDir, "master", masterSha.substring(0, 7), changelogJson(masterSha,
                         "master", List.of(fileChange("a.xmi", "uuid-A", null,
@@ -302,7 +302,7 @@ class ChangeReplayerTest {
 
                 git.checkout().setName("master").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertFalse(result.hasConflicts(), "both branches deleting the same element is not a conflict");
             }
@@ -335,7 +335,7 @@ class ChangeReplayerTest {
 
                 git.checkout().setName("master").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertTrue(result.hasConflicts());
                 assertEquals(1, result.highSeverityCount());
@@ -346,16 +346,16 @@ class ChangeReplayerTest {
 
 
     @Nested
-    @DisplayName("replayBranches - edge cases")
+    @DisplayName("analyzeBranches - edge cases")
     class EdgeCases {
 
         @Test
         @DisplayName("throws when branch does not exist")
         void throwsForMissingBranch(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
-                var replayer = new ChangeReplayer(repoDir);
+                var detector = new SemanticConflictDetector(repoDir);
                 assertThrows(BranchOperationException.class,
-                        () -> replayer.replayBranches("master", "nonexistent"));
+                        () -> detector.analyzeBranches("master", "nonexistent"));
             }
         }
 
@@ -363,9 +363,9 @@ class ChangeReplayerTest {
         @DisplayName("throws for null parameters")
         void throwsForNullParameters(@TempDir Path repoDir) throws Exception {
             try (var ignored = initRepo(repoDir)) {
-                var replayer = new ChangeReplayer(repoDir);
-                assertThrows(NullPointerException.class, () -> replayer.replayBranches(null, "master"));
-                assertThrows(NullPointerException.class, () -> replayer.replayBranches("master", null));
+                var detector = new SemanticConflictDetector(repoDir);
+                assertThrows(NullPointerException.class, () -> detector.analyzeBranches(null, "master"));
+                assertThrows(NullPointerException.class, () -> detector.analyzeBranches("master", null));
             }
         }
 
@@ -376,7 +376,7 @@ class ChangeReplayerTest {
                 // Create feature-x from master HEAD without any new commits
                 git.branchCreate().setName("feature-x").call();
 
-                ReplayResult result = new ChangeReplayer(repoDir).replayBranches("master", "feature-x");
+                ReplayResult result = new SemanticConflictDetector(repoDir).analyzeBranches("master", "feature-x");
 
                 assertFalse(result.hasConflicts());
                 assertTrue(result.getCommitShasOnA().isEmpty(), "no diverging commits on master");

@@ -26,7 +26,7 @@
  * <p>Conflict and replay:
  * <ul>
  *   <li>{@link tools.vitruv.framework.vsum.branch.data.ReplayResult}:per-branch change lists
- *       and detected conflicts produced by {@code ChangeReplayer}.</li>
+ *       and detected conflicts produced by {@code SemanticConflictDetector}.</li>
  *   <li>{@link tools.vitruv.framework.vsum.branch.data.SemanticConflict}:a single
  *       {@code (elementUuid, feature)} conflict with severity and conflicting values.</li>
  *   <li>{@link tools.vitruv.framework.vsum.branch.data.ConflictSeverity}:HIGH / MEDIUM
