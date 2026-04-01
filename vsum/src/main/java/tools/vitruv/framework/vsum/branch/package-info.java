@@ -16,9 +16,6 @@
  *       the current branch via JGit and returns a typed result.</li>
  *   <li>{@link tools.vitruv.framework.vsum.branch.SemanticConflictDetector}: reads per-branch
  *       changelog entries to compute semantic deltas and conflicts.</li>
- *   <li>{@link tools.vitruv.framework.vsum.branch.DeltaVisualizationService}: produces
- *       {@link tools.vitruv.framework.vsum.branch.DeltaView} and
- *       {@link tools.vitruv.framework.vsum.branch.BranchDeltaView} for UI-1.</li>
  * </ul>
  */
 package tools.vitruv.framework.vsum.branch;
