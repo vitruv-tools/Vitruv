@@ -51,6 +51,28 @@
     <sonar.projectKey>vitruv-tools_Vitruv</sonar.projectKey>
   </properties>
 
+  <!-- Java Sources Plugin-->
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Ensure that Vitruv sources are available over Maven -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
   <!-- Dependency Management -->
   <dependencyManagement>
     <dependencies>
