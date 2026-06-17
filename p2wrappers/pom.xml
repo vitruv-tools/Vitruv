@@ -18,7 +18,6 @@
   <description>P2 dependenciy warppers</description>
 
   <modules>
-    <module>activextendannotations</module>
     <module>emfcompare</module>
     <module>emfutils</module>
     <module>javautils</module>

@@ -65,10 +65,6 @@
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtext</groupId>
-      <artifactId>org.eclipse.xtend.lib</artifactId>
-    </dependency>
 
     <!-- external test dependencies -->
     <dependency>
