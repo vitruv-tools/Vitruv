@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework.testutils</artifactId>
-    <version>3.2.4-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.testutils.integration</artifactId>
@@ -82,16 +82,8 @@
       <artifactId>junit-jupiter-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.xtend</groupId>
-      <artifactId>org.eclipse.xtend.lib</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtext</groupId>
-      <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
     </dependency>
 
     <!-- p2 dependencies -->

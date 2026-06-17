@@ -26,10 +26,10 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup Java and Maven cache
-      uses: actions/setup-java@v5.2.0
+      uses: actions/setup-java@v5.3.0
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
         check-latest: true
         cache: 'maven'
 
@@ -66,10 +66,10 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup Java and Maven cache
-      uses: actions/setup-java@v5.2.0
+      uses: actions/setup-java@v5.3.0
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
         check-latest: true
         cache: 'maven'
 
@@ -94,10 +94,10 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup Java and Maven cache
-      uses: actions/setup-java@v5.2.0
+      uses: actions/setup-java@v5.3.0
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
         check-latest: true
         cache: 'maven'
 
@@ -141,10 +141,10 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup Java and Maven cache
-      uses: actions/setup-java@v5.2.0
+      uses: actions/setup-java@v5.3.0
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
         check-latest: true
         cache: 'maven'
         server-id: central
