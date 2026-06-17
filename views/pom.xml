@@ -8,7 +8,7 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>tools.vitruv.framework</artifactId>
-    <version>3.2.4-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>tools.vitruv.framework.views</artifactId>
@@ -65,10 +65,6 @@
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.eclipse.xtend</groupId>
-      <artifactId>org.eclipse.xtend.lib</artifactId>
-    </dependency>
 
     <!-- external test dependencies -->
     <dependency>
@@ -110,11 +106,6 @@
     <!-- p2 compile dependencies -->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.p2wrappers.emfcompare</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -122,14 +113,6 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <!-- p2 test dependencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

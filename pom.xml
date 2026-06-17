@@ -8,12 +8,12 @@
   <parent>
     <groupId>tools.vitruv</groupId>
     <artifactId>parent</artifactId>
-    <version>3.3.2</version>
+    <version>4.0.0</version>
   </parent>
 
   <!-- Project Information -->
   <artifactId>tools.vitruv.framework</artifactId>
-  <version>3.2.4-SNAPSHOT</version>
+  <version>4.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Vitruv Framework</name>
@@ -44,7 +44,7 @@
   </modules>
 
   <properties>
-    <vitruv-change.version>3.2.4-SNAPSHOT</vitruv-change.version>
+    <vitruv-change.version>4.0.1-SNAPSHOT</vitruv-change.version>
     <!-- SonarQube configuration -->
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.organization>vitruv-tools</sonar.organization>
@@ -147,11 +147,6 @@
         <groupId>org.eclipse.platform</groupId>
         <artifactId>org.eclipse.equinox.registry</artifactId>
         <version>3.12.600</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>org.eclipse.xtend.lib</artifactId>
-        <version>2.43.0</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.xtext</groupId>
