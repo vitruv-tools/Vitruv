@@ -106,11 +106,6 @@
     <!-- p2 compile dependencies -->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.activextendannotations</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.p2wrappers.emfcompare</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -118,14 +113,6 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>tools.vitruv.framework.p2wrappers.emfutils</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <!-- p2 test dependencies -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>tools.vitruv.framework.p2wrappers.javautils</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
