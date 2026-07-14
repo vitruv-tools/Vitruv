@@ -6,10 +6,12 @@ import static com.google.common.base.Preconditions.checkState;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -34,6 +36,7 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
   private final StateBasedChangeResolutionStrategy changeResolutionStrategy;
   private ResourceSet originalStateViewResourceSet;
   private Map<Resource, Resource> originalStateResourceMapping;
+  private final Map<Class<?>, Object> annotations = new HashMap<>();
 
   /**
    * Creates a new instance with the given underlying view and change resolution.
@@ -100,10 +103,31 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
       }
     }
 
+    // Annotations are stamped on each individual TransactionalChange so that ChangePropagator,
+    // which iterates the transactional sequence and passes each change as the AnnotationSource,
+    // can see them. The composite wrapper is also annotated so callers of commitViewChanges
+    // that inspect the outer envelope (e.g. tests) find them there too.
+    changes.forEach(c -> annotations.forEach((type, value) -> c.setAnnotation((Class) type, value)));
     VitruviusChange<HierarchicalId> change =
         VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+    annotations.forEach((type, value) -> change.setAnnotation((Class) type, value));
     view.getViewType().commitViewChanges(this, change);
     view.setViewChanged(false);
+  }
+
+  @Override
+  public <T> void setAnnotation(Class<T> type, T value) {
+    annotations.put(type, value);
+  }
+
+  @Override
+  public <T> Optional<T> getAnnotation(Class<T> type) {
+    return Optional.ofNullable(type.cast(annotations.get(type)));
+  }
+
+  @Override
+  public Map<Class<?>, Object> getAnnotations() {
+    return Collections.unmodifiableMap(annotations);
   }
 
   @Override
