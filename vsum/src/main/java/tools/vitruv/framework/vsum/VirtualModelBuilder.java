@@ -5,9 +5,8 @@ import static com.google.common.base.Preconditions.checkState;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
 import tools.vitruv.change.interaction.InteractionResultProvider;
 import tools.vitruv.change.interaction.InternalUserInteractor;
 import tools.vitruv.change.interaction.UserInteractionFactory;
@@ -25,6 +24,8 @@ public class VirtualModelBuilder {
   private final Set<ViewType<?>> viewTypes = new HashSet<>();
   private final Set<ChangePropagationSpecification> changePropagationSpecifications =
       new HashSet<>();
+  private final Map<ChangePropagationSpecification, Integer> changePropagationSpecificationsToLevel =
+      new HashMap<>();
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
 
@@ -118,6 +119,22 @@ public class VirtualModelBuilder {
   }
 
   /**
+   * Adds the given change propagation specifications to the virtual model, at the given level.
+   *
+   * @param level the level of the change propagation specifications, determines ordering
+   * @param changePropagationSpecifications the change propagation specifications to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withChangePropagationSpecifications(
+          int level,
+          ChangePropagationSpecification... changePropagationSpecifications) {
+    for (ChangePropagationSpecification spec : changePropagationSpecifications) {
+      withChangePropagationSpecification(level, spec);
+    }
+    return this;
+  }
+
+  /**
    * Adds the given change propagation specifications to the virtual model.
    *
    * @param changePropagationSpecifications the change propagation specifications to add
@@ -128,6 +145,37 @@ public class VirtualModelBuilder {
     for (ChangePropagationSpecification spec : changePropagationSpecifications) {
       withChangePropagationSpecification(spec);
     }
+    return this;
+  }
+
+  /**
+   * Adds the given change propagation specifications to the virtual model, at the given level.
+   *
+   * @param level the level of the change propagation specifications, determines ordering
+   * @param changePropagationSpecifications the change propagation specifications to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withChangePropagationSpecifications(
+          int level,
+          Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+    for (ChangePropagationSpecification spec : changePropagationSpecifications) {
+      withChangePropagationSpecification(level, spec);
+    }
+    return this;
+  }
+
+  /**
+   * Adds the given change propagation specification to the virtual model, at the given level.
+   *
+   * @param level the level of the change propagation specification, determines ordering
+   * @param changePropagationSpecification the change propagation specification to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withChangePropagationSpecification(
+          int level,
+          ChangePropagationSpecification changePropagationSpecification) {
+    withChangePropagationSpecification(changePropagationSpecification);
+    changePropagationSpecificationsToLevel.put(changePropagationSpecification, level);
     return this;
   }
 
@@ -185,7 +233,7 @@ public class VirtualModelBuilder {
     viewTypes.forEach(viewTypeRepository::register);
 
     ChangePropagationSpecificationRepository changeSpecificationRepository =
-        new ChangePropagationSpecificationRepository(changePropagationSpecifications);
+        new ChangePropagationSpecificationRepository(changePropagationSpecifications, changePropagationSpecificationsToLevel);
 
     VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
     fileSystemLayout.prepare();
