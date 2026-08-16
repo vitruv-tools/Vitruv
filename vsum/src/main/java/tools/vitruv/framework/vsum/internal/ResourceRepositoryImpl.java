@@ -205,7 +205,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
   @Override
   public ModelSnapshot createSnapshot() {
-    return DefaultModelSnapshot.copyOf(modelsResourceSet, this::getMetadataModelURI);
+    return DefaultModelSnapshot.copyOf(modelsResourceSet, correspondenceModel, this::getMetadataModelURI);
   }
 
   @Override
