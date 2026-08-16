@@ -28,9 +28,8 @@ import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel;
 import tools.vitruv.change.correspondence.view.CorrespondenceModelViewFactory;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
-import tools.vitruv.change.propagation.ModelSnapshot;
-import tools.vitruv.change.propagation.TransactionalChangeWithPreviousState;
-import tools.vitruv.change.propagation.impl.DefaultModelSnapshot;
+import tools.vitruv.change.propagation.ModelRepositorySnapshot;
+import tools.vitruv.change.propagation.impl.DefaultModelRepositorySnapshot;
 import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
@@ -204,38 +203,9 @@ class ResourceRepositoryImpl implements ModelRepository {
   }
 
   @Override
-  public ModelSnapshot createSnapshot() {
-    return DefaultModelSnapshot.copyOf(modelsResourceSet, correspondenceModel, this::getMetadataModelURI);
-  }
-
-  @Override
-  public List<TransactionalChangeWithPreviousState> applyChangeAndStorePreviousState(VitruviusChange<Uuid> change) {
-    List<TransactionalChangeWithPreviousState> result = new ArrayList<>();
-
-    for (TransactionalChange<Uuid> transactionalChange : change.getTransactionalChangeSequence()) {
-      ModelSnapshot previousState = createSnapshot();
-
-      try {
-        var resolvedTransactionalChange = (TransactionalChange<EObject>) changeResolver.resolveAndApply(transactionalChange);
-        result.add(new TransactionalChangeWithPreviousState(resolvedTransactionalChange, previousState));
-      } catch (Exception e) {
-        try {
-          previousState.close();
-          result.forEach(entry -> {
-            try {
-              entry.previousState().close();
-            } catch (Exception ex) {
-              throw new RuntimeException(ex);
-            }
-          });
-        } catch (Exception ex) {
-          throw new RuntimeException(ex);
-        }
-        throw e;
-      }
-    }
-
-    return result;
+  public ModelRepositorySnapshot createSnapshot() {
+    return DefaultModelRepositorySnapshot.copyOf(
+        modelsResourceSet, correspondenceModel, this::getMetadataModelURI);
   }
 
   @Override
