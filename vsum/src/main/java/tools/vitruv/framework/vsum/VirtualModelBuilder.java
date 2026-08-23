@@ -18,6 +18,7 @@ import tools.vitruv.change.propagation.ChangePropagationSpecification;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationRepository;
 import tools.vitruv.change.utils.ProjectMarker;
 import tools.vitruv.framework.views.ViewType;
+import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
@@ -101,7 +102,7 @@ public class VirtualModelBuilder {
    * @param viewTypeSupplier the supplier of the view type
    * @return the builder instance
    */
-  public VirtualModelBuilder withViewType(Function<ViewTypeRepository, ViewType<?>> viewTypeSupplier) {
+  public VirtualModelBuilder withViewType(Function<ViewTypeProvider, ViewType<?>> viewTypeSupplier) {
     return withViewType(viewTypeSupplier.apply(viewTypeRepository));
   }
 
