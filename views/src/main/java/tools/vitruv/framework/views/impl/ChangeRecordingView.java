@@ -3,7 +3,11 @@ package tools.vitruv.framework.views.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -25,6 +29,7 @@ import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionS
 public class ChangeRecordingView implements ModifiableView, CommittableView {
   private final BasicView view;
   private ChangeRecorder changeRecorder;
+  private final Map<Class<?>, Object> annotations = new HashMap<>();
 
   /**
    * Creates a new instance with the given underlying.
@@ -58,12 +63,29 @@ public class ChangeRecordingView implements ModifiableView, CommittableView {
   public void commitChanges() {
     view.checkNotClosed();
     VitruviusChange<EObject> recordedChange = changeRecorder.endRecording();
+    // Copy annotations onto the recorded change before ID resolution, which creates a new object.
+    annotations.forEach((type, value) -> recordedChange.setAnnotation((Class) type, value));
     var changeResolver =
         VitruviusChangeResolverFactory.forHierarchicalIds(view.getViewResourceSet());
     VitruviusChange<HierarchicalId> unresolvedChanges = changeResolver.assignIds(recordedChange);
     view.getViewType().commitViewChanges(this, unresolvedChanges);
     view.setViewChanged(false);
     changeRecorder.beginRecording();
+  }
+
+  @Override
+  public <T> void setAnnotation(Class<T> type, T value) {
+    annotations.put(type, value);
+  }
+
+  @Override
+  public <T> Optional<T> getAnnotation(Class<T> type) {
+    return Optional.ofNullable(type.cast(annotations.get(type)));
+  }
+
+  @Override
+  public Map<Class<?>, Object> getAnnotations() {
+    return Collections.unmodifiableMap(annotations);
   }
 
   @Override

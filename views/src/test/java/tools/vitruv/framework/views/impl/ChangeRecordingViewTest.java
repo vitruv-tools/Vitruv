@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
@@ -452,6 +453,83 @@ public class ChangeRecordingViewTest {
       verify(mockViewType).commitViewChanges(viewArgument.capture(), changeArgument.capture());
       assertThat(viewArgument.getValue(), is(view));
       assertThat(changeArgument.getValue().getEChanges(), not(hasItem(anything())));
+    }
+  }
+
+  /** Tests for annotation propagation via {@link ChangeRecordingView#setAnnotation}. */
+  @Nested
+  @DisplayName("annotations")
+  class Annotations {
+    record Tag(String value) {}
+
+    @Test
+    @DisplayName("set before commit are present on the committed change")
+    void annotationAppearsOnCommittedChange() throws Exception {
+      try (ChangeRecordingView view =
+          new ChangeRecordingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+        Root root = aet.Root();
+        root.setId("root");
+        view.registerRoot(root, URI.createURI("test://test.aet"));
+        view.setAnnotation(Tag.class, new Tag("author"));
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
+            ArgumentCaptor.forClass(VitruviusChange.class);
+        view.commitChanges();
+        verify(mockViewType).commitViewChanges(org.mockito.ArgumentMatchers.any(), changeArgument.capture());
+        assertTrue(changeArgument.getValue().getAnnotation(Tag.class).isPresent());
+        assertThat(changeArgument.getValue().getAnnotation(Tag.class).get().value(), is("author"));
+      }
+    }
+
+    @Test
+    @DisplayName("not set leave the committed change without the annotation")
+    void noAnnotationWhenNotSet() throws Exception {
+      try (ChangeRecordingView view =
+          new ChangeRecordingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+        Root root = aet.Root();
+        root.setId("root");
+        view.registerRoot(root, URI.createURI("test://test.aet"));
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
+            ArgumentCaptor.forClass(VitruviusChange.class);
+        view.commitChanges();
+        verify(mockViewType).commitViewChanges(org.mockito.ArgumentMatchers.any(), changeArgument.capture());
+        assertTrue(changeArgument.getValue().getAnnotation(Tag.class).isEmpty());
+      }
+    }
+
+    @Test
+    @DisplayName("set before commit are readable back from the view")
+    void getAnnotationReturnsSetValue() throws Exception {
+      try (ChangeRecordingView view =
+          new ChangeRecordingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+        var tag = new Tag("value");
+        view.setAnnotation(Tag.class, tag);
+        assertThat(view.getAnnotation(Tag.class).orElseThrow(), is(tag));
+      }
+    }
+
+    @Test
+    @DisplayName("persist across multiple commits")
+    void annotationPersistsAcrossCommits() throws Exception {
+      try (ChangeRecordingView view =
+          new ChangeRecordingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection))) {
+        Root root = aet.Root();
+        root.setId("root");
+        view.registerRoot(root, URI.createURI("test://test.aet"));
+        view.setAnnotation(Tag.class, new Tag("first"));
+        view.commitChanges();
+        // reset clears the first-commit invocation so the second verify below is unambiguous.
+        reset(mockChangeableViewSource, mockViewType);
+        // second commit — annotation not re-set, should still be there
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
+            ArgumentCaptor.forClass(VitruviusChange.class);
+        view.commitChanges();
+        verify(mockViewType).commitViewChanges(org.mockito.ArgumentMatchers.any(), changeArgument.capture());
+        assertThat(changeArgument.getValue().getAnnotation(Tag.class).get().value(), is("first"));
+      }
     }
   }
 
