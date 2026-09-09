@@ -25,5 +25,4 @@ This project depends on the following other projects from the Vitruvius framewor
 | views        | Definition of view types on the underlying models.                                           |
 | vsum         | Definition of V-SUMs with consistency preservation rules between meta-models and view types. |
 | remote       | Client-server infrastructure for working with V-SUMs.                                        |
-| applications | Definition of and registry for V-SUMs.                                                       |
 | *testutils*  | *Utilities for testing in Vitruvius or V-SUM projects.*                                      |
