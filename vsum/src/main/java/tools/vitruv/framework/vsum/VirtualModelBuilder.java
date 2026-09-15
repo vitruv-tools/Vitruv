@@ -6,8 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import tools.vitruv.change.interaction.InteractionResultProvider;
 import tools.vitruv.change.interaction.InternalUserInteractor;
 import tools.vitruv.change.interaction.UserInteractionFactory;
@@ -15,6 +18,7 @@ import tools.vitruv.change.propagation.ChangePropagationSpecification;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationRepository;
 import tools.vitruv.change.utils.ProjectMarker;
 import tools.vitruv.framework.views.ViewType;
+import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
@@ -22,9 +26,11 @@ import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 
 /** Builder for creating and initializing virtual models in the VSUM framework. */
 public class VirtualModelBuilder {
-  private final Set<ViewType<?>> viewTypes = new HashSet<>();
+  private final ViewTypeRepository viewTypeRepository = new ViewTypeRepository();
   private final Set<ChangePropagationSpecification> changePropagationSpecifications =
       new HashSet<>();
+  private final Map<ChangePropagationSpecification, Integer> changePropagationSpecificationsToLevel =
+      new HashMap<>();
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
 
@@ -86,8 +92,18 @@ public class VirtualModelBuilder {
    * @return the builder instance
    */
   public VirtualModelBuilder withViewType(ViewType<?> viewType) {
-    viewTypes.add(viewType);
+    this.viewTypeRepository.register(viewType);
     return this;
+  }
+
+  /**
+   * Adds a view type supplied by the given supplier to the virtual model.
+   *
+   * @param viewTypeSupplier the supplier of the view type
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withViewType(Function<ViewTypeProvider, ViewType<?>> viewTypeSupplier) {
+    return withViewType(viewTypeSupplier.apply(viewTypeRepository));
   }
 
   /**
@@ -118,6 +134,22 @@ public class VirtualModelBuilder {
   }
 
   /**
+   * Adds the given change propagation specifications to the virtual model, at the given level.
+   *
+   * @param level the level of the change propagation specifications, determines ordering
+   * @param changePropagationSpecifications the change propagation specifications to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withChangePropagationSpecifications(
+          int level,
+          ChangePropagationSpecification... changePropagationSpecifications) {
+    for (ChangePropagationSpecification spec : changePropagationSpecifications) {
+      withChangePropagationSpecification(level, spec);
+    }
+    return this;
+  }
+
+  /**
    * Adds the given change propagation specifications to the virtual model.
    *
    * @param changePropagationSpecifications the change propagation specifications to add
@@ -128,6 +160,37 @@ public class VirtualModelBuilder {
     for (ChangePropagationSpecification spec : changePropagationSpecifications) {
       withChangePropagationSpecification(spec);
     }
+    return this;
+  }
+
+  /**
+   * Adds the given change propagation specifications to the virtual model, at the given level.
+   *
+   * @param level the level of the change propagation specifications, determines ordering
+   * @param changePropagationSpecifications the change propagation specifications to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withChangePropagationSpecifications(
+          int level,
+          Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+    for (ChangePropagationSpecification spec : changePropagationSpecifications) {
+      withChangePropagationSpecification(level, spec);
+    }
+    return this;
+  }
+
+  /**
+   * Adds the given change propagation specification to the virtual model, at the given level.
+   *
+   * @param level the level of the change propagation specification, determines ordering
+   * @param changePropagationSpecification the change propagation specification to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withChangePropagationSpecification(
+          int level,
+          ChangePropagationSpecification changePropagationSpecification) {
+    withChangePropagationSpecification(changePropagationSpecification);
+    changePropagationSpecificationsToLevel.put(changePropagationSpecification, level);
     return this;
   }
 
@@ -181,11 +244,8 @@ public class VirtualModelBuilder {
     checkState(storageFolder != null, "No storage folder was configured!");
     checkState(userInteractor != null, "No user interactor was configured!");
 
-    ViewTypeRepository viewTypeRepository = new ViewTypeRepository();
-    viewTypes.forEach(viewTypeRepository::register);
-
     ChangePropagationSpecificationRepository changeSpecificationRepository =
-        new ChangePropagationSpecificationRepository(changePropagationSpecifications);
+        new ChangePropagationSpecificationRepository(changePropagationSpecifications, changePropagationSpecificationsToLevel);
 
     VsumFileSystemLayout fileSystemLayout = new VsumFileSystemLayout(storageFolder);
     fileSystemLayout.prepare();
