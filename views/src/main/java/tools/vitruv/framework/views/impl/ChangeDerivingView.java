@@ -107,10 +107,10 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
     // which iterates the transactional sequence and passes each change as the AnnotationSource,
     // can see them. The composite wrapper is also annotated so callers of commitViewChanges
     // that inspect the outer envelope (e.g. tests) find them there too.
-    changes.forEach(c -> annotations.forEach((type, value) -> c.setAnnotation((Class) type, value)));
+    changes.forEach(c -> AnnotationUtil.copyAnnotations(annotations, c));
     VitruviusChange<HierarchicalId> change =
         VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-    annotations.forEach((type, value) -> change.setAnnotation((Class) type, value));
+    AnnotationUtil.copyAnnotations(annotations, change);
     view.getViewType().commitViewChanges(this, change);
     view.setViewChanged(false);
   }

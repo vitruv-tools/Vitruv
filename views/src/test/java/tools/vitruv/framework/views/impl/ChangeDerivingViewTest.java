@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
@@ -469,7 +470,7 @@ public class ChangeDerivingViewTest {
         ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
             ArgumentCaptor.forClass(VitruviusChange.class);
         view.commitChanges();
-        verify(mockViewType).commitViewChanges(org.mockito.ArgumentMatchers.any(), changeArgument.capture());
+        verify(mockViewType).commitViewChanges(any(), changeArgument.capture());
         assertTrue(changeArgument.getValue().getAnnotation(Tag.class).isPresent());
         assertThat(changeArgument.getValue().getAnnotation(Tag.class).get().value(), is("author"));
       }
@@ -488,7 +489,7 @@ public class ChangeDerivingViewTest {
         ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
             ArgumentCaptor.forClass(VitruviusChange.class);
         view.commitChanges();
-        verify(mockViewType).commitViewChanges(org.mockito.ArgumentMatchers.any(), changeArgument.capture());
+        verify(mockViewType).commitViewChanges(any(), changeArgument.capture());
         assertTrue(changeArgument.getValue().getAnnotation(Tag.class).isEmpty());
       }
     }

@@ -64,7 +64,7 @@ public class ChangeRecordingView implements ModifiableView, CommittableView {
     view.checkNotClosed();
     VitruviusChange<EObject> recordedChange = changeRecorder.endRecording();
     // Copy annotations onto the recorded change before ID resolution, which creates a new object.
-    annotations.forEach((type, value) -> recordedChange.setAnnotation((Class) type, value));
+    AnnotationUtil.copyAnnotations(annotations, recordedChange);
     var changeResolver =
         VitruviusChangeResolverFactory.forHierarchicalIds(view.getViewResourceSet());
     VitruviusChange<HierarchicalId> unresolvedChanges = changeResolver.assignIds(recordedChange);
