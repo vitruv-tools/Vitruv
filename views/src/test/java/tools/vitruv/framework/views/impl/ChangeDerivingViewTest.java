@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
@@ -446,6 +447,64 @@ public class ChangeDerivingViewTest {
       assertThat(viewArgument.getValue(), is(view));
       assertFalse(changeArgument.getValue().containsConcreteChange(), "change must be empty");
       assertThat(view.getRootObjects().size(), is(1));
+    }
+  }
+
+  /** Tests for annotation propagation via {@link ChangeDerivingView#setAnnotation}. */
+  @Nested
+  @DisplayName("annotations")
+  class Annotations {
+    record Tag(String value) {}
+
+    @Test
+    @DisplayName("set before commit are present on the committed change")
+    void annotationAppearsOnCommittedChange() throws Exception {
+      try (ChangeDerivingView view =
+          new ChangeDerivingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
+              new DefaultStateBasedChangeResolutionStrategy())) {
+        Root root = aet.Root();
+        root.setId("root");
+        view.registerRoot(root, URI.createURI("test://test.aet"));
+        view.setAnnotation(Tag.class, new Tag("author"));
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
+            ArgumentCaptor.forClass(VitruviusChange.class);
+        view.commitChanges();
+        verify(mockViewType).commitViewChanges(any(), changeArgument.capture());
+        assertTrue(changeArgument.getValue().getAnnotation(Tag.class).isPresent());
+        assertThat(changeArgument.getValue().getAnnotation(Tag.class).get().value(), is("author"));
+      }
+    }
+
+    @Test
+    @DisplayName("not set leave the committed change without the annotation")
+    void noAnnotationWhenNotSet() throws Exception {
+      try (ChangeDerivingView view =
+          new ChangeDerivingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
+              new DefaultStateBasedChangeResolutionStrategy())) {
+        Root root = aet.Root();
+        root.setId("root");
+        view.registerRoot(root, URI.createURI("test://test.aet"));
+        ArgumentCaptor<VitruviusChange<HierarchicalId>> changeArgument =
+            ArgumentCaptor.forClass(VitruviusChange.class);
+        view.commitChanges();
+        verify(mockViewType).commitViewChanges(any(), changeArgument.capture());
+        assertTrue(changeArgument.getValue().getAnnotation(Tag.class).isEmpty());
+      }
+    }
+
+    @Test
+    @DisplayName("set before commit are readable back from the view")
+    void getAnnotationReturnsSetValue() throws Exception {
+      try (ChangeDerivingView view =
+          new ChangeDerivingView(
+              new BasicView(mockViewType, mockChangeableViewSource, mockViewSelection),
+              new DefaultStateBasedChangeResolutionStrategy())) {
+        var tag = new Tag("value");
+        view.setAnnotation(Tag.class, tag);
+        assertThat(view.getAnnotation(Tag.class).orElseThrow(), is(tag));
+      }
     }
   }
 

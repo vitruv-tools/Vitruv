@@ -1,10 +1,12 @@
 package tools.vitruv.framework.views;
 
+import tools.vitruv.change.composite.description.Annotatable;
+
 /**
  * A {@link View} that allows to commit its changes back to the underlying {@link
  * ChangeableViewSource}.
  */
-public interface CommittableView extends View {
+public interface CommittableView extends View, Annotatable {
   /**
    * Commits the changes made to the view and its containing elements to the underlying {@link
    * ChangeableViewSource}. This explicitly includes all changes that have been made before calling
