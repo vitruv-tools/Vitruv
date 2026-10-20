@@ -1,5 +1,6 @@
 package tools.vitruv.framework.views.impl;
 
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelector;
@@ -40,4 +41,25 @@ public interface ViewCreatingViewType<S extends ViewSelector, Id> extends ViewTy
    * @param viewChange are the changes performed to the view.
    */
   void commitViewChanges(ModifiableView view, VitruviusChange<Id> viewChange);
+
+  /**
+   * Turns the changes made to the view into a change of its underlying {@link
+   * ChangeableViewSource}, without propagating it. This is the first half of {@link
+   * #commitViewChanges}; the caller decides when and how the result is propagated, e.g., by
+   * enqueuing it instead of propagating it right away.
+   *
+   * <p>The view source is only read, not modified. Since its models are read, callers must make
+   * sure they are not modified concurrently, e.g., by a change propagation running in parallel.
+   *
+   * @param view is the modified view.
+   * @param viewChange are the changes performed to the view.
+   * @return the change to apply to the view source.
+   * @throws UnsupportedOperationException if this view type cannot resolve changes without
+   *     propagating them, which is the default.
+   */
+  default VitruviusChange<Uuid> resolveViewChanges(
+      ModifiableView view, VitruviusChange<Id> viewChange) {
+    throw new UnsupportedOperationException(
+        getClass().getSimpleName() + " does not support resolving view changes");
+  }
 }

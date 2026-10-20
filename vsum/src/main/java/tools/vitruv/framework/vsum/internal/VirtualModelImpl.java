@@ -2,11 +2,15 @@ package tools.vitruv.framework.vsum.internal;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -19,10 +23,15 @@ import tools.vitruv.change.composite.propagation.ChangePropagationListener;
 import tools.vitruv.change.correspondence.Correspondence;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.interaction.InternalUserInteractor;
+import tools.vitruv.change.interaction.UserInteractionBase;
 import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.change.propagation.ChangePropagationObservableRegistry;
 import tools.vitruv.change.propagation.ChangePropagationObserver;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider;
+import tools.vitruv.change.propagation.QueuedChange;
+import tools.vitruv.change.propagation.QueuedPropagationStep;
+import tools.vitruv.change.propagation.QueuedPropagationStep.Outcome;
+import tools.vitruv.change.propagation.impl.ChangePropagationQueue;
 import tools.vitruv.change.propagation.impl.ChangePropagator;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
@@ -46,6 +55,19 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   private final InternalUserInteractor userInteractor;
   private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
 
+  // Queued steps run under the monitor of this object, just like propagateChange, so the two never
+  // modify the models at the same time. Enqueuing, looking at the queue and answering user
+  // interactions do not take that monitor, so they never wait for a running step.
+  private volatile ChangePropagationQueue changePropagationQueue;
+
+  // Only setChangePropagationMode replaces the queue, and only while it is empty. Without this
+  // lock, a change enqueued at that very moment could end up in the queue being thrown away.
+  private final Object queueReplacementLock = new Object();
+
+  // Task ids of enqueued changes that have been applied to the models in a deferred step and wait
+  // to be propagated again. Only used by queued steps, under the monitor of this object.
+  private final Set<Integer> deferredAppliedChanges = new HashSet<>();
+
   /**
    * Creates a new instance of the {@link VirtualModelImpl} class.
    *
@@ -65,6 +87,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
     this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
     this.userInteractor = userInteractor;
+    this.changePropagationQueue = createChangePropagationQueue();
   }
 
   /** Loads the existing models of the virtual model. */
@@ -136,6 +159,105 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     if (LOGGER.isDebugEnabled()) {
       LOGGER.debug(InfoMessages.DEBUG_FINISHED_SYNC, inputChange);
     }
+  }
+
+  @Override
+  public int enqueueChange(VitruviusChange<Uuid> change) {
+    checkChangeToEnqueue(change);
+    synchronized (queueReplacementLock) {
+      return changePropagationQueue.enqueueChange(change);
+    }
+  }
+
+  @Override
+  public int enqueueChange(VitruviusChange<Uuid> change, int taskId) {
+    checkChangeToEnqueue(change);
+    synchronized (queueReplacementLock) {
+      return changePropagationQueue.enqueueChange(change, taskId);
+    }
+  }
+
+  private static void checkChangeToEnqueue(VitruviusChange<Uuid> change) {
+    checkNotNull(change, ErrorMessages.CHANGE_NULL);
+    checkArgument(
+        change.containsConcreteChange(),
+        ErrorMessages.CHANGE_HAS_NO_CONCRETE_CHANGE,
+        System.lineSeparator(),
+        change);
+  }
+
+  @Override
+  public synchronized Optional<QueuedPropagationStep> propagateNextQueuedChange() {
+    // No other step runs while this monitor is held, and enqueuing only appends to the queue, so
+    // the first queued change is the one this step takes.
+    List<QueuedChange> queuedChanges = changePropagationQueue.getQueuedChanges();
+    if (queuedChanges.isEmpty()) {
+      return Optional.empty();
+    }
+    QueuedChange next = queuedChanges.get(0);
+    // The first step of an enqueued change applies it to the models, whatever happens afterwards.
+    boolean appliesEnqueuedChange =
+        next.parentTaskId() == null && !deferredAppliedChanges.contains(next.taskId());
+    Optional<QueuedPropagationStep> step;
+    try {
+      step = changePropagationQueue.propagateNext(changePropagationObservers);
+    } catch (RuntimeException e) {
+      // The queue has dropped the change.
+      deferredAppliedChanges.remove(next.taskId());
+      throw e;
+    }
+    step.ifPresent(it -> finishQueuedPropagationStep(it, appliesEnqueuedChange));
+    return step;
+  }
+
+  private void finishQueuedPropagationStep(
+      QueuedPropagationStep step, boolean appliesEnqueuedChange) {
+    if (step.outcome() == Outcome.PROPAGATED) {
+      deferredAppliedChanges.remove(step.taskId());
+      save();
+      if (LOGGER.isTraceEnabled()) {
+        LOGGER.trace(InfoMessages.TRACE_PROPAGATED_CHANGES, step.propagatedChanges());
+      }
+      changePropagationListeners.stream()
+          .forEach(it -> it.finishedChangePropagation(step.propagatedChanges()));
+    }
+    if (step.outcome() == Outcome.DEFERRED && appliesEnqueuedChange) {
+      // The enqueued change stays applied while it waits for the answer, so views are outdated
+      // already. Nothing has been propagated yet, and the models are saved once it is.
+      deferredAppliedChanges.add(step.taskId());
+      changePropagationListeners.stream().forEach(it -> it.finishedChangePropagation(List.of()));
+    }
+    if (step.outcome() == Outcome.SKIPPED_BLOCKED) {
+      // A worker may come across the same blocked change again and again, so keep this out of the
+      // info log.
+      LOGGER.debug(InfoMessages.QUEUED_PROPAGATION_STEP, step.taskId(), step.outcome());
+    } else {
+      LOGGER.info(InfoMessages.QUEUED_PROPAGATION_STEP, step.taskId(), step.outcome());
+    }
+  }
+
+  @Override
+  public List<QueuedChange> getQueuedChanges() {
+    return changePropagationQueue.getQueuedChanges();
+  }
+
+  @Override
+  public boolean isChangePending(int taskId) {
+    return changePropagationQueue.isPending(taskId);
+  }
+
+  @Override
+  public void registerUserInteractions(int taskId, UserInteractionBase... interactions) {
+    changePropagationQueue.registerUserInteractions(taskId, interactions);
+  }
+
+  private ChangePropagationQueue createChangePropagationQueue() {
+    return new ChangePropagationQueue(
+        new ChangePropagator(
+            resourceRepository,
+            changePropagationSpecificationProvider,
+            userInteractor,
+            changePropagationMode));
   }
 
   @Override
@@ -219,7 +341,14 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   }
 
   @Override
-  public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
-    this.changePropagationMode = changePropagationMode;
+  public synchronized void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
+    synchronized (queueReplacementLock) {
+      checkState(
+          changePropagationQueue.getQueuedChanges().isEmpty(),
+          ErrorMessages.CHANGES_QUEUED_ON_MODE_CHANGE);
+      this.changePropagationMode = changePropagationMode;
+      // A change propagator keeps the mode it was created with, so the queue needs a new one.
+      changePropagationQueue = createChangePropagationQueue();
+    }
   }
 }

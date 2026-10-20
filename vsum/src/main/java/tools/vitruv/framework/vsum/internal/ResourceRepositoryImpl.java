@@ -190,10 +190,16 @@ class ResourceRepositoryImpl implements ModelRepository {
     changeRecorder.beginRecording();
     isRecording = true;
     LOGGER.debug(InfoMessages.DEBUG_START_RECORDING_VIRTUAL_MODEL);
-    changeApplicator.run();
-    LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
-    isRecording = false;
-    changeRecorder.endRecording();
+    try {
+      changeApplicator.run();
+    } finally {
+      // Stop recording even if the applicator throws, e.g., because a reaction fails or a queued
+      // change has to wait for a user interaction. Otherwise the recorder keeps recording and every
+      // later propagation fails with "This recorder is already recording!".
+      LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
+      isRecording = false;
+      changeRecorder.endRecording();
+    }
     TransactionalChange<EObject> change = changeRecorder.getChange();
     changeResolver.assignIds(change);
     return change.containsConcreteChange() ? List.of(change) : List.of();

@@ -7,37 +7,60 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.Resour
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.containsModelOf;
 import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 import static tools.vitruv.framework.vsum.VirtualModelTestUtil.createAndLoadTestVirtualModel;
+import static tools.vitruv.framework.vsum.VirtualModelTestUtil.createAndLoadTestVirtualModelWithConfirmedConsistencyPreservation;
 import static tools.vitruv.framework.vsum.VirtualModelTestUtil.createAndLoadTestVirtualModelWithConsistencyPreservation;
 import static tools.vitruv.framework.vsum.VirtualModelTestUtil.recordChanges;
 
 import allElementTypes.Root;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import tools.vitruv.change.atomic.eobject.CreateEObject;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.change.atomic.root.InsertRootEObject;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
+import tools.vitruv.change.composite.description.VitruviusChangeFactory;
 import tools.vitruv.change.composite.description.VitruviusChangeResolverFactory;
+import tools.vitruv.change.composite.propagation.ChangePropagationListener;
 import tools.vitruv.change.composite.recording.ChangeRecorder;
+import tools.vitruv.change.interaction.ConfirmationUserInteraction;
+import tools.vitruv.change.interaction.InteractionFactory;
+import tools.vitruv.change.interaction.PendingUserInteraction;
+import tools.vitruv.change.interaction.UserInteractionBase;
+import tools.vitruv.change.propagation.ChangePropagationMode;
+import tools.vitruv.change.propagation.PropagationBlockReason;
+import tools.vitruv.change.propagation.QueuedChange;
+import tools.vitruv.change.propagation.QueuedPropagationStep;
+import tools.vitruv.change.propagation.QueuedPropagationStep.Outcome;
 import tools.vitruv.change.testutils.TestProject;
 import tools.vitruv.change.testutils.TestProjectManager;
 import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeFactory;
+import tools.vitruv.framework.vsum.VirtualModelTestUtil.ConfirmingRedundancyChangePropagationSpecification;
 import tools.vitruv.framework.vsum.VirtualModelTestUtil.RedundancyChangePropagationSpecification;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
@@ -434,6 +457,222 @@ class VirtualModelTest {
         claimOne(reopenedViewRoot.getMultiValuedContainmentEReference()).getId(), is(NON_ROOT_ID));
   }
 
+  @Test
+  @DisplayName("propagate an enqueued change into a virtual model step by step")
+  void propagateQueuedChangeIntoVirtualModel() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var listener = new RecordingChangePropagationListener();
+    virtualModel.addChangePropagationListener(listener);
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    int taskId = enqueueRootCreation(virtualModel, resourceSet, uuidResolver, "");
+    var view = createTestView(virtualModel);
+
+    // Enqueuing alone does not touch the models.
+    assertTrue(virtualModel.isChangePending(taskId));
+    assertNull(virtualModel.getModelInstance(createTestModelResourceUri("")));
+    assertFalse(view.isOutdated());
+
+    var steps = propagateQueuedChanges(virtualModel);
+
+    assertEquals(taskId, steps.get(0).taskId());
+    assertTrue(steps.stream().allMatch(step -> step.outcome() == Outcome.PROPAGATED));
+    assertTrue(virtualModel.propagateNextQueuedChange().isEmpty());
+    assertFalse(virtualModel.isChangePending(taskId));
+    // Same result as propagating the change synchronously ...
+    var sourceModel = virtualModel.getModelInstance(createTestModelResourceUri(""));
+    var targetResourceUri =
+        RedundancyChangePropagationSpecification.getTargetResourceUri(
+            createTestModelResourceUri(""));
+    var monitoredResource = claimOne(resourceSet.getResources());
+    assertThat(sourceModel.getResource(), containsModelOf(monitoredResource));
+    assertThat(
+        virtualModel.getModelInstance(targetResourceUri).getResource(),
+        containsModelOf(monitoredResource));
+    assertEquals(
+        1,
+        virtualModel
+            .getCorrespondenceModel()
+            .getCorrespondingEObjects(sourceModel.getResource().getContents().get(0))
+            .size());
+    // ... saved to disk ...
+    var reloadingResourceSet = withGlobalFactories(new ResourceSetImpl());
+    assertThat(
+        reloadingResourceSet.getResource(createTestModelResourceUri(""), true),
+        containsModelOf(monitoredResource));
+    assertThat(
+        reloadingResourceSet.getResource(targetResourceUri, true),
+        containsModelOf(monitoredResource));
+    // ... and listeners hear about every step, so views know they are outdated.
+    assertEquals(steps.size(), listener.finishedPropagations.size());
+    assertEquals(
+        steps.stream().flatMap(step -> step.propagatedChanges().stream()).toList(),
+        listener.finishedPropagations.stream().flatMap(List::stream).toList());
+    assertEquals(0, listener.startedPropagations);
+    assertThat("view source must have been changed", view.isOutdated());
+  }
+
+  @ParameterizedTest(name = "answered with {0}")
+  @ValueSource(booleans = {true, false})
+  @DisplayName("defer an enqueued change until the user interaction it needs is answered")
+  void deferQueuedChangeUntilUserInteractionIsAnswered(boolean confirmed) throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConfirmedConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    int taskId = enqueueRootCreation(virtualModel, resourceSet, uuidResolver, "");
+
+    var stepsBeforeAnswer = propagateQueuedChanges(virtualModel);
+
+    assertEquals(List.of(Outcome.DEFERRED), outcomesOf(stepsBeforeAnswer));
+    QueuedChange waitingChange = claimOne(virtualModel.getQueuedChanges());
+    assertEquals(taskId, waitingChange.taskId());
+    assertEquals(PropagationBlockReason.USER_INTERACTION, waitingChange.blockReason());
+    assertEquals(
+        PendingUserInteraction.Kind.CONFIRMATION, waitingChange.pendingInteraction().kind());
+    assertEquals(
+        ConfirmingRedundancyChangePropagationSpecification.QUESTION,
+        waitingChange.pendingInteraction().message());
+
+    virtualModel.registerUserInteractions(taskId, confirmation(confirmed));
+    var stepsAfterAnswer = propagateQueuedChanges(virtualModel);
+
+    assertTrue(stepsAfterAnswer.stream().allMatch(step -> step.outcome() == Outcome.PROPAGATED));
+    assertFalse(virtualModel.isChangePending(taskId));
+    assertThat(
+        virtualModel.getModelInstance(createTestModelResourceUri("")).getResource(),
+        containsModelOf(claimOne(resourceSet.getResources())));
+    // The copy only exists if the user agreed to it.
+    var targetModel =
+        virtualModel.getModelInstance(
+            RedundancyChangePropagationSpecification.getTargetResourceUri(
+                createTestModelResourceUri("")));
+    assertEquals(confirmed, targetModel != null);
+  }
+
+  @Test
+  @DisplayName("mark views outdated when a deferred step has applied an enqueued change")
+  void markViewsOutdatedWhenDeferredStepAppliedEnqueuedChange() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConfirmedConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var listener = new RecordingChangePropagationListener();
+    virtualModel.addChangePropagationListener(listener);
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    int taskId = enqueueRootCreation(virtualModel, resourceSet, uuidResolver, "");
+    var view = createTestView(virtualModel);
+    assertFalse(view.isOutdated());
+
+    assertEquals(List.of(Outcome.DEFERRED), outcomesOf(propagateQueuedChanges(virtualModel)));
+
+    // The change waits for the answer, but it is in the models already.
+    assertEquals(taskId, claimOne(virtualModel.getQueuedChanges()).taskId());
+    assertNotNull(virtualModel.getModelInstance(createTestModelResourceUri("")));
+    assertThat("view source must have been changed", view.isOutdated());
+    assertEquals(List.of(List.of()), listener.finishedPropagations);
+
+    // Asking again without a matching answer applies nothing, so views stay up to date.
+    view.update();
+    var unrelatedAnswer = InteractionFactory.eINSTANCE.createConfirmationUserInteraction();
+    unrelatedAnswer.setMessage("Some other question?");
+    virtualModel.registerUserInteractions(taskId, unrelatedAnswer);
+    assertEquals(List.of(Outcome.DEFERRED), outcomesOf(propagateQueuedChanges(virtualModel)));
+    assertFalse(view.isOutdated());
+    assertEquals(1, listener.finishedPropagations.size());
+
+    virtualModel.registerUserInteractions(taskId, confirmation(true));
+    var steps = propagateQueuedChanges(virtualModel);
+
+    assertTrue(steps.stream().allMatch(step -> step.outcome() == Outcome.PROPAGATED));
+    assertEquals(1 + steps.size(), listener.finishedPropagations.size());
+    assertThat("view source must have been changed", view.isOutdated());
+  }
+
+  @Test
+  @DisplayName("propagate other enqueued changes while one waits for a user interaction")
+  void propagateOtherQueuedChangesWhileOneWaitsForUserInteraction() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConfirmedConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    int waitingTaskId = enqueueRootCreation(virtualModel, resourceSet, uuidResolver, "");
+    assertEquals(List.of(Outcome.DEFERRED), outcomesOf(propagateQueuedChanges(virtualModel)));
+    assertEquals(waitingTaskId, claimOne(virtualModel.getQueuedChanges()).taskId());
+
+    // This change asks nothing, so it must not wait for the answer to the first one.
+    int otherTaskId =
+        virtualModel.enqueueChange(
+            recordChanges(
+                resourceSet,
+                uuidResolver,
+                () ->
+                    ((Root) getFirstRootEObject(claimOne(resourceSet.getResources())))
+                        .setSingleValuedEAttribute(1)));
+    var steps = propagateQueuedChanges(virtualModel);
+
+    assertEquals(List.of(Outcome.SKIPPED_BLOCKED, Outcome.PROPAGATED), outcomesOf(steps));
+    assertFalse(virtualModel.isChangePending(otherTaskId));
+    assertTrue(virtualModel.isChangePending(waitingTaskId));
+    var vsumRoot =
+        (Root)
+            getFirstRootEObject(
+                virtualModel.getModelInstance(createTestModelResourceUri("")).getResource());
+    assertEquals(1, vsumRoot.getSingleValuedEAttribute());
+  }
+
+  @Test
+  @DisplayName("change the propagation mode only while no changes are queued")
+  void setChangePropagationModeOnlyWithoutQueuedChanges() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    enqueueRootCreation(virtualModel, resourceSet, uuidResolver, "");
+
+    assertThrows(
+        IllegalStateException.class,
+        () -> virtualModel.setChangePropagationMode(ChangePropagationMode.SINGLE_STEP));
+
+    // Transitive by default: the copy created in the first step is propagated in a second one.
+    assertEquals(
+        List.of(Outcome.PROPAGATED, Outcome.PROPAGATED),
+        outcomesOf(propagateQueuedChanges(virtualModel)));
+
+    virtualModel.setChangePropagationMode(ChangePropagationMode.SINGLE_STEP);
+    enqueueRootCreation(virtualModel, resourceSet, uuidResolver, "Second");
+
+    // Now the copy is still created, but not propagated any further.
+    assertEquals(List.of(Outcome.PROPAGATED), outcomesOf(propagateQueuedChanges(virtualModel)));
+    assertNotNull(
+        virtualModel.getModelInstance(
+            RedundancyChangePropagationSpecification.getTargetResourceUri(
+                createTestModelResourceUri("Second"))));
+  }
+
+  @Test
+  @DisplayName("reject enqueuing a null change or a change without concrete changes")
+  void enqueueInvalidChange() throws Exception {
+    var virtualModel = createAndLoadTestVirtualModel(getPathToVirtualModelProjectFolder());
+    VitruviusChange<Uuid> emptyChange =
+        VitruviusChangeFactory.getInstance().createTransactionalChange(Set.of());
+
+    assertThrows(NullPointerException.class, () -> virtualModel.enqueueChange(null));
+    assertThrows(IllegalArgumentException.class, () -> virtualModel.enqueueChange(emptyChange));
+    assertThrows(IllegalArgumentException.class, () -> virtualModel.enqueueChange(emptyChange, 42));
+    assertTrue(virtualModel.getQueuedChanges().isEmpty());
+  }
+
   private org.eclipse.emf.common.util.URI createTestModelResourceUri(String suffix) {
     return VirtualModelTestUtil.createTestModelResourceUri(projectFolder, suffix);
   }
@@ -464,6 +703,62 @@ class VirtualModelTest {
               root.setId(rootId);
               resource.getContents().add(root);
             }));
+  }
+
+  private int enqueueRootCreation(
+      VirtualModel virtualModel,
+      ResourceSet resourceSet,
+      UuidResolver uuidResolver,
+      String uriSuffix) {
+    return virtualModel.enqueueChange(
+        recordChanges(
+            resourceSet,
+            uuidResolver,
+            () -> {
+              var resource = resourceSet.createResource(createTestModelResourceUri(uriSuffix));
+              var root = aet.Root();
+              root.setId(ROOT_ID);
+              resource.getContents().add(root);
+            }));
+  }
+
+  /** Takes propagation steps the way a worker would: while any queued change is not blocked. */
+  private static List<QueuedPropagationStep> propagateQueuedChanges(VirtualModel virtualModel) {
+    List<QueuedPropagationStep> steps = new ArrayList<>();
+    while (virtualModel.getQueuedChanges().stream().anyMatch(change -> !change.blocked())) {
+      steps.add(virtualModel.propagateNextQueuedChange().orElseThrow());
+    }
+    return steps;
+  }
+
+  private static List<Outcome> outcomesOf(List<QueuedPropagationStep> steps) {
+    return steps.stream().map(QueuedPropagationStep::outcome).toList();
+  }
+
+  private static UserInteractionBase confirmation(boolean confirmed) {
+    ConfirmationUserInteraction answer =
+        InteractionFactory.eINSTANCE.createConfirmationUserInteraction();
+    answer.setMessage(ConfirmingRedundancyChangePropagationSpecification.QUESTION);
+    answer.setConfirmed(confirmed);
+    return answer;
+  }
+
+  /** Remembers the notifications it receives. */
+  private static class RecordingChangePropagationListener implements ChangePropagationListener {
+    private int startedPropagations;
+    private final List<List<PropagatedChange>> finishedPropagations = new ArrayList<>();
+
+    @Override
+    public void startedChangePropagation(VitruviusChange<Uuid> changeToPropagate) {
+      startedPropagations++;
+    }
+
+    @Override
+    public void finishedChangePropagation(Iterable<PropagatedChange> propagatedChanges) {
+      List<PropagatedChange> changes = new ArrayList<>();
+      propagatedChanges.forEach(changes::add);
+      finishedPropagations.add(changes);
+    }
   }
 
   @SuppressWarnings("null")
