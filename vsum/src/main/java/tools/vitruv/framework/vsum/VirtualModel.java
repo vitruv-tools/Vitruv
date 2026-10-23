@@ -22,8 +22,9 @@ import tools.vitruv.framework.views.ViewTypeProvider;
  * user input is needed. Alternatively, changes can be enqueued with {@link
  * #enqueueChange(VitruviusChange)} and propagated one step at a time with {@link
  * #propagateNextQueuedChange()}, typically by a single worker thread. A queued change that needs
- * user input is set aside until the answer is registered with {@link #registerUserInteractions}, so
- * it does not hold up the other queued changes.
+ * user input is set aside until the answer is registered with {@link #registerUserInteractions}.
+ * The rest of the enqueued change it belongs to waits with it, since the parts of an enqueued
+ * change are propagated in order, but the other enqueued changes are propagated in the meantime.
  */
 public interface VirtualModel extends ChangeableModelRepository, ViewProvider, ViewTypeProvider {
 
@@ -73,14 +74,26 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    * Takes one step on the queue of changes. The first queued change is propagated through the
    * change propagation specifications once (an enqueued change is applied to the models first), and
    * the changes this produces are queued right at the front, so they are propagated before any
-   * change enqueued later. A blocked change is just moved to the end of the queue.
+   * change enqueued later. The queued changes of one enqueued change are propagated in this order,
+   * as {@link #propagateChange(VitruviusChange)} would propagate them, since later ones may rely on
+   * what earlier ones created. So if the first queued change is blocked, or another queued change
+   * of the same enqueued change is, the step just moves all queued changes of that enqueued change
+   * to the end of the queue, keeping their order.
    *
    * <p>If the change needs an answer to a user interaction that has not been registered yet, it is
    * set aside instead of waiting for the answer: the step is {@link
-   * QueuedPropagationStep.Outcome#DEFERRED}, the change is moved to the end of the queue with the
-   * question attached (see {@link #getQueuedChanges()}), and it is propagated again once the answer
-   * is registered with {@link #registerUserInteractions}. Change propagation specifications must
-   * therefore ask for user input before they modify any model.
+   * QueuedPropagationStep.Outcome#DEFERRED}, the change gets the question attached (see {@link
+   * #getQueuedChanges()}), and it is propagated again once the answer is registered with {@link
+   * #registerUserInteractions}. Change propagation specifications must therefore ask for user input
+   * before they modify any model. Until the answer is there, the rest of the enqueued change waits
+   * with the change at the end of the queue, while the other enqueued changes are propagated. If
+   * answers for the enqueued change are registered while the step runs, the change stays at the
+   * front instead and is attempted again in the next step.
+   *
+   * <p>If propagating the change fails for any other reason, the enqueued change it belongs to is
+   * dropped from the queue with all of its queued changes, just as {@link
+   * #propagateChange(VitruviusChange)} stops at the first failure. The models keep what has been
+   * applied and propagated before.
    *
    * <p>Steps never run at the same time as each other or as {@link
    * #propagateChange(VitruviusChange)}. After a {@link QueuedPropagationStep.Outcome#PROPAGATED}
@@ -93,14 +106,19 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    * ChangePropagationListener#startedChangePropagation} is not called: a queued change is
    * propagated in several steps, interleaved with other changes, so its propagation has no single
    * start, and the changes produced along the way are no {@code VitruviusChange<Uuid>}. The
-   * listeners in the framework ignore that call anyway.
+   * listeners in the framework ignore that call anyway. If saving the models or notifying a
+   * listener fails, the exception is thrown from this method, but the step stands: the rest of the
+   * enqueued change stays queued and goes on in the next steps, and the next {@link
+   * QueuedPropagationStep.Outcome#PROPAGATED} step saves the models again. {@link
+   * #isChangePending(int)} tells this apart from a dropped change.
    *
    * @return what happened in this step, empty if no change is queued
    * @throws tools.vitruv.change.propagation.NonDeferrablePropagationException if the change needs
-   *     an unanswered user interaction but has already modified models; the change is dropped from
-   *     the queue
-   * @throws RuntimeException if propagating the change fails for any other reason; the change is
+   *     an unanswered user interaction but has already modified models; its enqueued change is
    *     dropped from the queue
+   * @throws RuntimeException if propagating the change fails for any other reason; its enqueued
+   *     change is dropped from the queue. Also if saving the models or notifying a listener fails
+   *     after the step; the rest of its enqueued change stays queued then
    */
   Optional<QueuedPropagationStep> propagateNextQueuedChange();
 
@@ -108,7 +126,10 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    * Returns the queued changes: the one being propagated right now first, then the others in the
    * order they will be attempted. Besides the enqueued changes, this includes the changes their
    * propagation produced that still have to be propagated; {@link QueuedChange#rootTaskId()} tells
-   * which enqueued change they belong to. Does not wait for a running propagation step.
+   * which enqueued change they belong to. A queued change that waits because another queued change
+   * of the same enqueued change is blocked reports the same block reason, but only the change that
+   * asked a question carries it as {@link QueuedChange#pendingInteraction()}. Does not wait for a
+   * running propagation step.
    *
    * @return snapshots of the queued changes
    */
@@ -125,9 +146,14 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
   boolean isChangePending(int taskId);
 
   /**
-   * Registers answers to user interactions of a queued change. Every part of the change that waits
-   * for an answer becomes ready to be propagated again, and the answers stay available for all
-   * further steps of the change. Can be called at any time, also while a step is running.
+   * Registers answers to user interactions of an enqueued change. The queued change of it that
+   * waits for an answer, if any, becomes ready to be propagated again; since the queued changes of
+   * an enqueued change are propagated in order, at most one of them waits for an answer at a time.
+   * Each answer answers one question, just as each question is answered once when the change is
+   * propagated with {@link #propagateChange(VitruviusChange)}: the answers a step used are used up
+   * once the step has been propagated, while those of a deferred step are available again when it
+   * is repeated. Answers that have not been used stay available for all further steps of the
+   * change. Can be called at any time, also while a step is running.
    *
    * @param taskId the task id of the enqueued change, or of any queued change it produced
    * @param interactions the answers, matched to the questions as described at {@link

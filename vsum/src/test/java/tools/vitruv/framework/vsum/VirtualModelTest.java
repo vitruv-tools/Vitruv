@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.containsModelOf;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -539,7 +541,8 @@ class VirtualModelTest {
         ConfirmingRedundancyChangePropagationSpecification.QUESTION,
         waitingChange.pendingInteraction().message());
 
-    virtualModel.registerUserInteractions(taskId, confirmation(confirmed));
+    // Each answer is used once, and propagating the copy, if there is one, asks again.
+    virtualModel.registerUserInteractions(taskId, confirmation(confirmed), confirmation(confirmed));
     var stepsAfterAnswer = propagateQueuedChanges(virtualModel);
 
     assertTrue(stepsAfterAnswer.stream().allMatch(step -> step.outcome() == Outcome.PROPAGATED));
@@ -590,8 +593,10 @@ class VirtualModelTest {
     virtualModel.registerUserInteractions(taskId, confirmation(true));
     var steps = propagateQueuedChanges(virtualModel);
 
-    assertTrue(steps.stream().allMatch(step -> step.outcome() == Outcome.PROPAGATED));
-    assertEquals(1 + steps.size(), listener.finishedPropagations.size());
+    // The answer is used up by the step that creates the copy, so propagating the copy asks again.
+    // Only the first step of an enqueued change applies it, so this deferral notifies nobody.
+    assertEquals(List.of(Outcome.PROPAGATED, Outcome.DEFERRED), outcomesOf(steps));
+    assertEquals(2, listener.finishedPropagations.size());
     assertThat("view source must have been changed", view.isOutdated());
   }
 
@@ -627,6 +632,97 @@ class VirtualModelTest {
             getFirstRootEObject(
                 virtualModel.getModelInstance(createTestModelResourceUri("")).getResource());
     assertEquals(1, vsumRoot.getSingleValuedEAttribute());
+  }
+
+  @Test
+  @DisplayName("hold back the rest of an enqueued change while one part waits for an answer")
+  void holdBackRestOfQueuedChangeWhileOnePartWaitsForUserInteraction() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConfirmedConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    // Two root insertions in one change, and the user is asked before each of them is copied.
+    int taskId =
+        virtualModel.enqueueChange(
+            VitruviusChangeFactory.getInstance()
+                .createCompositeChange(
+                    List.of(
+                        recordRootCreation(resourceSet, uuidResolver, ""),
+                        recordRootCreation(resourceSet, uuidResolver, "Second"))));
+
+    assertEquals(List.of(Outcome.DEFERRED), outcomesOf(propagateQueuedChanges(virtualModel)));
+
+    // The second insertion must not overtake the first one, so it waits without asking.
+    var queuedChanges = virtualModel.getQueuedChanges();
+    assertEquals(2, queuedChanges.size());
+    QueuedChange askingChange = queuedChanges.get(0);
+    QueuedChange waitingChange = queuedChanges.get(1);
+    assertEquals(taskId, askingChange.taskId());
+    assertNotNull(askingChange.pendingInteraction());
+    assertEquals(taskId, waitingChange.parentTaskId());
+    assertEquals(PropagationBlockReason.USER_INTERACTION, waitingChange.blockReason());
+    assertNull(waitingChange.pendingInteraction());
+
+    // The answer is used up by the first insertion, so the second one asks once it is its turn.
+    virtualModel.registerUserInteractions(taskId, confirmation(false));
+    assertEquals(
+        List.of(Outcome.PROPAGATED, Outcome.DEFERRED),
+        outcomesOf(propagateQueuedChanges(virtualModel)));
+    QueuedChange secondAskingChange = claimOne(virtualModel.getQueuedChanges());
+    assertEquals(waitingChange.taskId(), secondAskingChange.taskId());
+    assertEquals(
+        ConfirmingRedundancyChangePropagationSpecification.QUESTION,
+        secondAskingChange.pendingInteraction().message());
+
+    virtualModel.registerUserInteractions(taskId, confirmation(false));
+    assertEquals(List.of(Outcome.PROPAGATED), outcomesOf(propagateQueuedChanges(virtualModel)));
+    assertFalse(virtualModel.isChangePending(taskId));
+  }
+
+  @Test
+  @DisplayName("keep the rest of an enqueued change queued if a listener fails after a step")
+  void keepRestOfQueuedChangeIfListenerFailsAfterStep() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    var failure = new IllegalStateException("listener failed");
+    var failed = new AtomicBoolean();
+    virtualModel.addChangePropagationListener(
+        new ChangePropagationListener() {
+          @Override
+          public void startedChangePropagation(VitruviusChange<Uuid> changeToPropagate) {}
+
+          @Override
+          public void finishedChangePropagation(Iterable<PropagatedChange> propagatedChanges) {
+            if (failed.compareAndSet(false, true)) {
+              throw failure;
+            }
+          }
+        });
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    int taskId =
+        virtualModel.enqueueChange(
+            VitruviusChangeFactory.getInstance()
+                .createCompositeChange(
+                    List.of(
+                        recordRootCreation(resourceSet, uuidResolver, ""),
+                        recordRootCreation(resourceSet, uuidResolver, "Second"))));
+
+    var thrown = assertThrows(IllegalStateException.class, virtualModel::propagateNextQueuedChange);
+
+    // The listener failed after the first insertion had been propagated, so the change is not
+    // dropped, and its second insertion goes on in the next steps.
+    assertSame(failure, thrown);
+    assertTrue(virtualModel.isChangePending(taskId));
+    assertNotNull(virtualModel.getModelInstance(createTestModelResourceUri("")));
+    var steps = propagateQueuedChanges(virtualModel);
+    assertTrue(steps.stream().allMatch(step -> step.outcome() == Outcome.PROPAGATED));
+    assertFalse(virtualModel.isChangePending(taskId));
+    assertNotNull(virtualModel.getModelInstance(createTestModelResourceUri("Second")));
   }
 
   @Test
@@ -710,16 +806,20 @@ class VirtualModelTest {
       ResourceSet resourceSet,
       UuidResolver uuidResolver,
       String uriSuffix) {
-    return virtualModel.enqueueChange(
-        recordChanges(
-            resourceSet,
-            uuidResolver,
-            () -> {
-              var resource = resourceSet.createResource(createTestModelResourceUri(uriSuffix));
-              var root = aet.Root();
-              root.setId(ROOT_ID);
-              resource.getContents().add(root);
-            }));
+    return virtualModel.enqueueChange(recordRootCreation(resourceSet, uuidResolver, uriSuffix));
+  }
+
+  private VitruviusChange<Uuid> recordRootCreation(
+      ResourceSet resourceSet, UuidResolver uuidResolver, String uriSuffix) {
+    return recordChanges(
+        resourceSet,
+        uuidResolver,
+        () -> {
+          var resource = resourceSet.createResource(createTestModelResourceUri(uriSuffix));
+          var root = aet.Root();
+          root.setId(ROOT_ID);
+          resource.getContents().add(root);
+        });
   }
 
   /** Takes propagation steps the way a worker would: while any queued change is not blocked. */

@@ -188,8 +188,8 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
   @Override
   public synchronized Optional<QueuedPropagationStep> propagateNextQueuedChange() {
-    // No other step runs while this monitor is held, and enqueuing only appends to the queue, so
-    // the first queued change is the one this step takes.
+    // No other step runs while this monitor is held, and only steps reorder the queue; enqueuing
+    // just appends to it. So the first queued change is the one this step takes.
     List<QueuedChange> queuedChanges = changePropagationQueue.getQueuedChanges();
     if (queuedChanges.isEmpty()) {
       return Optional.empty();
@@ -202,10 +202,12 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     try {
       step = changePropagationQueue.propagateNext(changePropagationObservers);
     } catch (RuntimeException e) {
-      // The queue has dropped the change.
-      deferredAppliedChanges.remove(next.taskId());
+      // The queue has dropped the whole enqueued change, not only the change this step took.
+      deferredAppliedChanges.remove(next.rootTaskId());
       throw e;
     }
+    // If saving or a listener fails here, the step has gone through and the queue keeps the rest of
+    // the enqueued change, so nothing is dropped.
     step.ifPresent(it -> finishQueuedPropagationStep(it, appliesEnqueuedChange));
     return step;
   }
