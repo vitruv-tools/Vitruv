@@ -1,13 +1,16 @@
 package tools.vitruv.framework.vsum;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -20,9 +23,12 @@ import tools.vitruv.change.utils.ProjectMarker;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
+import tools.vitruv.framework.vsum.constraints.ConstraintChecker;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
+import tools.vitruv.framework.vsum.internal.ConstraintCheckerRegistry;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
+import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 
 /** Builder for creating and initializing virtual models in the VSUM framework. */
 public class VirtualModelBuilder {
@@ -31,6 +37,7 @@ public class VirtualModelBuilder {
       new HashSet<>();
   private final Map<ChangePropagationSpecification, Integer> changePropagationSpecificationsToLevel =
       new HashMap<>();
+  private final List<ConstraintChecker> constraintCheckers = new ArrayList<>();
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
 
@@ -235,6 +242,48 @@ public class VirtualModelBuilder {
   }
 
   /**
+   * Adds the given constraint checker to the virtual model. Adding the same checker again has no
+   * effect.
+   *
+   * @param constraintChecker the constraint checker to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withConstraintChecker(ConstraintChecker constraintChecker) {
+    checkNotNull(constraintChecker, ErrorMessages.CONSTRAINT_CHECKER_NULL);
+    if (!constraintCheckers.contains(constraintChecker)) {
+      constraintCheckers.add(constraintChecker);
+    }
+    return this;
+  }
+
+  /**
+   * Adds the given constraint checkers to the virtual model.
+   *
+   * @param constraintCheckers the constraint checkers to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withConstraintCheckers(ConstraintChecker... constraintCheckers) {
+    for (ConstraintChecker checker : constraintCheckers) {
+      withConstraintChecker(checker);
+    }
+    return this;
+  }
+
+  /**
+   * Adds the given constraint checkers to the virtual model.
+   *
+   * @param constraintCheckers the constraint checkers to add
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withConstraintCheckers(
+      Iterable<? extends ConstraintChecker> constraintCheckers) {
+    for (ConstraintChecker checker : constraintCheckers) {
+      withConstraintChecker(checker);
+    }
+    return this;
+  }
+
+  /**
    * Builds and initializes the virtual model.
    *
    * @return the initialized virtual model
@@ -244,6 +293,9 @@ public class VirtualModelBuilder {
     checkState(storageFolder != null, "No storage folder was configured!");
     checkState(userInteractor != null, "No user interactor was configured!");
 
+    ConstraintCheckerRegistry constraintCheckerRegistry =
+        new ConstraintCheckerRegistry(constraintCheckers);
+
     ChangePropagationSpecificationRepository changeSpecificationRepository =
         new ChangePropagationSpecificationRepository(changePropagationSpecifications, changePropagationSpecificationsToLevel);
 
@@ -252,7 +304,11 @@ public class VirtualModelBuilder {
 
     VirtualModelImpl vsum =
         new VirtualModelImpl(
-            fileSystemLayout, userInteractor, viewTypeRepository, changeSpecificationRepository);
+            fileSystemLayout,
+            userInteractor,
+            viewTypeRepository,
+            changeSpecificationRepository,
+            constraintCheckerRegistry);
     vsum.loadExistingModels();
 
     try {

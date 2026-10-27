@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.propagation.ChangePropagationListener;
 import tools.vitruv.change.correspondence.Correspondence;
+import tools.vitruv.change.correspondence.view.CorrespondenceModelView;
 import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.interaction.InternalUserInteractor;
 import tools.vitruv.change.propagation.ChangePropagationMode;
@@ -28,6 +30,9 @@ import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
+import tools.vitruv.framework.vsum.constraints.ConstraintCheckContext;
+import tools.vitruv.framework.vsum.constraints.ConstraintDescriptor;
+import tools.vitruv.framework.vsum.constraints.ConstraintValidationReport;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
@@ -44,10 +49,11 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
   private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
   private final InternalUserInteractor userInteractor;
+  private final ConstraintCheckerRegistry constraintCheckerRegistry;
   private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
 
   /**
-   * Creates a new instance of the {@link VirtualModelImpl} class.
+   * Creates a new instance of the {@link VirtualModelImpl} class without constraint checkers.
    *
    * @param fileSystemLayout The file system layout of the virtual model.
    * @param userInteractor The user interactor.
@@ -59,12 +65,36 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
       InternalUserInteractor userInteractor,
       ViewTypeRepository viewTypeRepository,
       ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
+    this(
+        fileSystemLayout,
+        userInteractor,
+        viewTypeRepository,
+        changePropagationSpecificationProvider,
+        new ConstraintCheckerRegistry(List.of()));
+  }
+
+  /**
+   * Creates a new instance of the {@link VirtualModelImpl} class.
+   *
+   * @param fileSystemLayout The file system layout of the virtual model.
+   * @param userInteractor The user interactor.
+   * @param viewTypeRepository The view type repository.
+   * @param changePropagationSpecificationProvider The change propagation specification provider.
+   * @param constraintCheckerRegistry The registry of the constraint checkers.
+   */
+  public VirtualModelImpl(
+      VsumFileSystemLayout fileSystemLayout,
+      InternalUserInteractor userInteractor,
+      ViewTypeRepository viewTypeRepository,
+      ChangePropagationSpecificationProvider changePropagationSpecificationProvider,
+      ConstraintCheckerRegistry constraintCheckerRegistry) {
     this.fileSystemLayout = fileSystemLayout;
     this.viewTypeRepository = viewTypeRepository;
     resourceRepository = new ResourceRepositoryImpl(fileSystemLayout);
 
     this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
     this.userInteractor = userInteractor;
+    this.constraintCheckerRegistry = checkNotNull(constraintCheckerRegistry);
   }
 
   /** Loads the existing models of the virtual model. */
@@ -221,5 +251,36 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   @Override
   public void setChangePropagationMode(ChangePropagationMode changePropagationMode) {
     this.changePropagationMode = changePropagationMode;
+  }
+
+  @Override
+  public List<ConstraintDescriptor> getConstraints() {
+    return constraintCheckerRegistry.getConstraints();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Synchronized with change propagation, so constraints are always checked on a consistent
+   * state.
+   */
+  @Override
+  public synchronized ConstraintValidationReport validateConstraints(
+      Collection<String> constraintIds) {
+    checkNotNull(constraintIds, "constraintIds");
+    ConstraintCheckContext context =
+        new ConstraintCheckContext() {
+          @Override
+          public Collection<Resource> getModelResources() {
+            return Collections.unmodifiableCollection(resourceRepository.getModelResources());
+          }
+
+          @Override
+          public CorrespondenceModelView<Correspondence> getCorrespondenceModel() {
+            // getView creates a view that does not allow modifications
+            return resourceRepository.getCorrespondenceModel().getView(Correspondence.class);
+          }
+        };
+    return constraintCheckerRegistry.validate(context, getUuidResolver(), constraintIds);
   }
 }
