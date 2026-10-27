@@ -266,7 +266,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
   /**
    * Restores the constraints changed while the virtual model was running before, and persists all
-   * later changes in the storage folder.
+   * later changes in the storage folder. Called once while the virtual model is built.
    */
   public synchronized void loadConstraints() {
     constraintCheckerRegistry.restore(new ConstraintStore(fileSystemLayout.getConstraintsPath()));

@@ -19,13 +19,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.constraints.ConstraintCheckContext;
 import tools.vitruv.framework.vsum.constraints.ConstraintChecker;
+import tools.vitruv.framework.vsum.constraints.ConstraintDiagnostic;
 import tools.vitruv.framework.vsum.constraints.ConstraintDescriptor;
+import tools.vitruv.framework.vsum.constraints.ConstraintNotEditableException;
 import tools.vitruv.framework.vsum.constraints.ConstraintResult;
 import tools.vitruv.framework.vsum.constraints.ConstraintValidationReport;
 import tools.vitruv.framework.vsum.constraints.ConstraintValidationResult;
 import tools.vitruv.framework.vsum.constraints.ConstraintViolation;
 import tools.vitruv.framework.vsum.constraints.DuplicateConstraintException;
 import tools.vitruv.framework.vsum.constraints.EditableConstraintChecker;
+import tools.vitruv.framework.vsum.constraints.InvalidConstraintException;
 import tools.vitruv.framework.vsum.constraints.ResolvedConstraintViolation;
 import tools.vitruv.framework.vsum.constraints.UnknownConstraintException;
 import tools.vitruv.framework.vsum.constraints.UnsupportedConstraintLanguageException;
@@ -118,15 +121,19 @@ public class ConstraintCheckerRegistry {
    *
    * <ul>
    *   <li>built-in constraints deleted at runtime stay deleted;
-   *   <li>built-in constraints changed at runtime keep the changed source;
+   *   <li>built-in constraints changed at runtime keep the changed source, until the checker
+   *       provides that source itself;
    *   <li>other built-in constraints take the source the checker provides now;
-   *   <li>constraints created at runtime are created again;
+   *   <li>constraints created at runtime are created again; if the checker now provides one of them
+   *       itself, it becomes a built-in constraint changed at runtime;
    *   <li>built-in constraints the checker no longer provides are dropped unless they were changed;
    *   <li>constraints of languages without checker are kept for later starts.
    * </ul>
    *
    * Constraints that cannot be restored, e.g. because their source became invalid, are logged and
-   * kept in the store, so they are not lost.
+   * kept in the store, so they are not lost; their stored state is then not applied.
+   *
+   * <p>Must only be called while the virtual model is built.
    *
    * @param constraintStore the store to restore from and persist to
    */
@@ -151,7 +158,7 @@ public class ConstraintCheckerRegistry {
       restoreAdditional(stored);
     }
     this.snapshot = createSnapshot();
-    persist();
+    store.save(new ArrayList<>(storedConstraints.values()));
   }
 
   private StoredConstraint reconcileBuiltIn(
@@ -160,22 +167,34 @@ public class ConstraintCheckerRegistry {
       ConstraintDescriptor descriptor,
       StoredConstraint stored) {
     String providedSource = sourceOf(descriptor);
-    if (stored == null) {
+    if (stored == null || providedSource.equals(stored.source()) && !stored.deleted()) {
+      // new, or the checker now provides the stored source itself
       return StoredConstraint.builtIn(descriptor.id(), language, providedSource);
     }
-    if (stored.deleted()) {
+    if (stored.deleted() && stored.origin() == Origin.BUILT_IN) {
       checker.delete(descriptor.id());
       return stored;
     }
-    if (stored.isModified() || stored.origin() == Origin.RUNTIME) {
-      if (!providedSource.equals(stored.source())) {
-        try {
-          checker.update(descriptor.id(), stored.source());
-        } catch (RuntimeException e) {
-          LOGGER.warn("Could not restore the changed constraint {}", descriptor.id(), e);
+    if (stored.origin() == Origin.RUNTIME || stored.isModified()) {
+      // keep the source changed at runtime, as change of the built-in constraint
+      StoredConstraint changed =
+          new StoredConstraint(
+              descriptor.id(),
+              language,
+              Origin.BUILT_IN,
+              false,
+              stored.source(),
+              stored.origin() == Origin.RUNTIME ? providedSource : stored.builtInSource());
+      try {
+        ConstraintDescriptor updated = checker.update(descriptor.id(), stored.source());
+        if (!updated.id().equals(descriptor.id())) {
+          checker.update(updated.id(), providedSource);
+          throw new IllegalStateException("The checker changed the id of " + descriptor.id());
         }
+      } catch (RuntimeException e) {
+        LOGGER.warn("Could not restore the changed constraint {}", descriptor.id(), e);
       }
-      return stored;
+      return changed;
     }
     // not changed at runtime, so the checker's current source replaces the stored one
     return StoredConstraint.builtIn(descriptor.id(), language, providedSource);
@@ -196,7 +215,12 @@ public class ConstraintCheckerRegistry {
       return;
     }
     try {
-      createInChecker(checker, stored.source());
+      ConstraintDescriptor created = createInChecker(checker, stored.source());
+      if (!created.id().equals(stored.id())) {
+        checker.delete(created.id());
+        throw new IllegalStateException(
+            "The stored source of " + stored.id() + " defines " + created.id());
+      }
       this.snapshot = createSnapshot();
       storedConstraints.put(stored.id(), stored.asRuntime());
     } catch (RuntimeException e) {
@@ -205,10 +229,18 @@ public class ConstraintCheckerRegistry {
     }
   }
 
-  private void persist() {
+  /**
+   * Persists the given state of the stored constraints and publishes it with a new snapshot. If
+   * persisting fails, nothing is published.
+   */
+  private void commit(Map<String, StoredConstraint> changedConstraints) {
+    Snapshot changedSnapshot = createSnapshot();
     if (store != null) {
-      store.save(new ArrayList<>(storedConstraints.values()));
+      store.save(new ArrayList<>(changedConstraints.values()));
     }
+    storedConstraints.clear();
+    storedConstraints.putAll(changedConstraints);
+    this.snapshot = changedSnapshot;
   }
 
   // ---------------------------------------------------------------------------------------------
@@ -222,28 +254,38 @@ public class ConstraintCheckerRegistry {
    * @param source the source of the constraint
    * @return the created constraint
    * @throws UnsupportedConstraintLanguageException if no editable checker supports the language
-   * @throws tools.vitruv.framework.vsum.constraints.InvalidConstraintException if the source is
-   *     invalid
+   * @throws InvalidConstraintException if the source is invalid
    * @throws DuplicateConstraintException if another constraint has the same id
+   * @throws java.io.UncheckedIOException if the change cannot be persisted; it is not applied then
    */
   public ConstraintDescriptor create(String language, String source) {
-    checkNotNull(source, "source");
+    requireSource(source);
     EditableConstraintChecker checker = editableCheckers.get(language);
     if (checker == null) {
       throw new UnsupportedConstraintLanguageException(language);
     }
     ConstraintDescriptor created = createInChecker(checker, source);
-    StoredConstraint previous = storedConstraints.get(created.id());
-    storedConstraints.put(
-        created.id(),
-        previous != null && previous.origin() == Origin.BUILT_IN
-            // a deleted built-in constraint is created again
-            ? new StoredConstraint(
-                created.id(), language, Origin.BUILT_IN, false, source, previous.builtInSource())
-            : StoredConstraint.runtime(created.id(), language, source));
-    this.snapshot = createSnapshot();
-    persist();
-    return created;
+    try {
+      StoredConstraint previous = storedConstraints.get(created.id());
+      if (previous != null && (!previous.deleted() || !previous.language().equals(language))) {
+        // kept for a language without checker, so the id is taken
+        throw new DuplicateConstraintException(created.id());
+      }
+      Map<String, StoredConstraint> changed = new LinkedHashMap<>(storedConstraints);
+      changed.put(
+          created.id(),
+          previous != null
+              // a deleted built-in constraint is created again
+              ? new StoredConstraint(
+                  created.id(), language, Origin.BUILT_IN, false, source, previous.builtInSource())
+              : StoredConstraint.runtime(created.id(), language, source));
+      commit(changed);
+      return created;
+    } catch (RuntimeException e) {
+      checker.delete(created.id());
+      this.snapshot = createSnapshot();
+      throw e;
+    }
   }
 
   /**
@@ -253,23 +295,50 @@ public class ConstraintCheckerRegistry {
    * @param source the new source
    * @return the updated constraint
    * @throws UnknownConstraintException if there is no constraint with the id
-   * @throws UnsupportedOperationException if the checker of the constraint is not editable
-   * @throws tools.vitruv.framework.vsum.constraints.InvalidConstraintException if the source is
-   *     invalid
+   * @throws ConstraintNotEditableException if the checker of the constraint is not editable
+   * @throws InvalidConstraintException if the source is invalid or defines another constraint
+   * @throws java.io.UncheckedIOException if the change cannot be persisted; it is not applied then
    */
   public ConstraintDescriptor update(String id, String source) {
-    checkNotNull(source, "source");
+    requireSource(source);
     EditableConstraintChecker checker = editableCheckerOf(id);
+    String previousSource = sourceOf(snapshot.descriptors().get(id));
     ConstraintDescriptor updated = checker.update(id, source);
-    StoredConstraint stored = storedConstraints.get(id);
-    storedConstraints.put(
-        id,
-        stored != null
-            ? stored.withSource(source)
-            : StoredConstraint.runtime(id, checker.getLanguage(), source));
+    try {
+      if (!updated.id().equals(id)) {
+        throw new InvalidConstraintException(
+            List.of(
+                new ConstraintDiagnostic(
+                    1, 0, "The source defines " + updated.id() + " instead of " + id)));
+      }
+      StoredConstraint stored = storedConstraints.get(id);
+      Map<String, StoredConstraint> changed = new LinkedHashMap<>(storedConstraints);
+      changed.put(
+          id,
+          stored != null
+              ? stored.withSource(source)
+              : StoredConstraint.runtime(id, checker.getLanguage(), source));
+      commit(changed);
+      return updated;
+    } catch (RuntimeException e) {
+      rollBackUpdate(checker, id, updated.id(), previousSource);
+      throw e;
+    }
+  }
+
+  private void rollBackUpdate(
+      EditableConstraintChecker checker, String id, String updatedId, String previousSource) {
+    try {
+      if (updatedId.equals(id)) {
+        checker.update(id, previousSource);
+      } else {
+        checker.delete(updatedId);
+        checker.create(previousSource);
+      }
+    } catch (RuntimeException rollbackFailure) {
+      LOGGER.error("Could not roll back the update of constraint {}", id, rollbackFailure);
+    }
     this.snapshot = createSnapshot();
-    persist();
-    return updated;
   }
 
   /**
@@ -277,19 +346,38 @@ public class ConstraintCheckerRegistry {
    *
    * @param id the id of the constraint
    * @throws UnknownConstraintException if there is no constraint with the id
-   * @throws UnsupportedOperationException if the checker of the constraint is not editable
+   * @throws ConstraintNotEditableException if the checker of the constraint is not editable
+   * @throws java.io.UncheckedIOException if the change cannot be persisted; it is not applied then
    */
   public void delete(String id) {
     EditableConstraintChecker checker = editableCheckerOf(id);
+    String previousSource = sourceOf(snapshot.descriptors().get(id));
     checker.delete(id);
-    StoredConstraint stored = storedConstraints.get(id);
-    if (stored != null && stored.origin() == Origin.BUILT_IN) {
-      storedConstraints.put(id, stored.asDeleted());
-    } else {
-      storedConstraints.remove(id);
+    try {
+      StoredConstraint stored = storedConstraints.get(id);
+      Map<String, StoredConstraint> changed = new LinkedHashMap<>(storedConstraints);
+      if (stored != null && stored.origin() == Origin.BUILT_IN) {
+        changed.put(id, stored.asDeleted());
+      } else {
+        changed.remove(id);
+      }
+      commit(changed);
+    } catch (RuntimeException e) {
+      try {
+        checker.create(previousSource);
+      } catch (RuntimeException rollbackFailure) {
+        LOGGER.error("Could not roll back the deletion of constraint {}", id, rollbackFailure);
+      }
+      this.snapshot = createSnapshot();
+      throw e;
     }
-    this.snapshot = createSnapshot();
-    persist();
+  }
+
+  private static void requireSource(String source) {
+    if (source == null || source.isBlank()) {
+      throw new InvalidConstraintException(
+          List.of(new ConstraintDiagnostic(1, 0, "The source of a constraint must not be empty")));
+    }
   }
 
   private EditableConstraintChecker editableCheckerOf(String id) {
@@ -298,8 +386,7 @@ public class ConstraintCheckerRegistry {
       throw new UnknownConstraintException(id);
     }
     if (!(checker instanceof EditableConstraintChecker editable)) {
-      throw new UnsupportedOperationException(
-          String.format(ErrorMessages.CONSTRAINT_NOT_EDITABLE, id));
+      throw new ConstraintNotEditableException(id);
     }
     return editable;
   }
@@ -336,7 +423,7 @@ public class ConstraintCheckerRegistry {
   }
 
   private static String sourceOf(ConstraintDescriptor descriptor) {
-    return Objects.requireNonNullElse(descriptor.source(), "");
+    return descriptor == null ? "" : Objects.requireNonNullElse(descriptor.source(), "");
   }
 
   // ---------------------------------------------------------------------------------------------

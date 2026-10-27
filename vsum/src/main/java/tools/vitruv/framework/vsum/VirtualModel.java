@@ -10,6 +10,7 @@ import tools.vitruv.framework.views.ViewProvider;
 import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.vsum.constraints.ConstraintChecker;
 import tools.vitruv.framework.vsum.constraints.ConstraintDescriptor;
+import tools.vitruv.framework.vsum.constraints.ConstraintNotEditableException;
 import tools.vitruv.framework.vsum.constraints.ConstraintValidationReport;
 import tools.vitruv.framework.vsum.constraints.DuplicateConstraintException;
 import tools.vitruv.framework.vsum.constraints.EditableConstraintChecker;
@@ -76,7 +77,7 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    * @param source the new source, which must define a constraint with the same id
    * @return the updated constraint
    * @throws UnknownConstraintException if there is no constraint with the id
-   * @throws UnsupportedOperationException if the checker of the constraint does not support changes
+   * @throws ConstraintNotEditableException if the checker of the constraint does not support changes
    * @throws InvalidConstraintException if the source is not a valid constraint with this id
    */
   default ConstraintDescriptor updateConstraint(String id, String source) {
@@ -89,7 +90,7 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    *
    * @param id the id of the constraint
    * @throws UnknownConstraintException if there is no constraint with the id
-   * @throws UnsupportedOperationException if the checker of the constraint does not support changes
+   * @throws ConstraintNotEditableException if the checker of the constraint does not support changes
    */
   default void deleteConstraint(String id) {
     throw new UnknownConstraintException(id);

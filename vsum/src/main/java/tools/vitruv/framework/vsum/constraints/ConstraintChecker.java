@@ -16,7 +16,9 @@ public interface ConstraintChecker {
 
   /**
    * Gets the constraints provided by this checker. Their ids must be unique within a virtual
-   * model. This method is called once when the virtual model is built.
+   * model. This method is called whenever the constraints of the virtual model change, so it must
+   * be cheap and reflect the current constraints; checkers that are no {@link
+   * EditableConstraintChecker} must always return the same constraints.
    *
    * @return the constraints provided by this checker
    */

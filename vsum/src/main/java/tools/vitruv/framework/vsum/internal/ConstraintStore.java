@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -96,6 +97,7 @@ class ConstraintStore {
    *
    * @return the constraints in stored order, empty if nothing was stored yet
    * @throws UncheckedIOException if the file cannot be read
+   * @throws IllegalStateException if the file is corrupt
    */
   List<StoredConstraint> load() {
     if (!Files.exists(file)) {
@@ -109,17 +111,46 @@ class ConstraintStore {
     }
     List<StoredConstraint> constraints = new ArrayList<>();
     for (int index = 0; properties.containsKey(index + ID); index++) {
-      String prefix = String.valueOf(index);
-      constraints.add(
-          new StoredConstraint(
-              properties.getProperty(prefix + ID),
-              properties.getProperty(prefix + LANGUAGE),
-              Origin.valueOf(properties.getProperty(prefix + ORIGIN)),
-              Boolean.parseBoolean(properties.getProperty(prefix + DELETED)),
-              properties.getProperty(prefix + SOURCE),
-              properties.getProperty(prefix + BUILT_IN_SOURCE)));
+      constraints.add(read(properties, index));
     }
     return constraints;
+  }
+
+  private StoredConstraint read(Properties properties, int index) {
+    String prefix = String.valueOf(index);
+    String id = properties.getProperty(prefix + ID);
+    String language = properties.getProperty(prefix + LANGUAGE);
+    String origin = properties.getProperty(prefix + ORIGIN);
+    String source = properties.getProperty(prefix + SOURCE);
+    String builtInSource = properties.getProperty(prefix + BUILT_IN_SOURCE);
+    if (id == null || language == null || source == null || !isOrigin(origin)) {
+      throw corrupt(index);
+    }
+    Origin parsedOrigin = Origin.valueOf(origin);
+    if (parsedOrigin == Origin.BUILT_IN && builtInSource == null) {
+      throw corrupt(index);
+    }
+    return new StoredConstraint(
+        id,
+        language,
+        parsedOrigin,
+        Boolean.parseBoolean(properties.getProperty(prefix + DELETED)),
+        source,
+        builtInSource);
+  }
+
+  private static boolean isOrigin(String value) {
+    for (Origin origin : Origin.values()) {
+      if (origin.name().equals(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private IllegalStateException corrupt(int index) {
+    return new IllegalStateException(
+        "The constraints file " + file + " is corrupt at entry " + index);
   }
 
   /**
@@ -149,7 +180,12 @@ class ConstraintStore {
       try (Writer writer = Files.newBufferedWriter(temporary, UTF_8)) {
         properties.store(writer, COMMENT);
       }
-      Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
+      try {
+        Files.move(
+            temporary, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+      } catch (AtomicMoveNotSupportedException atomicMoveNotSupported) {
+        Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
+      }
     } catch (IOException e) {
       throw new UncheckedIOException("Could not write the constraints to " + file, e);
     }

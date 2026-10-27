@@ -16,6 +16,7 @@ class PrefixConstraintChecker implements EditableConstraintChecker {
   static final String LANGUAGE = "prefix";
 
   private final Map<String, ConstraintDescriptor> constraints = new LinkedHashMap<>();
+  private final String language;
 
   /**
    * Creates a checker with the given built-in constraints.
@@ -23,14 +24,30 @@ class PrefixConstraintChecker implements EditableConstraintChecker {
    * @param builtInSources the sources of the built-in constraints
    */
   PrefixConstraintChecker(String... builtInSources) {
+    this(LANGUAGE, builtInSources, true);
+  }
+
+  private PrefixConstraintChecker(String language, String[] builtInSources, boolean unused) {
+    this.language = language;
     for (String source : builtInSources) {
       create(source);
     }
   }
 
+  /**
+   * Creates a checker for another language with the given built-in constraints.
+   *
+   * @param language the language of the checker
+   * @param builtInSources the sources of the built-in constraints
+   * @return the checker
+   */
+  static PrefixConstraintChecker forLanguage(String language, String... builtInSources) {
+    return new PrefixConstraintChecker(language, builtInSources, true);
+  }
+
   @Override
   public String getLanguage() {
-    return LANGUAGE;
+    return language;
   }
 
   @Override
@@ -95,7 +112,7 @@ class PrefixConstraintChecker implements EditableConstraintChecker {
     return results;
   }
 
-  private static ConstraintDescriptor parse(String source) {
+  private ConstraintDescriptor parse(String source) {
     int separator = source == null ? -1 : source.indexOf(':');
     if (separator <= 0) {
       throw new InvalidConstraintException(
@@ -103,6 +120,6 @@ class PrefixConstraintChecker implements EditableConstraintChecker {
     }
     String id = source.substring(0, separator);
     return new ConstraintDescriptor(
-        id, id, "allElementTypes::Root", ConstraintKind.INVARIANT, null, LANGUAGE, source);
+        id, id, "allElementTypes::Root", ConstraintKind.INVARIANT, null, language, source);
   }
 }

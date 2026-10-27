@@ -7,7 +7,12 @@ package tools.vitruv.framework.vsum.constraints;
  *
  * <p>The virtual model calls these methods while it is locked and persists the resulting set of
  * constraints, so implementations only have to keep their constraints in memory. On every start,
- * the virtual model restores changes made at runtime through these methods.
+ * the virtual model restores changes made at runtime through these methods, before the virtual
+ * model is used. It also calls them to roll back changes that could not be persisted.
+ *
+ * <p>The id of a constraint is defined by its source: {@link #create} and {@link #update} return
+ * the constraint the source defines, and {@link #update} must reject sources that define another
+ * id.
  */
 public interface EditableConstraintChecker extends ConstraintChecker {
 

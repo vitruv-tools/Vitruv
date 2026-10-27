@@ -16,10 +16,16 @@ public class InvalidConstraintException extends IllegalArgumentException {
    * @param diagnostics the problems in the source, must not be empty
    */
   public InvalidConstraintException(List<ConstraintDiagnostic> diagnostics) {
-    super(
-        "Invalid constraint: "
-            + diagnostics.stream().map(ConstraintDiagnostic::toString).collect(Collectors.joining("; ")));
+    super(describe(diagnostics));
     this.diagnostics = List.copyOf(diagnostics);
+  }
+
+  private static String describe(List<ConstraintDiagnostic> diagnostics) {
+    if (diagnostics == null || diagnostics.isEmpty()) {
+      throw new IllegalArgumentException("An invalid constraint needs at least one diagnostic");
+    }
+    return "Invalid constraint: "
+        + diagnostics.stream().map(ConstraintDiagnostic::toString).collect(Collectors.joining("; "));
   }
 
   /**

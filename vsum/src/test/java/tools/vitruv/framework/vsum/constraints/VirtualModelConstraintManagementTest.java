@@ -9,6 +9,8 @@ import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.a
 import static tools.vitruv.framework.vsum.VirtualModelTestUtil.recordChanges;
 
 import allElementTypes.Root;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import org.eclipse.emf.common.util.URI;
@@ -138,8 +140,45 @@ class VirtualModelConstraintManagementTest {
       vsum = build(new ReadOnlyChecker("fixed"));
 
       assertThrows(
-          UnsupportedOperationException.class, () -> vsum.updateConstraint("fixed", "fixed:x"));
-      assertThrows(UnsupportedOperationException.class, () -> vsum.deleteConstraint("fixed"));
+          ConstraintNotEditableException.class, () -> vsum.updateConstraint("fixed", "fixed:x"));
+      assertThrows(ConstraintNotEditableException.class, () -> vsum.deleteConstraint("fixed"));
+    }
+
+    @Test
+    @DisplayName("a missing source is rejected as invalid")
+    void missingSource() throws Exception {
+      vsum = build(new PrefixConstraintChecker("noBad:bad"));
+
+      assertThrows(
+          InvalidConstraintException.class,
+          () -> vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, null));
+      assertThrows(InvalidConstraintException.class, () -> vsum.updateConstraint("noBad", null));
+    }
+
+    @Test
+    @DisplayName("a change that cannot be persisted is not applied")
+    void persistFailure() throws Exception {
+      vsum = build(new PrefixConstraintChecker("noBad:bad"));
+      makeConstraintsFileUnwritable();
+
+      assertThrows(
+          UncheckedIOException.class,
+          () -> vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "new:x"));
+      assertThrows(UncheckedIOException.class, () -> vsum.updateConstraint("noBad", "noBad:y"));
+      assertThrows(UncheckedIOException.class, () -> vsum.deleteConstraint("noBad"));
+
+      assertEquals(List.of("noBad"), ids());
+      assertEquals("noBad:bad", vsum.getConstraint("noBad").orElseThrow().source());
+      assertEquals(ConstraintStatus.SATISFIED, statusOf("noBad"));
+    }
+
+    @Test
+    @DisplayName("an update that changes the id of a constraint is rejected")
+    void updateChangingTheId() throws Exception {
+      vsum = build(new IdChangingChecker());
+
+      assertThrows(InvalidConstraintException.class, () -> vsum.updateConstraint("a", "b"));
+      assertEquals(List.of("a"), ids());
     }
   }
 
@@ -196,6 +235,78 @@ class VirtualModelConstraintManagementTest {
 
       assertEquals(List.of("runtime"), ids());
     }
+
+    @Test
+    @DisplayName("a deleted runtime constraint stays deleted")
+    void deletedRuntimeConstraint() throws Exception {
+      vsum = build(new PrefixConstraintChecker());
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "runtime:c");
+      vsum.deleteConstraint("runtime");
+      restart(new PrefixConstraintChecker());
+
+      assertTrue(ids().isEmpty());
+    }
+
+    @Test
+    @DisplayName("a runtime constraint that became built-in stays deleted when deleted")
+    void runtimeConstraintBecomingBuiltIn() throws Exception {
+      vsum = build(new PrefixConstraintChecker());
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "x:runtime");
+      restart(new PrefixConstraintChecker("x:built"));
+      assertEquals("x:runtime", vsum.getConstraint("x").orElseThrow().source());
+
+      vsum.deleteConstraint("x");
+      restart(new PrefixConstraintChecker("x:built"));
+
+      assertTrue(ids().isEmpty());
+    }
+
+    @Test
+    @DisplayName("a deleted built-in constraint that is created again survives a restart")
+    void recreatedBuiltInConstraint() throws Exception {
+      vsum = build(new PrefixConstraintChecker("x:built"));
+      vsum.deleteConstraint("x");
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "x:again");
+      restart(new PrefixConstraintChecker("x:built"));
+
+      assertEquals("x:again", vsum.getConstraint("x").orElseThrow().source());
+    }
+
+    @Test
+    @DisplayName("a changed built-in constraint adopted by the build follows later builds again")
+    void adoptedBuiltInConstraint() throws Exception {
+      vsum = build(new PrefixConstraintChecker("x:a"));
+      vsum.updateConstraint("x", "x:b");
+      restart(new PrefixConstraintChecker("x:b"));
+      restart(new PrefixConstraintChecker("x:c"));
+
+      assertEquals("x:c", vsum.getConstraint("x").orElseThrow().source());
+    }
+
+    @Test
+    @DisplayName("a stored constraint that became invalid is kept and the VSUM still starts")
+    void invalidStoredConstraint() throws Exception {
+      vsum = build(new PrefixConstraintChecker("x:a"));
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "y:b");
+      restart(new RejectingChecker());
+      assertTrue(ids().isEmpty());
+
+      restart(new PrefixConstraintChecker("x:a"));
+
+      assertEquals(List.of("x", "y"), ids());
+    }
+
+    @Test
+    @DisplayName("ids of kept constraints of other languages cannot be taken")
+    void idsOfKeptConstraints() throws Exception {
+      vsum = build(new PrefixConstraintChecker());
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "x:a");
+      restart(PrefixConstraintChecker.forLanguage("other"));
+
+      assertThrows(DuplicateConstraintException.class, () -> vsum.createConstraint("other", "x:b"));
+      restart(new PrefixConstraintChecker());
+      assertEquals("x:a", vsum.getConstraint("x").orElseThrow().source());
+    }
   }
 
   private InternalVirtualModel build(ConstraintChecker... checkers) throws Exception {
@@ -237,6 +348,34 @@ class VirtualModelConstraintManagementTest {
               }
             });
     vsum.propagateChange(change);
+  }
+
+  /** Replaces the constraints file by a non-empty directory, so it cannot be written. */
+  private void makeConstraintsFileUnwritable() throws Exception {
+    Path file = projectFolder.resolve("vsum").resolve("vsum").resolve("constraints.properties");
+    Files.deleteIfExists(file);
+    Files.createDirectories(file.resolve("blocked"));
+  }
+
+  /** A checker of the prefix language that rejects every constraint. */
+  private static final class RejectingChecker extends PrefixConstraintChecker {
+    @Override
+    public ConstraintDescriptor create(String source) {
+      throw new InvalidConstraintException(List.of(new ConstraintDiagnostic(1, 0, "rejected")));
+    }
+  }
+
+  /** A checker whose update returns a constraint with another id, breaking its contract. */
+  private static final class IdChangingChecker extends PrefixConstraintChecker {
+    IdChangingChecker() {
+      super("a:x");
+    }
+
+    @Override
+    public ConstraintDescriptor update(String id, String source) {
+      return new ConstraintDescriptor(
+          source, source, null, null, null, PrefixConstraintChecker.LANGUAGE, source);
+    }
   }
 
   /** A checker whose constraints cannot be changed. */
