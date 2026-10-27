@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -256,6 +257,34 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   @Override
   public List<ConstraintDescriptor> getConstraints() {
     return constraintCheckerRegistry.getConstraints();
+  }
+
+  @Override
+  public Optional<ConstraintDescriptor> getConstraint(String id) {
+    return constraintCheckerRegistry.getConstraint(id);
+  }
+
+  /**
+   * Restores the constraints changed while the virtual model was running before, and persists all
+   * later changes in the storage folder.
+   */
+  public synchronized void loadConstraints() {
+    constraintCheckerRegistry.restore(new ConstraintStore(fileSystemLayout.getConstraintsPath()));
+  }
+
+  @Override
+  public synchronized ConstraintDescriptor createConstraint(String language, String source) {
+    return constraintCheckerRegistry.create(language, source);
+  }
+
+  @Override
+  public synchronized ConstraintDescriptor updateConstraint(String id, String source) {
+    return constraintCheckerRegistry.update(id, source);
+  }
+
+  @Override
+  public synchronized void deleteConstraint(String id) {
+    constraintCheckerRegistry.delete(id);
   }
 
   /**

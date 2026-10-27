@@ -310,6 +310,7 @@ public class VirtualModelBuilder {
             changeSpecificationRepository,
             constraintCheckerRegistry);
     vsum.loadExistingModels();
+    vsum.loadConstraints();
 
     try {
       ProjectMarker.getProjectRootFolder(storageFolder);
