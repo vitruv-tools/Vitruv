@@ -7,4 +7,6 @@ public class ErrorMessages {
       "This change contains no concrete change:%s%s";
   public static final String PROPAGATION_LISTENER_NULL = "propagationListener";
   public static final String PROPAGATION_OBSERVER_NULL = "propagationObserver";
+  public static final String CHANGES_QUEUED_ON_MODE_CHANGE =
+      "The change propagation mode cannot be changed while changes are queued";
 }

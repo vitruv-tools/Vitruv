@@ -11,4 +11,5 @@ public class InfoMessages {
       "Saving all models of model repository for VSUM {}";
   public static final String DEBUG_STARTED_SYNC = "Started synchronizing change: {}";
   public static final String DEBUG_FINISHED_SYNC = "Finished synchronizing change: {}";
+  public static final String QUEUED_PROPAGATION_STEP = "Propagation step for queued change {}: {}";
 }

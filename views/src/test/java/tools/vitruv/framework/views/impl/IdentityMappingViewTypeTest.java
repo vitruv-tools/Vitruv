@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
@@ -470,6 +471,62 @@ public class IdentityMappingViewTypeTest {
         var attributeChange = (ReplaceSingleValuedEAttribute<?, ?>) eChanges.get(0);
         assertThat(attributeChange.getOldValue(), is("testid"));
         assertThat(attributeChange.getNewValue(), is("testid2"));
+      }
+    }
+
+    @Test
+    @DisplayName("resolved without modifying or propagating to the view source")
+    void resolveWithoutPropagating() {
+      Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
+      VitruviusChange<HierarchicalId> viewChange = recordIdChange(root);
+
+      VitruviusChange<Uuid> resolvedChange = basicViewType.resolveViewChanges(view, viewChange);
+
+      verify(viewSource, never()).propagateChange(any());
+      Resource viewSourceResource = viewSourceResourceSet.getResources().get(0);
+      assertThat(((Root) viewSourceResource.getContents().get(0)).getId(), is("testid"));
+      List<EChange<Uuid>> eChanges = resolvedChange.getEChanges();
+      assertThat(eChanges.size(), is(1));
+      var attributeChange = (ReplaceSingleValuedEAttribute<?, ?>) eChanges.get(0);
+      assertThat(attributeChange.getOldValue(), is("testid"));
+      assertThat(attributeChange.getNewValue(), is("testid2"));
+    }
+
+    @Test
+    @DisplayName("resolved to the same change that committing propagates")
+    void resolveLikeCommit() {
+      Root root = createResourceWithSingleRoot(URI.createURI("test://test.aet"));
+      VitruviusChange<HierarchicalId> viewChange = recordIdChange(root);
+
+      VitruviusChange<Uuid> resolvedChange = basicViewType.resolveViewChanges(view, viewChange);
+      ArgumentCaptor<VitruviusChange<Uuid>> changeArgument =
+          ArgumentCaptor.forClass(VitruviusChange.class);
+      basicViewType.commitViewChanges(view, viewChange);
+
+      verify(viewSource).propagateChange(changeArgument.capture());
+      // Each call resolves against its own copy of the view source, so the changes are different
+      // objects. Their content has to match, though, down to the UUID of the changed element.
+      List<EChange<Uuid>> resolvedEChanges = resolvedChange.getEChanges();
+      List<EChange<Uuid>> committedEChanges = changeArgument.getValue().getEChanges();
+      assertThat(resolvedEChanges.size(), is(1));
+      assertThat(committedEChanges.size(), is(1));
+      var resolved = (ReplaceSingleValuedEAttribute<?, ?>) resolvedEChanges.get(0);
+      var committed = (ReplaceSingleValuedEAttribute<?, ?>) committedEChanges.get(0);
+      assertThat(resolved.getAffectedElement(), instanceOf(Uuid.class));
+      assertEquals(committed.getAffectedElement(), resolved.getAffectedElement());
+      assertEquals(committed.getAffectedFeature(), resolved.getAffectedFeature());
+      assertEquals(committed.getOldValue(), resolved.getOldValue());
+      assertEquals(committed.getNewValue(), resolved.getNewValue());
+    }
+
+    /** Changes the id of the given view root and returns that change with hierarchical ids. */
+    private VitruviusChange<HierarchicalId> recordIdChange(Root root) {
+      try (ChangeRecorder changeRecorder = new ChangeRecorder(viewResourceSet)) {
+        changeRecorder.addToRecording(root);
+        changeRecorder.beginRecording();
+        root.setId("testid2");
+        changeRecorder.endRecording();
+        return assignIds(changeRecorder.getChange());
       }
     }
 

@@ -76,6 +76,25 @@ public final class VirtualModelTestUtil {
   }
 
   /**
+   * Creates an empty virtual model with a {@link
+   * ConfirmingRedundancyChangePropagationSpecification}, which asks the user before creating
+   * copies.
+   */
+  public static VirtualModel createAndLoadTestVirtualModelWithConfirmedConsistencyPreservation(
+      Path folder) throws Exception {
+    return new VirtualModelBuilder()
+        .withStorageFolder(folder)
+        .withChangePropagationSpecification(
+            new ConfirmingRedundancyChangePropagationSpecification(
+                MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI),
+                MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI)))
+        .withUserInteractor(
+            UserInteractionFactory.instance.createUserInteractor(
+                UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
+        .buildAndInitialize();
+  }
+
+  /**
    * Creates a model resource URI for a given project folder. Use the suffix to distinguish multiple
    * URIs.
    */
@@ -173,6 +192,43 @@ public final class VirtualModelTestUtil {
 
       URI resourceURI = typedChange.getResource().getURI();
       resourceAccess.persistAsRoot(correspondingRoot, getTargetResourceUri(resourceURI));
+    }
+  }
+
+  /**
+   * Redundancy specification that asks the user for confirmation before it creates or updates a
+   * copy, and leaves the models alone if the user declines. It asks before modifying anything, as
+   * queued change propagation requires.
+   */
+  public static class ConfirmingRedundancyChangePropagationSpecification
+      extends RedundancyChangePropagationSpecification {
+    /** The message of the confirmation this specification asks for. */
+    public static final String QUESTION = "Create a copy of the inserted root?";
+
+    /**
+     * Creates a new confirming redundancy change propagation specification.
+     *
+     * @param sourceMetamodelDescriptor The source metamodel descriptor.
+     * @param targetMetamodelDescriptor The target metamodel descriptor.
+     */
+    public ConfirmingRedundancyChangePropagationSpecification(
+        MetamodelDescriptor sourceMetamodelDescriptor,
+        MetamodelDescriptor targetMetamodelDescriptor) {
+      super(sourceMetamodelDescriptor, targetMetamodelDescriptor);
+    }
+
+    @Override
+    public void propagateChange(
+        EChange<EObject> change,
+        EditableCorrespondenceModelView<Correspondence> correspondenceModel,
+        ResourceAccess resourceAccess) {
+      if (doesHandleChange(change, correspondenceModel)
+          && getUserInteractor()
+              .getConfirmationDialogBuilder()
+              .message(QUESTION)
+              .startInteraction()) {
+        super.propagateChange(change, correspondenceModel, resourceAccess);
+      }
     }
   }
 }

@@ -94,6 +94,14 @@ public class IdentityMappingViewType
 
   @Override
   public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
+    view.getViewSource().propagateChange(resolveViewChanges(view, viewChange));
+  }
+
+  @Override
+  public VitruviusChange<Uuid> resolveViewChanges(
+      ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
+    // The view change is applied to a fresh copy of the selected view source resources, so the
+    // view source itself stays untouched; only its UUIDs are carried over to the copy.
     ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
     VitruviusChangeResolver<HierarchicalId> idChangeResolver =
         VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);
@@ -104,8 +112,7 @@ public class IdentityMappingViewType
     view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
     VitruviusChange<EObject> resolvedChange = idChangeResolver.resolveAndApply(viewChange);
-    VitruviusChange<Uuid> unresolvedChanges = uuidChangeResolver.assignIds(resolvedChange);
-    view.getViewSource().propagateChange(unresolvedChanges);
+    return uuidChangeResolver.assignIds(resolvedChange);
   }
 
   private Map<Resource, Resource> createViewResources(
