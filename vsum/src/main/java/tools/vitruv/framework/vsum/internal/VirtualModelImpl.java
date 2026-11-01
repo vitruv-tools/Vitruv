@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -33,10 +35,13 @@ import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.views.ViewTypeRepository;
 import tools.vitruv.framework.vsum.constraints.ConstraintCheckContext;
 import tools.vitruv.framework.vsum.constraints.ConstraintDescriptor;
+import tools.vitruv.framework.vsum.constraints.ConstraintValidationListener;
+import tools.vitruv.framework.vsum.constraints.ConstraintValidationListener.Trigger;
 import tools.vitruv.framework.vsum.constraints.ConstraintValidationReport;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
+import tools.vitruv.framework.vsum.models.ModelReadAccess;
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
 public class VirtualModelImpl implements InternalVirtualModel, ChangePropagationObservableRegistry {
@@ -51,6 +56,9 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
   private final InternalUserInteractor userInteractor;
   private final ConstraintCheckerRegistry constraintCheckerRegistry;
+  private final List<ConstraintValidationListener> constraintValidationListeners =
+      new CopyOnWriteArrayList<>();
+  private volatile boolean constraintValidationAfterPropagation;
   private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
 
   /**
@@ -150,6 +158,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
     finishChangePropagation(change, result);
     LOGGER.info(InfoMessages.FINISH_PROPAGATION);
+    validateAutomatically(Trigger.PROPAGATION);
     return result;
   }
 
@@ -232,6 +241,20 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     return resourceRepository.getModelResources();
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Synchronized with change propagation, so the reader sees a consistent state.
+   */
+  @Override
+  public synchronized <T> T readModels(Function<? super ModelReadAccess, ? extends T> reader) {
+    checkNotNull(reader, "reader");
+    try (VsumModelReadAccess access =
+        new VsumModelReadAccess(resourceRepository.getModelResources(), getUuidResolver())) {
+      return reader.apply(access);
+    }
+  }
+
   @Override
   public Collection<ViewType<?>> getViewTypes() {
     return viewTypeRepository.getViewTypes();
@@ -274,17 +297,85 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
   @Override
   public synchronized ConstraintDescriptor createConstraint(String language, String source) {
-    return constraintCheckerRegistry.create(language, source);
+    ConstraintDescriptor created = constraintCheckerRegistry.create(language, source);
+    validateAutomatically(Trigger.CONSTRAINTS_CHANGED);
+    return created;
   }
 
   @Override
   public synchronized ConstraintDescriptor updateConstraint(String id, String source) {
-    return constraintCheckerRegistry.update(id, source);
+    ConstraintDescriptor updated = constraintCheckerRegistry.update(id, source);
+    validateAutomatically(Trigger.CONSTRAINTS_CHANGED);
+    return updated;
   }
 
   @Override
   public synchronized void deleteConstraint(String id) {
     constraintCheckerRegistry.delete(id);
+    validateAutomatically(Trigger.CONSTRAINTS_CHANGED);
+  }
+
+  @Override
+  public void setConstraintValidationAfterPropagation(boolean enabled) {
+    constraintValidationAfterPropagation = enabled;
+  }
+
+  @Override
+  public boolean isConstraintValidationAfterPropagation() {
+    return constraintValidationAfterPropagation;
+  }
+
+  @Override
+  public void addConstraintValidationListener(ConstraintValidationListener listener) {
+    constraintValidationListeners.add(checkNotNull(listener, "listener"));
+  }
+
+  @Override
+  public void removeConstraintValidationListener(ConstraintValidationListener listener) {
+    constraintValidationListeners.remove(listener);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Notifies the {@link ConstraintValidationListener}s with {@link Trigger#REQUEST}.
+   */
+  @Override
+  public synchronized ConstraintValidationReport validateConstraints() {
+    ConstraintValidationReport report = validateAllConstraints();
+    notifyConstraintValidationListeners(report, Trigger.REQUEST);
+    return report;
+  }
+
+  private ConstraintValidationReport validateAllConstraints() {
+    return validateConstraints(getConstraints().stream().map(ConstraintDescriptor::id).toList());
+  }
+
+  /** Validates all constraints if enabled; must be called while this virtual model is locked. */
+  private void validateAutomatically(Trigger trigger) {
+    if (!constraintValidationAfterPropagation || getConstraints().isEmpty()) {
+      return;
+    }
+    ConstraintValidationReport report;
+    try {
+      report = validateAllConstraints();
+    } catch (RuntimeException e) {
+      // a failing checker must not undo or fail the change that was already done
+      LOGGER.error("Validating the constraints after a change failed", e);
+      return;
+    }
+    notifyConstraintValidationListeners(report, trigger);
+  }
+
+  private void notifyConstraintValidationListeners(
+      ConstraintValidationReport report, Trigger trigger) {
+    for (ConstraintValidationListener listener : constraintValidationListeners) {
+      try {
+        listener.constraintsValidated(report, trigger);
+      } catch (RuntimeException e) {
+        LOGGER.error("A constraint validation listener failed", e);
+      }
+    }
   }
 
   /**

@@ -40,6 +40,7 @@ public class VirtualModelBuilder {
   private final List<ConstraintChecker> constraintCheckers = new ArrayList<>();
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
+  private boolean constraintValidationAfterPropagation;
 
   /**
    * Sets the storage folder for the virtual model.
@@ -284,6 +285,18 @@ public class VirtualModelBuilder {
   }
 
   /**
+   * Validates all constraints after each propagated change and after each change of a constraint,
+   * see {@link VirtualModel#setConstraintValidationAfterPropagation}. Disabled by default.
+   *
+   * @param enabled whether constraints are validated automatically
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withConstraintValidationAfterPropagation(boolean enabled) {
+    this.constraintValidationAfterPropagation = enabled;
+    return this;
+  }
+
+  /**
    * Builds and initializes the virtual model.
    *
    * @return the initialized virtual model
@@ -311,6 +324,7 @@ public class VirtualModelBuilder {
             constraintCheckerRegistry);
     vsum.loadExistingModels();
     vsum.loadConstraints();
+    vsum.setConstraintValidationAfterPropagation(constraintValidationAfterPropagation);
 
     try {
       ProjectMarker.getProjectRootFolder(storageFolder);

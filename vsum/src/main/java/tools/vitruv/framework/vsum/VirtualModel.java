@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import org.eclipse.emf.ecore.EPackage;
 import tools.vitruv.change.composite.propagation.ChangeableModelRepository;
 import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.framework.views.ViewProvider;
@@ -11,12 +13,15 @@ import tools.vitruv.framework.views.ViewTypeProvider;
 import tools.vitruv.framework.vsum.constraints.ConstraintChecker;
 import tools.vitruv.framework.vsum.constraints.ConstraintDescriptor;
 import tools.vitruv.framework.vsum.constraints.ConstraintNotEditableException;
+import tools.vitruv.framework.vsum.constraints.ConstraintValidationListener;
 import tools.vitruv.framework.vsum.constraints.ConstraintValidationReport;
 import tools.vitruv.framework.vsum.constraints.DuplicateConstraintException;
 import tools.vitruv.framework.vsum.constraints.EditableConstraintChecker;
 import tools.vitruv.framework.vsum.constraints.InvalidConstraintException;
 import tools.vitruv.framework.vsum.constraints.UnknownConstraintException;
 import tools.vitruv.framework.vsum.constraints.UnsupportedConstraintLanguageException;
+import tools.vitruv.framework.vsum.models.ModelDescriptor;
+import tools.vitruv.framework.vsum.models.ModelReadAccess;
 
 /** A virtual model in the VSUM framework that provides changeable model repositories and views. */
 public interface VirtualModel extends ChangeableModelRepository, ViewProvider, ViewTypeProvider {
@@ -34,6 +39,41 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
    * transitively propagated until no further changes are produced.
    */
   void setChangePropagationMode(ChangePropagationMode changePropagationMode);
+
+  /**
+   * Reads the models of this virtual model. The reader runs while the virtual model does not
+   * change, so everything it reads belongs to the same state. It must not modify the models and
+   * must not use the access after it returned.
+   *
+   * @param <T> the type of the result
+   * @param reader reads the models and computes the result
+   * @return the result of the reader
+   * @throws UnsupportedOperationException if this virtual model does not provide its models
+   */
+  default <T> T readModels(Function<? super ModelReadAccess, ? extends T> reader) {
+    throw new UnsupportedOperationException("This virtual model does not provide its models");
+  }
+
+  /**
+   * Describes the models of this virtual model.
+   *
+   * @return the descriptions, sorted by URI
+   * @throws UnsupportedOperationException if this virtual model does not provide its models
+   */
+  default List<ModelDescriptor> getModels() {
+    return readModels(ModelReadAccess::getModels);
+  }
+
+  /**
+   * Gets the root packages of the metamodels whose elements are contained in the models of this
+   * virtual model. The packages are shared metamodel definitions and must not be modified.
+   *
+   * @return the root packages
+   * @throws UnsupportedOperationException if this virtual model does not provide its models
+   */
+  default List<EPackage> getMetamodels() {
+    return readModels(ModelReadAccess::getMetamodels);
+  }
 
   /**
    * Gets the constraints of all {@link ConstraintChecker}s registered for this virtual model.
@@ -123,5 +163,47 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
       throw new UnknownConstraintException(constraintIds.iterator().next());
     }
     return new ConstraintValidationReport(List.of());
+  }
+
+  /**
+   * Enables or disables validating all constraints after each propagated change and after each
+   * change of a constraint. The reports are passed to the {@link ConstraintValidationListener}s.
+   * Disabled by default.
+   *
+   * @param enabled whether constraints are validated automatically
+   * @throws UnsupportedOperationException if this virtual model cannot validate automatically
+   */
+  default void setConstraintValidationAfterPropagation(boolean enabled) {
+    throw new UnsupportedOperationException("This virtual model cannot validate automatically");
+  }
+
+  /**
+   * Checks whether constraints are validated after each propagated change.
+   *
+   * @return {@code true} if enabled
+   */
+  default boolean isConstraintValidationAfterPropagation() {
+    return false;
+  }
+
+  /**
+   * Registers a listener that is notified whenever all constraints were validated: after
+   * propagated changes and changes of constraints if {@link
+   * #setConstraintValidationAfterPropagation enabled}, and after {@link #validateConstraints()}.
+   *
+   * @param listener the listener
+   * @throws UnsupportedOperationException if this virtual model does not notify listeners
+   */
+  default void addConstraintValidationListener(ConstraintValidationListener listener) {
+    throw new UnsupportedOperationException("This virtual model does not notify listeners");
+  }
+
+  /**
+   * Removes a listener registered with {@link #addConstraintValidationListener}.
+   *
+   * @param listener the listener
+   */
+  default void removeConstraintValidationListener(ConstraintValidationListener listener) {
+    // nothing registered, so nothing to remove
   }
 }
