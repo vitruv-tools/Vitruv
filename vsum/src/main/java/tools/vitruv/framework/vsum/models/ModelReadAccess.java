@@ -64,7 +64,9 @@ public interface ModelReadAccess {
 
   /**
    * Gets the root packages of the metamodels whose elements are contained in the models. The
-   * packages are shared metamodel definitions and must not be modified.
+   * packages are shared metamodel definitions and must not be modified. Implementations may add
+   * further metamodels of the virtual model, such as those of its change propagation
+   * specifications.
    *
    * @return the root packages, in the order of the models sorted by URI
    */

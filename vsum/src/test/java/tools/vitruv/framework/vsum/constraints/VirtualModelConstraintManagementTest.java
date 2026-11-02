@@ -12,7 +12,12 @@ import allElementTypes.Root;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -173,6 +178,59 @@ class VirtualModelConstraintManagementTest {
     }
 
     @Test
+    @DisplayName("concurrent changes, validations and propagations are safe")
+    void concurrentChangesAndValidations() throws Exception {
+      vsum = build(new PrefixConstraintChecker("noBad:bad"));
+      insertRoots("bad1");
+      int rounds = 50;
+      ExecutorService executor = Executors.newFixedThreadPool(4);
+      try {
+        List<Future<?>> tasks =
+            List.of(
+                executor.submit(
+                    () -> {
+                      for (int i = 0; i < rounds; i++) {
+                        vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "c" + i + ":x");
+                        vsum.updateConstraint("c" + i, "c" + i + ":bad");
+                      }
+                    }),
+                executor.submit(
+                    () -> {
+                      for (int i = 0; i < rounds; i++) {
+                        vsum.updateConstraint("noBad", "noBad:" + (i % 2 == 0 ? "bad" : "good"));
+                      }
+                    }),
+                executor.submit(
+                    () -> {
+                      for (int i = 0; i < rounds; i++) {
+                        ConstraintValidationReport report = vsum.validateConstraints();
+                        List<String> validated =
+                            report.results().stream().map(r -> r.descriptor().id()).toList();
+                        assertTrue(validated.contains("noBad"));
+                        assertEquals(validated.size(), new HashSet<>(validated).size());
+                      }
+                    }),
+                executor.submit(
+                    () -> {
+                      for (int i = 0; i < rounds; i++) {
+                        List<String> listed = ids();
+                        assertEquals(listed.size(), new HashSet<>(listed).size());
+                      }
+                    }));
+        for (Future<?> task : tasks) {
+          task.get(60, TimeUnit.SECONDS);
+        }
+      } finally {
+        executor.shutdownNow();
+      }
+
+      assertEquals(rounds + 1, ids().size());
+      assertEquals(ConstraintStatus.VIOLATED, statusOf("c" + (rounds - 1)));
+      restart(new PrefixConstraintChecker("noBad:bad"));
+      assertEquals(rounds + 1, ids().size(), "every change was persisted");
+    }
+
+    @Test
     @DisplayName("an update that changes the id of a constraint is rejected")
     void updateChangingTheId() throws Exception {
       vsum = build(new IdChangingChecker());
@@ -297,6 +355,37 @@ class VirtualModelConstraintManagementTest {
     }
 
     @Test
+    @DisplayName("a stored constraint that could not be restored can be created again")
+    void recreatesUnrestoredConstraint() throws Exception {
+      vsum = build(new PrefixConstraintChecker());
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "y:b");
+      restart(new RejectingChecker());
+      restart(new RejectingOnceChecker());
+
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "y:fixed");
+      restart(new PrefixConstraintChecker());
+
+      assertEquals("y:fixed", vsum.getConstraint("y").orElseThrow().source());
+    }
+
+    @Test
+    @DisplayName("a stored constraint that could not be restored can be deleted")
+    void deletesUnrestoredConstraint() throws Exception {
+      vsum = build(new PrefixConstraintChecker("x:a"));
+      vsum.updateConstraint("x", "x:changed");
+      vsum.createConstraint(PrefixConstraintChecker.LANGUAGE, "y:b");
+      restart(new RejectingChecker());
+      assertTrue(ids().isEmpty());
+
+      vsum.deleteConstraint("y");
+      vsum.deleteConstraint("x");
+      assertThrows(UnknownConstraintException.class, () -> vsum.deleteConstraint("y"));
+      restart(new PrefixConstraintChecker("x:a"));
+
+      assertTrue(ids().isEmpty(), "deleted runtime and built-in constraints stay deleted");
+    }
+
+    @Test
     @DisplayName("ids of kept constraints of other languages cannot be taken")
     void idsOfKeptConstraints() throws Exception {
       vsum = build(new PrefixConstraintChecker());
@@ -358,10 +447,29 @@ class VirtualModelConstraintManagementTest {
   }
 
   /** A checker of the prefix language that rejects every constraint. */
-  private static final class RejectingChecker extends PrefixConstraintChecker {
+  private static class RejectingChecker extends PrefixConstraintChecker {
     @Override
     public ConstraintDescriptor create(String source) {
       throw new InvalidConstraintException(List.of(new ConstraintDiagnostic(1, 0, "rejected")));
+    }
+
+    @Override
+    public ConstraintDescriptor update(String id, String source) {
+      throw new InvalidConstraintException(List.of(new ConstraintDiagnostic(1, 0, "rejected")));
+    }
+  }
+
+  /** A checker that rejects the first constraint created, i.e. the one restored at the start. */
+  private static final class RejectingOnceChecker extends PrefixConstraintChecker {
+    private boolean rejected;
+
+    @Override
+    public ConstraintDescriptor create(String source) {
+      if (!rejected) {
+        rejected = true;
+        throw new InvalidConstraintException(List.of(new ConstraintDiagnostic(1, 0, "rejected")));
+      }
+      return super.create(source);
     }
   }
 

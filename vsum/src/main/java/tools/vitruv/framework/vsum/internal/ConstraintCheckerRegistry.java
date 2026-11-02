@@ -267,15 +267,19 @@ public class ConstraintCheckerRegistry {
     ConstraintDescriptor created = createInChecker(checker, source);
     try {
       StoredConstraint previous = storedConstraints.get(created.id());
-      if (previous != null && (!previous.deleted() || !previous.language().equals(language))) {
+      boolean replaceable =
+          previous != null
+              && previous.language().equals(language)
+              && (previous.deleted() || isUnrestored(previous));
+      if (previous != null && !replaceable) {
         // kept for a language without checker, so the id is taken
         throw new DuplicateConstraintException(created.id());
       }
       Map<String, StoredConstraint> changed = new LinkedHashMap<>(storedConstraints);
       changed.put(
           created.id(),
-          previous != null
-              // a deleted built-in constraint is created again
+          previous != null && previous.origin() == Origin.BUILT_IN
+              // a deleted or unrestored built-in constraint is created again
               ? new StoredConstraint(
                   created.id(), language, Origin.BUILT_IN, false, source, previous.builtInSource())
               : StoredConstraint.runtime(created.id(), language, source));
@@ -342,7 +346,8 @@ public class ConstraintCheckerRegistry {
   }
 
   /**
-   * Deletes a constraint. Built-in constraints stay deleted after a restart.
+   * Deletes a constraint. Built-in constraints stay deleted after a restart. A stored constraint
+   * that could not be restored is removed from the store.
    *
    * @param id the id of the constraint
    * @throws UnknownConstraintException if there is no constraint with the id
@@ -350,6 +355,19 @@ public class ConstraintCheckerRegistry {
    * @throws java.io.UncheckedIOException if the change cannot be persisted; it is not applied then
    */
   public void delete(String id) {
+    StoredConstraint unrestored = storedConstraints.get(id);
+    if (!snapshot.descriptors().containsKey(id)
+        && unrestored != null
+        && isUnrestored(unrestored)) {
+      Map<String, StoredConstraint> changed = new LinkedHashMap<>(storedConstraints);
+      if (unrestored.origin() == Origin.BUILT_IN) {
+        changed.put(id, unrestored.asDeleted());
+      } else {
+        changed.remove(id);
+      }
+      commit(changed);
+      return;
+    }
     EditableConstraintChecker checker = editableCheckerOf(id);
     String previousSource = sourceOf(snapshot.descriptors().get(id));
     checker.delete(id);
@@ -371,6 +389,17 @@ public class ConstraintCheckerRegistry {
       this.snapshot = createSnapshot();
       throw e;
     }
+  }
+
+  /**
+   * Whether the given stored constraint belongs to a language with checker but could not be
+   * restored into it, e.g. because its source became invalid. It is kept so it is not lost, and can
+   * be deleted or created again.
+   */
+  private boolean isUnrestored(StoredConstraint stored) {
+    return !stored.deleted()
+        && editableCheckers.containsKey(stored.language())
+        && !snapshot.descriptors().containsKey(stored.id());
   }
 
   private static void requireSource(String source) {

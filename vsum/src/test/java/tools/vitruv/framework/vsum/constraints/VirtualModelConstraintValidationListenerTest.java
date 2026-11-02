@@ -144,6 +144,18 @@ class VirtualModelConstraintValidationListenerTest {
     assertEquals(List.of(Trigger.CONSTRAINTS_CHANGED), triggers, "no constraints, no validation");
   }
 
+  @Test
+  @DisplayName("deleting the last constraint is reported with an empty report")
+  void reportsDeletionOfTheLastConstraint() throws Exception {
+    InternalVirtualModel vsum = buildVsum(true, new PrefixConstraintChecker("noBad:bad"));
+    vsum.addConstraintValidationListener(this::record);
+
+    vsum.deleteConstraint("noBad");
+
+    assertEquals(List.of(Trigger.CONSTRAINTS_CHANGED), triggers);
+    assertTrue(reports.get(0).results().isEmpty());
+  }
+
   private void record(ConstraintValidationReport report, Trigger trigger) {
     reports.add(report);
     triggers.add(trigger);

@@ -65,8 +65,9 @@ public interface VirtualModel extends ChangeableModelRepository, ViewProvider, V
   }
 
   /**
-   * Gets the root packages of the metamodels whose elements are contained in the models of this
-   * virtual model. The packages are shared metamodel definitions and must not be modified.
+   * Gets the root packages of the metamodels of this virtual model: those whose elements are
+   * contained in its models, followed by those of its change propagation specifications that have
+   * no model yet. The packages are shared metamodel definitions and must not be modified.
    *
    * @return the root packages
    * @throws UnsupportedOperationException if this virtual model does not provide its models

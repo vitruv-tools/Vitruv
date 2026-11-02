@@ -32,6 +32,7 @@ import tools.vitruv.change.testutils.TestProject;
 import tools.vitruv.change.testutils.TestProjectManager;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
+import tools.vitruv.framework.vsum.VirtualModelTestUtil;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 
 /** Tests for reading the models and metamodels of a virtual model. */
@@ -65,8 +66,44 @@ class VirtualModelModelsTest {
     assertEquals(List.of(first, second), models.stream().map(ModelDescriptor::uri).toList());
     MetamodelReference allElementTypes =
         new MetamodelReference("allElementTypes", AllElementTypesPackage.eNS_URI);
-    assertEquals(new ModelDescriptor(first, List.of(allElementTypes), 1), models.get(0));
-    assertEquals(new ModelDescriptor(second, List.of(allElementTypes), 2), models.get(1));
+    assertEquals(
+        new ModelDescriptor(first, "../a.allElementTypes", List.of(allElementTypes), 1),
+        models.get(0));
+    assertEquals(
+        new ModelDescriptor(second, "../b.allElementTypes", List.of(allElementTypes), 2),
+        models.get(1));
+    assertEquals(List.of(AllElementTypesPackage.eINSTANCE), vsum.getMetamodels());
+  }
+
+  @Test
+  @DisplayName("models are identified by their URI relative to the folder of the virtual model")
+  void identifiesModelsRelativeToTheFolder() throws Exception {
+    InternalVirtualModel vsum = buildVsum();
+    insertRoots(vsum, "vsum/models/a.allElementTypes", "r1");
+
+    assertEquals("models/a.allElementTypes", vsum.getModels().get(0).id());
+  }
+
+  @Test
+  @DisplayName("models without a common folder are identified by their full URI")
+  void identifiesForeignModelsByTheirUri() {
+    URI folder = URI.createFileURI(projectFolder.resolve("vsum").toString()).appendSegment("");
+    URI platformUri = URI.createPlatformResourceURI("/project/a.allElementTypes", true);
+    URI relativeUri = URI.createURI("a.allElementTypes");
+
+    assertEquals(platformUri.toString(), ModelDescriptor.idOf(platformUri, folder));
+    assertEquals("a.allElementTypes", ModelDescriptor.idOf(relativeUri, folder));
+    assertEquals(platformUri.toString(), ModelDescriptor.idOf(platformUri, null));
+  }
+
+  @Test
+  @DisplayName("the metamodels of the change propagation specifications are provided without models")
+  void providesTheMetamodelsOfTheSpecifications() throws Exception {
+    VirtualModel vsum =
+        VirtualModelTestUtil.createAndLoadTestVirtualModelWithConsistencyPreservation(
+            projectFolder.resolve("vsum"));
+
+    assertTrue(vsum.getModels().isEmpty());
     assertEquals(List.of(AllElementTypesPackage.eINSTANCE), vsum.getMetamodels());
   }
 

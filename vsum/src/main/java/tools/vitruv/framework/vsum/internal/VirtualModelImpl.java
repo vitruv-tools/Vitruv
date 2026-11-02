@@ -4,16 +4,20 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
@@ -27,6 +31,7 @@ import tools.vitruv.change.interaction.InternalUserInteractor;
 import tools.vitruv.change.propagation.ChangePropagationMode;
 import tools.vitruv.change.propagation.ChangePropagationObservableRegistry;
 import tools.vitruv.change.propagation.ChangePropagationObserver;
+import tools.vitruv.change.propagation.ChangePropagationSpecification;
 import tools.vitruv.change.propagation.ChangePropagationSpecificationProvider;
 import tools.vitruv.change.propagation.impl.ChangePropagator;
 import tools.vitruv.framework.views.ViewSelector;
@@ -250,9 +255,33 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   public synchronized <T> T readModels(Function<? super ModelReadAccess, ? extends T> reader) {
     checkNotNull(reader, "reader");
     try (VsumModelReadAccess access =
-        new VsumModelReadAccess(resourceRepository.getModelResources(), getUuidResolver())) {
+        new VsumModelReadAccess(
+            resourceRepository.getModelResources(),
+            getUuidResolver(),
+            URI.createFileURI(getFolder().toAbsolutePath().toString()).appendSegment(""),
+            getSpecificationMetamodels())) {
       return reader.apply(access);
     }
+  }
+
+  /**
+   * Gets the root packages of the source and target metamodels of the change propagation
+   * specifications that are registered in the global package registry.
+   */
+  private List<EPackage> getSpecificationMetamodels() {
+    Set<String> nsUris = new LinkedHashSet<>();
+    for (ChangePropagationSpecification specification : changePropagationSpecificationProvider) {
+      nsUris.addAll(specification.getSourceMetamodelDescriptor().getNsUris());
+      nsUris.addAll(specification.getTargetMetamodelDescriptor().getNsUris());
+    }
+    List<EPackage> metamodels = new ArrayList<>();
+    for (String nsUri : nsUris) {
+      EPackage metamodel = EPackage.Registry.INSTANCE.getEPackage(nsUri);
+      if (metamodel != null && metamodel.getESuperPackage() == null) {
+        metamodels.add(metamodel);
+      }
+    }
+    return metamodels;
   }
 
   @Override
@@ -351,9 +380,14 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     return validateConstraints(getConstraints().stream().map(ConstraintDescriptor::id).toList());
   }
 
-  /** Validates all constraints if enabled; must be called while this virtual model is locked. */
+  /**
+   * Validates all constraints if enabled; must be called while this virtual model is locked. After
+   * a propagation without constraints nothing is reported, whereas a change of the constraints is
+   * always reported, so listeners also learn that the last constraint was deleted.
+   */
   private void validateAutomatically(Trigger trigger) {
-    if (!constraintValidationAfterPropagation || getConstraints().isEmpty()) {
+    if (!constraintValidationAfterPropagation
+        || trigger == Trigger.PROPAGATION && getConstraints().isEmpty()) {
       return;
     }
     ConstraintValidationReport report;
