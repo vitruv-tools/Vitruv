@@ -16,6 +16,7 @@ public class VsumFileSystemLayout {
   private static final String CORRESPONDENCES_FILE = "correspondences.correspondence";
   private static final String UUIDS_FILE = "uuid.uuid";
   private static final String MODELS_FILE = "models.models";
+  private static final String CONSTRAINTS_FILE = "constraints.properties";
   private static final String VSUM_FOLDER_NAME = "vsum";
   private static final String CONSISTENCY_METADATA_FOLDER_NAME = "consistencymetadata";
 
@@ -114,6 +115,16 @@ public class VsumFileSystemLayout {
   public Path getModelsNamesFilesPath() {
     checkPrepared();
     return getVsumFolder().resolve(MODELS_FILE);
+  }
+
+  /**
+   * Gets the path of the file storing the constraints of the virtual model.
+   *
+   * @return the path of the constraints file
+   */
+  public Path getConstraintsPath() {
+    checkPrepared();
+    return getVsumFolder().resolve(CONSTRAINTS_FILE);
   }
 
   /**
