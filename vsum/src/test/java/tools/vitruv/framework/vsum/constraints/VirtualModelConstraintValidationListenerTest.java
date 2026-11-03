@@ -93,7 +93,10 @@ class VirtualModelConstraintValidationListenerTest {
     vsum.deleteConstraint("noUgly");
 
     assertEquals(
-        List.of(Trigger.CONSTRAINTS_CHANGED, Trigger.CONSTRAINTS_CHANGED, Trigger.CONSTRAINTS_CHANGED),
+        List.of(
+            Trigger.CONSTRAINTS_CHANGED,
+            Trigger.CONSTRAINTS_CHANGED,
+            Trigger.CONSTRAINTS_CHANGED),
         triggers);
     assertFalse(reports.get(0).isSatisfied(), "the new constraint is violated by ugly");
     assertTrue(reports.get(1).isSatisfied());
@@ -161,8 +164,8 @@ class VirtualModelConstraintValidationListenerTest {
     triggers.add(trigger);
   }
 
-  private InternalVirtualModel buildVsum(boolean validateAfterPropagation, ConstraintChecker checker)
-      throws Exception {
+  private InternalVirtualModel buildVsum(
+      boolean validateAfterPropagation, ConstraintChecker checker) throws Exception {
     return new VirtualModelBuilder()
         .withStorageFolder(projectFolder.resolve("vsum"))
         .withUserInteractor(

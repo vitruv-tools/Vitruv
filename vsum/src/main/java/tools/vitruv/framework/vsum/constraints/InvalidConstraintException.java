@@ -25,7 +25,9 @@ public class InvalidConstraintException extends IllegalArgumentException {
       throw new IllegalArgumentException("An invalid constraint needs at least one diagnostic");
     }
     return "Invalid constraint: "
-        + diagnostics.stream().map(ConstraintDiagnostic::toString).collect(Collectors.joining("; "));
+        + diagnostics.stream()
+            .map(ConstraintDiagnostic::toString)
+            .collect(Collectors.joining("; "));
   }
 
   /**

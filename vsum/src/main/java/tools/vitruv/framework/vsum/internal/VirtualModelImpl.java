@@ -376,6 +376,32 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
     return report;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Synchronized with change propagation, so constraints are always checked on a consistent
+   * state.
+   */
+  @Override
+  public synchronized ConstraintValidationReport validateConstraints(
+      Collection<String> constraintIds) {
+    checkNotNull(constraintIds, "constraintIds");
+    ConstraintCheckContext context =
+        new ConstraintCheckContext() {
+          @Override
+          public Collection<Resource> getModelResources() {
+            return Collections.unmodifiableCollection(resourceRepository.getModelResources());
+          }
+
+          @Override
+          public CorrespondenceModelView<Correspondence> getCorrespondenceModel() {
+            // getView creates a view that does not allow modifications
+            return resourceRepository.getCorrespondenceModel().getView(Correspondence.class);
+          }
+        };
+    return constraintCheckerRegistry.validate(context, getUuidResolver(), constraintIds);
+  }
+
   private ConstraintValidationReport validateAllConstraints() {
     return validateConstraints(getConstraints().stream().map(ConstraintDescriptor::id).toList());
   }
@@ -410,31 +436,5 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
         LOGGER.error("A constraint validation listener failed", e);
       }
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * <p>Synchronized with change propagation, so constraints are always checked on a consistent
-   * state.
-   */
-  @Override
-  public synchronized ConstraintValidationReport validateConstraints(
-      Collection<String> constraintIds) {
-    checkNotNull(constraintIds, "constraintIds");
-    ConstraintCheckContext context =
-        new ConstraintCheckContext() {
-          @Override
-          public Collection<Resource> getModelResources() {
-            return Collections.unmodifiableCollection(resourceRepository.getModelResources());
-          }
-
-          @Override
-          public CorrespondenceModelView<Correspondence> getCorrespondenceModel() {
-            // getView creates a view that does not allow modifications
-            return resourceRepository.getCorrespondenceModel().getView(Correspondence.class);
-          }
-        };
-    return constraintCheckerRegistry.validate(context, getUuidResolver(), constraintIds);
   }
 }

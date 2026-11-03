@@ -97,7 +97,7 @@ class VirtualModelModelsTest {
   }
 
   @Test
-  @DisplayName("the metamodels of the change propagation specifications are provided without models")
+  @DisplayName("the metamodels of change propagation specifications are provided without models")
   void providesTheMetamodelsOfTheSpecifications() throws Exception {
     VirtualModel vsum =
         VirtualModelTestUtil.createAndLoadTestVirtualModelWithConsistencyPreservation(
@@ -119,7 +119,7 @@ class VirtualModelModelsTest {
     Uuid uuid = vsum.readModels(access -> access.getUuid(root).orElseThrow());
     boolean unknownModelMissing =
         vsum.readModels(access -> access.getModelResource(URI.createURI("x:/y")).isEmpty());
-    boolean foreignElementWithoutUuid =
+    final boolean foreignElementWithoutUuid =
         vsum.readModels(access -> access.getUuid(aet.Root()).isEmpty());
 
     assertEquals("r1", root.getId());

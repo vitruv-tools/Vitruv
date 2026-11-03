@@ -19,8 +19,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.constraints.ConstraintCheckContext;
 import tools.vitruv.framework.vsum.constraints.ConstraintChecker;
-import tools.vitruv.framework.vsum.constraints.ConstraintDiagnostic;
 import tools.vitruv.framework.vsum.constraints.ConstraintDescriptor;
+import tools.vitruv.framework.vsum.constraints.ConstraintDiagnostic;
 import tools.vitruv.framework.vsum.constraints.ConstraintNotEditableException;
 import tools.vitruv.framework.vsum.constraints.ConstraintResult;
 import tools.vitruv.framework.vsum.constraints.ConstraintValidationReport;
@@ -130,8 +130,8 @@ public class ConstraintCheckerRegistry {
    *   <li>constraints of languages without checker are kept for later starts.
    * </ul>
    *
-   * Constraints that cannot be restored, e.g. because their source became invalid, are logged and
-   * kept in the store, so they are not lost; their stored state is then not applied.
+   * <p>Constraints that cannot be restored, e.g. because their source became invalid, are logged
+   * and kept in the store, so they are not lost; their stored state is then not applied.
    *
    * <p>Must only be called while the virtual model is built.
    *
@@ -234,7 +234,7 @@ public class ConstraintCheckerRegistry {
    * persisting fails, nothing is published.
    */
   private void commit(Map<String, StoredConstraint> changedConstraints) {
-    Snapshot changedSnapshot = createSnapshot();
+    final Snapshot changedSnapshot = createSnapshot();
     if (store != null) {
       store.save(new ArrayList<>(changedConstraints.values()));
     }

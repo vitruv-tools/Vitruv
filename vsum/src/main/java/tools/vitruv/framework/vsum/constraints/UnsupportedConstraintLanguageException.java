@@ -1,6 +1,8 @@
 package tools.vitruv.framework.vsum.constraints;
 
-/** Thrown if a constraint is created in a language no {@link EditableConstraintChecker} supports. */
+/**
+ * Thrown if a constraint is created in a language no {@link EditableConstraintChecker} supports.
+ */
 public class UnsupportedConstraintLanguageException extends IllegalArgumentException {
   private static final long serialVersionUID = 1L;
 

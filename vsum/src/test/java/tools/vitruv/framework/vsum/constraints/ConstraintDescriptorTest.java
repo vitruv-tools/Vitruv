@@ -42,7 +42,8 @@ class ConstraintDescriptorTest {
 
   @Test
   void keepsTheGivenMetamodelsWithoutContextType() {
-    assertEquals(Set.of("shop", "billing"), descriptor(null, Set.of("shop", "billing")).metamodels());
+    assertEquals(
+        Set.of("shop", "billing"), descriptor(null, Set.of("shop", "billing")).metamodels());
   }
 
   @Test
