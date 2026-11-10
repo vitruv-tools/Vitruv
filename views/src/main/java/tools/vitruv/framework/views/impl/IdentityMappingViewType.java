@@ -32,6 +32,7 @@ import tools.vitruv.framework.views.View;
 import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSource;
 import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
+import tools.vitruv.framework.views.util.RobustMappedResourceLocator;
 
 /**
  * A view type that allows creating views based on a basic element-wise selection mechanism and
@@ -102,7 +103,7 @@ public class IdentityMappingViewType
   public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
     ResourceSetImpl viewSourceCopyResourceSet = new ResourceSetImpl();
     // index the resources by URI, so that resolving IDs does not scan all resources
-    new ResourceSetImpl.MappedResourceLocator(viewSourceCopyResourceSet);
+    new RobustMappedResourceLocator(viewSourceCopyResourceSet);
     withGlobalFactories(viewSourceCopyResourceSet);
     VitruviusChangeResolver<HierarchicalId> idChangeResolver =
         VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);

@@ -32,6 +32,7 @@ import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.propagation.ModelRepositorySnapshot;
 import tools.vitruv.change.propagation.impl.DefaultModelRepositorySnapshot;
 import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
+import tools.vitruv.framework.views.util.RobustMappedResourceLocator;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 
@@ -65,7 +66,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   private static ResourceSet createModelsResourceSet() {
     ResourceSetImpl resourceSet = new ResourceSetImpl();
     // index the resources by URI, so that resolving IDs does not scan all resources
-    new ResourceSetImpl.MappedResourceLocator(resourceSet);
+    new RobustMappedResourceLocator(resourceSet);
     return withGlobalFactories(resourceSet);
   }
 
