@@ -526,8 +526,8 @@ public class IdentityMappingViewTypeTest {
       when(viewSource.getUuidResolver()).thenReturn(uuidResolver);
       URI firstUri = URI.createURI("test://first.aet");
       URI secondUri = URI.createURI("test://second.aet");
-      Root first = createResourceWithSingleRoot(firstUri);
-      Root second = createResourceWithSingleRoot(secondUri);
+      final Root first = createResourceWithSingleRoot(firstUri);
+      final Root second = createResourceWithSingleRoot(secondUri);
       createResourceWithSingleRoot(URI.createURI("test://third.aet"));
       // a non-root element in the second resource, in the view source and in the view
       Root secondInSource =
