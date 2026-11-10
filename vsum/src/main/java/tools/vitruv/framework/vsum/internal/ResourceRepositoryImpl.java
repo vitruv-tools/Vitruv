@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
@@ -76,8 +77,31 @@ class ResourceRepositoryImpl implements ModelRepository {
     } catch (IOException e) {
       throw new IllegalStateException(e);
     }
-    correspondenceModel.loadSerializedCorrespondences(modelsResourceSet);
+    withIntrinsicIdIndex(
+        () -> correspondenceModel.loadSerializedCorrespondences(modelsResourceSet));
     isLoading = false;
+  }
+
+  /**
+   * Runs the given action while the model resources index their elements by their ID attributes.
+   * The correspondences refer to elements with an ID attribute by that ID, and without an index EMF
+   * searches the whole resource for each of them. The index is removed afterwards, because EMF does
+   * not update it when the ID of an element changes.
+   */
+  private void withIntrinsicIdIndex(Runnable action) {
+    List<ResourceImpl> indexedResources = new ArrayList<>();
+    for (Resource resource : modelsResourceSet.getResources()) {
+      if (resource instanceof ResourceImpl resourceImpl
+          && resourceImpl.getIntrinsicIDToEObjectMap() == null) {
+        resourceImpl.setIntrinsicIDToEObjectMap(new HashMap<>());
+        indexedResources.add(resourceImpl);
+      }
+    }
+    try {
+      action.run();
+    } finally {
+      indexedResources.forEach(resource -> resource.setIntrinsicIDToEObjectMap(null));
+    }
   }
 
   private void writeModelsFile() throws IOException {

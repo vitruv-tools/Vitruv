@@ -18,7 +18,9 @@ import static tools.vitruv.framework.vsum.VirtualModelTestUtil.recordChanges;
 import allElementTypes.Root;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.List;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -297,6 +299,47 @@ class VirtualModelTest {
             .getCorrespondenceModel()
             .getCorrespondingEObjects(reloadedModel.getResource().getContents().get(0))
             .size());
+  }
+
+  @Test
+  @DisplayName("reload correspondences between elements that are identified by an ID attribute")
+  void reloadCorrespondencesOfElementsWithIds() throws Exception {
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    var virtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    List<String> ids = List.of("first", "second", "third");
+    virtualModel.propagateChange(
+        recordChanges(
+            resourceSet,
+            uuidResolver,
+            () -> {
+              for (String id : ids) {
+                var root = aet.Root();
+                // Root has an ID attribute, so the correspondences refer to the roots by their IDs
+                root.setId(id);
+                resourceSet.createResource(createTestModelResourceUri(id)).getContents().add(root);
+              }
+            }));
+    virtualModel.dispose();
+
+    var reloadedVirtualModel =
+        (InternalVirtualModel)
+            createAndLoadTestVirtualModelWithConsistencyPreservation(
+                getPathToVirtualModelProjectFolder());
+    for (String id : ids) {
+      var resource =
+          reloadedVirtualModel.getModelInstance(createTestModelResourceUri(id)).getResource();
+      var root = (Root) getFirstRootEObject(resource);
+      var corresponding =
+          claimOne(reloadedVirtualModel.getCorrespondenceModel().getCorrespondingEObjects(root));
+      assertThat(((Root) corresponding).getId(), is(id));
+      assertNotEquals(resource, corresponding.eResource());
+      // the index of the IDs is not kept, as it would not follow changes of the IDs
+      assertNull(((ResourceImpl) resource).getIntrinsicIDToEObjectMap());
+    }
   }
 
   @Test
