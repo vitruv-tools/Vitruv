@@ -5,17 +5,23 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.Resour
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceCopier;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
+import tools.vitruv.change.atomic.root.RootEChange;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
 import tools.vitruv.change.composite.description.VitruviusChange;
@@ -103,7 +109,9 @@ public class IdentityMappingViewType
     UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);
     VitruviusChangeResolver<Uuid> uuidChangeResolver =
         VitruviusChangeResolverFactory.forUuids(viewSourceCopyUuidResolver);
-    Map<Resource, Resource> mapping = createViewResources(view, viewSourceCopyResourceSet);
+    Map<Resource, Resource> mapping =
+        createViewResources(
+            view, viewSourceCopyResourceSet, getReferencedResourceUris(viewChange)::contains);
     view.getViewSource().getUuidResolver().resolveResources(mapping, viewSourceCopyUuidResolver);
 
     VitruviusChange<EObject> resolvedChange = idChangeResolver.resolveAndApply(viewChange);
@@ -113,6 +121,16 @@ public class IdentityMappingViewType
 
   private Map<Resource, Resource> createViewResources(
       ModifiableView view, ResourceSet viewResourceSet) {
+    return createViewResources(view, viewResourceSet, uri -> true);
+  }
+
+  /**
+   * Copies the selected elements of the view source resources whose URIs match the given filter.
+   * The filter is ignored if a root element of a selected resource is contained in another
+   * resource, because such resources can only be copied together.
+   */
+  private Map<Resource, Resource> createViewResources(
+      ModifiableView view, ResourceSet viewResourceSet, Predicate<URI> resourceFilter) {
     Collection<Resource> viewSources = view.getViewSource().getViewSourceModels();
     ViewSelection selection = view.getSelection();
     List<Resource> resourcesWithSelectedElements =
@@ -121,7 +139,37 @@ public class IdentityMappingViewType
                 resource ->
                     resource.getContents().stream().anyMatch(selection::isViewObjectSelected))
             .toList();
+    boolean crossResourceContainment =
+        resourcesWithSelectedElements.stream()
+            .flatMap(resource -> resource.getContents().stream())
+            .anyMatch(root -> root.eContainer() != null);
+    List<Resource> resourcesToCopy =
+        crossResourceContainment
+            ? resourcesWithSelectedElements
+            : resourcesWithSelectedElements.stream()
+                .filter(resource -> resourceFilter.test(resource.getURI()))
+                .toList();
     return ResourceCopier.copyViewSourceResources(
-        resourcesWithSelectedElements, viewResourceSet, selection::isViewObjectSelected);
+        resourcesToCopy, viewResourceSet, selection::isViewObjectSelected);
+  }
+
+  /**
+   * Returns the URIs of the resources that contain an element the given change refers to. Applying
+   * the change only requires copies of these resources.
+   */
+  private static Set<URI> getReferencedResourceUris(VitruviusChange<HierarchicalId> change) {
+    Set<URI> uris = new HashSet<>();
+    for (EChange<HierarchicalId> eChange : change.getEChanges()) {
+      if (eChange instanceof RootEChange<HierarchicalId> rootChange
+          && rootChange.getUri() != null) {
+        uris.add(URI.createURI(rootChange.getUri()));
+      }
+    }
+    for (EObject element : change.getAffectedAndReferencedEObjects()) {
+      if (element instanceof HierarchicalId id && !id.isCache()) {
+        uris.add(URI.createURI(id.getId()).trimFragment());
+      }
+    }
+    return uris;
   }
 }
