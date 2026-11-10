@@ -94,7 +94,10 @@ public class IdentityMappingViewType
 
   @Override
   public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
-    ResourceSet viewSourceCopyResourceSet = withGlobalFactories(new ResourceSetImpl());
+    ResourceSetImpl viewSourceCopyResourceSet = new ResourceSetImpl();
+    // index the resources by URI, so that resolving IDs does not scan all resources
+    new ResourceSetImpl.MappedResourceLocator(viewSourceCopyResourceSet);
+    withGlobalFactories(viewSourceCopyResourceSet);
     VitruviusChangeResolver<HierarchicalId> idChangeResolver =
         VitruviusChangeResolverFactory.forHierarchicalIds(viewSourceCopyResourceSet);
     UuidResolver viewSourceCopyUuidResolver = UuidResolver.create(viewSourceCopyResourceSet);

@@ -434,6 +434,36 @@ class VirtualModelTest {
         claimOne(reopenedViewRoot.getMultiValuedContainmentEReference()).getId(), is(NON_ROOT_ID));
   }
 
+  @Test
+  @DisplayName("move a root in a view to another resource, change it and commit the changes")
+  void commitViewAfterMovingRoot() throws Exception {
+    var virtualModel =
+        (InternalVirtualModel) createAndLoadTestVirtualModel(getPathToVirtualModelProjectFolder());
+    var resourceSet = withGlobalFactories(new ResourceSetImpl());
+    var uuidResolver = UuidResolver.create(resourceSet);
+    createAndPropagateRoot(virtualModel, resourceSet, uuidResolver, ROOT_ID);
+    var testView = createTestView(virtualModel).withChangeRecordingTrait();
+
+    // the resource sets index their resources by URI, so the index must follow the move
+    @SuppressWarnings("null")
+    var rootObj = claimOne(testView.getRootObjects(Root.class));
+    var movedUri = createTestModelResourceUri("Moved");
+    testView.moveRoot(rootObj, movedUri);
+    var nonRoot = aet.NonRoot();
+    nonRoot.setId(NON_ROOT_ID);
+    rootObj.getMultiValuedContainmentEReference().add(nonRoot);
+    testView.commitChanges();
+
+    assertNull(virtualModel.getModelInstance(createTestModelResourceUri("")));
+    var movedRoot =
+        (Root) getFirstRootEObject(virtualModel.getModelInstance(movedUri).getResource());
+    assertThat(claimOne(movedRoot.getMultiValuedContainmentEReference()).getId(), is(NON_ROOT_ID));
+    @SuppressWarnings("null")
+    var reopenedViewRoot = claimOne(createTestView(virtualModel).getRootObjects(Root.class));
+    assertThat(
+        claimOne(reopenedViewRoot.getMultiValuedContainmentEReference()).getId(), is(NON_ROOT_ID));
+  }
+
   private org.eclipse.emf.common.util.URI createTestModelResourceUri(String suffix) {
     return VirtualModelTestUtil.createTestModelResourceUri(projectFolder, suffix);
   }

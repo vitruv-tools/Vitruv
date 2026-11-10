@@ -66,7 +66,9 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
   }
 
   private void setupReferenceState() {
-    originalStateViewResourceSet = new ResourceSetImpl();
+    ResourceSetImpl resourceSet = new ResourceSetImpl();
+    new ResourceSetImpl.MappedResourceLocator(resourceSet);
+    originalStateViewResourceSet = resourceSet;
     ResourceCopier.copyViewResources(
         view.getViewResourceSet().getResources(), originalStateViewResourceSet);
     originalStateResourceMapping = new HashMap<>();

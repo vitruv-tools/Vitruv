@@ -37,7 +37,7 @@ import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 class ResourceRepositoryImpl implements ModelRepository {
   private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
 
-  private final ResourceSet modelsResourceSet = withGlobalFactories(new ResourceSetImpl());
+  private final ResourceSet modelsResourceSet = createModelsResourceSet();
   private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
   private final PersistableCorrespondenceModel correspondenceModel;
   private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
@@ -59,6 +59,13 @@ class ResourceRepositoryImpl implements ModelRepository {
         .add(
             new ResourceRegistrationAdapter(
                 resource -> getCreateOrLoadModelUnlessLoading(resource.getURI())));
+  }
+
+  private static ResourceSet createModelsResourceSet() {
+    ResourceSetImpl resourceSet = new ResourceSetImpl();
+    // index the resources by URI, so that resolving IDs does not scan all resources
+    new ResourceSetImpl.MappedResourceLocator(resourceSet);
+    return withGlobalFactories(resourceSet);
   }
 
   @Override

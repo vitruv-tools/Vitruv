@@ -51,7 +51,10 @@ class BasicView implements ModifiableView, ChangePropagationListener {
     this.viewSource = viewSource;
     this.selection = selection;
     viewSource.addChangePropagationListener(this);
-    this.viewResourceSet = withGlobalFactories(new ResourceSetImpl());
+    ResourceSetImpl resourceSet = new ResourceSetImpl();
+    // index the resources by URI, so that resolving IDs does not scan all resources
+    new ResourceSetImpl.MappedResourceLocator(resourceSet);
+    this.viewResourceSet = withGlobalFactories(resourceSet);
     update();
   }
 
