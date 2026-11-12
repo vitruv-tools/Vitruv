@@ -23,6 +23,7 @@ import tools.vitruv.framework.views.ChangeableViewSource;
 import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.util.RobustMappedResourceLocator;
 
 class BasicView implements ModifiableView, ChangePropagationListener {
   private ViewSelection selection;
@@ -51,7 +52,10 @@ class BasicView implements ModifiableView, ChangePropagationListener {
     this.viewSource = viewSource;
     this.selection = selection;
     viewSource.addChangePropagationListener(this);
-    this.viewResourceSet = withGlobalFactories(new ResourceSetImpl());
+    ResourceSetImpl resourceSet = new ResourceSetImpl();
+    // index the resources by URI, so that resolving IDs does not scan all resources
+    new RobustMappedResourceLocator(resourceSet);
+    this.viewResourceSet = withGlobalFactories(resourceSet);
     update();
   }
 

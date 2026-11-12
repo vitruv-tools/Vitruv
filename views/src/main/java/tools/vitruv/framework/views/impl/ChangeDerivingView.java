@@ -26,6 +26,7 @@ import tools.vitruv.framework.views.ViewSelection;
 import tools.vitruv.framework.views.ViewSelector;
 import tools.vitruv.framework.views.ViewType;
 import tools.vitruv.framework.views.changederivation.StateBasedChangeResolutionStrategy;
+import tools.vitruv.framework.views.util.RobustMappedResourceLocator;
 
 /**
  * A view that derives changes based on the changed state of its resources and allows to propagate
@@ -66,7 +67,9 @@ public class ChangeDerivingView implements ModifiableView, CommittableView {
   }
 
   private void setupReferenceState() {
-    originalStateViewResourceSet = new ResourceSetImpl();
+    ResourceSetImpl resourceSet = new ResourceSetImpl();
+    new RobustMappedResourceLocator(resourceSet);
+    originalStateViewResourceSet = resourceSet;
     ResourceCopier.copyViewResources(
         view.getViewResourceSet().getResources(), originalStateViewResourceSet);
     originalStateResourceMapping = new HashMap<>();
