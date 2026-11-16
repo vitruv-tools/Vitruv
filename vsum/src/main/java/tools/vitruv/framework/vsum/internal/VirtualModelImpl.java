@@ -47,8 +47,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 import tools.vitruv.framework.vsum.models.ModelReadAccess;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
 import tools.vitruv.framework.vsum.persistence.ModelPersistence;
-import tools.vitruv.framework.vsum.persistence.StateBasedModelPersistence;
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
 public class VirtualModelImpl implements InternalVirtualModel, ChangePropagationObservableRegistry {
@@ -110,7 +110,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
         viewTypeRepository,
         changePropagationSpecificationProvider,
         constraintCheckerRegistry,
-        new StateBasedModelPersistence());
+        DefaultModelPersistence.create());
   }
 
   /**

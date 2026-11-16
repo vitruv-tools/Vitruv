@@ -42,14 +42,13 @@ import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
  *       propagated change and the consequential changes in application order, every element ID as
  *       path plus UUID ({@link ElementIds}), URIs relative to the storage folder.
  *   <li>A snapshot ({@link Snapshots}) is written every {@link Options#snapshotInterval()}
- *       propagations, on {@link #close}, and on {@link #compact()}. The log is never truncated.
+ *       propagations, on {@link #close}, and on {@link #compact()}. What happens to the records
+ *       it contains is set by {@link Options#logRetention()}.
  *   <li>Loading reads the latest snapshot and replays the log records after it, resolving elements
  *       by UUID.
  *   <li>The changes of the correspondence model go into the same record ({@link
  *       CorrespondenceLog}); {@code correspondences.correspondence} is written with each snapshot
- *       only. Records of logs written before (without correspondences) are replayed with the
- *       correspondence file as the state after the last record, and a snapshot is written right
- *       away.
+ *       only.
  * </ul>
  *
  * <p>A folder with state-based files ({@code models.models}) but neither snapshot nor log is
@@ -60,14 +59,32 @@ import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
 public class DeltaBasedModelPersistence implements ModelPersistence {
   private static final Logger LOGGER = LogManager.getLogger(DeltaBasedModelPersistence.class);
 
+  /** The folder in {@code vsum/} that {@link LogRetention#ARCHIVE} moves logs to. */
+  public static final String ARCHIVE_FOLDER = "log-archive";
+
+  /** What happens to the log records that a new snapshot contains. */
+  public enum LogRetention {
+    /** Keep every record in {@code changes.log}: the log is the full history of the models. */
+    KEEP,
+    /**
+     * Move the log to {@code vsum/log-archive/changes-<seq>.log} after each snapshot, so that
+     * {@code changes.log} only holds the records after the latest snapshot.
+     */
+    ARCHIVE,
+    /** Delete the log after each snapshot; only the records after the latest snapshot are kept. */
+    DELETE
+  }
+
   /**
    * Options of the delta-based persistence.
    *
    * @param snapshotInterval a snapshot is written after this many propagations
    * @param syncLog whether each log record is forced to the storage device before the propagation
-   *     returns
+   *     returns; the log and the snapshot files are always forced when a snapshot is written and when
+   *     the virtual model is closed
+   * @param logRetention what happens to the log records that a new snapshot contains
    */
-  public record Options(int snapshotInterval, boolean syncLog) {
+  public record Options(int snapshotInterval, boolean syncLog, LogRetention logRetention) {
     /** The default interval between snapshots. */
     public static final int DEFAULT_SNAPSHOT_INTERVAL = 50;
 
@@ -76,18 +93,21 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
      *
      * @param snapshotInterval a snapshot is written after this many propagations
      * @param syncLog whether each log record is forced to the storage device
+     * @param logRetention what happens to the log records that a new snapshot contains
      */
     public Options {
       checkArgument(snapshotInterval > 0, "snapshot interval must be positive");
+      checkArgument(logRetention != null, "log retention must not be null");
     }
 
     /**
-     * Returns the default options: a snapshot every 50 propagations, log records forced to disk.
+     * Returns the default options: a snapshot every 50 propagations, log records not forced
+     * individually, the whole log kept.
      *
      * @return the default options
      */
     public static Options defaults() {
-      return new Options(DEFAULT_SNAPSHOT_INTERVAL, true);
+      return new Options(DEFAULT_SNAPSHOT_INTERVAL, false, LogRetention.KEEP);
     }
 
     /**
@@ -97,7 +117,27 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
      * @return the changed options
      */
     public Options withSnapshotInterval(int interval) {
-      return new Options(interval, syncLog);
+      return new Options(interval, syncLog, logRetention);
+    }
+
+    /**
+     * Returns these options with records forced to the storage device one by one, or not.
+     *
+     * @param sync whether each log record is forced to the storage device
+     * @return the changed options
+     */
+    public Options withSyncLog(boolean sync) {
+      return new Options(snapshotInterval, sync, logRetention);
+    }
+
+    /**
+     * Returns these options with another log retention.
+     *
+     * @param retention what happens to the log records that a new snapshot contains
+     * @return the changed options
+     */
+    public Options withLogRetention(LogRetention retention) {
+      return new Options(snapshotInterval, syncLog, retention);
     }
   }
 
@@ -108,6 +148,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
   private ChangeLog log;
   private CorrespondenceLog correspondences;
   private Path snapshotFolder;
+  private Path archiveFolder;
   private long lastSeq;
   private long snapshotSeq;
   private PendingRecord pending;
@@ -142,13 +183,13 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
     ids = new ElementIds(layout.getVsumProjectFolder());
     log = new ChangeLog(vsumFolder.resolve(ChangeLog.FILE_NAME), options.syncLog());
     snapshotFolder = vsumFolder.resolve(Snapshots.FOLDER);
+    archiveFolder = vsumFolder.resolve(ARCHIVE_FOLDER);
     correspondences = new CorrespondenceLog(context, ids);
     try {
       Snapshots.recover(snapshotFolder);
       snapshotSeq = Snapshots.read(context, ids, snapshotFolder);
       List<ChangeLog.Entry> entries = log.read();
       boolean adopt = false;
-      boolean legacy = false;
       if (snapshotSeq < 0) {
         snapshotSeq = 0;
         if (Files.exists(layout.getModelsNamesFilesPath())) {
@@ -161,22 +202,8 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
           adopt = true;
         }
       }
-      List<ChangeLog.Entry> tail = entries.stream().filter(it -> it.seq() > snapshotSeq).toList();
-      if (!tail.isEmpty() && tail.stream().noneMatch(ChangeLog.Entry::hasCorrespondences)) {
-        legacy = true; // the correspondence file holds the state after the last record
-      } else {
-        tail.stream()
-            .filter(it -> !it.hasCorrespondences())
-            .findFirst()
-            .ifPresent(
-                it -> {
-                  throw new IllegalStateException(
-                      log.file() + " line " + it.line() + ": record " + it.seq()
-                          + " has no correspondences, but other records after the snapshot do");
-                });
-        // the correspondence file holds the snapshot's state; hrefs are positional in it
-        context.loadCorrespondences();
-      }
+      // the correspondence file holds the snapshot's state; hrefs are positional in it
+      context.loadCorrespondences();
       Set<URI> registered = new HashSet<>();
       context.getModelsResourceSet().getResources().forEach(it -> registered.add(it.getURI()));
       lastSeq = replay(context, entries);
@@ -186,16 +213,10 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
           context.registerModel(uri);
         }
       }
-      if (legacy) {
-        context.loadCorrespondences();
-      }
       correspondences.reset();
       this.context = context;
       if (adopt) {
         LOGGER.info("Adopting the state-based files in {} as first snapshot", vsumFolder);
-        writeSnapshot();
-      } else if (legacy) {
-        LOGGER.info("{} has records without correspondences; writing a snapshot", log.file());
         writeSnapshot();
       }
     } catch (IOException e) {
@@ -248,9 +269,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
         for (List<Map<String, Object>> group : entry.consequentialGroups()) {
           apply(context, resolver, group);
         }
-        if (entry.hasCorrespondences()) {
-          correspondences.apply(entry.correspondenceOperations());
-        }
+        correspondences.apply(entry.correspondenceOperations());
       } catch (RuntimeException e) {
         throw new IllegalStateException(
             log.file() + " line " + entry.line() + ": cannot replay record " + entry.seq() + ": "
@@ -260,7 +279,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
       last = entry.seq();
       replayed++;
     }
-    if (previous < snapshotSeq) {
+    if (previous < snapshotSeq && options.logRetention() == LogRetention.KEEP) {
       LOGGER.warn(
           "{} ends at record {}, the snapshot holds {}; continuing from the snapshot",
           log.file(),
@@ -385,7 +404,11 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
         lastSeq = seq;
         pending = null;
       }
-      if (compactRequested || lastSeq - snapshotSeq >= options.snapshotInterval()) {
+      // A model that became empty is deleted and forgotten right away, as state-based persistence
+      // does; only a snapshot may delete its file, as the log after an older snapshot needs it.
+      if (compactRequested
+          || lastSeq - snapshotSeq >= options.snapshotInterval()
+          || hasEmptyModel(context)) {
         writeSnapshot();
       }
     } catch (IOException e) {
@@ -393,11 +416,23 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
     }
   }
 
+  private static boolean hasEmptyModel(ModelPersistenceContext context) {
+    for (Resource resource : context.getModelsResourceSet().getResources()) {
+      URI uri = resource.getURI();
+      if ((uri.isFile() || uri.isPlatform()) && resource.getContents().isEmpty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public synchronized void close(ModelPersistenceContext context) {
     try {
       if (this.context != null && lastSeq > snapshotSeq) {
         writeSnapshot();
+      } else if (this.context != null) {
+        log.force();
       }
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -456,8 +491,16 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
     // Outside a propagation the correspondences may have changed without a record; the snapshot
     // stores them (pruned) all the same, as state-based persistence does on its next save.
     correspondences.diff();
-    Snapshots.write(context, ids, snapshotFolder, lastSeq, correspondences.resource());
+    log.force();
+    Snapshots.write(context, ids, snapshotFolder, lastSeq);
     snapshotSeq = lastSeq;
+    switch (options.logRetention()) {
+      case KEEP -> {
+        // the log stays the full history
+      }
+      case ARCHIVE -> log.archive(archiveFolder, lastSeq);
+      case DELETE -> log.delete();
+    }
     compactRequested = false;
     LOGGER.debug("Wrote snapshot at record {}", lastSeq);
   }

@@ -47,11 +47,15 @@ class DeltaPersistenceMeasurementTest {
   void measureBytesPerPropagation(@TestProject Path project) throws Exception {
     Result state = run(project.resolve("state"), new StateBasedModelPersistence());
     final Result delta =
-        run(project.resolve("delta"), DeltaBasedModelPersistenceTest.delta(50));
+        run(
+            project.resolve("delta"),
+            new DeltaBasedModelPersistence(
+                DeltaBasedModelPersistence.Options.defaults().withSyncLog(true)));
     final Result deltaNoSync =
         run(
             project.resolve("delta-nosync"),
-            new DeltaBasedModelPersistence(new DeltaBasedModelPersistence.Options(50, false)));
+            new DeltaBasedModelPersistence(
+                DeltaBasedModelPersistence.Options.defaults().withSyncLog(false)));
     StringBuilder table = new StringBuilder();
     table.append(String.format("propagations: %d, final model file: %d bytes%n", PROPAGATIONS,
         state.modelBytes()));

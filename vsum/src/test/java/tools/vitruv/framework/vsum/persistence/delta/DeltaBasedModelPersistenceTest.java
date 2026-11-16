@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -205,7 +206,7 @@ class DeltaBasedModelPersistenceTest {
     Path deltaFolder = project.resolve("delta");
     InternalVirtualModel deltaVsum = vsum(deltaFolder, delta(1000));
     runScenario(deltaVsum, deltaFolder);
-    assertTrue(modelFiles(deltaFolder).isEmpty(), "no snapshot before close");
+    assertEquals(10, Files.readAllLines(deltaFolder.resolve(LOG)).size(), "one record each");
     deltaVsum.dispose(); // writes the snapshot
 
     Map<String, String> expected = modelFiles(stateFolder);
@@ -257,8 +258,9 @@ class DeltaBasedModelPersistenceTest {
             }));
     Root vsumRoot = rootOf(open, folder, MODEL);
     Root vsumCopy = rootOf(open, folder, MODEL_COPY);
-    open.getCorrespondenceModel().addCorrespondenceBetween(vsumRoot, vsumCopy, "manual");
+    // removes the reaction's correspondence (a null tag matches every tag)
     open.getCorrespondenceModel().removeCorrespondencesBetween(vsumRoot, vsumCopy, null);
+    open.getCorrespondenceModel().addCorrespondenceBetween(vsumRoot, vsumCopy, "manual");
     open.getCorrespondenceModel().addCorrespondenceBetween(vsumCopy, vsumRoot, "reverse");
     open.propagateChange(client.record(() -> root.setSingleValuedEAttribute(1)));
     open.getCorrespondenceModel().removeCorrespondencesBetween(vsumCopy, vsumRoot, "reverse");
@@ -281,7 +283,10 @@ class DeltaBasedModelPersistenceTest {
         "http://vitruv.tools/metamodels/change/correspondence/1.0#//ManualCorrespondence",
         insert.get(CorrespondenceLog.TYPE));
     assertTrue(
-        ((List<?>) insert.get(CorrespondenceLog.LEFT)).get(0).toString().startsWith(MODEL + "#/|u="),
+        ((List<?>) insert.get(CorrespondenceLog.LEFT))
+            .get(0)
+            .toString()
+            .matches(Pattern.quote(MODEL) + "#[^|]+\\|u=.+"),
         insert.toString());
     assertFalse(Files.exists(crashed.resolve(CORRESPONDENCES)), "written with snapshots only");
 
@@ -318,34 +323,70 @@ class DeltaBasedModelPersistenceTest {
   }
 
   @Test
-  @DisplayName("records without correspondences (written before) use the correspondence file")
-  void recordsWithoutCorrespondencesAreRead(@TestProject Path project) throws Exception {
+  @DisplayName("a record without correspondences fails the load and names its line")
+  void recordWithoutCorrespondencesFails(@TestProject Path project) throws Exception {
+    Path folder = project.resolve("open");
+    InternalVirtualModel open = vsum(folder, delta(1000));
+    runScenario(open, folder);
+    Path broken = project.resolve("broken");
+    copyFolder(folder, broken);
+    open.dispose();
+    List<String> lines = new ArrayList<>();
+    for (String line : Files.readAllLines(broken.resolve(LOG), UTF_8)) {
+      lines.add(line.replaceFirst(",\"correspondences\":(\\[.*\\]|\"[^\"]*\")}$", "}"));
+    }
+    assertTrue(lines.stream().noneMatch(it -> it.contains("correspondences")));
+    Files.write(broken.resolve(LOG), lines, UTF_8);
+
+    RuntimeException failure =
+        assertThrows(RuntimeException.class, () -> vsum(broken, delta(1000)));
+    assertTrue(failure.getMessage().contains("line 1"), failure.getMessage());
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @ValueSource(strings = {"ARCHIVE", "DELETE"})
+  @DisplayName("a snapshot archives or deletes the records it contains, and reopening works")
+  void logRetentionAfterSnapshot(String retention, @TestProject Path project) throws Exception {
+    DeltaBasedModelPersistence.LogRetention logRetention =
+        DeltaBasedModelPersistence.LogRetention.valueOf(retention);
     Path stateFolder = project.resolve("state");
     InternalVirtualModel stateVsum = vsum(stateFolder, new StateBasedModelPersistence());
     runScenario(stateVsum, stateFolder);
     stateVsum.dispose();
 
-    Path folder = project.resolve("open");
-    InternalVirtualModel open = vsum(folder, delta(1000));
+    Path folder = project.resolve("delta");
+    DeltaBasedModelPersistence persistence =
+        new DeltaBasedModelPersistence(
+            DeltaBasedModelPersistence.Options.defaults()
+                .withSnapshotInterval(3)
+                .withLogRetention(logRetention));
+    InternalVirtualModel open = vsum(folder, persistence);
     runScenario(open, folder);
-    Path old = project.resolve("old");
-    copyFolder(folder, old);
+    assertEquals(9, persistence.getSnapshotRecord());
+    assertEquals(1, Files.readAllLines(folder.resolve(LOG)).size(), "only record 10 is left");
     open.dispose();
-    // What the first version of the log left: no correspondences in the records, the
-    // correspondence file as after the last record.
-    List<String> lines = new ArrayList<>();
-    for (String line : Files.readAllLines(old.resolve(LOG), UTF_8)) {
-      lines.add(line.replaceFirst(",\"correspondences\":(\\[.*\\]|\"[^\"]*\")}$", "}"));
+    assertFalse(Files.exists(folder.resolve(LOG)), "the closing snapshot contains record 10");
+    Path archive = folder.resolve("vsum").resolve(DeltaBasedModelPersistence.ARCHIVE_FOLDER);
+    if (logRetention == DeltaBasedModelPersistence.LogRetention.ARCHIVE) {
+      int archived = 0;
+      for (String name : List.of("changes-3.log", "changes-6.log", "changes-9.log",
+          "changes-10.log")) {
+        archived += Files.readAllLines(archive.resolve(name)).size();
+      }
+      assertEquals(10, archived, "every record is archived once");
+    } else {
+      assertFalse(Files.exists(archive));
     }
-    assertTrue(lines.stream().noneMatch(it -> it.contains("correspondences")));
-    Files.write(old.resolve(LOG), lines, UTF_8);
-    Files.copy(stateFolder.resolve(CORRESPONDENCES), old.resolve(CORRESPONDENCES));
 
-    DeltaBasedModelPersistence persistence = delta(1000);
-    InternalVirtualModel reopened = vsum(old, persistence);
-    assertEquals(10, persistence.getSnapshotRecord(), "converted by a snapshot");
+    DeltaBasedModelPersistence reopenedPersistence =
+        new DeltaBasedModelPersistence(
+            DeltaBasedModelPersistence.Options.defaults().withLogRetention(logRetention));
+    InternalVirtualModel reopened = vsum(folder, reopenedPersistence);
+    assertEquals(10, reopenedPersistence.getLastRecord());
+    assertEquals(7, rootOf(reopened, folder, MODEL).getSingleValuedEAttribute());
     reopened.dispose();
-    assertEquals(correspondences(stateFolder), correspondences(old));
+    assertEquals(modelFiles(stateFolder), modelFiles(folder));
+    assertEquals(correspondences(stateFolder), correspondences(folder));
   }
 
   static void deleteSnapshot(Path folder) throws IOException {

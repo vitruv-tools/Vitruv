@@ -28,6 +28,7 @@ import tools.vitruv.change.testutils.TestProject;
 import tools.vitruv.change.testutils.TestProjectManager;
 import tools.vitruv.framework.vsum.VirtualModelTestUtil;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
 
 /**
  * Pins the files the default (state-based) persistence writes for a small propagation: the
@@ -47,13 +48,23 @@ class StateBasedModelPersistenceTest {
   private static final Set<String> IGNORED_FILES = Set.of("vsum/constraints.properties");
 
   @Test
-  @DisplayName("the builder default writes the same files as before the extraction")
-  void defaultWritesSameFilesAsBefore(@TestProject Path projectFolder) throws Exception {
+  @DisplayName("the state-based persistence writes the same files as before the extraction")
+  void stateBasedWritesSameFilesAsBefore(@TestProject Path projectFolder) throws Exception {
     Path vsumFolder = projectFolder.resolve("vsum");
-    var virtualModel =
-        (InternalVirtualModel)
-            VirtualModelTestUtil.createAndLoadTestVirtualModelWithConsistencyPreservation(
-                vsumFolder);
+    String previousMode = System.setProperty(DefaultModelPersistence.PROPERTY, "state");
+    InternalVirtualModel virtualModel;
+    try {
+      virtualModel =
+          (InternalVirtualModel)
+              VirtualModelTestUtil.createAndLoadTestVirtualModelWithConsistencyPreservation(
+                  vsumFolder);
+    } finally {
+      if (previousMode == null) {
+        System.clearProperty(DefaultModelPersistence.PROPERTY);
+      } else {
+        System.setProperty(DefaultModelPersistence.PROPERTY, previousMode);
+      }
+    }
     ResourceSet resourceSet = withGlobalFactories(new ResourceSetImpl());
     UuidResolver uuidResolver = UuidResolver.create(resourceSet);
     URI modelUri = createTestModelResourceUri(vsumFolder, "");

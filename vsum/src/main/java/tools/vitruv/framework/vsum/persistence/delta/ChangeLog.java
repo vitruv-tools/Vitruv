@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +33,7 @@ import org.apache.logging.log4j.Logger;
  * v1).
  *
  * <p>{@code C} lists the changes of the correspondence model in that propagation as operations on
- * its list of correspondences ({@link CorrespondenceLog}), stored like {@code P}. Records written
- * before correspondences were logged lack it; their correspondences are only in the state-based
- * file.
+ * its list of correspondences ({@link CorrespondenceLog}), stored like {@code P}.
  *
  * <p>Reading tolerates a torn last line (the process died while appending): it is moved to a side
  * file {@code changes.log.torn-<millis>} and cut from the log, so that the next record starts on a
@@ -78,8 +77,7 @@ final class ChangeLog {
    * @param time the time of the propagation
    * @param original the stored payload of the propagated change
    * @param consequential the stored payload of the consequential changes
-   * @param correspondences the stored payload of the correspondence changes, null in records
-   *     written before correspondences were logged
+   * @param correspondences the stored payload of the correspondence changes
    */
   record Entry(
       int line,
@@ -95,10 +93,6 @@ final class ChangeLog {
 
     List<List<Map<String, Object>>> consequentialGroups() {
       return decode(consequential, line);
-    }
-
-    boolean hasCorrespondences() {
-      return correspondences != null;
     }
 
     List<Map<String, Object>> correspondenceOperations() {
@@ -148,6 +142,8 @@ final class ChangeLog {
               file + " line " + (i + 1) + " is corrupt: " + e.getMessage(), e);
         }
         cutTornLine(bytes, range[0], i + 1, e);
+      } catch (IllegalStateException e) {
+        throw new IllegalStateException(file + " " + e.getMessage(), e);
       }
     }
     return entries;
@@ -185,8 +181,14 @@ final class ChangeLog {
     Object seq = json.get(SEQ);
     Object original = json.get(ORIGINAL);
     Object consequential = json.get(CONSEQUENTIAL);
-    if (!(seq instanceof Long number) || original == null || consequential == null) {
-      throw new IllegalArgumentException("record without seq, original or consequential");
+    Object correspondences = json.get(CORRESPONDENCES);
+    if (!(seq instanceof Long number)
+        || original == null
+        || consequential == null
+        || correspondences == null) {
+      // a complete JSON object with missing fields is not torn: fail instead of cutting it
+      throw new IllegalStateException(
+          "line " + line + ": record without seq, original, consequential or correspondences");
     }
     return new Entry(
         line,
@@ -195,7 +197,7 @@ final class ChangeLog {
         (String) json.get(TIME),
         original,
         consequential,
-        json.get(CORRESPONDENCES));
+        correspondences);
   }
 
   /**
@@ -250,6 +252,47 @@ final class ChangeLog {
       }
       return (int) (channel.position() - size);
     }
+  }
+
+  /**
+   * Forces the records appended so far to the storage device, also those appended without {@code
+   * sync}.
+   *
+   * @throws IOException if forcing fails
+   */
+  void force() throws IOException {
+    if (Files.exists(file)) {
+      try (FileChannel channel = FileChannel.open(file, StandardOpenOption.WRITE)) {
+        channel.force(false);
+      }
+    }
+  }
+
+  /**
+   * Moves the log into an archive folder as {@code changes-<lastSeq>.log}, so that the next record
+   * starts a new log. Called right after a snapshot that contains every record of the log.
+   *
+   * @param archiveFolder the folder to move the log to
+   * @param lastSeq the number of the last record in the log
+   * @throws IOException if moving fails
+   */
+  void archive(Path archiveFolder, long lastSeq) throws IOException {
+    if (Files.exists(file)) {
+      Files.createDirectories(archiveFolder);
+      Files.move(
+          file,
+          archiveFolder.resolve("changes-" + lastSeq + ".log"),
+          StandardCopyOption.ATOMIC_MOVE);
+    }
+  }
+
+  /**
+   * Deletes the log. Called right after a snapshot that contains every record of the log.
+   *
+   * @throws IOException if deleting fails
+   */
+  void delete() throws IOException {
+    Files.deleteIfExists(file);
   }
 
   /**

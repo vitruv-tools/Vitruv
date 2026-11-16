@@ -18,12 +18,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.correspondence.Correspondence;
-import tools.vitruv.change.correspondence.CorrespondenceFactory;
 import tools.vitruv.change.correspondence.CorrespondencePackage;
-import tools.vitruv.change.correspondence.Correspondences;
 import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
 
 /**
@@ -50,9 +48,6 @@ import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
  * <p>Before comparing, correspondences of removed elements are dropped, with the same rule as
  * {@code PersistableCorrespondenceModel.save()} applies, so the log holds what state-based
  * persistence would store.
- *
- * <p>The correspondence model offers no access to its list. The root object is reached through a
- * probe correspondence that is added and removed right away.
  */
 final class CorrespondenceLog {
   static final String OP = "op";
@@ -68,7 +63,6 @@ final class CorrespondenceLog {
 
   private final ModelPersistenceContext context;
   private final ElementIds ids;
-  private final Correspondences root;
   private List<Correspondence> previous = List.of();
   private Map<Correspondence, Key> previousKeys = new IdentityHashMap<>();
 
@@ -85,31 +79,11 @@ final class CorrespondenceLog {
   CorrespondenceLog(ModelPersistenceContext context, ElementIds ids) {
     this.context = context;
     this.ids = ids;
-    Correspondence probe =
-        context
-            .getCorrespondenceModel()
-            .addCorrespondenceBetween(
-                List.of(), List.of(), null,
-                CorrespondenceFactory.eINSTANCE::createManualCorrespondence);
-    checkState(
-        probe.eContainer() instanceof Correspondences,
-        "the correspondence model does not keep its correspondences in a Correspondences root");
-    this.root = (Correspondences) probe.eContainer();
-    root.getCorrespondences().remove(probe);
-  }
-
-  /**
-   * Returns the resource the correspondence model is stored in, for snapshots.
-   *
-   * @return the correspondences resource, or null if the model has none
-   */
-  Resource resource() {
-    return root.eResource();
   }
 
   /** Takes the current list as the state the next {@link #diff()} compares against. */
   void reset() {
-    previous = List.copyOf(root.getCorrespondences());
+    previous = List.copyOf(list());
     previousKeys = new IdentityHashMap<>();
     for (Correspondence correspondence : previous) {
       previousKeys.put(correspondence, key(correspondence));
@@ -123,8 +97,8 @@ final class CorrespondenceLog {
    * @return the operations that turn the previous list into the current one, empty if none
    */
   List<Map<String, Object>> diff() {
-    prune();
-    List<Correspondence> current = List.copyOf(root.getCorrespondences());
+    context.getCorrespondenceModel().removeCorrespondencesForRemovedElements();
+    List<Correspondence> current = List.copyOf(list());
     Map<Correspondence, Key> currentKeys = new IdentityHashMap<>();
     for (Correspondence correspondence : current) {
       currentKeys.put(correspondence, key(correspondence));
@@ -172,7 +146,7 @@ final class CorrespondenceLog {
    * @param operations the operations of one record
    */
   void apply(List<Map<String, Object>> operations) {
-    List<Correspondence> list = root.getCorrespondences();
+    List<Correspondence> list = list();
     for (Map<String, Object> operation : operations) {
       Object op = operation.get(OP);
       int index = Math.toIntExact((Long) operation.get(INDEX));
@@ -186,30 +160,8 @@ final class CorrespondenceLog {
     }
   }
 
-  /** Same rule as {@code PersistableCorrespondenceModelImpl.removeCorrespondencesForRemovedElements}. */
-  private void prune() {
-    List<Correspondence> removed = new ArrayList<>();
-    for (Correspondence element : root.getCorrespondences()) {
-      boolean leftGone = element.getLeftEObjects().stream().anyMatch(this::isNotInManagedResource);
-      boolean rightGone =
-          element.getRightEObjects().stream().anyMatch(this::isNotInManagedResource);
-      if (leftGone || rightGone) {
-        checkState(
-            element.getLeftEObjects().stream().allMatch(this::isNotInManagedResource)
-                || element.getRightEObjects().stream().allMatch(this::isNotInManagedResource),
-            "Correspondence between %s and %s contains elements that are not contained in a"
-                + " resource anymore.",
-            element.getLeftEObjects(),
-            element.getRightEObjects());
-        removed.add(element);
-      }
-    }
-    root.getCorrespondences().removeAll(removed);
-  }
-
-  private boolean isNotInManagedResource(EObject object) {
-    return !(object instanceof EClass)
-        && (object.eResource() == null || object.eResource().getResourceSet() == null);
+  private List<Correspondence> list() {
+    return context.getCorrespondenceModel().getCorrespondenceList();
   }
 
   private Key key(Correspondence correspondence) {
@@ -227,7 +179,7 @@ final class CorrespondenceLog {
 
   private String uuid(EObject element) {
     try {
-      return Uuids.raw(context.getUuidResolver().getUuid(element));
+      return context.getUuidResolver().getUuid(element).getRawValue();
     } catch (IllegalStateException e) {
       return null; // not managed by the UUID resolver: identified by its path only
     }
@@ -326,7 +278,7 @@ final class CorrespondenceLog {
   private EObject resolve(String id) {
     ElementIds.Ref ref = ElementIds.decode(id);
     if (ref.uuid() != null) {
-      return context.getUuidResolver().getEObject(Uuids.of(ref.uuid()));
+      return context.getUuidResolver().getEObject(Uuid.of(ref.uuid()));
     }
     String path = ids.absolutize(ref.path());
     EObject element = context.getModelsResourceSet().getEObject(URI.createURI(path), true);

@@ -133,7 +133,7 @@ final class ElementIds {
                 throw new IllegalStateException("change has more IDs than UUIDs: " + withPaths);
               }
               String absolutePath = hid.getId();
-              String uuid = Uuids.raw(uuidIterator.next());
+              String uuid = uuidIterator.next().getRawValue();
               return new HierarchicalId(
                   encode(relativize(absolutePath), uuid.equals(absolutePath) ? null : uuid));
             },
@@ -161,7 +161,7 @@ final class ElementIds {
             hid -> {
               Ref ref = decode(hid.getId());
               return ref.uuid() != null
-                  ? Uuids.of(ref.uuid())
+                  ? Uuid.of(ref.uuid())
                   : byPath.apply(absolutize(ref.path()));
             },
             UnaryOperator.identity());

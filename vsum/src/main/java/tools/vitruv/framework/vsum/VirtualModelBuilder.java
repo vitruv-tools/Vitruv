@@ -29,6 +29,7 @@ import tools.vitruv.framework.vsum.internal.ConstraintCheckerRegistry;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
 import tools.vitruv.framework.vsum.persistence.ModelPersistence;
 import tools.vitruv.framework.vsum.persistence.StateBasedModelPersistence;
 import tools.vitruv.framework.vsum.persistence.delta.DeltaBasedModelPersistence;
@@ -44,7 +45,7 @@ public class VirtualModelBuilder {
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
   private boolean constraintValidationAfterPropagation;
-  private ModelPersistence modelPersistence = new StateBasedModelPersistence();
+  private ModelPersistence modelPersistence;
 
   /**
    * Sets the storage folder for the virtual model.
@@ -302,7 +303,9 @@ public class VirtualModelBuilder {
 
   /**
    * Sets the strategy that loads and stores the models, UUIDs and correspondences of the virtual
-   * model. The last strategy set wins. Defaults to {@link #withStateBasedPersistence()}.
+   * model. The last strategy set wins. Defaults to {@link DefaultModelPersistence#create()}:
+   * delta-based, unless the system property {@value DefaultModelPersistence#PROPERTY} says
+   * otherwise.
    *
    * @param modelPersistence the persistence strategy, used for this virtual model only
    * @return the builder instance
@@ -314,7 +317,7 @@ public class VirtualModelBuilder {
 
   /**
    * Stores the complete state of the virtual model after every propagation, see {@link
-   * StateBasedModelPersistence}. This is the default.
+   * StateBasedModelPersistence}.
    *
    * @return the builder instance
    */
@@ -324,7 +327,7 @@ public class VirtualModelBuilder {
 
   /**
    * Stores the changes of every propagation in a log plus snapshots of the state, see {@link
-   * DeltaBasedModelPersistence}.
+   * DeltaBasedModelPersistence}. This is the default.
    *
    * @param options the snapshot interval and log options
    * @return the builder instance
@@ -369,7 +372,7 @@ public class VirtualModelBuilder {
             viewTypeRepository,
             changeSpecificationRepository,
             constraintCheckerRegistry,
-            modelPersistence);
+            modelPersistence != null ? modelPersistence : DefaultModelPersistence.create());
     vsum.loadExistingModels();
     vsum.loadConstraints();
     vsum.setConstraintValidationAfterPropagation(constraintValidationAfterPropagation);

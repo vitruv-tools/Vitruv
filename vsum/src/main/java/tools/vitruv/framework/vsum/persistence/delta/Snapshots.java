@@ -6,16 +6,26 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import tools.vitruv.change.atomic.hid.HierarchicalId;
+import tools.vitruv.change.atomic.uuid.Uuid;
+import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel;
 import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
 
 /**
@@ -79,20 +89,16 @@ final class Snapshots {
             .map(line -> URI.createURI(ids.absolutize(line)))
             .toList();
     modelUris.forEach(uri -> loadOrCreateResource(context.getModelsResourceSet(), uri));
-    List<String> uuidLines = new ArrayList<>();
+    Map<Uuid, HierarchicalId> uuidToId = new HashMap<>();
     for (String line : Files.readAllLines(folder.resolve(UUIDS), UTF_8)) {
       int cut = line.indexOf(UUID_SEPARATOR);
       if (cut > 0) {
-        uuidLines.add(line.substring(0, cut + 1) + ids.absolutize(line.substring(cut + 1)));
+        uuidToId.put(
+            Uuid.of(line.substring(0, cut)),
+            new HierarchicalId(ids.absolutize(line.substring(cut + 1))));
       }
     }
-    Path absoluteUuids = folder.resolve(UUIDS + ".absolute" + TEMP_SUFFIX);
-    Files.write(absoluteUuids, uuidLines, UTF_8);
-    try {
-      context.getUuidResolver().loadFromUri(URI.createFileURI(absoluteUuids.toString()));
-    } finally {
-      Files.deleteIfExists(absoluteUuids);
-    }
+    context.getUuidResolver().loadFromMapping(uuidToId);
     modelUris.forEach(context::registerModel);
     return seq;
   }
@@ -105,16 +111,13 @@ final class Snapshots {
    * @param ids converts absolute URIs
    * @param folder the snapshot folder
    * @param seq the last log record the state contains
-   * @param correspondences the resource of the correspondence model, written with the snapshot;
-   *     null if there is none
    * @throws IOException if a file cannot be written
    */
   static void write(
       ModelPersistenceContext context,
       ElementIds ids,
       Path folder,
-      long seq,
-      Resource correspondences)
+      long seq)
       throws IOException {
     Files.createDirectories(folder);
     List<Path[]> moves = new ArrayList<>();
@@ -141,25 +144,25 @@ final class Snapshots {
         saved.add(resource);
       }
     }
-    if (correspondences != null && correspondences.getURI().isFile()) {
+    PersistableCorrespondenceModel correspondenceModel = context.getCorrespondenceModel();
+    URI correspondencesUri = context.getFileSystemLayout().getCorrespondencesURI();
+    if (correspondencesUri != null && correspondencesUri.isFile()) {
       ByteArrayOutputStream content = new ByteArrayOutputStream();
-      correspondences.save(content, null);
-      Path target = Path.of(correspondences.getURI().toFileString());
+      correspondenceModel.writeTo(content);
+      Path target = Path.of(correspondencesUri.toFileString());
       Files.createDirectories(target.getParent());
       moves.add(new Path[] {writeTemp(target, content.toByteArray()), target});
-    } else if (correspondences != null) {
-      correspondences.save(null); // not atomic: no file system path outside Eclipse
+    } else if (correspondencesUri != null) {
+      correspondenceModel.save(); // not atomic: no file system path outside Eclipse
     }
-    Path absoluteUuids = folder.resolve(UUIDS + ".absolute" + TEMP_SUFFIX);
-    context.getUuidResolver().storeAtUri(URI.createFileURI(absoluteUuids.toString()));
     List<String> uuidLines = new ArrayList<>();
-    for (String line : Files.readAllLines(absoluteUuids)) {
-      int cut = line.indexOf(UUID_SEPARATOR);
-      if (cut > 0) {
-        uuidLines.add(line.substring(0, cut + 1) + ids.relativize(line.substring(cut + 1)));
-      }
+    for (Map.Entry<Uuid, HierarchicalId> entry :
+        context.getUuidResolver().getUuidToIdMapping().entrySet()) {
+      uuidLines.add(
+          entry.getKey().getRawValue()
+              + UUID_SEPARATOR
+              + ids.relativize(entry.getValue().getId()));
     }
-    Files.delete(absoluteUuids);
     uuidLines.sort(null);
     moves.add(lines(folder.resolve(UUIDS), uuidLines));
     moves.add(lines(folder.resolve(MODELS), modelUris));
@@ -171,7 +174,13 @@ final class Snapshots {
     }
     Path journalFile = folder.resolve(JOURNAL);
     move(writeTemp(journalFile, (String.join("\n", journal) + "\n").getBytes(UTF_8)), journalFile);
+    syncDirectory(folder); // commit point
     applyJournal(folder);
+    Set<Path> directories = new HashSet<>();
+    for (Path[] move : moves) {
+      directories.add(move[1].toAbsolutePath().getParent());
+    }
+    directories.forEach(Snapshots::syncDirectory);
 
     saved.forEach(resource -> resource.setModified(false));
     context.saveOrDeleteModels();
@@ -183,10 +192,35 @@ final class Snapshots {
     return new Path[] {writeTemp(target, content.toString().getBytes(UTF_8)), target};
   }
 
+  /** Writes the content next to the target and forces it to the storage device. */
   private static Path writeTemp(Path target, byte[] content) throws IOException {
     Path temp = target.resolveSibling(target.getFileName() + TEMP_SUFFIX);
-    Files.write(temp, content);
+    try (FileChannel channel =
+        FileChannel.open(
+            temp,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.TRUNCATE_EXISTING,
+            StandardOpenOption.WRITE)) {
+      ByteBuffer buffer = ByteBuffer.wrap(content);
+      while (buffer.hasRemaining()) {
+        channel.write(buffer);
+      }
+      channel.force(true);
+    }
     return temp;
+  }
+
+  /**
+   * Forces the entries of a directory (moved or created files) to the storage device. Not every
+   * platform can open a directory for this (Windows cannot); there the moves are as durable as the
+   * file system makes them.
+   */
+  static void syncDirectory(Path directory) {
+    try (FileChannel channel = FileChannel.open(directory, StandardOpenOption.READ)) {
+      channel.force(true);
+    } catch (IOException | UnsupportedOperationException e) {
+      // not supported on this platform
+    }
   }
 
   private static void applyJournal(Path folder) throws IOException {
