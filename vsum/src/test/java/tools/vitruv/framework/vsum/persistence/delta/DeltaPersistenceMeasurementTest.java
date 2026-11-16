@@ -56,6 +56,12 @@ class DeltaPersistenceMeasurementTest {
             project.resolve("delta-nosync"),
             new DeltaBasedModelPersistence(
                 DeltaBasedModelPersistence.Options.defaults().withSyncLog(false)));
+    final Result deltaFiles =
+        run(
+            project.resolve("delta-files"),
+            new DeltaBasedModelPersistence(
+                DeltaBasedModelPersistence.Options.defaults()
+                    .withModelFiles(DeltaBasedModelPersistence.ModelFiles.EVERY_PROPAGATION)));
     StringBuilder table = new StringBuilder();
     table.append(String.format("propagations: %d, final model file: %d bytes%n", PROPAGATIONS,
         state.modelBytes()));
@@ -63,6 +69,7 @@ class DeltaPersistenceMeasurementTest {
     line(table, "state-based", state);
     line(table, "delta (sync, snapshot/50)", delta);
     line(table, "delta (no sync, snapshot/50)", deltaNoSync);
+    line(table, "delta (no sync, model files every propagation)", deltaFiles);
     System.out.print(table);
     Files.createDirectories(Path.of("target"));
     Files.writeString(Path.of("target", "d2-measurement.txt"), table, UTF_8);
