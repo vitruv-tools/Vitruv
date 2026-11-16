@@ -49,6 +49,8 @@ import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
  *   <li>The changes of the correspondence model go into the same record ({@link
  *       CorrespondenceLog}); {@code correspondences.correspondence} is written with each snapshot
  *       only.
+ *   <li>The model files at the models' own URIs are written with each snapshot, or also after
+ *       every propagation ({@link Options#modelFiles()}).
  * </ul>
  *
  * <p>A folder with state-based files ({@code models.models}) but neither snapshot nor log is
@@ -75,6 +77,21 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
     DELETE
   }
 
+  /** When the model files at the models' own URIs are written. */
+  public enum ModelFiles {
+    /**
+     * With each snapshot only: between snapshots the files lag behind, the log holds the changes.
+     * Writes the least.
+     */
+    ON_SNAPSHOT,
+    /**
+     * Also after every propagation, for each modified model, so that the files are always current,
+     * e.g. for tests or tools that read them. The log and snapshots are written as with {@link
+     * #ON_SNAPSHOT}; loading still reads the snapshot and replays the log.
+     */
+    EVERY_PROPAGATION
+  }
+
   /**
    * Options of the delta-based persistence.
    *
@@ -83,8 +100,10 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
    *     returns; the log and the snapshot files are always forced when a snapshot is written and when
    *     the virtual model is closed
    * @param logRetention what happens to the log records that a new snapshot contains
+   * @param modelFiles when the model files at the models' own URIs are written
    */
-  public record Options(int snapshotInterval, boolean syncLog, LogRetention logRetention) {
+  public record Options(
+      int snapshotInterval, boolean syncLog, LogRetention logRetention, ModelFiles modelFiles) {
     /** The default interval between snapshots. */
     public static final int DEFAULT_SNAPSHOT_INTERVAL = 50;
 
@@ -94,20 +113,23 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
      * @param snapshotInterval a snapshot is written after this many propagations
      * @param syncLog whether each log record is forced to the storage device
      * @param logRetention what happens to the log records that a new snapshot contains
+     * @param modelFiles when the model files at the models' own URIs are written
      */
     public Options {
       checkArgument(snapshotInterval > 0, "snapshot interval must be positive");
       checkArgument(logRetention != null, "log retention must not be null");
+      checkArgument(modelFiles != null, "model files mode must not be null");
     }
 
     /**
      * Returns the default options: a snapshot every 50 propagations, log records not forced
-     * individually, the whole log kept.
+     * individually, the whole log kept, model files written with snapshots only.
      *
      * @return the default options
      */
     public static Options defaults() {
-      return new Options(DEFAULT_SNAPSHOT_INTERVAL, false, LogRetention.KEEP);
+      return new Options(
+          DEFAULT_SNAPSHOT_INTERVAL, false, LogRetention.KEEP, ModelFiles.ON_SNAPSHOT);
     }
 
     /**
@@ -117,7 +139,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
      * @return the changed options
      */
     public Options withSnapshotInterval(int interval) {
-      return new Options(interval, syncLog, logRetention);
+      return new Options(interval, syncLog, logRetention, modelFiles);
     }
 
     /**
@@ -127,7 +149,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
      * @return the changed options
      */
     public Options withSyncLog(boolean sync) {
-      return new Options(snapshotInterval, sync, logRetention);
+      return new Options(snapshotInterval, sync, logRetention, modelFiles);
     }
 
     /**
@@ -137,7 +159,17 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
      * @return the changed options
      */
     public Options withLogRetention(LogRetention retention) {
-      return new Options(snapshotInterval, syncLog, retention);
+      return new Options(snapshotInterval, syncLog, retention, modelFiles);
+    }
+
+    /**
+     * Returns these options with another mode for writing the model files.
+     *
+     * @param files when the model files at the models' own URIs are written
+     * @return the changed options
+     */
+    public Options withModelFiles(ModelFiles files) {
+      return new Options(snapshotInterval, syncLog, logRetention, files);
     }
   }
 
@@ -405,11 +437,13 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
         pending = null;
       }
       // A model that became empty is deleted and forgotten right away, as state-based persistence
-      // does; only a snapshot may delete its file, as the log after an older snapshot needs it.
+      // does; the snapshot records that it is gone.
       if (compactRequested
           || lastSeq - snapshotSeq >= options.snapshotInterval()
           || hasEmptyModel(context)) {
         writeSnapshot();
+      } else if (options.modelFiles() == ModelFiles.EVERY_PROPAGATION) {
+        context.saveOrDeleteModels(); // the modified models; the snapshot keeps its own copies
       }
     } catch (IOException e) {
       throw new UncheckedIOException(e);

@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
@@ -29,11 +31,16 @@ import tools.vitruv.change.correspondence.model.PersistableCorrespondenceModel;
 import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
 
 /**
- * Snapshots of the delta-based persistence, in {@code vsum/snapshot/}: the models as XMI at their
- * own URIs (as state-based persistence stores them), {@code correspondences.correspondence} at its
- * own URI, {@code models.models} and {@code uuid.uuid}
- * with URIs relative to the storage folder, and {@code snapshot.properties} with {@code seq}, the
- * last log record the snapshot contains.
+ * Snapshots of the delta-based persistence, in {@code vsum/snapshot/}: a copy of each model as XMI
+ * in {@code models/}, {@code models.models} (the URI of each model, relative to the storage folder,
+ * and its copy), {@code uuid.uuid} with relative URIs, {@code snapshot.properties} with {@code
+ * seq}, the last log record the snapshot contains, and {@code correspondences.correspondence} at its
+ * own URI.
+ *
+ * <p>Loading reads the copies, not the model files at the models' own URIs: those are exports,
+ * written with each snapshot and, with {@link
+ * DeltaBasedModelPersistence.ModelFiles#EVERY_PROPAGATION}, after every propagation, so they may be
+ * newer than the snapshot.
  *
  * <p>A snapshot is written atomically: every file is first written next to its target with the
  * suffix {@value #TEMP_SUFFIX}; then a journal listing the moves is moved into place (the commit
@@ -50,6 +57,10 @@ final class Snapshots {
   static final String TEMP_SUFFIX = ".snapshot-tmp";
   private static final String SEQ = "seq";
   private static final char UUID_SEPARATOR = '|';
+  /** The folder in the snapshot folder that holds the snapshot's copies of the models. */
+  static final String MODEL_COPIES = "models";
+  /** Separates a model's URI from the path of its copy in {@value #MODELS}. */
+  static final char COPY_SEPARATOR = '\t';
 
   private Snapshots() {}
 
@@ -83,12 +94,24 @@ final class Snapshots {
     Properties properties = new Properties();
     properties.load(new StringReader(Files.readString(propertiesFile, UTF_8)));
     final long seq = Long.parseLong(properties.getProperty(SEQ));
-    List<URI> modelUris =
-        Files.readAllLines(folder.resolve(MODELS), UTF_8).stream()
-            .filter(line -> !line.isBlank())
-            .map(line -> URI.createURI(ids.absolutize(line)))
-            .toList();
-    modelUris.forEach(uri -> loadOrCreateResource(context.getModelsResourceSet(), uri));
+    List<URI> modelUris = new ArrayList<>();
+    for (String line : Files.readAllLines(folder.resolve(MODELS), UTF_8)) {
+      if (line.isBlank()) {
+        continue;
+      }
+      int cut = line.indexOf(COPY_SEPARATOR);
+      URI uri = URI.createURI(ids.absolutize(cut < 0 ? line : line.substring(0, cut)));
+      modelUris.add(uri);
+      if (cut < 0) {
+        loadOrCreateResource(context.getModelsResourceSet(), uri);
+      } else {
+        // the snapshot's own copy: the file at the model's URI may be newer than the snapshot
+        Resource resource = context.getModelsResourceSet().createResource(uri);
+        try (InputStream input = Files.newInputStream(folder.resolve(line.substring(cut + 1)))) {
+          resource.load(input, null);
+        }
+      }
+    }
     Map<Uuid, HierarchicalId> uuidToId = new HashMap<>();
     for (String line : Files.readAllLines(folder.resolve(UUIDS), UTF_8)) {
       int cut = line.indexOf(UUID_SEPARATOR);
@@ -119,27 +142,38 @@ final class Snapshots {
       Path folder,
       long seq)
       throws IOException {
-    Files.createDirectories(folder);
+    Files.createDirectories(folder.resolve(MODEL_COPIES));
     List<Path[]> moves = new ArrayList<>();
     List<Resource> saved = new ArrayList<>();
-    List<String> modelUris = new ArrayList<>();
+    List<String> modelLines = new ArrayList<>();
+    Set<String> copies = new HashSet<>();
     for (Resource resource : List.copyOf(context.getModelsResourceSet().getResources())) {
       URI uri = resource.getURI();
       boolean modifiable = uri.isFile() || uri.isPlatform();
-      if (modifiable && resource.getContents().isEmpty()) {
+      if (!modifiable) {
+        modelLines.add(ids.relativize(uri.toString())); // read-only: loaded from its URI
+        continue;
+      }
+      if (resource.getContents().isEmpty()) {
         continue; // deleted below
       }
-      modelUris.add(ids.relativize(uri.toString()));
+      ByteArrayOutputStream content = new ByteArrayOutputStream();
+      resource.save(content, null);
+      byte[] bytes = content.toByteArray();
+      String copy = MODEL_COPIES + "/m" + copies.size() + ".xmi";
+      copies.add(copy);
+      modelLines.add(ids.relativize(uri.toString()) + COPY_SEPARATOR + copy);
+      Path copyTarget = folder.resolve(copy);
+      moves.add(new Path[] {writeTemp(copyTarget, bytes), copyTarget});
+      // the model file at its own URI is an export of the snapshot's state
       if (uri.isFile()) {
-        ByteArrayOutputStream content = new ByteArrayOutputStream();
-        resource.save(content, null);
         Path target = Path.of(uri.toFileString());
         if (target.getParent() != null) {
           Files.createDirectories(target.getParent());
         }
-        moves.add(new Path[] {writeTemp(target, content.toByteArray()), target});
+        moves.add(new Path[] {writeTemp(target, bytes), target});
         saved.add(resource);
-      } else if (uri.isPlatform() && resource.isModified()) {
+      } else if (resource.isModified()) {
         resource.save(null); // not atomic: no file system path outside Eclipse
         saved.add(resource);
       }
@@ -165,7 +199,7 @@ final class Snapshots {
     }
     uuidLines.sort(null);
     moves.add(lines(folder.resolve(UUIDS), uuidLines));
-    moves.add(lines(folder.resolve(MODELS), modelUris));
+    moves.add(lines(folder.resolve(MODELS), modelLines));
     moves.add(lines(folder.resolve(PROPERTIES), List.of(SEQ + "=" + seq, "time=" + Instant.now())));
 
     List<String> journal = new ArrayList<>();
@@ -181,9 +215,23 @@ final class Snapshots {
       directories.add(move[1].toAbsolutePath().getParent());
     }
     directories.forEach(Snapshots::syncDirectory);
+    deleteStaleCopies(folder.resolve(MODEL_COPIES), copies, folder);
 
     saved.forEach(resource -> resource.setModified(false));
     context.saveOrDeleteModels();
+  }
+
+  /** Deletes the model copies of earlier snapshots that the new one does not use. */
+  private static void deleteStaleCopies(Path copiesFolder, Set<String> copies, Path folder)
+      throws IOException {
+    try (Stream<Path> files = Files.list(copiesFolder)) {
+      for (Path file : files.toList()) {
+        String name = folder.relativize(file).toString().replace('\\', '/');
+        if (!copies.contains(name) && !name.endsWith(TEMP_SUFFIX)) {
+          Files.deleteIfExists(file);
+        }
+      }
+    }
   }
 
   private static Path[] lines(Path target, List<String> lines) throws IOException {

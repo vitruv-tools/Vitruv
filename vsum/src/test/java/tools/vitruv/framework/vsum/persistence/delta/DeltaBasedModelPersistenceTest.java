@@ -568,4 +568,37 @@ class DeltaBasedModelPersistenceTest {
     adopted.dispose();
     assertEquals(expected, modelFiles(folder));
   }
+
+  @Test
+  @DisplayName("model files after every propagation: files are current, reopening replays from the"
+      + " snapshot's copies")
+  void modelFilesAfterEveryPropagation(@TestProject Path project) throws Exception {
+    Path stateFolder = project.resolve("state");
+    InternalVirtualModel stateVsum = vsum(stateFolder, new StateBasedModelPersistence());
+    runScenario(stateVsum, stateFolder);
+    stateVsum.dispose();
+
+    Path folder = project.resolve("delta");
+    InternalVirtualModel open =
+        vsum(
+            folder,
+            new DeltaBasedModelPersistence(
+                DeltaBasedModelPersistence.Options.defaults()
+                    .withSnapshotInterval(4)
+                    .withModelFiles(DeltaBasedModelPersistence.ModelFiles.EVERY_PROPAGATION)));
+    runScenario(open, folder);
+    assertEquals(modelFiles(stateFolder), modelFiles(folder), "files current before close");
+    Path crashed = project.resolve("crashed");
+    copyFolder(folder, crashed);
+    open.dispose();
+
+    DeltaBasedModelPersistence persistence = delta(1000);
+    InternalVirtualModel reopened = vsum(crashed, persistence);
+    assertEquals(9, persistence.getSnapshotRecord(), "propagation 9 empties a model");
+    assertEquals(10, persistence.getLastRecord());
+    assertEquals(7, rootOf(reopened, crashed, MODEL).getSingleValuedEAttribute());
+    reopened.dispose();
+    assertEquals(modelFiles(stateFolder), modelFiles(crashed));
+    assertEquals(correspondences(stateFolder), correspondences(crashed));
+  }
 }
