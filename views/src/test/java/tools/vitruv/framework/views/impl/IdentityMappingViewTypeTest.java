@@ -13,15 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.vitruv.change.testutils.matchers.ModelMatchers.equalsDeeply;
 import static tools.vitruv.change.testutils.metamodels.AllElementTypesCreators.aet;
 
+import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import com.google.common.collect.FluentIterable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -39,6 +43,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import tools.vitruv.change.atomic.EChange;
 import tools.vitruv.change.atomic.feature.attribute.ReplaceSingleValuedEAttribute;
+import tools.vitruv.change.atomic.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.change.atomic.hid.HierarchicalId;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
@@ -471,6 +476,77 @@ public class IdentityMappingViewTypeTest {
         assertThat(attributeChange.getOldValue(), is("testid"));
         assertThat(attributeChange.getNewValue(), is("testid2"));
       }
+    }
+
+    private VitruviusChange<Uuid> commitRecordedChange(Root recordedRoot, Runnable modification) {
+      try (ChangeRecorder changeRecorder = new ChangeRecorder(viewResourceSet)) {
+        changeRecorder.addToRecording(recordedRoot);
+        changeRecorder.beginRecording();
+        modification.run();
+        changeRecorder.endRecording();
+        basicViewType.commitViewChanges(view, assignIds(changeRecorder.getChange()));
+      }
+      ArgumentCaptor<VitruviusChange<Uuid>> changeArgument =
+          ArgumentCaptor.forClass(VitruviusChange.class);
+      verify(viewSource).propagateChange(changeArgument.capture());
+      return changeArgument.getValue();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<URI> getResolvedResourceUris() {
+      ArgumentCaptor<Map<Resource, Resource>> mappingArgument = ArgumentCaptor.forClass(Map.class);
+      verify(uuidResolver).resolveResources(mappingArgument.capture(), any());
+      return mappingArgument.getValue().keySet().stream()
+          .map(Resource::getURI)
+          .collect(Collectors.toSet());
+    }
+
+    @Test
+    @DisplayName("with a change in one of two resources")
+    void withChangeInOneOfTwoResources() {
+      uuidResolver = spy(uuidResolver);
+      when(viewSource.getUuidResolver()).thenReturn(uuidResolver);
+      URI firstUri = URI.createURI("test://first.aet");
+      Root first = createResourceWithSingleRoot(firstUri);
+      createResourceWithSingleRoot(URI.createURI("test://second.aet"));
+
+      List<EChange<Uuid>> eChanges =
+          commitRecordedChange(first, () -> first.setId("changed")).getEChanges();
+      assertThat(eChanges.size(), is(1));
+      assertThat(
+          ((ReplaceSingleValuedEAttribute<?, ?>) eChanges.get(0)).getNewValue(), is("changed"));
+      // only the changed resource has to be copied
+      assertThat(getResolvedResourceUris(), is(Set.of(firstUri)));
+    }
+
+    @Test
+    @DisplayName("with a reference to an element in another resource")
+    void withReferenceToOtherResource() {
+      uuidResolver = spy(uuidResolver);
+      when(viewSource.getUuidResolver()).thenReturn(uuidResolver);
+      URI firstUri = URI.createURI("test://first.aet");
+      URI secondUri = URI.createURI("test://second.aet");
+      final Root first = createResourceWithSingleRoot(firstUri);
+      final Root second = createResourceWithSingleRoot(secondUri);
+      createResourceWithSingleRoot(URI.createURI("test://third.aet"));
+      // a non-root element in the second resource, in the view source and in the view
+      Root secondInSource =
+          (Root) viewSourceResourceSet.getResource(secondUri, false).getContents().get(0);
+      NonRoot target = aet.NonRoot();
+      uuidResolver.registerEObject(target);
+      target.setId("target");
+      secondInSource.setSingleValuedContainmentEReference(target);
+      NonRoot viewTarget = EcoreUtil.copy(target);
+      second.setSingleValuedContainmentEReference(viewTarget);
+
+      List<EChange<Uuid>> eChanges =
+          commitRecordedChange(
+                  first, () -> first.setSingleValuedNonContainmentEReference(viewTarget))
+              .getEChanges();
+      assertThat(eChanges.size(), is(1));
+      var referenceChange = (ReplaceSingleValuedEReference<Uuid>) eChanges.get(0);
+      assertThat(referenceChange.getNewValue(), is(uuidResolver.getUuid(target)));
+      assertThat(getResolvedResourceUris(), is(Set.of(firstUri, secondUri)));
     }
 
     private VitruviusChange<HierarchicalId> assignIds(VitruviusChange<EObject> change) {

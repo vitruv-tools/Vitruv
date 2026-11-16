@@ -28,7 +28,7 @@ public class StateBasedModelPersistence implements ModelPersistence {
     } catch (IOException e) {
       throw new IllegalStateException(e);
     }
-    context.getCorrespondenceModel().loadSerializedCorrespondences(context.getModelsResourceSet());
+    context.loadCorrespondences();
   }
 
   private static void readModelsFile(ModelPersistenceContext context) throws IOException {

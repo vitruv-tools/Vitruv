@@ -38,6 +38,12 @@ public interface ModelPersistenceContext {
   PersistableCorrespondenceModel getCorrespondenceModel();
 
   /**
+   * Loads the serialized correspondences and resolves them against the models in the resource set.
+   * Elements with an ID attribute are looked up through a temporary ID index while loading.
+   */
+  void loadCorrespondences();
+
+  /**
    * Registers the model at the given URI with the virtual model, so that its changes are recorded.
    * Loads or creates its resource if necessary.
    *

@@ -175,9 +175,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
                           + " has no correspondences, but other records after the snapshot do");
                 });
         // the correspondence file holds the snapshot's state; hrefs are positional in it
-        context
-            .getCorrespondenceModel()
-            .loadSerializedCorrespondences(context.getModelsResourceSet());
+        context.loadCorrespondences();
       }
       Set<URI> registered = new HashSet<>();
       context.getModelsResourceSet().getResources().forEach(it -> registered.add(it.getURI()));
@@ -189,9 +187,7 @@ public class DeltaBasedModelPersistence implements ModelPersistence {
         }
       }
       if (legacy) {
-        context
-            .getCorrespondenceModel()
-            .loadSerializedCorrespondences(context.getModelsResourceSet());
+        context.loadCorrespondences();
       }
       correspondences.reset();
       this.context = context;
