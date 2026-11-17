@@ -8,6 +8,7 @@ public class ErrorMessages {
   public static final String PROPAGATION_LISTENER_NULL = "propagationListener";
   public static final String PROPAGATION_OBSERVER_NULL = "propagationObserver";
   public static final String CONSTRAINT_CHECKER_NULL = "constraintChecker";
+  public static final String MODEL_PERSISTENCE_NULL = "modelPersistence";
   public static final String DUPLICATE_CONSTRAINT_ID =
       "There is already another constraint with the id %s";
   public static final String CHECKER_CONSTRAINTS_NULL =

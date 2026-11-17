@@ -1,0 +1,5 @@
+root.allElementTypes
+rootCopy.allElementTypes
+vsum/correspondences.correspondence
+vsum/models.models
+vsum/uuid.uuid

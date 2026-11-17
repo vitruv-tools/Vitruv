@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<allElementTypes:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allElementTypes="http://tools.vitruv.change.testutils.metamodels.allElementTypes" id="root" singleValuedEAttribute="42">
+  <singleValuedContainmentEReference id="nonRoot"/>
+</allElementTypes:Root>
