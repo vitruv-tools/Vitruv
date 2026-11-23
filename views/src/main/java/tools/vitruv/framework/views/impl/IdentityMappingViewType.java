@@ -62,24 +62,25 @@ public class IdentityMappingViewType
 
   @Override
   public DirectViewElementSelector<HierarchicalId> createSelector(ChangeableViewSource viewSource) {
-    return new DirectViewElementSelector<>(
-        this,
-        viewSource,
-        viewSource.getViewSourceModels().stream()
-            .map(
-                resource -> {
-                  if (!resource.getContents().isEmpty()
-                      && ResourceCopier.requiresFullCopy(resource)) {
-                    // Some resources (like UML) can only be copied as a whole, so no option to
-                    // select
-                    // specific root elements
-                    return Stream.of(resource.getContents().get(0));
-                  }
-                  return resource.getContents().stream();
-                })
-            .flatMap(Function.identity())
-            .filter(Objects::nonNull)
-            .toList());
+    List<EObject> selectableElements =
+        viewSource.executeExclusively(() -> getSelectableElements(viewSource));
+    return new DirectViewElementSelector<>(this, viewSource, selectableElements);
+  }
+
+  private static List<EObject> getSelectableElements(ViewSource viewSource) {
+    return viewSource.getViewSourceModels().stream()
+        .map(
+            resource -> {
+              if (!resource.getContents().isEmpty() && ResourceCopier.requiresFullCopy(resource)) {
+                // Some resources (like UML) can only be copied as a whole, so no option to select
+                // specific root elements
+                return Stream.of(resource.getContents().get(0));
+              }
+              return resource.getContents().stream();
+            })
+        .flatMap(Function.identity())
+        .filter(Objects::nonNull)
+        .toList();
   }
 
   @Override
@@ -95,12 +96,24 @@ public class IdentityMappingViewType
         viewResourceSet -> {
           viewResourceSet.getResources().forEach(Resource::unload);
           viewResourceSet.getResources().clear();
-          createViewResources(view, viewResourceSet);
+          view.getViewSource()
+              .executeExclusively(() -> createViewResources(view, viewResourceSet));
         });
   }
 
   @Override
   public void commitViewChanges(ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
+    // the copies and the IDs assigned from them must match the state the change is propagated into
+    view.getViewSource()
+        .executeExclusively(
+            () -> {
+              commitViewChangesExclusively(view, viewChange);
+              return null;
+            });
+  }
+
+  private void commitViewChangesExclusively(
+      ModifiableView view, VitruviusChange<HierarchicalId> viewChange) {
     ResourceSetImpl viewSourceCopyResourceSet = new ResourceSetImpl();
     // index the resources by URI, so that resolving IDs does not scan all resources
     new RobustMappedResourceLocator(viewSourceCopyResourceSet);

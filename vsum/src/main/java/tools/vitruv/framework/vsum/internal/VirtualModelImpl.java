@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -276,6 +277,17 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   @Override
   public Collection<Resource> getViewSourceModels() {
     return resourceRepository.getModelResources();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Synchronized with change propagation.
+   */
+  @Override
+  public synchronized <T> T executeExclusively(Supplier<T> action) {
+    checkNotNull(action, "action");
+    return action.get();
   }
 
   /**
