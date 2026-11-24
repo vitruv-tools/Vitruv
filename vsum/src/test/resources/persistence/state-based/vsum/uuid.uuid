@@ -1,0 +1,3 @@
+${UUID:${FOLDER}/root.allElementTypes#/0/@singleValuedContainmentEReference}|${FOLDER}/root.allElementTypes#/0/@singleValuedContainmentEReference
+${UUID:${FOLDER}/root.allElementTypes#/0}|${FOLDER}/root.allElementTypes#/0
+${UUID:${FOLDER}/rootCopy.allElementTypes#/0}|${FOLDER}/rootCopy.allElementTypes#/0

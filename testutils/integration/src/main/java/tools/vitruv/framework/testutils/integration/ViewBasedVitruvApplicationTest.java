@@ -18,6 +18,7 @@ import tools.vitruv.change.testutils.views.UriMode;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
 
 /** Abstract base class for Vitruv application tests using a {@link VirtualModelBasedTestView}. */
 @ExtendWith({TestLogging.class, TestProjectManager.class})
@@ -59,6 +60,7 @@ public abstract class ViewBasedVitruvApplicationTest {
       virtualModel =
           new VirtualModelBuilder()
               .withStorageFolder(vsumPath)
+              .withModelPersistence(DefaultModelPersistence.createForTests())
               .withUserInteractorForResultProvider(
                   new TestUserInteraction.ResultProvider(userInteraction))
               .withChangePropagationSpecifications(changePropagationSpecifications)

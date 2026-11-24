@@ -1,2 +1,5 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
+
+# Compression dictionary: its bytes are pinned by SHA-256, never convert line endings
+**/payload-dict-v1.txt -text

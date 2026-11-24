@@ -48,6 +48,8 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 import tools.vitruv.framework.vsum.models.ModelReadAccess;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
+import tools.vitruv.framework.vsum.persistence.ModelPersistence;
 
 /** The implementation of the {@link InternalVirtualModel} interface. */
 public class VirtualModelImpl implements InternalVirtualModel, ChangePropagationObservableRegistry {
@@ -103,9 +105,38 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
       ViewTypeRepository viewTypeRepository,
       ChangePropagationSpecificationProvider changePropagationSpecificationProvider,
       ConstraintCheckerRegistry constraintCheckerRegistry) {
+    this(
+        fileSystemLayout,
+        userInteractor,
+        viewTypeRepository,
+        changePropagationSpecificationProvider,
+        constraintCheckerRegistry,
+        DefaultModelPersistence.create());
+  }
+
+  /**
+   * Creates a new instance of the {@link VirtualModelImpl} class.
+   *
+   * @param fileSystemLayout The file system layout of the virtual model.
+   * @param userInteractor The user interactor.
+   * @param viewTypeRepository The view type repository.
+   * @param changePropagationSpecificationProvider The change propagation specification provider.
+   * @param constraintCheckerRegistry The registry of the constraint checkers.
+   * @param modelPersistence The strategy that loads and stores the models.
+   */
+  public VirtualModelImpl(
+      VsumFileSystemLayout fileSystemLayout,
+      InternalUserInteractor userInteractor,
+      ViewTypeRepository viewTypeRepository,
+      ChangePropagationSpecificationProvider changePropagationSpecificationProvider,
+      ConstraintCheckerRegistry constraintCheckerRegistry,
+      ModelPersistence modelPersistence) {
     this.fileSystemLayout = fileSystemLayout;
     this.viewTypeRepository = viewTypeRepository;
-    resourceRepository = new ResourceRepositoryImpl(fileSystemLayout);
+    resourceRepository =
+        new ResourceRepositoryImpl(
+            fileSystemLayout,
+            checkNotNull(modelPersistence, ErrorMessages.MODEL_PERSISTENCE_NULL));
 
     this.changePropagationSpecificationProvider = changePropagationSpecificationProvider;
     this.userInteractor = userInteractor;
@@ -156,6 +187,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
             changePropagationMode);
     List<PropagatedChange> result =
         changePropagator.propagateChange(change, changePropagationObservers);
+    resourceRepository.propagationFinished(result);
     save();
 
     if (LOGGER.isTraceEnabled()) {

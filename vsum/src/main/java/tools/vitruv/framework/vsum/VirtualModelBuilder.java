@@ -29,6 +29,10 @@ import tools.vitruv.framework.vsum.internal.ConstraintCheckerRegistry;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.internal.VirtualModelImpl;
 import tools.vitruv.framework.vsum.internal.messages.ErrorMessages;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
+import tools.vitruv.framework.vsum.persistence.ModelPersistence;
+import tools.vitruv.framework.vsum.persistence.StateBasedModelPersistence;
+import tools.vitruv.framework.vsum.persistence.delta.DeltaBasedModelPersistence;
 
 /** Builder for creating and initializing virtual models in the VSUM framework. */
 public class VirtualModelBuilder {
@@ -41,6 +45,7 @@ public class VirtualModelBuilder {
   private Path storageFolder;
   private InternalUserInteractor userInteractor;
   private boolean constraintValidationAfterPropagation;
+  private ModelPersistence modelPersistence;
 
   /**
    * Sets the storage folder for the virtual model.
@@ -297,6 +302,51 @@ public class VirtualModelBuilder {
   }
 
   /**
+   * Sets the strategy that loads and stores the models, UUIDs and correspondences of the virtual
+   * model. The last strategy set wins. Defaults to {@link DefaultModelPersistence#create()}:
+   * delta-based, unless the system property {@value DefaultModelPersistence#PROPERTY} says
+   * otherwise.
+   *
+   * @param modelPersistence the persistence strategy, used for this virtual model only
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withModelPersistence(ModelPersistence modelPersistence) {
+    this.modelPersistence = checkNotNull(modelPersistence, ErrorMessages.MODEL_PERSISTENCE_NULL);
+    return this;
+  }
+
+  /**
+   * Stores the complete state of the virtual model after every propagation, see {@link
+   * StateBasedModelPersistence}.
+   *
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withStateBasedPersistence() {
+    return withModelPersistence(new StateBasedModelPersistence());
+  }
+
+  /**
+   * Stores the changes of every propagation in a log plus snapshots of the state, see {@link
+   * DeltaBasedModelPersistence}. This is the default.
+   *
+   * @param options the snapshot interval and log options
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withDeltaBasedPersistence(DeltaBasedModelPersistence.Options options) {
+    return withModelPersistence(new DeltaBasedModelPersistence(options));
+  }
+
+  /**
+   * Stores the changes of every propagation in a log plus snapshots of the state, with {@link
+   * DeltaBasedModelPersistence.Options#defaults()}.
+   *
+   * @return the builder instance
+   */
+  public VirtualModelBuilder withDeltaBasedPersistence() {
+    return withDeltaBasedPersistence(DeltaBasedModelPersistence.Options.defaults());
+  }
+
+  /**
    * Builds and initializes the virtual model.
    *
    * @return the initialized virtual model
@@ -321,7 +371,8 @@ public class VirtualModelBuilder {
             userInteractor,
             viewTypeRepository,
             changeSpecificationRepository,
-            constraintCheckerRegistry);
+            constraintCheckerRegistry,
+            modelPersistence != null ? modelPersistence : DefaultModelPersistence.create());
     vsum.loadExistingModels();
     vsum.loadConstraints();
     vsum.setConstraintValidationAfterPropagation(constraintValidationAfterPropagation);
