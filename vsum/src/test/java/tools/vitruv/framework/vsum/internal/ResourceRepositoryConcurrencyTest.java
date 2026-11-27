@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import tools.vitruv.change.testutils.TestProject;
 import tools.vitruv.change.testutils.TestProjectManager;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
+import tools.vitruv.framework.vsum.persistence.StateBasedModelPersistence;
 
 /**
  * Tests that the resource repository of a virtual model stays consistent when models are created
@@ -113,7 +114,7 @@ class ResourceRepositoryConcurrencyTest {
   private static ResourceRepositoryImpl createRepository(Path projectFolder) throws Exception {
     var layout = new VsumFileSystemLayout(projectFolder.resolve("vsum"));
     layout.prepare();
-    return new ResourceRepositoryImpl(layout);
+    return new ResourceRepositoryImpl(layout, new StateBasedModelPersistence());
   }
 
   private static URI modelUri(Path projectFolder, int thread, int index) {

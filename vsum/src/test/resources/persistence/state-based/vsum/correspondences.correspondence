@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<correspondence:Correspondences xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:correspondence="http://vitruv.tools/metamodels/change/correspondence/1.0">
+  <correspondences xsi:type="correspondence:ManualCorrespondence">
+    <leftEObjects href="../root.allElementTypes#root"/>
+    <rightEObjects href="../rootCopy.allElementTypes#root"/>
+  </correspondences>
+</correspondence:Correspondences>

@@ -19,6 +19,7 @@ import tools.vitruv.change.testutils.views.UriMode;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelBuilder;
 import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
 import tools.vitruv.framework.vsum.internal.ModelInstance;
 
 /**
@@ -60,6 +61,7 @@ public class DefaultVirtualModelBasedTestView
     try {
       return new VirtualModelBuilder()
           .withStorageFolder(vsumPath)
+          .withModelPersistence(DefaultModelPersistence.createForTests())
           .withUserInteractorForResultProvider(
               new TestUserInteraction.ResultProvider(userInteraction))
           .withChangePropagationSpecifications(changePropagationSpecifications)

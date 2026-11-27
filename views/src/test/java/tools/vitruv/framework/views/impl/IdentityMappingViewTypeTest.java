@@ -25,6 +25,7 @@ import com.google.common.collect.FluentIterable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
@@ -63,6 +64,14 @@ import tools.vitruv.framework.views.selectors.DirectViewElementSelector;
 /** Tests for the IdentityMappingViewType class. */
 @ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class IdentityMappingViewTypeTest {
+  /** Mocks a view source that executes exclusive actions directly. */
+  private static ChangeableViewSource mockViewSource() {
+    ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+    when(viewSource.executeExclusively(any()))
+        .thenAnswer(invocation -> invocation.<Supplier<?>>getArgument(0).get());
+    return viewSource;
+  }
+
   @Nested
   @DisplayName("initialize")
   class Initialize {
@@ -101,7 +110,7 @@ public class IdentityMappingViewTypeTest {
     @DisplayName("for empty source")
     void forEmptySource() {
       DirectViewElementSelector<HierarchicalId> selector =
-          basicViewType.createSelector(mock(ChangeableViewSource.class));
+          basicViewType.createSelector(mockViewSource());
       assertThat(selector.getSelectableElements(), is(emptySet()));
     }
 
@@ -113,7 +122,7 @@ public class IdentityMappingViewTypeTest {
               .createResource(URI.createURI("test:///test.aet"));
       Root rootElement = aet.Root();
       resource.getContents().add(rootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       assertThat(selector.getSelectableElements(), is(Set.of(rootElement)));
@@ -128,7 +137,7 @@ public class IdentityMappingViewTypeTest {
       Root rootElement = aet.Root();
       rootElement.setSingleValuedContainmentEReference(aet.NonRoot());
       resource.getContents().add(rootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       assertThat(selector.getSelectableElements(), is(Set.of(rootElement)));
@@ -155,7 +164,7 @@ public class IdentityMappingViewTypeTest {
     @Test
     @DisplayName("with empty source")
     void withNoElements() throws Exception {
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       try (View view = basicViewType.createView(selector)) {
         assertThat(view.getRootObjects(), not(hasItem(anything())));
@@ -165,7 +174,7 @@ public class IdentityMappingViewTypeTest {
     @Test
     @DisplayName("with selector from other view type")
     void withSelectorFromOtherViewtype() {
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       DirectViewElementSelector<HierarchicalId> selector =
           new IdentityMappingViewType("other").createSelector(viewSource);
       assertThrows(IllegalArgumentException.class, () -> basicViewType.createView(selector));
@@ -178,7 +187,7 @@ public class IdentityMappingViewTypeTest {
       Root rootElement = aet.Root();
       rootElement.setId("testid");
       resource.getContents().add(rootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       try (View view = basicViewType.createView(selector)) {
@@ -193,7 +202,7 @@ public class IdentityMappingViewTypeTest {
       Root rootElement = aet.Root();
       rootElement.setId("testid");
       resource.getContents().add(rootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(resource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.setSelected(rootElement, true);
@@ -214,7 +223,7 @@ public class IdentityMappingViewTypeTest {
       firstResource.getContents().add(firstRootElement);
       Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
       secondResource.getContents().add(secondRootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.setSelected(firstRootElement, true);
@@ -235,7 +244,7 @@ public class IdentityMappingViewTypeTest {
       firstResource.getContents().add(firstRootElement);
       Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
       secondResource.getContents().add(secondRootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.setSelected(firstRootElement, true);
@@ -267,7 +276,7 @@ public class IdentityMappingViewTypeTest {
       firstResource.getContents().add(firstRootElement);
       Resource secondResource = testResourceSet.createResource(URI.createURI("test://test2.aet"));
       secondResource.getContents().add(secondRootElement);
-      ChangeableViewSource viewSource = mock(ChangeableViewSource.class);
+      ChangeableViewSource viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(Set.of(firstResource, secondResource));
       DirectViewElementSelector<HierarchicalId> selector = basicViewType.createSelector(viewSource);
       selector.setSelected(firstRootElement, true);
@@ -302,7 +311,7 @@ public class IdentityMappingViewTypeTest {
     public void initializeViewTypeAndResourceSetAndViewSource() {
       this.basicViewType = new IdentityMappingViewType("name");
       this.testResourceSet = withGlobalFactories(new ResourceSetImpl());
-      this.viewSource = mock(ChangeableViewSource.class);
+      this.viewSource = mockViewSource();
       when(viewSource.getViewSourceModels()).thenReturn(testResourceSet.getResources());
     }
 
@@ -398,7 +407,7 @@ public class IdentityMappingViewTypeTest {
       this.viewSourceResourceSet = withGlobalFactories(new ResourceSetImpl());
       this.viewResourceSet = withGlobalFactories(new ResourceSetImpl());
       this.view = mock(ModifiableView.class);
-      this.viewSource = mock(ChangeableViewSource.class);
+      this.viewSource = mockViewSource();
       this.viewSelection = mock(ViewSelection.class);
       this.uuidResolver = UuidResolver.create(viewSourceResourceSet);
       when(view.getViewSource()).thenReturn(viewSource);

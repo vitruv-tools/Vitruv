@@ -23,6 +23,7 @@ import tools.vitruv.change.correspondence.view.EditableCorrespondenceModelView;
 import tools.vitruv.change.interaction.UserInteractionFactory;
 import tools.vitruv.change.propagation.impl.AbstractChangePropagationSpecification;
 import tools.vitruv.change.utils.ResourceAccess;
+import tools.vitruv.framework.vsum.persistence.DefaultModelPersistence;
 
 /** Utility methods for the VSUM and view test cases. */
 public final class VirtualModelTestUtil {
@@ -54,6 +55,7 @@ public final class VirtualModelTestUtil {
   public static VirtualModel createAndLoadTestVirtualModel(Path folder) throws Exception {
     return new VirtualModelBuilder()
         .withStorageFolder(folder)
+        .withModelPersistence(DefaultModelPersistence.createForTests())
         .withUserInteractor(
             UserInteractionFactory.instance.createUserInteractor(
                 UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)))
@@ -65,6 +67,7 @@ public final class VirtualModelTestUtil {
       throws Exception {
     return new VirtualModelBuilder()
         .withStorageFolder(folder)
+        .withModelPersistence(DefaultModelPersistence.createForTests())
         .withChangePropagationSpecification(
             new RedundancyChangePropagationSpecification(
                 MetamodelDescriptor.with(AllElementTypesPackage.eNS_URI),

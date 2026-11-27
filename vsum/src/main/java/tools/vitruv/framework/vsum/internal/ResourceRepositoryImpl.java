@@ -5,10 +5,12 @@ import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.Resour
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories;
 import static tools.vitruv.change.correspondence.model.CorrespondenceModelFactory.createPersistableCorrespondenceModel;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import tools.vitruv.change.atomic.uuid.Uuid;
 import tools.vitruv.change.atomic.uuid.UuidResolver;
+import tools.vitruv.change.composite.description.PropagatedChange;
 import tools.vitruv.change.composite.description.TransactionalChange;
 import tools.vitruv.change.composite.description.VitruviusChange;
 import tools.vitruv.change.composite.description.VitruviusChangeResolver;
@@ -36,6 +39,8 @@ import tools.vitruv.change.propagation.impl.ResourceRegistrationAdapter;
 import tools.vitruv.framework.views.util.RobustMappedResourceLocator;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
+import tools.vitruv.framework.vsum.persistence.ModelPersistence;
+import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
 
 /**
  * The repository of the models of a virtual model.
@@ -57,14 +62,17 @@ class ResourceRepositoryImpl implements ModelRepository {
       VitruviusChangeResolverFactory.forUuids(uuidResolver);
 
   private final VsumFileSystemLayout fileSystemLayout;
+  private final ModelPersistence modelPersistence;
+  private final ModelPersistenceContext persistenceContext = new PersistenceContext();
 
   /** Whether the current thread records changes in {@link #recordChanges}. */
   private final ThreadLocal<Boolean> isRecording = ThreadLocal.withInitial(() -> false);
 
   private volatile boolean isLoading = false;
 
-  ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout) {
+  ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout, ModelPersistence modelPersistence) {
     this.fileSystemLayout = fileSystemLayout;
+    this.modelPersistence = modelPersistence;
     this.correspondenceModel =
         createPersistableCorrespondenceModel(fileSystemLayout.getCorrespondencesURI());
     modelsResourceSet
@@ -85,13 +93,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   public void loadExistingModels() {
     synchronized (modelsResourceSet) {
       isLoading = true;
-      try {
-        readModelsFile();
-      } catch (IOException e) {
-        throw new IllegalStateException(e);
-      }
-      withIntrinsicIdIndex(
-          () -> correspondenceModel.loadSerializedCorrespondences(modelsResourceSet));
+      modelPersistence.load(persistenceContext);
       isLoading = false;
     }
   }
@@ -116,32 +118,6 @@ class ResourceRepositoryImpl implements ModelRepository {
     } finally {
       indexedResources.forEach(resource -> resource.setIntrinsicIDToEObjectMap(null));
     }
-  }
-
-  private void writeModelsFile() throws IOException {
-    Files.write(
-        fileSystemLayout.getModelsNamesFilesPath(),
-        modelsResourceSet.getResources().stream()
-            .map(Resource::getURI)
-            .map(URI::toString)
-            .toList());
-  }
-
-  private void readModelsFile() throws IOException {
-    List<URI> modelUris;
-    try {
-      modelUris =
-          Files.readAllLines(fileSystemLayout.getModelsNamesFilesPath()).stream()
-              .map(URI::createURI)
-              .toList();
-
-    } catch (NoSuchFileException e) {
-      // There are no existing models, so don't do anything
-      return;
-    }
-    modelUris.forEach(uri -> loadOrCreateResource(modelsResourceSet, uri));
-    uuidResolver.loadFromUri(fileSystemLayout.getUuidsURI());
-    modelUris.forEach(this::createOrLoadModel);
   }
 
   @Override
@@ -220,10 +196,21 @@ class ResourceRepositoryImpl implements ModelRepository {
   }
 
   @Override
-  public void saveOrDeleteModels() {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(InfoMessages.DEBUG_SAVING_ALL_MODELS, fileSystemLayout);
+  public void propagationFinished(List<PropagatedChange> propagatedChanges) {
+    // the persistence strategies iterate the models resource set
+    synchronized (modelsResourceSet) {
+      modelPersistence.propagationFinished(persistenceContext, propagatedChanges);
     }
+  }
+
+  @Override
+  public void saveOrDeleteModels() {
+    synchronized (modelsResourceSet) {
+      modelPersistence.save(persistenceContext);
+    }
+  }
+
+  private void saveOrDeleteModelResources() {
     synchronized (modelsResourceSet) {
       Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
           modelInstances.entrySet().iterator();
@@ -235,13 +222,6 @@ class ResourceRepositoryImpl implements ModelRepository {
         } else {
           modelInstance.save();
         }
-      }
-      correspondenceModel.save();
-      try {
-        writeModelsFile();
-        uuidResolver.storeAtUri(fileSystemLayout.getUuidsURI());
-      } catch (IOException e) {
-        throw new IllegalStateException(e);
       }
     }
   }
@@ -259,13 +239,19 @@ class ResourceRepositoryImpl implements ModelRepository {
     LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
     changeRecorder.endRecording();
     TransactionalChange<EObject> change = changeRecorder.getChange();
-    changeResolver.assignIds(change);
-    return change.containsConcreteChange() ? List.of(change) : List.of();
+    VitruviusChange<Uuid> changeWithIds = changeResolver.assignIds(change);
+    if (!change.containsConcreteChange()) {
+      return List.of();
+    }
+    modelPersistence.changeRecorded(persistenceContext, change, changeWithIds);
+    return List.of(change);
   }
 
   @Override
   public VitruviusChange<EObject> applyChange(VitruviusChange<Uuid> change) {
-    return changeResolver.resolveAndApply(change);
+    VitruviusChange<EObject> appliedChange = changeResolver.resolveAndApply(change);
+    modelPersistence.changeApplied(persistenceContext, change, appliedChange);
+    return appliedChange;
   }
 
   @Override
@@ -295,11 +281,51 @@ class ResourceRepositoryImpl implements ModelRepository {
 
   @Override
   public void close() {
+    modelPersistence.close(persistenceContext);
     changeRecorder.close();
     synchronized (modelsResourceSet) {
       modelsResourceSet.getResources().forEach(Resource::unload);
       modelsResourceSet.getResources().clear();
     }
     uuidResolver = null;
+  }
+
+  /** Gives the persistence strategy access to the models of this repository. */
+  private final class PersistenceContext implements ModelPersistenceContext {
+    @Override
+    public VsumFileSystemLayout getFileSystemLayout() {
+      return fileSystemLayout;
+    }
+
+    @Override
+    public ResourceSet getModelsResourceSet() {
+      return modelsResourceSet;
+    }
+
+    @Override
+    public UuidResolver getUuidResolver() {
+      return uuidResolver;
+    }
+
+    @Override
+    public PersistableCorrespondenceModel getCorrespondenceModel() {
+      return correspondenceModel;
+    }
+
+    @Override
+    public void loadCorrespondences() {
+      withIntrinsicIdIndex(
+          () -> correspondenceModel.loadSerializedCorrespondences(modelsResourceSet));
+    }
+
+    @Override
+    public void registerModel(URI modelUri) {
+      createOrLoadModel(modelUri);
+    }
+
+    @Override
+    public void saveOrDeleteModels() {
+      saveOrDeleteModelResources();
+    }
   }
 }
