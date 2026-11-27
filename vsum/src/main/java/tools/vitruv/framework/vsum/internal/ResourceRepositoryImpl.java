@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -41,11 +42,19 @@ import tools.vitruv.framework.vsum.internal.messages.InfoMessages;
 import tools.vitruv.framework.vsum.persistence.ModelPersistence;
 import tools.vitruv.framework.vsum.persistence.ModelPersistenceContext;
 
+/**
+ * The repository of the models of a virtual model.
+ *
+ * <p>Models can be created, loaded and looked up from several threads. Creating and loading
+ * models, including the demand-loading by proxy resolution, as well as iterating the models, holds
+ * the monitor of the {@link SynchronizedResourceSet models resource set}, which serves as the
+ * repository lock; {@link #getModel} does not lock.
+ */
 class ResourceRepositoryImpl implements ModelRepository {
   private static final Logger LOGGER = LogManager.getLogger(ResourceRepositoryImpl.class);
 
   private final ResourceSet modelsResourceSet = createModelsResourceSet();
-  private final Map<URI, ModelInstance> modelInstances = new HashMap<>();
+  private final Map<URI, ModelInstance> modelInstances = new ConcurrentHashMap<>();
   private final PersistableCorrespondenceModel correspondenceModel;
   private UuidResolver uuidResolver = UuidResolver.create(modelsResourceSet);
   private final ChangeRecorder changeRecorder = new ChangeRecorder(modelsResourceSet);
@@ -56,8 +65,10 @@ class ResourceRepositoryImpl implements ModelRepository {
   private final ModelPersistence modelPersistence;
   private final ModelPersistenceContext persistenceContext = new PersistenceContext();
 
-  private boolean isRecording = false;
-  private boolean isLoading = false;
+  /** Whether the current thread records changes in {@link #recordChanges}. */
+  private final ThreadLocal<Boolean> isRecording = ThreadLocal.withInitial(() -> false);
+
+  private volatile boolean isLoading = false;
 
   ResourceRepositoryImpl(VsumFileSystemLayout fileSystemLayout, ModelPersistence modelPersistence) {
     this.fileSystemLayout = fileSystemLayout;
@@ -72,7 +83,7 @@ class ResourceRepositoryImpl implements ModelRepository {
   }
 
   private static ResourceSet createModelsResourceSet() {
-    ResourceSetImpl resourceSet = new ResourceSetImpl();
+    ResourceSetImpl resourceSet = new SynchronizedResourceSet();
     // index the resources by URI, so that resolving IDs does not scan all resources
     new RobustMappedResourceLocator(resourceSet);
     return withGlobalFactories(resourceSet);
@@ -80,9 +91,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 
   @Override
   public void loadExistingModels() {
-    isLoading = true;
-    modelPersistence.load(persistenceContext);
-    isLoading = false;
+    synchronized (modelsResourceSet) {
+      isLoading = true;
+      modelPersistence.load(persistenceContext);
+      isLoading = false;
+    }
   }
 
   /**
@@ -135,27 +148,40 @@ class ResourceRepositoryImpl implements ModelRepository {
     if (instance != null) {
       return instance;
     }
-    return createOrLoadModel(modelUri);
+    synchronized (modelsResourceSet) {
+      instance = getModel(modelUri);
+      if (instance != null) {
+        return instance;
+      }
+      return createOrLoadModel(modelUri);
+    }
   }
 
   private ModelInstance createOrLoadModel(URI modelUri) {
-    Resource resource;
-    if (modelUri.isFile() || modelUri.isPlatform()) {
-      resource = getOrCreateResource(modelsResourceSet, modelUri);
-    } else {
-      resource = loadOrCreateResource(modelsResourceSet, modelUri);
+    synchronized (modelsResourceSet) {
+      Resource resource;
+      if (modelUri.isFile() || modelUri.isPlatform()) {
+        resource = getOrCreateResource(modelsResourceSet, modelUri);
+      } else {
+        resource = loadOrCreateResource(modelsResourceSet, modelUri);
+      }
+      // creating the resource registers it through the ResourceRegistrationAdapter
+      ModelInstance existing = getModel(modelUri);
+      if (existing != null) {
+        return existing;
+      }
+      ModelInstance modelInstance = new ModelInstance(resource);
+      modelInstances.put(modelUri, modelInstance);
+      registerRecorder(modelInstance);
+      return modelInstance;
     }
-    ModelInstance modelInstance = new ModelInstance(resource);
-    modelInstances.put(modelUri, modelInstance);
-    registerRecorder(modelInstance);
-    return modelInstance;
   }
 
   private void registerRecorder(ModelInstance modelInstance) {
     // Only monitor modifiable models (file / platform URIs, not pathmap URIs)
     if (modelInstance.getURI().isFile() || modelInstance.getURI().isPlatform()) {
       changeRecorder.addToRecording(modelInstance.getResource());
-      if (isRecording && !changeRecorder.isRecording()) {
+      if (isRecording.get() && !changeRecorder.isRecording()) {
         changeRecorder.beginRecording();
       }
     }
@@ -163,29 +189,39 @@ class ResourceRepositoryImpl implements ModelRepository {
 
   @Override
   public void persistAsRoot(EObject rootObject, URI uri) {
-    getCreateOrLoadModel(uri).addRoot(rootObject);
+    ModelInstance model = getCreateOrLoadModel(uri);
+    synchronized (modelsResourceSet) {
+      model.addRoot(rootObject);
+    }
   }
 
   @Override
   public void propagationFinished(List<PropagatedChange> propagatedChanges) {
-    modelPersistence.propagationFinished(persistenceContext, propagatedChanges);
+    // the persistence strategies iterate the models resource set
+    synchronized (modelsResourceSet) {
+      modelPersistence.propagationFinished(persistenceContext, propagatedChanges);
+    }
   }
 
   @Override
   public void saveOrDeleteModels() {
-    modelPersistence.save(persistenceContext);
+    synchronized (modelsResourceSet) {
+      modelPersistence.save(persistenceContext);
+    }
   }
 
   private void saveOrDeleteModelResources() {
-    Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
-        modelInstances.entrySet().iterator();
-    while (modelInstancesIterator.hasNext()) {
-      ModelInstance modelInstance = modelInstancesIterator.next().getValue();
-      if (modelInstance.isEmpty()) {
-        modelInstance.delete();
-        modelInstancesIterator.remove();
-      } else {
-        modelInstance.save();
+    synchronized (modelsResourceSet) {
+      Iterator<Entry<URI, ModelInstance>> modelInstancesIterator =
+          modelInstances.entrySet().iterator();
+      while (modelInstancesIterator.hasNext()) {
+        ModelInstance modelInstance = modelInstancesIterator.next().getValue();
+        if (modelInstance.isEmpty()) {
+          modelInstance.delete();
+          modelInstancesIterator.remove();
+        } else {
+          modelInstance.save();
+        }
       }
     }
   }
@@ -193,11 +229,14 @@ class ResourceRepositoryImpl implements ModelRepository {
   @Override
   public Iterable<TransactionalChange<EObject>> recordChanges(Runnable changeApplicator) {
     changeRecorder.beginRecording();
-    isRecording = true;
+    isRecording.set(true);
     LOGGER.debug(InfoMessages.DEBUG_START_RECORDING_VIRTUAL_MODEL);
-    changeApplicator.run();
+    try {
+      changeApplicator.run();
+    } finally {
+      isRecording.remove();
+    }
     LOGGER.debug(InfoMessages.DEBUG_END_RECORDING_VIRTUAL_MODEL);
-    isRecording = false;
     changeRecorder.endRecording();
     TransactionalChange<EObject> change = changeRecorder.getChange();
     VitruviusChange<Uuid> changeWithIds = changeResolver.assignIds(change);
@@ -217,8 +256,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 
   @Override
   public ModelRepositorySnapshot createSnapshot() {
-    return DefaultModelRepositorySnapshot.copyOf(
-        modelsResourceSet, correspondenceModel, this::getMetadataModelURI);
+    synchronized (modelsResourceSet) {
+      return DefaultModelRepositorySnapshot.copyOf(
+          modelsResourceSet, correspondenceModel, this::getMetadataModelURI);
+    }
   }
 
   @Override
@@ -233,15 +274,19 @@ class ResourceRepositoryImpl implements ModelRepository {
 
   @Override
   public Collection<Resource> getModelResources() {
-    return modelsResourceSet.getResources();
+    synchronized (modelsResourceSet) {
+      return List.copyOf(modelsResourceSet.getResources());
+    }
   }
 
   @Override
   public void close() {
     modelPersistence.close(persistenceContext);
     changeRecorder.close();
-    modelsResourceSet.getResources().forEach(Resource::unload);
-    modelsResourceSet.getResources().clear();
+    synchronized (modelsResourceSet) {
+      modelsResourceSet.getResources().forEach(Resource::unload);
+      modelsResourceSet.getResources().clear();
+    }
     uuidResolver = null;
   }
 

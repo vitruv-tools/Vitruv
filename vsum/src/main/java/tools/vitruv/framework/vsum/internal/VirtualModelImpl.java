@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,8 +57,10 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   private final ModelRepository resourceRepository;
   private final ViewTypeProvider viewTypeRepository;
   private final VsumFileSystemLayout fileSystemLayout;
-  private final List<ChangePropagationListener> changePropagationListeners = new LinkedList<>();
-  private final List<ChangePropagationObserver> changePropagationObservers = new LinkedList<>();
+  private final List<ChangePropagationListener> changePropagationListeners =
+      new CopyOnWriteArrayList<>();
+  private final List<ChangePropagationObserver> changePropagationObservers =
+      new CopyOnWriteArrayList<>();
 
   private final ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
   private final InternalUserInteractor userInteractor;
@@ -67,7 +68,8 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
   private final List<ConstraintValidationListener> constraintValidationListeners =
       new CopyOnWriteArrayList<>();
   private volatile boolean constraintValidationAfterPropagation;
-  private ChangePropagationMode changePropagationMode = ChangePropagationMode.TRANSITIVE_CYCLIC;
+  private volatile ChangePropagationMode changePropagationMode =
+      ChangePropagationMode.TRANSITIVE_CYCLIC;
 
   /**
    * Creates a new instance of the {@link VirtualModelImpl} class without constraint checkers.
@@ -186,7 +188,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
             userInteractor,
             changePropagationMode);
     List<PropagatedChange> result =
-        changePropagator.propagateChange(change, changePropagationObservers);
+        changePropagator.propagateChange(change, List.copyOf(changePropagationObservers));
     resourceRepository.propagationFinished(result);
     save();
 
@@ -223,11 +225,11 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
 
   /**
    * Registers the given {@link ChangePropagationListener}. The listener must not be <code>null
-   * </code>.
+   * </code>. Listeners can be registered at any time; a listener registered while a change is
+   * propagated may be informed only about the end of that propagation.
    */
   @Override
-  public synchronized void addChangePropagationListener(
-      ChangePropagationListener propagationListener) {
+  public void addChangePropagationListener(ChangePropagationListener propagationListener) {
     this.changePropagationListeners.add(
         checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
@@ -237,8 +239,7 @@ public class VirtualModelImpl implements InternalVirtualModel, ChangePropagation
    * </code>.
    */
   @Override
-  public synchronized void removeChangePropagationListener(
-      ChangePropagationListener propagationListener) {
+  public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
     this.changePropagationListeners.remove(
         checkNotNull(propagationListener, ErrorMessages.PROPAGATION_LISTENER_NULL));
   }
