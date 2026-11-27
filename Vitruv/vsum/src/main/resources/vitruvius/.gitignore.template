@@ -1,0 +1,8 @@
+# Vitruvius runtime files
+.vitruvius/*.lock
+.vitruvius/*-trigger
+.vitruvius/validation-result-*
+.vitruvius/merge-result-*
+.vitruvius/.amend-in-progress
+# Vitruvius project root marker (created by ProjectMarker.markAsProjectRootFolder)
+test_project.marker_vitruv

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/2.0"
+            class="tools.vitruv.change.atomic.AtomicPackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/eobject/2.0"
+            class="tools.vitruv.change.atomic.eobject.EobjectPackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/root/2.0"
+            class="tools.vitruv.change.atomic.root.RootPackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic//feature/2.0"
+            class="tools.vitruv.change.atomic.feature.FeaturePackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/feature/single/2.0"
+            class="tools.vitruv.change.atomic.feature.single.SinglePackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/feature/list/2.0"
+            class="tools.vitruv.change.atomic.feature.list.ListPackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/feature/attribute/2.0"
+            class="tools.vitruv.change.atomic.feature.attribute.AttributePackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated atomicModelChange -->
+      <package
+            uri="http://vitruv.tools/metamodels/change/atomic/feature/reference/2.0"
+            class="tools.vitruv.change.atomic.feature.reference.ReferencePackage"
+            genModel="src/main/ecore/atomicModelChange.genmodel"/>
+   </extension>
+
+</plugin>

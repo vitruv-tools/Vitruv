@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Build Parent -->
+  <parent>
+    <groupId>tools.vitruv</groupId>
+    <artifactId>parent</artifactId>
+    <version>3.3.2</version>
+  </parent>
+
+  <!-- Project Information -->
+  <artifactId>tools.vitruv.change</artifactId>
+  <version>3.2.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Vitruv Change and Propagation Framework</name>
+  <description>The Vitruv change and propagation framework providing change propagation specification and execution capabilities</description>
+  <url>https://github.com/vitruv-tools/Vitruv-Change</url>
+
+  <!-- Organizational Information -->
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>https://www.eclipse.org/org/documents/epl-v10.php</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/vitruv-tools/Vitruv-Change.git</connection>
+    <developerConnection>scm:git:https://github.com/vitruv-tools/Vitruv-Change.git</developerConnection>
+    <url>https://github.com/vitruv-tools/Vitruv-Change/tree/main</url>
+  </scm>
+
+  <!-- Modules -->
+  <modules>
+    <module>atomic</module>
+    <module>changederivation</module>
+    <module>composite</module>
+    <module>correspondence</module>
+    <module>interaction</module>
+    <module>interaction.model</module>
+    <module>propagation</module>
+    <module>testutils</module>
+    <module>utils</module>
+    <module>p2wrappers</module>
+  </modules>
+
+  <properties>
+    <!-- SonarQube configuration -->
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.organization>vitruv-tools</sonar.organization>
+    <sonar.projectKey>vitruv-tools_Vitruv-Change</sonar.projectKey>
+  </properties>
+
+  <!-- Dependency Management -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.21.0</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>3.27.7</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.42</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.5.0-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.25.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.common</artifactId>
+        <version>2.44.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>2.41.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.change</artifactId>
+        <version>2.17.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+        <version>2.39.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.edit</artifactId>
+        <version>2.23.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.core.resources</artifactId>
+        <version>3.23.100</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.core.runtime</artifactId>
+        <version>3.34.100</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.platform</groupId>
+        <artifactId>org.eclipse.equinox.common</artifactId>
+        <version>3.20.300</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.xtend</groupId>
+        <artifactId>org.eclipse.xtend.lib</artifactId>
+        <version>2.39.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.xtend</groupId>
+        <artifactId>org.eclipse.xtend.lib.macro</artifactId>
+        <version>2.39.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.xtext</groupId>
+        <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+        <version>2.41.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest</artifactId>
+        <version>3.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-commons</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

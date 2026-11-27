@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="allElementTypes2" nsURI="http://tools.vitruv.change.testutils.metamodels.allElementTypes2"
+    nsPrefix="allElementTypes2">
+  <eClassifiers xsi:type="ecore:EClass" name="Root2" eSuperTypes="#//Identified2">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute2"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedPrimitiveTypeEAttribute2"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedNonContainmentEReference2"
+        eType="#//NonRoot2"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedContainmentEReference2"
+        eType="#//NonRoot2" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValuedEAttribute2"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedNonContainmentEReference2"
+        upperBound="-1" eType="#//NonRoot2"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedContainmentEReference2"
+        upperBound="-1" eType="#//NonRoot2" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectContainerHelper"
+        lowerBound="1" eType="#//NonRootObjectContainerHelper2" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NonRoot2" eSuperTypes="#//Identified2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NonRootObjectContainerHelper2" eSuperTypes="#//Identified2">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectsContainment2"
+        upperBound="-1" eType="#//NonRoot2" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Identified2" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id2" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,30 @@
+# VS Code
+.vscode/
+
+# Maven
+target/
+*.log
+.mvn/wrapper/*.jar
+.flattened-pom.xml
+dependency-reduced-pom.xml
+
+# Eclipse
+META-INF
+build.properties
+plugin.properties
+
+# Vitruvius transient inter-process communication files.
+# These are written by Git hooks and watcher threads and must never be committed.
+# Everything else under .vitruvius/ (vsum/, branches/, changelogs/, merges/,
+# versions/, etc.) is intentionally tracked, so only the transient files are
+# listed here rather than ignoring the whole directory.
+.vitruvius/validate-trigger
+.vitruvius/post-commit-trigger
+.vitruvius/merge-trigger
+.vitruvius/reload-trigger
+.vitruvius/.amend-in-progress
+.vitruvius/.validation.lock
+.vitruvius/.merge.lock
+.vitruvius/.reload.lock
+.vitruvius/validation-result-*
+.vitruvius/merge-result-*

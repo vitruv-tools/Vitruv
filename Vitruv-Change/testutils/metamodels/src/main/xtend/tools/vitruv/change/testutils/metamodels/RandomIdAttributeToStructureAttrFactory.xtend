@@ -1,0 +1,9 @@
+package tools.vitruv.change.testutils.metamodels
+
+import attribute_to_structure_attr.Identified
+import attribute_to_structure_attr.impl.Attribute_to_structure_attrFactoryImpl
+import tools.vitruv.change.utils.activeannotations.WithGeneratedRandomIds
+
+@WithGeneratedRandomIds(identifierMetaclass=Identified)
+class RandomIdAttributeToStructureAttrFactory extends Attribute_to_structure_attrFactoryImpl {
+}

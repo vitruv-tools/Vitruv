@@ -1,0 +1,166 @@
+name: CI
+
+# workflow triggers
+on:
+  # manually
+  workflow_dispatch:
+  # PRs on `main`
+  pull_request:
+    branches:
+    - main
+  # nightly
+  schedule:
+  - cron: "0 4 * * *"
+
+jobs:
+  verify:
+    name: Verify build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6.0.2
+
+    - name: Setup Java and Maven cache
+      uses: actions/setup-java@v5.2.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        check-latest: true
+        cache: 'maven'
+
+    - name: Verify build
+      run: >
+        ./mvnw clean verify
+        --batch-mode
+        --update-snapshots
+        --no-transfer-progress
+
+    - name: Stage build results (Unix)
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+      run: mkdir staging-${{ matrix.os }} && find . -path '*/target/*.jar' -exec cp {} staging-${{ matrix.os }}/ \;
+
+    - name: Stage build results (Windows)
+      if: matrix.os == 'windows-latest'
+      run: mkdir staging-${{ matrix.os }} && gci -Path . -Recurse -Include *.jar |? { $_.FullName -like '*\target\*.jar' } |% { cp $_.FullName staging-${{ matrix.os }} }
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v6
+      with:
+        name: build-results-${{ matrix.os }}
+        path: staging-*/
+
+  verify-javadoc:
+    name: Verify JavaDoc
+    runs-on: ubuntu-latest
+    needs: [verify]
+    strategy:
+      fail-fast: true
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6.0.2
+
+    - name: Setup Java and Maven cache
+      uses: actions/setup-java@v5.2.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        check-latest: true
+        cache: 'maven'
+
+    - name: Verify JavaDoc
+      run: >
+        ./mvnw clean compile javadoc:javadoc
+        -DskipTests
+        --batch-mode
+        --update-snapshots
+        --no-transfer-progress
+
+  sonar:
+    name: SonarQube analysis
+    runs-on: ubuntu-latest
+    needs: [verify]
+    if: github.event_name == 'schedule' || (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]')    
+    strategy:
+      fail-fast: true
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6.0.2
+
+    - name: Setup Java and Maven cache
+      uses: actions/setup-java@v5.2.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        check-latest: true
+        cache: 'maven'
+
+    - name: Run SonarQube analysis
+      run: >
+        ./mvnw clean verify sonar:sonar -P coverage
+        --batch-mode
+        --update-snapshots
+        --no-transfer-progress
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  run-checkstyle:
+    name: checkstyle check
+    runs-on: ubuntu-latest
+    needs: [verify]
+    if: (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]')
+    strategy:
+      fail-fast: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+      - name: Run checkstyle
+        uses: dbelyaev/action-checkstyle@v3.4.2
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          checkstyle_config: checkstyle.xml
+          checkstyle_version: "10.21.4"
+  
+  deploy-snapshot:
+    name: Deploy snapshot
+    runs-on: ubuntu-latest
+    needs: [verify]
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'vitruv-tools'
+    strategy:
+      fail-fast: true
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6.0.2
+
+    - name: Setup Java and Maven cache
+      uses: actions/setup-java@v5.2.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        check-latest: true
+        cache: 'maven'
+        server-id: central
+        server-username: CENTRAL_USERNAME
+        server-password: CENTRAL_PASSWORD
+        gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+        gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+    - name: Deploy snapshot
+      run: >
+        ./mvnw clean deploy -P snapshot
+        -DskipTests
+        --batch-mode
+        --update-snapshots
+        --no-transfer-progress
+      env:
+        CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+        CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}

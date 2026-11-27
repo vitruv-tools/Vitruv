@@ -1,0 +1,63 @@
+module tools.vitruv.change.testutils.metamodels
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+
+var workspaceRoot = ".."
+
+Workflow {
+
+    bean = StandaloneSetup {
+        scanClassPath = true
+        platformUri = workspaceRoot
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/allElementTypes.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/allElementTypes2.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/attributeToStructureAttr.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/attributeToStructureStruct1.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/multicontainment_a.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/multicontainment_b.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/pcm_mockup.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.testutils.metamodels/src/main/ecore/uml_mockup.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.testutils.metamodels/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+}

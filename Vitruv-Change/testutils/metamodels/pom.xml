@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>tools.vitruv</groupId>
+    <artifactId>tools.vitruv.change.testutils</artifactId>
+    <version>3.2.4-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>tools.vitruv.change.testutils.metamodels</artifactId>
+
+  <name>Vitruv Change Test Utilities Metamodels</name>
+  <description>Metamodels used in Testing Vitruv Change and Propagation Specifications.</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.xtend</groupId>
+        <artifactId>xtend-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>${project.basedir}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <!-- project dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.change.utils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- external dependencies -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+    </dependency>
+
+    <!-- p2 dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tools.vitruv.change.p2wrappers.activextendannotations</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

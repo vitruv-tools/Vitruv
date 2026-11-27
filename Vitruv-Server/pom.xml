@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Build Parent -->
+  <parent>
+    <groupId>tools.vitruv</groupId>
+    <artifactId>parent</artifactId>
+    <version>3.3.2</version>
+  </parent>
+
+  <!-- Project Information -->
+  <artifactId>tools.vitruv.server</artifactId>
+  <version>3.2.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Vitruv Server</name>
+  <description>The Vitruv Server providing remote access to Vitruv.</description>
+  <url>https://github.com/vitruv-tools/Vitruv-Server</url>
+
+  <!-- Organizational Information -->
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>https://www.eclipse.org/org/documents/epl-v10.php</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/vitruv-tools/Vitruv-Server.git</connection>
+    <developerConnection>scm:git:https://github.com/vitruv-tools/Vitruv-Server.git</developerConnection>
+    <url>https://github.com/vitruv-tools/Vitruv-Server/tree/main</url>
+  </scm>
+
+  <!-- Modules -->
+  <modules>
+    <module>remote</module>
+    <module>p2wrappers</module>
+  </modules>
+
+  <properties>
+    <vitruv.version>3.2.4-SNAPSHOT</vitruv.version>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.organization>vitruv-tools</sonar.organization>
+    <sonar.projectKey>vitruv-tools_Vitruv-Server</sonar.projectKey>
+  </properties>
+
+  <!-- Dependency Management -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Vitruvius dependencies -->
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.utils</artifactId>
+        <version>${vitruv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.composite</artifactId>
+        <version>${vitruv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.interaction.model</artifactId>
+        <version>${vitruv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.change.atomic</artifactId>
+        <version>${vitruv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.framework.views</artifactId>
+        <version>${vitruv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.vitruv</groupId>
+        <artifactId>tools.vitruv.framework.vsum</artifactId>
+        <version>${vitruv.version}</version>
+      </dependency>
+
+      <!-- external dependencies -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.5.0-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.common</artifactId>
+        <version>2.44.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
+        <version>2.41.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.21.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.21.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.emfcloud</groupId>
+        <artifactId>emfjson-jackson</artifactId>
+        <version>2.3.0</version>
+      </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-core</artifactId>
+        <version>1.16.2</version>
+      </dependency>
+
+      <!-- external test dependencies -->
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-commons</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-launcher</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.21.0</version>
+      </dependency>
+    </dependencies>
+
+  </dependencyManagement>
+
+  <repositories>
+    <!-- allow snapshots -->
+    <repository>
+      <id>ossrh-snapshots</id>
+      <name>OSSRH Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+</project>

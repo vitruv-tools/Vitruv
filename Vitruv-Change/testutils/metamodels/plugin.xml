@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated uml_mockup -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.uml_mockup"
+            class="uml_mockup.Uml_mockupPackage"
+            genModel="src/main/ecore/uml_mockup.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdUmlMockupFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.uml_mockup">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated pcm_mockup -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.pcm_mockup"
+            class="pcm_mockup.Pcm_mockupPackage"
+            genModel="src/main/ecore/pcm_mockup.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdPcmMockupFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.pcm_mockup">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated multicontainment_a -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.multicontainment_a"
+            class="multicontainment_a.Multicontainment_aPackage"
+            genModel="src/main/ecore/multicontainment_a.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdMulticontainmentAFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.multicontainment_a">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated multicontainment_b -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.multicontainment_b"
+            class="multicontainment_b.Multicontainment_bPackage"
+            genModel="src/main/ecore/multicontainment_b.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdMulticontainmentBFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.multicontainment_b">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated allElementTypes -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.allElementTypes"
+            class="allElementTypes.AllElementTypesPackage"
+            genModel="src/main/ecore/allElementTypes.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdAllElementTypesFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.allElementTypes">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated attributeToStructureAttr -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.attribute_to_structure_attr"
+            class="attribute_to_structure_attr.Attribute_to_structure_attrPackage"
+            genModel="src/main/ecore/attributeToStructureAttr.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdAttributeToStructureAttrFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.attribute_to_structure_attr">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated attributeToStructureStruct1 -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.attribute_to_structure_struct_1"
+            class="attribute_to_structure_struct_1.Attribute_to_structure_struct_1Package"
+            genModel="src/main/ecore/attributeToStructureStruct1.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdAttributeToStructureStructFactory"
+            uri="http://tools.vitruv.change.testutils.metamodels.attribute_to_structure_struct_1">
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated allElementTypes2 -->
+      <package
+            uri="http://tools.vitruv.change.testutils.metamodels.allElementTypes2"
+            class="allElementTypes2.AllElementTypes2Package"
+            genModel="src/main/ecore/allElementTypes2.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.change.testutils.metamodels.RandomIdAllElementTypes2Factory"
+            uri="http://tools.vitruv.change.testutils.metamodels.allElementTypes2">
+      </factory>
+   </extension>
+
+</plugin>

@@ -1,0 +1,160 @@
+
+import java.io.File;
+
+import "http://vitruv.tools/methodologisttemplate/model" as model
+import "http://vitruv.tools/methodologisttemplate/model2" as model2
+
+reactions: model2Model2
+in reaction to changes in model
+execute actions in model2
+
+// insert a System, which is the root element of model, into an instance of model
+// as a reaction, an element of type Root should be created, persisted relatively, 
+// and a correspondence should be added (see the called routine)
+reaction SystemInsertedAsRoot {
+	after element model::System inserted as root
+  // newValue refers to the newly inserted element of type System (provided by the reactions runtime environment at runtime)
+	call createAndRegisterRoot(newValue)
+}
+
+routine createAndRegisterRoot(model::System system) {
+	match {
+    // we do only want to create a new corresponding Root if we not have one already and the old one has, e.g., only been moved
+		require absence of model2::Root corresponding to system
+	}
+  create {
+    // short way of using the respective Factory calls, which would be used in the update-block
+    val mRoot = new model2::Root
+  }
+	update {
+    // save the newly created Root element at the specified location
+    persistProjectRelative(system, mRoot, new File("").toString() + "example.model2")
+    // register the correspondence so we can find mRoot later, if we modify something in system and need to adapt mRoot accordingly
+		addCorrespondenceBetween(system, mRoot)
+	}
+}
+
+// a Component is mapped to an Entity in model2.
+reaction ComponentInsertedIntoSystem {
+  // the brackets [ ] are used to denote a reference inside a metaclass (see model.ecore line 23 in the model project)
+	after element model::Component inserted in model::System[components]
+	call createAndInsertEntity(affectedEObject, newValue)
+}
+
+routine createAndInsertEntity(model::System system, model::Component component) {
+	match {
+		require absence of model2::Entity corresponding to component
+    // retrieve the mRoot we added a correspondence in the createAndRegisterRoot routine in the update block (line 33 in this file)
+    val mRoot = retrieve model2::Root corresponding to system
+	}
+  create {
+    val entity = new model2::Entity
+  }
+	update {
+    entity.name = component.name
+    mRoot.entities.add(entity)
+		addCorrespondenceBetween(component, entity)
+	}
+}
+
+// we replaced a single-valued attribute value, in this case the name of a component, with a new name.
+reaction ComponentRenamed {
+	after attribute replaced at model::Component[name]
+  // affectedEObject refers to the modified element (provided by the reactions runtime environment at runtime). The change is already applied, so affectedEObject.name is the new name. alternatively, we could use newValue to get the name.
+	call renameEntity(affectedEObject)
+}
+
+routine renameEntity(model::Component component) {
+	match {
+    val entity = retrieve model2::Entity corresponding to component
+	}
+  // we can omit blocks like the update block if we do not need them
+	update {
+    entity.name = component.name
+	}
+}
+
+reaction ComponentDeleted {
+	after element model::Component deleted
+	call deleteEntity(affectedEObject)
+}
+
+routine deleteEntity(model::Component component) {
+	match {
+		val entity = retrieve model2::Entity corresponding to component
+	}
+	update {
+    // remove the corresponding object as well
+		removeObject(entity)
+    // cleanup of the correspondence model so it does not contain links to invalid, i.e., deleted, model elements
+		removeCorrespondenceBetween(entity, component)
+	}
+}
+
+reaction ProtocolInsertedIntoSystem {
+    after element model::Protocol inserted in model::System[protocols]
+    call createAndInsertProtocol(affectedEObject, newValue)
+}
+
+routine createAndInsertProtocol(model::System system, model::Protocol protocol) {
+    match {
+        require absence of model2::CommunicationStandard corresponding to protocol
+        val mRoot = retrieve model2::Root corresponding to system
+    }
+    create {
+        val mStandard = new model2::CommunicationStandard
+    }
+    update {
+    	mStandard.name = protocol.name
+    	addCorrespondenceBetween(protocol, mStandard)
+    }
+}
+
+reaction LinkInsertedIntoSystem {
+	after element model::Link inserted in model::System[links]
+	call createAndInsertLink(affectedEObject, newValue)
+}
+
+routine createAndInsertLink(model::System system, model::Link link) {
+	match {
+		require absence of model2::Link corresponding to link
+		val mRoot = retrieve model2::Root corresponding to system
+	}
+	create {
+		val mLink = new model2::Link
+	}
+	update {
+		mRoot.links.add(mLink)
+		addCorrespondenceBetween(link, mLink)
+	}
+}
+
+reaction ComponentInsertedIntoLink {
+	after element model::Component inserted in model::Link[components]
+	call updateLinkEntities(affectedEObject, newValue)
+}
+
+routine updateLinkEntities(model::Link link, model::Component component) {
+	match {
+		val mEntity = retrieve model2::Entity corresponding to component
+		val mLink = retrieve model2::Link corresponding to link
+	}
+	update {
+		mLink.entities.add(mEntity)
+	}
+}
+
+reaction ProtocolInsertedIntoLink {
+	after element model::Protocol replaced at model::Link[protocol]
+	call updateLinkProtocols(affectedEObject, newValue)
+}
+
+routine updateLinkProtocols(model::Link link, model::Protocol protocol) {
+	match {
+		val mStandard = retrieve model2::CommunicationStandard corresponding to protocol
+		val mLink = retrieve model2::Link corresponding to link
+	}
+	update {
+		mLink.standard = mStandard
+	}
+}

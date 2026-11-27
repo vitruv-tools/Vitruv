@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="atomic" nsURI="http://vitruv.tools/metamodels/change/atomic/2.0"
+    nsPrefix="atomic">
+  <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract change, which can be applied forward or backward, after it was resolved to a specific instance of a model."/>
+    </eAnnotations>
+    <eTypeParameters name="Element">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AdditiveEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which adds a new value, like an EObject or primitive type."/>
+    </eAnnotations>
+    <eTypeParameters name="Element">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="Value">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="getNewValue" lowerBound="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Get the added value.&#xA;@return The newly added value."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//AdditiveEChange/Value"/>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//EChange">
+      <eTypeArguments eTypeParameter="#//AdditiveEChange/Element"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which removes an existing value, like an EObject or primitive type."/>
+    </eAnnotations>
+    <eTypeParameters name="Element">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="Value">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="getOldValue" lowerBound="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Get the removed value.&#xA;@return The value which will be removed."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//SubtractiveEChange/Value"/>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//EChange">
+      <eTypeArguments eTypeParameter="#//SubtractiveEChange/Element"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eSubpackages name="eobject" nsURI="http://vitruv.tools/metamodels/change/atomic/eobject/2.0"
+      nsPrefix="eobject">
+    <eClassifiers xsi:type="ecore:EClass" name="EObjectAddedEChange" abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which inserts an EObject into a resource or reference."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1"
+          resolveProxies="false">
+        <eGenericType eTypeParameter="#//eobject/EObjectAddedEChange/Element"/>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="#//AdditiveEChange">
+        <eTypeArguments eTypeParameter="#//eobject/EObjectAddedEChange/Element"/>
+        <eTypeArguments eTypeParameter="#//eobject/EObjectAddedEChange/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EObjectSubtractedEChange" abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which removes an EObject from a resource or reference."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="oldValue" lowerBound="1"
+          resolveProxies="false">
+        <eGenericType eTypeParameter="#//eobject/EObjectSubtractedEChange/Element"/>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="#//SubtractiveEChange">
+        <eTypeArguments eTypeParameter="#//eobject/EObjectSubtractedEChange/Element"/>
+        <eTypeArguments eTypeParameter="#//eobject/EObjectSubtractedEChange/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EObjectExistenceEChange" abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which creates or deletes an EObject."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedElement" lowerBound="1"
+          resolveProxies="false">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;The created or deleted EObject."/>
+        </eAnnotations>
+        <eGenericType eTypeParameter="#//eobject/EObjectExistenceEChange/Element"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="idAttributeValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObjectType"
+          eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+      <eGenericSuperTypes eClassifier="#//EChange">
+        <eTypeArguments eTypeParameter="#//eobject/EObjectExistenceEChange/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CreateEObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;EChange which creates a new EObject and places it in the staging area.&#xA;There it can be taken by another EChange."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//eobject/EObjectExistenceEChange">
+        <eTypeArguments eTypeParameter="#//eobject/CreateEObject/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;EChange which deletes a EObject from the staging area.&#xA;The object must be placed in the staging area by another change."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//eobject/EObjectExistenceEChange">
+        <eTypeArguments eTypeParameter="#//eobject/DeleteEObject/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="root" nsURI="http://vitruv.tools/metamodels/change/atomic/root/2.0"
+      nsPrefix="root">
+    <eClassifiers xsi:type="ecore:EDataType" name="Resource" instanceClassName="org.eclipse.emf.ecore.resource.Resource"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RootEChange" abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which inserts or removes a root element."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;The uri of the resource."/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="resource" unique="false"
+          eType="#//root/Resource">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;The resource where the root element will be inserted or removed from.&#xA;Is only valid in resolved changes."/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" unique="false"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;The index where the root element is inserted or removed."/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="#//EChange">
+        <eTypeArguments eTypeParameter="#//root/RootEChange/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="InsertRootEObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;EChange which inserts a new root EObject into a resource. The object will&#xA;be taken from the staging area and needs to be filled by {@link tools.vitruv.change.atomic.eobject.CreateEObject} change first."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//root/RootEChange">
+        <eTypeArguments eTypeParameter="#//root/InsertRootEObject/Element"/>
+      </eGenericSuperTypes>
+      <eGenericSuperTypes eClassifier="#//eobject/EObjectAddedEChange">
+        <eTypeArguments eTypeParameter="#//root/InsertRootEObject/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="RemoveRootEObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;EChange removes an existing root EObject from its resource and places it in the staging area.&#xA;There it can be deleted or be taken by another change to reinsert it."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//root/RootEChange">
+        <eTypeArguments eTypeParameter="#//root/RemoveRootEObject/Element"/>
+      </eGenericSuperTypes>
+      <eGenericSuperTypes eClassifier="#//eobject/EObjectSubtractedEChange">
+        <eTypeArguments eTypeParameter="#//root/RemoveRootEObject/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="feature" nsURI="http://vitruv.tools/metamodels/change/atomic//feature/2.0"
+      nsPrefix="feature">
+    <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which changes an attribute or reference of an EObject."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="Feature">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;The affected attribute or reference."/>
+        </eAnnotations>
+        <eGenericType eTypeParameter="#//feature/FeatureEChange/Feature"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedElement" lowerBound="1"
+          resolveProxies="false">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;The affected EObject of the change."/>
+        </eAnnotations>
+        <eGenericType eTypeParameter="#//feature/FeatureEChange/Element"/>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="#//EChange">
+        <eTypeArguments eTypeParameter="#//feature/FeatureEChange/Element"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedFeatureEChange" abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which changes a many valued attribute or reference."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="Feature">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//feature/FeatureEChange">
+        <eTypeArguments eTypeParameter="#//feature/UpdateMultiValuedFeatureEChange/Element"/>
+        <eTypeArguments eTypeParameter="#//feature/UpdateMultiValuedFeatureEChange/Feature"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedFeatureEChange"
+        abstract="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Abstract EChange which changes a single valued attribute or reference."/>
+      </eAnnotations>
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="Feature">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//feature/FeatureEChange">
+        <eTypeArguments eTypeParameter="#//feature/UpdateSingleValuedFeatureEChange/Element"/>
+        <eTypeArguments eTypeParameter="#//feature/UpdateSingleValuedFeatureEChange/Feature"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetFeature">
+      <eTypeParameters name="Element">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="Feature">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//feature/FeatureEChange">
+        <eTypeArguments eTypeParameter="#//feature/UnsetFeature/Element"/>
+        <eTypeArguments eTypeParameter="#//feature/UnsetFeature/Feature"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eSubpackages name="single" nsURI="http://vitruv.tools/metamodels/change/atomic/feature/single/2.0"
+        nsPrefix="single">
+      <eClassifiers xsi:type="ecore:EClass" name="ReplaceSingleValuedFeatureEChange"
+          abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which replaces a single valued attribute or reference."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Feature">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eOperations name="isFromNonDefaultValue" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="*&#xA;The change don't replace the default value.&#xA;@return The change don't replace the default value."/>
+            <details key="body" value="Value _oldValue = this.getOldValue();&#xA;Feature _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_oldValue, _defaultValue);&#xA;return (!_equals);"/>
+          </eAnnotations>
+        </eOperations>
+        <eOperations name="isToNonDefaultValue" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="*&#xA;The change don't replaces a value with the default value.&#xA;@return The change don't replaces a value with the default value."/>
+            <details key="body" value="Value _newValue = this.getNewValue();&#xA;Feature _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_newValue, _defaultValue);&#xA;return (!_equals);"/>
+          </eAnnotations>
+        </eOperations>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateSingleValuedFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/single/ReplaceSingleValuedFeatureEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/single/ReplaceSingleValuedFeatureEChange/Feature"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//AdditiveEChange">
+          <eTypeArguments eTypeParameter="#//feature/single/ReplaceSingleValuedFeatureEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/single/ReplaceSingleValuedFeatureEChange/Value"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//SubtractiveEChange">
+          <eTypeArguments eTypeParameter="#//feature/single/ReplaceSingleValuedFeatureEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/single/ReplaceSingleValuedFeatureEChange/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="list" nsURI="http://vitruv.tools/metamodels/change/atomic/feature/list/2.0"
+        nsPrefix="list">
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleListEntryEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which changes an EList."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Feature">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+        </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" unique="false"
+            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+            defaultValueLiteral="0"/>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateMultiValuedFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/list/UpdateSingleListEntryEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/list/UpdateSingleListEntryEChange/Feature"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InsertInListEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which inserts a value into an EList."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Feature">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/UpdateSingleListEntryEChange">
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInListEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInListEChange/Feature"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//AdditiveEChange">
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInListEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInListEChange/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="RemoveFromListEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which removes a value from an EList."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Feature">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/UpdateSingleListEntryEChange">
+          <eTypeArguments eTypeParameter="#//feature/list/RemoveFromListEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/list/RemoveFromListEChange/Feature"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//SubtractiveEChange">
+          <eTypeArguments eTypeParameter="#//feature/list/RemoveFromListEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/list/RemoveFromListEChange/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="attribute" nsURI="http://vitruv.tools/metamodels/change/atomic/feature/attribute/2.0"
+        nsPrefix="attribute">
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateAttributeEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which updates the value of an attribute."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/FeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateAttributeEChange/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="AdditiveAttributeEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which inserts a new value into an attribute."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" unique="false"
+            lowerBound="1">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="*&#xA;The value which will be inserted."/>
+          </eAnnotations>
+          <eGenericType eTypeParameter="#//feature/attribute/AdditiveAttributeEChange/Value"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="wasUnset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateAttributeEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/AdditiveAttributeEChange/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//AdditiveEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/AdditiveAttributeEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/AdditiveAttributeEChange/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="SubtractiveAttributeEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which removes a value from an attribute."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" unique="false"
+            lowerBound="1">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="*&#xA;The value which will be removed."/>
+          </eAnnotations>
+          <eGenericType eTypeParameter="#//feature/attribute/SubtractiveAttributeEChange/Value"/>
+        </eStructuralFeatures>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateAttributeEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/SubtractiveAttributeEChange/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//SubtractiveEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/SubtractiveAttributeEChange/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/SubtractiveAttributeEChange/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InsertEAttributeValue">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;EChange which inserts a new value into a many valued attribute."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/InsertInListEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertEAttributeValue/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertEAttributeValue/Value"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/AdditiveAttributeEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertEAttributeValue/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertEAttributeValue/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="RemoveEAttributeValue">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;EChange which removes the value of a many valued attribute."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromListEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/RemoveEAttributeValue/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/RemoveEAttributeValue/Value"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/SubtractiveAttributeEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/RemoveEAttributeValue/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/RemoveEAttributeValue/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ReplaceSingleValuedEAttribute">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;EChange which replaces the value of the single valued attribute."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="Value">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/single/ReplaceSingleValuedFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/Value"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/AdditiveAttributeEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/Value"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/SubtractiveAttributeEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/Element"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/Value"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="reference" nsURI="http://vitruv.tools/metamodels/change/atomic/feature/reference/2.0"
+        nsPrefix="reference">
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateReferenceEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which updates a reference with a new value."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eOperations name="isContainment" unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="*&#xA;The affected reference is a containment reference."/>
+            <details key="body" value="&lt;%org.eclipse.emf.ecore.EReference%> _affectedFeature = this.getAffectedFeature();&#xA;return _affectedFeature.isContainment();"/>
+          </eAnnotations>
+        </eOperations>
+        <eGenericSuperTypes eClassifier="#//feature/FeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/UpdateReferenceEChange/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="AdditiveReferenceEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which inserts an EObject into a reference."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="wasUnset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateReferenceEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/AdditiveReferenceEChange/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//eobject/EObjectAddedEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/AdditiveReferenceEChange/Element"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="SubtractiveReferenceEChange" abstract="true">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;Abstract EChange which removes an EObject from a reference."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateReferenceEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/SubtractiveReferenceEChange/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//eobject/EObjectSubtractedEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/SubtractiveReferenceEChange/Element"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InsertEReference">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;EChange which inserts an EObject into a many valued reference.&#xA;If the reference is a containment reference, the inserted object will be taken from the staging area.&#xA;There it must be placed by a {@link tools.vitruv.change.atomic.eobject.CreateEObject} EChange or by removing it from another reference."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/InsertInListEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/InsertEReference/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/InsertEReference/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/AdditiveReferenceEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/InsertEReference/Element"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="RemoveEReference">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;EChange which removes an EObject from a many valued reference.&#xA;If the reference is a containment reference, the removed object will be placed in the staging area.&#xA;There it can be deleted by a {@link tools.vitruv.change.atomic.eobject.DeleteEObject} EChange or reinserted by another change."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromListEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/RemoveEReference/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/RemoveEReference/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/SubtractiveReferenceEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/RemoveEReference/Element"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ReplaceSingleValuedEReference">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="*&#xA;EChange which replaces a single valued reference with a new EObject.&#xA;If the reference is a containment reference, the new object will be taken from the staging&#xA;area and the old one will be placed in it.&#xA;The new object must be placed in the staging area by a {@link tools.vitruv.change.atomic.eobject.CreateEObject} EChange or by removing&#xA;it from another reference.&#xA;The old one can be deleted by a {@link tools.vitruv.change.atomic.eobject.DeleteEObject} EChange or resinserted by another change."/>
+        </eAnnotations>
+        <eTypeParameters name="Element">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/single/ReplaceSingleValuedFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/ReplaceSingleValuedEReference/Element"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/ReplaceSingleValuedEReference/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/AdditiveReferenceEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/ReplaceSingleValuedEReference/Element"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/SubtractiveReferenceEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/ReplaceSingleValuedEReference/Element"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+  </eSubpackages>
+</ecore:EPackage>

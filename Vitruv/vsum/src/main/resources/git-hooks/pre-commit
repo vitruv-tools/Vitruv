@@ -1,0 +1,101 @@
+#!/bin/bash
+#
+# Git pre-commit hook for Vitruvius V-SUM validation.
+#
+# Triggered before every commit. Validates that the V-SUM is in a consistent
+# state. If validation fails the commit is blocked.
+#
+# Workflow:
+#   1. Generate a unique request ID and write the validate-trigger file.
+#   2. Wait for VsumValidationWatcher to write the result file (up to 30s).
+#      The watcher updates lastModified in branch metadata on the Java side.
+#   3. Read the result: on pass, stage the metadata file and allow the commit;
+#      on failure or timeout, block the commit.
+#
+
+set -e
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
+COMMIT_SHA=$(git rev-parse HEAD 2>/dev/null || echo "0000000000000000000000000000000000000000")
+
+VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
+mkdir -p "$VITRUVIUS_DIR"
+
+METADATA_FILE="$VITRUVIUS_DIR/branches/$BRANCH.metadata"
+
+# Generate a unique request ID so concurrent commits do not read each other's results.
+if command -v uuidgen &> /dev/null; then
+    REQUEST_ID=$(uuidgen)
+elif [ -f /proc/sys/kernel/random/uuid ]; then
+    REQUEST_ID=$(cat /proc/sys/kernel/random/uuid)
+else
+    REQUEST_ID="$(date +%s)-$$-$RANDOM"
+fi
+
+TRIGGER_FILE="$VITRUVIUS_DIR/validate-trigger"
+RESULT_FILE="$VITRUVIUS_DIR/validation-result-$REQUEST_ID"
+RESULT_JSON="$VITRUVIUS_DIR/validation-result-$REQUEST_ID.json"
+
+echo "Validating V-SUM consistency..."
+echo "Request ID: $REQUEST_ID"
+echo "Commit:     ${COMMIT_SHA:0:8}"
+echo "Branch:     $BRANCH"
+echo ""
+
+TIMESTAMP=$(date +%s)
+echo "$COMMIT_SHA|$BRANCH|$REQUEST_ID|$TIMESTAMP" > "$TRIGGER_FILE"
+
+# Wait up to 30 seconds for the watcher to write the result file.
+MAX_WAIT=60
+WAITED=0
+
+while [ $WAITED -lt $MAX_WAIT ]; do
+    if [ -f "$RESULT_FILE" ]; then
+        if grep -q "VALIDATION PASSED" "$RESULT_FILE"; then
+            echo "V-SUM validation PASSED"
+            echo ""
+            cat "$RESULT_FILE"
+            echo ""
+            rm -f "$RESULT_FILE" "$RESULT_JSON"
+            if [ -f "$METADATA_FILE" ]; then
+                git add "$METADATA_FILE"
+            fi
+            exit 0
+        else
+            echo "V-SUM validation FAILED"
+            echo ""
+            cat "$RESULT_FILE"
+            echo ""
+            rm -f "$RESULT_FILE" "$RESULT_JSON"
+            echo "Commit blocked. Fix errors above before committing."
+            exit 1
+        fi
+    fi
+
+    sleep 0.5
+    WAITED=$((WAITED + 1))
+
+    if [ $((WAITED % 10)) -eq 0 ]; then
+        ELAPSED=$((WAITED / 2))
+        echo "Still waiting for validation... (${ELAPSED}s elapsed)"
+    fi
+done
+
+# Timeout: watcher did not respond within 30 seconds.
+echo "Validation timeout after $((MAX_WAIT / 2)) seconds"
+echo ""
+echo "Request ID: $REQUEST_ID"
+echo ""
+echo "Possible causes:"
+echo "  - VsumValidationWatcher is not running"
+echo "  - Validation is taking longer than expected"
+echo "  - Another validation is in progress (lock contention)"
+echo ""
+echo "Ensure your Vitruvius application is running and VsumValidationWatcher has been started."
+echo "If another commit is in progress, wait a moment and try again."
+echo ""
+echo "Commit blocked for safety."
+
+rm -f "$TRIGGER_FILE" "$RESULT_FILE" "$RESULT_JSON"
+exit 1

@@ -1,0 +1,107 @@
+#!/bin/bash
+#
+# Git post-commit hook for Vitruvius semantic changelog generation.
+#
+# Triggered after every successful commit. Signals the background watcher to
+# generate the semantic changelog for the commit.
+#
+# For merge commits (2+ parents), this hook also triggers merge metadata
+# generation, because conflict-requiring merges fire post-commit (not post-merge)
+# after the resolution commit.
+#
+# Workflow:
+#   1. Check if the commit contains XMI/model file changes; skip if not.
+#   2. Amend the commit to include the current VSUM state for this branch.
+#   3. Write a post-commit trigger for changelog generation.
+#   4. If this is a merge commit, also write a merge trigger.
+#
+
+set -e
+
+generate_uuid() {
+    if command -v uuidgen &> /dev/null; then
+        uuidgen
+    elif [ -f /proc/sys/kernel/random/uuid ]; then
+        cat /proc/sys/kernel/random/uuid
+    else
+        echo "$(date +%s)-$$-$RANDOM"
+    fi
+}
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+IS_MERGE_COMMIT=false
+
+if git rev-parse HEAD^2 &> /dev/null; then
+    FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD^1 HEAD)
+    IS_MERGE_COMMIT=true
+elif git rev-parse HEAD^1 &> /dev/null; then
+    FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD)
+else
+    FILES_CHANGED=$(git ls-tree --name-only -r HEAD)
+fi
+
+HAS_MODEL_CHANGES=false
+while IFS= read -r file; do
+    if [[ "$file" =~ \.(xmi|model[0-9]*|ecore|genmodel|uml)$ ]]; then
+        HAS_MODEL_CHANGES=true
+        break
+    fi
+done <<< "$FILES_CHANGED"
+
+if [ "$HAS_MODEL_CHANGES" = false ]; then
+    echo "Vitruvius: Skipping changelog (no XMI/model files changed)"
+    exit 0
+fi
+
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached-HEAD")
+VITRUVIUS_DIR="$REPO_ROOT/.vitruvius"
+mkdir -p "$VITRUVIUS_DIR"
+
+# Amend the commit to include the current VSUM state for this branch.
+VSUM_DIR="$REPO_ROOT/.vitruvius/vsum/$BRANCH"
+AMEND_GUARD="$VITRUVIUS_DIR/.amend-in-progress"
+
+if [ -f "$AMEND_GUARD" ]; then
+    GUARD_PID=$(cat "$AMEND_GUARD" 2>/dev/null)
+    if [ -n "$GUARD_PID" ] && kill -0 "$GUARD_PID" 2>/dev/null; then
+        # Guard belongs to a live amend loop; this invocation is the recursive re-entry.
+        rm -f "$AMEND_GUARD"
+        exit 0
+    else
+        # Guard was left by a crashed process; discard it and continue normally.
+        echo "Vitruvius: WARNING - stale amend guard removed (PID $GUARD_PID is gone)." >&2
+        echo "Vitruvius: The previous commit may be missing its changelog. Re-running now." >&2
+        rm -f "$AMEND_GUARD"
+    fi
+fi
+if [ -d "$VSUM_DIR" ]; then
+    git add "$VSUM_DIR"
+    if ! git diff --cached --quiet; then
+        echo $$ > "$AMEND_GUARD"
+        git commit --amend --no-edit --no-verify
+        echo "Vitruvius: VSUM state for branch '$BRANCH' committed"
+    fi
+fi
+
+# Capture HEAD after the amend so the trigger SHA matches the actual commit in history.
+COMMIT_SHA=$(git rev-parse HEAD)
+TIMESTAMP=$(date +%s)
+
+REQUEST_ID=$(generate_uuid)
+echo "$COMMIT_SHA|$BRANCH|$REQUEST_ID|$TIMESTAMP" > "$VITRUVIUS_DIR/post-commit-trigger"
+
+if [ "$IS_MERGE_COMMIT" = true ]; then
+    SOURCE_COMMIT=$(git rev-parse HEAD^2)
+    SOURCE_BRANCH=$(git name-rev --name-only "$SOURCE_COMMIT" 2>/dev/null || echo "unknown-branch")
+    SOURCE_BRANCH=$(echo "$SOURCE_BRANCH" | sed 's|^remotes/origin/||')
+
+    MERGE_REQUEST_ID=$(generate_uuid)
+    echo "$COMMIT_SHA|$SOURCE_BRANCH|$BRANCH|$MERGE_REQUEST_ID|$TIMESTAMP" > "$VITRUVIUS_DIR/merge-trigger"
+
+    echo "Vitruvius: Changelog + Merge metadata triggered for commit ${COMMIT_SHA:0:8} ($SOURCE_BRANCH -> $BRANCH)"
+else
+    echo "Vitruvius: Changelog generation triggered for commit ${COMMIT_SHA:0:8} on '$BRANCH'"
+fi
+
+exit 0

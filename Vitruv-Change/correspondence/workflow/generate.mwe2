@@ -1,0 +1,21 @@
+module tools.vitruv.change.correspondence
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+
+var workspaceRoot = ".."
+
+Workflow {
+
+    bean = StandaloneSetup {
+        scanClassPath = true
+        platformUri = workspaceRoot
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.change.correspondence/src/main/ecore/correspondence.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.change.correspondence/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+}

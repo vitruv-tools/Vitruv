@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.change.atomic/target/generated-sources/ecore" modelPluginID="tools.vitruv.change.atomic"
+    modelName="atomicModelChange" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    usedGenPackages="platform:/resource/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>atomicModelChange.ecore</foreignModel>
+  <genPackages prefix="Atomic" basePackage="tools.vitruv.change" disposableProviderFactory="true"
+      ecorePackage="atomicModelChange.ecore#/">
+    <genClasses image="false" ecoreClass="atomicModelChange.ecore#//EChange">
+      <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//EChange/Element"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="atomicModelChange.ecore#//AdditiveEChange">
+      <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//AdditiveEChange/Element"/>
+      <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//AdditiveEChange/Value"/>
+      <genOperations ecoreOperation="atomicModelChange.ecore#//AdditiveEChange/getNewValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="atomicModelChange.ecore#//SubtractiveEChange">
+      <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//SubtractiveEChange/Element"/>
+      <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//SubtractiveEChange/Value"/>
+      <genOperations ecoreOperation="atomicModelChange.ecore#//SubtractiveEChange/getOldValue"/>
+    </genClasses>
+    <nestedGenPackages prefix="Eobject" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//eobject">
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//eobject/EObjectAddedEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//eobject/EObjectAddedEChange/Element"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference atomicModelChange.ecore#//eobject/EObjectAddedEChange/newValue"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//eobject/EObjectSubtractedEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//eobject/EObjectSubtractedEChange/Element"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference atomicModelChange.ecore#//eobject/EObjectSubtractedEChange/oldValue"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//eobject/EObjectExistenceEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//eobject/EObjectExistenceEChange/Element"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference atomicModelChange.ecore#//eobject/EObjectExistenceEChange/affectedElement"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//eobject/EObjectExistenceEChange/idAttributeValue"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference atomicModelChange.ecore#//eobject/EObjectExistenceEChange/affectedEObjectType"/>
+      </genClasses>
+      <genClasses ecoreClass="atomicModelChange.ecore#//eobject/CreateEObject">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//eobject/CreateEObject/Element"/>
+      </genClasses>
+      <genClasses ecoreClass="atomicModelChange.ecore#//eobject/DeleteEObject">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//eobject/DeleteEObject/Element"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Root" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//root">
+      <genDataTypes ecoreDataType="atomicModelChange.ecore#//root/Resource"/>
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//root/RootEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//root/RootEChange/Element"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//root/RootEChange/uri"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//root/RootEChange/resource"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//root/RootEChange/index"/>
+      </genClasses>
+      <genClasses ecoreClass="atomicModelChange.ecore#//root/InsertRootEObject">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//root/InsertRootEObject/Element"/>
+      </genClasses>
+      <genClasses ecoreClass="atomicModelChange.ecore#//root/RemoveRootEObject">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//root/RemoveRootEObject/Element"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Feature" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//feature">
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/FeatureEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/FeatureEChange/Element"/>
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/FeatureEChange/Feature"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference atomicModelChange.ecore#//feature/FeatureEChange/affectedFeature"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference atomicModelChange.ecore#//feature/FeatureEChange/affectedElement"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/UpdateMultiValuedFeatureEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/UpdateMultiValuedFeatureEChange/Element"/>
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/UpdateMultiValuedFeatureEChange/Feature"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/UpdateSingleValuedFeatureEChange">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/UpdateSingleValuedFeatureEChange/Element"/>
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/UpdateSingleValuedFeatureEChange/Feature"/>
+      </genClasses>
+      <genClasses ecoreClass="atomicModelChange.ecore#//feature/UnsetFeature">
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/UnsetFeature/Element"/>
+        <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/UnsetFeature/Feature"/>
+      </genClasses>
+      <nestedGenPackages prefix="Single" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//feature/single">
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/Feature"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/Value"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/isUnset"/>
+          <genOperations ecoreOperation="atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/isFromNonDefaultValue"
+              body="Value _oldValue = this.getOldValue();&#xA;Feature _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_oldValue, _defaultValue);&#xA;return (!_equals);"/>
+          <genOperations ecoreOperation="atomicModelChange.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/isToNonDefaultValue"
+              body="Value _newValue = this.getNewValue();&#xA;Feature _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_newValue, _defaultValue);&#xA;return (!_equals);"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="List" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//feature/list">
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/list/UpdateSingleListEntryEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/UpdateSingleListEntryEChange/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/UpdateSingleListEntryEChange/Feature"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//feature/list/UpdateSingleListEntryEChange/index"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/list/InsertInListEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/InsertInListEChange/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/InsertInListEChange/Feature"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/InsertInListEChange/Value"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/list/RemoveFromListEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/RemoveFromListEChange/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/RemoveFromListEChange/Feature"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/list/RemoveFromListEChange/Value"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Attribute" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//feature/attribute">
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/attribute/UpdateAttributeEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/UpdateAttributeEChange/Element"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/attribute/AdditiveAttributeEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/AdditiveAttributeEChange/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/AdditiveAttributeEChange/Value"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//feature/attribute/AdditiveAttributeEChange/newValue"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//feature/attribute/AdditiveAttributeEChange/wasUnset"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/attribute/SubtractiveAttributeEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/SubtractiveAttributeEChange/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/SubtractiveAttributeEChange/Value"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//feature/attribute/SubtractiveAttributeEChange/oldValue"/>
+        </genClasses>
+        <genClasses ecoreClass="atomicModelChange.ecore#//feature/attribute/InsertEAttributeValue">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/InsertEAttributeValue/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/InsertEAttributeValue/Value"/>
+        </genClasses>
+        <genClasses ecoreClass="atomicModelChange.ecore#//feature/attribute/RemoveEAttributeValue">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/RemoveEAttributeValue/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/RemoveEAttributeValue/Value"/>
+        </genClasses>
+        <genClasses ecoreClass="atomicModelChange.ecore#//feature/attribute/ReplaceSingleValuedEAttribute">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/ReplaceSingleValuedEAttribute/Element"/>
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/attribute/ReplaceSingleValuedEAttribute/Value"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Reference" disposableProviderFactory="true" ecorePackage="atomicModelChange.ecore#//feature/reference">
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/reference/UpdateReferenceEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/reference/UpdateReferenceEChange/Element"/>
+          <genOperations ecoreOperation="atomicModelChange.ecore#//feature/reference/UpdateReferenceEChange/isContainment"
+              body="&lt;%org.eclipse.emf.ecore.EReference%> _affectedFeature = this.getAffectedFeature();&#xA;return _affectedFeature.isContainment();"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/reference/AdditiveReferenceEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/reference/AdditiveReferenceEChange/Element"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute atomicModelChange.ecore#//feature/reference/AdditiveReferenceEChange/wasUnset"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="atomicModelChange.ecore#//feature/reference/SubtractiveReferenceEChange">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/reference/SubtractiveReferenceEChange/Element"/>
+        </genClasses>
+        <genClasses ecoreClass="atomicModelChange.ecore#//feature/reference/InsertEReference">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/reference/InsertEReference/Element"/>
+        </genClasses>
+        <genClasses ecoreClass="atomicModelChange.ecore#//feature/reference/RemoveEReference">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/reference/RemoveEReference/Element"/>
+        </genClasses>
+        <genClasses ecoreClass="atomicModelChange.ecore#//feature/reference/ReplaceSingleValuedEReference">
+          <genTypeParameters ecoreTypeParameter="atomicModelChange.ecore#//feature/reference/ReplaceSingleValuedEReference/Element"/>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

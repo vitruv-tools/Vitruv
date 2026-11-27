@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>tools.vitruv</groupId>
+    <artifactId>tools.vitruv.change</artifactId>
+    <version>3.2.4-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>tools.vitruv.change.testutils</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Vitruv Change Test Utilities</name>
+  <description>Utilities for defining tests using the Vitruv change and propagation specifications</description>
+
+  <modules>
+    <module>changevisualization</module>
+    <module>core</module>
+    <module>integration</module>
+    <module>metamodels</module>
+  </modules>
+</project>

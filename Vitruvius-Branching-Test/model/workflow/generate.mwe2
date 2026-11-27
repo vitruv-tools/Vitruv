@@ -1,0 +1,27 @@
+module tools.vitruv.methodologisttemplate.model
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+
+var workspaceRoot = ".."
+
+Workflow {
+
+    bean = StandaloneSetup {
+        scanClassPath = true
+        platformUri = workspaceRoot
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.methodologisttemplate.model/src/main/ecore/model.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.methodologisttemplate.model/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+    component = EcoreGenerator {
+        genModel = "platform:/resource/tools.vitruv.methodologisttemplate.model/src/main/ecore/model2.genmodel"
+        srcPath = "platform:/resource/tools.vitruv.methodologisttemplate.model/target/generated-sources/ecore"
+        generateCustomClasses = false
+    }
+
+}

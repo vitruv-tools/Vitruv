@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="pcm_mockup" nsURI="http://tools.vitruv.change.testutils.metamodels.pcm_mockup"
+    nsPrefix="pcm_mockup">
+  <eClassifiers xsi:type="ecore:EClass" name="Identified" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" ordered="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" iD="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Repository" eSuperTypes="#//Identified #//PNamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="interfaces" upperBound="-1"
+        eType="#//PInterface" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+        eType="#//Component" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PInterface" eSuperTypes="#//Identified #//PNamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="methods" upperBound="-1"
+        eType="#//PMethod" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Component" eSuperTypes="#//Identified #//PNamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="providedInterface" ordered="false"
+        eType="#//PInterface"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryFactor" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="componentExclusive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PNamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PMethod" eSuperTypes="#//Identified #//PNamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//PInterface"/>
+  </eClassifiers>
+</ecore:EPackage>
